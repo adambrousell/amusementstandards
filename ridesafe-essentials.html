@@ -57,6 +57,7 @@
       border-radius: 6px;
       margin-top: 20px;
       font-weight: bold;
+      cursor: pointer;
     }
 
     .section {
@@ -93,6 +94,39 @@
       padding: 20px;
       margin-top: 40px;
     }
+
+    /* Modal Styles */
+    #formModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    #formModal .modal-content {
+      background: #fff;
+      max-width: 600px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    #formModal .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #333;
+    }
   </style>
 </head>
 
@@ -110,7 +144,9 @@
 <section class="hero">
   <h1>RideSafe Essentials</h1>
   <p>Your foundation for safer, more consistent ride operations.</p>
-  <a href="/contact.html?service=RideSafe%20Essentials" class="btn">Request This Program</a>
+
+  <!-- Modal Trigger Button -->
+  <a class="btn" onclick="openFormModal()">Request This Program</a>
 </section>
 
 <section class="section">
@@ -152,12 +188,38 @@
 <section class="cta">
   <h2>Ready to Strengthen Your Ride Operations?</h2>
   <p>Start with a focused, fixed‑scope engagement that gives you clarity and momentum.</p>
-  <a href="/contact.html?service=RideSafe%20Essentials" class="btn">Get Started</a>
+  <a class="btn" onclick="openFormModal()">Get Started</a>
 </section>
 
 <footer>
   &copy; Amusement Standards. All rights reserved.
 </footer>
+
+<!-- Modal -->
+<div id="formModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeFormModal()">&times;</span>
+
+    <!-- HubSpot Form -->
+    <script src="https://js-na2.hsforms.net/forms/embed/245118753.js" defer></script>
+    <div class="hs-form-frame"
+         data-region="na2"
+         data-form-id="0a2bfbf3-f22b-4435-b229-f0240ce84aba"
+         data-portal-id="245118753">
+    </div>
+  </div>
+</div>
+
+<!-- Modal Script -->
+<script>
+function openFormModal() {
+  document.getElementById('formModal').style.display = 'flex';
+}
+
+function closeFormModal() {
+  document.getElementById('formModal').style.display = 'none';
+}
+</script>
 
 </body>
 </html>
