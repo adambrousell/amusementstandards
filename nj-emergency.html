@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NJ Emergency Incident Response - NJAC 5:14A-4.13 Compliant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+
+        .compliance-banner {
+            background: #1e40af;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .emergency-banner {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 15px 20px;
+            margin: 20px;
+            border-radius: 6px;
+        }
+
+        .emergency-banner strong {
+            color: #dc2626;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .section.critical {
+            border-color: #dc2626;
+            border-width: 3px;
+        }
+
+        .section-header {
+            background: #f3f4f6;
+            padding: 15px 20px;
+            border-bottom: 2px solid #e5e7eb;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .section.critical .section-header {
+            background: #fee2e2;
+            border-bottom-color: #dc2626;
+        }
+
+        .section-header:hover {
+            background: #e5e7eb;
+        }
+
+        .section.critical .section-header:hover {
+            background: #fecaca;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: #dc2626;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .critical-badge {
+            background: #dc2626;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .toggle-icon {
+            font-size: 20px;
+            color: #6b7280;
+            transition: transform 0.3s;
+        }
+
+        .section.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .section-body {
+            padding: 20px;
+            display: none;
+        }
+
+        .section.expanded .section-body {
+            display: block;
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+        .field-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .required-field label::after {
+            content: " *";
+            color: #dc2626;
+        }
+
+        .field-group input[type="text"],
+        .field-group input[type="tel"],
+        .field-group input[type="email"],
+        .field-group input[type="date"],
+        .field-group input[type="time"],
+        .field-group input[type="number"],
+        .field-group textarea,
+        .field-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .field-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            margin-bottom: 12px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .checkbox-group label:hover {
+            background: #f9fafb;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"]:checked + span {
+            text-decoration: line-through;
+            color: #6b7280;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .radio-group label:hover {
+            background: #f9fafb;
+        }
+
+        .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .subsection {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .subsection h3 {
+            font-size: 16px;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .njac-reference {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .njac-reference strong {
+            color: #1e40af;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+        }
+
+        .btn-email {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-email:hover {
+            background: #2563eb;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc2626, #f97316);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 30px;
+        }
+
+        .stat-card {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #dc2626;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .email-status {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin: 20px;
+            display: none;
+        }
+
+        .email-status.show {
+            display: block;
+        }
+
+        .email-status.error {
+            background: #fef2f2;
+            border-color: #fca5a5;
+        }
+
+        @media (max-width: 768px) {
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .action-buttons,
+            .toggle-icon {
+                display: none;
+            }
+
+            .section-body {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚨 NJ Emergency Incident Response</h1>
+            <p>Phone Intake Checklist - (732) 207-0005</p>
+        </div>
+
+        <div class="compliance-banner">
+            ✓ NJAC 5:14A-4.13 COMPLIANT - New Jersey Amusement Ride Incident Reporting
+        </div>
+
+        <div class="emergency-banner">
+            <strong>⚡ CRITICAL:</strong> This is a live emergency call. Determine incident category (Shut Down, 24-Hour Report, or Record Only) per NJ regulations.
+        </div>
+
+        <div class="email-status" id="emailStatus">
+            Email sent successfully to adam@amusementstandards.com and adam.brousell@gmail.com
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalChecked">0</div>
+                <div class="stat-label">Items Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalItems">0</div>
+                <div class="stat-label">Total Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="progressPercent">0%</div>
+                <div class="stat-label">Progress</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="incidentCategory">TBD</div>
+                <div class="stat-label">NJAC Category</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- SECTION 1: INCIDENT CATEGORY DETERMINATION (CRITICAL) -->
+            <div class="section critical expanded" data-section="1">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">1</span>
+                        INCIDENT CATEGORY (NJAC 5:14A-4.13)
+                        <span class="critical-badge">REQUIRED FIRST</span>
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="njac-reference">
+                        <strong>NJAC 5:14A-4.13:</strong> New Jersey requires different actions based on incident severity. Determine category IMMEDIATELY to provide correct guidance to caller.
+                    </div>
+
+                    <div class="subsection">
+                        <h3>⚠️ CATEGORY A: SHUT DOWN & IMMEDIATE REPORT</h3>
+                        <p style="margin-bottom: 10px;"><strong>If ANY of these occurred, facility MUST:</strong></p>
+                        <ol style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Shut down the ride and secure the area</li>
+                            <li>Evacuate riders and provide care for injured</li>
+                            <li>Report to NJ DCA IMMEDIATELY by phone</li>
+                            <li>Submit Incident Report within 24 hours</li>
+                            <li>Send copy of report to ride manufacturer</li>
+                        </ol>
+
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="A">
+                                <span><strong>Ejection from ride</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="A">
+                                <span><strong>Failure of critical structural or mechanical component</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="A">
+                                <span><strong>Serious injury/illness attributed to the ride</strong> (hospitalization, surgery, ICU)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>⚡ CATEGORY B: REPORT WITHIN 24 HOURS</h3>
+                        <p style="margin-bottom: 10px;"><strong>If ANY of these occurred, facility MUST:</strong></p>
+                        <ol style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Report to NJ DCA within 24 hours (phone or email)</li>
+                            <li>Submit written incident report within 5 days</li>
+                            <li>Repair per manufacturer instructions</li>
+                            <li>Submit written report of corrective actions</li>
+                        </ol>
+
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="B">
+                                <span><strong>Mechanical malfunction</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="B">
+                                <span><strong>Emergency evacuation of ride</strong> (NOT including: area-wide power failure, rider request, rider misbehavior)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>📋 CATEGORY C: RECORD ONLY (No State Report Required)</h3>
+                        <p style="margin-bottom: 10px;"><strong>Facility MUST keep internal record including:</strong></p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Name and address of injured party</li>
+                            <li>Age and sex</li>
+                            <li>Brief description of injury</li>
+                            <li>Ride where injury occurred</li>
+                            <li>Time, date, weather conditions</li>
+                            <li>Description of incident</li>
+                        </ul>
+
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="C">
+                                <span><strong>Minor injury or illness</strong> (first aid only, no hospitalization)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="C">
+                                <span><strong>Complaint reported by rider</strong> (observed by owner/operator)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field-group required-field" style="margin-top: 20px;">
+                        <label>DETERMINED INCIDENT CATEGORY:</label>
+                        <select id="incidentCategory" required onchange="updateIncidentCategory()">
+                            <option value="">Select category...</option>
+                            <option value="A">Category A - SHUT DOWN & IMMEDIATE REPORT</option>
+                            <option value="B">Category B - Report Within 24 Hours</option>
+                            <option value="C">Category C - Record Only (No State Report)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: CALLER & FACILITY INFORMATION -->
+            <div class="section expanded" data-section="2">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">2</span>
+                        Caller & Facility Information
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="field-group required-field">
+                        <label>Caller Name:</label>
+                        <input type="text" id="callerName" required placeholder="Full name">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Caller Title/Role:</label>
+                        <input type="text" id="callerTitle" required placeholder="Operations Manager, General Manager, etc.">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Facility Name:</label>
+                        <input type="text" id="facilityName" required placeholder="Name of park/facility">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Facility Address:</label>
+                        <input type="text" id="facilityAddress" required placeholder="Street address, City, NJ, ZIP">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Callback Phone Number:</label>
+                        <input type="tel" id="callbackNumber" required placeholder="(123) 456-7890">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Email Address:</label>
+                        <input type="email" id="callerEmail" required placeholder="caller@email.com">
+                    </div>
+                    <div class="field-group">
+                        <label>NJ DCA Ride Permit Number (if known):</label>
+                        <input type="text" id="permitNumber" placeholder="NJ permit #">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: INCIDENT DETAILS (NJAC REQUIRED FIELDS) -->
+            <div class="section critical expanded" data-section="3">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">3</span>
+                        Incident Details (NJAC Required Fields)
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="field-group required-field">
+                        <label>Date of Incident:</label>
+                        <input type="date" id="incidentDate" required>
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Time of Incident:</label>
+                        <input type="time" id="incidentTime" required>
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Weather Conditions:</label>
+                        <input type="text" id="weatherConditions" required placeholder="Clear, rainy, windy, temperature, etc.">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Ride Name (where incident occurred):</label>
+                        <input type="text" id="rideName" required placeholder="Specific ride/attraction name">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Ride Manufacturer:</label>
+                        <input type="text" id="rideManufacturer" placeholder="Manufacturer name (if known)">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Ride Model/Type:</label>
+                        <input type="text" id="rideModel" placeholder="Model number or type">
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Injured Party Information (NJAC Required)</h3>
+                        <div class="field-group required-field">
+                            <label>Name of Injured Party:</label>
+                            <input type="text" id="injuredName" required placeholder="Full name">
+                        </div>
+                        <div class="field-group required-field">
+                            <label>Address of Injured Party:</label>
+                            <input type="text" id="injuredAddress" required placeholder="Street, City, State, ZIP">
+                        </div>
+                        <div class="field-group required-field">
+                            <label>Age:</label>
+                            <input type="number" id="injuredAge" required min="0" max="120" placeholder="Age">
+                        </div>
+                        <div class="field-group required-field">
+                            <label>Sex:</label>
+                            <select id="injuredSex" required>
+                                <option value="">Select...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="field-group required-field">
+                            <label>Brief Description of Injury:</label>
+                            <textarea id="injuryDescription" required placeholder="Describe the injury/illness"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="field-group required-field">
+                        <label>Description of Incident:</label>
+                        <textarea id="incidentDescription" required placeholder="Detailed description of what happened, sequence of events, contributing factors"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: CURRENT STATUS -->
+            <div class="section" data-section="4">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">4</span>
+                        Current Status
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="rideShutDown">
+                            <span>Ride has been shut down</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="areaSecured">
+                            <span>Area has been secured</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="ridersEvacuated">
+                            <span>All riders evacuated safely</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="careProvided">
+                            <span>Care provided for injured persons</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="njDcaNotified">
+                            <span>NJ DCA has been notified (if Category A or B)</span>
+                        </label>
+                    </div>
+                    <div class="field-group">
+                        <label>NJ DCA Contact Person (if already contacted):</label>
+                        <input type="text" id="dcaContact" placeholder="Inspector name">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: DOCUMENTATION STATUS -->
+            <div class="section" data-section="5">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">5</span>
+                        Evidence & Documentation
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Scene preserved/unchanged</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Photos taken of scene</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Video footage available</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Witness statements collected</span>
+                        </label>
+                    </div>
+                    <div class="field-group">
+                        <label>Number of Witnesses:</label>
+                        <input type="number" id="witnessCount" min="0" placeholder="0">
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Operator on duty identified</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Maintenance logs available</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Operator training records available</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Daily inspection logs available</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: IMMEDIATE GUIDANCE TO CALLER -->
+            <div class="section critical" data-section="6">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">6</span>
+                        Immediate Actions Required (Tell Caller)
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="njac-reference">
+                        <strong>CRITICAL:</strong> Based on incident category, caller must take specific immediate actions per NJ regulations.
+                    </div>
+
+                    <div class="subsection" id="categoryAGuidance" style="display:none;">
+                        <h3>⚠️ CATEGORY A IMMEDIATE ACTIONS:</h3>
+                        <ol style="margin-left: 20px;">
+                            <li><strong>DO NOT restart the ride</strong> - It must remain shut down until NJ DCA authorizes</li>
+                            <li><strong>Call NJ DCA IMMEDIATELY:</strong> (609) 984-7834</li>
+                            <li><strong>Preserve the scene</strong> - Do not move equipment, clean, or repair anything</li>
+                            <li><strong>Document everything</strong> - Photos, videos, witness info, weather</li>
+                            <li><strong>Notify ride manufacturer</strong> - Required by NJAC 5:14A-4.13</li>
+                            <li><strong>Submit Incident Report Form within 24 hours</strong> to NJ DCA</li>
+                        </ol>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller: DO NOT restart ride</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Gave caller NJ DCA phone: (609) 984-7834</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller to preserve scene</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller to notify manufacturer</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection" id="categoryBGuidance" style="display:none;">
+                        <h3>⚡ CATEGORY B IMMEDIATE ACTIONS:</h3>
+                        <ol style="margin-left: 20px;">
+                            <li><strong>Report to NJ DCA within 24 hours:</strong> (609) 984-7834 or email</li>
+                            <li><strong>Prepare written incident report</strong> - Must be submitted within 5 days</li>
+                            <li><strong>Document the malfunction/evacuation</strong> - Photos, details, what happened</li>
+                            <li><strong>Do not operate ride</strong> until repaired per manufacturer instructions</li>
+                            <li><strong>Submit corrective action report</strong> to NJ DCA after repairs</li>
+                        </ol>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller 24-hour reporting requirement</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Gave caller NJ DCA contact info</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection" id="categoryCGuidance" style="display:none;">
+                        <h3>📋 CATEGORY C IMMEDIATE ACTIONS:</h3>
+                        <ol style="margin-left: 20px;">
+                            <li><strong>Create internal record</strong> - Must include all NJAC required fields</li>
+                            <li><strong>Keep record accessible</strong> - Must be available for DCA inspection</li>
+                            <li><strong>No state report required</strong> - But record must be maintained</li>
+                            <li><strong>Evaluate if incident reveals pattern</strong> - Multiple minor incidents may require action</li>
+                        </ol>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller to create internal record with required fields</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>ALL CATEGORIES - General Guidance:</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller to notify insurance company immediately</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller to gather maintenance and training records</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller DO NOT make statements to media without legal counsel</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 7: SERVICE RECOMMENDATION -->
+            <div class="section" data-section="7">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">7</span>
+                        Recommended Service
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="field-group required-field">
+                        <label>Select Amusement Standards Service:</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="service" value="emergency">
+                                <div>
+                                    <strong>Emergency Investigation - $5,000</strong><br>
+                                    <small style="color: #6b7280;">48-hour response, on-site/remote investigation, root cause analysis, NJAC-compliant report, 30-day follow-up</small>
+                                </div>
+                            </label>
+                            <label>
+                                <input type="radio" name="service" value="expert">
+                                <div>
+                                    <strong>Expert Witness Retainer - $7,500 + hourly</strong><br>
+                                    <small style="color: #6b7280;">Everything in Emergency Investigation + deposition prep, trial testimony, attorney consultation (Landan Ansell, CPA, CFF, J.D.)</small>
+                                </div>
+                            </label>
+                            <label>
+                                <input type="radio" name="service" value="annual">
+                                <div>
+                                    <strong>Annual Response Retainer - $15,000/year</strong><br>
+                                    <small style="color: #6b7280;">Priority 24-hour response, 2 included investigations/year, quarterly preparedness reviews, NJAC compliance support</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>Investigation Scheduled For:</label>
+                        <input type="date" id="investigationDate">
+                    </div>
+                    <div class="field-group">
+                        <label>Lead Investigator Assigned:</label>
+                        <select id="leadInvestigator">
+                            <option value="">Select investigator...</option>
+                            <option value="landan">Landan Ansell, CPA, CFF, J.D. (legal/expert witness)</option>
+                            <option value="matt">Matt Smith (operations/safety)</option>
+                            <option value="adam">Adam Brousell (data/analytics)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 8: CALL SUMMARY & NOTES -->
+            <div class="section expanded" data-section="8">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">8</span>
+                        Call Summary & Additional Notes
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="field-group">
+                        <label>Call Duration (minutes):</label>
+                        <input type="number" id="callDuration" min="0" placeholder="Minutes">
+                    </div>
+                    <div class="field-group">
+                        <label>Priority Level:</label>
+                        <select id="priorityLevel">
+                            <option value="">Select priority...</option>
+                            <option value="P1">P1 - CRITICAL (Category A, fatality, lawsuit)</option>
+                            <option value="P2">P2 - URGENT (Category B, serious injury)</option>
+                            <option value="P3">P3 - STANDARD (Category C)</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label>Additional Notes / Special Considerations:</label>
+                        <textarea id="additionalNotes" placeholder="Any other important details, concerns, follow-up needed..."></textarea>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="callerUnderstanding">
+                            <span>Confirmed caller understands NJAC requirements and next steps</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="emergencyContact">
+                            <span>Caller has our emergency contact: (732) 207-0005</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-email" onclick="sendEmail()">📧 Email Report to Adam</button>
+            <button class="btn btn-primary" onclick="exportData()">📄 Export Summary</button>
+            <button class="btn btn-secondary" onclick="printChecklist()">🖨️ Print</button>
+            <button class="btn btn-secondary" onclick="resetAll()">🔄 Reset</button>
+        </div>
+    </div>
+
+    <script>
+        // Toggle section
+        function toggleSection(header) {
+            const section = header.closest('.section');
+            section.classList.toggle('expanded');
+            updateProgress();
+        }
+
+        // Update incident category display and show relevant guidance
+        function updateIncidentCategory() {
+            const category = document.getElementById('incidentCategory').value;
+            document.getElementById('incidentCategory').value = category;
+            
+            // Update stat display
+            const statDisplay = document.querySelector('#incidentCategory');
+            if (statDisplay) {
+                statDisplay.textContent = category || 'TBD';
+            }
+
+            // Show/hide relevant guidance sections
+            document.getElementById('categoryAGuidance').style.display = category === 'A' ? 'block' : 'none';
+            document.getElementById('categoryBGuidance').style.display = category === 'B' ? 'block' : 'none';
+            document.getElementById('categoryCGuidance').style.display = category === 'C' ? 'block' : 'none';
+        }
+
+        // Update progress
+        function updateProgress() {
+            const totalCheckboxes = document.querySelectorAll('.checklist-item').length;
+            const checkedCheckboxes = document.querySelectorAll('.checklist-item:checked').length;
+            const progressPercent = totalCheckboxes > 0 ? Math.round((checkedCheckboxes / totalCheckboxes) * 100) : 0;
+
+            document.getElementById('totalChecked').textContent = checkedCheckboxes;
+            document.getElementById('totalItems').textContent = totalCheckboxes;
+            document.getElementById('progressPercent').textContent = progressPercent + '%';
+            document.getElementById('progressBar').style.width = progressPercent + '%';
+        }
+
+        // Send email with form data
+        function sendEmail() {
+            const formData = collectFormData();
+            const emailBody = generateEmailBody(formData);
+            
+            // Create mailto link (note: this has size limitations)
+            const subject = `EMERGENCY INCIDENT REPORT - ${formData.facilityName || 'Unknown Facility'} - ${formData.incidentCategory || 'TBD'} - ${new Date().toLocaleDateString()}`;
+            const mailto = `mailto:adam@amusementstandards.com,adam.brousell@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            // For better reliability, we'll also copy to clipboard
+            navigator.clipboard.writeText(emailBody).then(() => {
+                // Show success message
+                const status = document.getElementById('emailStatus');
+                status.textContent = '✓ Report copied to clipboard! Opening email client...';
+                status.classList.add('show');
+                status.classList.remove('error');
+                
+                // Open mailto link
+                window.location.href = mailto;
+                
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 5000);
+            }).catch(err => {
+                const status = document.getElementById('emailStatus');
+                status.textContent = '⚠ Could not copy to clipboard. Please use Export Summary instead.';
+                status.classList.add('show', 'error');
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 5000);
+            });
+        }
+
+        // Collect all form data
+        function collectFormData() {
+            return {
+                // Category
+                incidentCategory: document.getElementById('incidentCategory').value,
+                
+                // Caller info
+                callerName: document.getElementById('callerName').value,
+                callerTitle: document.getElementById('callerTitle').value,
+                facilityName: document.getElementById('facilityName').value,
+                facilityAddress: document.getElementById('facilityAddress').value,
+                callbackNumber: document.getElementById('callbackNumber').value,
+                callerEmail: document.getElementById('callerEmail').value,
+                permitNumber: document.getElementById('permitNumber').value,
+                
+                // Incident details
+                incidentDate: document.getElementById('incidentDate').value,
+                incidentTime: document.getElementById('incidentTime').value,
+                weatherConditions: document.getElementById('weatherConditions').value,
+                rideName: document.getElementById('rideName').value,
+                rideManufacturer: document.getElementById('rideManufacturer').value,
+                rideModel: document.getElementById('rideModel').value,
+                
+                // Injured party
+                injuredName: document.getElementById('injuredName').value,
+                injuredAddress: document.getElementById('injuredAddress').value,
+                injuredAge: document.getElementById('injuredAge').value,
+                injuredSex: document.getElementById('injuredSex').value,
+                injuryDescription: document.getElementById('injuryDescription').value,
+                incidentDescription: document.getElementById('incidentDescription').value,
+                
+                // Status
+                rideShutDown: document.getElementById('rideShutDown').checked,
+                njDcaNotified: document.getElementById('njDcaNotified').checked,
+                
+                // Service
+                service: document.querySelector('input[name="service"]:checked')?.value || 'Not selected',
+                investigationDate: document.getElementById('investigationDate').value,
+                leadInvestigator: document.getElementById('leadInvestigator').value,
+                
+                // Notes
+                priorityLevel: document.getElementById('priorityLevel').value,
+                additionalNotes: document.getElementById('additionalNotes').value,
+                
+                // Timestamp
+                timestamp: new Date().toLocaleString()
+            };
+        }
+
+        // Generate email body
+        function generateEmailBody(data) {
+            let body = `NJ EMERGENCY INCIDENT RESPONSE - CALL REPORT
+${'='.repeat(70)}
+
+NJAC 5:14A-4.13 INCIDENT CATEGORY: ${data.incidentCategory || 'NOT DETERMINED'}
+
+CRITICAL ACTIONS REQUIRED:
+`;
+
+            if (data.incidentCategory === 'A') {
+                body += `⚠️ CATEGORY A - SHUT DOWN & IMMEDIATE REPORT
+- Ride MUST remain shut down until NJ DCA authorizes restart
+- NJ DCA MUST be notified immediately: (609) 984-7834
+- Incident report due within 24 hours
+- Manufacturer must be notified
+`;
+            } else if (data.incidentCategory === 'B') {
+                body += `⚡ CATEGORY B - REPORT WITHIN 24 HOURS
+- NJ DCA must be notified within 24 hours: (609) 984-7834
+- Written incident report due within 5 days
+- Ride must be repaired per manufacturer instructions
+`;
+            } else if (data.incidentCategory === 'C') {
+                body += `📋 CATEGORY C - RECORD ONLY
+- Internal record must be maintained with all required NJAC fields
+- No state report required
+- Record must be available for DCA inspection
+`;
+            }
+
+            body += `
+${'='.repeat(70)}
+
+CALLER INFORMATION:
+Name: ${data.callerName || 'N/A'}
+Title: ${data.callerTitle || 'N/A'}
+Phone: ${data.callbackNumber || 'N/A'}
+Email: ${data.callerEmail || 'N/A'}
+
+FACILITY INFORMATION:
+Facility: ${data.facilityName || 'N/A'}
+Address: ${data.facilityAddress || 'N/A'}
+NJ Permit #: ${data.permitNumber || 'N/A'}
+
+INCIDENT DETAILS (NJAC REQUIRED FIELDS):
+Date: ${data.incidentDate || 'N/A'}
+Time: ${data.incidentTime || 'N/A'}
+Weather: ${data.weatherConditions || 'N/A'}
+Ride Name: ${data.rideName || 'N/A'}
+Manufacturer: ${data.rideManufacturer || 'N/A'}
+Model: ${data.rideModel || 'N/A'}
+
+INJURED PARTY INFORMATION (NJAC REQUIRED):
+Name: ${data.injuredName || 'N/A'}
+Address: ${data.injuredAddress || 'N/A'}
+Age: ${data.injuredAge || 'N/A'}
+Sex: ${data.injuredSex || 'N/A'}
+Injury Description: ${data.injuryDescription || 'N/A'}
+
+INCIDENT DESCRIPTION:
+${data.incidentDescription || 'N/A'}
+
+CURRENT STATUS:
+Ride Shut Down: ${data.rideShutDown ? 'YES' : 'NO'}
+NJ DCA Notified: ${data.njDcaNotified ? 'YES' : 'NO'}
+
+AMUSEMENT STANDARDS SERVICE:
+Recommended: ${data.service}
+Investigation Date: ${data.investigationDate || 'TBD'}
+Lead Investigator: ${data.leadInvestigator || 'TBD'}
+Priority Level: ${data.priorityLevel || 'TBD'}
+
+ADDITIONAL NOTES:
+${data.additionalNotes || 'None'}
+
+${'='.repeat(70)}
+Report Generated: ${data.timestamp}
+Emergency Hotline: (732) 207-0005
+`;
+
+            return body;
+        }
+
+        // Export data as text file
+        function exportData() {
+            const formData = collectFormData();
+            const summary = generateEmailBody(formData);
+            
+            const blob = new Blob([summary], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `NJ-Incident-Report-${formData.facilityName?.replace(/\s+/g, '-') || 'Unknown'}-${Date.now()}.txt`;
+            a.click();
+        }
+
+        // Print checklist
+        function printChecklist() {
+            window.print();
+        }
+
+        // Reset all
+        function resetAll() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+                document.querySelectorAll('input, textarea, select').forEach(input => {
+                    if (input.type === 'checkbox' || input.type === 'radio') {
+                        input.checked = false;
+                    } else {
+                        input.value = '';
+                    }
+                });
+                updateProgress();
+                updateIncidentCategory();
+            }
+        }
+
+        // Initialize
+        document.querySelectorAll('.checklist-item').forEach(checkbox => {
+            checkbox.addEventListener('change', updateProgress);
+        });
+
+        // Auto-save to localStorage
+        setInterval(() => {
+            const formData = collectFormData();
+            localStorage.setItem('njIncidentChecklist', JSON.stringify(formData));
+        }, 30000);
+
+        // Load saved data
+        window.addEventListener('load', () => {
+            const savedData = localStorage.getItem('njIncidentChecklist');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                Object.keys(formData).forEach(key => {
+                    const input = document.getElementById(key);
+                    if (input && formData[key]) {
+                        if (input.type === 'checkbox') {
+                            input.checked = formData[key];
+                        } else {
+                            input.value = formData[key];
+                        }
+                    }
+                });
+                updateProgress();
+                updateIncidentCategory();
+            }
+        });
+
+        updateProgress();
+    </script>
+</body>
+</html>
