@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Emergency Incident Response | Amusement Standards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --as-navy: #0b1f33;
+      --as-blue: #1f6fe5;
+      --as-blue-soft: #e7f0ff;
+      --as-orange: #f97316;
+      --as-bg: #f5f7fb;
+      --as-border: #dde3f0;
+      --as-text: #1f2933;
+      --as-muted: #6b7280;
+      --radius-card: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f7f9fb;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #001E4C;
+      padding: 20px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: bold;
+    }
+
+    .nav {
+      margin-left: auto;
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-container .nav {
+      margin-left: auto;
+    }
+
+    .logo {
+      font-weight: bold;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    footer {
+      background: #002966;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #002966, #80A9E6);
+      color: #fff;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .hero p {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+
+    .hero .btn {
+      margin-top: 20px;
+    }
+
+    #formModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    #formModal .modal-content {
+      background: #fff;
+      max-width: 600px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    #formModal .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .page-wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 20px 60px;
+      background: #ffffff;
+    }
+
+    h1, h2, h3, h4 {
+      color: #0a3d62;
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    h3 {
+      font-size: 1.35rem;
+      margin-top: 1.6rem;
+      margin-bottom: 0.4rem;
+    }
+
+    p {
+      margin: 0 0 0.75rem;
+    }
+
+    .lead {
+      font-size: 1.05rem;
+      max-width: 780px;
+      color: var(--as-muted);
+    }
+
+    .hero-cta,
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 1.25rem 0 1.75rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      text-decoration: none;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: #FF6B35;
+      color: #ffffff;
+      border-color: #FF6B35;
+    }
+
+    .btn-primary:hover {
+      background: #e55a28;
+      border-color: #e55a28;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: #FF6B35;
+      border-color: #FF6B35;
+    }
+
+    .btn-secondary:hover {
+      background: #fff5f0;
+    }
+
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-top: 1rem;
+    }
+
+    .tier-card {
+      border-radius: var(--radius-card);
+      border: 1px solid var(--as-border);
+      padding: 18px 20px;
+      background: #f9fbff;
+    }
+
+    .tier-card h3 {
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .feature-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0;
+      display: inline-block;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .tier-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: #FF6B35;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .tier-meta {
+      font-size: 0.9rem;
+      color: var(--as-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    ul {
+      margin: 0.4rem 0 0.9rem 1.2rem;
+      padding: 0;
+    }
+
+    ul li {
+      margin-bottom: 0.25rem;
+    }
+
+    .pricing-note {
+      font-weight: 600;
+      margin-top: 0.25rem;
+      color: #0a3d62;
+    }
+
+    .highlight-section {
+      border-radius: var(--radius-card);
+      border: 1px solid var(--as-border);
+      padding: 18px 20px;
+      background: #fffaf5;
+      margin-top: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .highlight-section h3 {
+      color: #0a3d62;
+    }
+
+    .emergency-banner {
+      background: #dc2626;
+      color: #fff;
+      padding: 15px 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .emergency-banner a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    .why-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 700px;
+    }
+
+    .why-item {
+      font-size: 0.95rem;
+      color: var(--as-muted);
+    }
+
+    .footer-cta {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--as-border);
+    }
+
+    .urgency-box {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 15px 20px;
+      margin: 1.5rem 0;
+    }
+
+    .urgency-box strong {
+      color: #92400e;
+    }
+
+    @media (max-width: 640px) {
+      .page-wrap {
+        padding: 24px 16px 40px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-container">
+      <a href="/" class="logo">amusement standards.</a>
+      <nav class="nav">
+        <a href="https://amusementstandards.com/#services">Services</a>
+        <a href="https://amusementstandards.com/#packages">Packages</a>
+        <a href="https://amusementstandards.com/#about">About</a>
+        <a href="https://amusementstandards.com/#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="emergency-banner">
+    🚨 INCIDENT EMERGENCY HOTLINE: <a href="tel:+17322070005">(732) 207-0005</a> — Available 24/7
+  </div>
+
+  <section class="hero">
+    <h1>Emergency Incident Response</h1>
+    <p>48-Hour Investigation, Root Cause Analysis, Expert Witness Support</p>
+  </section>
+
+  <div class="page-wrap">
+    <section>
+      <p class="lead">
+        When a serious incident occurs at your facility, time is critical. Insurance adjusters, attorneys, and 
+        regulators are already moving. Our emergency response team provides rapid, expert investigation and 
+        defensible documentation to protect your operation legally and operationally.
+      </p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Request Emergency Investigation</a>
+        <a href="tel:+17322070005" class="btn btn-secondary">Call Hotline: (732) 207-0005</a>
+      </div>
+    </section>
+
+    <div class="urgency-box">
+      <strong>Time-Sensitive:</strong> The first 48 hours after an incident determine your legal exposure, 
+      insurance claims, and regulatory consequences. Don't wait—evidence disappears, memories fade, and 
+      witnesses become unavailable.
+    </div>
+
+    <section>
+      <h2>When You Need Emergency Response</h2>
+      <p>Our incident investigation service is designed for facilities facing:</p>
+
+      <div class="tier-grid">
+        <div class="tier-card">
+          <h3><span class="feature-icon">🚑</span> Serious Injuries</h3>
+          <p>Guest or staff injury requiring hospitalization, surgery, or extended medical treatment</p>
+        </div>
+
+        <div class="tier-card">
+          <h3><span class="feature-icon">⚖️</span> Lawsuit Filings</h3>
+          <p>Personal injury claim, negligence lawsuit, or regulatory violation notice</p>
+        </div>
+
+        <div class="tier-card">
+          <h3><span class="feature-icon">📰</span> Media Attention</h3>
+          <p>Viral video, local news coverage, or social media crisis threatening reputation</p>
+        </div>
+
+        <div class="tier-card">
+          <h3><span class="feature-icon">🔍</span> Regulatory Action</h3>
+          <p>State inspector findings, violation citations, or equipment shutdown orders</p>
+        </div>
+
+        <div class="tier-card">
+          <h3><span class="feature-icon">⚙️</span> Equipment Failure</h3>
+          <p>Mechanical malfunction, restraint failure, or structural issue requiring investigation</p>
+        </div>
+
+        <div class="tier-card">
+          <h3><span class="feature-icon">👥</span> Multiple Incidents</h3>
+          <p>Pattern of similar incidents indicating systemic operational or training problems</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Service Tiers</h2>
+      <p>
+        Three levels of emergency support—from rapid investigation to full expert witness services.
+      </p>
+
+      <div class="tier-grid">
+        <div class="tier-card">
+          <h3>
+            <span class="tier-badge">Emergency Investigation</span>
+          </h3>
+          <p class="tier-meta"><strong>48-Hour Response & Analysis</strong></p>
+          <p>Fast, independent investigation with defensible documentation for legal and insurance purposes.</p>
+          <p><strong>Includes:</strong></p>
+          <ul>
+            <li>On-site or remote investigation within 48 hours</li>
+            <li>Witness interviews (staff, guests, bystanders)</li>
+            <li>Physical evidence collection & documentation</li>
+            <li>Video/photo review and analysis</li>
+            <li>Equipment inspection coordination</li>
+            <li>Root cause analysis (5 Whys, fishbone)</li>
+            <li>Written incident report with findings</li>
+            <li>Corrective action recommendations</li>
+            <li>30-day follow-up consultation</li>
+          </ul>
+          <p class="pricing-note">Pricing: <em>$5,000 flat fee</em></p>
+          <div class="cta-row">
+            <a href="#contact" class="btn btn-primary">Request Investigation</a>
+          </div>
+        </div>
+
+        <div class="tier-card">
+          <h3>
+            <span class="tier-badge">Expert Witness Retainer</span>
+          </h3>
+          <p class="tier-meta"><strong>Litigation Support & Testimony</strong></p>
+          <p>Everything in Emergency Investigation plus expert witness preparation and courtroom testimony.</p>
+          <p><strong>Includes everything in Emergency Investigation plus:</strong></p>
+          <ul>
+            <li>Expert witness testimony preparation</li>
+            <li>Deposition support and strategy</li>
+            <li>Trial testimony (if needed)</li>
+            <li>Technical document review</li>
+            <li>Attorney consultation sessions</li>
+            <li>Opposition expert report review</li>
+          </ul>
+          <p class="pricing-note">Pricing: <em>$7,500 retainer + hourly</em></p>
+          <p style="font-size: 0.85rem; color: var(--as-muted); margin-top: 0.5rem;">
+            Deposition: $350/hr · Trial testimony: $500/hr · Document review: $250/hr
+          </p>
+          <div class="cta-row">
+            <a href="#contact" class="btn btn-primary">Engage Expert Witness</a>
+          </div>
+        </div>
+
+        <div class="tier-card">
+          <h3>
+            <span class="tier-badge">Annual Response Retainer</span>
+          </h3>
+          <p class="tier-meta"><strong>Priority Access & Prevention</strong></p>
+          <p>Year-round priority response with included investigations and proactive incident preparedness.</p>
+          <p><strong>Includes:</strong></p>
+          <ul>
+            <li>Guaranteed 24-hour response (vs 48-hour)</li>
+            <li>2 included emergency investigations/year</li>
+            <li>Priority scheduling & dedicated hotline</li>
+            <li>Quarterly incident preparedness reviews</li>
+            <li>Pre-incident protocol development</li>
+            <li>Direct phone access to incident team</li>
+            <li>Mock incident response drills</li>
+          </ul>
+          <p class="pricing-note">Pricing: <em>$15,000/year</em></p>
+          <p style="font-size: 0.85rem; color: var(--as-muted); margin-top: 0.5rem;">
+            Includes $10,000 value in investigations
+          </p>
+          <div class="cta-row">
+            <a href="#contact" class="btn btn-primary">Secure Retainer</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Our Investigation Process</h2>
+      <div class="highlight-section">
+        <h3>Phase 1: Initial Response (0-4 hours)</h3>
+        <p><strong>What happens:</strong></p>
+        <ul>
+          <li>You call our emergency hotline</li>
+          <li>15-30 minute intake call to gather incident details</li>
+          <li>Lead investigator assigned based on case complexity</li>
+          <li>On-site visit or remote investigation scheduled</li>
+        </ul>
+      </div>
+
+      <div class="highlight-section">
+        <h3>Phase 2: Investigation (4-48 hours)</h3>
+        <p><strong>Evidence we collect:</strong></p>
+        <ul>
+          <li>Ride operation logs & maintenance records</li>
+          <li>Operator training documentation</li>
+          <li>Video footage (surveillance & guest cell phones)</li>
+          <li>Photos of scene, equipment, and conditions</li>
+          <li>Weather data (if applicable)</li>
+        </ul>
+        <p><strong>Interviews we conduct:</strong></p>
+        <ul>
+          <li>Operator(s) on duty at time of incident</li>
+          <li>Supervisors and managers</li>
+          <li>Staff witnesses</li>
+          <li>Guest witnesses (when available)</li>
+        </ul>
+      </div>
+
+      <div class="highlight-section">
+        <h3>Phase 3: Analysis & Reporting (48 hours - 5 days)</h3>
+        <p><strong>Our analysis includes:</strong></p>
+        <ul>
+          <li>Root cause determination (human, equipment, environmental, procedural)</li>
+          <li>Legal exposure assessment & negligence evaluation</li>
+          <li>Regulatory compliance status review</li>
+          <li>Industry standard comparison (ASTM, state regulations)</li>
+        </ul>
+        <p><strong>You receive:</strong></p>
+        <ul>
+          <li>Executive summary (1-2 pages)</li>
+          <li>Detailed incident timeline</li>
+          <li>Root cause analysis with contributing factors</li>
+          <li>Corrective action recommendations (immediate + long-term)</li>
+          <li>Documentation package for legal counsel/insurers</li>
+        </ul>
+      </div>
+
+      <div class="highlight-section">
+        <h3>Phase 4: Follow-Up (30 days)</h3>
+        <p><strong>Ongoing support:</strong></p>
+        <ul>
+          <li>30-day check-in call to review progress</li>
+          <li>Verification of corrective actions implemented</li>
+          <li>Additional guidance as needed</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Why Legal Teams Choose Our Expert Witness Services</h2>
+      
+      <div class="highlight-section">
+        <h3>Landan Ansell, CPA, CFF, J.D.</h3>
+        <p class="tier-meta"><strong>Director of Regulatory & Compliance</strong></p>
+        <p>
+          Our expert witness services are led by Landan Ansell, who brings a unique combination of credentials 
+          rarely found in a single expert:
+        </p>
+        <ul>
+          <li><strong>CPA (Certified Public Accountant)</strong> — Financial analysis and loss calculation expertise</li>
+          <li><strong>CFF (Certified in Financial Forensics)</strong> — Fraud detection and documentation review</li>
+          <li><strong>J.D. (Juris Doctor)</strong> — Legal strategy, regulatory interpretation, courtroom experience</li>
+        </ul>
+        <p><strong>Why this matters:</strong></p>
+        <ul>
+          <li>Can testify on operational negligence, financial damages, AND regulatory compliance</li>
+          <li>Understands what plaintiff attorneys will attack and what defense needs to protect</li>
+          <li>Speaks "insurance adjuster" and "courtroom" language fluently</li>
+          <li>Credentials hold up under cross-examination</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>For Personal Injury Attorneys</h2>
+      <p>
+        We provide expert witness services for plaintiff and defense attorneys handling amusement ride injury cases.
+      </p>
+
+      <div class="tier-grid">
+        <div class="tier-card">
+          <h3><span class="feature-icon">📋</span> Case Evaluation</h3>
+          <p>Review of incident documentation, operational records, and potential liability assessment</p>
+        </div>
+
+        <div class="tier-card">
+          <h3><span class="feature-icon">📊</span> Technical Analysis</h3>
+          <p>Equipment inspection, industry standard comparison, regulatory compliance review</p>
+        </div>
+
+        <div class="tier-card">
+          <h3><span class="feature-icon">💼</span> Deposition Testimony</h3>
+          <p>Expert deposition preparation and testimony on operational standards and negligence</p>
+        </div>
+
+        <div class="tier-card">
+          <h3><span class="feature-icon">⚖️</span> Trial Testimony</h3>
+          <p>Courtroom testimony explaining technical concepts to juries in clear, credible manner</p>
+        </div>
+      </div>
+
+      <p style="margin-top: 1.5rem;">
+        <strong>Initial consultation:</strong> Free 30-minute case review for attorneys with active amusement ride litigation.
+      </p>
+      <div class="cta-row">
+        <a href="/cdn-cgi/l/email-protection#3559545b51545b75545840465058505b414641545b51544751461b565a58" class="btn btn-secondary">Contact Landan Ansell</a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Why Facilities Choose Our Emergency Response</h2>
+
+      <div class="why-list">
+        <div class="why-item"><strong>Speed:</strong> 48-hour response vs weeks from traditional consultants</div>
+        <div class="why-item"><strong>Triple credentials:</strong> CPA/CFF/J.D. expertise unique in the industry</div>
+        <div class="why-item"><strong>Amusement specialists:</strong> Not generic safety consultants—we know your industry</div>
+        <div class="why-item"><strong>Legal + operational bridge:</strong> We speak to both attorneys and operations teams</div>
+        <div class="why-item"><strong>Flat-fee pricing:</strong> Predictable costs during crisis moment</div>
+        <div class="why-item"><strong>Defensible documentation:</strong> Reports designed to withstand legal scrutiny</div>
+      </div>
+    </section>
+
+    <section class="footer-cta">
+      <h2>Don't Wait—Evidence and Memories Fade Fast</h2>
+      <p>
+        The first 48 hours after an incident are critical. Insurance adjusters and attorneys are already moving. 
+        Get expert investigation and defensible documentation before it's too late.
+      </p>
+      <div class="cta-row">
+        <a id="contact" href="tel:+17322070005" class="btn btn-primary">Call Emergency Hotline</a>
+        <a href="/cdn-cgi/l/email-protection#88e1e6ebe1ecede6fcc8e9e5fdfbede5ede6fcfbfce9e6ece9faecfba6ebe7e5" class="btn btn-secondary">Email Incident Team</a>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    &copy; Amusement Standards. All rights reserved.
+  </footer>
+
+  <div id="formModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeFormModal()">&times;</span>
+      <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://js-na2.hsforms.net/forms/embed/245118753.js" defer></script>
+      <div class="hs-form-frame"
+           data-region="na2"
+           data-form-id="0a2bfbf3-f22b-4435-b229-f0240ce84aba"
+           data-portal-id="245118753">
+      </div>
+    </div>
+  </div>
+
+  <script>
+  function op
