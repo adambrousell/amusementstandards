@@ -2111,7 +2111,7 @@
                 <button class="modal-close" onclick="closeEmailModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <p style="margin-bottom: 15px; color: #374151;"><strong>To:</strong> adam@amusementstandards.com, adam.brousell@gmail.com</p>
+                <p style="margin-bottom: 15px; color: #374151;"><strong>To:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="335257525e73525e4640565e565d474047525d57524157401d505c5e">[email&#160;protected]</a>, <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="59383d3834773b2b362c2a3c3535193e34383035773a3634">[email&#160;protected]</a></p>
                 <p style="margin-bottom: 15px; color: #374151;"><strong>Subject:</strong> <span id="emailSubject"></span></p>
                 <div class="modal-email-preview" id="emailPreview">
                     <!-- Email body will be inserted here -->
@@ -2125,7 +2125,7 @@
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Toggle section expand/collapse
         function toggleSection(header) {
             const section = header.closest('.section');
@@ -2681,18 +2681,7 @@ CRITICAL REGULATORY ACTIONS REQUIRED:
 - Online: www.osha.gov/report
 - Reason: ${data.oshaFatality ? 'FATALITY' : 'HOSPITALIZATION OF 3+ EMPLOYEES'}
 `;
-            } else if (data.oshaReportingStatus === '24hour') {
-                body += `
-⏰ OSHA 24-HOUR REPORTING REQUIRED!
-- Report to OSHA within 24 hours: 1-800-321-OSHA (6742)
-- Online: www.osha.gov/report
-- Reason: Amputation/Eye Loss/Hospitalization
-`;
-            }
-
-            // CPSC requirements
-            if (data.cpscReportingStatus === 'required') {
-                body += `
+                     body += `
 ⚠️ CPSC REPORTING REQUIRED WITHIN 24 HOURS!
 - Report to CPSC: 1-800-638-2772
 - Online: www.saferproducts.gov
@@ -2868,4 +2857,35 @@ ${'='.repeat(70)}
         window.addEventListener('load', () => {
             const savedData = localStorage.getItem('emergencyIncidentChecklist');
             if (savedData) {
-                const formData = JSON
+                const formData = JSON.parse(savedData);
+                Object.keys(formData).forEach(key => {
+                    const input = document.getElementById(key) || document.querySelector(`input[name="${key}"][value="${formData[key]}"]`);
+                    if (input) {
+                        if (input.type === 'checkbox') {
+                            input.checked = formData[key];
+                        } else if (input.type === 'radio') {
+                            input.checked = true;
+                        } else {
+                            input.value = formData[key];
+                        }
+                    }
+                });
+                updateProgress();
+                checkOSHARequirements();
+                checkCPSCRequirements();
+            }
+        });
+
+        // Initial progress update
+        updateProgress();
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('emailModal');
+            if (event.target == modal) {
+                closeEmailModal();
+            }
+        }
+    </script>
+</body>
+</html>
