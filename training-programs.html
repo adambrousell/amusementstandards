@@ -2,51 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Training Programs | Amusement Standards</title>
+  <title>LMS Training Programs | Amusement Standards</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    :root {
+      --as-navy: #0b1f33;
+      --as-blue: #1f6fe5;
+      --as-blue-soft: #e7f0ff;
+      --as-orange: #f97316;
+      --as-bg: #f5f7fb;
+      --as-border: #dde3f0;
+      --as-text: #1f2933;
+      --as-muted: #6b7280;
+      --radius-card: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
-      padding: 0;
-      color: #1f2933;
-      background: #f7fafc;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--as-bg);
+      color: var(--as-text);
       line-height: 1.6;
     }
+
     .page-wrap {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 40px 20px 60px;
       background: #ffffff;
     }
+
     h1, h2, h3, h4 {
-      color: #102a43;
+      color: var(--as-navy);
       margin-top: 0;
     }
+
     h1 {
       font-size: 2.4rem;
       margin-bottom: 0.5rem;
     }
+
     h2 {
       font-size: 1.8rem;
       margin-top: 2.2rem;
       margin-bottom: 0.75rem;
     }
+
     h3 {
       font-size: 1.35rem;
       margin-top: 1.6rem;
       margin-bottom: 0.4rem;
     }
+
     p {
       margin: 0 0 0.75rem;
     }
+
     .lead {
       font-size: 1.05rem;
       max-width: 780px;
+      color: var(--as-muted);
     }
-    .section-intro {
-      margin-bottom: 1.5rem;
+
+    .pill-label {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: var(--as-blue-soft);
+      color: var(--as-blue);
+      margin-bottom: 0.75rem;
     }
+
     .hero-cta,
     .cta-row {
       display: flex;
@@ -54,6 +88,7 @@
       gap: 10px;
       margin: 1.25rem 0 1.75rem;
     }
+
     .btn {
       display: inline-block;
       padding: 10px 18px;
@@ -66,92 +101,124 @@
       transition: all 0.15s ease-in-out;
       white-space: nowrap;
     }
+
     .btn-primary {
-      background: #2563eb;
+      background: var(--as-blue);
       color: #ffffff;
-      border-color: #2563eb;
+      border-color: var(--as-blue);
     }
+
     .btn-primary:hover {
-      background: #1d4ed8;
-      border-color: #1d4ed8;
+      background: #1958b5;
+      border-color: #1958b5;
     }
+
     .btn-secondary {
       background: #ffffff;
-      color: #2563eb;
-      border-color: #2563eb;
+      color: var(--as-blue);
+      border-color: var(--as-blue);
     }
+
     .btn-secondary:hover {
-      background: #eff6ff;
+      background: var(--as-blue-soft);
     }
-    .pill-label {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      background: #eff6ff;
-      color: #1d4ed8;
-      margin-bottom: 0.5rem;
+
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 1rem;
     }
+
     .tier-card {
-      border-radius: 10px;
-      border: 1px solid #e1e7f0;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--as-border);
       padding: 18px 20px;
-      margin-bottom: 16px;
       background: #f9fbff;
     }
+
     .tier-card h3 {
       margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+
+    .tier-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: var(--as-orange);
+      color: #ffffff;
+    }
+
     .tier-meta {
       font-size: 0.9rem;
-      color: #52606d;
+      color: var(--as-muted);
       margin-bottom: 0.5rem;
     }
+
     ul {
       margin: 0.4rem 0 0.9rem 1.2rem;
       padding: 0;
     }
+
     ul li {
       margin-bottom: 0.25rem;
     }
+
     .pricing-note {
       font-weight: 600;
       margin-top: 0.25rem;
+      color: var(--as-navy);
     }
+
     .highlight-section {
-      border-radius: 10px;
-      border: 1px solid #e1e7f0;
+      border-radius: var(--radius-card);
+      border: 1px solid var(--as-border);
       padding: 18px 20px;
-      background: #fdfcfb;
+      background: #fffaf5;
       margin-top: 1.2rem;
       margin-bottom: 1.2rem;
     }
+
+    .highlight-section h3 {
+      color: var(--as-navy);
+    }
+
     .table-wrap {
       overflow-x: auto;
       margin-top: 1rem;
       margin-bottom: 1.5rem;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.9rem;
       background: #ffffff;
     }
+
     th, td {
-      border: 1px solid #e1e7f0;
+      border: 1px solid var(--as-border);
       padding: 8px 10px;
       text-align: left;
     }
+
     th {
       background: #f3f4f6;
       font-weight: 600;
+      color: var(--as-navy);
     }
+
     .check {
       text-align: center;
     }
+
     .why-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -159,14 +226,18 @@
       margin-top: 0.5rem;
       margin-bottom: 1.5rem;
     }
+
     .why-item {
       font-size: 0.95rem;
+      color: var(--as-muted);
     }
+
     .footer-cta {
       margin-top: 2.5rem;
       padding-top: 1.5rem;
-      border-top: 1px solid #e1e7f0;
+      border-top: 1px solid var(--as-border);
     }
+
     @media (max-width: 640px) {
       .page-wrap {
         padding: 24px 16px 40px;
@@ -186,76 +257,136 @@
     <section>
       <span class="pill-label">LMS Training Programs</span>
       <h1>Training Programs That Build Safer, Stronger, More Consistent Operations</h1>
-      <p class="lead section-intro">
+      <p class="lead">
         A complete LMS designed for FECs and amusement facilities that want consistent training, real accountability,
         and confident operators. Train every employee. Track every certification. Strengthen every shift.
       </p>
       <div class="hero-cta">
         <a href="#contact" class="btn btn-primary">Book a Demo</a>
-        <a href="#download" class="btn btn-secondary">Download the RIDE LMS Overview</a>
+        <a href="#download" class="btn btn-secondary">Request RIDE LMS Overview</a>
       </div>
     </section>
 
-    <!-- RIDE LMS PATH -->
+    <!-- TIERS -->
     <section>
       <h2>The RIDE LMS Training Path</h2>
       <p>
-        Three levels of training that build on each other — all delivered through a modern, mobile‑friendly LMS
-        tailored to your operation.
+        Three tiers designed to grow with your operation — from foundational safety to leadership excellence.
       </p>
 
-      <!-- Tier 1 -->
-      <div class="tier-card" id="tier1">
-        <h3>Tier 1 — RIDE Safety Orientation (Base Level)</h3>
-        <p class="tier-meta"><strong>Required for every employee before any on‑site training.</strong></p>
-        <p>This module builds the foundation for safe, consistent operations across your entire team.</p>
-        <p><strong>Employees learn:</strong></p>
-        <ul>
-          <li>RIDE Framework (Recognize, Identify, Decide, Execute)</li>
-          <li>Basic safety expectations</li>
-          <li>Code of conduct</li>
-          <li>Pre‑shift readiness</li>
-          <li>Guest courtesy fundamentals</li>
-        </ul>
-        <p class="pricing-note">Included in LMS · Recommended pricing: <em>$1,500/year facility license</em></p>
-        <div class="cta-row">
-          <a href="#contact" class="btn btn-primary">Start With RIDE Orientation</a>
+      <div class="tier-grid">
+        <!-- Tier 1 -->
+        <div class="tier-card" id="tier1">
+          <h3>
+            <span class="tier-badge">Tier 1</span>
+            RIDE Safety Orientation
+          </h3>
+          <p class="tier-meta"><strong>Required for every employee before any on‑site training.</strong></p>
+          <p>This module builds the foundation for safe, consistent operations across your entire team.</p>
+          <p><strong>Employees learn:</strong></p>
+          <ul>
+            <li>RIDE Framework (Recognize, Identify, Decide, Execute)</li>
+            <li>Basic safety expectations</li>
+            <li>Code of conduct</li>
+            <li>Pre‑shift readiness</li>
+            <li>Guest courtesy fundamentals</li>
+          </ul>
+          <p class="pricing-note">Recommended pricing: <em>$1,500/year facility license</em></p>
+          <div class="cta-row">
+            <a href="#contact" class="btn btn-primary">Start With Tier 1</a>
+          </div>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="tier-card" id="tier2">
+          <h3>
+            <span class="tier-badge">Tier 2</span>
+            Attraction‑Specific Training
+          </h3>
+          <p class="tier-meta">
+            Includes everything in Tier 1 plus detailed, ride‑by‑ride training for your attractions.
+          </p>
+          <p><strong>Employees learn:</strong></p>
+          <ul>
+            <li>Attraction‑specific SOPs</li>
+            <li>Dispatch standards</li>
+            <li>Restraint verification</li>
+            <li>Height/eligibility enforcement</li>
+            <li>Emergency procedures</li>
+            <li>Cycle monitoring &amp; situational awareness</li>
+          </ul>
+          <p class="pricing-note">Recommended pricing: <em>+$1,000/year add‑on</em></p>
+          <div class="cta-row">
+            <a href="#contact" class="btn btn-secondary">Upgrade to Tier 2</a>
+          </div>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="tier-card" id="tier3">
+          <h3>
+            <span class="tier-badge">Tier 3</span>
+            Management &amp; Leadership Courses
+          </h3>
+          <p class="tier-meta">
+            Designed for supervisors, leads, and managers responsible for coaching and operational consistency.
+          </p>
+          <p><strong>Courses include:</strong></p>
+          <ul>
+            <li>Coaching &amp; corrective feedback</li>
+            <li>Incident leadership</li>
+            <li>Guest conflict resolution</li>
+            <li>Throughput &amp; dispatch optimization</li>
+            <li>Team communication &amp; shift leadership</li>
+          </ul>
+          <p class="pricing-note">
+            Pricing: <em>$750 per course</em> · <em>$2,000 for full leadership bundle</em>
+          </p>
+          <div class="cta-row">
+            <a href="#contact" class="btn btn-secondary">Explore Tier 3 Leadership</a>
+          </div>
         </div>
       </div>
+    </section>
 
-      <!-- Tier 2 -->
-      <div class="tier-card" id="tier2">
-        <h3>Tier 2 — Guest Service Module</h3>
-        <p class="tier-meta">Builds on the RIDE foundation with deeper guest‑interaction skills.</p>
-        <p><strong>Employees learn:</strong></p>
-        <ul>
-          <li>Courtesy standards</li>
-          <li>De‑escalation basics</li>
-          <li>Queue management</li>
-          <li>Communication expectations</li>
-          <li>Service recovery</li>
-        </ul>
-        <p class="pricing-note">Recommended pricing: <em>+$500/year add‑on</em></p>
-        <div class="cta-row">
-          <a href="#contact" class="btn btn-secondary">Add Guest Service Training</a>
+    <!-- ADD-ONS -->
+    <section>
+      <h2>Add‑On Courses</h2>
+      <p>
+        Flexible modules that let you decide how guest service and inclusion training are delivered at your facility.
+      </p>
+
+      <div class="tier-grid">
+        <!-- Guest Service Add-On -->
+        <div class="tier-card">
+          <h3>Guest Service Training Module</h3>
+          <p class="tier-meta">
+            Ideal when you want Amusement Standards to focus on safety while your team delivers in‑person guest service coaching — or vice‑versa.
+          </p>
+          <p><strong>Employees learn:</strong></p>
+          <ul>
+            <li>Courtesy standards</li>
+            <li>De‑escalation basics</li>
+            <li>Queue management</li>
+            <li>Communication expectations</li>
+            <li>Service recovery</li>
+          </ul>
+          <p class="pricing-note">Pricing: <em>+$500/year add‑on</em></p>
         </div>
-      </div>
 
-      <!-- Tier 3 -->
-      <div class="tier-card" id="tier3">
-        <h3>Tier 3 — Attraction‑Specific Training</h3>
-        <p class="tier-meta">Ride‑by‑ride training that ensures operators are consistent and compliant.</p>
-        <p><strong>Employees learn:</strong></p>
-        <ul>
-          <li>Attraction‑specific SOPs</li>
-          <li>Dispatch standards</li>
-          <li>Restraint verification</li>
-          <li>Height/eligibility enforcement</li>
-          <li>Emergency procedures</li>
-        </ul>
-        <p class="pricing-note">Recommended pricing: <em>+$1,000/year add‑on</em></p>
-        <div class="cta-row">
-          <a href="#contact" class="btn btn-secondary">See Attraction Modules</a>
+        <!-- Autism Awareness Add-On -->
+        <div class="tier-card">
+          <h3>Autism Awareness &amp; Inclusive Operations</h3>
+          <p class="tier-meta">
+            A specialized module that helps operators support guests with sensory needs, communication differences, and accessibility considerations.
+          </p>
+          <p><strong>Focus areas:</strong></p>
+          <ul>
+            <li>Understanding sensory sensitivities</li>
+            <li>Communication strategies</li>
+            <li>Queue and environment adjustments</li>
+            <li>Inclusive guest interaction</li>
+          </ul>
+          <p class="pricing-note">Pricing: <em>$300 add‑on</em></p>
         </div>
       </div>
     </section>
@@ -284,28 +415,6 @@
       </div>
     </section>
 
-    <!-- LEADERSHIP ADD-ONS -->
-    <section>
-      <h2>Optional Add‑On Courses (Management &amp; Leadership)</h2>
-      <p>
-        Perfect for supervisors, leads, and managers who are responsible for coaching, standards, and daily execution.
-      </p>
-      <p><strong>Courses include:</strong></p>
-      <ul>
-        <li>Coaching &amp; corrective feedback</li>
-        <li>Incident leadership</li>
-        <li>Guest conflict resolution</li>
-        <li>Throughput &amp; dispatch optimization</li>
-        <li>Team communication &amp; shift leadership</li>
-      </ul>
-      <p class="pricing-note">
-        Pricing: <em>$750 per course</em> · <em>$2,000 for full leadership bundle</em>
-      </p>
-      <div class="cta-row">
-        <a href="#contact" class="btn btn-secondary">Explore Leadership Courses</a>
-      </div>
-    </section>
-
     <!-- COMPARISON TABLE -->
     <section>
       <h2>Training Program Comparison</h2>
@@ -314,9 +423,9 @@
           <thead>
             <tr>
               <th>Feature</th>
-              <th>Tier 1 — RIDE Safety Orientation</th> 
-              <th>Tier 2 — Guest Service Module</th> 
-              <th>Tier 3 — Attraction‑Specific Training</th>
+              <th>Tier 1 — RIDE Orientation</th>
+              <th>Tier 2 — Attraction‑Specific</th>
+              <th>Tier 3 — Leadership Courses</th>
             </tr>
           </thead>
           <tbody>
@@ -327,15 +436,21 @@
               <td class="check">✔️</td>
             </tr>
             <tr>
-              <td>Guest courtesy &amp; communication</td>
-              <td class="check">✔️</td>
+              <td>Attraction‑specific SOPs</td>
+              <td class="check">—</td>
               <td class="check">✔️</td>
               <td class="check">✔️</td>
             </tr>
             <tr>
-              <td>Attraction‑specific SOPs</td>
+              <td>Dispatch &amp; restraint training</td>
+              <td class="check">—</td>
               <td class="check">✔️</td>
               <td class="check">✔️</td>
+            </tr>
+            <tr>
+              <td>Leadership coaching skills</td>
+              <td class="check">—</td>
+              <td class="check">—</td>
               <td class="check">✔️</td>
             </tr>
             <tr>
@@ -351,10 +466,16 @@
               <td class="check">✔️</td>
             </tr>
             <tr>
-              <td>Leadership add‑on courses</td>
-              <td class="check">Optional</td>
-              <td class="check">Optional</td>
-              <td class="check">Optional</td>
+              <td>Guest Service Module</td>
+              <td class="check">Add‑On</td>
+              <td class="check">Add‑On</td>
+              <td class="check">Add‑On</td>
+            </tr>
+            <tr>
+              <td>Autism Awareness Module</td>
+              <td class="check">Add‑On</td>
+              <td class="check">Add‑On</td>
+              <td class="check">Add‑On</td>
             </tr>
           </tbody>
         </table>
