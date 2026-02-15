@@ -3,299 +3,248 @@
 <head>
   <meta charset="UTF-8">
   <title>Incident & Risk Management | Amusement Standards</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A complete, defensible incident and risk management program for parks, FECs, waterparks, and event operators.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Same styling as RideSafe Essentials -->
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f7f7f7;
-      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f7f9fb;
+      color: #1a1a1a;
       line-height: 1.6;
     }
 
-    .page-wrapper {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 48px 16px 80px 16px;
-      background-color: #ffffff;
+    header {
+      background: #001E4C;
+      padding: 20px;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    h1 {
-      font-size: 34px;
-      margin-bottom: 6px;
-      color: #111;
+    header a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: bold;
+    }
+
+    .nav { 
+      margin-left: auto; 
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-container .nav {
+      margin-left: auto;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #002966, #80A9E6);
+      color: #fff;
+      padding: 80px 20px;
       text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #FF6B35;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-top: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .section {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: auto;
     }
 
     h2 {
-      font-size: 26px;
-      margin-top: 48px;
-      margin-bottom: 12px;
-      color: #1a2a43;
-    }
-
-    h3 {
-      font-size: 20px;
-      margin-top: 28px;
-      margin-bottom: 6px;
-      color: #1a2a43;
-    }
-
-    p {
-      font-size: 16px;
-      margin-bottom: 16px;
-      color: #444;
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #0a3d62;
     }
 
     ul {
-      margin-top: 4px;
-      margin-bottom: 16px;
       padding-left: 20px;
-      font-size: 15px;
     }
 
-    li {
-      margin-bottom: 4px;
+    ul li {
+      margin-bottom: 8px;
     }
 
-    .hero-block {
-      padding: 24px 20px;
-      background-color: #f2f6ff;
-      border: 1px solid #d5e2ff;
-      border-radius: 6px;
-      margin-bottom: 32px;
+    .cta {
+      background: #607EAC;
+      color: #fff;
       text-align: center;
+      padding: 60px 20px;
     }
 
-    .tier-cards {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .tier-card {
-      flex: 1;
-      min-width: 260px;
-      background: #f7f9fc;
-      border: 1px solid #d9e1ec;
-      border-radius: 8px;
+    footer {
+      background: #002966;
+      color: #fff;
+      text-align: center;
       padding: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-top: 40px;
     }
 
-    .pricing-table {
+    /* Modal Styles */
+    #formModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      border-collapse: collapse;
-      font-size: 15px;
-      background: #ffffff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-    }
-
-    .pricing-table th {
-      background: #e9eff7;
-      padding: 14px;
-      border: 1px solid #d3dbe6;
-      text-align: center;
-      font-weight: 600;
-    }
-
-    .pricing-table td {
-      padding: 12px;
-      border: 1px solid #e1e5ea;
-      text-align: center;
-    }
-
-    .cta-block {
-      margin-top: 48px;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
       padding: 20px;
-      background-color: #f9fafb;
-      border: 1px solid #e3e6ea;
-      border-radius: 6px;
-      text-align: center;
     }
 
-    .cta-email {
-      font-size: 16px;
-      font-weight: 600;
-      color: #0b63ce;
-      text-decoration: none;
+    #formModal .modal-content {
+      background: #fff;
+      max-width: 600px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 8px;
+      position: relative;
     }
 
-    .cta-email:hover {
-      text-decoration: underline;
+    #formModal .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #333;
     }
   </style>
 </head>
 
 <body>
-  <div class="page-wrapper">
 
-    <!-- HERO -->
-    <div class="hero-block">
-      <h1>Incident & Risk Management</h1>
-      <p>A complete, defensible program for documenting incidents, improving reporting consistency, and strengthening operational standards.</p>
-    </div>
-
-    <!-- INTRO NOTE -->
-    <p style="font-style:italic; text-align:center; max-width:700px; margin:0 auto 32px auto;">
-      A brief overview of how this program strengthens reporting, improves consistency, and brings clear standards into daily operations.
-    </p>
-
-    <!-- OVERVIEW -->
-    <h2>Overview</h2>
-    <p>
-      Our Incident & Risk Management program gives your operation a standardized, defensible system for documenting incidents, analyzing root causes, tracking corrective actions, and demonstrating continuous improvement.
-    </p>
-
-    <!-- WHAT YOU GET -->
-    <h2>What You Get</h2>
-
-    <h3>Injury Classification System</h3>
-    <ul>
-      <li>Injury types</li>
-      <li>Severity levels</li>
-      <li>Event categories</li>
-      <li>OSHA-aligned terminology</li>
-      <li>Definitions & examples</li>
-    </ul>
-
-    <h3>Near Miss Reporting Workflows</h3>
-    <ul>
-      <li>QR-code mobile forms</li>
-      <li>Simple reporting steps</li>
-      <li>Escalation triggers</li>
-      <li>Supervisor review processes</li>
-      <li>Data validation rules</li>
-    </ul>
-
-    <h3>Root Cause Analysis Tools</h3>
-    <ul>
-      <li>5 Why templates</li>
-      <li>Fishbone diagrams</li>
-      <li>Human-factors checklists</li>
-      <li>Corrective-action forms</li>
-    </ul>
-
-    <h3>Corrective Action Tracking</h3>
-    <ul>
-      <li>Assignment workflows</li>
-      <li>Due dates</li>
-      <li>Verification steps</li>
-      <li>Closure documentation</li>
-      <li>Accountability dashboards</li>
-    </ul>
-
-    <h3>Monthly Trend Reports</h3>
-    <ul>
-      <li>Incident counts</li>
-      <li>Severity trends</li>
-      <li>Root-cause patterns</li>
-      <li>Heat maps</li>
-      <li>Corrective-action status</li>
-    </ul>
-
-    <h3>Annual Safety Performance Summary</h3>
-    <ul>
-      <li>Year-over-year comparisons</li>
-      <li>Reduction metrics</li>
-      <li>Corrective-action effectiveness</li>
-      <li>Recommendations for next year</li>
-    </ul>
-
-    <!-- TIERS -->
-    <h2>Tiered Program Options</h2>
-
-    <div class="tier-cards">
-
-      <div class="tier-card">
-        <h3>Tier 1 — Incident Reporting Essentials</h3>
-        <p>A foundational reporting and classification system.</p>
-        <p style="font-weight:600;">$6,500 – $8,500 setup<br>$350 – $550/month</p>
-      </div>
-
-      <div class="tier-card">
-        <h3>Tier 2 — Full Incident & Risk Management System</h3>
-        <p>Our complete end‑to‑end framework.</p>
-        <p style="font-weight:600;">$18,000 – $25,000 setup<br>$750 – $1,250/month</p>
-      </div>
-
-      <div class="tier-card">
-        <h3>Tier 3 — Continuous Improvement Program</h3>
-        <p>Ongoing analytics + annual performance review.</p>
-        <p style="font-weight:600;">$30,000 – $40,000/year</p>
-      </div>
-
-    </div>
-
-    <!-- COMPARISON TABLE -->
-    <h2>Package Comparison</h2>
-
-    <div style="overflow-x:auto;">
-      <table class="pricing-table">
-        <thead>
-          <tr>
-            <th style="text-align:left;">Feature</th>
-            <th>Tier 1</th>
-            <th>Tier 2</th>
-            <th>Tier 3</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td style="text-align:left;">Incident Reporting System</td>
-            <td>✔️</td><td>✔️</td><td>✔️</td>
-          </tr>
-
-          <tr style="background:#f9fbfd;">
-            <td style="text-align:left;">Injury Classification System</td>
-            <td>✔️</td><td>✔️</td><td>✔️</td>
-          </tr>
-
-          <tr>
-            <td style="text-align:left;">Near Miss Reporting Workflows</td>
-            <td>—</td><td>✔️</td><td>✔️</td>
-          </tr>
-
-          <tr style="background:#f9fbfd;">
-            <td style="text-align:left;">Root Cause Analysis Tools</td>
-            <td>—</td><td>✔️</td><td>✔️</td>
-          </tr>
-
-          <tr>
-            <td style="text-align:left;">Corrective Action Tracking</td>
-            <td>—</td><td>✔️</td><td>✔️</td>
-          </tr>
-
-          <tr style="background:#f9fbfd;">
-            <td style="text-align:left;">Monthly Trend Reports</td>
-            <td>—</td><td>✔️</td><td>✔️</td>
-          </tr>
-
-          <tr>
-            <td style="text-align:left;">Annual Safety Performance Summary</td>
-            <td>—</td><td>—</td><td>✔️</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- CTA -->
-    <div class="cta-block">
-      <p style="font-size:18px; font-weight:600;">
-        Let’s build safer operations with better reporting and stronger standards.
-      </p>
-      <p>
-        Email <a class="cta-email" href="mailto:adam@amusementstandards.com">adam@amusementstandards.com</a>
-      </p>
-    </div>
-
+<header class="header">
+  <div class="header-container">
+    <a href="/" class="logo">amusement standards.</a>
+    <nav class="nav">
+      <a href="https://amusementstandards.com/#services">Services</a>
+      <a href="https://amusementstandards.com/#packages">Packages</a>
+      <a href="https://amusementstandards.com/#about">About</a>
+      <a href="https://amusementstandards.com/#contact">Contact</a>
+    </nav>
   </div>
+</header>
+
+<section class="hero">
+  <h1>Incident & Risk Management</h1>
+  <p>A complete, defensible program for stronger reporting and clearer operational standards.</p>
+
+  <a class="btn" onclick="openFormModal()">Request This Program</a>
+</section>
+
+<section class="section">
+  <h2>Who This Is For</h2>
+  <p>
+    This program is built for parks, FECs, waterparks, and event operators who need consistent,
+    defensible reporting and clearer visibility into operational risk. If your incident data is
+    inconsistent, incomplete, or difficult to analyze, this gives you a structured foundation.
+  </p>
+</section>
+
+<section class="section">
+  <h2>What’s Included</h2>
+  <ul>
+    <li>Injury Classification System (types, severity levels, categories)</li>
+    <li>Near Miss Reporting Workflows with QR‑code mobile forms</li>
+    <li>Root Cause Analysis Tools (5 Whys, fishbone, human‑factors checklists)</li>
+    <li>Corrective Action Tracking with verification steps</li>
+    <li>Monthly Trend Reports (patterns, heat maps, severity trends)</li>
+    <li>Annual Safety Performance Summary</li>
+  </ul>
+</section>
+
+<section class="section">
+  <h2>Tiered Program Options</h2>
+
+  <ul>
+    <li><strong>Tier 1 — Incident Reporting Essentials:</strong> $6,500–$8,500 setup + $350–$550/month</li>
+    <li><strong>Tier 2 — Full Incident & Risk Management System:</strong> $18,000–$25,000 setup + $750–$1,250/month</li>
+    <li><strong>Tier 3 — Continuous Improvement Program:</strong> $30,000–$40,000/year</li>
+  </ul>
+</section>
+
+<section class="section">
+  <h2>Outcomes</h2>
+  <ul>
+    <li>Cleaner, more consistent incident data</li>
+    <li>Defensible documentation for insurers and regulators</li>
+    <li>Clearer visibility into trends and root causes</li>
+    <li>Alignment between reporting, corrective actions, and leadership expectations</li>
+  </ul>
+</section>
+
+<section class="section">
+  <h2>Engagement Format</h2>
+  <p><strong>Delivery:</strong> System build + ongoing analytics</p>
+  <p><strong>Support:</strong> Monthly reporting, data integrity checks, and supervisor support</p>
+  <p><strong>Optional:</strong> On‑site training, insurer presentations, and SOP alignment</p>
+</section>
+
+<section class="cta">
+  <h2>Ready to Strengthen Your Reporting Standards?</h2>
+  <p>Start with a structured, defensible program that improves consistency and reduces risk.</p>
+  <a class="btn" onclick="openFormModal()">Get Started</a>
+</section>
+
+<footer>
+  &copy; Amusement Standards. All rights reserved.
+</footer>
+
+<!-- Modal -->
+<div id="formModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeFormModal()">&times;</span>
+
+    <script src="https://js-na2.hsforms.net/forms/embed/245118753.js" defer></script>
+    <div class="hs-form-frame"
+         data-region="na2"
+         data-form-id="0a2bfbf3-f22b-4435-b229-f0240ce84aba"
+         data-portal-id="245118753">
+    </div>
+  </div>
+</div>
+
+<script>
+function openFormModal() {
+  document.getElementById('formModal').style.display = 'flex';
+}
+
+function closeFormModal() {
+  document.getElementById('formModal').style.display = 'none';
+}
+</script>
+
 </body>
 </html>
