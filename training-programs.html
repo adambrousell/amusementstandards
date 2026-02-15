@@ -23,9 +23,9 @@
 
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--as-bg);
-      color: var(--as-text);
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f7f9fb;
+      color: #1a1a1a;
       line-height: 1.6;
     }
 
@@ -74,6 +74,39 @@
       margin-top: 40px;
     }
 
+    /* Modal Styles */
+    #formModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    #formModal .modal-content {
+      background: #fff;
+      max-width: 600px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    #formModal .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #333;
+    }
+
     .page-wrap {
       max-width: 1120px;
       margin: 0 auto;
@@ -82,7 +115,7 @@
     }
 
     h1, h2, h3, h4 {
-      color: var(--as-navy);
+      color: #0a3d62;
       margin-top: 0;
     }
 
@@ -121,8 +154,8 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      background: var(--as-blue-soft);
-      color: var(--as-blue);
+      background: #e7f0ff;
+      color: #1f6fe5;
       margin-bottom: 0.75rem;
     }
 
@@ -136,10 +169,10 @@
 
     .btn {
       display: inline-block;
-      padding: 10px 18px;
-      border-radius: 999px;
+      padding: 12px 24px;
+      border-radius: 6px;
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: bold;
       text-decoration: none;
       border: 2px solid transparent;
       cursor: pointer;
@@ -148,24 +181,24 @@
     }
 
     .btn-primary {
-      background: var(--as-blue);
+      background: #FF6B35;
       color: #ffffff;
-      border-color: var(--as-blue);
+      border-color: #FF6B35;
     }
 
     .btn-primary:hover {
-      background: #1958b5;
-      border-color: #1958b5;
+      background: #e55a28;
+      border-color: #e55a28;
     }
 
     .btn-secondary {
       background: #ffffff;
-      color: var(--as-blue);
-      border-color: var(--as-blue);
+      color: #FF6B35;
+      border-color: #FF6B35;
     }
 
     .btn-secondary:hover {
-      background: var(--as-blue-soft);
+      background: #fff5f0;
     }
 
     .tier-grid {
@@ -197,7 +230,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      background: var(--as-orange);
+      background: #FF6B35;
       color: #ffffff;
     }
 
@@ -219,7 +252,7 @@
     .pricing-note {
       font-weight: 600;
       margin-top: 0.25rem;
-      color: var(--as-navy);
+      color: #0a3d62;
     }
 
     .highlight-section {
@@ -232,7 +265,7 @@
     }
 
     .highlight-section h3 {
-      color: var(--as-navy);
+      color: #0a3d62;
     }
 
     .table-wrap {
@@ -257,7 +290,7 @@
     th {
       background: #f3f4f6;
       font-weight: 600;
-      color: var(--as-navy);
+      color: #0a3d62;
     }
 
     .check {
@@ -610,11 +643,11 @@
     <section class="footer-cta">
       <h2>Ready to Upgrade Your Training System?</h2>
       <p>
-        Let’s build a safer, more consistent operation together with a training system your team will actually use.
+        Let's build a safer, more consistent operation together with a training system your team will actually use.
       </p>
       <div class="cta-row">
         <a id="contact" href="mailto:info@amusementstandards.com" class="btn btn-primary">Book a Demo</a>
-        <a id="download" href="#" class="btn btn-secondary">Request Pricing &amp; Overview</a>
+        <a id="download" href="#" class="btn btn-secondary" onclick="openFormModal(); return false;">Request Pricing &amp; Overview</a>
       </div>
     </section>
   </div>
@@ -623,6 +656,32 @@
   <footer>
     &copy; Amusement Standards. All rights reserved.
   </footer>
+
+  <!-- Modal -->
+  <div id="formModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeFormModal()">&times;</span>
+
+      <!-- HubSpot Form -->
+      <script src="https://js-na2.hsforms.net/forms/embed/245118753.js" defer></script>
+      <div class="hs-form-frame"
+           data-region="na2"
+           data-form-id="0a2bfbf3-f22b-4435-b229-f0240ce84aba"
+           data-portal-id="245118753">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Script -->
+  <script>
+  function openFormModal() {
+    document.getElementById('formModal').style.display = 'flex';
+  }
+
+  function closeFormModal() {
+    document.getElementById('formModal').style.display = 'none';
+  }
+  </script>
 
 </body>
 </html>
