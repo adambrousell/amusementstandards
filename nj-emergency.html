@@ -411,6 +411,112 @@
                 display: block !important;
             }
         }
+
+        /* Modal popup styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 2% auto;
+            padding: 0;
+            border: 1px solid #888;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .modal-close {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+        }
+
+        .modal-close:hover {
+            opacity: 0.7;
+        }
+
+        .modal-body {
+            padding: 30px;
+            max-height: calc(90vh - 180px);
+            overflow-y: auto;
+        }
+
+        .modal-email-preview {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .modal-footer {
+            background: #f9fafb;
+            padding: 20px 30px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .action-buttons,
+            .toggle-icon {
+                display: none;
+            }
+
+            .section-body {
+                display: block !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -560,6 +666,92 @@
                             <option value="B">Category B - Report Within 24 Hours</option>
                             <option value="C">Category C - Record Only (No State Report)</option>
                         </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 1A: URGENCY ASSESSMENT -->
+            <div class="section critical expanded" data-section="1a">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">1A</span>
+                        URGENCY ASSESSMENT
+                        <span class="critical-badge">REQUIRED</span>
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="njac-reference" style="border-left-color: #dc2626; background: #fef2f2;">
+                        <strong>⚡ DETERMINE RESPONSE URGENCY:</strong> Select the urgency level based on incident severity. This determines response timeline and priority.
+                    </div>
+
+                    <div class="field-group required-field">
+                        <label>URGENCY LEVEL:</label>
+                        <div class="radio-group" style="gap: 15px;">
+                            <label style="background: #fee2e2; border: 2px solid #dc2626; padding: 15px; border-radius: 8px;">
+                                <input type="radio" name="urgencyLevel" value="CRITICAL" id="urgencyCritical" onchange="updateUrgencyDisplay()">
+                                <div>
+                                    <strong style="color: #dc2626; font-size: 16px;">🚨 CRITICAL (Immediate Response Required)</strong><br>
+                                    <small style="color: #7f1d1d;">
+                                        • Fatality<br>
+                                        • Multiple serious injuries<br>
+                                        • Lawsuit filed/imminent<br>
+                                        • Major media attention<br>
+                                        • Inspector on-site or arriving soon<br>
+                                        • Category A incident (NJ)<br>
+                                        <strong>Response: Within 4-8 hours</strong>
+                                    </small>
+                                </div>
+                            </label>
+
+                            <label style="background: #fef3c7; border: 2px solid #f59e0b; padding: 15px; border-radius: 8px;">
+                                <input type="radio" name="urgencyLevel" value="URGENT" id="urgencyUrgent" onchange="updateUrgencyDisplay()">
+                                <div>
+                                    <strong style="color: #92400e; font-size: 16px;">⚠️ URGENT (24-48 Hour Response)</strong><br>
+                                    <small style="color: #78350f;">
+                                        • Serious injury (hospitalization)<br>
+                                        • Equipment failure<br>
+                                        • Emergency evacuation<br>
+                                        • OSHA/CPSC reporting required<br>
+                                        • Category B incident (NJ)<br>
+                                        <strong>Response: Within 24-48 hours</strong>
+                                    </small>
+                                </div>
+                            </label>
+
+                            <label style="background: #fef9c3; border: 2px solid #eab308; padding: 15px; border-radius: 8px;">
+                                <input type="radio" name="urgencyLevel" value="STANDARD" id="urgencyStandard" onchange="updateUrgencyDisplay()">
+                                <div>
+                                    <strong style="color: #854d0e; font-size: 16px;">📋 STANDARD (5-7 Day Response)</strong><br>
+                                    <small style="color: #713f12;">
+                                        • Minor injury (first aid only)<br>
+                                        • Guest complaint<br>
+                                        • Near miss<br>
+                                        • Category C incident (NJ)<br>
+                                        • Post-incident analysis<br>
+                                        <strong>Response: Within 5-7 days</strong>
+                                    </small>
+                                </div>
+                            </label>
+
+                            <label style="background: #e0f2fe; border: 2px solid #0ea5e9; padding: 15px; border-radius: 8px;">
+                                <input type="radio" name="urgencyLevel" value="NON-URGENT" id="urgencyNonUrgent" onchange="updateUrgencyDisplay()">
+                                <div>
+                                    <strong style="color: #075985; font-size: 16px;">ℹ️ NON-URGENT (Consultation/Planning)</strong><br>
+                                    <small style="color: #0c4a6e;">
+                                        • No incident occurred<br>
+                                        • Pre-incident planning<br>
+                                        • Training inquiry<br>
+                                        • General consultation<br>
+                                        <strong>Response: Scheduled call within 7-14 days</strong>
+                                    </small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="urgencyConfirmation" style="display:none; margin-top: 15px; padding: 15px; border-radius: 6px; font-weight: 600;">
+                        <!-- Dynamic urgency confirmation message -->
                     </div>
                 </div>
             </div>
@@ -1653,10 +1845,35 @@
         </div>
 
         <div class="action-buttons">
-            <button class="btn btn-email" onclick="sendEmail()">📧 Email Report to Adam</button>
+            <button class="btn btn-primary" onclick="sendEmail()" style="background: #dc2626;">📧 Email Report to Adam</button>
+            <button class="btn btn-secondary" onclick="showEmailPreview()">👁️ Email Preview</button>
             <button class="btn btn-primary" onclick="exportData()">📄 Export Summary</button>
             <button class="btn btn-secondary" onclick="printChecklist()">🖨️ Print</button>
+            <button class="btn btn-secondary" onclick="expandAll()">📂 Expand All</button>
+            <button class="btn btn-secondary" onclick="collapseAll()">📁 Collapse All</button>
             <button class="btn btn-secondary" onclick="resetAll()">🔄 Reset</button>
+        </div>
+    </div>
+
+    <!-- Email Preview Modal -->
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📧 Email Report Preview</h2>
+                <button class="modal-close" onclick="closeEmailModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 15px; color: #374151;"><strong>To:</strong> adam@amusementstandards.com, adam.brousell@gmail.com</p>
+                <p style="margin-bottom: 15px; color: #374151;"><strong>Subject:</strong> <span id="emailSubject"></span></p>
+                <div class="modal-email-preview" id="emailPreview">
+                    <!-- Email body will be inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="copyEmailToClipboard()">📋 Copy to Clipboard</button>
+                <button class="btn btn-primary" onclick="sendEmailFromModal()" style="background: #3b82f6;">📧 Send Email</button>
+                <button class="btn btn-secondary" onclick="closeEmailModal()">Close</button>
+            </div>
         </div>
     </div>
 
@@ -1666,6 +1883,20 @@
             const section = header.closest('.section');
             section.classList.toggle('expanded');
             updateProgress();
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('expanded');
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('expanded');
+            });
         }
 
         // Update incident category display and show relevant guidance
@@ -1683,6 +1914,54 @@
             document.getElementById('categoryAGuidance').style.display = category === 'A' ? 'block' : 'none';
             document.getElementById('categoryBGuidance').style.display = category === 'B' ? 'block' : 'none';
             document.getElementById('categoryCGuidance').style.display = category === 'C' ? 'block' : 'none';
+        }
+
+        // Update urgency display
+        function updateUrgencyDisplay() {
+            const urgency = document.querySelector('input[name="urgencyLevel"]:checked')?.value;
+            const confirmation = document.getElementById('urgencyConfirmation');
+            
+            if (!urgency || !confirmation) return;
+
+            const urgencyConfig = {
+                'CRITICAL': {
+                    bg: '#fee2e2',
+                    border: '#dc2626',
+                    color: '#7f1d1d',
+                    icon: '🚨',
+                    message: 'CRITICAL URGENCY CONFIRMED - Amusement Standards will respond within 4-8 hours. Emergency investigation team will be mobilized immediately.'
+                },
+                'URGENT': {
+                    bg: '#fef3c7',
+                    border: '#f59e0b',
+                    color: '#78350f',
+                    icon: '⚠️',
+                    message: 'URGENT RESPONSE CONFIRMED - Amusement Standards will respond within 24-48 hours. Investigation scheduled as priority.'
+                },
+                'STANDARD': {
+                    bg: '#fef9c3',
+                    border: '#eab308',
+                    color: '#713f12',
+                    icon: '📋',
+                    message: 'STANDARD TIMELINE CONFIRMED - Amusement Standards will respond within 5-7 days. Investigation will be scheduled.'
+                },
+                'NON-URGENT': {
+                    bg: '#e0f2fe',
+                    border: '#0ea5e9',
+                    color: '#0c4a6e',
+                    icon: 'ℹ️',
+                    message: 'NON-URGENT CONSULTATION - Amusement Standards will schedule a call within 7-14 days to discuss planning and services.'
+                }
+            };
+
+            const config = urgencyConfig[urgency];
+            if (config) {
+                confirmation.style.display = 'block';
+                confirmation.style.background = config.bg;
+                confirmation.style.border = `2px solid ${config.border}`;
+                confirmation.style.color = config.color;
+                confirmation.innerHTML = `${config.icon} ${config.message}`;
+            }
         }
 
         // Check OSHA reporting requirements
@@ -1876,17 +2155,17 @@
         }
 
         // Send email with form data
+        // Send email with form data
         function sendEmail() {
             const formData = collectFormData();
             const emailBody = generateEmailBody(formData);
             
-            // Create mailto link (note: this has size limitations)
-            const subject = `EMERGENCY INCIDENT REPORT - ${formData.facilityName || 'Unknown Facility'} - ${formData.incidentCategory || 'TBD'} - ${new Date().toLocaleDateString()}`;
+            // Create mailto link
+            const subject = `EMERGENCY INCIDENT REPORT - ${formData.facilityName || 'Unknown Facility'} - ${formData.urgencyLevel || 'TBD'} - ${new Date().toLocaleDateString()}`;
             const mailto = `mailto:adam@amusementstandards.com,adam.brousell@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
             
-            // For better reliability, we'll also copy to clipboard
+            // Copy to clipboard
             navigator.clipboard.writeText(emailBody).then(() => {
-                // Show success message
                 const status = document.getElementById('emailStatus');
                 status.textContent = '✓ Report copied to clipboard! Opening email client...';
                 status.classList.add('show');
@@ -1900,12 +2179,95 @@
                 }, 5000);
             }).catch(err => {
                 const status = document.getElementById('emailStatus');
-                status.textContent = '⚠ Could not copy to clipboard. Please use Export Summary instead.';
+                status.textContent = '⚠ Could not copy to clipboard. Please try again.';
                 status.classList.add('show', 'error');
                 setTimeout(() => {
                     status.classList.remove('show');
                 }, 5000);
             });
+        }
+
+        // Show email preview in modal
+        function showEmailPreview() {
+            const formData = collectFormData();
+            const emailBody = generateEmailBody(formData);
+            const subject = `EMERGENCY INCIDENT REPORT - ${formData.facilityName || 'Unknown Facility'} - ${formData.urgencyLevel || 'TBD'} - ${new Date().toLocaleDateString()}`;
+            
+            // Store email data globally for modal buttons
+            window.currentEmailData = {
+                subject: subject,
+                body: emailBody,
+                formData: formData
+            };
+            
+            // Update modal content
+            document.getElementById('emailSubject').textContent = subject;
+            document.getElementById('emailPreview').textContent = emailBody;
+            
+            // Show modal
+            document.getElementById('emailModal').classList.add('show');
+        }
+
+        // Close email modal
+        function closeEmailModal() {
+            document.getElementById('emailModal').classList.remove('show');
+        }
+
+        // Copy email to clipboard from modal
+        function copyEmailToClipboard() {
+            const emailBody = window.currentEmailData?.body || '';
+            
+            navigator.clipboard.writeText(emailBody).then(() => {
+                alert('✓ Email report copied to clipboard!');
+            }).catch(err => {
+                alert('⚠ Could not copy to clipboard. Please select and copy manually.');
+            });
+        }
+
+        // Send email from modal
+        function sendEmailFromModal() {
+            const data = window.currentEmailData;
+            if (!data) return;
+            
+            const mailto = `mailto:adam@amusementstandards.com,adam.brousell@gmail.com?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(data.body)}`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(data.body).then(() => {
+                const status = document.getElementById('emailStatus');
+                status.textContent = '✓ Email copied to clipboard! Opening email client...';
+                status.classList.add('show');
+                status.classList.remove('error');
+                
+                // Open mailto link
+                window.location.href = mailto;
+                
+                // Close modal
+                closeEmailModal();
+                
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 5000);
+            }).catch(err => {
+                const status = document.getElementById('emailStatus');
+                status.textContent = '⚠ Could not copy to clipboard. Please try again.';
+                status.classList.add('show', 'error');
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 5000);
+            });
+        }
+
+        // Export data as text file (download)
+        function exportData() {
+            const formData = collectFormData();
+            const summary = generateEmailBody(formData);
+            
+            const blob = new Blob([summary], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `NJ-Incident-Report-${formData.facilityName?.replace(/\s+/g, '-') || 'Unknown'}-${Date.now()}.txt`;
+            a.click();
         }
 
         // Collect all form data
@@ -1919,6 +2281,9 @@
             });
 
             return {
+                // Urgency Level
+                urgencyLevel: document.querySelector('input[name="urgencyLevel"]:checked')?.value,
+                
                 // Category
                 incidentCategory: document.getElementById('incidentCategory')?.value,
                 
@@ -1929,6 +2294,12 @@
                 oshaAmputation: document.getElementById('oshaAmputation')?.checked,
                 oshaEyeLoss: document.getElementById('oshaEyeLoss')?.checked,
                 oshaHospitalization: document.getElementById('oshaHospitalization')?.checked,
+                
+                // CPSC
+                cpscReportingStatus: document.getElementById('cpscReportingStatus')?.value,
+                cpscDeath: document.getElementById('cpscDeath')?.checked,
+                cpscSeriousInjury: document.getElementById('cpscSeriousInjury')?.checked,
+                cpscPattern: document.getElementById('cpscPattern')?.checked,
                 
                 // Caller info
                 callerName: document.getElementById('callerName')?.value,
@@ -2005,11 +2376,30 @@
         function generateEmailBody(data) {
             let body = `NJ EMERGENCY INCIDENT RESPONSE - COMPREHENSIVE INVESTIGATION REPORT
 ${'='.repeat(70)}
-COMPLIANCE: NJAC 5:14A-4.13 | OSHA 1904 | NFPA Standards
+COMPLIANCE: NJAC 5:14A-4.13 | OSHA 1904 | CPSC 16 CFR 1115 | NFPA Standards
 
+🎯 URGENCY LEVEL: ${data.urgencyLevel || 'NOT DETERMINED'}
 NJAC 5:14A-4.13 INCIDENT CATEGORY: ${data.incidentCategory || 'NOT DETERMINED'}
 OSHA REPORTING STATUS: ${data.oshaReportingStatus || 'NOT DETERMINED'}
+CPSC REPORTING STATUS: ${data.cpscReportingStatus || 'NOT DETERMINED'}
 
+${'='.repeat(70)}
+AMUSEMENT STANDARDS RESPONSE TIMELINE:
+`;
+
+            // Add urgency-specific timeline
+            const urgencyTimelines = {
+                'CRITICAL': '🚨 CRITICAL - Response within 4-8 hours | Emergency investigation team mobilized immediately',
+                'URGENT': '⚠️ URGENT - Response within 24-48 hours | Investigation scheduled as priority',
+                'STANDARD': '📋 STANDARD - Response within 5-7 days | Investigation will be scheduled',
+                'NON-URGENT': 'ℹ️ NON-URGENT - Consultation call within 7-14 days'
+            };
+
+            if (data.urgencyLevel && urgencyTimelines[data.urgencyLevel]) {
+                body += urgencyTimelines[data.urgencyLevel] + '\n';
+            }
+
+            body += `
 ${'='.repeat(70)}
 CRITICAL REGULATORY ACTIONS REQUIRED:
 `;
@@ -2052,6 +2442,16 @@ CRITICAL REGULATORY ACTIONS REQUIRED:
 - Report to OSHA within 24 hours: 1-800-321-OSHA (6742)
 - Online: www.osha.gov/report
 - Reason: Amputation/Eye Loss/Hospitalization
+`;
+            }
+
+            // CPSC requirements
+            if (data.cpscReportingStatus === 'required') {
+                body += `
+⚠️ CPSC REPORTING REQUIRED WITHIN 24 HOURS!
+- Report to CPSC: 1-800-638-2772
+- Online: www.saferproducts.gov
+- Reason: Guest death or serious injury requiring hospitalization
 `;
             }
 
