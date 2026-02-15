@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Incident Response - Phone Intake Checklist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+
+        .emergency-banner {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 15px 20px;
+            margin: 20px;
+            border-radius: 6px;
+        }
+
+        .emergency-banner strong {
+            color: #dc2626;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #f3f4f6;
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .section-header:hover {
+            background: #e5e7eb;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: #dc2626;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .toggle-icon {
+            font-size: 20px;
+            color: #6b7280;
+            transition: transform 0.3s;
+        }
+
+        .section.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .section-body {
+            padding: 20px;
+            display: none;
+        }
+
+        .section.expanded .section-body {
+            display: block;
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+        .field-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .field-group input[type="text"],
+        .field-group input[type="tel"],
+        .field-group input[type="email"],
+        .field-group input[type="date"],
+        .field-group input[type="time"],
+        .field-group input[type="number"],
+        .field-group textarea,
+        .field-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .field-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            margin-bottom: 12px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .checkbox-group label:hover {
+            background: #f9fafb;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"]:checked + span {
+            text-decoration: line-through;
+            color: #6b7280;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .subsection {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .subsection h3 {
+            font-size: 16px;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .urgency-critical {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .urgency-critical strong {
+            color: #dc2626;
+        }
+
+        .do-dont-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .do-box {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .do-box h4 {
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+
+        .dont-box {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .dont-box h4 {
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc2626, #f97316);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 30px;
+        }
+
+        .stat-card {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #dc2626;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .do-dont-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .action-buttons,
+            .toggle-icon {
+                display: none;
+            }
+
+            .section-body {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚨 Emergency Incident Response</h1>
+            <p>Phone Intake Checklist - (732) 207-0005</p>
+        </div>
+
+        <div class="emergency-banner">
+            <strong>⚡ CRITICAL:</strong> This is a live emergency call. Stay calm, gather facts, determine urgency, recommend service.
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalChecked">0</div>
+                <div class="stat-label">Items Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalItems">0</div>
+                <div class="stat-label">Total Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="progressPercent">0%</div>
+                <div class="stat-label">Progress</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="sectionCount">0/10</div>
+                <div class="stat-label">Sections Done</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- SECTION 1 -->
+            <div class="section expanded" data-section="1">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">1</span>
+                        Immediate Information (First 2 Minutes)
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="subsection">
+                        <h3>Caller Information</h3>
+                        <div class="field-group">
+                            <label>Name:</label>
+                            <input type="text" id="callerName" placeholder="Full name">
+                        </div>
+                        <div class="field-group">
+                            <label>Title/Role:</label>
+                            <input type="text" id="callerTitle" placeholder="Operations Manager, General Manager, etc.">
+                        </div>
+                        <div class="field-group">
+                            <label>Facility Name:</label>
+                            <input type="text" id="facilityName" placeholder="Name of park/facility">
+                        </div>
+                        <div class="field-group">
+                            <label>Callback Number:</label>
+                            <input type="tel" id="callbackNumber" placeholder="(123) 456-7890">
+                        </div>
+                        <div class="field-group">
+                            <label>Best Contact Method:</label>
+                            <input type="text" id="contactMethod" placeholder="Cell, email, office line">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Incident Overview</h3>
+                        <div class="field-group">
+                            <label>Date of Incident:</label>
+                            <input type="date" id="incidentDate">
+                        </div>
+                        <div class="field-group">
+                            <label>Time of Incident:</label>
+                            <input type="time" id="incidentTime">
+                        </div>
+                        <div class="field-group">
+                            <label>Days Since Incident:</label>
+                            <input type="number" id="daysSince" placeholder="Number of days">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Urgency Assessment</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" data-critical="true">
+                                <span><strong>Anyone currently injured requiring medical attention?</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" data-critical="true">
+                                <span><strong>Has media contacted the facility?</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" data-critical="true">
+                                <span><strong>Has a lawsuit been filed?</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" data-critical="true">
+                                <span><strong>Has state inspector been notified/visited?</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" data-critical="true">
+                                <span><strong>Is facility currently shut down?</strong></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2 -->
+            <div class="section" data-section="2">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">2</span>
+                        Incident Details (Next 5 Minutes)
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="subsection">
+                        <h3>What Happened?</h3>
+                        <div class="field-group">
+                            <label>Type of Incident:</label>
+                            <select id="incidentType">
+                                <option value="">Select type...</option>
+                                <option value="guest-injury">Guest injury (serious/hospitalization)</option>
+                                <option value="equipment-failure">Equipment failure/mechanical malfunction</option>
+                                <option value="operator-error">Operator error/SOP violation</option>
+                                <option value="multiple-injuries">Multiple injuries (pattern/cluster)</option>
+                                <option value="fatality">Fatality</option>
+                                <option value="near-miss">Near miss (serious potential)</option>
+                                <option value="regulatory">Regulatory violation</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Who Was Involved?</h3>
+                        <div class="field-group">
+                            <label>Number of Guests Injured:</label>
+                            <input type="number" id="guestsInjured" min="0" placeholder="0">
+                        </div>
+                        <div class="field-group">
+                            <label>Number of Staff Injured:</label>
+                            <input type="number" id="staffInjured" min="0" placeholder="0">
+                        </div>
+                        <div class="field-group">
+                            <label>Age(s) of Injured Party(ies):</label>
+                            <input type="text" id="injuredAges" placeholder="e.g., 12, 35, 8">
+                        </div>
+                        <div class="field-group">
+                            <label>Severity of Injuries:</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="severity" value="minor"> Minor (first aid)</label>
+                                <label><input type="radio" name="severity" value="moderate"> Moderate (ER visit)</label>
+                                <label><input type="radio" name="severity" value="serious"> Serious (hospitalization)</label>
+                                <label><input type="radio" name="severity" value="critical"> Critical (ICU)</label>
+                                <label><input type="radio" name="severity" value="fatality"> Fatality</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Where Did It Occur?</h3>
+                        <div class="field-group">
+                            <label>Specific Attraction/Ride Name:</label>
+                            <input type="text" id="attractionName" placeholder="Name of ride/attraction">
+                        </div>
+                        <div class="field-group">
+                            <label>Location Within Facility:</label>
+                            <input type="text" id="locationDetail" placeholder="Loading area, queue, exit, etc.">
+                        </div>
+                        <div class="field-group">
+                            <label>Indoor or Outdoor:</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="location" value="indoor"> Indoor</label>
+                                <label><input type="radio" name="location" value="outdoor"> Outdoor</label>
+                                <label><input type="radio" name="location" value="both"> Both</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Current Status</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Attraction still operating?</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Has it been inspected since incident?</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Any equipment locked out/tagged?</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3 -->
+            <div class="section" data-section="3">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">3</span>
+                        Documentation Status (Next 3 Minutes)
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="subsection">
+                        <h3>What Documentation Exists?</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Incident report completed</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Photos of scene taken</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Video footage available (surveillance)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Video footage available (guest cell phone)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Witness statements collected</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Number of Witnesses:</label>
+                            <input type="number" id="witnessCount" min="0" placeholder="0">
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Operator on duty identified</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Maintenance logs available</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Training records available</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Evidence Status</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Scene preserved/unchanged</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Equipment moved/altered</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Weather conditions documented (if outdoor)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4 -->
+            <div class="section" data-section="4">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">4</span>
+                        Legal & Insurance Status (Next 2 Minutes)
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="subsection">
+                        <h3>Insurance</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Insurance company notified</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Insurance Carrier:</label>
+                            <input type="text" id="insuranceCarrier" placeholder="Company name">
+                        </div>
+                        <div class="field-group">
+                            <label>Claim Number (if opened):</label>
+                            <input type="text" id="claimNumber" placeholder="Claim #">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Legal</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" data-critical="true">
+                                <span><strong>Attorney contacted facility (Plaintiff)</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Defense attorney retained</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Attorney Name:</label>
+                            <input type="text" id="attorneyName" placeholder="Attorney name">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Regulatory</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" data-critical="true">
+                                <span><strong>State inspector notified</strong></span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Inspector Name:</label>
+                            <input type="text" id="inspectorName" placeholder="Inspector name">
+                        </div>
+                        <div class="field-group">
+                            <label>Inspection Scheduled:</label>
+                            <input type="date" id="inspectionDate">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Media</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" data-critical="true">
+                                <span><strong>Media inquiries received</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Local news coverage</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Social media posts</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" data-critical="true">
+                                <span><strong>Viral video circulating</strong></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5 -->
+            <div class="section" data-section="5">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">5</span>
+                        Immediate Needs Assessment
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="subsection">
+                        <h3>What Does Caller Need RIGHT NOW?</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Emergency investigation (within 48 hours)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Expert witness preparation</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Incident report review/improvement</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Pre-inspection audit (before state arrives)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Media response guidance</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Documentation preservation instructions</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Root cause analysis</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Corrective action planning</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Timeline Urgency</h3>
+                        <div class="field-group">
+                            <label>Priority Level:</label>
+                            <div class="radio-group" style="flex-direction: column;">
+                                <label><input type="radio" name="priority" value="critical"> <strong>CRITICAL</strong> (lawsuit filed, inspector arriving, media attention) → 24-hour response</label>
+                                <label><input type="radio" name="priority" value="urgent"> <strong>URGENT</strong> (within 48-72 hours) → Schedule on-site within 2 days</label>
+                                <label><input type="radio" name="priority" value="standard"> <strong>STANDARD</strong> (post-incident analysis) → Schedule within 1 week</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6 -->
+            <div class="section" data-section="6">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">6</span>
+                        Service Determination
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="subsection">
+                        <h3>Recommended Service</h3>
+                        <div class="field-group">
+                            <label>Select Service Tier:</label>
+                            <div class="radio-group" style="flex-direction: column;">
+                                <label>
+                                    <input type="radio" name="service" value="emergency">
+                                    <strong>Emergency Investigation - $5,000</strong><br>
+                                    <small style="margin-left: 28px; color: #6b7280;">48-hour response, on-site/remote investigation, root cause analysis, written report, 30-day follow-up</small>
+                                </label>
+                                <label>
+                                    <input type="radio" name="service" value="expert">
+                                    <strong>Expert Witness Retainer - $7,500 + hourly</strong><br>
+                                    <small style="margin-left: 28px; color: #6b7280;">Everything in Emergency Investigation + deposition prep, trial testimony, attorney consultation</small>
+                                </label>
+                                <label>
+                                    <input type="radio" name="service" value="annual">
+                                    <strong>Annual Response Retainer - $15,000/year</strong><br>
+                                    <small style="margin-left: 28px; color: #6b7280;">Priority 24-hour response, 2 included investigations/year, quarterly preparedness reviews</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 7 -->
+            <div class="section" data-section="7">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">7</span>
+                        Immediate Action Items (Tell Caller)
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="do-dont-grid">
+                        <div class="do-box">
+                            <h4>✅ DO (Right Now)</h4>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Preserve the scene - don't move equipment or clean up</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Take photos - wide shots and close-ups</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Identify witnesses - get names and contact info</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Secure video footage - download/preserve all relevant footage</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Lock out equipment - tag and do not operate</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Document everything - weather, time, staffing, guest counts</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Notify insurance - report incident to carrier immediately</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Gather records - maintenance logs, training records, SOPs</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="dont-box">
+                            <h4>❌ DON'T (Critical)</h4>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Don't discuss fault with anyone</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Don't destroy evidence (cleaning, repairs, resuming operations)</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Don't make statements to media without legal counsel</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Don't alter documentation retroactively</span>
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" class="checklist-item">
+                                    <span>Don't operate attraction until inspected and cleared</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 8 -->
+            <div class="section" data-section="8">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">8</span>
+                        Next Steps & Scheduling
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="subsection">
+                        <h3>Immediate Follow-Up</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Email confirmation sent to caller</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Email Sent To:</label>
+                            <input type="email" id="emailSent" placeholder="caller@email.com">
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Service agreement sent</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Retainer invoice sent</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Investigation Scheduled</h3>
+                        <div class="field-group">
+                            <label>On-Site Visit Date:</label>
+                            <input type="date" id="visitDate">
+                        </div>
+                        <div class="field-group">
+                            <label>On-Site Visit Time:</label>
+                            <input type="time" id="visitTime">
+                        </div>
+                        <div class="field-group">
+                            <label>Lead Investigator Assigned:</label>
+                            <select id="leadInvestigator">
+                                <option value="">Select investigator...</option>
+                                <option value="landan">Landan Ansell (legal/expert witness)</option>
+                                <option value="matt">Matt Smith (operations)</option>
+                                <option value="adam">Adam Brousell (data/analytics)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Information Requested from Caller</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told to send incident report to: incident@amusementstandards.com</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Arrange access for on-site visit</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Prepare list of witnesses for interviews</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Gather maintenance/training documentation</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Secure video footage for review</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 9 -->
+            <div class="section" data-section="9">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">9</span>
+                        Call Closing
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="subsection">
+                        <h3>Confirm Understanding</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Caller understands service scope</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Caller understands pricing</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Caller understands timeline</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Caller knows next steps</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Caller has emergency contact: (732) 207-0005</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="urgency-critical">
+                        <strong>Reassurance Statement (Read to Caller):</strong><br>
+                        <em>"We understand this is a stressful situation. Our team has handled hundreds of incident investigations, and we'll work quickly to determine what happened, why it happened, and what needs to be done to prevent it from happening again. You'll have our full support throughout this process."</em>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 10 -->
+            <div class="section" data-section="10">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">10</span>
+                        Internal Documentation
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="subsection">
+                        <h3>Log in CRM/System</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Caller contact info entered in CRM</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Incident details logged</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Service tier selected</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Calendar hold placed</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Team notified (Landan/Matt/Adam)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Follow-up tasks created</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Assign Priority Level</h3>
+                        <div class="field-group">
+                            <label>Final Priority Assessment:</label>
+                            <div class="radio-group" style="flex-direction: column;">
+                                <label><input type="radio" name="finalPriority" value="p1"> <strong>P1 - CRITICAL</strong> (lawsuit, fatality, inspector arriving) → Immediate response</label>
+                                <label><input type="radio" name="finalPriority" value="p2"> <strong>P2 - URGENT</strong> (serious injury, media attention) → 24-48 hour response</label>
+                                <label><input type="radio" name="finalPriority" value="p3"> <strong>P3 - STANDARD</strong> (post-incident analysis) → 5-7 day response</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Additional Notes</h3>
+                        <div class="field-group">
+                            <label>Call Summary / Important Details:</label>
+                            <textarea id="callNotes" placeholder="Additional notes, concerns, special considerations..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="urgency-critical" style="margin-top: 20px;">
+                        <strong>🚨 Escalate to Landan Ansell Immediately if:</strong>
+                        <ul style="margin: 10px 0 0 20px;">
+                            <li>Lawsuit filed</li>
+                            <li>Plaintiff attorney contacted facility</li>
+                            <li>Fatality occurred</li>
+                            <li>Criminal investigation initiated</li>
+                            <li>Expert witness testimony needed</li>
+                            <li>State threatening license suspension</li>
+                            <li>Insurance denying coverage</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="exportData()">📄 Export Summary</button>
+            <button class="btn btn-secondary" onclick="printChecklist()">🖨️ Print Checklist</button>
+            <button class="btn btn-secondary" onclick="resetAll()">🔄 Reset All</button>
+            <button class="btn btn-secondary" onclick="expandAll()">📂 Expand All Sections</button>
+        </div>
+    </div>
+
+    <script>
+        // Toggle section expand/collapse
+        function toggleSection(header) {
+            const section = header.closest('.section');
+            section.classList.toggle('expanded');
+            updateProgress();
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('expanded');
+            });
+        }
+
+        // Update progress tracking
+        function updateProgress() {
+            const totalCheckboxes = document.querySelectorAll('.checklist-item').length;
+            const checkedCheckboxes = document.querySelectorAll('.checklist-item:checked').length;
+            const progressPercent = totalCheckboxes > 0 ? Math.round((checkedCheckboxes / totalCheckboxes) * 100) : 0;
+
+            // Count completed sections (sections with all items checked)
+            let completedSections = 0;
+            document.querySelectorAll('.section').forEach(section => {
+                const sectionCheckboxes = section.querySelectorAll('.checklist-item');
+                const sectionChecked = section.querySelectorAll('.checklist-item:checked');
+                if (sectionCheckboxes.length > 0 && sectionCheckboxes.length === sectionChecked.length) {
+                    completedSections++;
+                }
+            });
+
+            // Update stats
+            document.getElementById('totalChecked').textContent = checkedCheckboxes;
+            document.getElementById('totalItems').textContent = totalCheckboxes;
+            document.getElementById('progressPercent').textContent = progressPercent + '%';
+            document.getElementById('sectionCount').textContent = completedSections + '/10';
+
+            // Update progress bar
+            document.getElementById('progressBar').style.width = progressPercent + '%';
+        }
+
+        // Export data as text summary
+        function exportData() {
+            let summary = 'EMERGENCY INCIDENT RESPONSE - CALL SUMMARY\n';
+            summary += '=' .repeat(60) + '\n\n';
+
+            // Caller info
+            summary += 'CALLER INFORMATION:\n';
+            summary += 'Name: ' + (document.getElementById('callerName').value || 'N/A') + '\n';
+            summary += 'Title: ' + (document.getElementById('callerTitle').value || 'N/A') + '\n';
+            summary += 'Facility: ' + (document.getElementById('facilityName').value || 'N/A') + '\n';
+            summary += 'Phone: ' + (document.getElementById('callbackNumber').value || 'N/A') + '\n\n';
+
+            // Incident details
+            summary += 'INCIDENT DETAILS:\n';
+            summary += 'Date: ' + (document.getElementById('incidentDate').value || 'N/A') + '\n';
+            summary += 'Time: ' + (document.getElementById('incidentTime').value || 'N/A') + '\n';
+            summary += 'Type: ' + (document.getElementById('incidentType').value || 'N/A') + '\n';
+            summary += 'Location: ' + (document.getElementById('attractionName').value || 'N/A') + '\n\n';
+
+            // Service recommended
+            const selectedService = document.querySelector('input[name="service"]:checked');
+            summary += 'RECOMMENDED SERVICE: ' + (selectedService ? selectedService.value.toUpperCase() : 'N/A') + '\n\n';
+
+            // Priority
+            const selectedPriority = document.querySelector('input[name="finalPriority"]:checked');
+            summary += 'PRIORITY: ' + (selectedPriority ? selectedPriority.value.toUpperCase() : 'N/A') + '\n\n';
+
+            // Notes
+            summary += 'NOTES:\n' + (document.getElementById('callNotes').value || 'N/A') + '\n\n';
+
+            summary += '=' .repeat(60) + '\n';
+            summary += 'Generated: ' + new Date().toLocaleString() + '\n';
+
+            // Download as text file
+            const blob = new Blob([summary], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'incident-call-summary-' + Date.now() + '.txt';
+            a.click();
+        }
+
+        // Print checklist
+        function printChecklist() {
+            window.print();
+        }
+
+        // Reset all form data
+        function resetAll() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+                document.querySelectorAll('input, textarea, select').forEach(input => {
+                    if (input.type === 'checkbox' || input.type === 'radio') {
+                        input.checked = false;
+                    } else {
+                        input.value = '';
+                    }
+                });
+                updateProgress();
+            }
+        }
+
+        // Initialize progress tracking
+        document.querySelectorAll('.checklist-item').forEach(checkbox => {
+            checkbox.addEventListener('change', updateProgress);
+        });
+
+        // Initial progress update
+        updateProgress();
+
+        // Auto-save to localStorage every 30 seconds
+        setInterval(() => {
+            const formData = {};
+            document.querySelectorAll('input, textarea, select').forEach(input => {
+                if (input.id) {
+                    if (input.type === 'checkbox') {
+                        formData[input.id] = input.checked;
+                    } else if (input.type === 'radio') {
+                        if (input.checked) {
+                            formData[input.name] = input.value;
+                        }
+                    } else {
+                        formData[input.id] = input.value;
+                    }
+                }
+            });
+            localStorage.setItem('emergencyIncidentChecklist', JSON.stringify(formData));
+        }, 30000);
+
+        // Load saved data on page load
+        window.addEventListener('load', () => {
+            const savedData = localStorage.getItem('emergencyIncidentChecklist');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                Object.keys(formData).forEach(key => {
+                    const input = document.getElementById(key) || document.querySelector(`input[name="${key}"][value="${formData[key]}"]`);
+                    if (input) {
+                        if (input.type === 'checkbox') {
+                            input.checked = formData[key];
+                        } else if (input.type === 'radio') {
+                            input.checked = true;
+                        } else {
+                            input.value = formData[key];
+                        }
+                    }
+                });
+                updateProgress();
+            }
+        });
+    </script>
+</body>
+</html>
