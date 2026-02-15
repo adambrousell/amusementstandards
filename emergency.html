@@ -338,6 +338,24 @@
             margin-top: 5px;
         }
 
+        .email-status {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin: 20px;
+            display: none;
+        }
+
+        .email-status.show {
+            display: block;
+        }
+
+        .email-status.error {
+            background: #fef2f2;
+            border-color: #fca5a5;
+        }
+
         @media (max-width: 768px) {
             .do-dont-grid {
                 grid-template-columns: 1fr;
@@ -374,10 +392,15 @@
         <div class="header">
             <h1>🚨 Emergency Incident Response</h1>
             <p>Phone Intake Checklist - (732) 207-0005</p>
+            <p style="font-size: 14px; opacity: 0.9; margin-top: 5px;">OSHA 1904 & NFPA Compliant Investigation Protocol</p>
         </div>
 
         <div class="emergency-banner">
-            <strong>⚡ CRITICAL:</strong> This is a live emergency call. Stay calm, gather facts, determine urgency, recommend service.
+            <strong>⚡ CRITICAL:</strong> This is a live emergency call. Determine OSHA reporting requirements and ensure proper evidence preservation per NFPA standards.
+        </div>
+
+        <div class="email-status" id="emailStatus">
+            Email sent successfully to adam@amusementstandards.com and adam.brousell@gmail.com
         </div>
 
         <div class="progress-bar">
@@ -398,8 +421,8 @@
                 <div class="stat-label">Progress</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="sectionCount">0/10</div>
-                <div class="stat-label">Sections Done</div>
+                <div class="stat-number" id="oshaStatus">TBD</div>
+                <div class="stat-label">OSHA Status</div>
             </div>
         </div>
 
@@ -486,6 +509,123 @@
                                 <span><strong>Is facility currently shut down?</strong></span>
                             </label>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 1B: OSHA REPORTING REQUIREMENTS -->
+            <div class="section critical expanded" data-section="1b">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">1B</span>
+                        OSHA Reporting Requirements
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="urgency-critical">
+                        <strong>⚠️ FEDERAL REQUIREMENT:</strong> Certain severe injuries must be reported to OSHA within specific timeframes. Failure to report is a federal violation with penalties up to $13,653 per violation.
+                    </div>
+
+                    <div class="subsection">
+                        <h3>🚨 REPORT TO OSHA WITHIN 8 HOURS:</h3>
+                        <p style="margin-bottom: 10px;"><strong>If ANY of these occurred:</strong></p>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="oshaFatality" onchange="checkOSHARequirements()">
+                                <span><strong>FATALITY</strong> (any work-related death)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="oshaMultipleHosp" onchange="checkOSHARequirements()">
+                                <span><strong>HOSPITALIZATION OF 3 OR MORE EMPLOYEES</strong> (in-patient hospitalization)</span>
+                            </label>
+                        </div>
+                        <div id="osha8HourAlert" style="display:none; background:#fee2e2; border:2px solid #dc2626; padding:15px; margin-top:10px; border-radius:6px;">
+                            <strong style="color:#dc2626;">⚠️ OSHA 8-HOUR REPORTING REQUIRED!</strong><br>
+                            Must report to OSHA within 8 hours:<br>
+                            • Call: <strong>1-800-321-OSHA (6742)</strong><br>
+                            • Online: <a href="https://www.osha.gov/report" target="_blank" style="color:#dc2626;">www.osha.gov/report</a><br>
+                            • Report to: Nearest OSHA Area Office<br>
+                            • Information needed: Business name, location, time, number injured, contact person
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>⏰ REPORT TO OSHA WITHIN 24 HOURS:</h3>
+                        <p style="margin-bottom: 10px;"><strong>If ANY of these occurred:</strong></p>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="oshaAmputation" onchange="checkOSHARequirements()">
+                                <span><strong>AMPUTATION</strong> (loss of any body part)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="oshaEyeLoss" onchange="checkOSHARequirements()">
+                                <span><strong>EYE LOSS</strong> (permanent loss of eye or sight)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="oshaHospitalization" onchange="checkOSHARequirements()">
+                                <span><strong>IN-PATIENT HOSPITALIZATION</strong> (admitted for 24+ hours)</span>
+                            </label>
+                        </div>
+                        <div id="osha24HourAlert" style="display:none; background:#fef3c7; border:2px solid #f59e0b; padding:15px; margin-top:10px; border-radius:6px;">
+                            <strong style="color:#92400e;">⏰ OSHA 24-HOUR REPORTING REQUIRED!</strong><br>
+                            Must report to OSHA within 24 hours:<br>
+                            • Call: <strong>1-800-321-OSHA (6742)</strong><br>
+                            • Online: <a href="https://www.osha.gov/report" target="_blank" style="color:#92400e;">www.osha.gov/report</a><br>
+                            • Include: Business name, location, time, number injured, contact person
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>📋 OSHA 300 LOG RECORDABILITY:</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Determine if incident is OSHA recordable (injury/illness + medical treatment beyond first aid)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>If recordable: Must be logged on OSHA 300 within 7 calendar days</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Employee or representative has right to review OSHA 300 log</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>OSHA Reporting Status:</label>
+                        <select id="oshaReportingStatus">
+                            <option value="">Select status...</option>
+                            <option value="8hour">CRITICAL - 8-Hour Reporting Required (Fatality/3+ Hospitalized)</option>
+                            <option value="24hour">URGENT - 24-Hour Reporting Required (Amputation/Eye Loss/Hospitalization)</option>
+                            <option value="recordable">Recordable - OSHA 300 Log Required (Within 7 Days)</option>
+                            <option value="none">No OSHA Reporting Required</option>
+                        </select>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Told caller OSHA reporting requirements and deadlines</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Gave caller OSHA hotline: 1-800-321-OSHA (6742)</span>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -672,6 +812,179 @@
                             <label>
                                 <input type="checkbox" class="checklist-item">
                                 <span>Weather conditions documented (if outdoor)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3B: NFPA EVIDENCE PRESERVATION PROTOCOL -->
+            <div class="section" data-section="3b">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">3B</span>
+                        NFPA Evidence Preservation Protocol
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="urgency-critical">
+                        <strong>NFPA Best Practice:</strong> Proper evidence preservation is critical for determining root cause and preventing future incidents. Follow chain of custody procedures.
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Scene Security & Preservation</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Scene secured with barriers/tape to prevent contamination</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Only authorized investigation personnel allowed in scene</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Log of all persons who entered scene maintained</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Who Secured Scene:</label>
+                            <input type="text" id="sceneSecuredBy" placeholder="Name and title">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Photo/Video Documentation (BEFORE any changes)</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Overall scene photos (4 directions/angles)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Equipment close-ups (all relevant components)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Alleged failure point(s) documented</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>All photos/videos timestamped and labeled</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Measurement scale included in close-up photos</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Environmental Conditions Documentation</h3>
+                        <div class="field-group">
+                            <label>Temperature at Time of Incident:</label>
+                            <input type="text" id="temperature" placeholder="Temperature (°F)">
+                        </div>
+                        <div class="field-group">
+                            <label>Wind Conditions:</label>
+                            <input type="text" id="windConditions" placeholder="Wind speed, direction, gusts">
+                        </div>
+                        <div class="field-group">
+                            <label>Precipitation:</label>
+                            <select id="precipitation">
+                                <option value="">Select...</option>
+                                <option value="none">None/Dry</option>
+                                <option value="rain">Rain</option>
+                                <option value="snow">Snow</option>
+                                <option value="sleet">Sleet/Ice</option>
+                                <option value="recent">Recent (within 2 hours)</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Lighting Conditions:</label>
+                            <select id="lightingConditions">
+                                <option value="">Select...</option>
+                                <option value="daylight">Daylight</option>
+                                <option value="dusk">Dusk/Dawn</option>
+                                <option value="night">Night (artificial lighting)</option>
+                                <option value="dark">Dark (inadequate lighting)</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Ground/Surface Conditions:</label>
+                            <input type="text" id="surfaceConditions" placeholder="Dry, wet, icy, debris, etc.">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Witness Management (NFPA Best Practice)</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Witnesses identified and contact info collected BEFORE leaving scene</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Witnesses separated to prevent collaboration on statements</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Witness statements taken individually (not as a group)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Witnesses asked open-ended questions (not leading questions)</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Witness Names & Contact Info:</label>
+                            <textarea id="witnessDetails" placeholder="List each witness: Name, phone, email, what they saw"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Equipment/Evidence Chain of Custody</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>All physical evidence photographed in place before moving</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Evidence tagged with date, time, location, collector name</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Chain of custody log started for critical components</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Failed components secured and protected from tampering</span>
                             </label>
                         </div>
                     </div>
@@ -986,6 +1299,119 @@
                 </div>
             </div>
 
+            <!-- SECTION 7B: ROOT CAUSE ANALYSIS (OSHA/NFPA REQUIREMENT) -->
+            <div class="section" data-section="7b">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">7B</span>
+                        Root Cause & Contributing Factors
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="urgency-critical">
+                        <strong>OSHA/NFPA Requirement:</strong> Investigation must identify ROOT CAUSE (underlying reason), not just immediate cause. Use 5 Whys method or similar systematic approach.
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Immediate Cause (What Failed?)</h3>
+                        <div class="field-group">
+                            <label>What Directly Caused the Incident?</label>
+                            <textarea id="immediateCause" placeholder="e.g., 'Restraint failed to lock', 'Operator failed to check height requirement', 'Hydraulic line ruptured'"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Root Cause Analysis (Why It Failed?)</h3>
+                        <p style="margin-bottom:10px;"><em>Use "5 Whys" method - ask "why" 5 times to find root cause:</em></p>
+                        <div class="field-group">
+                            <label>Why #1:</label>
+                            <input type="text" id="why1" placeholder="Why did the immediate cause happen?">
+                        </div>
+                        <div class="field-group">
+                            <label>Why #2:</label>
+                            <input type="text" id="why2" placeholder="Why did #1 happen?">
+                        </div>
+                        <div class="field-group">
+                            <label>Why #3:</label>
+                            <input type="text" id="why3" placeholder="Why did #2 happen?">
+                        </div>
+                        <div class="field-group">
+                            <label>Why #4:</label>
+                            <input type="text" id="why4" placeholder="Why did #3 happen?">
+                        </div>
+                        <div class="field-group">
+                            <label>Why #5 (Root Cause):</label>
+                            <input type="text" id="why5" placeholder="The underlying system/process failure">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Contributing Factors (Check All That Apply)</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item contributing-factor" value="human">
+                                <span><strong>Human Factors:</strong> Operator error, fatigue, training gap, communication failure</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item contributing-factor" value="equipment">
+                                <span><strong>Equipment Factors:</strong> Mechanical failure, design flaw, wear/deterioration, maintenance gap</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item contributing-factor" value="environmental">
+                                <span><strong>Environmental Factors:</strong> Weather, visibility, noise, temperature, crowds</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item contributing-factor" value="procedural">
+                                <span><strong>Procedural Factors:</strong> Inadequate SOP, SOP not followed, unclear instructions</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item contributing-factor" value="management">
+                                <span><strong>Management Factors:</strong> Staffing levels, time pressure, inadequate supervision</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item contributing-factor" value="guest">
+                                <span><strong>Guest Factors:</strong> Rule violation, medical condition, misuse of equipment</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Corrective Actions (OSHA Requires Specific Timeline)</h3>
+                        <div class="field-group">
+                            <label>Immediate Corrective Actions (Already Taken):</label>
+                            <textarea id="immediateActions" placeholder="e.g., 'Ride shut down', 'Defective part removed', 'All operators retrained'"></textarea>
+                        </div>
+                        <div class="field-group">
+                            <label>Short-Term Corrective Actions (Within 7 Days):</label>
+                            <textarea id="shortTermActions" placeholder="e.g., 'Replace failed component', 'Update SOP', 'Retrain staff'"></textarea>
+                        </div>
+                        <div class="field-group">
+                            <label>Long-Term Corrective Actions (Within 30-90 Days):</label>
+                            <textarea id="longTermActions" placeholder="e.g., 'Redesign safety system', 'Install additional sensors', 'Implement new inspection protocol'"></textarea>
+                        </div>
+                        <div class="field-group">
+                            <label>Person Responsible for Follow-Up:</label>
+                            <input type="text" id="responsiblePerson" placeholder="Name and title">
+                        </div>
+                        <div class="field-group">
+                            <label>Corrective Action Completion Target Date:</label>
+                            <input type="date" id="completionDate">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- SECTION 8 -->
             <div class="section" data-section="8">
                 <div class="section-header" onclick="toggleSection(this)">
@@ -1048,7 +1474,7 @@
                         <div class="checkbox-group">
                             <label>
                                 <input type="checkbox" class="checklist-item">
-                                <span>Told to send incident report to: incident@amusementstandards.com</span>
+                                <span>Told to send incident report to: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="99f0f7faf0fdfcf7edd9f8f4eceafcf4fcf7edeaedf8f7fdf8ebfdeab7faf6f4">[email&#160;protected]</a></span>
                             </label>
                         </div>
                         <div class="checkbox-group">
@@ -1217,6 +1643,7 @@
         </div>
 
         <div class="action-buttons">
+            <button class="btn btn-primary" onclick="sendEmail()" style="background: #3b82f6;">📧 Email Report to Adam</button>
             <button class="btn btn-primary" onclick="exportData()">📄 Export Summary</button>
             <button class="btn btn-secondary" onclick="printChecklist()">🖨️ Print Checklist</button>
             <button class="btn btn-secondary" onclick="resetAll()">🔄 Reset All</button>
@@ -1224,7 +1651,7 @@
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Toggle section expand/collapse
         function toggleSection(header) {
             const section = header.closest('.section');
@@ -1239,30 +1666,313 @@
             });
         }
 
+        // Check OSHA reporting requirements
+        function checkOSHARequirements() {
+            const fatality = document.getElementById('oshaFatality')?.checked;
+            const multipleHosp = document.getElementById('oshaMultipleHosp')?.checked;
+            const amputation = document.getElementById('oshaAmputation')?.checked;
+            const eyeLoss = document.getElementById('oshaEyeLoss')?.checked;
+            const hospitalization = document.getElementById('oshaHospitalization')?.checked;
+
+            // Show 8-hour alert if fatality or 3+ hospitalized
+            const show8Hour = fatality || multipleHosp;
+            const alert8Hour = document.getElementById('osha8HourAlert');
+            if (alert8Hour) {
+                alert8Hour.style.display = show8Hour ? 'block' : 'none';
+            }
+
+            // Show 24-hour alert if amputation, eye loss, or hospitalization
+            const show24Hour = amputation || eyeLoss || hospitalization;
+            const alert24Hour = document.getElementById('osha24HourAlert');
+            if (alert24Hour) {
+                alert24Hour.style.display = show24Hour ? 'block' : 'none';
+            }
+
+            // Auto-update OSHA reporting status dropdown
+            const statusDropdown = document.getElementById('oshaReportingStatus');
+            if (statusDropdown) {
+                if (show8Hour) {
+                    statusDropdown.value = '8hour';
+                } else if (show24Hour) {
+                    statusDropdown.value = '24hour';
+                }
+            }
+
+            // Update stat display
+            const statDisplay = document.getElementById('oshaStatus');
+            if (statDisplay) {
+                if (show8Hour) {
+                    statDisplay.textContent = '8HR';
+                    statDisplay.style.color = '#dc2626';
+                } else if (show24Hour) {
+                    statDisplay.textContent = '24HR';
+                    statDisplay.style.color = '#f59e0b';
+                } else {
+                    statDisplay.textContent = 'OK';
+                    statDisplay.style.color = '#10b981';
+                }
+            }
+        }
+
         // Update progress tracking
         function updateProgress() {
             const totalCheckboxes = document.querySelectorAll('.checklist-item').length;
             const checkedCheckboxes = document.querySelectorAll('.checklist-item:checked').length;
             const progressPercent = totalCheckboxes > 0 ? Math.round((checkedCheckboxes / totalCheckboxes) * 100) : 0;
 
-            // Count completed sections (sections with all items checked)
-            let completedSections = 0;
-            document.querySelectorAll('.section').forEach(section => {
-                const sectionCheckboxes = section.querySelectorAll('.checklist-item');
-                const sectionChecked = section.querySelectorAll('.checklist-item:checked');
-                if (sectionCheckboxes.length > 0 && sectionCheckboxes.length === sectionChecked.length) {
-                    completedSections++;
-                }
-            });
-
-            // Update stats
             document.getElementById('totalChecked').textContent = checkedCheckboxes;
             document.getElementById('totalItems').textContent = totalCheckboxes;
             document.getElementById('progressPercent').textContent = progressPercent + '%';
-            document.getElementById('sectionCount').textContent = completedSections + '/10';
-
-            // Update progress bar
             document.getElementById('progressBar').style.width = progressPercent + '%';
+        }
+
+        // Export data as text summary
+        function exportData() {
+            let summary = 'EMERGENCY INCIDENT RESPONSE - CALL SUMMARY\n';
+            summary += '=' .repeat(60) + '\n\n';
+
+            // Caller info
+            summary += 'CALLER INFORMATION:\n';
+            summary += 'Name: ' + (document.getElementById('callerName').value || 'N/A') + '\n';
+            summary += 'Title: ' + (document.getElementById('callerTitle').value || 'N/A') + '\n';
+            summary += 'Facility: ' + (document.getElementById('facilityName').value || 'N/A') + '\n';
+            summary += 'Phone: ' + (document.getElementById('callbackNumber').value || 'N/A') + '\n\n';
+
+            // Incident details
+            summary += 'INCIDENT DETAILS:\n';
+            summary += 'Date: ' + (document.getElementById('incidentDate').value || 'N/A') + '\n';
+            summary += 'Time: ' + (document.getElementById('incidentTime').value || 'N/A') + '\n';
+            summary += 'Type: ' + (document.getElementById('incidentType').value || 'N/A') + '\n';
+            summary += 'Location: ' + (document.getElementById('attractionName').value || 'N/A') + '\n\n';
+
+            // Service recommended
+            const selectedService = document.querySelector('input[name="service"]:checked');
+            summary += 'RECOMMENDED SERVICE: ' + (selectedService ? selectedService.value.toUpperCase() : 'N/A') + '\n\n';
+
+            // Priority
+            const selectedPriority = document.querySelector('input[name="finalPriority"]:checked');
+            summary += 'PRIORITY: ' + (selectedPriority ? selectedPriority.value.toUpperCase() : 'N/A') + '\n\n';
+
+            // Notes
+            summary += 'NOTES:\n' + (document.getElementById('callNotes').value || 'N/A') + '\n\n';
+
+            summary += '=' .repeat(60) + '\n';
+            summary += 'Generated: ' + new Date().toLocaleString() + '\n';
+
+            // Download as text file
+            const blob = new Blob([summary], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'incident-call-summary-' + Date.now() + '.txt';
+            a.click();
+        }
+
+        // Send email with form data
+        function sendEmail() {
+            const formData = collectFormData();
+            const emailBody = generateEmailBody(formData);
+            
+            // Create mailto link
+            const subject = `EMERGENCY INCIDENT REPORT - ${formData.facilityName || 'Unknown Facility'} - ${formData.oshaReportingStatus || 'TBD'} - ${new Date().toLocaleDateString()}`;
+            const mailto = `mailto:adam@amusementstandards.com,adam.brousell@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(emailBody).then(() => {
+                const status = document.getElementById('emailStatus');
+                status.textContent = '✓ Report copied to clipboard! Opening email client...';
+                status.classList.add('show');
+                status.classList.remove('error');
+                
+                window.location.href = mailto;
+                
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 5000);
+            }).catch(err => {
+                const status = document.getElementById('emailStatus');
+                status.textContent = '⚠ Could not copy to clipboard. Please use Export Summary instead.';
+                status.classList.add('show', 'error');
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 5000);
+            });
+        }
+
+        // Collect all form data
+        function collectFormData() {
+            // Collect contributing factors
+            const contributingFactors = [];
+            document.querySelectorAll('.contributing-factor:checked').forEach(cb => {
+                contributingFactors.push(cb.value);
+            });
+
+            return {
+                // OSHA
+                oshaReportingStatus: document.getElementById('oshaReportingStatus')?.value,
+                oshaFatality: document.getElementById('oshaFatality')?.checked,
+                oshaMultipleHosp: document.getElementById('oshaMultipleHosp')?.checked,
+                oshaAmputation: document.getElementById('oshaAmputation')?.checked,
+                oshaEyeLoss: document.getElementById('oshaEyeLoss')?.checked,
+                oshaHospitalization: document.getElementById('oshaHospitalization')?.checked,
+                
+                // Caller info
+                callerName: document.getElementById('callerName')?.value,
+                callerTitle: document.getElementById('callerTitle')?.value,
+                facilityName: document.getElementById('facilityName')?.value,
+                callbackNumber: document.getElementById('callbackNumber')?.value,
+                
+                // Incident details
+                incidentDate: document.getElementById('incidentDate')?.value,
+                incidentTime: document.getElementById('incidentTime')?.value,
+                incidentType: document.getElementById('incidentType')?.value,
+                attractionName: document.getElementById('attractionName')?.value,
+                guestsInjured: document.getElementById('guestsInjured')?.value,
+                staffInjured: document.getElementById('staffInjured')?.value,
+                injuredAges: document.getElementById('injuredAges')?.value,
+                severity: document.querySelector('input[name="severity"]:checked')?.value,
+                locationDetail: document.getElementById('locationDetail')?.value,
+                
+                // Environmental (NFPA)
+                temperature: document.getElementById('temperature')?.value,
+                windConditions: document.getElementById('windConditions')?.value,
+                precipitation: document.getElementById('precipitation')?.value,
+                lightingConditions: document.getElementById('lightingConditions')?.value,
+                surfaceConditions: document.getElementById('surfaceConditions')?.value,
+                
+                // Evidence (NFPA)
+                sceneSecuredBy: document.getElementById('sceneSecuredBy')?.value,
+                witnessDetails: document.getElementById('witnessDetails')?.value,
+                witnessCount: document.getElementById('witnessCount')?.value,
+                
+                // Root Cause (OSHA/NFPA)
+                immediateCause: document.getElementById('immediateCause')?.value,
+                why1: document.getElementById('why1')?.value,
+                why2: document.getElementById('why2')?.value,
+                why3: document.getElementById('why3')?.value,
+                why4: document.getElementById('why4')?.value,
+                why5: document.getElementById('why5')?.value,
+                contributingFactors: contributingFactors.join(', '),
+                immediateActions: document.getElementById('immediateActions')?.value,
+                shortTermActions: document.getElementById('shortTermActions')?.value,
+                longTermActions: document.getElementById('longTermActions')?.value,
+                responsiblePerson: document.getElementById('responsiblePerson')?.value,
+                completionDate: document.getElementById('completionDate')?.value,
+                
+                // Service
+                service: document.querySelector('input[name="service"]:checked')?.value || 'Not selected',
+                
+                // Notes
+                callNotes: document.getElementById('callNotes')?.value,
+                
+                // Timestamp
+                timestamp: new Date().toLocaleString()
+            };
+        }
+
+        // Generate email body
+        function generateEmailBody(data) {
+            let body = `EMERGENCY INCIDENT RESPONSE - COMPREHENSIVE INVESTIGATION REPORT
+${'='.repeat(70)}
+COMPLIANCE: OSHA 1904 | NFPA Standards
+
+OSHA REPORTING STATUS: ${data.oshaReportingStatus || 'NOT DETERMINED'}
+
+${'='.repeat(70)}
+CRITICAL REGULATORY ACTIONS REQUIRED:
+`;
+
+            // OSHA requirements
+            if (data.oshaReportingStatus === '8hour') {
+                body += `
+🚨 OSHA 8-HOUR REPORTING REQUIRED!
+- Report to OSHA within 8 hours: 1-800-321-OSHA (6742)
+- Online: www.osha.gov/report
+- Reason: ${data.oshaFatality ? 'FATALITY' : 'HOSPITALIZATION OF 3+ EMPLOYEES'}
+`;
+            } else if (data.oshaReportingStatus === '24hour') {
+                body += `
+⏰ OSHA 24-HOUR REPORTING REQUIRED!
+- Report to OSHA within 24 hours: 1-800-321-OSHA (6742)
+- Online: www.osha.gov/report
+- Reason: Amputation/Eye Loss/Hospitalization
+`;
+            }
+
+            body += `
+${'='.repeat(70)}
+
+CALLER INFORMATION:
+Name: ${data.callerName || 'N/A'}
+Title: ${data.callerTitle || 'N/A'}
+Facility: ${data.facilityName || 'N/A'}
+Phone: ${data.callbackNumber || 'N/A'}
+
+INCIDENT DETAILS:
+Date: ${data.incidentDate || 'N/A'}
+Time: ${data.incidentTime || 'N/A'}
+Type: ${data.incidentType || 'N/A'}
+Location: ${data.attractionName || 'N/A'} - ${data.locationDetail || 'N/A'}
+
+INJURED PARTIES:
+Guests Injured: ${data.guestsInjured || '0'}
+Staff Injured: ${data.staffInjured || '0'}
+Ages: ${data.injuredAges || 'N/A'}
+Severity: ${data.severity || 'N/A'}
+
+ENVIRONMENTAL CONDITIONS (NFPA):
+Temperature: ${data.temperature || 'N/A'}
+Wind: ${data.windConditions || 'N/A'}
+Precipitation: ${data.precipitation || 'N/A'}
+Lighting: ${data.lightingConditions || 'N/A'}
+Surface: ${data.surfaceConditions || 'N/A'}
+
+${'='.repeat(70)}
+ROOT CAUSE ANALYSIS (OSHA/NFPA):
+
+IMMEDIATE CAUSE:
+${data.immediateCause || 'N/A'}
+
+ROOT CAUSE (5 Whys):
+Why #1: ${data.why1 || 'N/A'}
+Why #2: ${data.why2 || 'N/A'}
+Why #3: ${data.why3 || 'N/A'}
+Why #4: ${data.why4 || 'N/A'}
+Why #5 (Root): ${data.why5 || 'N/A'}
+
+CONTRIBUTING FACTORS:
+${data.contributingFactors || 'N/A'}
+
+CORRECTIVE ACTIONS:
+Immediate: ${data.immediateActions || 'N/A'}
+Short-Term (7 days): ${data.shortTermActions || 'N/A'}
+Long-Term (30-90 days): ${data.longTermActions || 'N/A'}
+Responsible Person: ${data.responsiblePerson || 'N/A'}
+Target Completion: ${data.completionDate || 'N/A'}
+
+${'='.repeat(70)}
+EVIDENCE PRESERVATION (NFPA):
+
+Scene Secured By: ${data.sceneSecuredBy || 'N/A'}
+Witnesses: ${data.witnessDetails || 'N/A'}
+Witness Count: ${data.witnessCount || 'N/A'}
+
+${'='.repeat(70)}
+AMUSEMENT STANDARDS SERVICE:
+
+Recommended: ${data.service}
+
+ADDITIONAL NOTES:
+${data.callNotes || 'None'}
+
+${'='.repeat(70)}
+Report Generated: ${data.timestamp}
+Emergency Hotline: (732) 207-0005
+OSHA: 1-800-321-OSHA (6742)
+${'='.repeat(70)}
+`;
+
+            return body;
         }
 
         // Export data as text summary
@@ -1365,14 +2075,3 @@
                             input.checked = formData[key];
                         } else if (input.type === 'radio') {
                             input.checked = true;
-                        } else {
-                            input.value = formData[key];
-                        }
-                    }
-                });
-                updateProgress();
-            }
-        });
-    </script>
-</body>
-</html>
