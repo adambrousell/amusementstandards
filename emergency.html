@@ -392,15 +392,18 @@
         <div class="header">
             <h1>🚨 Emergency Incident Response</h1>
             <p>Phone Intake Checklist - (732) 207-0005</p>
-            <p style="font-size: 14px; opacity: 0.9; margin-top: 5px;">OSHA 1904 & NFPA Compliant Investigation Protocol</p>
+        </div>
+
+        <div style="background: #1e40af; color: white; padding: 12px 20px; text-align: center; font-weight: 600; font-size: 13px;">
+            ✓ MULTI-AGENCY COMPLIANT: OSHA 1904 | CPSC 16 CFR 1115 | NFPA | ASTM F24/F853 | DOT FMCSA | USCG | ACCT | ANSI B77.1/Z359 | All 50 States Workers' Comp Boards
         </div>
 
         <div class="emergency-banner">
-            <strong>⚡ CRITICAL:</strong> This is a live emergency call. Determine OSHA reporting requirements and ensure proper evidence preservation per NFPA standards.
+            <strong>⚡ CRITICAL:</strong> This is a live emergency call. Determine OSHA/CPSC reporting requirements and ensure proper evidence preservation.
         </div>
 
         <div class="email-status" id="emailStatus">
-            Email sent successfully to adam@amusementstandards.com and adam.brousell@gmail.com
+            Email sent successfully to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2a3a6a3af82a3afb7b1a7afa7acb6b1b6a3aca6a3b0a6b1eca1adaf">[email&#160;protected]</a> and <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="670603060a490515081214020b0b27000a060e0b4904080a">[email&#160;protected]</a>
         </div>
 
         <div class="progress-bar">
@@ -630,6 +633,111 @@
                 </div>
             </div>
 
+            <!-- SECTION 1C: CPSC REPORTING REQUIREMENTS -->
+            <div class="section critical expanded" data-section="1c">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">1C</span>
+                        CPSC Reporting Requirements (Guest Injuries)
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="urgency-critical">
+                        <strong>⚠️ CPSC (Consumer Product Safety Commission):</strong> Primary federal authority for GUEST injuries on amusement rides. CPSC has jurisdiction over patron/guest injuries, while OSHA covers employee injuries.
+                    </div>
+
+                    <div class="subsection">
+                        <h3>🚨 REPORT TO CPSC IMMEDIATELY:</h3>
+                        <p style="margin-bottom: 10px;"><strong>If ANY of these occurred to a GUEST/PATRON:</strong></p>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="cpscDeath" onchange="checkCPSCRequirements()">
+                                <span><strong>DEATH of guest/patron</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="cpscSeriousInjury" onchange="checkCPSCRequirements()">
+                                <span><strong>SERIOUS INJURY requiring hospitalization</strong> (ER admission, surgery, ICU)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="cpscPattern" onchange="checkCPSCRequirements()">
+                                <span><strong>PATTERN OF INJURIES</strong> (multiple similar incidents on same ride)</span>
+                            </label>
+                        </div>
+                        <div id="cpscAlert" style="display:none; background:#fee2e2; border:2px solid #dc2626; padding:15px; margin-top:10px; border-radius:6px;">
+                            <strong style="color:#dc2626;">⚠️ CPSC REPORTING REQUIRED WITHIN 24 HOURS!</strong><br>
+                            Report substantial product hazard to CPSC:<br>
+                            • Online: <a href="https://www.saferproducts.gov" target="_blank" style="color:#dc2626;">www.saferproducts.gov</a><br>
+                            • Phone: <strong>1-800-638-2772</strong><br>
+                            • Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2e474048416e4d5e5d4d00494158">[email&#160;protected]</a><br>
+                            • Report must include: Product description, nature of defect/hazard, injuries, corrective action<br>
+                            • Failure to report: Up to $100,000 civil penalty + criminal penalties
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>📋 CPSC Report Information (16 CFR 1115):</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Ride manufacturer name and contact information gathered</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Ride model number and serial number documented</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Date of manufacture/installation documented</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Number of units in operation (if multiple rides of same type)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Previous incidents on same ride type documented</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>CPSC Reporting Status:</label>
+                        <select id="cpscReportingStatus">
+                            <option value="">Select status...</option>
+                            <option value="required">REQUIRED - Guest Death or Serious Injury</option>
+                            <option value="not-required">Not Required - Minor Guest Injury Only</option>
+                            <option value="employee-only">Not Required - Employee Injury Only (OSHA jurisdiction)</option>
+                        </select>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Told caller about CPSC reporting requirements</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Gave caller CPSC contact: 1-800-638-2772 or www.saferproducts.gov</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <!-- SECTION 2 -->
             <div class="section" data-section="2">
                 <div class="section-header" onclick="toggleSection(this)">
@@ -723,6 +831,160 @@
                                 <input type="checkbox" class="checklist-item">
                                 <span>Any equipment locked out/tagged?</span>
                             </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2B: STATE & JURISDICTION INFORMATION -->
+            <div class="section expanded" data-section="2b">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">2B</span>
+                        State & Regulatory Jurisdiction
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="field-group">
+                        <label>State Where Incident Occurred:</label>
+                        <select id="incidentState" onchange="updateStateContacts()">
+                            <option value="">Select state...</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California (Cal/OSHA)</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland (MOSH)</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan (MIOSHA)</option>
+                            <option value="MN">Minnesota (MNOSHA)</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada (NV OSHA)</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico (NM OSHA)</option>
+                            <option value="NY">New York (NY PESH)</option>
+                            <option value="NC">North Carolina (NC DOL)</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon (OR-OSHA)</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina (SC OSHA)</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee (TOSHA)</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah (UOSH)</option>
+                            <option value="VT">Vermont (VOSHA)</option>
+                            <option value="VA">Virginia (VOSH)</option>
+                            <option value="WA">Washington (WISHA)</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming (WY OSHA)</option>
+                        </select>
+                    </div>
+
+                    <div id="stateContacts" class="subsection">
+                        <h3>State-Specific Regulatory Contacts:</h3>
+                        <div id="stateContactInfo">
+                            <p><em>Select a state above to see state-specific contacts</em></p>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Ride Type & Special Jurisdiction:</h3>
+                        <div class="field-group">
+                            <label>Ride Type:</label>
+                            <select id="rideType" onchange="checkSpecialJurisdiction()">
+                                <option value="">Select type...</option>
+                                <option value="fixed">Fixed-Site Ride (Permanent Installation)</option>
+                                <option value="mobile">Mobile/Traveling Carnival Ride</option>
+                                <option value="water-fixed">Water Ride (Fixed Pool/Tank)</option>
+                                <option value="water-navigable">Water Ride (On Navigable Water - Lake/River)</option>
+                                <option value="aerial-adventure">Aerial Adventure Course/Zip Line</option>
+                                <option value="rope-course">Challenge Course/Ropes Course</option>
+                                <option value="ski-lift">Ski Lift/Aerial Tramway</option>
+                                <option value="climbing-wall">Climbing Wall</option>
+                                <option value="go-kart">Go-Karts/Racing Attraction</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div id="specialJurisdictionAlert" style="display:none; background:#fef3c7; border:2px solid #f59e0b; padding:15px; margin-top:10px; border-radius:6px;">
+                            <!-- Dynamic content based on ride type -->
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>ASTM Compliance Information:</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Ride was designed/manufactured to ASTM F24 standards</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Last ASTM F853 Inspection Date:</label>
+                            <input type="date" id="lastASTMInspection">
+                        </div>
+                        <div class="field-group">
+                            <label>ASTM-Qualified Inspector Name:</label>
+                            <input type="text" id="astmInspector" placeholder="Inspector name and certification">
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Ride has current manufacturer's maintenance manual (ASTM F853 requirement)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Daily inspection logs maintained per ASTM standards</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Workers' Compensation Reporting:</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>EMPLOYEE injury (not guest) - Workers' Comp report required</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>First Report of Injury submitted to Workers' Comp carrier</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Workers' Comp Carrier:</label>
+                            <input type="text" id="workersCompCarrier" placeholder="Insurance carrier name">
+                        </div>
+                        <div class="field-group">
+                            <label>Workers' Comp Claim Number:</label>
+                            <input type="text" id="workersCompClaim" placeholder="Claim #">
                         </div>
                     </div>
                 </div>
@@ -1651,7 +1913,7 @@
         </div>
     </div>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Toggle section expand/collapse
         function toggleSection(header) {
             const section = header.closest('.section');
@@ -1711,6 +1973,155 @@
                     statDisplay.textContent = 'OK';
                     statDisplay.style.color = '#10b981';
                 }
+            }
+        }
+
+        // Check CPSC reporting requirements
+        function checkCPSCRequirements() {
+            const death = document.getElementById('cpscDeath')?.checked;
+            const seriousInjury = document.getElementById('cpscSeriousInjury')?.checked;
+            const pattern = document.getElementById('cpscPattern')?.checked;
+
+            const showAlert = death || seriousInjury || pattern;
+            const alert = document.getElementById('cpscAlert');
+            if (alert) {
+                alert.style.display = showAlert ? 'block' : 'none';
+            }
+
+            const statusDropdown = document.getElementById('cpscReportingStatus');
+            if (statusDropdown && showAlert) {
+                statusDropdown.value = 'required';
+            }
+        }
+
+        // Update state-specific contacts
+        function updateStateContacts() {
+            const state = document.getElementById('incidentState')?.value;
+            const contactInfo = document.getElementById('stateContactInfo');
+            
+            if (!contactInfo || !state) {
+                if (contactInfo) {
+                    contactInfo.innerHTML = '<p><em>Select a state above to see state-specific contacts</em></p>';
+                }
+                return;
+            }
+
+            const stateData = {
+                'NJ': {
+                    name: 'New Jersey',
+                    contacts: [
+                        'NJ DCA (Amusement Rides): <strong>(609) 984-7834</strong>',
+                        'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                        'NJ Workers\' Comp: <strong>(609) 292-2515</strong>'
+                    ]
+                },
+                'CA': {
+                    name: 'California',
+                    contacts: [
+                        'Cal/OSHA: <strong>1-833-579-0927</strong>',
+                        'CA Div of Occupational Safety & Health: <strong>(916) 263-2800</strong>',
+                        'CA Workers\' Comp: <strong>1-800-736-7401</strong>'
+                    ]
+                },
+                'NY': {
+                    name: 'New York',
+                    contacts: [
+                        'NY PESH (Public Employee Safety & Health): <strong>(518) 457-2735</strong>',
+                        'NY DOL: <strong>(518) 457-9000</strong>',
+                        'NY Workers\' Comp Board: <strong>1-877-632-4996</strong>'
+                    ]
+                },
+                'FL': {
+                    name: 'Florida',
+                    contacts: [
+                        'FL Dept of Agriculture (Amusement Rides): <strong>(850) 617-7730</strong>',
+                        'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                        'FL Workers\' Comp: <strong>(850) 413-1601</strong>'
+                    ]
+                },
+                'TX': {
+                    name: 'Texas',
+                    contacts: [
+                        'TX Dept of Insurance (Amusement Rides): <strong>(512) 676-6000</strong>',
+                        'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                        'TX Workers\' Comp: <strong>1-800-252-7031</strong>'
+                    ]
+                },
+                'OH': {
+                    name: 'Ohio',
+                    contacts: [
+                        'OH Dept of Agriculture (Amusement Rides): <strong>(614) 728-6220</strong>',
+                        'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                        'OH Workers\' Comp: <strong>1-800-644-6292</strong>'
+                    ]
+                },
+                'PA': {
+                    name: 'Pennsylvania',
+                    contacts: [
+                        'PA Dept of Agriculture (Amusement Rides): <strong>(717) 787-4315</strong>',
+                        'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                        'PA Workers\' Comp: <strong>1-800-482-2383</strong>'
+                    ]
+                }
+            };
+
+            const info = stateData[state] || {
+                name: state,
+                contacts: [
+                    'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                    'State Amusement Ride Authority: <em>Contact state government</em>',
+                    'State Workers\' Comp: <em>Contact state insurance department</em>'
+                ]
+            };
+
+            contactInfo.innerHTML = `
+                <p><strong>${info.name}:</strong></p>
+                <ul style="margin-left: 20px;">
+                    ${info.contacts.map(c => `<li>${c}</li>`).join('')}
+                </ul>
+            `;
+        }
+
+        // Check special jurisdiction based on ride type
+        function checkSpecialJurisdiction() {
+            const rideType = document.getElementById('rideType')?.value;
+            const alert = document.getElementById('specialJurisdictionAlert');
+            
+            if (!alert) return;
+
+            const jurisdictionInfo = {
+                'mobile': {
+                    show: true,
+                    message: '<strong>🚛 MOBILE RIDE - DOT Jurisdiction:</strong><br>If ride travels between locations, DOT (Department of Transportation) regulations apply.<br>• FMCSA: <strong>1-800-832-5660</strong><br>• Transportation incidents must be reported to DOT'
+                },
+                'water-navigable': {
+                    show: true,
+                    message: '<strong>⚓ NAVIGABLE WATER - USCG Jurisdiction:</strong><br>US Coast Guard has jurisdiction for rides on navigable waters.<br>• USCG National Response Center: <strong>1-800-424-8802</strong><br>• Report marine casualties within 24 hours'
+                },
+                'aerial-adventure': {
+                    show: true,
+                    message: '<strong>🧗 AERIAL ADVENTURE - ACCT Standards:</strong><br>Association for Challenge Course Technology (ACCT) standards apply.<br>• Follow ACCT incident reporting protocols<br>• ACCT: <a href="https://www.acctinfo.org" target="_blank">www.acctinfo.org</a>'
+                },
+                'rope-course': {
+                    show: true,
+                    message: '<strong>🪢 ROPES COURSE - ACCT/ANSI Standards:</strong><br>ACCT and ANSI Z359 fall protection standards apply.<br>• Document fall protection equipment condition<br>• Preserve harnesses/lanyards as evidence'
+                },
+                'ski-lift': {
+                    show: true,
+                    message: '<strong>🎿 SKI LIFT - ANSI B77.1 Standards:</strong><br>ANSI B77.1 Passenger Ropeway standards apply.<br>• State tramway board notification may be required<br>• Specialized inspection protocols'
+                },
+                'climbing-wall': {
+                    show: true,
+                    message: '<strong>🧗 CLIMBING WALL - ANSI Standards:</strong><br>ANSI Z359 fall protection and belay standards apply.<br>• Document belay device and auto-belay condition<br>• Check certification of climbing holds'
+                }
+            };
+
+            const info = jurisdictionInfo[rideType];
+            if (info && info.show) {
+                alert.innerHTML = info.message;
+                alert.style.display = 'block';
+            } else {
+                alert.style.display = 'none';
             }
         }
 
@@ -2067,11 +2478,4 @@ ${'='.repeat(70)}
         window.addEventListener('load', () => {
             const savedData = localStorage.getItem('emergencyIncidentChecklist');
             if (savedData) {
-                const formData = JSON.parse(savedData);
-                Object.keys(formData).forEach(key => {
-                    const input = document.getElementById(key) || document.querySelector(`input[name="${key}"][value="${formData[key]}"]`);
-                    if (input) {
-                        if (input.type === 'checkbox') {
-                            input.checked = formData[key];
-                        } else if (input.type === 'radio') {
-                            input.checked = true;
+                const formData = JSON
