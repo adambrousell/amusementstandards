@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk Intelligence Pro | Amusement Standards</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #ffffff;
+    --bg: #f9f9f9;
+    --bg-dark: #111827;
+    --text: #111827;
+    --text-muted: #6b7280;
+    --text-light: #9ca3af;
+    --border: #e5e7eb;
+    --border-dark: #d1d5db;
+    --accent: #1d4ed8;
+    --accent-hover: #1e40af;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+    --red-border: #fecaca;
+    --amber: #d97706;
+    --amber-bg: #fffbeb;
+    --amber-border: #fde68a;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --green-border: #bbf7d0;
+    --blue: #2563eb;
+    --blue-bg: #eff6ff;
+    --blue-border: #bfdbfe;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--white); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; }
+
+  nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 15px; font-weight: 600; color: var(--text); text-decoration: none; }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; font-weight: 500; }
+  .nav-links a:hover { color: var(--text); }
+
+  .hero { background: var(--bg-dark); color: #fff; padding: 52px 40px 44px; }
+  .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end; }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #60a5fa; margin-bottom: 12px; }
+  .hero-title { font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 10px; letter-spacing: -0.02em; }
+  .hero-sub { font-size: 14px; color: #9ca3af; max-width: 500px; line-height: 1.6; }
+  .hero-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #374151; border: 1px solid #374151; min-width: 290px; }
+  .hero-meta-cell { background: #1f2937; padding: 13px 16px; }
+  .meta-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; margin-bottom: 4px; }
+  .meta-val { font-size: 13px; font-weight: 600; color: #f9fafb; }
+
+  .layout { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 216px 1fr; padding: 32px 40px; align-items: start; }
+  .sidebar { position: sticky; top: 76px; padding-right: 28px; border-right: 1px solid var(--border); }
+  .sidebar-section { margin-bottom: 28px; }
+  .sidebar-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .ride-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 10px; border-radius: 5px; margin-bottom: 2px; cursor: pointer; }
+  .ride-item:hover { background: var(--bg); }
+  .ride-item.active { background: var(--blue-bg); }
+  .ride-name { font-size: 12px; color: var(--text); font-weight: 500; }
+  .badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); }
+  .risk-row { margin-bottom: 9px; }
+  .risk-row-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .risk-name { font-size: 11px; color: var(--text-muted); }
+  .risk-pct { font-size: 11px; font-weight: 600; }
+  .risk-track { height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .risk-fill { height: 100%; border-radius: 4px; }
+  .score-wrap { text-align: center; padding: 10px 0; }
+
+  .content { padding-left: 28px; }
+  .alert { display: flex; gap: 12px; padding: 12px 16px; border-radius: 6px; margin-bottom: 12px; font-size: 12px; line-height: 1.5; border: 1px solid; }
+  .alert-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .alert-red { background: var(--red-bg); border-color: var(--red-border); color: #7f1d1d; }
+  .alert-amber { background: var(--amber-bg); border-color: var(--amber-border); color: #78350f; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0 28px; }
+  .kpi { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 18px; position: relative; overflow: hidden; }
+  .kpi-top { height: 3px; position: absolute; top: 0; left: 0; right: 0; border-radius: 8px 8px 0 0; }
+  .kpi-label { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .kpi-value { font-size: 34px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .kpi-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+  .kpi-tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin: 28px 0 12px; display: flex; align-items: center; gap: 10px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border-bottom: 1px solid var(--border); background: var(--bg); }
+  .card-title { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text); }
+  .card-subtitle { font-size: 11px; color: var(--text-muted); }
+  .card-body { padding: 18px; }
+
+  .heatmap-wrap { overflow-x: auto; }
+  .heatmap { display: grid; grid-template-columns: 98px repeat(12, 1fr); gap: 3px; min-width: 580px; }
+  .hm-h { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); text-align: center; padding: 4px 0; }
+  .hm-label { font-size: 11px; color: var(--text); font-weight: 500; display: flex; align-items: center; padding-right: 6px; white-space: nowrap; }
+  .hm-cell { height: 26px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; cursor: default; }
+  .hm-cell:hover { filter: brightness(0.88); }
+  .hm-0 { background: #f3f4f6; color: transparent; }
+  .hm-1 { background: #dcfce7; color: #15803d; }
+  .hm-2 { background: #fef9c3; color: #a16207; }
+  .hm-3 { background: #fed7aa; color: #c2410c; }
+  .hm-4 { background: #fecaca; color: #b91c1c; }
+  .hm-5 { background: #f87171; color: #fff; }
+  .hm-6 { background: #dc2626; color: #fff; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .three-col { display: grid; grid-template-columns: 3fr 2fr; gap: 12px; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--bg); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #fafafa; }
+  .sev { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.04em; }
+  .sev-high { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+  .sev-med  { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .sev-low  { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .doc-wrap { display: flex; align-items: center; gap: 8px; }
+  .doc-track { width: 48px; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .doc-fill { height: 100%; border-radius: 4px; }
+  .doc-num { font-size: 10px; font-weight: 600; }
+
+  .donut-row { display: flex; align-items: center; gap: 20px; }
+  .legend { flex: 1; }
+  .legend-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .legend-item:last-child { border-bottom: none; }
+  .legend-left { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .legend-pct { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .trend-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin: 18px 0 8px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+  .pattern { display: flex; gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--border); }
+  .pattern:last-child { border-bottom: none; }
+  .pattern-num { font-size: 20px; font-weight: 700; color: var(--border-dark); line-height: 1; flex-shrink: 0; width: 26px; text-align: right; padding-top: 2px; }
+  .p-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+  .p-detail { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+  .p-tag { display: inline-block; margin-top: 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+
+  .rec { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .rec:last-child { border-bottom: none; }
+  .rec-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; letter-spacing: 0.04em; }
+  .rb-critical { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+  .rb-high     { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .rb-standard { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .rec-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; line-height: 1.4; }
+  .rec-sub   { font-size: 11px; color: var(--text-muted); }
+
+  .cta-footer { margin-top: 28px; background: var(--bg-dark); border-radius: 8px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 32px; color: #fff; }
+  .cta-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #60a5fa; margin-bottom: 6px; }
+  .cta-heading { font-size: 20px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .cta-sub { font-size: 13px; color: #9ca3af; }
+  .cta-btn { display: inline-block; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; padding: 12px 24px; border-radius: 6px; text-decoration: none; white-space: nowrap; flex-shrink: 0; transition: background 0.15s; }
+  .cta-btn:hover { background: var(--accent-hover); }
+
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: 1fr; padding: 20px; }
+    .sidebar { display: none; }
+    .content { padding-left: 0; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-meta { display: none; }
+    nav { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://amusementstandards.com" class="nav-logo">amusement standards.</a>
+  <ul class="nav-links">
+    <li><a href="https://amusementstandards.com/#services">Services</a></li>
+    <li><a href="https://amusementstandards.com/#packages">Packages</a></li>
+    <li><a href="https://amusementstandards.com/#about">About</a></li>
+    <li><a href="https://amusementstandards.com/contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">📊 Risk Intelligence Pro — Sample Report</div>
+      <h1 class="hero-title">24-Month Incident Analysis</h1>
+      <p class="hero-sub">Full incident data analysis across 18 attractions. Pattern identification, risk exposure mapping, documentation quality review, and prioritized recommendations — delivered in 3–4 weeks.</p>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-cell"><div class="meta-label">Period</div><div class="meta-val">Jan '23–Dec '24</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Incidents</div><div class="meta-val">247 total</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Rides</div><div class="meta-val">18 attractions</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Lookback</div><div class="meta-val">24 months</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Delivery</div><div class="meta-val">3–4 weeks</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Format</div><div class="meta-val">Flat-rate</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Attractions by Volume</div>
+      <div class="ride-item active"><span class="ride-name">All Attractions</span><span class="badge badge-amber">247</span></div>
+      <div class="ride-item"><span class="ride-name">Coaster — Main</span><span class="badge badge-red">61</span></div>
+      <div class="ride-item"><span class="ride-name">Log Flume</span><span class="badge badge-red">44</span></div>
+      <div class="ride-item"><span class="ride-name">Drop Tower</span><span class="badge badge-amber">31</span></div>
+      <div class="ride-item"><span class="ride-name">Carousel</span><span class="badge badge-amber">28</span></div>
+      <div class="ride-item"><span class="ride-name">Spinning Ride</span><span class="badge badge-amber">22</span></div>
+      <div class="ride-item"><span class="ride-name">Kiddie Coaster</span><span class="badge badge-green">18</span></div>
+      <div class="ride-item"><span class="ride-name">Dark Ride</span><span class="badge badge-green">14</span></div>
+      <div class="ride-item"><span class="ride-name">Remaining (11)</span><span class="badge badge-green">29</span></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Risk by Category</div>
+      <div class="risk-row"><div class="risk-row-top"><span class="risk-name">Operator Error</span><span class="risk-pct" style="color:var(--red)">72%</span></div><div class="risk-track"><div class="risk-fill" style="width:72%;background:var(--red)"></div></div></div>
+      <div class="risk-row"><div class="risk-row-top"><span class="risk-name">Guest Behavior</span><span class="risk-pct" style="color:var(--amber)">41%</span></div><div class="risk-track"><div class="risk-fill" style="width:41%;background:var(--amber)"></div></div></div>
+      <div class="risk-row"><div class="risk-row-top"><span class="risk-name">Mechanical</span><span class="risk-pct" style="color:var(--amber)">28%</span></div><div class="risk-track"><div class="risk-fill" style="width:28%;background:var(--amber)"></div></div></div>
+      <div class="risk-row"><div class="risk-row-top"><span class="risk-name">Environmental</span><span class="risk-pct" style="color:var(--green)">14%</span></div><div class="risk-track"><div class="risk-fill" style="width:14%;background:var(--green)"></div></div></div>
+      <div class="risk-row"><div class="risk-row-top"><span class="risk-name">Documentation</span><span class="risk-pct" style="color:var(--blue)">61%</span></div><div class="risk-track"><div class="risk-fill" style="width:61%;background:var(--blue)"></div></div></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Doc Quality Score</div>
+      <div class="score-wrap">
+        <svg width="90" height="90" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#e5e7eb" stroke-width="7"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#d97706" stroke-width="7"
+            stroke-dasharray="207" stroke-dashoffset="83"
+            stroke-linecap="round" transform="rotate(-90 45 45)"/>
+          <text x="45" y="41" text-anchor="middle" font-family="Inter,sans-serif" font-size="18" font-weight="700" fill="#111827">60</text>
+          <text x="45" y="53" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#9ca3af">/100</text>
+        </svg>
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-top:4px">Overall Quality</div>
+        <div style="margin-top:8px"><span class="badge badge-amber">⚠ Needs Improvement</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="alert alert-red">
+      <span class="alert-icon">🚨</span>
+      <div><strong>Critical Finding:</strong> 8–12 incidents appear under-classified relative to reportable thresholds. This creates retroactive liability exposure if records are reviewed during a claim or litigation.</div>
+    </div>
+    <div class="alert alert-amber">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Documentation Gap:</strong> 38% of incidents recorded between 2–4pm show incomplete records — aligned with supervisor overlap at shift change. Reports deferred and never completed.</div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-top" style="background:var(--red)"></div>
+        <div class="kpi-label">High-Severity Incidents</div>
+        <div class="kpi-value" style="color:var(--red)">34</div>
+        <div class="kpi-sub">Requiring immediate review</div>
+        <span class="kpi-tag" style="background:var(--red-bg);color:var(--red)">↑ 18% vs prior year</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top" style="background:var(--amber)"></div>
+        <div class="kpi-label">Top Risk Attraction</div>
+        <div class="kpi-value" style="color:var(--amber);font-size:20px;padding-top:8px">Main Coaster</div>
+        <div class="kpi-sub">61 incidents · 25% of total</div>
+        <span class="kpi-tag" style="background:var(--amber-bg);color:var(--amber)">Operator error primary</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top" style="background:var(--green)"></div>
+        <div class="kpi-label">Preventable Rate</div>
+        <div class="kpi-value" style="color:var(--green)">68%</div>
+        <div class="kpi-sub">Linked to operator error</div>
+        <span class="kpi-tag" style="background:var(--green-bg);color:var(--green)">Training gap identified</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top" style="background:var(--blue)"></div>
+        <div class="kpi-label">Documentation Gaps</div>
+        <div class="kpi-value" style="color:var(--blue)">112</div>
+        <div class="kpi-sub">Incomplete records found</div>
+        <span class="kpi-tag" style="background:var(--blue-bg);color:var(--blue)">↑ Insurer liability risk</span>
+      </div>
+    </div>
+
+    <div class="section-label">Risk Exposure Heatmap · Attraction × Month</div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Incident Frequency by Ride</span>
+        <span class="card-subtitle">Jan – Dec 2024</span>
+      </div>
+      <div class="card-body">
+        <div class="heatmap-wrap">
+          <div class="heatmap">
+            <div></div>
+            <div class="hm-h">Jan</div><div class="hm-h">Feb</div><div class="hm-h">Mar</div><div class="hm-h">Apr</div><div class="hm-h">May</div><div class="hm-h">Jun</div><div class="hm-h">Jul</div><div class="hm-h">Aug</div><div class="hm-h">Sep</div><div class="hm-h">Oct</div><div class="hm-h">Nov</div><div class="hm-h">Dec</div>
+            <div class="hm-label">Coaster</div>
+            <div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-3">4</div><div class="hm-cell hm-3">5</div><div class="hm-cell hm-5">8</div><div class="hm-cell hm-6">11</div><div class="hm-cell hm-6">12</div><div class="hm-cell hm-5">9</div><div class="hm-cell hm-4">6</div><div class="hm-cell hm-3">4</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div>
+            <div class="hm-label">Log Flume</div>
+            <div class="hm-cell hm-1">1</div><div class="hm-cell hm-0"></div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">3</div><div class="hm-cell hm-4">6</div><div class="hm-cell hm-5">8</div><div class="hm-cell hm-5">9</div><div class="hm-cell hm-5">7</div><div class="hm-cell hm-3">4</div><div class="hm-cell hm-2">3</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-0"></div>
+            <div class="hm-label">Drop Tower</div>
+            <div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">3</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-3">4</div><div class="hm-cell hm-3">3</div><div class="hm-cell hm-4">5</div><div class="hm-cell hm-4">5</div><div class="hm-cell hm-3">3</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-0"></div><div class="hm-cell hm-0"></div>
+            <div class="hm-label">Carousel</div>
+            <div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">3</div><div class="hm-cell hm-3">3</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-3">3</div><div class="hm-cell hm-3">4</div><div class="hm-cell hm-3">3</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-1">1</div>
+            <div class="hm-label">Spinning Ride</div>
+            <div class="hm-cell hm-1">1</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-3">3</div><div class="hm-cell hm-3">4</div><div class="hm-cell hm-3">4</div><div class="hm-cell hm-2">3</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-0"></div><div class="hm-cell hm-0"></div>
+            <div class="hm-label">Kiddie Coaster</div>
+            <div class="hm-cell hm-1">1</div><div class="hm-cell hm-0"></div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-3">3</div><div class="hm-cell hm-3">3</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-0"></div>
+            <div class="hm-label">Dark Ride</div>
+            <div class="hm-cell hm-1">1</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-2">2</div><div class="hm-cell hm-1">1</div><div class="hm-cell hm-0"></div><div class="hm-cell hm-0"></div><div class="hm-cell hm-1">1</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap">
+          <span style="font-size:10px;color:var(--text-muted);font-weight:600;margin-right:2px">Frequency:</span>
+          <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text-muted)"><span style="width:14px;height:12px;background:#dcfce7;border-radius:2px;display:inline-block"></span>1–2</span>
+          <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text-muted)"><span style="width:14px;height:12px;background:#fef9c3;border-radius:2px;display:inline-block"></span>3–4</span>
+          <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text-muted)"><span style="width:14px;height:12px;background:#fed7aa;border-radius:2px;display:inline-block"></span>5–6</span>
+          <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text-muted)"><span style="width:14px;height:12px;background:#fecaca;border-radius:2px;display:inline-block"></span>7–8</span>
+          <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text-muted)"><span style="width:14px;height:12px;background:#f87171;border-radius:2px;display:inline-block"></span>9–10</span>
+          <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text-muted)"><span style="width:14px;height:12px;background:#dc2626;border-radius:2px;display:inline-block"></span>11+</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header"><span class="card-title">High-Severity Incidents</span><span class="card-subtitle">Last 6 months</span></div>
+        <div style="padding:0">
+          <table>
+            <thead><tr><th>Date</th><th>Attraction</th><th>Severity</th><th>Doc Score</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--text-muted);font-size:11px">Aug 14</td><td style="font-weight:500">Coaster — Main</td><td><span class="sev sev-high">High</span></td><td><div class="doc-wrap"><div class="doc-track"><div class="doc-fill" style="width:30%;background:var(--red)"></div></div><span class="doc-num" style="color:var(--red)">30%</span></div></td></tr>
+              <tr><td style="color:var(--text-muted);font-size:11px">Aug 22</td><td style="font-weight:500">Log Flume</td><td><span class="sev sev-high">High</span></td><td><div class="doc-wrap"><div class="doc-track"><div class="doc-fill" style="width:55%;background:var(--amber)"></div></div><span class="doc-num" style="color:var(--amber)">55%</span></div></td></tr>
+              <tr><td style="color:var(--text-muted);font-size:11px">Jul 08</td><td style="font-weight:500">Drop Tower</td><td><span class="sev sev-high">High</span></td><td><div class="doc-wrap"><div class="doc-track"><div class="doc-fill" style="width:80%;background:var(--green)"></div></div><span class="doc-num" style="color:var(--green)">80%</span></div></td></tr>
+              <tr><td style="color:var(--text-muted);font-size:11px">Jun 30</td><td style="font-weight:500">Coaster — Main</td><td><span class="sev sev-med">Med</span></td><td><div class="doc-wrap"><div class="doc-track"><div class="doc-fill" style="width:40%;background:var(--amber)"></div></div><span class="doc-num" style="color:var(--amber)">40%</span></div></td></tr>
+              <tr><td style="color:var(--text-muted);font-size:11px">Jun 18</td><td style="font-weight:500">Spinning Ride</td><td><span class="sev sev-med">Med</span></td><td><div class="doc-wrap"><div class="doc-track"><div class="doc-fill" style="width:65%;background:var(--green)"></div></div><span class="doc-num" style="color:var(--green)">65%</span></div></td></tr>
+              <tr><td style="color:var(--text-muted);font-size:11px">May 27</td><td style="font-weight:500">Carousel</td><td><span class="sev sev-low">Low</span></td><td><div class="doc-wrap"><div class="doc-track"><div class="doc-fill" style="width:90%;background:var(--green)"></div></div><span class="doc-num" style="color:var(--green)">90%</span></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Incident Cause Breakdown</span><span class="card-subtitle">247 incidents · 24 months</span></div>
+        <div class="card-body">
+          <div class="donut-row">
+            <svg width="96" height="96" viewBox="0 0 96 96" style="flex-shrink:0">
+              <circle cx="48" cy="48" r="34" fill="none" stroke="#e5e7eb" stroke-width="9"/>
+              <circle cx="48" cy="48" r="34" fill="none" stroke="#dc2626" stroke-width="9" stroke-dasharray="81 213.6" stroke-dashoffset="53.4" transform="rotate(-90 48 48)"/>
+              <circle cx="48" cy="48" r="34" fill="none" stroke="#d97706" stroke-width="9" stroke-dasharray="55.5 213.6" stroke-dashoffset="-27.6" transform="rotate(-90 48 48)"/>
+              <circle cx="48" cy="48" r="34" fill="none" stroke="#2563eb" stroke-width="9" stroke-dasharray="42.7 213.6" stroke-dashoffset="-83.1" transform="rotate(-90 48 48)"/>
+              <circle cx="48" cy="48" r="34" fill="none" stroke="#16a34a" stroke-width="9" stroke-dasharray="21.4 213.6" stroke-dashoffset="-125.8" transform="rotate(-90 48 48)"/>
+              <text x="48" y="44" text-anchor="middle" font-family="Inter,sans-serif" font-size="15" font-weight="700" fill="#111827">247</text>
+              <text x="48" y="56" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#9ca3af">incidents</text>
+            </svg>
+            <div class="legend">
+              <div class="legend-item"><div class="legend-left"><div class="dot" style="background:var(--red)"></div>Operator Error</div><span class="legend-pct">38%</span></div>
+              <div class="legend-item"><div class="legend-left"><div class="dot" style="background:var(--amber)"></div>Guest Behavior</div><span class="legend-pct">26%</span></div>
+              <div class="legend-item"><div class="legend-left"><div class="dot" style="background:var(--blue)"></div>Mechanical</div><span class="legend-pct">20%</span></div>
+              <div class="legend-item"><div class="legend-left"><div class="dot" style="background:var(--green)"></div>Environmental</div><span class="legend-pct">10%</span></div>
+              <div class="legend-item"><div class="legend-left"><div class="dot" style="background:#d1d5db"></div>Other</div><span class="legend-pct">6%</span></div>
+            </div>
+          </div>
+          <div class="trend-label">Monthly Trend · 2024</div>
+          <svg width="100%" height="70" viewBox="0 0 400 70" preserveAspectRatio="none" style="display:block">
+            <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2563eb" stop-opacity="0.12"/><stop offset="100%" stop-color="#2563eb" stop-opacity="0"/></linearGradient></defs>
+            <line x1="0" y1="20" x2="400" y2="20" stroke="#f3f4f6" stroke-width="1"/>
+            <line x1="0" y1="45" x2="400" y2="45" stroke="#f3f4f6" stroke-width="1"/>
+            <path d="M0 65 L33 60 L66 57 L99 50 L132 40 L165 24 L198 12 L231 18 L264 30 L297 40 L330 48 L363 52 L400 65 Z" fill="url(#g)"/>
+            <path d="M0 65 L33 60 L66 57 L99 50 L132 40 L165 24 L198 12 L231 18 L264 30 L297 40 L330 48 L363 52" fill="none" stroke="#2563eb" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle cx="198" cy="12" r="3.5" fill="#2563eb"/>
+            <text x="198" y="8" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" font-weight="600" fill="#2563eb">Peak Jul</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Root Cause Patterns &amp; Analyst Findings</div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Key Patterns Identified</span><span class="card-subtitle">4 findings requiring action</span></div>
+        <div class="card-body">
+          <div class="pattern">
+            <div class="pattern-num">01</div>
+            <div>
+              <div class="p-title">Summer surge concentrated on two attractions</div>
+              <div class="p-detail">June–August accounts for 61% of all high-severity incidents. The Main Coaster and Log Flume generate 43% of these alone — both staffed by seasonal operators with under 30 days tenure at time of incident.</div>
+              <span class="p-tag">Operator Training Gap</span>
+            </div>
+          </div>
+          <div class="pattern">
+            <div class="pattern-num">02</div>
+            <div>
+              <div class="p-title">Documentation completeness drops at shift change</div>
+              <div class="p-detail">38% of incidents recorded between 2–4pm show incomplete documentation. Cross-referencing with scheduling data shows this aligns with supervisor overlap — reports deferred and never completed.</div>
+              <span class="p-tag">Documentation Process</span>
+            </div>
+          </div>
+          <div class="pattern">
+            <div class="pattern-num">03</div>
+            <div>
+              <div class="p-title">Repeat incident profiles on Drop Tower</div>
+              <div class="p-detail">14 of 31 Drop Tower incidents share near-identical root cause descriptions. Same procedure step referenced in 11 separate reports — a systemic SOP gap, not isolated operator error.</div>
+              <span class="p-tag">SOP Review Required</span>
+            </div>
+          </div>
+          <div class="pattern">
+            <div class="pattern-num">04</div>
+            <div>
+              <div class="p-title">Insurer-reportable incidents under-classified</div>
+              <div class="p-detail">8–12 incidents that meet reportable thresholds were classified below reportable level. Creates retroactive liability exposure if records are reviewed during a claim.</div>
+              <span class="p-tag" style="background:var(--red-bg);color:var(--red);border-color:var(--red-border)">Compliance Risk</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-title">Recommendations</span><span class="card-subtitle">Prioritized</span></div>
+        <div class="card-body" style="padding-top:10px">
+          <div class="rec"><span class="rec-badge rb-critical">Critical</span><div><div class="rec-title">Implement ride-specific operator certification for Main Coaster &amp; Log Flume before next season</div><div class="rec-sub">Est. 30–40% reduction in high-severity incidents</div></div></div>
+          <div class="rec"><span class="rec-badge rb-critical">Critical</span><div><div class="rec-title">Audit and reclassify 8–12 under-classified incidents before next insurance renewal</div><div class="rec-sub">Protects against retroactive claim exposure</div></div></div>
+          <div class="rec"><span class="rec-badge rb-high">High</span><div><div class="rec-title">Revise Drop Tower SOP for procedure step appearing in 11 separate incident reports</div><div class="rec-sub">Systemic gap — not a personnel issue</div></div></div>
+          <div class="rec"><span class="rec-badge rb-high">High</span><div><div class="rec-title">Introduce mandatory same-shift documentation to close the 2–4pm reporting gap</div><div class="rec-sub">Assign documentation lead at supervisor overlap</div></div></div>
+          <div class="rec"><span class="rec-badge rb-standard">Standard</span><div><div class="rec-title">Build insurer-ready analytics package from this data for next renewal</div><div class="rec-sub">Demonstrates proactive risk management posture</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-footer">
+      <div>
+        <div class="cta-label">📊 Risk Intelligence Pro</div>
+        <div class="cta-heading">Ready to run this on your park's data?</div>
+        <div class="cta-sub">$6,500 – $12,500 flat rate &nbsp;·&nbsp; 3–4 week engagement &nbsp;·&nbsp; Remote delivery with optional on-site briefing</div>
+      </div>
+      <a href="https://amusementstandards.com/contact.html?service=Risk%20Intelligence%20Pro" class="cta-btn">Request This Program →</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
