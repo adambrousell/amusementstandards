@@ -1,0 +1,2647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NJ Emergency Incident Response - NJAC 5:14A-4.13 Compliant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.95;
+        }
+
+        .compliance-banner {
+            background: #1e40af;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .emergency-banner {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 15px 20px;
+            margin: 20px;
+            border-radius: 6px;
+        }
+
+        .emergency-banner strong {
+            color: #dc2626;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .section.critical {
+            border-color: #dc2626;
+            border-width: 3px;
+        }
+
+        .section-header {
+            background: #f3f4f6;
+            padding: 15px 20px;
+            border-bottom: 2px solid #e5e7eb;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .section.critical .section-header {
+            background: #fee2e2;
+            border-bottom-color: #dc2626;
+        }
+
+        .section-header:hover {
+            background: #e5e7eb;
+        }
+
+        .section.critical .section-header:hover {
+            background: #fecaca;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            background: #dc2626;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .critical-badge {
+            background: #dc2626;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .toggle-icon {
+            font-size: 20px;
+            color: #6b7280;
+            transition: transform 0.3s;
+        }
+
+        .section.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .section-body {
+            padding: 20px;
+            display: none;
+        }
+
+        .section.expanded .section-body {
+            display: block;
+        }
+
+        .field-group {
+            margin-bottom: 20px;
+        }
+
+        .field-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .required-field label::after {
+            content: " *";
+            color: #dc2626;
+        }
+
+        .field-group input[type="text"],
+        .field-group input[type="tel"],
+        .field-group input[type="email"],
+        .field-group input[type="date"],
+        .field-group input[type="time"],
+        .field-group input[type="number"],
+        .field-group textarea,
+        .field-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .field-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            margin-bottom: 12px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .checkbox-group label:hover {
+            background: #f9fafb;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"]:checked + span {
+            text-decoration: line-through;
+            color: #6b7280;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .radio-group label:hover {
+            background: #f9fafb;
+        }
+
+        .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .subsection {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .subsection h3 {
+            font-size: 16px;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .njac-reference {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .njac-reference strong {
+            color: #1e40af;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+        }
+
+        .btn-email {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-email:hover {
+            background: #2563eb;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #dc2626, #f97316);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 30px;
+        }
+
+        .stat-card {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #dc2626;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .email-status {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin: 20px;
+            display: none;
+        }
+
+        .email-status.show {
+            display: block;
+        }
+
+        .email-status.error {
+            background: #fef2f2;
+            border-color: #fca5a5;
+        }
+
+        @media (max-width: 768px) {
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .action-buttons,
+            .toggle-icon {
+                display: none;
+            }
+
+            .section-body {
+                display: block !important;
+            }
+        }
+
+        /* Modal popup styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 2% auto;
+            padding: 0;
+            border: 1px solid #888;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .modal-close {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+        }
+
+        .modal-close:hover {
+            opacity: 0.7;
+        }
+
+        .modal-body {
+            padding: 30px;
+            max-height: calc(90vh - 180px);
+            overflow-y: auto;
+        }
+
+        .modal-email-preview {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .modal-footer {
+            background: #f9fafb;
+            padding: 20px 30px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .action-buttons,
+            .toggle-icon {
+                display: none;
+            }
+
+            .section-body {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚨 NJ Emergency Incident Response</h1>
+            <p>Phone Intake Checklist - (732) 207-0005</p>
+        </div>
+
+        <div class="compliance-banner">
+            ✓ MULTI-AGENCY COMPLIANT: NJAC 5:14A-4.13 (NJ) | OSHA 1904 | CPSC 16 CFR 1115 | NFPA | ASTM F24/F853 | DOT FMCSA | USCG | ACCT | ANSI B77.1/Z359 | All 50 States Workers' Comp Boards
+        </div>
+
+        <div class="emergency-banner">
+            <strong>⚡ CRITICAL:</strong> This is a live emergency call. Determine incident category (Shut Down, 24-Hour Report, or Record Only) per NJ regulations.
+        </div>
+
+        <div class="email-status" id="emailStatus">
+            Email sent successfully to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="741510151934151901071119111a000700151a10150610075a171b19">[email&#160;protected]</a> and <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="afcecbcec281cdddc0dadccac3c3efc8c2cec6c381ccc0c2">[email&#160;protected]</a>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalChecked">0</div>
+                <div class="stat-label">Items Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalItems">0</div>
+                <div class="stat-label">Total Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="progressPercent">0%</div>
+                <div class="stat-label">Progress</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="incidentCategory">TBD</div>
+                <div class="stat-label">NJAC Category</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- SECTION 1: INCIDENT CATEGORY DETERMINATION (CRITICAL) -->
+            <div class="section critical expanded" data-section="1">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">1</span>
+                        INCIDENT CATEGORY (NJAC 5:14A-4.13)
+                        <span class="critical-badge">REQUIRED FIRST</span>
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="njac-reference">
+                        <strong>NJAC 5:14A-4.13:</strong> New Jersey requires different actions based on incident severity. Determine category IMMEDIATELY to provide correct guidance to caller.
+                    </div>
+
+                    <div class="subsection">
+                        <h3>⚠️ CATEGORY A: SHUT DOWN & IMMEDIATE REPORT</h3>
+                        <p style="margin-bottom: 10px;"><strong>If ANY of these occurred, facility MUST:</strong></p>
+                        <ol style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Shut down the ride and secure the area</li>
+                            <li>Evacuate riders and provide care for injured</li>
+                            <li>Report to NJ DCA IMMEDIATELY by phone</li>
+                            <li>Submit Incident Report within 24 hours</li>
+                            <li>Send copy of report to ride manufacturer</li>
+                        </ol>
+
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="A">
+                                <span><strong>Ejection from ride</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="A">
+                                <span><strong>Failure of critical structural or mechanical component</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="A">
+                                <span><strong>Serious injury/illness attributed to the ride</strong> (hospitalization, surgery, ICU)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>⚡ CATEGORY B: REPORT WITHIN 24 HOURS</h3>
+                        <p style="margin-bottom: 10px;"><strong>If ANY of these occurred, facility MUST:</strong></p>
+                        <ol style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Report to NJ DCA within 24 hours (phone or email)</li>
+                            <li>Submit written incident report within 5 days</li>
+                            <li>Repair per manufacturer instructions</li>
+                            <li>Submit written report of corrective actions</li>
+                        </ol>
+
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="B">
+                                <span><strong>Mechanical malfunction</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="B">
+                                <span><strong>Emergency evacuation of ride</strong> (NOT including: area-wide power failure, rider request, rider misbehavior)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>📋 CATEGORY C: RECORD ONLY (No State Report Required)</h3>
+                        <p style="margin-bottom: 10px;"><strong>Facility MUST keep internal record including:</strong></p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Name and address of injured party</li>
+                            <li>Age and sex</li>
+                            <li>Brief description of injury</li>
+                            <li>Ride where injury occurred</li>
+                            <li>Time, date, weather conditions</li>
+                            <li>Description of incident</li>
+                        </ul>
+
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="C">
+                                <span><strong>Minor injury or illness</strong> (first aid only, no hospitalization)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item category-check" data-category="C">
+                                <span><strong>Complaint reported by rider</strong> (observed by owner/operator)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field-group required-field" style="margin-top: 20px;">
+                        <label>DETERMINED INCIDENT CATEGORY:</label>
+                        <select id="incidentCategory" required onchange="updateIncidentCategory()">
+                            <option value="">Select category...</option>
+                            <option value="A">Category A - SHUT DOWN & IMMEDIATE REPORT</option>
+                            <option value="B">Category B - Report Within 24 Hours</option>
+                            <option value="C">Category C - Record Only (No State Report)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 1A: URGENCY ASSESSMENT -->
+            <div class="section critical expanded" data-section="1a">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">1A</span>
+                        URGENCY ASSESSMENT
+                        <span class="critical-badge">REQUIRED</span>
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="njac-reference" style="border-left-color: #dc2626; background: #fef2f2;">
+                        <strong>⚡ DETERMINE RESPONSE URGENCY:</strong> Select the urgency level based on incident severity. This determines response timeline and priority.
+                    </div>
+
+                    <div class="field-group required-field">
+                        <label>URGENCY LEVEL:</label>
+                        <div class="radio-group" style="gap: 15px;">
+                            <label style="background: #fee2e2; border: 2px solid #dc2626; padding: 15px; border-radius: 8px;">
+                                <input type="radio" name="urgencyLevel" value="CRITICAL" id="urgencyCritical" onchange="updateUrgencyDisplay()">
+                                <div>
+                                    <strong style="color: #dc2626; font-size: 16px;">🚨 CRITICAL (Immediate Response Required)</strong><br>
+                                    <small style="color: #7f1d1d;">
+                                        • Fatality<br>
+                                        • Multiple serious injuries<br>
+                                        • Lawsuit filed/imminent<br>
+                                        • Major media attention<br>
+                                        • Inspector on-site or arriving soon<br>
+                                        • Category A incident (NJ)<br>
+                                        <strong>Response: Within 4-8 hours</strong>
+                                    </small>
+                                </div>
+                            </label>
+
+                            <label style="background: #fef3c7; border: 2px solid #f59e0b; padding: 15px; border-radius: 8px;">
+                                <input type="radio" name="urgencyLevel" value="URGENT" id="urgencyUrgent" onchange="updateUrgencyDisplay()">
+                                <div>
+                                    <strong style="color: #92400e; font-size: 16px;">⚠️ URGENT (24-48 Hour Response)</strong><br>
+                                    <small style="color: #78350f;">
+                                        • Serious injury (hospitalization)<br>
+                                        • Equipment failure<br>
+                                        • Emergency evacuation<br>
+                                        • OSHA/CPSC reporting required<br>
+                                        • Category B incident (NJ)<br>
+                                        <strong>Response: Within 24-48 hours</strong>
+                                    </small>
+                                </div>
+                            </label>
+
+                            <label style="background: #fef9c3; border: 2px solid #eab308; padding: 15px; border-radius: 8px;">
+                                <input type="radio" name="urgencyLevel" value="STANDARD" id="urgencyStandard" onchange="updateUrgencyDisplay()">
+                                <div>
+                                    <strong style="color: #854d0e; font-size: 16px;">📋 STANDARD (5-7 Day Response)</strong><br>
+                                    <small style="color: #713f12;">
+                                        • Minor injury (first aid only)<br>
+                                        • Guest complaint<br>
+                                        • Near miss<br>
+                                        • Category C incident (NJ)<br>
+                                        • Post-incident analysis<br>
+                                        <strong>Response: Within 5-7 days</strong>
+                                    </small>
+                                </div>
+                            </label>
+
+                            <label style="background: #e0f2fe; border: 2px solid #0ea5e9; padding: 15px; border-radius: 8px;">
+                                <input type="radio" name="urgencyLevel" value="NON-URGENT" id="urgencyNonUrgent" onchange="updateUrgencyDisplay()">
+                                <div>
+                                    <strong style="color: #075985; font-size: 16px;">ℹ️ NON-URGENT (Consultation/Planning)</strong><br>
+                                    <small style="color: #0c4a6e;">
+                                        • No incident occurred<br>
+                                        • Pre-incident planning<br>
+                                        • Training inquiry<br>
+                                        • General consultation<br>
+                                        <strong>Response: Scheduled call within 7-14 days</strong>
+                                    </small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="urgencyConfirmation" style="display:none; margin-top: 15px; padding: 15px; border-radius: 6px; font-weight: 600;">
+                        <!-- Dynamic urgency confirmation message -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 1B: OSHA REPORTING REQUIREMENTS -->
+            <div class="section critical expanded" data-section="1b">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">1B</span>
+                        OSHA Reporting Requirements
+                        <span class="critical-badge">FEDERAL LAW</span>
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="njac-reference" style="border-left-color: #dc2626; background: #fef2f2;">
+                        <strong>⚠️ OSHA REQUIRES:</strong> Certain severe injuries must be reported to OSHA within specific timeframes. Failure to report is a federal violation.
+                    </div>
+
+                    <div class="subsection">
+                        <h3>🚨 REPORT TO OSHA WITHIN 8 HOURS:</h3>
+                        <p style="margin-bottom: 10px;"><strong>If ANY of these occurred:</strong></p>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="oshaFatality" onchange="checkOSHARequirements()">
+                                <span><strong>FATALITY</strong> (any work-related death)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="oshaMultipleHosp" onchange="checkOSHARequirements()">
+                                <span><strong>HOSPITALIZATION OF 3 OR MORE EMPLOYEES</strong> (in-patient hospitalization)</span>
+                            </label>
+                        </div>
+                        <div id="osha8HourAlert" style="display:none; background:#fee2e2; border:2px solid #dc2626; padding:15px; margin-top:10px; border-radius:6px;">
+                            <strong style="color:#dc2626;">⚠️ OSHA 8-HOUR REPORTING REQUIRED!</strong><br>
+                            Must report to OSHA within 8 hours:<br>
+                            • Call: 1-800-321-OSHA (6742)<br>
+                            • Online: <a href="https://www.osha.gov/report" target="_blank">www.osha.gov/report</a><br>
+                            • Report to: Nearest OSHA Area Office
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>⏰ REPORT TO OSHA WITHIN 24 HOURS:</h3>
+                        <p style="margin-bottom: 10px;"><strong>If ANY of these occurred:</strong></p>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="oshaAmputation" onchange="checkOSHARequirements()">
+                                <span><strong>AMPUTATION</strong> (loss of any body part)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="oshaEyeLoss" onchange="checkOSHARequirements()">
+                                <span><strong>EYE LOSS</strong> (permanent loss of eye or sight)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="oshaHospitalization" onchange="checkOSHARequirements()">
+                                <span><strong>IN-PATIENT HOSPITALIZATION</strong> (admitted for 24+ hours)</span>
+                            </label>
+                        </div>
+                        <div id="osha24HourAlert" style="display:none; background:#fef3c7; border:2px solid #f59e0b; padding:15px; margin-top:10px; border-radius:6px;">
+                            <strong style="color:#92400e;">⏰ OSHA 24-HOUR REPORTING REQUIRED!</strong><br>
+                            Must report to OSHA within 24 hours:<br>
+                            • Call: 1-800-321-OSHA (6742)<br>
+                            • Online: <a href="https://www.osha.gov/report" target="_blank">www.osha.gov/report</a><br>
+                            • Include: Business name, location, time, number injured, contact person
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>📋 OSHA 300 LOG RECORDABILITY:</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Determine if incident is OSHA recordable (injury/illness + medical treatment beyond first aid)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>If recordable: Must be logged on OSHA 300 within 7 calendar days</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Employee or representative has right to review OSHA 300 log</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>OSHA Reporting Status:</label>
+                        <select id="oshaReportingStatus">
+                            <option value="">Select status...</option>
+                            <option value="8hour">CRITICAL - 8-Hour Reporting Required (Fatality/3+ Hospitalized)</option>
+                            <option value="24hour">URGENT - 24-Hour Reporting Required (Amputation/Eye Loss/Hospitalization)</option>
+                            <option value="recordable">Recordable - OSHA 300 Log Required (Within 7 Days)</option>
+                            <option value="none">No OSHA Reporting Required</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 1C: CPSC REPORTING REQUIREMENTS -->
+            <div class="section critical expanded" data-section="1c">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">1C</span>
+                        CPSC Reporting Requirements (Guest Injuries)
+                        <span class="critical-badge">FEDERAL LAW</span>
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="njac-reference" style="border-left-color: #dc2626; background: #fef2f2;">
+                        <strong>⚠️ CPSC (Consumer Product Safety Commission):</strong> Primary federal authority for GUEST injuries on amusement rides. CPSC has jurisdiction over patron/guest injuries, while OSHA covers employee injuries.
+                    </div>
+
+                    <div class="subsection">
+                        <h3>🚨 REPORT TO CPSC IMMEDIATELY:</h3>
+                        <p style="margin-bottom: 10px;"><strong>If ANY of these occurred to a GUEST/PATRON:</strong></p>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="cpscDeath" onchange="checkCPSCRequirements()">
+                                <span><strong>DEATH of guest/patron</strong></span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="cpscSeriousInjury" onchange="checkCPSCRequirements()">
+                                <span><strong>SERIOUS INJURY requiring hospitalization</strong> (ER admission, surgery, ICU)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" id="cpscPattern" onchange="checkCPSCRequirements()">
+                                <span><strong>PATTERN OF INJURIES</strong> (multiple similar incidents on same ride)</span>
+                            </label>
+                        </div>
+                        <div id="cpscAlert" style="display:none; background:#fee2e2; border:2px solid #dc2626; padding:15px; margin-top:10px; border-radius:6px;">
+                            <strong style="color:#dc2626;">⚠️ CPSC REPORTING REQUIRED WITHIN 24 HOURS!</strong><br>
+                            Report substantial product hazard to CPSC:<br>
+                            • Online: <a href="https://www.saferproducts.gov" target="_blank" style="color:#dc2626;">www.saferproducts.gov</a><br>
+                            • Phone: <strong>1-800-638-2772</strong><br>
+                            • Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="046d6a626b44677477672a636b72">[email&#160;protected]</a><br>
+                            • Report must include: Product description, nature of defect/hazard, injuries, corrective action<br>
+                            • Failure to report: Up to $100,000 civil penalty + criminal penalties
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>📋 CPSC Report Information (16 CFR 1115):</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Ride manufacturer name and contact information gathered</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Ride model number and serial number documented</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Date of manufacture/installation documented</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Number of units in operation (if multiple rides of same type)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Previous incidents on same ride type documented</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>CPSC Reporting Status:</label>
+                        <select id="cpscReportingStatus">
+                            <option value="">Select status...</option>
+                            <option value="required">REQUIRED - Guest Death or Serious Injury</option>
+                            <option value="not-required">Not Required - Minor Guest Injury Only</option>
+                            <option value="employee-only">Not Required - Employee Injury Only (OSHA jurisdiction)</option>
+                        </select>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Told caller about CPSC reporting requirements</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Gave caller CPSC contact: 1-800-638-2772 or www.saferproducts.gov</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: CALLER & FACILITY INFORMATION -->
+            <div class="section expanded" data-section="2">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">2</span>
+                        Caller & Facility Information
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="field-group required-field">
+                        <label>Caller Name:</label>
+                        <input type="text" id="callerName" required placeholder="Full name">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Caller Title/Role:</label>
+                        <input type="text" id="callerTitle" required placeholder="Operations Manager, General Manager, etc.">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Facility Name:</label>
+                        <input type="text" id="facilityName" required placeholder="Name of park/facility">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Facility Address:</label>
+                        <input type="text" id="facilityAddress" required placeholder="Street address, City, NJ, ZIP">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Callback Phone Number:</label>
+                        <input type="tel" id="callbackNumber" required placeholder="(123) 456-7890">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Email Address:</label>
+                        <input type="email" id="callerEmail" required placeholder="caller@email.com">
+                    </div>
+                    <div class="field-group">
+                        <label>NJ DCA Ride Permit Number (if known):</label>
+                        <input type="text" id="permitNumber" placeholder="NJ permit #">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2B: STATE & JURISDICTION INFORMATION -->
+            <div class="section expanded" data-section="2b">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">2B</span>
+                        State & Regulatory Jurisdiction
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="field-group required-field">
+                        <label>State Where Incident Occurred:</label>
+                        <select id="incidentState" onchange="updateStateContacts()" required>
+                            <option value="">Select state...</option>
+                            <option value="NJ" selected>New Jersey</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California (Cal/OSHA)</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland (MOSH)</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan (MIOSHA)</option>
+                            <option value="MN">Minnesota (MNOSHA)</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada (NV OSHA)</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NM">New Mexico (NM OSHA)</option>
+                            <option value="NY">New York (NY PESH)</option>
+                            <option value="NC">North Carolina (NC DOL)</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon (OR-OSHA)</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina (SC OSHA)</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee (TOSHA)</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah (UOSH)</option>
+                            <option value="VT">Vermont (VOSHA)</option>
+                            <option value="VA">Virginia (VOSH)</option>
+                            <option value="WA">Washington (WISHA)</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming (WY OSHA)</option>
+                        </select>
+                    </div>
+
+                    <div id="stateContacts" class="subsection" style="display:block;">
+                        <h3>State-Specific Regulatory Contacts:</h3>
+                        <div id="stateContactInfo">
+                            <p><strong>New Jersey:</strong></p>
+                            <ul style="margin-left: 20px;">
+                                <li>NJ DCA (Amusement Rides): <strong>(609) 984-7834</strong></li>
+                                <li>Federal OSHA: <strong>1-800-321-OSHA (6742)</strong></li>
+                                <li>NJ Workers' Comp: <strong>(609) 292-2515</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Ride Type & Special Jurisdiction:</h3>
+                        <div class="field-group">
+                            <label>Ride Type:</label>
+                            <select id="rideType" onchange="checkSpecialJurisdiction()">
+                                <option value="">Select type...</option>
+                                <option value="fixed">Fixed-Site Ride (Permanent Installation)</option>
+                                <option value="mobile">Mobile/Traveling Carnival Ride</option>
+                                <option value="water-fixed">Water Ride (Fixed Pool/Tank)</option>
+                                <option value="water-navigable">Water Ride (On Navigable Water - Lake/River)</option>
+                                <option value="aerial-adventure">Aerial Adventure Course/Zip Line</option>
+                                <option value="rope-course">Challenge Course/Ropes Course</option>
+                                <option value="ski-lift">Ski Lift/Aerial Tramway</option>
+                                <option value="climbing-wall">Climbing Wall</option>
+                                <option value="go-kart">Go-Karts/Racing Attraction</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div id="specialJurisdictionAlert" style="display:none; background:#fef3c7; border:2px solid #f59e0b; padding:15px; margin-top:10px; border-radius:6px;">
+                            <!-- Dynamic content based on ride type -->
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>ASTM Compliance Information:</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Ride was designed/manufactured to ASTM F24 standards</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Last ASTM F853 Inspection Date:</label>
+                            <input type="date" id="lastASTMInspection">
+                        </div>
+                        <div class="field-group">
+                            <label>ASTM-Qualified Inspector Name:</label>
+                            <input type="text" id="astmInspector" placeholder="Inspector name and certification">
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Ride has current manufacturer's maintenance manual (ASTM F853 requirement)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Daily inspection logs maintained per ASTM standards</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Workers' Compensation Reporting:</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>EMPLOYEE injury (not guest) - Workers' Comp report required</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>First Report of Injury submitted to Workers' Comp carrier</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Workers' Comp Carrier:</label>
+                            <input type="text" id="workersCompCarrier" placeholder="Insurance carrier name">
+                        </div>
+                        <div class="field-group">
+                            <label>Workers' Comp Claim Number:</label>
+                            <input type="text" id="workersCompClaim" placeholder="Claim #">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: INCIDENT DETAILS (NJAC REQUIRED FIELDS) -->
+            <div class="section critical expanded" data-section="3">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">3</span>
+                        Incident Details (NJAC Required Fields)
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="field-group required-field">
+                        <label>Date of Incident:</label>
+                        <input type="date" id="incidentDate" required>
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Time of Incident:</label>
+                        <input type="time" id="incidentTime" required>
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Weather Conditions:</label>
+                        <input type="text" id="weatherConditions" required placeholder="Clear, rainy, windy, temperature, etc.">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Ride Name (where incident occurred):</label>
+                        <input type="text" id="rideName" required placeholder="Specific ride/attraction name">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Ride Manufacturer:</label>
+                        <input type="text" id="rideManufacturer" placeholder="Manufacturer name (if known)">
+                    </div>
+                    <div class="field-group required-field">
+                        <label>Ride Model/Type:</label>
+                        <input type="text" id="rideModel" placeholder="Model number or type">
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Injured Party Information (NJAC Required)</h3>
+                        <div class="field-group required-field">
+                            <label>Name of Injured Party:</label>
+                            <input type="text" id="injuredName" required placeholder="Full name">
+                        </div>
+                        <div class="field-group required-field">
+                            <label>Address of Injured Party:</label>
+                            <input type="text" id="injuredAddress" required placeholder="Street, City, State, ZIP">
+                        </div>
+                        <div class="field-group required-field">
+                            <label>Age:</label>
+                            <input type="number" id="injuredAge" required min="0" max="120" placeholder="Age">
+                        </div>
+                        <div class="field-group required-field">
+                            <label>Sex:</label>
+                            <select id="injuredSex" required>
+                                <option value="">Select...</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="field-group required-field">
+                            <label>Brief Description of Injury:</label>
+                            <textarea id="injuryDescription" required placeholder="Describe the injury/illness"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="field-group required-field">
+                        <label>Description of Incident:</label>
+                        <textarea id="incidentDescription" required placeholder="Detailed description of what happened, sequence of events, contributing factors"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: CURRENT STATUS -->
+            <div class="section" data-section="4">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">4</span>
+                        Current Status
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="rideShutDown">
+                            <span>Ride has been shut down</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="areaSecured">
+                            <span>Area has been secured</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="ridersEvacuated">
+                            <span>All riders evacuated safely</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="careProvided">
+                            <span>Care provided for injured persons</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="njDcaNotified">
+                            <span>NJ DCA has been notified (if Category A or B)</span>
+                        </label>
+                    </div>
+                    <div class="field-group">
+                        <label>NJ DCA Contact Person (if already contacted):</label>
+                        <input type="text" id="dcaContact" placeholder="Inspector name">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: DOCUMENTATION STATUS -->
+            <div class="section" data-section="5">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">5</span>
+                        Evidence & Documentation
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Scene preserved/unchanged</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Photos taken of scene</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Video footage available</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Witness statements collected</span>
+                        </label>
+                    </div>
+                    <div class="field-group">
+                        <label>Number of Witnesses:</label>
+                        <input type="number" id="witnessCount" min="0" placeholder="0">
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Operator on duty identified</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Maintenance logs available</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Operator training records available</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item">
+                            <span>Daily inspection logs available</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5B: NFPA EVIDENCE PRESERVATION PROTOCOL -->
+            <div class="section" data-section="5b">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">5B</span>
+                        NFPA Evidence Preservation Protocol
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="njac-reference">
+                        <strong>NFPA Best Practice:</strong> Proper evidence preservation is critical for determining root cause and preventing future incidents. Follow chain of custody procedures.
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Scene Security & Preservation</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Scene secured with barriers/tape to prevent contamination</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Only authorized investigation personnel allowed in scene</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Log of all persons who entered scene maintained</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Who Secured Scene:</label>
+                            <input type="text" id="sceneSecuredBy" placeholder="Name and title">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Photo/Video Documentation (BEFORE any changes)</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Overall scene photos (4 directions/angles)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Equipment close-ups (all relevant components)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Alleged failure point(s) documented</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>All photos/videos timestamped and labeled</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Measurement scale included in close-up photos</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Environmental Conditions Documentation</h3>
+                        <div class="field-group">
+                            <label>Temperature at Time of Incident:</label>
+                            <input type="text" id="temperature" placeholder="Temperature (°F)">
+                        </div>
+                        <div class="field-group">
+                            <label>Wind Conditions:</label>
+                            <input type="text" id="windConditions" placeholder="Wind speed, direction, gusts">
+                        </div>
+                        <div class="field-group">
+                            <label>Precipitation:</label>
+                            <select id="precipitation">
+                                <option value="">Select...</option>
+                                <option value="none">None/Dry</option>
+                                <option value="rain">Rain</option>
+                                <option value="snow">Snow</option>
+                                <option value="sleet">Sleet/Ice</option>
+                                <option value="recent">Recent (within 2 hours)</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Lighting Conditions:</label>
+                            <select id="lightingConditions">
+                                <option value="">Select...</option>
+                                <option value="daylight">Daylight</option>
+                                <option value="dusk">Dusk/Dawn</option>
+                                <option value="night">Night (artificial lighting)</option>
+                                <option value="dark">Dark (inadequate lighting)</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Ground/Surface Conditions:</label>
+                            <input type="text" id="surfaceConditions" placeholder="Dry, wet, icy, debris, etc.">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Witness Management (NFPA Best Practice)</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Witnesses identified and contact info collected BEFORE leaving scene</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Witnesses separated to prevent collaboration on statements</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Witness statements taken individually (not as a group)</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Witnesses asked open-ended questions (not leading questions)</span>
+                            </label>
+                        </div>
+                        <div class="field-group">
+                            <label>Witness Names & Contact Info:</label>
+                            <textarea id="witnessDetails" placeholder="List each witness: Name, phone, email, what they saw"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Equipment/Evidence Chain of Custody</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>All physical evidence photographed in place before moving</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Evidence tagged with date, time, location, collector name</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Chain of custody log started for critical components</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Failed components secured and protected from tampering</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: IMMEDIATE GUIDANCE TO CALLER -->
+            <div class="section critical" data-section="6">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">6</span>
+                        Immediate Actions Required (Tell Caller)
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="njac-reference">
+                        <strong>CRITICAL:</strong> Based on incident category, caller must take specific immediate actions per NJ regulations.
+                    </div>
+
+                    <div class="subsection" id="categoryAGuidance" style="display:none;">
+                        <h3>⚠️ CATEGORY A IMMEDIATE ACTIONS:</h3>
+                        <ol style="margin-left: 20px;">
+                            <li><strong>DO NOT restart the ride</strong> - It must remain shut down until NJ DCA authorizes</li>
+                            <li><strong>Call NJ DCA IMMEDIATELY:</strong> (609) 984-7834</li>
+                            <li><strong>Preserve the scene</strong> - Do not move equipment, clean, or repair anything</li>
+                            <li><strong>Document everything</strong> - Photos, videos, witness info, weather</li>
+                            <li><strong>Notify ride manufacturer</strong> - Required by NJAC 5:14A-4.13</li>
+                            <li><strong>Submit Incident Report Form within 24 hours</strong> to NJ DCA</li>
+                        </ol>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller: DO NOT restart ride</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Gave caller NJ DCA phone: (609) 984-7834</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller to preserve scene</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller to notify manufacturer</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection" id="categoryBGuidance" style="display:none;">
+                        <h3>⚡ CATEGORY B IMMEDIATE ACTIONS:</h3>
+                        <ol style="margin-left: 20px;">
+                            <li><strong>Report to NJ DCA within 24 hours:</strong> (609) 984-7834 or email</li>
+                            <li><strong>Prepare written incident report</strong> - Must be submitted within 5 days</li>
+                            <li><strong>Document the malfunction/evacuation</strong> - Photos, details, what happened</li>
+                            <li><strong>Do not operate ride</strong> until repaired per manufacturer instructions</li>
+                            <li><strong>Submit corrective action report</strong> to NJ DCA after repairs</li>
+                        </ol>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller 24-hour reporting requirement</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Gave caller NJ DCA contact info</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection" id="categoryCGuidance" style="display:none;">
+                        <h3>📋 CATEGORY C IMMEDIATE ACTIONS:</h3>
+                        <ol style="margin-left: 20px;">
+                            <li><strong>Create internal record</strong> - Must include all NJAC required fields</li>
+                            <li><strong>Keep record accessible</strong> - Must be available for DCA inspection</li>
+                            <li><strong>No state report required</strong> - But record must be maintained</li>
+                            <li><strong>Evaluate if incident reveals pattern</strong> - Multiple minor incidents may require action</li>
+                        </ol>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller to create internal record with required fields</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>ALL CATEGORIES - General Guidance:</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller to notify insurance company immediately</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller to gather maintenance and training records</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item">
+                                <span>Told caller DO NOT make statements to media without legal counsel</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6B: ROOT CAUSE ANALYSIS (OSHA/NFPA REQUIREMENT) -->
+            <div class="section" data-section="6b">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">6B</span>
+                        Root Cause & Contributing Factors
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="njac-reference">
+                        <strong>OSHA/NFPA Requirement:</strong> Investigation must identify ROOT CAUSE (underlying reason), not just immediate cause. Use 5 Whys method or similar systematic approach.
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Immediate Cause (What Failed?)</h3>
+                        <div class="field-group">
+                            <label>What Directly Caused the Incident?</label>
+                            <textarea id="immediateCause" placeholder="e.g., 'Restraint failed to lock', 'Operator failed to check height requirement', 'Hydraulic line ruptured'"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Root Cause Analysis (Why It Failed?)</h3>
+                        <p style="margin-bottom:10px;"><em>Use "5 Whys" method - ask "why" 5 times to find root cause:</em></p>
+                        <div class="field-group">
+                            <label>Why #1:</label>
+                            <input type="text" id="why1" placeholder="Why did the immediate cause happen?">
+                        </div>
+                        <div class="field-group">
+                            <label>Why #2:</label>
+                            <input type="text" id="why2" placeholder="Why did #1 happen?">
+                        </div>
+                        <div class="field-group">
+                            <label>Why #3:</label>
+                            <input type="text" id="why3" placeholder="Why did #2 happen?">
+                        </div>
+                        <div class="field-group">
+                            <label>Why #4:</label>
+                            <input type="text" id="why4" placeholder="Why did #3 happen?">
+                        </div>
+                        <div class="field-group">
+                            <label>Why #5 (Root Cause):</label>
+                            <input type="text" id="why5" placeholder="The underlying system/process failure">
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Contributing Factors (Check All That Apply)</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" value="human">
+                                <span><strong>Human Factors:</strong> Operator error, fatigue, training gap, communication failure</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" value="equipment">
+                                <span><strong>Equipment Factors:</strong> Mechanical failure, design flaw, wear/deterioration, maintenance gap</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" value="environmental">
+                                <span><strong>Environmental Factors:</strong> Weather, visibility, noise, temperature, crowds</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" value="procedural">
+                                <span><strong>Procedural Factors:</strong> Inadequate SOP, SOP not followed, unclear instructions</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" value="management">
+                                <span><strong>Management Factors:</strong> Staffing levels, time pressure, inadequate supervision</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" class="checklist-item" value="guest">
+                                <span><strong>Guest Factors:</strong> Rule violation, medical condition, misuse of equipment</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="subsection">
+                        <h3>Corrective Actions (OSHA Requires Specific Timeline)</h3>
+                        <div class="field-group">
+                            <label>Immediate Corrective Actions (Already Taken):</label>
+                            <textarea id="immediateActions" placeholder="e.g., 'Ride shut down', 'Defective part removed', 'All operators retrained'"></textarea>
+                        </div>
+                        <div class="field-group">
+                            <label>Short-Term Corrective Actions (Within 7 Days):</label>
+                            <textarea id="shortTermActions" placeholder="e.g., 'Replace failed component', 'Update SOP', 'Retrain staff'"></textarea>
+                        </div>
+                        <div class="field-group">
+                            <label>Long-Term Corrective Actions (Within 30-90 Days):</label>
+                            <textarea id="longTermActions" placeholder="e.g., 'Redesign safety system', 'Install additional sensors', 'Implement new inspection protocol'"></textarea>
+                        </div>
+                        <div class="field-group">
+                            <label>Person Responsible for Follow-Up:</label>
+                            <input type="text" id="responsiblePerson" placeholder="Name and title">
+                        </div>
+                        <div class="field-group">
+                            <label>Corrective Action Completion Target Date:</label>
+                            <input type="date" id="completionDate">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 7: SERVICE RECOMMENDATION -->
+            <div class="section" data-section="7">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">7</span>
+                        Recommended Service
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="field-group required-field">
+                        <label>Select Amusement Standards Service:</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="service" value="emergency">
+                                <div>
+                                    <strong>Emergency Investigation - $5,000</strong><br>
+                                    <small style="color: #6b7280;">48-hour response, on-site/remote investigation, root cause analysis, NJAC-compliant report, 30-day follow-up</small>
+                                </div>
+                            </label>
+                            <label>
+                                <input type="radio" name="service" value="expert">
+                                <div>
+                                    <strong>Expert Witness Retainer - $7,500 + hourly</strong><br>
+                                    <small style="color: #6b7280;">Everything in Emergency Investigation + deposition prep, trial testimony, attorney consultation (Landan Ansell, CPA, CFF, J.D.)</small>
+                                </div>
+                            </label>
+                            <label>
+                                <input type="radio" name="service" value="annual">
+                                <div>
+                                    <strong>Annual Response Retainer - $15,000/year</strong><br>
+                                    <small style="color: #6b7280;">Priority 24-hour response, 2 included investigations/year, quarterly preparedness reviews, NJAC compliance support</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label>Investigation Scheduled For:</label>
+                        <input type="date" id="investigationDate">
+                    </div>
+                    <div class="field-group">
+                        <label>Lead Investigator Assigned:</label>
+                        <select id="leadInvestigator">
+                            <option value="">Select investigator...</option>
+                            <option value="landan">Landan Ansell, CPA, CFF, J.D. (legal/expert witness)</option>
+                            <option value="matt">Matt Smith (operations/safety)</option>
+                            <option value="adam">Adam Brousell (data/analytics)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 8: CALL SUMMARY & NOTES -->
+            <div class="section expanded" data-section="8">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>
+                        <span class="section-number">8</span>
+                        Call Summary & Additional Notes
+                    </h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-body">
+                    <div class="field-group">
+                        <label>Call Duration (minutes):</label>
+                        <input type="number" id="callDuration" min="0" placeholder="Minutes">
+                    </div>
+                    <div class="field-group">
+                        <label>Priority Level:</label>
+                        <select id="priorityLevel">
+                            <option value="">Select priority...</option>
+                            <option value="P1">P1 - CRITICAL (Category A, fatality, lawsuit)</option>
+                            <option value="P2">P2 - URGENT (Category B, serious injury)</option>
+                            <option value="P3">P3 - STANDARD (Category C)</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label>Additional Notes / Special Considerations:</label>
+                        <textarea id="additionalNotes" placeholder="Any other important details, concerns, follow-up needed..."></textarea>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="callerUnderstanding">
+                            <span>Confirmed caller understands NJAC requirements and next steps</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" class="checklist-item" id="emergencyContact">
+                            <span>Caller has our emergency contact: (732) 207-0005</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="sendEmail()" style="background: #dc2626;">📧 Email Report to Adam</button>
+            <button class="btn btn-secondary" onclick="showEmailPreview()">👁️ Email Preview</button>
+            <button class="btn btn-primary" onclick="exportData()">📄 Export Summary</button>
+            <button class="btn btn-secondary" onclick="printChecklist()">🖨️ Print</button>
+            <button class="btn btn-secondary" onclick="expandAll()">📂 Expand All</button>
+            <button class="btn btn-secondary" onclick="collapseAll()">📁 Collapse All</button>
+            <button class="btn btn-secondary" onclick="resetAll()">🔄 Reset</button>
+        </div>
+    </div>
+
+    <!-- Email Preview Modal -->
+    <div id="emailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📧 Email Report Preview</h2>
+                <button class="modal-close" onclick="closeEmailModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 15px; color: #374151;"><strong>To:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f495909599b4959981879199919a808780959a9095869087da979b99">[email&#160;protected]</a>, <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bfdedbded291ddcdd0caccdad3d3ffd8d2ded6d391dcd0d2">[email&#160;protected]</a></p>
+                <p style="margin-bottom: 15px; color: #374151;"><strong>Subject:</strong> <span id="emailSubject"></span></p>
+                <div class="modal-email-preview" id="emailPreview">
+                    <!-- Email body will be inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="copyEmailToClipboard()">📋 Copy to Clipboard</button>
+                <button class="btn btn-primary" onclick="sendEmailFromModal()" style="background: #3b82f6;">📧 Send Email</button>
+                <button class="btn btn-secondary" onclick="closeEmailModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Toggle section
+        function toggleSection(header) {
+            const section = header.closest('.section');
+            section.classList.toggle('expanded');
+            updateProgress();
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('expanded');
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('expanded');
+            });
+        }
+
+        // Update incident category display and show relevant guidance
+        function updateIncidentCategory() {
+            const category = document.getElementById('incidentCategory').value;
+            document.getElementById('incidentCategory').value = category;
+            
+            // Update stat display
+            const statDisplay = document.querySelector('#incidentCategory');
+            if (statDisplay) {
+                statDisplay.textContent = category || 'TBD';
+            }
+
+            // Show/hide relevant guidance sections
+            document.getElementById('categoryAGuidance').style.display = category === 'A' ? 'block' : 'none';
+            document.getElementById('categoryBGuidance').style.display = category === 'B' ? 'block' : 'none';
+            document.getElementById('categoryCGuidance').style.display = category === 'C' ? 'block' : 'none';
+        }
+
+        // Update urgency display
+        function updateUrgencyDisplay() {
+            const urgency = document.querySelector('input[name="urgencyLevel"]:checked')?.value;
+            const confirmation = document.getElementById('urgencyConfirmation');
+            
+            if (!urgency || !confirmation) return;
+
+            const urgencyConfig = {
+                'CRITICAL': {
+                    bg: '#fee2e2',
+                    border: '#dc2626',
+                    color: '#7f1d1d',
+                    icon: '🚨',
+                    message: 'CRITICAL URGENCY CONFIRMED - Amusement Standards will respond within 4-8 hours. Emergency investigation team will be mobilized immediately.'
+                },
+                'URGENT': {
+                    bg: '#fef3c7',
+                    border: '#f59e0b',
+                    color: '#78350f',
+                    icon: '⚠️',
+                    message: 'URGENT RESPONSE CONFIRMED - Amusement Standards will respond within 24-48 hours. Investigation scheduled as priority.'
+                },
+                'STANDARD': {
+                    bg: '#fef9c3',
+                    border: '#eab308',
+                    color: '#713f12',
+                    icon: '📋',
+                    message: 'STANDARD TIMELINE CONFIRMED - Amusement Standards will respond within 5-7 days. Investigation will be scheduled.'
+                },
+                'NON-URGENT': {
+                    bg: '#e0f2fe',
+                    border: '#0ea5e9',
+                    color: '#0c4a6e',
+                    icon: 'ℹ️',
+                    message: 'NON-URGENT CONSULTATION - Amusement Standards will schedule a call within 7-14 days to discuss planning and services.'
+                }
+            };
+
+            const config = urgencyConfig[urgency];
+            if (config) {
+                confirmation.style.display = 'block';
+                confirmation.style.background = config.bg;
+                confirmation.style.border = `2px solid ${config.border}`;
+                confirmation.style.color = config.color;
+                confirmation.innerHTML = `${config.icon} ${config.message}`;
+            }
+        }
+
+        // Check OSHA reporting requirements
+        function checkOSHARequirements() {
+            const fatality = document.getElementById('oshaFatality')?.checked;
+            const multipleHosp = document.getElementById('oshaMultipleHosp')?.checked;
+            const amputation = document.getElementById('oshaAmputation')?.checked;
+            const eyeLoss = document.getElementById('oshaEyeLoss')?.checked;
+            const hospitalization = document.getElementById('oshaHospitalization')?.checked;
+
+            // Show 8-hour alert if fatality or 3+ hospitalized
+            const show8Hour = fatality || multipleHosp;
+            const alert8Hour = document.getElementById('osha8HourAlert');
+            if (alert8Hour) {
+                alert8Hour.style.display = show8Hour ? 'block' : 'none';
+            }
+
+            // Show 24-hour alert if amputation, eye loss, or hospitalization
+            const show24Hour = amputation || eyeLoss || hospitalization;
+            const alert24Hour = document.getElementById('osha24HourAlert');
+            if (alert24Hour) {
+                alert24Hour.style.display = show24Hour ? 'block' : 'none';
+            }
+
+            // Auto-update OSHA reporting status dropdown
+            const statusDropdown = document.getElementById('oshaReportingStatus');
+            if (statusDropdown) {
+                if (show8Hour) {
+                    statusDropdown.value = '8hour';
+                } else if (show24Hour) {
+                    statusDropdown.value = '24hour';
+                }
+            }
+        }
+
+        // Check CPSC reporting requirements
+        function checkCPSCRequirements() {
+            const death = document.getElementById('cpscDeath')?.checked;
+            const seriousInjury = document.getElementById('cpscSeriousInjury')?.checked;
+            const pattern = document.getElementById('cpscPattern')?.checked;
+
+            const showAlert = death || seriousInjury || pattern;
+            const alert = document.getElementById('cpscAlert');
+            if (alert) {
+                alert.style.display = showAlert ? 'block' : 'none';
+            }
+
+            // Auto-update CPSC reporting status
+            const statusDropdown = document.getElementById('cpscReportingStatus');
+            if (statusDropdown && showAlert) {
+                statusDropdown.value = 'required';
+            }
+        }
+
+        // Update state-specific contacts
+        function updateStateContacts() {
+            const state = document.getElementById('incidentState')?.value;
+            const contactInfo = document.getElementById('stateContactInfo');
+            
+            if (!contactInfo) return;
+
+            const stateData = {
+                'NJ': {
+                    name: 'New Jersey',
+                    contacts: [
+                        'NJ DCA (Amusement Rides): <strong>(609) 984-7834</strong>',
+                        'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                        'NJ Workers\' Comp: <strong>(609) 292-2515</strong>'
+                    ]
+                },
+                'CA': {
+                    name: 'California',
+                    contacts: [
+                        'Cal/OSHA: <strong>1-833-579-0927</strong>',
+                        'CA Div of Occupational Safety & Health: <strong>(916) 263-2800</strong>',
+                        'CA Workers\' Comp: <strong>1-800-736-7401</strong>'
+                    ]
+                },
+                'NY': {
+                    name: 'New York',
+                    contacts: [
+                        'NY PESH (Public Employee Safety & Health): <strong>(518) 457-2735</strong>',
+                        'NY DOL: <strong>(518) 457-9000</strong>',
+                        'NY Workers\' Comp Board: <strong>1-877-632-4996</strong>'
+                    ]
+                },
+                'FL': {
+                    name: 'Florida',
+                    contacts: [
+                        'FL Dept of Agriculture (Amusement Rides): <strong>(850) 617-7730</strong>',
+                        'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                        'FL Workers\' Comp: <strong>(850) 413-1601</strong>'
+                    ]
+                },
+                'TX': {
+                    name: 'Texas',
+                    contacts: [
+                        'TX Dept of Insurance (Amusement Rides): <strong>(512) 676-6000</strong>',
+                        'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                        'TX Workers\' Comp: <strong>1-800-252-7031</strong>'
+                    ]
+                },
+                'OH': {
+                    name: 'Ohio',
+                    contacts: [
+                        'OH Dept of Agriculture (Amusement Rides): <strong>(614) 728-6220</strong>',
+                        'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                        'OH Workers\' Comp: <strong>1-800-644-6292</strong>'
+                    ]
+                },
+                'PA': {
+                    name: 'Pennsylvania',
+                    contacts: [
+                        'PA Dept of Agriculture (Amusement Rides): <strong>(717) 787-4315</strong>',
+                        'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                        'PA Workers\' Comp: <strong>1-800-482-2383</strong>'
+                    ]
+                }
+            };
+
+            const info = stateData[state] || {
+                name: state,
+                contacts: [
+                    'Federal OSHA: <strong>1-800-321-OSHA (6742)</strong>',
+                    'State Amusement Ride Authority: <em>Contact state government</em>',
+                    'State Workers\' Comp: <em>Contact state insurance department</em>'
+                ]
+            };
+
+            contactInfo.innerHTML = `
+                <p><strong>${info.name}:</strong></p>
+                <ul style="margin-left: 20px;">
+                    ${info.contacts.map(c => `<li>${c}</li>`).join('')}
+                </ul>
+            `;
+        }
+
+        // Check special jurisdiction based on ride type
+        function checkSpecialJurisdiction() {
+            const rideType = document.getElementById('rideType')?.value;
+            const alert = document.getElementById('specialJurisdictionAlert');
+            
+            if (!alert) return;
+
+            const jurisdictionInfo = {
+                'mobile': {
+                    show: true,
+                    message: '<strong>🚛 MOBILE RIDE - DOT Jurisdiction:</strong><br>If ride travels between locations, DOT (Department of Transportation) regulations apply.<br>• FMCSA: <strong>1-800-832-5660</strong><br>• Transportation incidents must be reported to DOT'
+                },
+                'water-navigable': {
+                    show: true,
+                    message: '<strong>⚓ NAVIGABLE WATER - USCG Jurisdiction:</strong><br>US Coast Guard has jurisdiction for rides on navigable waters.<br>• USCG National Response Center: <strong>1-800-424-8802</strong><br>• Report marine casualties within 24 hours'
+                },
+                'aerial-adventure': {
+                    show: true,
+                    message: '<strong>🧗 AERIAL ADVENTURE - ACCT Standards:</strong><br>Association for Challenge Course Technology (ACCT) standards apply.<br>• Follow ACCT incident reporting protocols<br>• ACCT: <a href="https://www.acctinfo.org" target="_blank">www.acctinfo.org</a>'
+                },
+                'rope-course': {
+                    show: true,
+                    message: '<strong>🪢 ROPES COURSE - ACCT/ANSI Standards:</strong><br>ACCT and ANSI Z359 fall protection standards apply.<br>• Document fall protection equipment condition<br>• Preserve harnesses/lanyards as evidence'
+                },
+                'ski-lift': {
+                    show: true,
+                    message: '<strong>🎿 SKI LIFT - ANSI B77.1 Standards:</strong><br>ANSI B77.1 Passenger Ropeway standards apply.<br>• State tramway board notification may be required<br>• Specialized inspection protocols'
+                },
+                'climbing-wall': {
+                    show: true,
+                    message: '<strong>🧗 CLIMBING WALL - ANSI Standards:</strong><br>ANSI Z359 fall protection and belay standards apply.<br>• Document belay device and auto-belay condition<br>• Check certification of climbing holds'
+                }
+            };
+
+            const info = jurisdictionInfo[rideType];
+            if (info && info.show) {
+                alert.innerHTML = info.message;
+                alert.style.display = 'block';
+            } else {
+                alert.style.display = 'none';
+            }
+        }
+
+        // Update progress
+        function updateProgress() {
+            const totalCheckboxes = document.querySelectorAll('.checklist-item').length;
+            const checkedCheckboxes = document.querySelectorAll('.checklist-item:checked').length;
+            const progressPercent = totalCheckboxes > 0 ? Math.round((checkedCheckboxes / totalCheckboxes) * 100) : 0;
+
+            document.getElementById('totalChecked').textContent = checkedCheckboxes;
+            document.getElementById('totalItems').textContent = totalCheckboxes;
+            document.getElementById('progressPercent').textContent = progressPercent + '%';
+            document.getElementById('progressBar').style.width = progressPercent + '%';
+        }
+
+        // Send email with form data
+        // Send email with form data
+        function sendEmail() {
+            const formData = collectFormData();
+            const emailBody = generateEmailBody(formData);
+            
+            // Create mailto link
+            const subject = `EMERGENCY INCIDENT REPORT - ${formData.facilityName || 'Unknown Facility'} - ${formData.urgencyLevel || 'TBD'} - ${new Date().toLocaleDateString()}`;
+            const mailto = `mailto:adam@amusementstandards.com,adam.brousell@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(emailBody).then(() => {
+                const status = document.getElementById('emailStatus');
+                status.textContent = '✓ Report copied to clipboard! Opening email client...';
+                status.classList.add('show');
+                status.classList.remove('error');
+                
+                // Open mailto link
+                window.location.href = mailto;
+                
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 5000);
+            }).catch(err => {
+                const status = document.getElementById('emailStatus');
+                status.textContent = '⚠ Could not copy to clipboard. Please try again.';
+                status.classList.add('show', 'error');
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 5000);
+            });
+        }
+
+        // Show email preview in modal
+        function showEmailPreview() {
+            const formData = collectFormData();
+            const emailBody = generateEmailBody(formData);
+            const subject = `EMERGENCY INCIDENT REPORT - ${formData.facilityName || 'Unknown Facility'} - ${formData.urgencyLevel || 'TBD'} - ${new Date().toLocaleDateString()}`;
+            
+            // Store email data globally for modal buttons
+            window.currentEmailData = {
+                subject: subject,
+                body: emailBody,
+                formData: formData
+            };
+            
+            // Update modal content
+            document.getElementById('emailSubject').textContent = subject;
+            document.getElementById('emailPreview').textContent = emailBody;
+            
+            // Show modal
+            document.getElementById('emailModal').classList.add('show');
+        }
+
+        // Close email modal
+        function closeEmailModal() {
+            document.getElementById('emailModal').classList.remove('show');
+        }
+
+        // Copy email to clipboard from modal
+        function copyEmailToClipboard() {
+            const emailBody = window.currentEmailData?.body || '';
+            
+            navigator.clipboard.writeText(emailBody).then(() => {
+                alert('✓ Email report copied to clipboard!');
+            }).catch(err => {
+                alert('⚠ Could not copy to clipboard. Please select and copy manually.');
+            });
+        }
+
+        // Send email from modal
+        function sendEmailFromModal() {
+            const data = window.currentEmailData;
+            if (!data) return;
+            
+            const mailto = `mailto:adam@amusementstandards.com,adam.brousell@gmail.com?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(data.body)}`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(data.body).then(() => {
+                const status = document.getElementById('emailStatus');
+                status.textContent = '✓ Email copied to clipboard! Opening email client...';
+                status.classList.add('show');
+                status.classList.remove('error');
+                
+                // Open mailto link
+                window.location.href = mailto;
+                
+                // Close modal
+                closeEmailModal();
+                
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 5000);
+            }).catch(err => {
+                const status = document.getElementById('emailStatus');
+                status.textContent = '⚠ Could not copy to clipboard. Please try again.';
+                status.classList.add('show', 'error');
+                setTimeout(() => {
+                    status.classList.remove('show');
+                }, 5000);
+            });
+        }
+
+        // Export data as text file (download)
+        function exportData() {
+            const formData = collectFormData();
+            const summary = generateEmailBody(formData);
+            
+            const blob = new Blob([summary], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `NJ-Incident-Report-${formData.facilityName?.replace(/\s+/g, '-') || 'Unknown'}-${Date.now()}.txt`;
+            a.click();
+        }
+
+        // Collect all form data
+        function collectFormData() {
+            // Collect contributing factors
+            const contributingFactors = [];
+            document.querySelectorAll('input[type="checkbox"][value]').forEach(cb => {
+                if (cb.checked && cb.value) {
+                    contributingFactors.push(cb.value);
+                }
+            });
+
+            return {
+                // Urgency Level
+                urgencyLevel: document.querySelector('input[name="urgencyLevel"]:checked')?.value,
+                
+                // Category
+                incidentCategory: document.getElementById('incidentCategory')?.value,
+                
+                // OSHA
+                oshaReportingStatus: document.getElementById('oshaReportingStatus')?.value,
+                oshaFatality: document.getElementById('oshaFatality')?.checked,
+                oshaMultipleHosp: document.getElementById('oshaMultipleHosp')?.checked,
+                oshaAmputation: document.getElementById('oshaAmputation')?.checked,
+                oshaEyeLoss: document.getElementById('oshaEyeLoss')?.checked,
+                oshaHospitalization: document.getElementById('oshaHospitalization')?.checked,
+                
+                // CPSC
+                cpscReportingStatus: document.getElementById('cpscReportingStatus')?.value,
+                cpscDeath: document.getElementById('cpscDeath')?.checked,
+                cpscSeriousInjury: document.getElementById('cpscSeriousInjury')?.checked,
+                cpscPattern: document.getElementById('cpscPattern')?.checked,
+                
+                // Caller info
+                callerName: document.getElementById('callerName')?.value,
+                callerTitle: document.getElementById('callerTitle')?.value,
+                facilityName: document.getElementById('facilityName')?.value,
+                facilityAddress: document.getElementById('facilityAddress')?.value,
+                callbackNumber: document.getElementById('callbackNumber')?.value,
+                callerEmail: document.getElementById('callerEmail')?.value,
+                permitNumber: document.getElementById('permitNumber')?.value,
+                
+                // Incident details
+                incidentDate: document.getElementById('incidentDate')?.value,
+                incidentTime: document.getElementById('incidentTime')?.value,
+                weatherConditions: document.getElementById('weatherConditions')?.value,
+                rideName: document.getElementById('rideName')?.value,
+                rideManufacturer: document.getElementById('rideManufacturer')?.value,
+                rideModel: document.getElementById('rideModel')?.value,
+                
+                // Environmental (NFPA)
+                temperature: document.getElementById('temperature')?.value,
+                windConditions: document.getElementById('windConditions')?.value,
+                precipitation: document.getElementById('precipitation')?.value,
+                lightingConditions: document.getElementById('lightingConditions')?.value,
+                surfaceConditions: document.getElementById('surfaceConditions')?.value,
+                
+                // Injured party
+                injuredName: document.getElementById('injuredName')?.value,
+                injuredAddress: document.getElementById('injuredAddress')?.value,
+                injuredAge: document.getElementById('injuredAge')?.value,
+                injuredSex: document.getElementById('injuredSex')?.value,
+                injuryDescription: document.getElementById('injuryDescription')?.value,
+                incidentDescription: document.getElementById('incidentDescription')?.value,
+                
+                // Status
+                rideShutDown: document.getElementById('rideShutDown')?.checked,
+                areaSecured: document.getElementById('areaSecured')?.checked,
+                njDcaNotified: document.getElementById('njDcaNotified')?.checked,
+                dcaContact: document.getElementById('dcaContact')?.value,
+                
+                // Evidence (NFPA)
+                sceneSecuredBy: document.getElementById('sceneSecuredBy')?.value,
+                witnessDetails: document.getElementById('witnessDetails')?.value,
+                witnessCount: document.getElementById('witnessCount')?.value,
+                
+                // Root Cause (OSHA/NFPA)
+                immediateCause: document.getElementById('immediateCause')?.value,
+                why1: document.getElementById('why1')?.value,
+                why2: document.getElementById('why2')?.value,
+                why3: document.getElementById('why3')?.value,
+                why4: document.getElementById('why4')?.value,
+                why5: document.getElementById('why5')?.value,
+                contributingFactors: contributingFactors.join(', '),
+                immediateActions: document.getElementById('immediateActions')?.value,
+                shortTermActions: document.getElementById('shortTermActions')?.value,
+                longTermActions: document.getElementById('longTermActions')?.value,
+                responsiblePerson: document.getElementById('responsiblePerson')?.value,
+                completionDate: document.getElementById('completionDate')?.value,
+                
+                // Service
+                service: document.querySelector('input[name="service"]:checked')?.value || 'Not selected',
+                investigationDate: document.getElementById('investigationDate')?.value,
+                leadInvestigator: document.getElementById('leadInvestigator')?.value,
+                
+                // Notes
+                priorityLevel: document.getElementById('priorityLevel')?.value,
+                additionalNotes: document.getElementById('additionalNotes')?.value,
+                
+                // Timestamp
+                timestamp: new Date().toLocaleString()
+            };
+        }
+
+        // Generate email body
+        function generateEmailBody(data) {
+            let body = `NJ EMERGENCY INCIDENT RESPONSE - COMPREHENSIVE INVESTIGATION REPORT
+${'='.repeat(70)}
+COMPLIANCE: NJAC 5:14A-4.13 | OSHA 1904 | CPSC 16 CFR 1115 | NFPA Standards
+
+🎯 URGENCY LEVEL: ${data.urgencyLevel || 'NOT DETERMINED'}
+NJAC 5:14A-4.13 INCIDENT CATEGORY: ${data.incidentCategory || 'NOT DETERMINED'}
+OSHA REPORTING STATUS: ${data.oshaReportingStatus || 'NOT DETERMINED'}
+CPSC REPORTING STATUS: ${data.cpscReportingStatus || 'NOT DETERMINED'}
+
+${'='.repeat(70)}
+AMUSEMENT STANDARDS RESPONSE TIMELINE:
+`;
+
+            // Add urgency-specific timeline
+            const urgencyTimelines = {
+                'CRITICAL': '🚨 CRITICAL - Response within 4-8 hours | Emergency investigation team mobilized immediately',
+                'URGENT': '⚠️ URGENT - Response within 24-48 hours | Investigation scheduled as priority',
+                'STANDARD': '📋 STANDARD - Response within 5-7 days | Investigation will be scheduled',
+                'NON-URGENT': 'ℹ️ NON-URGENT - Consultation call within 7-14 days'
+            };
+
+            if (data.urgencyLevel && urgencyTimelines[data.urgencyLevel]) {
+                body += urgencyTimelines[data.urgencyLevel] + '\n';
+            }
+
+            body += `
+${'='.repeat(70)}
+CRITICAL REGULATORY ACTIONS REQUIRED:
+`;
+
+            if (data.incidentCategory === 'A') {
+                body += `
+⚠️ NJAC CATEGORY A - SHUT DOWN & IMMEDIATE REPORT
+- Ride MUST remain shut down until NJ DCA authorizes restart
+- NJ DCA MUST be notified immediately: (609) 984-7834
+- Incident report due within 24 hours
+- Manufacturer must be notified
+`;
+            } else if (data.incidentCategory === 'B') {
+                body += `
+⚡ NJAC CATEGORY B - REPORT WITHIN 24 HOURS
+- NJ DCA must be notified within 24 hours: (609) 984-7834
+- Written incident report due within 5 days
+- Ride must be repaired per manufacturer instructions
+`;
+            } else if (data.incidentCategory === 'C') {
+                body += `
+📋 NJAC CATEGORY C - RECORD ONLY
+- Internal record must be maintained with all required NJAC fields
+- No state report required
+- Record must be available for DCA inspection
+`;
+            }
+
+            // OSHA requirements
+            if (data.oshaReportingStatus === '8hour') {
+                body += `
+🚨 OSHA 8-HOUR REPORTING REQUIRED!
+- Report to OSHA within 8 hours: 1-800-321-OSHA (6742)
+- Online: www.osha.gov/report
+- Reason: ${data.oshaFatality ? 'FATALITY' : 'HOSPITALIZATION OF 3+ EMPLOYEES'}
+`;
+            } else if (data.oshaReportingStatus === '24hour') {
+                body += `
+⏰ OSHA 24-HOUR REPORTING REQUIRED!
+- Report to OSHA within 24 hours: 1-800-321-OSHA (6742)
+- Online: www.osha.gov/report
+- Reason: Amputation/Eye Loss/Hospitalization
+`;
+            }
+
+            // CPSC requirements
+            if (data.cpscReportingStatus === 'required') {
+                body += `
+⚠️ CPSC REPORTING REQUIRED WITHIN 24 HOURS!
+- Report to CPSC: 1-800-638-2772
+- Online: www.saferproducts.gov
+- Reason: Guest death or serious injury requiring hospitalization
+`;
+            }
+
+            body += `
+${'='.repeat(70)}
+
+CALLER INFORMATION:
+Name: ${data.callerName || 'N/A'}
+Title: ${data.callerTitle || 'N/A'}
+Phone: ${data.callbackNumber || 'N/A'}
+Email: ${data.callerEmail || 'N/A'}
+
+FACILITY INFORMATION:
+Facility: ${data.facilityName || 'N/A'}
+Address: ${data.facilityAddress || 'N/A'}
+NJ Permit #: ${data.permitNumber || 'N/A'}
+
+INCIDENT DETAILS (NJAC REQUIRED FIELDS):
+Date: ${data.incidentDate || 'N/A'}
+Time: ${data.incidentTime || 'N/A'}
+Weather: ${data.weatherConditions || 'N/A'}
+Temperature: ${data.temperature || 'N/A'}
+Wind: ${data.windConditions || 'N/A'}
+Precipitation: ${data.precipitation || 'N/A'}
+Lighting: ${data.lightingConditions || 'N/A'}
+Surface Conditions: ${data.surfaceConditions || 'N/A'}
+
+Ride Name: ${data.rideName || 'N/A'}
+Manufacturer: ${data.rideManufacturer || 'N/A'}
+Model: ${data.rideModel || 'N/A'}
+
+INJURED PARTY INFORMATION (NJAC REQUIRED):
+Name: ${data.injuredName || 'N/A'}
+Address: ${data.injuredAddress || 'N/A'}
+Age: ${data.injuredAge || 'N/A'}
+Sex: ${data.injuredSex || 'N/A'}
+Injury Description: ${data.injuryDescription || 'N/A'}
+
+INCIDENT DESCRIPTION:
+${data.incidentDescription || 'N/A'}
+
+${'='.repeat(70)}
+ROOT CAUSE ANALYSIS (OSHA/NFPA):
+
+IMMEDIATE CAUSE:
+${data.immediateCause || 'N/A'}
+
+ROOT CAUSE (5 Whys):
+Why #1: ${data.why1 || 'N/A'}
+Why #2: ${data.why2 || 'N/A'}
+Why #3: ${data.why3 || 'N/A'}
+Why #4: ${data.why4 || 'N/A'}
+Why #5 (Root): ${data.why5 || 'N/A'}
+
+CONTRIBUTING FACTORS:
+${data.contributingFactors || 'N/A'}
+
+CORRECTIVE ACTIONS:
+Immediate: ${data.immediateActions || 'N/A'}
+Short-Term (7 days): ${data.shortTermActions || 'N/A'}
+Long-Term (30-90 days): ${data.longTermActions || 'N/A'}
+Responsible Person: ${data.responsiblePerson || 'N/A'}
+Target Completion: ${data.completionDate || 'N/A'}
+
+${'='.repeat(70)}
+EVIDENCE PRESERVATION (NFPA):
+
+Scene Secured By: ${data.sceneSecuredBy || 'N/A'}
+Witnesses: ${data.witnessDetails || 'N/A'}
+Witness Count: ${data.witnessCount || 'N/A'}
+
+CURRENT STATUS:
+Ride Shut Down: ${data.rideShutDown ? 'YES' : 'NO'}
+Area Secured: ${data.areaSecured ? 'YES' : 'NO'}
+NJ DCA Notified: ${data.njDcaNotified ? 'YES' : 'NO'}
+DCA Contact: ${data.dcaContact || 'N/A'}
+
+${'='.repeat(70)}
+AMUSEMENT STANDARDS SERVICE:
+
+Recommended: ${data.service}
+Investigation Date: ${data.investigationDate || 'TBD'}
+Lead Investigator: ${data.leadInvestigator || 'TBD'}
+Priority Level: ${data.priorityLevel || 'TBD'}
+
+ADDITIONAL NOTES:
+${data.additionalNotes || 'None'}
+
+${'='.repeat(70)}
+Report Generated: ${data.timestamp}
+Emergency Hotline: (732) 207-0005
+NJ DCA: (609) 984-7834
+OSHA: 1-800-321-OSHA (6742)
+${'='.repeat(70)}
+`;
+
+            return body;
+        }
+
+        // Export data as text file
+        function exportData() {
+            const formData = collectFormData();
+            const summary = generateEmailBody(formData);
+            
+            const blob = new Blob([summary], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `NJ-Incident-Report-${formData.facilityName?.replace(/\s+/g, '-') || 'Unknown'}-${Date.now()}.txt`;
+            a.click();
+        }
+
+        // Print checklist
+        function printChecklist() {
+            window.print();
+        }
+
+        // Reset all
+        function resetAll() {
+            if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+                document.querySelectorAll('input, textarea, select').forEach(input => {
+                    if (input.type === 'checkbox' || input.type === 'radio') {
+                        input.checked = false;
+                    } else {
+                        input.value = '';
+                    }
+                });
+                updateProgress();
+                updateIncidentCategory();
+            }
+        }
+
+        // Initialize
+        document.querySelectorAll('.checklist-item').forEach(checkbox => {
+            checkbox.addEventListener('change', updateProgress);
+        });
+
+        // Auto-save to localStorage
+        setInterval(() => {
+            const formData = collect            const formData = {};
+            document.querySelectorAll('input, textarea, select').forEach(input => {
+                if (input.id) {
+                    if (input.type === 'checkbox') {
+                        formData[input.id] = input.checked;
+                    } else if (input.type === 'radio') {
+                        if (input.checked) {
+                            formData[input.name] = input.value;
+                        }
+                    } else {
+                        formData[input.id] = input.value;
+                    }
+                }
+            });
+            localStorage.setItem('njIncidentChecklist', JSON.stringify(formData));
+        }, 30000);
+
+        // Load saved data on page load
+        window.addEventListener('load', () => {
+            const savedData = localStorage.getItem('njIncidentChecklist');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                Object.keys(formData).forEach(key => {
+                    const input = document.getElementById(key) || document.querySelector(`input[name="${key}"][value="${formData[key]}"]`);
+                    if (input) {
+                        if (input.type === 'checkbox') {
+                            input.checked = formData[key];
+                        } else if (input.type === 'radio') {
+                            input.checked = true;
+                        } else {
+                            input.value = formData[key];
+                        }
+                    }
+                });
+                updateProgress();
+                updateIncidentCategory();
+                checkOSHARequirements();
+                checkCPSCRequirements();
+            }
+        });
+
+        // Initial progress update
+        updateProgress();
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('emailModal');
+            if (event.target == modal) {
+                closeEmailModal();
+            }
+        }
+    </script>
+</body>
+</html>
