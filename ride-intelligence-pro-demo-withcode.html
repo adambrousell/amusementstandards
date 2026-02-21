@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk Intelligence Pro | Amusement Standards</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #ffffff; --bg: #f9f9f9; --bg-dark: #111827; --text: #111827;
+    --text-muted: #6b7280; --text-light: #9ca3af; --border: #e5e7eb;
+    --accent: #1d4ed8; --accent-hover: #1e40af;
+    --red: #dc2626; --red-bg: #fef2f2; --red-border: #fecaca;
+    --amber: #d97706; --amber-bg: #fffbeb; --amber-border: #fde68a;
+    --green: #16a34a; --green-bg: #f0fdf4; --green-border: #bbf7d0;
+    --blue: #2563eb; --blue-bg: #eff6ff; --blue-border: #bfdbfe;
+    --purple: #7c3aed; --purple-bg: #f5f3ff; --purple-border: #ddd6fe;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--white); color:var(--text); font-family:'Inter',-apple-system,sans-serif; font-size:14px; line-height:1.6; }
+  nav { background:var(--white); border-bottom:1px solid var(--border); padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:60px; position:sticky; top:0; z-index:100; }
+  .nav-logo { font-size:15px; font-weight:600; color:var(--text); text-decoration:none; }
+  .nav-links { display:flex; align-items:center; gap:28px; list-style:none; }
+  .nav-links a { font-size:13px; color:var(--text-muted); text-decoration:none; font-weight:500; }
+  .hero { background:var(--bg-dark); color:#fff; padding:52px 40px 44px; }
+  .hero-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr auto; gap:48px; align-items:end; }
+  .hero-eyebrow { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#60a5fa; margin-bottom:12px; }
+  .hero-title { font-size:32px; font-weight:700; line-height:1.2; margin-bottom:10px; letter-spacing:-0.02em; }
+  .hero-sub { font-size:14px; color:#9ca3af; max-width:500px; line-height:1.6; }
+  .hero-meta { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:#374151; border:1px solid #374151; min-width:290px; }
+  .hero-meta-cell { background:#1f2937; padding:13px 16px; }
+  .meta-label { font-size:10px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:#6b7280; margin-bottom:4px; }
+  .meta-val { font-size:13px; font-weight:600; color:#f9fafb; }
+  .layout { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:216px 1fr; padding:32px 40px; align-items:start; }
+  .sidebar { position:sticky; top:76px; padding-right:28px; border-right:1px solid var(--border); }
+  .sidebar-section { margin-bottom:28px; }
+  .sidebar-heading { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-light); margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid var(--border); }
+  .stat-item { padding:10px; border-radius:6px; margin-bottom:6px; border:1px solid var(--border); }
+  .stat-label { font-size:10px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px; }
+  .stat-val { font-size:22px; font-weight:700; line-height:1; letter-spacing:-0.02em; }
+  .stat-sub { font-size:10px; color:var(--text-muted); margin-top:2px; }
+  .content { padding-left:28px; }
+  .alert { display:flex; gap:12px; padding:12px 16px; border-radius:6px; margin-bottom:10px; font-size:12px; line-height:1.5; border:1px solid; }
+  .alert-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+  .alert-red { background:var(--red-bg); border-color:var(--red-border); color:#7f1d1d; }
+  .alert-amber { background:var(--amber-bg); border-color:var(--amber-border); color:#78350f; }
+  .alert-blue { background:var(--blue-bg); border-color:var(--blue-border); color:#1e3a8a; }
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0 28px; }
+  .kpi { background:var(--white); border:1px solid var(--border); border-radius:8px; padding:18px; position:relative; overflow:hidden; }
+  .kpi-top { height:3px; position:absolute; top:0; left:0; right:0; }
+  .kpi-label { font-size:10px; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
+  .kpi-value { font-size:36px; font-weight:700; line-height:1; letter-spacing:-0.02em; margin-bottom:4px; }
+  .kpi-sub { font-size:11px; color:var(--text-muted); margin-bottom:8px; }
+  .kpi-tag { display:inline-block; font-size:10px; font-weight:600; padding:2px 8px; border-radius:10px; }
+  .section-label { font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-light); margin:28px 0 12px; display:flex; align-items:center; gap:10px; }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+  .card { background:var(--white); border:1px solid var(--border); border-radius:8px; margin-bottom:12px; overflow:hidden; }
+  .card-header { display:flex; align-items:center; justify-content:space-between; padding:13px 18px; border-bottom:1px solid var(--border); background:var(--bg); }
+  .card-title { font-size:12px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--text); }
+  .card-subtitle { font-size:11px; color:var(--text-muted); }
+  .card-body { padding:18px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+  /* HEATMAP */
+  .heatmap-wrap { overflow-x:auto; }
+  .heatmap-table { border-collapse:collapse; width:100%; font-size:11px; }
+  .heatmap-table th { font-size:9px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); padding:6px 4px; text-align:center; }
+  .heatmap-table th.ride-col { text-align:left; padding-left:0; min-width:140px; }
+  .heatmap-table td { padding:3px; text-align:center; }
+  .heatmap-table td.ride-name { text-align:left; font-size:11px; font-weight:500; color:var(--text); padding:4px 10px 4px 0; white-space:nowrap; }
+  .cell { width:36px; height:28px; border-radius:3px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; cursor:default; transition:transform 0.1s; }
+  .cell:hover { transform:scale(1.2); z-index:10; position:relative; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
+  .h0{background:#f3f4f6;color:#9ca3af} .h1{background:#fef9c3;color:#854d0e} .h2{background:#fde68a;color:#78350f}
+  .h3{background:#fbbf24;color:#451a03} .h4{background:#f97316;color:#fff} .h5{background:#ef4444;color:#fff} .h6{background:#b91c1c;color:#fff}
+  .heatmap-legend { display:flex; align-items:center; gap:6px; margin-top:12px; font-size:10px; color:var(--text-muted); flex-wrap:wrap; }
+  .legend-swatch { width:20px; height:14px; border-radius:2px; flex-shrink:0; }
+  /* PIPELINE */
+  .pipeline { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:16px; }
+  .pipe-step { border-radius:6px; padding:14px; }
+  .pipe-num { font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px; }
+  .pipe-title { font-size:12px; font-weight:700; color:var(--text); margin-bottom:3px; }
+  .pipe-detail { font-size:10px; color:var(--text-muted); line-height:1.4; }
+  /* CODE */
+  .code-label { font-size:10px; font-weight:600; color:var(--text-muted); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:6px; }
+  .code-block { background:#0f172a; border-radius:6px; padding:16px 18px; font-family:'Courier New',monospace; font-size:11px; line-height:1.7; overflow-x:auto; }
+  .cc{color:#64748b} .ck{color:#7dd3fc} .cf{color:#a78bfa} .cs{color:#86efac} .cn{color:#fbbf24} .cv{color:#e2e8f0}
+  /* DONUT */
+  .donut-wrap { display:flex; align-items:center; gap:24px; justify-content:center; padding:8px; }
+  .donut-legend { display:flex; flex-direction:column; gap:8px; }
+  .donut-item { display:flex; align-items:center; gap:8px; font-size:12px; }
+  .donut-swatch { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+  /* TREND */
+  .trend-row { display:grid; grid-template-columns:32px 1fr 32px; gap:6px; align-items:center; margin-bottom:5px; }
+  .trend-month { font-size:10px; color:var(--text-muted); font-weight:500; }
+  .trend-track { height:18px; background:#f3f4f6; border-radius:3px; overflow:hidden; }
+  .trend-fill { height:100%; border-radius:3px; display:flex; align-items:center; padding-left:6px; font-size:9px; font-weight:700; color:#fff; }
+  .trend-count { font-size:10px; font-weight:600; color:var(--text); text-align:right; }
+  /* TABLE */
+  table { width:100%; border-collapse:collapse; }
+  th { font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); text-align:left; padding:10px 14px; border-bottom:1px solid var(--border); background:var(--bg); }
+  td { padding:10px 14px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:middle; }
+  tr:last-child td { border-bottom:none; }
+  tbody tr:hover { background:#fafafa; }
+  .badge { font-size:10px; font-weight:600; padding:2px 8px; border-radius:10px; white-space:nowrap; }
+  .badge-red{background:var(--red-bg);color:var(--red)} .badge-amber{background:var(--amber-bg);color:var(--amber)}
+  .badge-green{background:var(--green-bg);color:var(--green)} .badge-blue{background:var(--blue-bg);color:var(--blue)}
+  .badge-purple{background:var(--purple-bg);color:var(--purple)}
+  .doc-score { display:flex; align-items:center; gap:6px; }
+  .doc-bar { height:6px; border-radius:3px; background:#f3f4f6; width:60px; overflow:hidden; }
+  .doc-fill { height:100%; border-radius:3px; }
+  /* FINDINGS */
+  .finding { border:1px solid var(--border); border-radius:6px; padding:14px 16px; margin-bottom:8px; display:flex; gap:14px; }
+  .finding-num { width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; margin-top:2px; }
+  .finding-title { font-size:13px; font-weight:600; color:var(--text); margin-bottom:3px; }
+  .finding-detail { font-size:12px; color:var(--text-muted); line-height:1.5; }
+  /* RECS */
+  .rec { border-left:3px solid; padding:12px 16px; margin-bottom:8px; border-radius:0 6px 6px 0; background:var(--bg); }
+  .rec-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; gap:12px; }
+  .rec-title { font-size:13px; font-weight:600; color:var(--text); }
+  .rec-detail { font-size:12px; color:var(--text-muted); line-height:1.5; }
+  .cta-footer { margin-top:28px; background:var(--bg-dark); border-radius:8px; padding:28px 32px; display:flex; align-items:center; justify-content:space-between; gap:32px; color:#fff; }
+  .cta-label { font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#60a5fa; margin-bottom:6px; }
+  .cta-heading { font-size:20px; font-weight:700; margin-bottom:4px; }
+  .cta-sub { font-size:13px; color:#9ca3af; }
+  .cta-btn { display:inline-block; background:var(--accent); color:#fff; font-size:13px; font-weight:600; padding:12px 24px; border-radius:6px; text-decoration:none; white-space:nowrap; flex-shrink:0; }
+  .cta-btn:hover { background:var(--accent-hover); }
+  @media(max-width:960px){
+    .layout{grid-template-columns:1fr;padding:20px}
+    .sidebar{display:none} .content{padding-left:0}
+    .kpi-grid{grid-template-columns:1fr 1fr} .two-col{grid-template-columns:1fr}
+    .hero-inner{grid-template-columns:1fr} .hero-meta{display:none}
+    nav{padding:0 20px} .pipeline{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://amusementstandards.com" class="nav-logo">amusement standards.</a>
+  <ul class="nav-links">
+    <li><a href="https://amusementstandards.com/#services">Services</a></li>
+    <li><a href="https://amusementstandards.com/#packages">Packages</a></li>
+    <li><a href="https://amusementstandards.com/#about">About</a></li>
+    <li><a href="https://amusementstandards.com/contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">🔴 Risk Intelligence Pro — Sample Report</div>
+      <h1 class="hero-title">Turn Your Incident Logs Into<br>Actionable Risk Intelligence.</h1>
+      <p class="hero-sub">We analyze 12–24 months of your incident data and return a clear picture of where risk is concentrated, why incidents are really happening, and exactly what to do about it — in a format your leadership and insurer can act on.</p>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-cell"><div class="meta-label">Park Profile</div><div class="meta-val">18 attractions</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Data Period</div><div class="meta-val">24 months</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Incidents Analyzed</div><div class="meta-val">247 total</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">High-Severity</div><div class="meta-val">34 flagged</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Preventable Rate</div><div class="meta-val">68%</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Doc Quality Score</div><div class="meta-val">60 / 100</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Risk by Category</div>
+      <div class="stat-item"><div class="stat-label">Operator Error</div><div class="stat-val" style="color:var(--red)">38%</div><div class="stat-sub">94 of 247 incidents</div></div>
+      <div class="stat-item"><div class="stat-label">Guest Behavior</div><div class="stat-val" style="color:var(--amber)">26%</div><div class="stat-sub">64 of 247 incidents</div></div>
+      <div class="stat-item"><div class="stat-label">Mechanical</div><div class="stat-val" style="color:var(--blue)">20%</div><div class="stat-sub">49 of 247 incidents</div></div>
+      <div class="stat-item"><div class="stat-label">Environmental</div><div class="stat-val" style="color:var(--text-muted)">16%</div><div class="stat-sub">40 of 247 incidents</div></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Top Risk Attractions</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><span style="font-weight:500">Drop Tower</span><span class="badge badge-red">Critical</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><span style="font-weight:500">Spinning Coaster</span><span class="badge badge-red">Critical</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><span style="font-weight:500">Wave Pool</span><span class="badge badge-amber">High</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><span style="font-weight:500">Lazy River</span><span class="badge badge-amber">High</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px"><span style="font-weight:500">Go-Karts</span><span class="badge badge-blue">Moderate</span></div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Documentation Quality</div>
+      <div style="font-size:40px;font-weight:700;color:var(--amber);letter-spacing:-0.02em;margin-bottom:4px">60<span style="font-size:16px;color:var(--text-muted);font-weight:500">/100</span></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Below acceptable threshold of 75</div>
+      <div style="display:flex;flex-direction:column;gap:5px">
+        <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--text-muted)">Completeness</span><span style="font-weight:600">58%</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--text-muted)">Root cause filed</span><span style="font-weight:600">41%</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--text-muted)">Timely submission</span><span style="font-weight:600">73%</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px"><span style="color:var(--text-muted)">Classification accuracy</span><span style="font-weight:600">62%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="alert alert-red"><span class="alert-icon">🚨</span><div><strong>Critical Pattern Detected:</strong> Drop Tower shows 3.2× the incident rate of comparable attractions, with 71% of incidents occurring during shift changes (6–8am and 2–4pm). This is an operator handoff protocol failure, not a mechanical issue.</div></div>
+    <div class="alert alert-amber"><span class="alert-icon">⚠️</span><div><strong>Documentation Gap:</strong> 112 of 247 incidents are missing root cause classification — suppressing pattern detection and creating risk at your next insurance renewal or state inspection.</div></div>
+    <div class="alert alert-blue"><span class="alert-icon">💡</span><div><strong>Opportunity:</strong> 68% of high-severity incidents are preventable. The single highest-leverage fix is a revised operator certification protocol for the top 3 risk attractions.</div></div>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-top" style="background:var(--red)"></div><div class="kpi-label">High-Severity Incidents</div><div class="kpi-value" style="color:var(--red)">34</div><div class="kpi-sub">Over 24-month period</div><span class="kpi-tag" style="background:var(--red-bg);color:var(--red)">↑ 22% vs prior year</span></div>
+      <div class="kpi"><div class="kpi-top" style="background:var(--amber)"></div><div class="kpi-label">Preventable Rate</div><div class="kpi-value" style="color:var(--amber)">68%</div><div class="kpi-sub">Of all high-severity incidents</div><span class="kpi-tag" style="background:var(--amber-bg);color:var(--amber)">Operator or process failures</span></div>
+      <div class="kpi"><div class="kpi-top" style="background:var(--blue)"></div><div class="kpi-label">Documentation Gaps</div><div class="kpi-value" style="color:var(--blue)">112</div><div class="kpi-sub">Incomplete incident records</div><span class="kpi-tag" style="background:var(--blue-bg);color:var(--blue)">45% of total incidents</span></div>
+      <div class="kpi"><div class="kpi-top" style="background:var(--green)"></div><div class="kpi-label">Projected Risk Reduction</div><div class="kpi-value" style="color:var(--green)">−31%</div><div class="kpi-sub">With recommendations applied</div><span class="kpi-tag" style="background:var(--green-bg);color:var(--green)">Based on comparable parks</span></div>
+    </div>
+
+    <div class="section-label">Risk Exposure Heatmap · Incidents by Attraction & Month</div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Incident Frequency Heatmap</span>
+        <span class="card-subtitle">Built in R (ggplot2 · geom_tile) · 24-month window · hover cells to highlight</span>
+      </div>
+      <div class="card-body">
+        <div class="heatmap-wrap">
+          <table class="heatmap-table">
+            <thead><tr>
+              <th class="ride-col">Attraction</th>
+              <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th>
+              <th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
+              <th>Total</th>
+            </tr></thead>
+            <tbody>
+              <tr><td class="ride-name">Drop Tower</td><td><div class="cell h1">1</div></td><td><div class="cell h1">2</div></td><td><div class="cell h2">3</div></td><td><div class="cell h3">5</div></td><td><div class="cell h4">7</div></td><td><div class="cell h6">12</div></td><td><div class="cell h6">14</div></td><td><div class="cell h6">13</div></td><td><div class="cell h4">8</div></td><td><div class="cell h3">5</div></td><td><div class="cell h1">2</div></td><td><div class="cell h1">1</div></td><td style="font-weight:700;color:var(--red)">73</td></tr>
+              <tr><td class="ride-name">Spinning Coaster</td><td><div class="cell h1">1</div></td><td><div class="cell h0">0</div></td><td><div class="cell h1">2</div></td><td><div class="cell h2">3</div></td><td><div class="cell h3">5</div></td><td><div class="cell h5">9</div></td><td><div class="cell h5">11</div></td><td><div class="cell h5">10</div></td><td><div class="cell h3">6</div></td><td><div class="cell h2">4</div></td><td><div class="cell h1">1</div></td><td><div class="cell h0">0</div></td><td style="font-weight:700;color:var(--red)">52</td></tr>
+              <tr><td class="ride-name">Wave Pool</td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h1">1</div></td><td><div class="cell h2">4</div></td><td><div class="cell h4">7</div></td><td><div class="cell h5">9</div></td><td><div class="cell h5">8</div></td><td><div class="cell h2">4</div></td><td><div class="cell h1">2</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td style="font-weight:700;color:var(--amber)">35</td></tr>
+              <tr><td class="ride-name">Lazy River</td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h1">2</div></td><td><div class="cell h2">3</div></td><td><div class="cell h3">5</div></td><td><div class="cell h4">7</div></td><td><div class="cell h3">6</div></td><td><div class="cell h2">3</div></td><td><div class="cell h1">1</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td style="font-weight:700;color:var(--amber)">27</td></tr>
+              <tr><td class="ride-name">Go-Karts</td><td><div class="cell h1">1</div></td><td><div class="cell h1">1</div></td><td><div class="cell h1">2</div></td><td><div class="cell h1">2</div></td><td><div class="cell h2">3</div></td><td><div class="cell h2">4</div></td><td><div class="cell h3">5</div></td><td><div class="cell h3">5</div></td><td><div class="cell h2">3</div></td><td><div class="cell h1">2</div></td><td><div class="cell h1">1</div></td><td><div class="cell h1">1</div></td><td style="font-weight:700;color:var(--blue)">30</td></tr>
+              <tr><td class="ride-name">Bumper Cars</td><td><div class="cell h0">0</div></td><td><div class="cell h1">1</div></td><td><div class="cell h1">1</div></td><td><div class="cell h1">2</div></td><td><div class="cell h1">2</div></td><td><div class="cell h2">3</div></td><td><div class="cell h2">4</div></td><td><div class="cell h2">3</div></td><td><div class="cell h1">2</div></td><td><div class="cell h1">1</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td style="font-weight:600;color:var(--text-muted)">19</td></tr>
+              <tr><td class="ride-name">Kiddie Land (all)</td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h1">1</div></td><td><div class="cell h1">1</div></td><td><div class="cell h1">2</div></td><td><div class="cell h1">2</div></td><td><div class="cell h2">3</div></td><td><div class="cell h2">3</div></td><td><div class="cell h1">1</div></td><td><div class="cell h1">1</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td style="font-weight:600;color:var(--text-muted)">14</td></tr>
+              <tr><td class="ride-name">Mini Golf</td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h1">1</div></td><td><div class="cell h1">1</div></td><td><div class="cell h1">1</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td><div class="cell h0">0</div></td><td style="font-weight:600;color:var(--text-muted)">3</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="heatmap-legend">
+          <span>Low</span>
+          <div class="legend-swatch" style="background:#f3f4f6"></div>
+          <div class="legend-swatch" style="background:#fef9c3"></div>
+          <div class="legend-swatch" style="background:#fde68a"></div>
+          <div class="legend-swatch" style="background:#fbbf24"></div>
+          <div class="legend-swatch" style="background:#f97316"></div>
+          <div class="legend-swatch" style="background:#ef4444"></div>
+          <div class="legend-swatch" style="background:#b91c1c"></div>
+          <span>High</span>
+          <span style="margin-left:12px;font-style:italic;color:var(--text-light)">Generated in R · ggplot2 geom_tile · viridis scale</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">How This Is Built · R Studio Analysis Pipeline</div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Analysis Workflow</span>
+        <span class="card-subtitle">From your raw incident logs to finished deliverable — 3 weeks</span>
+      </div>
+      <div class="card-body">
+        <div class="pipeline">
+          <div class="pipe-step" style="background:#f0fdf4;border:1px solid var(--green-border)">
+            <div class="pipe-num" style="color:var(--green)">Step 01</div>
+            <div class="pipe-title">Data Intake</div>
+            <div class="pipe-detail">You send raw logs — Excel, PDF, paper scans, any format. No cleaning needed.</div>
+          </div>
+          <div class="pipe-step" style="background:#eff6ff;border:1px solid var(--blue-border)">
+            <div class="pipe-num" style="color:var(--blue)">Step 02</div>
+            <div class="pipe-title">Clean & Structure</div>
+            <div class="pipe-detail">readxl / tidyverse import. Date normalization, ride name standardization, severity mapping.</div>
+          </div>
+          <div class="pipe-step" style="background:#f5f3ff;border:1px solid var(--purple-border)">
+            <div class="pipe-num" style="color:var(--purple)">Step 03</div>
+            <div class="pipe-title">Analyze in R</div>
+            <div class="pipe-detail">dplyr aggregations, root cause grouping, severity scoring, trend modeling.</div>
+          </div>
+          <div class="pipe-step" style="background:#fffbeb;border:1px solid var(--amber-border)">
+            <div class="pipe-num" style="color:var(--amber)">Step 04</div>
+            <div class="pipe-title">Build Heatmap</div>
+            <div class="pipe-detail">ggplot2 geom_tile with viridis scale. Exported at 300dpi for print-quality deliverable.</div>
+          </div>
+          <div class="pipe-step" style="background:#fef2f2;border:1px solid var(--red-border)">
+            <div class="pipe-num" style="color:var(--red)">Step 05</div>
+            <div class="pipe-title">Deliverable</div>
+            <div class="pipe-detail">Executive summary PDF + heatmaps + prioritized recommendations deck.</div>
+          </div>
+        </div>
+
+        <div class="code-label">Sample R code — heatmap generation</div>
+        <div class="code-block">
+<span class="cc"># Load and clean incident data</span><br>
+<span class="ck">library</span>(<span class="cs">tidyverse</span>); <span class="ck">library</span>(<span class="cs">readxl</span>); <span class="ck">library</span>(<span class="cs">viridis</span>)<br><br>
+<span class="cv">incidents</span> &lt;- <span class="cf">read_excel</span>(<span class="cs">"incident_log.xlsx"</span>) |&gt;<br>
+&nbsp;&nbsp;<span class="cf">mutate</span>(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cv">month</span> = <span class="cf">floor_date</span>(<span class="cv">date</span>, <span class="cs">"month"</span>),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cv">ride</span>  = <span class="cf">str_to_title</span>(<span class="cf">str_trim</span>(<span class="cv">attraction_name</span>))<br>
+&nbsp;&nbsp;)<br><br>
+<span class="cc"># Aggregate by ride x month, fill zeros</span><br>
+<span class="cv">heat_data</span> &lt;- <span class="cv">incidents</span> |&gt;<br>
+&nbsp;&nbsp;<span class="cf">count</span>(<span class="cv">ride</span>, <span class="cv">month</span>) |&gt;<br>
+&nbsp;&nbsp;<span class="cf">complete</span>(<span class="cv">ride</span>, <span class="cv">month</span>, fill = <span class="cf">list</span>(n = <span class="cn">0</span>))<br><br>
+<span class="cc"># Build heatmap — rides ordered by total incident count</span><br>
+<span class="cf">ggplot</span>(<span class="cv">heat_data</span>, <span class="cf">aes</span>(x = <span class="cv">month</span>, y = <span class="cf">fct_reorder</span>(<span class="cv">ride</span>, <span class="cv">n</span>), fill = <span class="cv">n</span>)) +<br>
+&nbsp;&nbsp;<span class="cf">geom_tile</span>(color = <span class="cs">"white"</span>, linewidth = <span class="cn">0.4</span>) +<br>
+&nbsp;&nbsp;<span class="cf">scale_fill_viridis</span>(option = <span class="cs">"magma"</span>, direction = <span class="cn">-1</span>) +<br>
+&nbsp;&nbsp;<span class="cf">scale_x_date</span>(date_labels = <span class="cs">"%b '%y"</span>, date_breaks = <span class="cs">"2 months"</span>) +<br>
+&nbsp;&nbsp;<span class="cf">labs</span>(title = <span class="cs">"Incident Frequency by Attraction"</span>, x = <span class="ck">NULL</span>, y = <span class="ck">NULL</span>, fill = <span class="cs">"Incidents"</span>) +<br>
+&nbsp;&nbsp;<span class="cf">theme_minimal</span>(base_size = <span class="cn">11</span>)<br><br>
+<span class="cf">ggsave</span>(<span class="cs">"heatmap.png"</span>, dpi = <span class="cn">300</span>, width = <span class="cn">12</span>, height = <span class="cn">6</span>)
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">High-Severity Incident Detail</div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">High-Severity Incidents</span><span class="card-subtitle">Sorted by severity · documentation quality scored</span></div>
+      <div style="padding:0">
+        <table>
+          <thead><tr><th>Date</th><th>Attraction</th><th>Category</th><th>Severity</th><th>Root Cause</th><th>Doc Quality</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--text-muted)">Aug 12</td><td style="font-weight:600">Drop Tower</td><td><span class="badge badge-red">Operator Error</span></td><td><span class="badge" style="background:#fecaca;color:#7f1d1d">Critical</span></td><td>Shift change — restraint not verified</td><td><div class="doc-score"><div class="doc-bar"><div class="doc-fill" style="width:28%;background:var(--red)"></div></div><span style="font-size:11px;color:var(--red);font-weight:600">28</span></div></td></tr>
+            <tr><td style="color:var(--text-muted)">Jul 28</td><td style="font-weight:600">Spinning Coaster</td><td><span class="badge badge-red">Operator Error</span></td><td><span class="badge" style="background:#fecaca;color:#7f1d1d">Critical</span></td><td>Guest loaded during cycle</td><td><div class="doc-score"><div class="doc-bar"><div class="doc-fill" style="width:42%;background:var(--amber)"></div></div><span style="font-size:11px;color:var(--amber);font-weight:600">42</span></div></td></tr>
+            <tr><td style="color:var(--text-muted)">Jul 4</td><td style="font-weight:600">Drop Tower</td><td><span class="badge badge-red">Operator Error</span></td><td><span class="badge" style="background:#fecaca;color:#7f1d1d">Critical</span></td><td>Height restriction not enforced</td><td><div class="doc-score"><div class="doc-bar"><div class="doc-fill" style="width:55%;background:var(--amber)"></div></div><span style="font-size:11px;color:var(--amber);font-weight:600">55</span></div></td></tr>
+            <tr><td style="color:var(--text-muted)">Jun 18</td><td style="font-weight:600">Wave Pool</td><td><span class="badge badge-amber">Guest Behavior</span></td><td><span class="badge badge-red">High</span></td><td>Unsupervised minor in deep zone</td><td><div class="doc-score"><div class="doc-bar"><div class="doc-fill" style="width:80%;background:var(--green)"></div></div><span style="font-size:11px;color:var(--green);font-weight:600">80</span></div></td></tr>
+            <tr><td style="color:var(--text-muted)">May 30</td><td style="font-weight:600">Go-Karts</td><td><span class="badge badge-blue">Mechanical</span></td><td><span class="badge badge-red">High</span></td><td>Brake failure — maintenance log gap</td><td><div class="doc-score"><div class="doc-bar"><div class="doc-fill" style="width:61%;background:var(--amber)"></div></div><span style="font-size:11px;color:var(--amber);font-weight:600">61</span></div></td></tr>
+            <tr><td style="color:var(--text-muted)">Apr 14</td><td style="font-weight:600">Spinning Coaster</td><td><span class="badge badge-red">Operator Error</span></td><td><span class="badge badge-red">High</span></td><td>Unclassified — insufficient documentation</td><td><div class="doc-score"><div class="doc-bar"><div class="doc-fill" style="width:18%;background:var(--red)"></div></div><span style="font-size:11px;color:var(--red);font-weight:600">18</span></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header"><span class="card-title">Monthly Incident Trend</span><span class="card-subtitle">All attractions · 12-month</span></div>
+        <div class="card-body">
+          <div class="trend-row"><span class="trend-month">Jan</span><div class="trend-track"><div class="trend-fill" style="width:14%;background:#3b82f6"></div></div><span class="trend-count">4</span></div>
+          <div class="trend-row"><span class="trend-month">Feb</span><div class="trend-track"><div class="trend-fill" style="width:14%;background:#3b82f6"></div></div><span class="trend-count">4</span></div>
+          <div class="trend-row"><span class="trend-month">Mar</span><div class="trend-track"><div class="trend-fill" style="width:21%;background:#3b82f6"></div></div><span class="trend-count">6</span></div>
+          <div class="trend-row"><span class="trend-month">Apr</span><div class="trend-track"><div class="trend-fill" style="width:28%;background:#f59e0b"></div></div><span class="trend-count">8</span></div>
+          <div class="trend-row"><span class="trend-month">May</span><div class="trend-track"><div class="trend-fill" style="width:38%;background:#f59e0b"></div></div><span class="trend-count">11</span></div>
+          <div class="trend-row"><span class="trend-month">Jun</span><div class="trend-track"><div class="trend-fill" style="width:62%;background:#ef4444"></div></div><span class="trend-count">18</span></div>
+          <div class="trend-row"><span class="trend-month">Jul</span><div class="trend-track"><div class="trend-fill" style="width:83%;background:#dc2626"></div></div><span class="trend-count">24</span></div>
+          <div class="trend-row"><span class="trend-month">Aug</span><div class="trend-track"><div class="trend-fill" style="width:79%;background:#dc2626"></div></div><span class="trend-count">23</span></div>
+          <div class="trend-row"><span class="trend-month">Sep</span><div class="trend-track"><div class="trend-fill" style="width:48%;background:#f59e0b"></div></div><span class="trend-count">14</span></div>
+          <div class="trend-row"><span class="trend-month">Oct</span><div class="trend-track"><div class="trend-fill" style="width:38%;background:#f59e0b"></div></div><span class="trend-count">11</span></div>
+          <div class="trend-row"><span class="trend-month">Nov</span><div class="trend-track"><div class="trend-fill" style="width:14%;background:#3b82f6"></div></div><span class="trend-count">4</span></div>
+          <div class="trend-row"><span class="trend-month">Dec</span><div class="trend-track"><div class="trend-fill" style="width:7%;background:#3b82f6"></div></div><span class="trend-count">2</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Incident Cause Breakdown</span><span class="card-subtitle">247 incidents classified</span></div>
+        <div class="card-body">
+          <div class="donut-wrap">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="45" fill="none" stroke="#e5e7eb" stroke-width="18"/>
+              <circle cx="60" cy="60" r="45" fill="none" stroke="#dc2626" stroke-width="18" stroke-dasharray="107.6 174.9" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+              <circle cx="60" cy="60" r="45" fill="none" stroke="#d97706" stroke-width="18" stroke-dasharray="73.5 209" stroke-dashoffset="-107.6" transform="rotate(-90 60 60)"/>
+              <circle cx="60" cy="60" r="45" fill="none" stroke="#2563eb" stroke-width="18" stroke-dasharray="56.5 226" stroke-dashoffset="-181.1" transform="rotate(-90 60 60)"/>
+              <circle cx="60" cy="60" r="45" fill="none" stroke="#9ca3af" stroke-width="18" stroke-dasharray="45.2 237.2" stroke-dashoffset="-237.6" transform="rotate(-90 60 60)"/>
+              <text x="60" y="57" text-anchor="middle" font-size="13" font-weight="700" fill="#111827">247</text>
+              <text x="60" y="69" text-anchor="middle" font-size="8" fill="#6b7280">incidents</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="donut-item"><div class="donut-swatch" style="background:#dc2626"></div><span style="font-weight:700;color:var(--text)">38%</span><span style="color:var(--text-muted)">Operator Error</span></div>
+              <div class="donut-item"><div class="donut-swatch" style="background:#d97706"></div><span style="font-weight:700;color:var(--text)">26%</span><span style="color:var(--text-muted)">Guest Behavior</span></div>
+              <div class="donut-item"><div class="donut-swatch" style="background:#2563eb"></div><span style="font-weight:700;color:var(--text)">20%</span><span style="color:var(--text-muted)">Mechanical</span></div>
+              <div class="donut-item"><div class="donut-swatch" style="background:#9ca3af"></div><span style="font-weight:700;color:var(--text)">16%</span><span style="color:var(--text-muted)">Environmental</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Root Cause Pattern Analysis · 4 Key Findings</div>
+
+    <div class="finding"><div class="finding-num" style="background:var(--red-bg);color:var(--red)">1</div><div><div class="finding-title">Shift-Change Window is Your Highest-Risk Period</div><div class="finding-detail">71% of Drop Tower incidents and 58% of Spinning Coaster incidents occur within 45 minutes of a shift change (6–8am and 2–4pm). This is a handoff protocol failure, not a staffing volume issue. The fix is a structured pre-operation checklist signed by the incoming operator before guests are loaded.</div></div></div>
+
+    <div class="finding"><div class="finding-num" style="background:var(--amber-bg);color:var(--amber)">2</div><div><div class="finding-title">Summer Surge Compounds Documentation Failures</div><div class="finding-detail">Documentation quality drops from 74/100 in April to 41/100 in July — directly correlated with seasonal staffing increases. New seasonal hires are not completing incident reports fully. Incident documentation needs to be a standalone module in onboarding, not a footnote in the general safety brief.</div></div></div>
+
+    <div class="finding"><div class="finding-num" style="background:var(--blue-bg);color:var(--blue)">3</div><div><div class="finding-title">Drop Tower SOP Has a Specific Compliance Gap</div><div class="finding-detail">Height and weight restriction enforcement is inconsistently applied. 4 of 6 critical incidents reference a failure to enforce restrictions — but the SOP language puts discretion on the operator rather than defining a mandatory step. This needs a SOP rewrite, not more training on the existing document.</div></div></div>
+
+    <div class="finding"><div class="finding-num" style="background:var(--purple-bg);color:var(--purple)">4</div><div><div class="finding-title">Incident Under-Classification is Masking True Severity Profile</div><div class="finding-detail">An estimated 18–22 incidents classified as "minor" show descriptors consistent with recordable or reportable events. This is both a compliance exposure and an insurance risk — under-classified incidents that later result in claims can create coverage disputes. A classification audit is recommended before your next renewal.</div></div></div>
+
+    <div class="section-label">Prioritized Recommendations</div>
+
+    <div class="rec" style="border-color:var(--red)"><div class="rec-header"><span class="rec-title">1 — Revise Drop Tower SOP and require dual sign-off at shift change</span><span class="badge badge-red">Critical</span></div><div class="rec-detail">Eliminate operator discretion from restriction enforcement. Mandatory pre-operation checklist signed by both outgoing and incoming operator before guests are loaded. Target implementation: 2 weeks.</div></div>
+
+    <div class="rec" style="border-color:var(--red)"><div class="rec-header"><span class="rec-title">2 — Rebuild seasonal onboarding with incident documentation as a standalone module</span><span class="badge badge-red">Critical</span></div><div class="rec-detail">New hires need to complete and pass a documentation assessment before being cleared to operate independently. This directly addresses the summer quality collapse.</div></div>
+
+    <div class="rec" style="border-color:var(--amber)"><div class="rec-header"><span class="rec-title">3 — Conduct a retroactive incident classification audit</span><span class="badge badge-amber">High</span></div><div class="rec-detail">Review the 18–22 potentially under-classified incidents with your legal and insurance contacts before your next renewal. Getting ahead of this is far better than having it surface during a claim.</div></div>
+
+    <div class="rec" style="border-color:var(--amber)"><div class="rec-header"><span class="rec-title">4 — Implement ride-specific operator re-certification for Drop Tower and Spinning Coaster</span><span class="badge badge-amber">High</span></div><div class="rec-detail">Both attractions show incident rates 2–3× the park average with operator error as the dominant cause. Annual generic certification is not sufficient.</div></div>
+
+    <div class="rec" style="border-color:var(--blue)"><div class="rec-header"><span class="rec-title">5 — Add maintenance log review to Go-Karts pre-operation checklist</span><span class="badge badge-blue">Standard</span></div><div class="rec-detail">The May brake failure was preceded by a 12-day maintenance log gap. Requiring the operator to confirm the log is current before opening is a simple fix with meaningful risk reduction.</div></div>
+
+    <div class="cta-footer">
+      <div>
+        <div class="cta-label">🔴 Risk Intelligence Pro</div>
+        <div class="cta-heading">Ready to see your park's data like this?</div>
+        <div class="cta-sub">Send us your incident logs in any format — we handle the rest and return a full analysis in 3 weeks.</div>
+      </div>
+      <a href="https://amusementstandards.com/contact.html?service=Risk%20Intelligence%20Pro" class="cta-btn">Request This Program →</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
