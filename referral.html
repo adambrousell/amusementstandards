@@ -9,12 +9,7 @@
 <body style="margin:0; font-family:Arial, sans-serif; color:#1a1a1a; background:#ffffff;">
 
 <!-- HERO -->
-<section style="
-  background:#0a2342;
-  color:white;
-  padding:60px 20px;
-  text-align:center;
-">
+<section style="background:#0a2342; color:white; padding:60px 20px; text-align:center;">
   <h1 style="margin:0; font-size:42px; font-weight:700;">Referral Intake</h1>
   <p style="margin-top:10px; font-size:20px; max-width:700px; margin-left:auto; margin-right:auto;">
     Help operators run safer, stronger, more consistent operations by sending them our way.
@@ -33,92 +28,108 @@
       documentation support, or operational audits.
     </p>
 
-    <form method="post" action="#" style="margin-top:30px;">
+    <form id="referralForm" style="margin-top:30px;" onsubmit="sendReferral(event)">
 
       <!-- Contact Name -->
       <label style="display:block; margin-bottom:6px; font-weight:600;">Contact Name</label>
-      <input type="text" name="contact_name" required
-        style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px;">
+      <input type="text" id="contact_name" required
+        style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
 
       <!-- Park -->
       <label style="display:block; margin-bottom:6px; font-weight:600;">Park / Company</label>
-      <input type="text" name="park_name" required
-        style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px;">
+      <input type="text" id="park_name" required
+        style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
 
       <!-- Role -->
       <label style="display:block; margin-bottom:6px; font-weight:600;">Role / Title</label>
-      <input type="text" name="role" required
-        style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px;">
+      <input type="text" id="role" required
+        style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
 
       <!-- Email + Phone -->
       <div style="display:flex; gap:20px;">
-
         <div style="flex:1;">
           <label style="display:block; margin-bottom:6px; font-weight:600;">Email</label>
-          <input type="email" name="email" required
-            style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px;">
+          <input type="email" id="email" required
+            style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
         </div>
-
         <div style="flex:1;">
           <label style="display:block; margin-bottom:6px; font-weight:600;">Phone (optional)</label>
-          <input type="tel" name="phone"
-            style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px;">
+          <input type="tel" id="phone"
+            style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
         </div>
-
       </div>
 
       <!-- Need -->
       <label style="display:block; margin-bottom:6px; font-weight:600;">What do they need help with?</label>
-      <textarea name="need" rows="4" required
-        style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px;"></textarea>
+      <textarea id="need" rows="4" required
+        style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;"></textarea>
 
       <!-- Referrer Info -->
       <div style="display:flex; gap:20px;">
-
         <div style="flex:1;">
           <label style="display:block; margin-bottom:6px; font-weight:600;">Referrer Type</label>
-          <select name="referrer_type" required
-            style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px;">
+          <select id="referrer_type" required
+            style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
             <option value="">Select one…</option>
-            <option value="manufacturer">Manufacturer</option>
-            <option value="inspector">Inspector</option>
-            <option value="broker">Broker</option>
-            <option value="operator">Operator</option>
-            <option value="other">Other</option>
+            <option value="Manufacturer">Manufacturer</option>
+            <option value="Inspector">Inspector</option>
+            <option value="Broker">Broker</option>
+            <option value="Operator">Operator</option>
+            <option value="Other">Other</option>
           </select>
         </div>
-
         <div style="flex:1;">
           <label style="display:block; margin-bottom:6px; font-weight:600;">Your Name (Referrer)</label>
-          <input type="text" name="referrer_name"
-            style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px;">
+          <input type="text" id="referrer_name"
+            style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;">
         </div>
-
       </div>
 
       <!-- Submit -->
       <button type="submit"
-        style="
-          width:100%;
-          padding:14px;
-          background:#0a2342;
-          color:white;
-          font-size:18px;
-          font-weight:600;
-          border:none;
-          border-radius:6px;
-          cursor:pointer;
-        ">
+        style="width:100%; padding:14px; background:#0a2342; color:white; font-size:18px; font-weight:600; border:none; border-radius:6px; cursor:pointer;">
         Submit Referral
       </button>
 
       <p style="text-align:center; margin-top:12px; font-size:14px; color:#666;">
-        We’ll reach out to your referral directly and keep you updated.
+        We'll reach out to your referral directly and keep you updated.
       </p>
 
     </form>
   </div>
 </section>
+
+<script>
+function sendReferral(e) {
+  e.preventDefault();
+
+  var contact  = document.getElementById('contact_name').value;
+  var park     = document.getElementById('park_name').value;
+  var role     = document.getElementById('role').value;
+  var email    = document.getElementById('email').value;
+  var phone    = document.getElementById('phone').value || 'N/A';
+  var need     = document.getElementById('need').value;
+  var refType  = document.getElementById('referrer_type').value;
+  var refName  = document.getElementById('referrer_name').value || 'N/A';
+
+  var body =
+    'New Referral Submission\n' +
+    '------------------------\n' +
+    'Contact Name: '   + contact  + '\n' +
+    'Park / Company: ' + park     + '\n' +
+    'Role / Title: '   + role     + '\n' +
+    'Email: '          + email    + '\n' +
+    'Phone: '          + phone    + '\n\n' +
+    'What they need help with:\n' + need + '\n\n' +
+    'Referrer Type: '  + refType  + '\n' +
+    'Referrer Name: '  + refName;
+
+  window.location.href =
+    'mailto:adam@amusementstandards.com' +
+    '?subject=' + encodeURIComponent('New Referral: ' + contact + ' – ' + park) +
+    '&body='    + encodeURIComponent(body);
+}
+</script>
 
 </body>
 </html>
