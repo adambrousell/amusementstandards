@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seasonal Operations Optimization | Amusement Standards</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #ffffff;
+    --bg: #f9f9f9;
+    --bg-dark: #111827;
+    --text: #111827;
+    --text-muted: #6b7280;
+    --text-light: #9ca3af;
+    --border: #e5e7eb;
+    --border-dark: #d1d5db;
+    --accent: #1d4ed8;
+    --accent-hover: #1e40af;
+    --red: #dc2626;
+    --red-bg: #fef2f2;
+    --red-border: #fecaca;
+    --amber: #d97706;
+    --amber-bg: #fffbeb;
+    --amber-border: #fde68a;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --green-border: #bbf7d0;
+    --blue: #2563eb;
+    --blue-bg: #eff6ff;
+    --blue-border: #bfdbfe;
+    --purple: #7c3aed;
+    --purple-bg: #f5f3ff;
+    --purple-border: #ddd6fe;
+    --teal: #0d9488;
+    --teal-bg: #f0fdfa;
+    --teal-border: #99f6e4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--white); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; font-size: 14px; line-height: 1.6; }
+
+  nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 15px; font-weight: 600; color: var(--text); text-decoration: none; }
+  .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+  .nav-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; font-weight: 500; }
+  .nav-links a:hover { color: var(--text); }
+
+  .hero { background: var(--bg-dark); color: #fff; padding: 52px 40px 44px; }
+  .hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end; }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #34d399; margin-bottom: 12px; }
+  .hero-title { font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 10px; letter-spacing: -0.02em; }
+  .hero-sub { font-size: 14px; color: #9ca3af; max-width: 500px; line-height: 1.6; }
+  .hero-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #374151; border: 1px solid #374151; min-width: 290px; }
+  .hero-meta-cell { background: #1f2937; padding: 13px 16px; }
+  .meta-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; margin-bottom: 4px; }
+  .meta-val { font-size: 13px; font-weight: 600; color: #f9fafb; }
+
+  .layout { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 216px 1fr; padding: 32px 40px; align-items: start; }
+  .sidebar { position: sticky; top: 76px; padding-right: 28px; border-right: 1px solid var(--border); }
+  .sidebar-section { margin-bottom: 28px; }
+  .sidebar-heading { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  .challenge-item { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; border-radius: 5px; margin-bottom: 3px; font-size: 12px; color: var(--text); font-weight: 500; line-height: 1.4; }
+  .challenge-item:hover { background: var(--bg); }
+  .challenge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+
+  .deliverable-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 5px; margin-bottom: 2px; font-size: 12px; color: var(--text); font-weight: 500; }
+  .deliverable-item:hover { background: var(--bg); }
+  .check { font-size: 12px; flex-shrink: 0; }
+
+  .pkg-card { border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 8px; cursor: pointer; transition: border-color 0.15s; }
+  .pkg-card:hover { border-color: var(--accent); }
+  .pkg-card.featured { border-color: var(--accent); background: var(--blue-bg); }
+  .pkg-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .pkg-price { font-size: 18px; font-weight: 700; color: var(--accent); }
+  .pkg-desc { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+  .content { padding-left: 28px; }
+
+  .alert { display: flex; gap: 12px; padding: 12px 16px; border-radius: 6px; margin-bottom: 12px; font-size: 12px; line-height: 1.5; border: 1px solid; }
+  .alert-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+  .alert-amber { background: var(--amber-bg); border-color: var(--amber-border); color: #78350f; }
+  .alert-green { background: var(--green-bg); border-color: var(--green-border); color: #14532d; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0 28px; }
+  .kpi { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 18px; position: relative; overflow: hidden; }
+  .kpi-top { height: 3px; position: absolute; top: 0; left: 0; right: 0; border-radius: 8px 8px 0 0; }
+  .kpi-label { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+  .kpi-value { font-size: 34px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .kpi-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+  .kpi-tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin: 28px 0 12px; display: flex; align-items: center; gap: 10px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border-bottom: 1px solid var(--border); background: var(--bg); }
+  .card-title { font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text); }
+  .card-subtitle { font-size: 11px; color: var(--text-muted); }
+  .card-body { padding: 18px; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .three-col { display: grid; grid-template-columns: 3fr 2fr; gap: 12px; margin-bottom: 12px; }
+
+  /* STAFFING CHART */
+  .staffing-chart { width: 100%; }
+  .month-row { display: grid; grid-template-columns: 44px 1fr 44px; gap: 8px; align-items: center; margin-bottom: 7px; }
+  .month-name { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .bar-track { height: 20px; background: #f3f4f6; border-radius: 4px; overflow: hidden; position: relative; }
+  .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 10px; font-weight: 600; color: #fff; white-space: nowrap; transition: width 0.6s ease; }
+  .bar-count { font-size: 11px; font-weight: 600; color: var(--text); text-align: right; }
+
+  /* WEATHER GRID */
+  .weather-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .weather-card { border: 1px solid var(--border); border-radius: 6px; padding: 14px; }
+  .weather-icon { font-size: 22px; margin-bottom: 8px; }
+  .weather-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .weather-detail { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+  .weather-tag { display: inline-block; margin-top: 6px; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
+
+  /* REVENUE CHART */
+  .rev-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .rev-label { font-size: 11px; color: var(--text-muted); width: 80px; flex-shrink: 0; }
+  .rev-track { flex: 1; height: 16px; background: #f3f4f6; border-radius: 4px; overflow: hidden; position: relative; }
+  .rev-fill-actual { height: 100%; border-radius: 4px; background: var(--blue); }
+  .rev-fill-potential { height: 100%; border-radius: 4px; background: repeating-linear-gradient(90deg, #bbf7d0 0px, #bbf7d0 6px, #f0fdf4 6px, #f0fdf4 12px); position: absolute; top: 0; left: 0; }
+  .rev-vals { font-size: 10px; font-weight: 600; color: var(--text-muted); width: 60px; text-align: right; flex-shrink: 0; }
+
+  /* ONBOARDING TIMELINE */
+  .timeline { position: relative; padding-left: 24px; }
+  .timeline::before { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 2px; background: var(--border); }
+  .tl-item { position: relative; margin-bottom: 16px; }
+  .tl-item:last-child { margin-bottom: 0; }
+  .tl-dot { position: absolute; left: -20px; top: 3px; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--white); box-shadow: 0 0 0 2px var(--border); background: var(--white); }
+  .tl-dot.done { background: var(--green); box-shadow: 0 0 0 2px var(--green-border); }
+  .tl-dot.active { background: var(--blue); box-shadow: 0 0 0 2px var(--blue-border); }
+  .tl-day { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px; }
+  .tl-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .tl-detail { font-size: 11px; color: var(--text-muted); }
+
+  /* CAPACITY TABLE */
+  table { width: 100%; border-collapse: collapse; }
+  th { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--bg); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #fafafa; }
+
+  .badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); }
+  .badge-purple { background: var(--purple-bg); color: var(--purple); }
+  .badge-teal { background: var(--teal-bg); color: var(--teal); }
+
+  .status-pill { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.04em; border: 1px solid; }
+  .sp-over { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
+  .sp-ok { background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
+  .sp-under { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-border); }
+
+  /* OUTCOMES */
+  .outcome-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .outcome-card { border: 1px solid var(--border); border-radius: 6px; padding: 16px; }
+  .outcome-icon { font-size: 20px; margin-bottom: 8px; }
+  .outcome-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .outcome-detail { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+  .cta-footer { margin-top: 28px; background: var(--bg-dark); border-radius: 8px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 32px; color: #fff; }
+  .cta-label { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #34d399; margin-bottom: 6px; }
+  .cta-heading { font-size: 20px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+  .cta-sub { font-size: 13px; color: #9ca3af; }
+  .cta-btn { display: inline-block; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; padding: 12px 24px; border-radius: 6px; text-decoration: none; white-space: nowrap; flex-shrink: 0; transition: background 0.15s; }
+  .cta-btn:hover { background: var(--accent-hover); }
+
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: 1fr; padding: 20px; }
+    .sidebar { display: none; }
+    .content { padding-left: 0; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-meta { display: none; }
+    nav { padding: 0 20px; }
+    .outcome-grid, .weather-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://amusementstandards.com" class="nav-logo">amusement standards.</a>
+  <ul class="nav-links">
+    <li><a href="https://amusementstandards.com/#services">Services</a></li>
+    <li><a href="https://amusementstandards.com/#packages">Packages</a></li>
+    <li><a href="https://amusementstandards.com/#about">About</a></li>
+    <li><a href="https://amusementstandards.com/contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">🔄 Seasonal Operations Optimization — Sample Report</div>
+      <h1 class="hero-title">Scale Smarter. Staff Efficiently.<br>Maximize Revenue Year-Round.</h1>
+      <p class="hero-sub">Custom staffing models, rapid training systems, weather contingency plans, and revenue forecasting — built for parks that can't afford to scramble every season.</p>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-cell"><div class="meta-label">Duration</div><div class="meta-val">3-week flat-rate</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Base Price</div><div class="meta-val">From $3,000</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Hybrid</div><div class="meta-val">$5,500</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Delivery</div><div class="meta-val">Remote + optional on-site</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Data In</div><div class="meta-val">Staffing, attendance, revenue</div></div>
+      <div class="hero-meta-cell"><div class="meta-label">Deliverables</div><div class="meta-val">5 custom tools</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Common Challenges</div>
+      <div class="challenge-item"><div class="challenge-dot" style="background:var(--red)"></div>Mass hiring every spring, losing staff by fall</div>
+      <div class="challenge-item"><div class="challenge-dot" style="background:var(--red)"></div>Inconsistent service peak vs. off-peak</div>
+      <div class="challenge-item"><div class="challenge-dot" style="background:var(--amber)"></div>Weather shutdowns with no contingency plan</div>
+      <div class="challenge-item"><div class="challenge-dot" style="background:var(--amber)"></div>Overstaffed slow days, understaffed busy ones</div>
+      <div class="challenge-item"><div class="challenge-dot" style="background:var(--amber)"></div>Revenue gaps in shoulder season</div>
+      <div class="challenge-item"><div class="challenge-dot" style="background:var(--blue)"></div>Training takes weeks, staff quit after 2</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Deliverables Included</div>
+      <div class="deliverable-item"><span class="check">📊</span>Staffing model templates</div>
+      <div class="deliverable-item"><span class="check">🎓</span>Training acceleration toolkit</div>
+      <div class="deliverable-item"><span class="check">📅</span>Capacity planning spreadsheet</div>
+      <div class="deliverable-item"><span class="check">⛈️</span>Weather contingency playbook</div>
+      <div class="deliverable-item"><span class="check">📈</span>Revenue forecasting report</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Package Options</div>
+      <div class="pkg-card">
+        <div class="pkg-name">Base Package</div>
+        <div class="pkg-price">$3,000</div>
+        <div class="pkg-desc">Remote-first · all 5 deliverables</div>
+      </div>
+      <div class="pkg-card featured">
+        <div class="pkg-name">Hybrid Package ★</div>
+        <div class="pkg-price">$5,500</div>
+        <div class="pkg-desc">Base + on-site day, live assessment, workshops</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="alert alert-amber">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Staffing Inefficiency Detected:</strong> Analysis shows this park is overstaffed by an average of 23% on weekday shoulder-season days, while running 18% understaffed on peak summer weekends — both patterns are fully correctable with custom scheduling models.</div>
+    </div>
+    <div class="alert alert-green">
+      <span class="alert-icon">💡</span>
+      <div><strong>Revenue Opportunity Identified:</strong> Shoulder season (Sep–Nov) accounts for only 11% of annual revenue despite representing 31% of operating days. Targeted pricing and programming strategies could lift this to 18–22%.</div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-top" style="background:var(--red)"></div>
+        <div class="kpi-label">Peak Staffing Gap</div>
+        <div class="kpi-value" style="color:var(--red)">−18%</div>
+        <div class="kpi-sub">Understaffed on busy days</div>
+        <span class="kpi-tag" style="background:var(--red-bg);color:var(--red)">Jul–Aug weekends</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top" style="background:var(--amber)"></div>
+        <div class="kpi-label">Avg. Onboarding Time</div>
+        <div class="kpi-value" style="color:var(--amber)">18 days</div>
+        <div class="kpi-sub">Industry benchmark: 7–9 days</div>
+        <span class="kpi-tag" style="background:var(--amber-bg);color:var(--amber)">2× longer than needed</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top" style="background:var(--green)"></div>
+        <div class="kpi-label">Shoulder Season Lift</div>
+        <div class="kpi-value" style="color:var(--green)">+11%</div>
+        <div class="kpi-sub">Projected revenue upside</div>
+        <span class="kpi-tag" style="background:var(--green-bg);color:var(--green)">With pricing strategy</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top" style="background:var(--blue)"></div>
+        <div class="kpi-label">Weather Protocols</div>
+        <div class="kpi-value" style="color:var(--blue)">0</div>
+        <div class="kpi-sub">Pre-built plans on file</div>
+        <span class="kpi-tag" style="background:var(--blue-bg);color:var(--blue)">5 scenarios needed</span>
+      </div>
+    </div>
+
+    <div class="section-label">Staffing Model · Peak vs. Off-Peak by Month</div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Recommended Headcount by Month</span>
+        <span class="card-subtitle">All departments · based on historical attendance data</span>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+          <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)"><span style="width:12px;height:12px;background:#2563eb;border-radius:2px;display:inline-block"></span>Peak Season</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)"><span style="width:12px;height:12px;background:#16a34a;border-radius:2px;display:inline-block"></span>Standard</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)"><span style="width:12px;height:12px;background:#d97706;border-radius:2px;display:inline-block"></span>Shoulder Season</span>
+          <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)"><span style="width:12px;height:12px;background:#e5e7eb;border-radius:2px;display:inline-block"></span>Closed / Minimal</span>
+        </div>
+        <div class="staffing-chart">
+          <div class="month-row"><span class="month-name">Jan</span><div class="bar-track"><div class="bar-fill" style="width:8%;background:#e5e7eb;color:#9ca3af">12</div></div><span class="bar-count" style="color:var(--text-muted)">12</span></div>
+          <div class="month-row"><span class="month-name">Feb</span><div class="bar-track"><div class="bar-fill" style="width:8%;background:#e5e7eb;color:#9ca3af">12</div></div><span class="bar-count" style="color:var(--text-muted)">12</span></div>
+          <div class="month-row"><span class="month-name">Mar</span><div class="bar-track"><div class="bar-fill" style="width:20%;background:#16a34a">30</div></div><span class="bar-count">30</span></div>
+          <div class="month-row"><span class="month-name">Apr</span><div class="bar-track"><div class="bar-fill" style="width:33%;background:#16a34a">50</div></div><span class="bar-count">50</span></div>
+          <div class="month-row"><span class="month-name">May</span><div class="bar-track"><div class="bar-fill" style="width:50%;background:#16a34a">75</div></div><span class="bar-count">75</span></div>
+          <div class="month-row"><span class="month-name">Jun</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:#2563eb">122</div></div><span class="bar-count">122</span></div>
+          <div class="month-row"><span class="month-name">Jul</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:#2563eb">152</div></div><span class="bar-count">152</span></div>
+          <div class="month-row"><span class="month-name">Aug</span><div class="bar-track"><div class="bar-fill" style="width:96%;background:#2563eb">146</div></div><span class="bar-count">146</span></div>
+          <div class="month-row"><span class="month-name">Sep</span><div class="bar-track"><div class="bar-fill" style="width:46%;background:#d97706">70</div></div><span class="bar-count">70</span></div>
+          <div class="month-row"><span class="month-name">Oct</span><div class="bar-track"><div class="bar-fill" style="width:40%;background:#d97706">60</div></div><span class="bar-count">60</span></div>
+          <div class="month-row"><span class="month-name">Nov</span><div class="bar-track"><div class="bar-fill" style="width:16%;background:#e5e7eb;color:#9ca3af">24</div></div><span class="bar-count" style="color:var(--text-muted)">24</span></div>
+          <div class="month-row"><span class="month-name">Dec</span><div class="bar-track"><div class="bar-fill" style="width:10%;background:#e5e7eb;color:#9ca3af">15</div></div><span class="bar-count" style="color:var(--text-muted)">15</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+
+      <!-- ONBOARDING TIMELINE -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Accelerated Onboarding System</span>
+          <span class="card-subtitle">Target: operational in 7 days</span>
+        </div>
+        <div class="card-body">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot done"></div>
+              <div class="tl-day">Day 1</div>
+              <div class="tl-title">Pre-arrival digital orientation</div>
+              <div class="tl-detail">LMS modules assigned before first day. Safety policy, park overview, role fundamentals — completed on personal device. Saves 3–4 hours of Day 1 classroom time.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot done"></div>
+              <div class="tl-day">Day 2–3</div>
+              <div class="tl-title">Ride-specific certification</div>
+              <div class="tl-detail">Attraction-specific modules with knowledge checks. Supervised shadow shifts on assigned ride. Certification checklist signed off by lead operator.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot active"></div>
+              <div class="tl-day">Day 4–5</div>
+              <div class="tl-title">Supervised solo operation</div>
+              <div class="tl-detail">New hire operates independently with scheduled check-ins. Incident reporting procedures reviewed. Guest communication standards assessed.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-day">Day 6–7</div>
+              <div class="tl-title">Certification sign-off + cross-training begins</div>
+              <div class="tl-detail">Final ride certification completed. Cross-training on secondary attraction begins to increase schedule flexibility and reduce single-point-of-failure staffing.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAPACITY TABLE -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Capacity Planning Matrix</span>
+          <span class="card-subtitle">Staff needed by day type</span>
+        </div>
+        <div style="padding:0">
+          <table>
+            <thead><tr><th>Day Type</th><th>Projected Attendance</th><th>Staff Needed</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:600">Peak Weekend</td>
+                <td>3,800–4,200</td>
+                <td style="font-weight:600">148–155</td>
+                <td><span class="status-pill sp-under">Understaffed</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Peak Weekday</td>
+                <td>2,200–2,800</td>
+                <td style="font-weight:600">95–110</td>
+                <td><span class="status-pill sp-ok">Optimized</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Holiday</td>
+                <td>4,500–5,000</td>
+                <td style="font-weight:600">165–175</td>
+                <td><span class="status-pill sp-under">Understaffed</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Shoulder Weekend</td>
+                <td>1,400–1,800</td>
+                <td style="font-weight:600">62–72</td>
+                <td><span class="status-pill sp-over">Overstaffed</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Shoulder Weekday</td>
+                <td>600–900</td>
+                <td style="font-weight:600">28–38</td>
+                <td><span class="status-pill sp-over">Overstaffed</span></td>
+              </tr>
+              <tr>
+                <td style="font-weight:600">Off-Season</td>
+                <td>200–400</td>
+                <td style="font-weight:600">12–18</td>
+                <td><span class="status-pill sp-ok">Optimized</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Weather Contingency Playbook · 5 Scenarios</div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Pre-Built Weather Protocols</span>
+        <span class="card-subtitle">Guest communication scripts · staff redeployment · refund policies</span>
+      </div>
+      <div class="card-body">
+        <div class="weather-grid">
+          <div class="weather-card">
+            <div class="weather-icon">🌧️</div>
+            <div class="weather-title">Rain Protocol</div>
+            <div class="weather-detail">Partial closure decision tree based on rainfall rate. Indoor redeployment assignments pre-mapped. Guest communication script and comp voucher policy ready to activate.</div>
+            <span class="weather-tag" style="background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)">Trigger: &gt;0.25in/hr</span>
+          </div>
+          <div class="weather-card">
+            <div class="weather-icon">⚡</div>
+            <div class="weather-title">Lightning Protocol</div>
+            <div class="weather-detail">Full outdoor shutdown procedure with ride evacuation sequence. 30-minute all-clear timer. Guest shelter capacity mapped across the park. Staff safety accountability checklist.</div>
+            <span class="weather-tag" style="background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)">Trigger: Within 10 miles</span>
+          </div>
+          <div class="weather-card">
+            <div class="weather-icon">🌡️</div>
+            <div class="weather-title">Heat Protocol</div>
+            <div class="weather-detail">Staff rotation schedule shortens when heat index exceeds thresholds. Cooling stations activated. Guest hydration messaging deployed via PA and digital signage. Modified operating hours plan.</div>
+            <span class="weather-tag" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)">Trigger: Heat index &gt;100°F</span>
+          </div>
+          <div class="weather-card">
+            <div class="weather-icon">💨</div>
+            <div class="weather-title">Wind Protocol</div>
+            <div class="weather-detail">Ride-specific wind speed thresholds mapped per manufacturer spec. Automated monitoring alerts lead operators. Ride-by-ride shutdown sequence minimizes guest disruption while maintaining safety compliance.</div>
+            <span class="weather-tag" style="background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border)">Trigger: Ride-specific mph</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Revenue Forecasting · Shoulder Season Strategy</div>
+
+    <div class="three-col">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Revenue by Season · Actual vs. Potential</span>
+          <span class="card-subtitle">% of annual revenue · with optimization</span>
+        </div>
+        <div class="card-body">
+          <div style="margin-bottom:20px">
+            <div class="rev-row">
+              <span class="rev-label" style="font-weight:600">Peak Summer</span>
+              <div class="rev-track" style="position:relative">
+                <div class="rev-fill-actual" style="width:68%"></div>
+              </div>
+              <span class="rev-vals" style="color:var(--blue);font-weight:700">68%</span>
+            </div>
+            <div class="rev-row">
+              <span class="rev-label" style="font-weight:600">Spring</span>
+              <div class="rev-track" style="position:relative">
+                <div class="rev-fill-actual" style="width:14%"></div>
+                <div class="rev-fill-potential" style="width:20%"></div>
+              </div>
+              <span class="rev-vals"><span style="color:var(--blue)">14%</span> <span style="color:var(--green);font-size:9px">→20%</span></span>
+            </div>
+            <div class="rev-row">
+              <span class="rev-label" style="font-weight:600">Fall / Oct</span>
+              <div class="rev-track" style="position:relative">
+                <div class="rev-fill-actual" style="width:11%"></div>
+                <div class="rev-fill-potential" style="width:22%"></div>
+              </div>
+              <span class="rev-vals"><span style="color:var(--blue)">11%</span> <span style="color:var(--green);font-size:9px">→22%</span></span>
+            </div>
+            <div class="rev-row">
+              <span class="rev-label" style="font-weight:600">Winter</span>
+              <div class="rev-track" style="position:relative">
+                <div class="rev-fill-actual" style="width:7%"></div>
+                <div class="rev-fill-potential" style="width:12%"></div>
+              </div>
+              <span class="rev-vals"><span style="color:var(--blue)">7%</span> <span style="color:var(--green);font-size:9px">→12%</span></span>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;padding-top:14px;border-top:1px solid var(--border);flex-wrap:wrap">
+            <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted)"><span style="width:12px;height:8px;background:var(--blue);border-radius:2px;display:inline-block"></span>Current</span>
+            <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted)"><span style="width:12px;height:8px;background:repeating-linear-gradient(90deg,#bbf7d0 0,#bbf7d0 4px,#f0fdf4 4px,#f0fdf4 8px);border-radius:2px;display:inline-block"></span>Potential with strategy</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Shoulder Season Tactics</span>
+          <span class="card-subtitle">Actionable recommendations</span>
+        </div>
+        <div class="card-body" style="padding-top:12px">
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span class="badge badge-green" style="flex-shrink:0;margin-top:1px">Revenue</span>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px">Dynamic pricing for off-peak days</div>
+              <div style="font-size:11px;color:var(--text-muted)">15–25% discount on weekdays drives attendance without eroding peak pricing</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span class="badge badge-purple" style="flex-shrink:0;margin-top:1px">Events</span>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px">Themed fall event programming</div>
+              <div style="font-size:11px;color:var(--text-muted)">Halloween-themed nights in Oct drove 2.1× normal weekend attendance at comparable parks</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span class="badge badge-blue" style="flex-shrink:0;margin-top:1px">Groups</span>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px">School & corporate group packages</div>
+              <div style="font-size:11px;color:var(--text-muted)">Spring/fall group bookings fill weekdays and reduce weather-driven revenue variance</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0">
+            <span class="badge badge-teal" style="flex-shrink:0;margin-top:1px">Passes</span>
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px">Season pass renewal incentives</div>
+              <div style="font-size:11px;color:var(--text-muted)">Early renewal discounts offered during shoulder season lock in next year's revenue now</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Program Outcomes</div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">What You'll Have at Engagement Close</span>
+        <span class="card-subtitle">5 custom deliverables · ready to use immediately</span>
+      </div>
+      <div class="card-body">
+        <div class="outcome-grid">
+          <div class="outcome-card">
+            <div class="outcome-icon">📊</div>
+            <div class="outcome-title">Custom staffing benchmarks for every season</div>
+            <div class="outcome-detail">Exact headcount by department, day type, and month. No more guessing — hire confidently and schedule efficiently across your entire operating year.</div>
+          </div>
+          <div class="outcome-card">
+            <div class="outcome-icon">🎓</div>
+            <div class="outcome-title">Faster, safer seasonal onboarding</div>
+            <div class="outcome-detail">Condensed training system that gets new hires operational in 7 days without cutting corners on safety or service quality. Built for high-turnover realities.</div>
+          </div>
+          <div class="outcome-card">
+            <div class="outcome-icon">🌦️</div>
+            <div class="outcome-title">Weather protocols that protect revenue & reputation</div>
+            <div class="outcome-detail">Pre-scripted shutdown plans and guest communication strategies for 5 weather scenarios — so your team executes confidently instead of improvising under pressure.</div>
+          </div>
+          <div class="outcome-card">
+            <div class="outcome-icon">📈</div>
+            <div class="outcome-title">Shoulder season revenue strategy</div>
+            <div class="outcome-detail">Actionable pricing, events, and group booking tactics to reduce summer dependency and drive off-peak attendance — with realistic revenue projections attached.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Pricing · Choose Your Package</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px">
+
+      <!-- BASE -->
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
+        <div style="padding:24px;border-bottom:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Base Package</div>
+          <div style="font-size:40px;font-weight:700;letter-spacing:-0.02em;color:var(--text);line-height:1;margin-bottom:4px">$3,000</div>
+          <div style="font-size:12px;color:var(--text-muted)">Flat rate · 3-week engagement · Remote delivery</div>
+        </div>
+        <div style="padding:20px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px">What's included</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text)"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span><span>Historical data analysis — staffing, attendance, revenue</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text)"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span><span>Custom staffing model templates (peak/off-peak)</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text)"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span><span>Training acceleration toolkit</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text)"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span><span>Weather contingency playbook (5 scenarios)</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text)"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span><span>Revenue forecasting spreadsheet with pricing recommendations</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text-muted)"><span style="color:var(--border-dark);font-weight:700;flex-shrink:0">—</span><span>On-site observation day</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text-muted)"><span style="color:var(--border-dark);font-weight:700;flex-shrink:0">—</span><span>Live capacity & guest flow assessment</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text-muted)"><span style="color:var(--border-dark);font-weight:700;flex-shrink:0">—</span><span>In-person stakeholder workshops</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text-muted)"><span style="color:var(--border-dark);font-weight:700;flex-shrink:0">—</span><span>Custom seasonal marketing strategy session</span></div>
+          </div>
+          <a href="https://amusementstandards.com/contact.html?service=Seasonal%20Operations%20Base" style="display:block;margin-top:20px;text-align:center;border:1px solid var(--border);color:var(--text);font-size:13px;font-weight:600;padding:11px 20px;border-radius:6px;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">Get Started with Base →</a>
+        </div>
+      </div>
+
+      <!-- HYBRID -->
+      <div style="border:2px solid var(--accent);border-radius:8px;overflow:hidden;position:relative">
+        <div style="background:var(--accent);padding:6px 16px;text-align:center">
+          <span style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#fff">Most Popular · Recommended</span>
+        </div>
+        <div style="padding:24px;border-bottom:1px solid var(--blue-border);background:var(--blue-bg)">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px">Hybrid Package</div>
+          <div style="font-size:40px;font-weight:700;letter-spacing:-0.02em;color:var(--text);line-height:1;margin-bottom:4px">$5,500</div>
+          <div style="font-size:12px;color:var(--text-muted)">Flat rate · 3-week engagement · Remote + on-site day</div>
+        </div>
+        <div style="padding:20px;background:var(--blue-bg)">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px">Everything in Base, plus</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text)"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span><span>Historical data analysis — staffing, attendance, revenue</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text)"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span><span>Custom staffing model templates (peak/off-peak)</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text)"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span><span>Training acceleration toolkit</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text)"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span><span>Weather contingency playbook (5 scenarios)</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text)"><span style="color:var(--green);font-weight:700;flex-shrink:0">✓</span><span>Revenue forecasting spreadsheet with pricing recommendations</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text);font-weight:600"><span style="color:var(--accent);font-weight:700;flex-shrink:0">✓</span><span>On-site observation day during peak operations</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text);font-weight:600"><span style="color:var(--accent);font-weight:700;flex-shrink:0">✓</span><span>Live capacity assessment and guest flow analysis</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text);font-weight:600"><span style="color:var(--accent);font-weight:700;flex-shrink:0">✓</span><span>In-person stakeholder workshops (ops, HR, finance)</span></div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--text);font-weight:600"><span style="color:var(--accent);font-weight:700;flex-shrink:0">✓</span><span>Custom seasonal marketing strategy session</span></div>
+          </div>
+          <a href="https://amusementstandards.com/contact.html?service=Seasonal%20Operations%20Hybrid" style="display:block;margin-top:20px;text-align:center;background:var(--accent);color:#fff;font-size:13px;font-weight:600;padding:12px 20px;border-radius:6px;text-decoration:none;" onmouseover="this.style.background='#1e40af'" onmouseout="this.style.background='#1d4ed8'">Get Started with Hybrid →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="cta-footer">
+      <div>
+        <div class="cta-label">🔄 Seasonal Operations Optimization</div>
+        <div class="cta-heading">Stop scrambling every season.</div>
+        <div class="cta-sub">Base from $3,000 &nbsp;·&nbsp; Hybrid $5,500 &nbsp;·&nbsp; 3-week engagement &nbsp;·&nbsp; Remote + optional on-site &nbsp;·&nbsp; 5 custom deliverables</div>
+      </div>
+      <a href="https://amusementstandards.com/contact.html?service=Seasonal%20Operations%20Optimization" class="cta-btn">Get Started →</a>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
