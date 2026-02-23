@@ -1,533 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amusement Standards | Safety & Compliance Consulting</title>
-    <meta name="description" content="Expert consulting for amusement venue safety, training, compliance, and risk management.">
+    <title>Amusement Standards | Safety, Compliance & Risk Intelligence Consulting</title>
+    <meta name="description" content="Expert consulting for amusement venue safety, training, compliance, risk intelligence, and data analytics. Serving parks, FECs, water parks, and attractions nationwide.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/styles.css">
-    <style>
-        body { font-family: 'DM Sans', sans-serif; }
-        h1 { font-size: 3rem; }
-        h2 { font-size: 2.5rem; }
-        h3 { font-size: 2rem; }
-        h4 { font-size: 1.5rem; }
-        p, li { font-size: 1rem; }
-        /* Emergency Package Styles */
-.emergency-package {
-    background: linear-gradient(135deg, #fef2f2, #fee2e2);
-    border: 2px solid #fca5a5;
-    border-radius: 12px;
-    margin: 40px 0 0 0;
-    padding: 0;
-    width: 100%;
+<style>
+:root {
+    --primary: #0052CC;
+    --primary-dark: #003D99;
+    --primary-light: #E8F0FC;
+    --secondary: #FF6B35;
+    --secondary-dark: #E55A2B;
+    --success: #00875A;
+    --danger: #DC2626;
+    --danger-dark: #B91C1C;
+    --bg-light: #F7F9FC;
+    --bg-white: #FFFFFF;
+    --text-primary: #172B4D;
+    --text-secondary: #5E6C84;
+    --text-light: #8993A4;
+    --border: #DFE1E6;
+    --border-strong: #C1C7D0;
+    --shadow: rgba(9,30,66,0.08);
+    --shadow-hover: rgba(9,30,66,0.16);
+    --font-display: 'DM Sans', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --transition: 0.2s ease;
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-display);color:var(--text-primary);line-height:1.6;background:var(--bg-white);-webkit-font-smoothing:antialiased}
+a{text-decoration:none}
 
-.emergency-package-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 30px;
-    padding: 30px 40px;
-}
+/* BUTTONS */
+.btn{display:inline-block;font-family:var(--font-display);font-weight:600;font-size:15px;padding:13px 28px;border-radius:var(--radius-sm);transition:all var(--transition);cursor:pointer;border:none;white-space:nowrap}
+.btn-primary{background:var(--secondary);color:#fff}
+.btn-primary:hover{background:var(--secondary-dark);transform:translateY(-1px);box-shadow:0 8px 20px rgba(255,107,53,.28)}
+.btn-blue{background:var(--primary);color:#fff}
+.btn-blue:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,82,204,.25)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}
+.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.28)}
+.btn-ghost:hover{background:rgba(255,255,255,.22)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:var(--danger-dark);transform:translateY(-1px)}
+.btn-lg{padding:16px 36px;font-size:16px}
+.btn-full{width:100%;text-align:center;display:block}
 
-.emergency-icon {
-    font-size: 3rem;
-    flex-shrink: 0;
-}
+/* HEADER */
+.header{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.logo{font-family:var(--font-mono);font-size:17px;font-weight:700;color:var(--primary);letter-spacing:-.5px;flex-shrink:0}
+.nav{display:flex;align-items:center;gap:8px;list-style:none}
+.nav a{color:var(--text-secondary);font-weight:500;font-size:14px;padding:6px 12px;border-radius:var(--radius-sm);transition:all var(--transition)}
+.nav a:hover{color:var(--primary);background:var(--primary-light)}
+.nav .nav-cta{background:var(--secondary);color:#fff;padding:9px 18px}
+.nav .nav-cta:hover{background:var(--secondary-dark)}
 
-.emergency-content {
-    flex: 1;
-}
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a2d6e 0%,#003D99 50%,#0052CC 100%);color:#fff;padding:88px 40px 96px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 70% 50%,rgba(255,107,53,.12) 0%,transparent 60%),radial-gradient(circle at 20% 80%,rgba(255,255,255,.04) 0%,transparent 50%)}
+.hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' fill='white' opacity='0.06'/%3E%3C/svg%3E") repeat;background-size:60px 60px}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.hero-eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--secondary)}
+.hero h1{font-size:clamp(34px,4vw,52px);font-weight:700;line-height:1.1;letter-spacing:-1px;margin-bottom:22px}
+.hero h1 span{color:rgba(255,255,255,.5)}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.72);line-height:1.75;font-weight:300;margin-bottom:40px;max-width:500px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.hero-proof{display:flex;flex-direction:column;gap:16px}
+.proof-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.proof-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);padding:22px 26px;backdrop-filter:blur(8px);transition:background var(--transition)}
+.proof-card:hover{background:rgba(255,255,255,.10)}
+.proof-num{font-family:var(--font-mono);font-size:30px;font-weight:700;color:#fff;line-height:1;margin-bottom:5px}
+.proof-num em{color:var(--secondary);font-style:normal}
+.proof-label{font-size:12px;color:rgba(255,255,255,.5);line-height:1.4}
+.proof-wide .proof-num{font-size:19px;letter-spacing:-.5px}
 
-.emergency-content h3 {
-    margin: 0 0 10px 0;
-    color: #991b1b;
-    font-size: 1.5rem;
-}
+/* TRUST BAR */
+.trust-bar{background:var(--bg-light);border-bottom:1px solid var(--border);padding:14px 40px}
+.trust-bar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.trust-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-light);white-space:nowrap}
+.trust-items{display:flex;gap:6px;flex-wrap:wrap}
+.trust-pill{font-size:12px;font-weight:500;color:var(--text-secondary);background:#fff;border:1px solid var(--border);border-radius:100px;padding:4px 12px}
 
-.emergency-content p {
-    margin: 0 0 5px 0;
-    color: #7f1d1d;
-}
+/* SHARED */
+.section{padding:96px 40px}
+.section-alt{background:var(--bg-light)}
+.container{max-width:1200px;margin:0 auto}
+.section-head{margin-bottom:56px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:12px}
+.section-title{font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:12px}
+.section-sub{font-size:16px;color:var(--text-secondary);line-height:1.7;font-weight:300;max-width:580px}
 
-.emergency-meta {
-    font-size: 0.9rem;
-    color: #991b1b;
-}
+/* SERVICES */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.svc-card{background:var(--bg-white);padding:30px 26px;display:block;transition:background var(--transition)}
+.svc-card:hover{background:var(--bg-light)}
+.svc-icon{width:44px;height:44px;background:var(--primary-light);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.svc-name{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:7px}
+.svc-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;font-weight:300}
+.svc-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:600;color:var(--primary);margin-top:12px;transition:gap var(--transition)}
+.svc-card:hover .svc-link{gap:8px}
 
-.emergency-cta {
-    flex-shrink: 0;
-}
+/* ANALYTICS SPOTLIGHT */
+.analytics-spotlight{background:linear-gradient(135deg,#0a2d6e 0%,#0052CC 100%);border-radius:14px;padding:56px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;overflow:hidden;margin-top:40px}
+.analytics-spotlight::before{content:'';position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(255,107,53,.15) 0%,transparent 70%);pointer-events:none}
+.as-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--secondary);margin-bottom:14px}
+.analytics-spotlight h3{font-size:clamp(20px,2.5vw,30px);font-weight:700;color:#fff;line-height:1.2;letter-spacing:-.5px;margin-bottom:14px}
+.analytics-spotlight p{font-size:15px;color:rgba(255,255,255,.62);line-height:1.75;font-weight:300;margin-bottom:24px}
+.as-caps{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:28px}
+.as-cap{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.55);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:4px 9px}
+.as-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.as-metric{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:18px}
+.as-num{font-family:var(--font-mono);font-size:26px;font-weight:700;color:#fff;line-height:1;margin-bottom:5px}
+.as-num em{color:var(--secondary);font-style:normal;font-size:18px}
+.as-mlabel{font-size:11px;color:rgba(255,255,255,.4);line-height:1.4}
 
-.btn-emergency {
-    display: inline-block;
-    padding: 12px 24px;
-    background: #dc2626;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: all 0.2s;
-    white-space: nowrap;
-}
+/* PACKAGE GROUP LABELS */
+.pkg-group-label{display:flex;align-items:baseline;gap:16px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--border)}
+.pkg-group-title{font-size:18px;font-weight:700;color:var(--text-primary)}
+.pkg-group-sub{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light)}
 
-.btn-emergency:hover {
-    background: #b91c1c;
-    transform: translateY(-2px);
-}
+/* PACKAGES */
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:18px}
+.pkg{background:var(--bg-white);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 24px;display:flex;flex-direction:column;transition:all var(--transition);position:relative}
+.pkg:hover{box-shadow:0 10px 28px var(--shadow-hover);transform:translateY(-2px);border-color:var(--border-strong)}
+.pkg.featured{border-color:var(--primary);border-width:2px}
+.pkg.featured::before{content:'Most Requested';position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 14px;border-radius:0 0 8px 8px;white-space:nowrap}
+.pkg-icon{width:40px;height:40px;background:var(--primary-light);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px}
+.pkg-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:6px}
+.pkg-name{font-size:18px;font-weight:700;color:var(--text-primary);margin-bottom:8px;line-height:1.2}
+.pkg-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;font-weight:300;margin-bottom:16px;flex:1}
+.pkg-includes{list-style:none;margin-bottom:18px;display:flex;flex-direction:column;gap:7px}
+.pkg-includes li{font-size:13px;color:var(--text-secondary);display:flex;align-items:flex-start;gap:8px;line-height:1.4}
+.pkg-includes li::before{content:'✓';color:var(--success);font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px}
+.pkg-footer{display:flex;gap:14px;padding-top:14px;border-top:1px solid var(--border);margin-bottom:14px}
+.pkg-meta-k{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:2px}
+.pkg-meta-v{font-size:12px;font-weight:600;color:var(--text-primary)}
 
-@media (max-width: 768px) {
-    .emergency-package-inner {
-        flex-direction: column;
-        text-align: center;
-        padding: 25px 20px;
-    }
-    
-    .emergency-icon {
-        font-size: 2.5rem;
-    }
-    
-    .emergency-content h3 {
-        font-size: 1.3rem;
-    }
+/* EMERGENCY */
+.emergency-block{background:linear-gradient(135deg,#fff5f5,#fee2e2);border:2px solid #fca5a5;border-radius:var(--radius);padding:28px 36px;margin-top:18px;display:flex;align-items:center;gap:24px}
+.emergency-icon{font-size:40px;flex-shrink:0}
+.emergency-body{flex:1}
+.emergency-body h3{font-size:19px;font-weight:700;color:#991b1b;margin-bottom:7px}
+.emergency-body p{font-size:13px;color:#7f1d1d;line-height:1.6;margin-bottom:5px}
+.emergency-meta{font-size:12px;color:#991b1b;font-weight:500}
+
+/* CREDENTIAL STRIP */
+.credential-strip{background:#172B4D;padding:0}
+.credential-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08)}
+.credential-item{padding:26px 32px;background:#172B4D}
+.credential-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:7px}
+.credential-value{font-size:14px;font-weight:600;color:rgba(255,255,255,.8);line-height:1.4}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.about-body{font-size:16px;color:var(--text-secondary);line-height:1.8;font-weight:300;margin-bottom:24px}
+.why-list{list-style:none;margin-top:28px;display:flex;flex-direction:column}
+.why-list li{padding:14px 0 14px 42px;position:relative;font-size:14px;color:var(--text-secondary);border-bottom:1px solid var(--border);line-height:1.5}
+.why-list li:last-child{border-bottom:none}
+.why-list li::before{content:'✓';position:absolute;left:0;top:14px;width:26px;height:26px;background:var(--success);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.why-list li strong{color:var(--text-primary);font-weight:600}
+.team-stack{display:flex;flex-direction:column;gap:14px}
+.team-card{background:var(--bg-white);border:1px solid var(--border);border-radius:var(--radius);padding:24px 26px;transition:box-shadow var(--transition)}
+.team-card:hover{box-shadow:0 6px 20px var(--shadow)}
+.team-name{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:3px}
+.team-role{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+.team-bio{font-size:13px;color:var(--text-secondary);line-height:1.65;font-weight:300}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,#0052CC 0%,#003D99 100%);padding:88px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='white' opacity='0.07'/%3E%3C/svg%3E") repeat;background-size:40px 40px}
+.cta-inner{position:relative;z-index:1;max-width:660px;margin:0 auto}
+.cta-section h2{font-size:clamp(26px,4vw,42px);font-weight:700;color:#fff;margin-bottom:14px;letter-spacing:-.5px}
+.cta-section p{font-size:17px;color:rgba(255,255,255,.65);margin-bottom:40px;font-weight:300;line-height:1.7}
+.cta-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+.footer{background:#0d1829;padding:56px 40px 28px}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px}
+.footer-brand-name{font-family:var(--font-mono);font-size:15px;font-weight:700;color:#fff;margin-bottom:10px}
+.footer-brand-desc{font-size:13px;color:rgba(255,255,255,.38);line-height:1.65;font-weight:300}
+.footer-col-title{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:14px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.48);transition:color var(--transition)}
+.footer-links a:hover{color:#fff}
+.footer-bottom{padding-top:24px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,.22)}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+    .hero-inner{grid-template-columns:1fr;gap:48px}
+    .proof-row{grid-template-columns:1fr 1fr}
+    .services-grid{grid-template-columns:1fr 1fr}
+    .pkg-grid{grid-template-columns:1fr 1fr}
+    .analytics-spotlight{grid-template-columns:1fr;gap:36px;padding:36px}
+    .about-grid{grid-template-columns:1fr;gap:48px}
+    .credential-inner{grid-template-columns:1fr 1fr}
+    .footer-grid{grid-template-columns:1fr 1fr}
 }
-    </style>
+@media(max-width:600px){
+    .section{padding:60px 20px}
+    .hero{padding:60px 20px 68px}
+    .header-inner,.trust-bar{padding-left:20px;padding-right:20px}
+    .services-grid,.pkg-grid{grid-template-columns:1fr}
+    .emergency-block{flex-direction:column;text-align:center;padding:24px 20px}
+    .credential-inner{grid-template-columns:1fr 1fr}
+    .footer-grid{grid-template-columns:1fr}
+    .footer-bottom{flex-direction:column;gap:6px;text-align:center}
+    .nav{display:none}
+    .cta-buttons{flex-direction:column;align-items:center}
+}
+</style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-container">
-            <a href="/" class="logo">amusement standards.</a>
-            <nav class="nav">
-                <a href="#services">Services</a>
-                <a href="#packages">Packages</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
-                <a href="#contact" class="cta-header">“Book a 15‑Minute Risk Review”</a>
-            </nav>
-        </div>
-    </header>
+
+<header class="header">
+    <div class="header-inner">
+        <a href="/" class="logo">amusement standards.</a>
+        <nav><ul class="nav">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#packages">Packages</a></li>
+            <li><a href="data-analytics.html">Data Analytics</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact" class="nav-cta">Book Risk Review</a></li>
+        </ul></nav>
+    </div>
+</header>
 
 <section class="hero">
-    <div class="hero-container">
-        <h1>Amusement Safety & Compliance Done Right</h1>
-        <p class="hero-subtitle">Expert consulting for training, operational standards, regulatory compliance, and risk management. We help amusement venues build safer operations, reduce liability, and maintain underwriter confidence.</p>
-        <div class="hero-cta-group">
-            <a href="#contact" class="btn-primary">Schedule Consultation</a>
-            <a href="#services" class="btn-secondary">View Services</a>
+    <div class="hero-inner">
+        <div>
+            <div class="hero-eyebrow">Trusted by Parks, FECs &amp; Water Parks Nationwide</div>
+            <h1>Safety &amp; Compliance Done Right. <span>Risk Intelligence Built In.</span></h1>
+            <p class="hero-sub">Expert consulting for training, operational standards, regulatory compliance, and risk management — backed by data analytics your insurers will actually use.</p>
+            <div class="hero-actions">
+                <a href="#contact" class="btn btn-primary btn-lg">Schedule Consultation</a>
+                <a href="#services" class="btn btn-ghost btn-lg">View Services</a>
+            </div>
+        </div>
+        <div class="hero-proof">
+            <div class="proof-row">
+                <div class="proof-card">
+                    <div class="proof-num">20<em>+</em></div>
+                    <div class="proof-label">Years industry experience</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-num">48<em>hr</em></div>
+                    <div class="proof-label">Emergency incident response</div>
+                </div>
+            </div>
+            <div class="proof-card proof-wide">
+                <div class="proof-num">Operations · Analytics · Regulatory · Legal</div>
+                <div class="proof-label" style="margin-top:8px;">Four disciplines. One team. No gaps.</div>
+            </div>
+            <div class="proof-row">
+                <div class="proof-card">
+                    <div class="proof-num">12<em>–24mo</em></div>
+                    <div class="proof-label">Incident data window analyzed</div>
+                </div>
+                <div class="proof-card">
+                    <div class="proof-num">100<em>%</em></div>
+                    <div class="proof-label">Insurer-ready analytics output</div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
+<div class="trust-bar">
+    <div class="trust-bar-inner">
+        <span class="trust-label">We serve</span>
+        <div class="trust-items">
+            <span class="trust-pill">Amusement Parks</span>
+            <span class="trust-pill">Water Parks</span>
+            <span class="trust-pill">FECs</span>
+            <span class="trust-pill">Trampoline Parks</span>
+            <span class="trust-pill">Adventure Parks</span>
+            <span class="trust-pill">Seasonal Attractions</span>
+            <span class="trust-pill">Boardwalk Venues</span>
+            <span class="trust-pill">Municipal Recreation</span>
+        </div>
+    </div>
+</div>
+
+<section class="section" id="services">
+    <div class="container">
+        <div class="section-head">
+            <div class="eyebrow">Core Services</div>
+            <h2 class="section-title">Comprehensive safety solutions, built to be implemented</h2>
+            <p class="section-sub">We don't hand off a report and leave. Every service includes implementation, training, verification, and ongoing support.</p>
+        </div>
+        <div class="services-grid">
+            <a href="services/training-programs.html" class="svc-card">
+                <div class="svc-icon">🎓</div>
+                <div class="svc-name">Training Programs</div>
+                <div class="svc-desc">Staff training, emergency response, and compliance training with LMS courses and certifications.</div>
+                <div class="svc-link">Learn more →</div>
+            </a>
+            <a href="services/operational-standards.html" class="svc-card">
+                <div class="svc-icon">⚙️</div>
+                <div class="svc-name">Operational Standards</div>
+                <div class="svc-desc">SOPs, inspection protocols, and maintenance standards for consistent, safe operations across every shift.</div>
+                <div class="svc-link">Learn more →</div>
+            </a>
+            <a href="services/compliance-regulatory-support.html" class="svc-card">
+                <div class="svc-icon">✅</div>
+                <div class="svc-name">Compliance &amp; Regulatory</div>
+                <div class="svc-desc">State compliance mapping, pre-inspection audits, and gap analysis built to close vulnerabilities before regulators find them.</div>
+                <div class="svc-link">Learn more →</div>
+            </a>
+            <a href="services/waiver-policy-documentation.html" class="svc-card">
+                <div class="svc-icon">📋</div>
+                <div class="svc-name">Waiver &amp; Documentation</div>
+                <div class="svc-desc">Bulletproof waivers, signage standards, and incident reporting systems designed to hold up in litigation.</div>
+                <div class="svc-link">Learn more →</div>
+            </a>
+            <a href="services/insurance-risk-reduction.html" class="svc-card">
+                <div class="svc-icon">🛡️</div>
+                <div class="svc-name">Insurance &amp; Risk</div>
+                <div class="svc-desc">Insurability assessments, loss analysis, and premium reduction strategies framed the way underwriters think.</div>
+                <div class="svc-link">Learn more →</div>
+            </a>
+            <a href="#packages" class="svc-card">
+                <div class="svc-icon">📦</div>
+                <div class="svc-name">View All Programs</div>
+                <div class="svc-desc">Browse our full catalog of fixed-scope engagements and ongoing subscription programs — from quick tune-ups to full managed services.</div>
+                <div class="svc-link">See packages →</div>
+            </a>
+        </div>
+
+        <div class="analytics-spotlight">
+            <div>
+                <div class="as-eyebrow">Data Analytics &amp; Risk Intelligence Division</div>
+                <h3>Your incident data has been telling you something. We decode it.</h3>
+                <p>Most operators are sitting on 12–24 months of incident, inspection, and near-miss data with no analytical framework to extract meaning. We transform it into heatmaps, trend models, and insurer-ready intelligence — built in R, structured for defensibility.</p>
+                <div class="as-caps">
+                    <span class="as-cap">Heatmapping</span>
+                    <span class="as-cap">Root Cause Clustering</span>
+                    <span class="as-cap">Temporal Trend Modeling</span>
+                    <span class="as-cap">Predictive Risk Indicators</span>
+                    <span class="as-cap">Portfolio Analysis</span>
+                    <span class="as-cap">Renewal Intelligence</span>
+                </div>
+                <a href="data-analytics.html" class="btn btn-primary">View Analytics Packages →</a>
+            </div>
+            <div class="as-metrics">
+                <div class="as-metric"><div class="as-num">12–24<em>mo</em></div><div class="as-mlabel">Data window per engagement</div></div>
+                <div class="as-metric"><div class="as-num">4</div><div class="as-mlabel">Tiered packages: snapshot to retainer</div></div>
+                <div class="as-metric"><div class="as-num">100<em>%</em></div><div class="as-mlabel">Insurer-ready output every engagement</div></div>
+                <div class="as-metric"><div class="as-num">48<em>hr</em></div><div class="as-mlabel">Emergency response SLA</div></div>
+            </div>
+        </div>
+    </div>
 </section>
-    <section class="section" id="services">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Core Services</h2>
-                <p class="section-eyebrow">Comprehensive Safety Solutions & Business Operations Optimization</p>
+
+<section class="section section-alt" id="packages">
+    <div class="container">
+        <div class="section-head">
+            <div class="eyebrow">Built-for-You Safety Programs</div>
+            <h2 class="section-title">Fixed scope. Clear deliverables. Right-sized for your operation.</h2>
+            <p class="section-sub">Whether you need a defined project with a clear end date or continuous expert support built into your operation, every program delivers measurable outcomes.</p>
+        </div>
+
+        <!-- GROUP 1: ONE-TIME ENGAGEMENTS -->
+        <div class="pkg-group-label">
+            <div class="pkg-group-title">One-Time Engagements</div>
+            <div class="pkg-group-sub">Fixed scope · Flat-rate · Defined deliverables</div>
+        </div>
+        <div class="pkg-grid">
+            <div class="pkg">
+                <div class="pkg-icon">🚦</div>
+                <div class="pkg-tag">Operations</div>
+                <div class="pkg-name">RIDE Safe Essentials</div>
+                <div class="pkg-desc">Your foundation for safer, more consistent ride operations. Fast, affordable, and immediately actionable.</div>
+                <ul class="pkg-includes">
+                    <li>SOP Review &amp; Alignment</li>
+                    <li>Ride Operator Training Checkup</li>
+                    <li>Incident Data Snapshot</li>
+                    <li>Actionable Recommendations Report</li>
+                </ul>
+                <div class="pkg-footer">
+                    <div><div class="pkg-meta-k">Timeline</div><div class="pkg-meta-v">2 Weeks</div></div>
+                    <div><div class="pkg-meta-k">Format</div><div class="pkg-meta-v">Flat-Rate</div></div>
+                </div>
+                <a href="ridesafe-essentials.html" class="btn btn-outline btn-full">Learn More</a>
             </div>
-
-            <div class="service-grid">
-                <div class="service-card">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">🧑‍🤝‍🧑</div>
-                        <h3 style="margin: 0;">Training Programs</h3>
-                    </div>
-                    <p>Staff training, emergency response, and compliance training with LMS courses and certifications.</p>
-                    <a href="services/training-programs.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
+            <div class="pkg featured">
+                <div class="pkg-icon">📊</div>
+                <div class="pkg-tag">Analytics</div>
+                <div class="pkg-name">Risk Intelligence Pro</div>
+                <div class="pkg-desc">Turn 12–24 months of incident data into clarity, prevention, and insurer-ready intelligence. Our flagship engagement.</div>
+                <ul class="pkg-includes">
+                    <li>Full Incident Data Analysis (12–24 months)</li>
+                    <li>Trend Mapping &amp; Root Cause Patterns</li>
+                    <li>Attraction-Level Risk Exposure Heatmap</li>
+                    <li>Documentation Quality Review</li>
+                    <li>Strategic Prevention Recommendations</li>
+                    <li>Insurer-Ready Analytics Package</li>
+                </ul>
+                <div class="pkg-footer">
+                    <div><div class="pkg-meta-k">Timeline</div><div class="pkg-meta-v">3–4 Weeks</div></div>
+                    <div><div class="pkg-meta-k">Format</div><div class="pkg-meta-v">Flat-Rate</div></div>
                 </div>
-
-                <div class="service-card">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">⚙️</div>
-                        <h3 style="margin: 0;">Operational Standards</h3>
-                    </div>
-                    <p>SOPs, inspection protocols, and maintenance standards for consistent, safe operations.</p>
-                    <a href="services/operational-standards.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
+                <a href="risk-intelligence-pro.html" class="btn btn-blue btn-full">Learn More</a>
+            </div>
+            <div class="pkg">
+                <div class="pkg-icon">🏗️</div>
+                <div class="pkg-tag">Culture</div>
+                <div class="pkg-name">Safety Culture Accelerator</div>
+                <div class="pkg-desc">Strengthen your people, processes, and leadership alignment with a structured 30-day engagement and 90-day roadmap.</div>
+                <ul class="pkg-includes">
+                    <li>Staff Interviews &amp; Field Observations</li>
+                    <li>Leadership Alignment Workshop</li>
+                    <li>Safety Culture Scorecard</li>
+                    <li>Training &amp; Communication Recommendations</li>
+                    <li>90-Day Improvement Roadmap</li>
+                </ul>
+                <div class="pkg-footer">
+                    <div><div class="pkg-meta-k">Timeline</div><div class="pkg-meta-v">30 Days</div></div>
+                    <div><div class="pkg-meta-k">Format</div><div class="pkg-meta-v">Flat-Rate</div></div>
                 </div>
-
-                <div class="service-card">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">✅</div>
-                        <h3 style="margin: 0;">Compliance & Regulatory</h3>
-                    </div>
-                    <p>State compliance mapping, pre‑inspection audits, and operational gap analysis review services.</p>
-                    <a href="services/compliance-regulatory-support.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
+                <a href="safety-culture-accelerator.html" class="btn btn-outline btn-full">Learn More</a>
+            </div>
+            <div class="pkg">
+                <div class="pkg-icon">🙋🏻‍♂️</div>
+                <div class="pkg-tag">Guest Experience</div>
+                <div class="pkg-name">Guest Service Program</div>
+                <div class="pkg-desc">Data-driven guest service audits surfacing inconsistencies across shifts, teams, and locations with clear recommendations.</div>
+                <ul class="pkg-includes">
+                    <li>Guest Service Standards Review</li>
+                    <li>Mobile Guest Service Audits</li>
+                    <li>Queue &amp; Guest Flow Assessments</li>
+                    <li>Cleanliness &amp; Presentation Review</li>
+                    <li>Service Recovery Snapshot</li>
+                </ul>
+                <div class="pkg-footer">
+                    <div><div class="pkg-meta-k">Timeline</div><div class="pkg-meta-v">3 Weeks</div></div>
+                    <div><div class="pkg-meta-k">Format</div><div class="pkg-meta-v">Flat-Rate</div></div>
                 </div>
-
-                <div class="service-card">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">📋</div>
-                        <h3 style="margin: 0;">Waiver & Documentation</h3>
-                    </div>
-                    <p>Bulletproof waivers, signage standards, and incident reporting systems.</p>
-                    <a href="services/waiver-policy-documentation.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
+                <a href="Guest-Experience-Program.html" class="btn btn-outline btn-full">Learn More</a>
+            </div>
+            <div class="pkg">
+                <div class="pkg-icon">🔄</div>
+                <div class="pkg-tag">Seasonal</div>
+                <div class="pkg-name">Seasonal Operations Optimization</div>
+                <div class="pkg-desc">Custom staffing models, rapid onboarding systems, and demand-smoothing strategies for parks with major seasonal swings.</div>
+                <ul class="pkg-includes">
+                    <li>Peak/Off-Peak Staffing Models</li>
+                    <li>High-Turnover Training Systems</li>
+                    <li>Capacity Planning &amp; Forecasting</li>
+                    <li>Weather Contingency Protocols</li>
+                    <li>Shoulder Season Revenue Tactics</li>
+                </ul>
+                <div class="pkg-footer">
+                    <div><div class="pkg-meta-k">Timeline</div><div class="pkg-meta-v">3 Weeks</div></div>
+                    <div><div class="pkg-meta-k">Format</div><div class="pkg-meta-v">Flat-Rate</div></div>
                 </div>
+                <a href="seasonal-operations-optimization.html" class="btn btn-outline btn-full">Learn More</a>
+            </div>
+        </div>
 
-                <div class="service-card">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">🛡️</div>
-                        <h3 style="margin: 0;">Insurance & Risk</h3>
-                    </div>
-                    <p>Insurability assessments, loss analysis, and premium reduction strategies.</p>
-                    <a href="services/insurance-risk-reduction.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
+        <!-- GROUP 2: ONGOING PROGRAMS -->
+        <div class="pkg-group-label" style="margin-top:48px;">
+            <div class="pkg-group-title">Ongoing Programs</div>
+            <div class="pkg-group-sub">Subscription-based · Continuous support · Cancel with 30-day notice</div>
+        </div>
+        <div class="pkg-grid">
+            <div class="pkg">
+                <div class="pkg-icon">💻</div>
+                <div class="pkg-tag">Training</div>
+                <div class="pkg-name">LMS Training Programs</div>
+                <div class="pkg-desc">Structured, trackable operator training with attraction-specific modules and annual on-site support.</div>
+                <ul class="pkg-includes">
+                    <li>RIDE Safety Orientation Module</li>
+                    <li>Attraction-Specific Training Modules</li>
+                    <li>LMS Setup &amp; Configuration</li>
+                    <li>Annual On-Site Train-the-Trainer</li>
+                    <li>Optional Guest Service Add-Ons</li>
+                </ul>
+                <div class="pkg-footer">
+                    <div><div class="pkg-meta-k">Format</div><div class="pkg-meta-v">Annual Subscription</div></div>
                 </div>
+                <a href="training-programs.html" class="btn btn-outline btn-full">Learn More</a>
+            </div>
+            <div class="pkg">
+                <div class="pkg-icon">⚠️</div>
+                <div class="pkg-tag">Risk Management</div>
+                <div class="pkg-name">Incident &amp; Risk Program</div>
+                <div class="pkg-desc">A standardized incident and risk management system with monthly analytics and annual performance summaries.</div>
+                <ul class="pkg-includes">
+                    <li>Injury Classification System</li>
+                    <li>Near Miss Reporting Workflows</li>
+                    <li>Root Cause Analysis Templates</li>
+                    <li>Corrective Action Tracking</li>
+                    <li>Mobile-Friendly Reporting Tools</li>
+                    <li>Monthly Trend Reports</li>
+                </ul>
+                <div class="pkg-footer">
+                    <div><div class="pkg-meta-k">Format</div><div class="pkg-meta-v">System Build + Ongoing</div></div>
+                </div>
+                <a href="incident-risk-management.html" class="btn btn-outline btn-full">Learn More</a>
+            </div>
+            <div class="pkg">
+                <div class="pkg-icon">🕵️</div>
+                <div class="pkg-tag">Audits</div>
+                <div class="pkg-name">RIDE-Verified Audits</div>
+                <div class="pkg-desc">Year-round third-party compliance monitoring with quarterly unannounced audits and insurance-recognized documentation.</div>
+                <ul class="pkg-includes">
+                    <li>Mobile Audit Platform</li>
+                    <li>Performance Analytics Dashboard</li>
+                    <li>Multi-Location View</li>
+                    <li>Compliance Advisor Support</li>
+                    <li>Quarterly Third-Party Audits</li>
+                    <li>Insurance-Ready Reports</li>
+                </ul>
+                <div class="pkg-footer">
+                    <div><div class="pkg-meta-k">Format</div><div class="pkg-meta-v">Annual Subscription</div></div>
+                </div>
+                <a href="ride-verified.html" class="btn btn-outline btn-full">Learn More</a>
+            </div>
+            <div class="pkg">
+                <div class="pkg-icon">📈</div>
+                <div class="pkg-tag">Full-Service</div>
+                <div class="pkg-name">Ongoing Managed Services</div>
+                <div class="pkg-desc">Continuous compliance tracking, training refreshers, incident monitoring, and priority support — we become an extension of your team.</div>
+                <ul class="pkg-includes">
+                    <li>Regulatory Alerts &amp; Compliance Tracking</li>
+                    <li>Training Refreshers &amp; Onboarding Support</li>
+                    <li>Incident Trend Monitoring &amp; Reporting</li>
+                    <li>SOP Review &amp; Update Recommendations</li>
+                    <li>Training Library &amp; Digital Tool Access</li>
+                    <li>Priority Email &amp; Phone Support</li>
+                </ul>
+                <div class="pkg-footer">
+                    <div><div class="pkg-meta-k">Format</div><div class="pkg-meta-v">Monthly Subscription</div></div>
+                    <div><div class="pkg-meta-k">Cancel</div><div class="pkg-meta-v">30-Day Notice</div></div>
+                </div>
+                <a href="ongoing-managed-services-pricing.html" class="btn btn-outline btn-full">Learn More</a>
+            </div>
+        </div>
 
-                <div class="service-card">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">📈</div>
-                        <h3 style="margin: 0;">Managed Services</h3>
-                    </div>
-                    <p>Ongoing support with refreshers, compliance checks, and improvements.</p>
-                    <a href="services/ongoing-managed-services.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
+        <div class="emergency-block">
+            <div class="emergency-icon">🚨</div>
+            <div class="emergency-body">
+                <h3>Emergency Incident Response</h3>
+                <p>When a serious incident occurs, insurance adjusters, attorneys, and regulators are already moving. Rapid expert investigation and defensible documentation deployed within 48 hours.</p>
+                <p class="emergency-meta">Best for: Facilities facing serious incidents or active litigation &nbsp;·&nbsp; Format: 48-hour investigation with expert witness support</p>
+            </div>
+            <a href="emergency-incident-response.html" class="btn btn-danger" style="flex-shrink:0;">Learn More →</a>
+        </div>
+    </div>
+</section>
+
+<div class="credential-strip">
+    <div class="credential-inner">
+        <div class="credential-item">
+            <div class="credential-label">Regulatory Alignment</div>
+            <div class="credential-value">OSHA · CPSC · ASTM · State Ride Safety Acts</div>
+        </div>
+        <div class="credential-item">
+            <div class="credential-label">Industry Coverage</div>
+            <div class="credential-value">Parks · FECs · Water Parks · Adventure · Seasonal</div>
+        </div>
+        <div class="credential-item">
+            <div class="credential-label">Team Credentials</div>
+            <div class="credential-value">CPA · CFF · J.D. · NAARSO · Analytics · 20+ Yrs Operations</div>
+        </div>
+        <div class="credential-item">
+            <div class="credential-label">Documentation Standard</div>
+            <div class="credential-value">Audit-Ready · Claims-Ready · Litigation-Ready</div>
+        </div>
+    </div>
+</div>
+
+<section class="section" id="about">
+    <div class="container">
+        <div class="about-grid">
+            <div>
+                <div class="eyebrow">About Amusement Standards</div>
+                <h2 class="section-title">We evaluate your operation the way insurers, regulators, and litigators do</h2>
+                <p class="about-body">With more than 20 years of experience in safety consulting, risk management, regulatory compliance, and operational excellence, Amusement Standards has become a trusted partner for amusement parks, FECs, water parks, adventure parks, trampoline parks, seasonal attractions, and municipal recreation departments across the country.</p>
+                <p class="about-body">Our philosophy is simple: we don't just hand off recommendations — we stay with you through implementation, training, verification, and ongoing support.</p>
+                <ul class="why-list">
+                    <li><strong>Hands-on partnership:</strong> We stay involved from assessment through implementation, not just delivery.</li>
+                    <li><strong>Cross-disciplinary expertise:</strong> Operations + analytics + regulatory + legal — all under one roof.</li>
+                    <li><strong>Insurer-aligned systems:</strong> Every program built to strengthen underwriting confidence.</li>
+                    <li><strong>Data-driven decisions:</strong> Every recommendation backed by evidence and analytical rigor.</li>
+                    <li><strong>Defensible documentation:</strong> Designed to withstand audits, claims, and litigation.</li>
+                    <li><strong>Scalable support:</strong> From essential compliance tune-ups to full managed safety services.</li>
+                </ul>
+            </div>
+            <div class="team-stack">
+                <div class="team-card">
+                    <div class="team-name">Matt Smith</div>
+                    <div class="team-role">Senior Safety &amp; Operations Consultant</div>
+                    <div class="team-bio">Two decades of hands-on leadership in ride operations, training program development, emergency response planning, and regulatory compliance. Has supported facilities through state inspections, insurance audits, incident investigations, and major operational transitions — always focused on clarity, consistency, and defensibility.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-name">Adam Brousell</div>
+                    <div class="team-role">Director of Data Analytics &amp; Risk Intelligence</div>
+                    <div class="team-bio">Specializes in transforming raw incident data, loss runs, and operational metrics into actionable insights. Builds injury trend dashboards, predictive risk models, attraction-level heatmaps, and insurer-ready analytics packages in R. His frameworks help operators understand not just what is happening — but why, and what to do next.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-name">Landan Ansell, CPA, CFF, J.D.</div>
+                    <div class="team-role">Regulatory &amp; Compliance Advisor</div>
+                    <div class="team-bio">Brings a unique combination of legal, financial, and forensic expertise. Ensures every standard, SOP, waiver, and safety system aligns with the expectations of regulators, insurers, auditors, and — when necessary — legal scrutiny. His involvement strengthens the defensibility of every program we deliver.</div>
                 </div>
             </div>
         </div>
-    </section>
-    
-    <section class="section" id="packages">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Built‑for‑You Safety Programs</h2>
-                <p class="section-eyebrow">Clear, fixed‑scope programs designed to improve safety, reduce risk, and strengthen operational consistency.</p>
-            </div>
-    
-            <div class="service-grid">
-                <div class="service-card">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">🚦</div>
-                        <h3 style="margin: 0;">RIDE Safe Essentials</h3>
-                    </div>
-                    <p>Your foundation for safer, more consistent ride operations.<br><br>
-                    <strong>What’s included:</strong><br>
-                    SOP Review & Alignment<br>
-                    Ride Operator Training Checkup<br>
-                    1 Incident Data Snapshot<br>
-                    Actionable Recommendations<br><br>
-    
-                    <strong>Best for:</strong><br>
-                    Parks and FECs needing a fast, affordable safety tune‑up.<br><br>
-    
-                    <strong>Format:</strong><br>
-                    Flat‑rate, 2‑week engagement.</p>
-    
-                    <a href="ridesafe-essentials.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
-                </div>
-    
-                <div class="service-card">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">📊</div>
-                        <h3 style="margin: 0;">Risk Intelligence Pro</h3>
-                    </div>
-                    <p>Turn your incident data into clarity, insight, and prevention.<br><br>
-                    <strong>What’s included:</strong><br>
-                    Full Incident Data Analysis (12–24 months)<br>
-                    Trend Mapping & Root Cause Patterns<br>
-                    Risk Exposure Heatmap<br>
-                    Documentation Quality Review<br>
-                    Strategic Recommendations for Prevention & Training<br><br>
-    
-                    <strong>Best for:</strong><br>
-                    Operators, insurers, and brokers who need data‑driven decision support.<br><br>
-    
-                    <strong>Format:</strong><br>
-                    Flat‑rate, 3–4 week engagement.</p>
-    
-                    <a href="risk-intelligence-pro.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
-                </div>
-    
-                <div class="service-card">
-                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">🏗️</div>
-                        <h3 style="margin: 0;">Safety Culture Accelerator</h3>
-                    </div>
-                    <p>Strengthen your people, your processes, and your leadership alignment.<br><br>
-                    <strong>What’s included:</strong><br>
-                    Staff Interviews & Observations<br>
-                    Leadership Alignment Workshop<br>
-                    Safety Culture Scorecard<br>
-                    Training & Communication Recommendations<br>
-                    90‑Day Improvement Roadmap<br><br>
-    
-                    <strong>Best for:</strong><br>
-                    Teams ready to elevate culture, consistency, and accountability.<br><br>
-    
-                    <strong>Format:</strong><br>
-                    Flat‑rate, 30‑day engagement.</p>
-    
-                    <a href="safety-culture-accelerator.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
-                </div>
+    </div>
+</section>
 
-                 <div class="service-card">
-                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">💻</div>
-                       <h3 style="margin: 0;">LMS Training Programs</h3>
-                    </div>
-                    <p>
-                      Strengthen your people, your processes, and your leadership alignment with a structured, trackable Learning Management System.<br><br>
-                    
-                      <strong>What’s included:</strong><br>
-                      RIDE Safety Orientation (base module)<br>
-                      Attraction‑Specific Training Modules<br>
-                      LMS Setup & Configuration Support<br>
-                      Annual On‑Site Train‑the‑Trainer Session<br>
-                      Optional Guest Service & Management Add‑On Courses<br><br>
-                    
-                      <strong>Best for:</strong><br>
-                      FECs and amusement facilities that need consistent, documented training and clear certification tracking.<br><br>
-                    
-                      <strong>Format:</strong><br>
-                      Annual LMS subscription with included on‑site visit and optional leadership course bundle.
-                    </p>
-
-    
-                    <a href="training-programs.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
-                </div>
-                <div class="service-card">
-                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">⚠️</div>
-                       <h3 style="margin: 0;">Incident & Risk Program</h3>
-                    </div>
-                    <p>
-                      Build safer, more defensible operations with a standardized incident and risk management system.<br><br>
-                    
-                      <strong>What’s included:</strong><br> 
-                        Injury Classification System<br> 
-                        Near Miss Reporting Workflows<br> 
-                        Root Cause Analysis Templates<br> 
-                        Corrective Action Tracking<br> 
-                        Mobile‑Friendly Reporting Tools<br> 
-                        Monthly Trend Reports<br> 
-                        Annual Safety Performance Summary<br><br>
-                    
-                      <strong>Best for:</strong><br>
-                      Operations that need consistent reporting, defensible documentation, and clear visibility into trends, risks, and corrective actions.<br><br>
-                    
-                      <strong>Format:</strong><br>
-                      System build + ongoing analytics, delivered through monthly reporting and annual performance reviews.
-                    </p>
-    
-        
-                        <a href="https://amusementstandards.com/incident-risk-management.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
-                </div>
-                <div class="service-card">
-                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">🙋🏻‍♂️</div>
-                     <h3 style="margin: 0;">Guest Service Program</h3>
-                    </div>
-                    <p>
-                      Your foundation for consistent, data‑driven guest service that strengthens leadership visibility, clarifies team standards, and improves satisfaction and repeat visits.<br><br>
-                    
-                      <strong>What’s included:</strong><br> 
-                        Guest service standards review<br> 
-                        Mobile guest service audits<br> 
-                        Queue & guest flow assessments<br> 
-                        Cleanliness & presentation review<br> 
-                        Service recovery snapshot<br> 
-                        Prioritized recommendations<br><br>
-                                            
-                      <strong>Best for:</strong><br>
-                      Designed for parks, FECs, and attractions that know guest service is inconsistent across shifts, teams, or locations—but don’t have a clear, objective way to measure and improve it.<br><br>
-                    
-                      <strong>Format:</strong><br>
-                      Flat‑rate, 3‑week engagement.
-                    </p>
-
-    
-                    <a href="https://amusementstandards.com/Guest-Experience-Program.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
-                </div>
-                 <div class="service-card">
-                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">🔄</div>
-                     <h3 style="margin: 0;">Seasonal Operations Optimization</h3>
-                    </div>
-                    <p>
-                      Helps parks handle staffing swings, training turnover, and revenue gaps across seasons. Includes custom staffing models, rapid training systems, forecasting tools, weather protocols, and demand-smoothing strategies that adapt instead of scramble.<br><br>
-                    
-                      <strong>What’s included:</strong><br> 
-                        Peak/off-peak staffing models<br> 
-                        High-turnover training systems<br> 
-                        Capacity planning & forecasting tools<br> 
-                        Weather contingency protocols<br> 
-                        Revenue forecasting & pricing strategies<br> 
-                        Shoulder season optimization tactics<br><br>
-                                            
-                      <strong>Best for:</strong><br>
-                       Seasonal parks with 40+ seasonal hires, weather closures, and major peak/off-peak attendance swings. For operators struggling with rapid onboarding, high turnover, and shoulder season revenue gaps.<br><br>
-                    
-                      <strong>Format:</strong><br>
-                      Flat‑rate, 3‑week engagement.
-                    </p>
-
-    
-                    <a href="https://amusementstandards.com/seasonal-operations-optimization.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
-                </div>
-                <div class="service-card">
-                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">📈</div>
-                     <h3 style="margin: 0;">Ongoing Managed Services</h3>
-                    </div>
-                    <p>
-                      We become an extension of your team, providing continuous oversight, training, updates, and incident support based on your chosen service tier.<br><br>
-                    
-                      <strong>What’s included:</strong><br> 
-                        Regulatory alerts & compliance tracking<br> 
-                        Training refreshers<br> 
-                        Onboarding support<br> 
-                        Incident trend monitoring & reporting<br> 
-                        SOP review & update recommendationss<br> 
-                        Training library & digital tool access<br>
-                        Priority email & phone support<br><br>
-                                            
-                      <strong>Best for:</strong><br>
-                       Ongoing Managed Services is designed for parks, FECs, and attractions that have completed initial safety and compliance work but need continuous support to maintain standards, adapt to regulatory changes, manage staff turnover, and respond to incidents.<br><br>
-                    
-                      <strong>Format:</strong><br>
-                      Month‑to‑month subscription with 30‑day cancellation notice.
-                    </p>
-
-    
-                    <a href="https://amusementstandards.com/ongoing-managed-services-pricing.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
-                </div>
-                  <div class="service-card">
-                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="service-icon">🕵️</div>
-                     <h3 style="margin: 0;">RIDE-Verified Audits</h3>
-                    </div>
-                    <p>
-                      Year-round third-party compliance monitoring powered by mobile audit technology. Quarterly unannounced audits, real-time performance tracking, and continuous improvement support—all accessible from any device, anywhere.<br><br>
-                    
-                      <strong>What’s included:</strong><br> 
-                        Mobile Audit Platform<br>
-                        Performance Analytics<br> 
-                        Multi-Location Dashboard<br>
-                        Compliance Advisor Support<br> 
-                        Insurance-Ready Reports<br> 
-                        Quarterly Third-Party Audits<br><br>
-                                            
-                      <strong>Best for:</strong><br>
-                       Facilities wanting continuous third-party oversight with quarterly audits, real-time digital monitoring, and insurance-recognized documentation—beyond one-time annual assessments.<br><br>
-                    
-                      <strong>Format:</strong><br>
-                      Annual subscription with unannounced audits.
-                    </p>
-
-    
-                    <a href="https://amusementstandards.com/ride-verified.html" class="btn-primary" style="margin-top: 20px;">Learn More →</a>
-                </div>
-                
-                </div>
-            
-                <div class="emergency-package">
-                    <div class="emergency-package-inner">
-                        <div class="emergency-icon">🚨</div>
-                        <div class="emergency-content">
-                            <h3>Emergency Incident Response</h3>
-                            <p>When a serious incident occurs at your facility, time is critical. Insurance adjusters, attorneys, and regulators are already moving. Our emergency response team provides rapid, expert investigation and defensible documentation to protect your operation legally and operationally.</p>
-                            <p class="emergency-meta">
-                                <strong>Best for:</strong> Facilities facing serious incidents or lawsuits<br>
-                                <strong>Format:</strong> 48-hour investigation with expert witness support
-                            </p>
-                        </div>
-                        <div class="emergency-cta">
-                            <a href="https://amusementstandards.com/emergency-incident-response.html" class="btn-emergency">Learn More →</a>
-                        </div>
-                    </div>
-                </div>
-            
-                </div>
-                    </section>
-                    
-                    <section class="section section-alt" id="about">
-                        <div class="container">
-                            <div class="section-header">
-                                <h2 class="section-title">About Amusement Standards</h2>
-                                <p class="section-description">With more than 20 years of experience in safety consulting, risk management, regulatory compliance, and operational excellence, Amusement Standards has become a trusted partner for amusement parks, FECs, water parks, adventure parks, trampoline parks, seasonal attractions, and municipal recreation departments across the country. Our philosophy is simple: we don’t just hand off recommendations — we stay with you through implementation, training, verification, and ongoing support. Our team brings together a rare combination of operational expertise, data analytics, regulatory insight, and forensic-level documentation standards. This multidisciplinary approach allows us to evaluate your operation the same way insurers, regulators, and litigators do — and then help you build systems that exceed those expectations.</p>
-                                <h2>Our Leadership Team</h2>
-                                <p class="section-description"><strong><b>Matt Smith — Senior Safety & Operations Consultant</b></strong><br>With a career spanning more than two decades in the amusement and attractions industry, Matt has led safety programs, operational teams, and multi-site risk management initiatives across several states. His background includes hands-on leadership in ride operations, training program development, emergency response planning, and regulatory compliance. Matt is known for his ability to translate complex safety requirements into practical, staff-friendly systems that improve both guest experience and operational reliability. He has supported facilities through state inspections, insurance audits, incident investigations, and major operational transitions — always with a focus on clarity, consistency, and defensibility.</p>
-                                
-                                
-                                <p class="section-description"><strong></b>Adam Brousell — Director of Data Analytics & Risk Intelligence</b></strong><br>Adam brings deep expertise in data analysis, claims trend modeling, and operational risk forecasting. With a background in analytics and safety program evaluation, he specializes in transforming raw incident data, loss runs, and operational metrics into actionable insights that drive measurable risk reduction. His work includes developing injury trend dashboards, predictive risk models, attraction level heat maps, and insurer-ready analytics packages. Adam’s analytical frameworks help operators understand not just what is happening, but why — and what to do next. His ability to merge data science with real-world operations gives clients a competitive advantage during insurance renewals and safety planning.</p>
-                                
-                                
-                                <p class="section-description"><strong></b>Landan Ansell, CPA, CFF, J.D. — Regulatory & Compliance Advisor</b></strong><br>Landan brings a unique combination of legal, financial, and forensic expertise to Amusement Standards. As a Certified Public Accountant (CPA), Certified in Financial Forensics (CFF), and a licensed attorney (J.D.), he provides high-level guidance on regulatory compliance, documentation defensibility, and risk governance. His background includes regulatory interpretation, policy development, financial impact analysis, and expert-level documentation review. Landan ensures that every standard, SOP, waiver, and safety system aligns with the expectations of regulators, insurers, auditors, and — when necessary — legal scrutiny. His involvement strengthens the defensibility and credibility of every program we deliver.</p>
-                                
-                                
-                                
-                            </div>
-                        </div>
-    </section>
-    
-     <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Why Clients Choose Amusement Standards</h2>
-            </div>
-            <ul class="benefits-list">
-                <li><strong>Hands-on partnership:</strong> We stay involved from assessment through implementation.</li>
-                <li><strong>Cross-disciplinary expertise:</strong> Operations + analytics + regulatory + legal.</li>
-                <li><strong>Insurer aligned systems:</strong> Built to strengthen underwriting confidence.</li>
-                <li><strong>Data-driven decision making:</strong> Every recommendation backed by evidence.</li>
-                <li><strong>Clear, defensible documentation:</strong> Designed to withstand audits, claims, and litigation.</li>
-                <li><strong>Scalable support:</strong> From essential compliance to full managed safety services.</li>
-            </ul>
+<section class="cta-section" id="contact">
+    <div class="cta-inner">
+        <div class="eyebrow" style="color:rgba(255,255,255,.45);margin-bottom:14px;">Get Started</div>
+        <h2>Ready to Build a Safer Operation?</h2>
+        <p>Schedule a free 15-minute risk review. We'll identify where your operation needs attention and which program is the right fit.</p>
+        <div class="hs-form-frame" data-region="na2" data-form-id="2d8d9f7b-a046-42aa-9d3c-b980cc8d1b05" data-portal-id="245118753"></div>
+        <div class="cta-buttons" style="margin-top:28px;">
+            <a href="/cdn-cgi/l/email-protection#ec8d888d81ac8d81999f89818982989f988d82888d9e889fc28f8381" class="btn btn-primary btn-lg">Email Us Directly</a>
+            <a href="data-analytics.html" class="btn btn-ghost btn-lg">View Analytics Services</a>
         </div>
-    </section>
-    
-    <section class="cta-section" id="contact">
-        <div class="cta-content">
-            <h2>Ready to Build a Safer Operation?</h2>
-            <p>Schedule a free consultation to learn how we can help your venue.</p>
-            <div class="hs-form-frame" data-region="na2" data-form-id="2d8d9f7b-a046-42aa-9d3c-b980cc8d1b05" data-portal-id="245118753"></div>
-        </div>
-    </section>
+    </div>
+</section>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-grid">
-                <div>
-                    <h4>Services</h4>
-                    <ul>
-                        <li><a href="services/training-programs.html">Training Programs</a></li>
-                        <li><a href="services/operational-standards.html">Operational Standards</a></li>
-                        <li><a href="services/compliance-regulatory-support.html">Compliance & Regulatory</a></li>
-                        <li><a href="services/waiver-policy-documentation.html">Waiver & Documentation</a></li>
-                        <li><a href="services/insurance-risk-reduction.html">Insurance & Risk</a></li>
-                        <li><a href="services/ongoing-managed-services.html">Managed Services</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Company</h4>
-                    <ul>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#packages">Packages</a></li>
-                        <li><a href="#about">About</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Contact</h4>
-                    <ul>
-                        <li><a href="mailto:adam@amusementstandards.com">adam@amusementstandards.com</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4>Follow</h4>
-                    <ul>
-                        <li><a href="https://www.linkedin.com/company/amusement-standards">LinkedIn</a></li>
-                    </ul>
-                </div>
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand-name">amusement standards.</div>
+                <p class="footer-brand-desc">Expert safety consulting, risk intelligence, and compliance services for the amusement and attractions industry. We stay with you from assessment through implementation.</p>
             </div>
-            <div class="footer-bottom">
-                © 2025 Amusement Standards. All rights reserved.
+            <div>
+                <div class="footer-col-title">Services</div>
+                <ul class="footer-links">
+                    <li><a href="services/training-programs.html">Training Programs</a></li>
+                    <li><a href="services/operational-standards.html">Operational Standards</a></li>
+                    <li><a href="services/compliance-regulatory-support.html">Compliance &amp; Regulatory</a></li>
+                    <li><a href="services/insurance-risk-reduction.html">Insurance &amp; Risk</a></li>
+                    <li><a href="services/ongoing-managed-services.html">Managed Services</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-col-title">Analytics</div>
+                <ul class="footer-links">
+                    <li><a href="data-analytics.html">Risk Intelligence Pro</a></li>
+                    <li><a href="data-analytics.html">Portfolio Analysis</a></li>
+                    <li><a href="data-analytics.html">Renewal Intelligence</a></li>
+                    <li><a href="data-analytics.html">Continuous Retainer</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-col-title">Contact</div>
+                <ul class="footer-links">
+                    <li><a href="/cdn-cgi/l/email-protection#066762676b46676b7375636b6368727572676862677462752865696b"><span class="__cf_email__" data-cfemail="523336333f12333f2721373f373c262126333c36332036217c313d3f">[email&#160;protected]</span></a></li>
+                    <li><a href="https://www.linkedin.com/company/amusement-standards">LinkedIn</a></li>
+                </ul>
             </div>
         </div>
-    </footer>
+        <div class="footer-bottom">
+            <span>© 2025 Amusement Standards. All rights reserved.</span>
+            <span>amusementstandards.com</span>
+        </div>
+    </div>
+</footer>
 
-    <script src="https://js-na2.hsforms.net/forms/embed/245118753.js" defer></script>
-    <script src="assets/scripts.js"></script>
-    <!-- Start of HubSpot Embed Code -->
-<script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/245118753.js"></script>
-<!-- End of HubSpot Embed Code -->
-</body>
-</html>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/clo
