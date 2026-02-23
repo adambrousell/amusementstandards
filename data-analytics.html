@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Data Analytics & Risk Intelligence — Amusement Standards</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --black: #080a0e;
@@ -31,7 +31,7 @@
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 300;
     line-height: 1.6;
-    overflow-x: hidden;
+    /* NO overflow-x:hidden here — it clips descenders */
   }
 
   /* GRID BACKGROUND */
@@ -63,12 +63,13 @@
   }
 
   .nav-logo {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 800;
     font-size: 15px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--text);
+    text-decoration: none;
   }
 
   .nav-logo span { color: var(--accent); }
@@ -90,6 +91,7 @@
     padding: 100px 40px 80px;
     max-width: 1100px;
     margin: 0 auto;
+    overflow: visible;
   }
 
   .hero-eyebrow {
@@ -113,19 +115,26 @@
   }
 
   h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 800;
-    font-size: clamp(42px, 6vw, 80px);
-    line-height: 1.0;
+    font-size: clamp(36px, 5.5vw, 72px);
+    line-height: 1.5;
     letter-spacing: -0.02em;
     color: #fff;
+    margin-bottom: 0;
+    overflow: visible;
+    display: block;
+  }
+
+  .h1-wrap {
+    overflow: visible;
+    padding-bottom: 40px;
     margin-bottom: 32px;
   }
 
   h1 em {
     font-style: normal;
     color: var(--accent);
-    position: relative;
   }
 
   .hero-sub {
@@ -144,27 +153,6 @@
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     padding: 0 40px;
-    overflow: hidden;
-  }
-
-  .stats-bar::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 200px;
-    height: 100%;
-    background: linear-gradient(90deg, var(--black), transparent);
-    z-index: 2;
-  }
-
-  .stats-bar::after {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 200px;
-    height: 100%;
-    background: linear-gradient(-90deg, var(--black), transparent);
-    z-index: 2;
   }
 
   .stats-inner {
@@ -175,20 +163,23 @@
   }
 
   .stat-item {
-    padding: 28px 48px 28px 0;
+    padding: 28px 24px;
     border-right: 1px solid var(--border);
     flex: 1;
+    text-align: center;
   }
 
   .stat-item:last-child { border-right: none; }
 
   .stat-num {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 800;
     font-size: 36px;
     color: #fff;
-    line-height: 1;
+    line-height: 1.2;
     margin-bottom: 6px;
+    overflow: visible;
+    padding-bottom: 2px;
   }
 
   .stat-num span { color: var(--accent); }
@@ -220,12 +211,14 @@
   }
 
   h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 700;
     font-size: clamp(28px, 4vw, 44px);
     color: #fff;
-    line-height: 1.1;
+    line-height: 1.15;
     margin-bottom: 16px;
+    overflow: visible;
+    padding-bottom: 2px;
   }
 
   .section-intro {
@@ -285,12 +278,14 @@
   }
 
   .pkg-name {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 700;
     font-size: 22px;
     color: #fff;
     margin-bottom: 8px;
-    line-height: 1.2;
+    line-height: 1.3;
+    overflow: visible;
+    padding-bottom: 2px;
   }
 
   .pkg-desc {
@@ -345,26 +340,24 @@
   }
 
   .pkg-meta-val {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 600;
     font-size: 14px;
     color: var(--text);
   }
 
-  /* FULL-WIDTH PACKAGE */
-  .pkg-card.full-width {
-    grid-column: 1 / -1;
-  }
+  .pkg-card.full-width { grid-column: 1 / -1; }
 
   .pkg-card.enterprise {
     background: var(--surface-2);
     border-top: 2px solid var(--accent-2);
+    overflow: visible;
   }
 
   .pkg-card.enterprise .pkg-name { color: var(--accent-2); }
   .pkg-card.enterprise .pkg-deliverables li::before { color: var(--accent-2); }
 
-  /* CAPABILITIES SECTION */
+  /* CAPABILITIES */
   .capabilities {
     background: var(--surface);
     border-top: 1px solid var(--border);
@@ -381,7 +374,6 @@
     padding: 40px;
     border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    position: relative;
   }
 
   .cap-item:nth-child(3n) { border-right: none; }
@@ -407,11 +399,14 @@
   }
 
   .cap-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 600;
     font-size: 17px;
     color: #fff;
     margin-bottom: 10px;
+    line-height: 1.3;
+    overflow: visible;
+    padding-bottom: 2px;
   }
 
   .cap-body {
@@ -428,10 +423,8 @@
     margin-top: 48px;
   }
 
-  .del-group { }
-
   .del-group-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 600;
     font-size: 13px;
     color: var(--accent);
@@ -485,7 +478,7 @@
   }
 
   .serve-num {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 800;
     font-size: 11px;
     letter-spacing: 0.2em;
@@ -494,11 +487,13 @@
   }
 
   .serve-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 600;
     font-size: 14px;
     color: #fff;
     margin-bottom: 8px;
+    overflow: visible;
+    padding-bottom: 2px;
   }
 
   .serve-body {
@@ -515,7 +510,7 @@
     border-top: 1px solid var(--border);
     padding: 80px 40px;
     text-align: center;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .cta-block::before {
@@ -542,7 +537,7 @@
 
   .btn-primary {
     display: inline-block;
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 700;
     font-size: 13px;
     letter-spacing: 0.12em;
@@ -562,7 +557,7 @@
 
   .btn-secondary {
     display: inline-block;
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 600;
     font-size: 13px;
     letter-spacing: 0.12em;
@@ -587,15 +582,8 @@
   }
 
   .hero-eyebrow { animation: fadeUp 0.5s ease both; }
-  h1 { animation: fadeUp 0.5s 0.1s ease both; }
+  /* h1 animation removed — causes descender clipping */
   .hero-sub { animation: fadeUp 0.5s 0.2s ease both; }
-
-  /* HORIZONTAL RULE */
-  hr {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 0;
-  }
 
   /* PROCESS STRIP */
   .process-strip {
@@ -650,7 +638,7 @@
   }
 
   .process-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 600;
     font-size: 13px;
     color: #fff;
@@ -677,12 +665,14 @@
   }
 
   .quote-text {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 600;
     font-size: clamp(20px, 3vw, 28px);
     color: #fff;
     line-height: 1.4;
     position: relative;
+    overflow: visible;
+    padding-bottom: 4px;
   }
 
   .quote-text::before {
@@ -696,8 +686,6 @@
     line-height: 1;
     pointer-events: none;
   }
-
-  .quote-detail { }
 
   .quote-detail-label {
     font-family: 'IBM Plex Mono', monospace;
@@ -725,13 +713,14 @@
   .quote-fact:last-child { border-bottom: none; }
 
   .qf-num {
-    font-family: 'Syne', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: 800;
     font-size: 22px;
     color: var(--accent);
-    line-height: 1;
+    line-height: 1.2;
     flex-shrink: 0;
     min-width: 60px;
+    overflow: visible;
   }
 
   .qf-text {
@@ -750,25 +739,25 @@
     .process-inner::before { display: none; }
     .stats-inner { flex-direction: column; }
     .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+    nav { padding: 0 20px; }
+    .hero { padding: 60px 20px 60px; }
+    .section { padding: 60px 20px; }
   }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <div class="nav-logo">Amusement <span>Standards</span></div>
+  <a href="index.html" class="nav-logo">Amusement <span>Standards</span></a>
   <div class="nav-tag">DATA ANALYTICS & RISK INTELLIGENCE</div>
 </nav>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-eyebrow">Risk Intelligence Division</div>
-  <h1>Your incident data<br>has been telling you<br>something. <em>We decode it.</em></h1>
+  <div class="h1-wrap"><h1>Your incident data has been telling you something. <em>We decode it.</em></h1></div>
   <p class="hero-sub">Most operators are sitting on 12–24 months of incident, inspection, and near-miss data with no analytical framework to extract meaning from it. We transform that data into heatmaps, trend models, and insurer-ready intelligence packages that drive real decisions.</p>
 </div>
 
-<!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat-item">
@@ -790,7 +779,6 @@
   </div>
 </div>
 
-<!-- PROCESS -->
 <div class="process-strip">
   <div class="process-inner">
     <div class="process-step">
@@ -821,15 +809,12 @@
   </div>
 </div>
 
-<!-- PACKAGES -->
 <div class="section">
   <div class="section-label">// analytics packages</div>
   <h2>Choose your intelligence level</h2>
   <p class="section-intro">Every engagement starts with your data. We structure it, analyze it, and give you something you can act on — and defend in front of an underwriter.</p>
 
   <div class="packages-grid">
-
-    <!-- SNAPSHOT -->
     <div class="pkg-card">
       <div class="pkg-tier">Tier 01 — Entry</div>
       <div class="pkg-name">Incident Data Snapshot</div>
@@ -842,22 +827,12 @@
         <li>One-page executive brief</li>
       </ul>
       <div class="pkg-meta">
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Timeline</div>
-          <div class="pkg-meta-val">5–7 Business Days</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Format</div>
-          <div class="pkg-meta-val">Flat-Rate</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Output</div>
-          <div class="pkg-meta-val">PDF Report</div>
-        </div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Timeline</div><div class="pkg-meta-val">5–7 Business Days</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Format</div><div class="pkg-meta-val">Flat-Rate</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Output</div><div class="pkg-meta-val">PDF Report</div></div>
       </div>
     </div>
 
-    <!-- RISK INTELLIGENCE PRO -->
     <div class="pkg-card featured">
       <div class="pkg-tier">Tier 02 — Core</div>
       <div class="pkg-name">Risk Intelligence Pro</div>
@@ -873,22 +848,12 @@
         <li>Executive presentation deck</li>
       </ul>
       <div class="pkg-meta">
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Timeline</div>
-          <div class="pkg-meta-val">3–4 Weeks</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Format</div>
-          <div class="pkg-meta-val">Flat-Rate</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Output</div>
-          <div class="pkg-meta-val">Full Package</div>
-        </div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Timeline</div><div class="pkg-meta-val">3–4 Weeks</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Format</div><div class="pkg-meta-val">Flat-Rate</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Output</div><div class="pkg-meta-val">Full Package</div></div>
       </div>
     </div>
 
-    <!-- MULTI-LOCATION -->
     <div class="pkg-card">
       <div class="pkg-tier">Tier 03 — Scale</div>
       <div class="pkg-name">Multi-Location Portfolio Analysis</div>
@@ -903,22 +868,12 @@
         <li>Location-specific action plans with priority triage</li>
       </ul>
       <div class="pkg-meta">
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Timeline</div>
-          <div class="pkg-meta-val">4–6 Weeks</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Format</div>
-          <div class="pkg-meta-val">Custom Scope</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Output</div>
-          <div class="pkg-meta-val">Full Package</div>
-        </div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Timeline</div><div class="pkg-meta-val">4–6 Weeks</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Format</div><div class="pkg-meta-val">Custom Scope</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Output</div><div class="pkg-meta-val">Full Package</div></div>
       </div>
     </div>
 
-    <!-- RENEWAL PREP -->
     <div class="pkg-card">
       <div class="pkg-tier">Tier 03 — Specialty</div>
       <div class="pkg-name">Insurance Renewal Intelligence</div>
@@ -933,22 +888,12 @@
         <li>Premium reduction talking points</li>
       </ul>
       <div class="pkg-meta">
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Timeline</div>
-          <div class="pkg-meta-val">2–3 Weeks</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Format</div>
-          <div class="pkg-meta-val">Flat-Rate</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Output</div>
-          <div class="pkg-meta-val">Broker Package</div>
-        </div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Timeline</div><div class="pkg-meta-val">2–3 Weeks</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Format</div><div class="pkg-meta-val">Flat-Rate</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Output</div><div class="pkg-meta-val">Broker Package</div></div>
       </div>
     </div>
 
-    <!-- ENTERPRISE RETAINER -->
     <div class="pkg-card full-width enterprise">
       <div class="pkg-tier">Tier 04 — Ongoing</div>
       <div class="pkg-name">Continuous Risk Intelligence Retainer</div>
@@ -976,36 +921,22 @@
         </div>
       </div>
       <div class="pkg-meta" style="margin-top:28px">
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Commitment</div>
-          <div class="pkg-meta-val">Monthly Subscription</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Cancellation</div>
-          <div class="pkg-meta-val">30-Day Notice</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Best For</div>
-          <div class="pkg-meta-val">Multi-Location Chains</div>
-        </div>
-        <div class="pkg-meta-item">
-          <div class="pkg-meta-label">Onboarding</div>
-          <div class="pkg-meta-val">Full Risk Intel Pro Included</div>
-        </div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Commitment</div><div class="pkg-meta-val">Monthly Subscription</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Cancellation</div><div class="pkg-meta-val">30-Day Notice</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Best For</div><div class="pkg-meta-val">Multi-Location Chains</div></div>
+        <div class="pkg-meta-item"><div class="pkg-meta-label">Onboarding</div><div class="pkg-meta-val">Full Risk Intel Pro Included</div></div>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- CAPABILITIES -->
 <div class="capabilities">
   <div class="section" style="padding-bottom: 0;">
     <div class="section-label">// analytical capabilities</div>
     <h2>What we actually build</h2>
     <p class="section-intro">Our analytics outputs are built in R, structured for defensibility, and designed to communicate clearly to both operators and underwriters.</p>
   </div>
-  <div class="cap-grid" style="max-width:1100px; margin: 0 auto 0; border-top: 1px solid var(--border);">
+  <div class="cap-grid" style="max-width:1100px; margin: 0 auto; border-top: 1px solid var(--border);">
     <div class="cap-item">
       <div class="cap-icon">HEATMAP</div>
       <div class="cap-title">Attraction-Level Risk Heatmaps</div>
@@ -1039,12 +970,10 @@
   </div>
 </div>
 
-<!-- WHO WE SERVE -->
 <div class="section">
   <div class="section-label">// who we serve</div>
   <h2>Built for operators at every scale</h2>
   <p class="section-intro">Whether you're a single FEC trying to understand your incident history or a 20-property chain that needs portfolio-level visibility, we have an analytics package calibrated to your situation.</p>
-
   <div class="serve-row">
     <div class="serve-cell">
       <div class="serve-num">01</div>
@@ -1069,7 +998,6 @@
   </div>
 </div>
 
-<!-- QUOTE BLOCK -->
 <div style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="quote-block">
     <div class="quote-text">
@@ -1095,14 +1023,13 @@
   </div>
 </div>
 
-<!-- CTA -->
 <div class="cta-block">
   <div style="position:relative; z-index:1;">
     <div class="section-label" style="text-align:center; margin-bottom:16px;">// get started</div>
     <h2>Start with your data.<br>We'll tell you what it means.</h2>
     <p>Schedule a free 15-minute risk review. We'll identify which analytics package fits your situation and what your data is likely to surface.</p>
     <a href="mailto:adam@amusementstandards.com" class="btn-primary">Schedule Risk Review</a>
-    <a href="#" class="btn-secondary">View All Services</a>
+    <a href="index.html" class="btn-secondary">View All Services</a>
   </div>
 </div>
 
