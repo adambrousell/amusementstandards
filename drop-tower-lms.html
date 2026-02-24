@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drop Tower Operator Certification — Amusement Standards</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #0A0E18;
+  --surface: #111827;
+  --surface2: #1a2236;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --red: #EF4444;
+  --red-dim: rgba(239,68,68,0.15);
+  --amber: #F59E0B;
+  --amber-dim: rgba(245,158,11,0.12);
+  --green: #10B981;
+  --green-dim: rgba(16,185,129,0.12);
+  --blue: #3B82F6;
+  --blue-dim: rgba(59,130,246,0.12);
+  --cyan: #06B6D4;
+  --text: #F1F5F9;
+  --text2: #94A3B8;
+  --text3: #64748B;
+  --accent: #06B6D4;
+  --accent2: #0891B2;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 56px;
+  background: rgba(10,14,24,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 1.5rem;
+  gap: 1rem;
+}
+.topbar-brand { display: flex; align-items: center; gap: 0.6rem; }
+.topbar-icon {
+  width: 32px; height: 32px; background: linear-gradient(135deg,#0891B2,#0e7490);
+  border-radius: 7px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; color: white; letter-spacing: -1px;
+}
+.topbar-name { font-weight: 800; font-size: 0.9rem; }
+.topbar-sub { font-size: 0.7rem; color: var(--text3); font-weight: 500; }
+.topbar-spacer { flex: 1; }
+.progress-wrap { display: flex; align-items: center; gap: 0.75rem; }
+.progress-track {
+  width: 160px; height: 5px; background: var(--surface2); border-radius: 3px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--cyan), #22d3ee);
+  border-radius: 3px; transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+}
+.progress-pct { font-size: 0.75rem; font-weight: 700; color: var(--cyan); font-family: 'DM Mono'; }
+.cert-pill {
+  padding: 3px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 800;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  background: rgba(6,182,212,0.15); color: var(--cyan); border: 1px solid rgba(6,182,212,0.3);
+}
+
+/* ── LAYOUT ── */
+.layout { display: flex; min-height: 100vh; padding-top: 56px; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 270px; flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto; overflow-x: hidden;
+  position: sticky; top: 56px; height: calc(100vh - 56px);
+}
+.sidebar-section-label {
+  padding: 1.1rem 1.25rem 0.4rem;
+  font-size: 0.62rem; font-weight: 800; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text3);
+}
+.nav-item {
+  display: flex; align-items: center; gap: 0.65rem;
+  padding: 0.55rem 1.25rem;
+  cursor: pointer; transition: background 0.15s;
+  border-left: 2px solid transparent;
+  position: relative;
+}
+.nav-item:hover { background: var(--surface2); }
+.nav-item.active {
+  background: rgba(6,182,212,0.08);
+  border-left-color: var(--cyan);
+}
+.nav-dot {
+  width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; font-weight: 700;
+  background: var(--surface2); color: var(--text3); border: 1px solid var(--border2);
+  transition: all 0.2s;
+}
+.nav-dot.done { background: var(--green); color: white; border-color: var(--green); }
+.nav-dot.active-dot { background: var(--cyan); color: white; border-color: var(--cyan); }
+.nav-text { flex: 1; min-width: 0; }
+.nav-label { font-size: 0.8rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+.nav-sublabel { font-size: 0.68rem; color: var(--text3); margin-top: 1px; }
+.nav-badge {
+  font-size: 0.58rem; font-weight: 800; padding: 2px 6px; border-radius: 8px;
+  letter-spacing: 0.04em; text-transform: uppercase; flex-shrink: 0;
+}
+.badge-read { background: rgba(148,163,184,0.12); color: var(--text3); }
+.badge-quiz { background: rgba(245,158,11,0.15); color: var(--amber); }
+.badge-sim { background: rgba(16,185,129,0.15); color: var(--green); }
+.badge-exam { background: rgba(239,68,68,0.15); color: var(--red); }
+.sidebar-sep { height: 1px; background: var(--border); margin: 0.6rem 1.25rem; }
+
+/* ── MAIN ── */
+.main { flex: 1; overflow-y: auto; padding: 2rem 2.5rem; max-width: 900px; }
+
+.screen { display: none; animation: fadeUp 0.3s ease; }
+.screen.active { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── SHARED COMPONENTS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.55rem 1.3rem; border-radius: 8px; border: none;
+  cursor: pointer; font-family: 'DM Sans'; font-weight: 700; font-size: 0.85rem;
+  transition: all 0.15s; text-decoration: none;
+}
+.btn-primary { background: var(--cyan); color: #000; }
+.btn-primary:hover { background: #22d3ee; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(6,182,212,0.35); }
+.btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+.btn-ghost:hover { background: rgba(255,255,255,0.06); }
+.btn-green { background: var(--green); color: #000; }
+.btn-green:hover { background: #34d399; transform: translateY(-1px); }
+.btn-amber { background: var(--amber); color: #000; }
+
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;
+}
+.card-title {
+  font-size: 0.95rem; font-weight: 800; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.6rem; color: var(--text);
+}
+.card-title .icon-circle {
+  width: 28px; height: 28px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
+}
+
+.callout {
+  border-radius: 8px; padding: 0.9rem 1.1rem;
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  margin-bottom: 0.9rem; font-size: 0.85rem; line-height: 1.6;
+}
+.callout-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.callout.red { background: var(--red-dim); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; }
+.callout.amber { background: var(--amber-dim); border: 1px solid rgba(245,158,11,0.25); color: #fcd34d; }
+.callout.blue { background: var(--blue-dim); border: 1px solid rgba(59,130,246,0.25); color: #93c5fd; }
+.callout.green { background: var(--green-dim); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; }
+.callout.cyan { background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.2); color: #67e8f9; }
+
+body-text { font-size: 0.875rem; line-height: 1.75; color: #cbd5e1; }
+
+p.body { font-size: 0.875rem; line-height: 1.75; color: #cbd5e1; margin-bottom: 0.75rem; }
+ul.body-list, ol.body-list {
+  font-size: 0.875rem; line-height: 1.75; color: #cbd5e1;
+  padding-left: 1.4rem; margin-bottom: 0.75rem;
+}
+ul.body-list li, ol.body-list li { margin-bottom: 0.35rem; }
+
+.tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; }
+.tag-red { background: var(--red-dim); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+.tag-amber { background: var(--amber-dim); color: #fcd34d; border: 1px solid rgba(245,158,11,0.3); }
+.tag-green { background: var(--green-dim); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.3); }
+.tag-cyan { background: rgba(6,182,212,0.1); color: #67e8f9; border: 1px solid rgba(6,182,212,0.3); }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+
+.stat-block {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1.1rem; text-align: center;
+}
+.stat-num { font-size: 2rem; font-weight: 900; font-family: 'DM Mono'; }
+.stat-label { font-size: 0.72rem; font-weight: 600; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.step-ol { list-style: none; padding: 0; counter-reset: steps; }
+.step-ol li {
+  counter-increment: steps;
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  margin-bottom: 0.75rem; font-size: 0.875rem; color: #cbd5e1; line-height: 1.65;
+}
+.step-ol li::before {
+  content: counter(steps);
+  min-width: 26px; height: 26px; border-radius: 50%;
+  background: linear-gradient(135deg,var(--cyan),#0891B2);
+  color: #000; font-weight: 800; font-size: 0.72rem;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+
+.defect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.5rem; }
+.defect-card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1rem;
+}
+.defect-card.critical { border-color: rgba(239,68,68,0.35); background: rgba(239,68,68,0.05); }
+.defect-card.warning { border-color: rgba(245,158,11,0.35); background: rgba(245,158,11,0.05); }
+.defect-title { font-size: 0.8rem; font-weight: 800; margin-bottom: 0.35rem; display: flex; align-items: center; gap: 0.4rem; }
+.defect-body { font-size: 0.78rem; color: var(--text3); line-height: 1.55; }
+
+.checklist-row {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.65rem 0.8rem; border-radius: 7px;
+  cursor: pointer; transition: background 0.15s; margin-bottom: 0.3rem;
+}
+.checklist-row:hover { background: var(--surface2); }
+.checklist-row input { width: 16px; height: 16px; cursor: pointer; accent-color: var(--cyan); flex-shrink: 0; margin-top: 2px; }
+.checklist-row label { font-size: 0.85rem; color: #cbd5e1; line-height: 1.55; cursor: pointer; }
+.checklist-row.checked label { color: var(--text3); text-decoration: line-through; }
+
+.lesson-nav-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+}
+.lesson-title h2 { font-size: 1.4rem; font-weight: 900; }
+.lesson-title p { font-size: 0.8rem; color: var(--text3); margin-top: 3px; }
+.lesson-actions { display: flex; gap: 0.5rem; }
+
+/* ── WELCOME SCREEN ── */
+.hero {
+  background: linear-gradient(135deg,#0c1a2e,#0f2447);
+  border: 1px solid rgba(6,182,212,0.2);
+  border-radius: 16px; padding: 2.5rem; margin-bottom: 1.5rem;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; right: -60px; top: -80px;
+  width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-kicker {
+  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--cyan); margin-bottom: 0.6rem;
+}
+.hero h1 { font-size: 2rem; font-weight: 900; line-height: 1.15; margin-bottom: 0.75rem; }
+.hero h1 span { color: var(--cyan); }
+.hero-sub { font-size: 0.9rem; color: var(--text2); max-width: 520px; line-height: 1.65; margin-bottom: 1.5rem; }
+.hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+.hero-stat .num { font-size: 1.6rem; font-weight: 900; font-family: 'DM Mono'; color: var(--cyan); }
+.hero-stat .lbl { font-size: 0.7rem; font-weight: 600; color: var(--text3); margin-top: 1px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+.compliance-strip {
+  background: rgba(6,182,212,0.06); border: 1px solid rgba(6,182,212,0.18);
+  border-radius: 10px; padding: 0.9rem 1.1rem;
+  display: flex; gap: 0.75rem; font-size: 0.82rem; color: #a5f3fc; margin-bottom: 1rem;
+}
+
+/* ── QUIZ ENGINE ── */
+.quiz-meta-bar {
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+}
+.quiz-track { flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+.quiz-fill { height: 100%; background: linear-gradient(90deg,var(--cyan),#22d3ee); border-radius: 3px; transition: width 0.4s; }
+.quiz-counter { font-family: 'DM Mono'; font-size: 0.78rem; color: var(--text3); white-space: nowrap; }
+
+.q-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden; margin-bottom: 1rem;
+}
+.q-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
+.q-num { font-size: 0.68rem; font-weight: 700; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.q-text { font-size: 0.95rem; font-weight: 600; line-height: 1.55; }
+.q-body { padding: 1.25rem 1.5rem; }
+.q-opt {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.8rem 1rem; border-radius: 8px; margin-bottom: 0.5rem;
+  cursor: pointer; border: 1.5px solid var(--border); transition: all 0.15s; font-size: 0.875rem;
+}
+.q-opt:hover { border-color: var(--cyan); background: rgba(6,182,212,0.06); }
+.q-opt.selected { border-color: var(--blue); background: rgba(59,130,246,0.1); }
+.q-opt.correct { border-color: var(--green); background: rgba(16,185,129,0.1); }
+.q-opt.wrong { border-color: var(--red); background: rgba(239,68,68,0.08); }
+.q-letter {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  background: var(--surface2); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 800; font-family: 'DM Mono';
+  transition: all 0.15s;
+}
+.q-opt.selected .q-letter { background: var(--blue); color: white; border-color: var(--blue); }
+.q-opt.correct .q-letter { background: var(--green); color: #000; border-color: var(--green); }
+.q-opt.wrong .q-letter { background: var(--red); color: white; border-color: var(--red); }
+.q-opt-text { flex: 1; line-height: 1.5; color: #cbd5e1; }
+.q-feedback {
+  margin-top: 0.75rem; padding: 0.8rem 1rem; border-radius: 8px;
+  font-size: 0.83rem; line-height: 1.6; display: none;
+}
+.q-feedback.show { display: block; }
+.q-feedback.pass { background: var(--green-dim); border: 1px solid rgba(16,185,129,0.3); color: #a7f3d0; }
+.q-feedback.fail { background: var(--red-dim); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+.q-actions { display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 1rem; }
+
+/* ── RESULT PANEL ── */
+.result-panel { display: none; }
+.result-panel.show { display: block; }
+.score-donut {
+  width: 110px; height: 110px; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  margin: 0 auto 1.25rem; font-family: 'DM Mono';
+}
+.score-donut.pass { border: 8px solid var(--green); box-shadow: 0 0 24px rgba(16,185,129,0.3); }
+.score-donut.fail { border: 8px solid var(--red); box-shadow: 0 0 24px rgba(239,68,68,0.2); }
+.score-big { font-size: 1.8rem; font-weight: 900; line-height: 1; }
+.score-unit { font-size: 0.7rem; color: var(--text3); }
+
+/* ── SCENARIO SIM ── */
+.scenario-box {
+  background: linear-gradient(135deg,#0c1f38,#0a1a2e);
+  border: 1px solid rgba(6,182,212,0.2); border-radius: 12px;
+  padding: 1.5rem; margin-bottom: 1rem;
+}
+.scenario-pill {
+  display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 0.65rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  background: rgba(245,158,11,0.2); color: var(--amber); border: 1px solid rgba(245,158,11,0.3);
+  margin-bottom: 0.75rem;
+}
+.scenario-title { font-size: 1rem; font-weight: 800; margin-bottom: 0.5rem; }
+.scenario-desc { font-size: 0.875rem; color: #94a3b8; line-height: 1.7; }
+.s-choice {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 9px; padding: 0.9rem 1.1rem; margin-bottom: 0.55rem;
+  cursor: pointer; transition: all 0.15s; font-size: 0.875rem; color: #cbd5e1;
+}
+.s-choice:hover { border-color: var(--cyan); background: rgba(6,182,212,0.05); }
+.s-choice.correct-choice { border-color: var(--green); background: rgba(16,185,129,0.08); }
+.s-choice.wrong-choice { border-color: var(--red); background: rgba(239,68,68,0.06); }
+.s-letter {
+  min-width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  background: var(--surface2); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 800; font-family: 'DM Mono';
+}
+.s-outcome {
+  border-radius: 8px; padding: 0.9rem 1.1rem; margin-top: 0.6rem;
+  font-size: 0.83rem; line-height: 1.6; display: none;
+}
+.s-outcome.show { display: block; }
+.s-outcome.good { background: var(--green-dim); border: 1px solid rgba(16,185,129,0.3); color: #a7f3d0; }
+.s-outcome.bad { background: var(--amber-dim); border: 1px solid rgba(245,158,11,0.3); color: #fcd34d; }
+.scenario-divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+/* ── CERT SCREEN ── */
+.cert-wrap {
+  background: linear-gradient(145deg,#0f2447,#0c1a2e);
+  border: 2px solid rgba(245,158,11,0.4);
+  border-radius: 16px; padding: 3rem; text-align: center;
+  position: relative; overflow: hidden;
+}
+.cert-wrap::before {
+  content: '';
+  position: absolute; inset: 8px;
+  border: 1px solid rgba(245,158,11,0.15);
+  border-radius: 10px; pointer-events: none;
+}
+.cert-emblem { font-size: 3.5rem; margin-bottom: 1rem; }
+.cert-org { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text3); margin-bottom: 0.5rem; }
+.cert-title { font-size: 0.85rem; font-weight: 700; color: var(--text2); margin-bottom: 0.25rem; }
+.cert-course { font-size: 1.5rem; font-weight: 900; margin-bottom: 0.75rem; }
+.cert-awardee-label { font-size: 0.78rem; color: var(--text3); margin-bottom: 0.25rem; }
+.cert-name { font-size: 1.75rem; font-weight: 900; color: var(--amber); font-family: 'DM Mono'; letter-spacing: 0.02em; }
+.cert-divider { width: 120px; height: 2px; background: linear-gradient(90deg,transparent,var(--amber),transparent); margin: 0.9rem auto; }
+.cert-standards { font-size: 0.75rem; color: var(--text3); max-width: 420px; margin: 0 auto 1.5rem; line-height: 1.6; }
+.cert-meta { display: flex; justify-content: center; gap: 3rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.cert-meta-item strong { display: block; font-size: 1.1rem; font-family: 'DM Mono'; color: var(--text); }
+.cert-meta-item span { font-size: 0.7rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+.cert-id { font-family: 'DM Mono'; font-size: 0.7rem; color: var(--text3); }
+
+/* ── FINAL INTRO ── */
+.exam-gate {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; text-align: center;
+}
+.exam-gate h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.75rem; }
+
+@media print {
+  .topbar, .sidebar, .lesson-actions, .lesson-nav-bar .lesson-actions { display: none !important; }
+  .layout { padding-top: 0; }
+  .cert-wrap { border: 2px solid #b8860b; background: white; color: #000; }
+  .cert-name { color: #b8860b; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-icon">AS</div>
+    <div>
+      <div class="topbar-name">Amusement Standards</div>
+      <div class="topbar-sub">Learning Management System</div>
+    </div>
+  </div>
+  <div class="topbar-spacer"></div>
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="topProgress" style="width:0%"></div></div>
+    <div class="progress-pct" id="topPct">0%</div>
+    <div class="cert-pill" id="topStatus">In Progress</div>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-section-label">Unit 1 — Foundations</div>
+  <div class="nav-item active" id="nav-home" onclick="go('home')">
+    <div class="nav-dot active-dot" id="dot-home">●</div>
+    <div class="nav-text"><div class="nav-label">Course Overview</div><div class="nav-sublabel">Welcome & objectives</div></div>
+  </div>
+  <div class="nav-item" id="nav-m1" onclick="go('m1')">
+    <div class="nav-dot" id="dot-m1">1</div>
+    <div class="nav-text"><div class="nav-label">Ride Systems & Components</div><div class="nav-sublabel">Drop tower anatomy</div></div>
+    <div class="nav-badge badge-read">Read</div>
+  </div>
+  <div class="nav-item" id="nav-m2" onclick="go('m2')">
+    <div class="nav-dot" id="dot-m2">2</div>
+    <div class="nav-text"><div class="nav-label">Regulatory Framework</div><div class="nav-sublabel">ASTM F770 / F1193</div></div>
+    <div class="nav-badge badge-read">Read</div>
+  </div>
+
+  <div class="sidebar-sep"></div>
+  <div class="sidebar-section-label">Unit 2 — Daily Operations</div>
+  <div class="nav-item" id="nav-m3" onclick="go('m3')">
+    <div class="nav-dot" id="dot-m3">3</div>
+    <div class="nav-text"><div class="nav-label">Pre-Opening Inspection</div><div class="nav-sublabel">ASTM F770 §7.1 protocol</div></div>
+    <div class="nav-badge badge-read">Read</div>
+  </div>
+  <div class="nav-item" id="nav-m4" onclick="go('m4')">
+    <div class="nav-dot" id="dot-m4">4</div>
+    <div class="nav-text"><div class="nav-label">Rider Screening & Loading</div><div class="nav-sublabel">Height, size, restraints</div></div>
+    <div class="nav-badge badge-read">Read</div>
+  </div>
+  <div class="nav-item" id="nav-kc1" onclick="go('kc1')">
+    <div class="nav-dot" id="dot-kc1">Q</div>
+    <div class="nav-text"><div class="nav-label">Knowledge Check #1</div><div class="nav-sublabel">Units 1 & 2 review</div></div>
+    <div class="nav-badge badge-quiz">Quiz</div>
+  </div>
+
+  <div class="sidebar-sep"></div>
+  <div class="sidebar-section-label">Unit 3 — Safety & Emergency</div>
+  <div class="nav-item" id="nav-m5" onclick="go('m5')">
+    <div class="nav-dot" id="dot-m5">5</div>
+    <div class="nav-text"><div class="nav-label">LOTO & Safe Zones</div><div class="nav-sublabel">Lockout/tagout procedures</div></div>
+    <div class="nav-badge badge-read">Read</div>
+  </div>
+  <div class="nav-item" id="nav-m6" onclick="go('m6')">
+    <div class="nav-dot" id="dot-m6">6</div>
+    <div class="nav-text"><div class="nav-label">Emergency Procedures</div><div class="nav-sublabel">Downtime, evac, injury</div></div>
+    <div class="nav-badge badge-read">Read</div>
+  </div>
+  <div class="nav-item" id="nav-sim" onclick="go('sim')">
+    <div class="nav-dot" id="dot-sim">★</div>
+    <div class="nav-text"><div class="nav-label">Decision Simulations</div><div class="nav-sublabel">4 emergency scenarios</div></div>
+    <div class="nav-badge badge-sim">Sim</div>
+  </div>
+  <div class="nav-item" id="nav-kc2" onclick="go('kc2')">
+    <div class="nav-dot" id="dot-kc2">Q</div>
+    <div class="nav-text"><div class="nav-label">Knowledge Check #2</div><div class="nav-sublabel">Unit 3 safety review</div></div>
+    <div class="nav-badge badge-quiz">Quiz</div>
+  </div>
+
+  <div class="sidebar-sep"></div>
+  <div class="sidebar-section-label">Certification</div>
+  <div class="nav-item" id="nav-exam" onclick="go('exam')">
+    <div class="nav-dot" id="dot-exam">★</div>
+    <div class="nav-text"><div class="nav-label">Final Certification Exam</div><div class="nav-sublabel">20 questions · 80% required</div></div>
+    <div class="nav-badge badge-exam">Exam</div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ══════════════════════════════════════════════
+     WELCOME / HOME
+══════════════════════════════════════════════ -->
+<section class="screen active" id="s-home">
+  <div class="hero">
+    <div class="hero-kicker">Pilot Program · Drop Tower Series</div>
+    <h1>Drop Tower Operator<br><span>Certification Program</span></h1>
+    <p class="hero-sub">A rigorous, ASTM F770-compliant training program for ride operators, attendants, and supervisors. Complete all modules and pass the final exam to earn your operator certification.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">9</div><div class="lbl">Modules</div></div>
+      <div class="hero-stat"><div class="num">~90</div><div class="lbl">Minutes</div></div>
+      <div class="hero-stat"><div class="num">80%</div><div class="lbl">Pass Score</div></div>
+      <div class="hero-stat"><div class="num">12 mo</div><div class="lbl">Validity</div></div>
+    </div>
+  </div>
+
+  <div class="compliance-strip">
+    <span>📋</span>
+    <div><strong>Regulatory Alignment:</strong> This course aligns with ASTM F770-18 §8 Training Requirements, ASTM F1193, IAAPA Guidelines for Effective Operation Programs, and industry ride operations best practices. Completion satisfies documented training obligations under F770-18 §8.1 — but does NOT replace the hands-on supervised demonstration required by §8.3.</div>
+  </div>
+
+  <div class="three-col" style="margin-bottom:1rem;">
+    <div class="stat-block">
+      <div class="stat-num" style="color:var(--cyan);">3</div>
+      <div class="stat-label">Content Units</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num" style="color:var(--amber);">2</div>
+      <div class="stat-label">Knowledge Checks</div>
+    </div>
+    <div class="stat-block">
+      <div class="stat-num" style="color:var(--green);">20</div>
+      <div class="stat-label">Final Exam Questions</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📚 Course Structure</div>
+    <div class="two-col">
+      <div>
+        <p class="body"><strong style="color:var(--text)">Unit 1 — Foundations</strong><br>Ride systems anatomy, major component identification, and the ASTM F770/F1193 regulatory framework governing your daily responsibilities as a certified operator.</p>
+        <p class="body"><strong style="color:var(--text)">Unit 2 — Daily Operations</strong><br>The ASTM F770 §7.1 pre-opening inspection protocol, rider screening procedures, height/size/health restriction enforcement, restraint verification, loose article management, and dispatch hand signals.</p>
+      </div>
+      <div>
+        <p class="body"><strong style="color:var(--text)">Unit 3 — Safety & Emergency</strong><br>Lock Out/Tag Out (LOTO), operator safe zones, restricted area protocols, ride downtime classification, emergency evacuation procedures, injury response, and weather/fire emergencies.</p>
+        <p class="body"><strong style="color:var(--text)">Certification Exam</strong><br>20 questions covering all three units including scenario-based decision questions. 80% passing threshold (16/20). Three attempts permitted before remediation is required.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <span class="callout-icon">⛔</span>
+    <div><strong>Important Limitation:</strong> This LMS course satisfies the written knowledge component of ASTM F770-18 §8.1-8.2. It does NOT fulfill §8.3, which requires a qualified trainer to physically demonstrate all assigned duties and then observe you performing those duties under direct supervision. Field sign-off from your supervisor is required before you may operate independently.</div>
+  </div>
+
+  <div style="padding:1rem 0; text-align:center;">
+    <button class="btn btn-primary" style="padding:0.75rem 2.5rem; font-size:0.95rem;" onclick="completeGo('home','m1')">Begin Training →</button>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     MODULE 1 — RIDE SYSTEMS
+══════════════════════════════════════════════ -->
+<section class="screen" id="s-m1">
+  <div class="lesson-nav-bar">
+    <div class="lesson-title">
+      <h2>Module 1: Ride Systems & Components</h2>
+      <p>Unit 1 · Foundations · ~12 min</p>
+    </div>
+    <div class="lesson-actions">
+      <button class="btn btn-ghost" onclick="go('home')">← Back</button>
+      <button class="btn btn-primary" onclick="completeGo('m1','m2')">Mark Complete →</button>
+    </div>
+  </div>
+
+  <div class="callout blue">
+    <span class="callout-icon">ℹ️</span>
+    <div>ASTM F1193 requires manufacturers to provide documented operating instructions for every ride. Your supervisor should have provided the ride-specific SOP (Standard Operating Procedure). This module supplements — not replaces — that documentation.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon-circle" style="background:rgba(6,182,212,0.15)">🎡</span> Drop Tower Overview</div>
+    <p class="body">A drop tower (also called a free-fall, gyro-drop, or tower ride) consists of a gondola or seat assembly that is mechanically raised to height, then released in a controlled downward motion before braking brings the gondola safely to rest. Understanding the ride's mechanical logic is essential to recognizing abnormal operation — one of your core responsibilities as a certified operator.</p>
+    <div class="two-col" style="margin-top:0.75rem;">
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--cyan)">Free-Fall (Gravity Drop)</div>
+        <div class="defect-body">Gondola rises via electromagnetic or hydraulic lift, releases at apex for a brief free-fall, then magnetic or eddy-current brakes engage progressively. Most common configuration at major parks.</div>
+      </div>
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--cyan)">Gyro Drop</div>
+        <div class="defect-body">Gondola rises while rotating outward, then drops. The rotational component adds centrifugal force that affects restraint verification and requires specific pre-ride body posture checks.</div>
+      </div>
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--cyan)">Turbo Drop / Shot Tower</div>
+        <div class="defect-body">Uses compressed air or hydraulic launch to drive gondola upward before free-fall. Launch pressure systems require specific daily pressure and fluid checks beyond standard inspection.</div>
+      </div>
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--cyan)">Space Shot</div>
+        <div class="defect-body">Rapid upward launch from ground level to apex then free-fall return. Hydraulic cylinders and launch pressure components require additional monitoring in daily inspection cycle.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon-circle" style="background:rgba(239,68,68,0.1)">⚙️</span> Major System Components</div>
+    <p class="body">Every drop tower shares these critical systems. You are required to visually inspect each one during your pre-opening check. Develop a mental map of each component and its location on your specific ride.</p>
+    <div class="defect-grid">
+      <div class="defect-card critical">
+        <div class="defect-title">🔐 Restraint System <span class="tag tag-red">CRITICAL</span></div>
+        <div class="defect-body">Over-the-shoulder restraints (OTSR) or lap bars with positive-lock mechanism. Requires manual physical verification of each seat every cycle. Sensor confirmation is a secondary check — never rely solely on indicators.</div>
+      </div>
+      <div class="defect-card critical">
+        <div class="defect-title">🔧 Lift / Drive Mechanism <span class="tag tag-red">CRITICAL</span></div>
+        <div class="defect-body">Motor, chain, cable, or hydraulic cylinder system that raises the gondola. Any unusual sounds (grinding, squeaking, popping), vibrations, or fluid leaks must halt operations and trigger immediate maintenance notification.</div>
+      </div>
+      <div class="defect-card critical">
+        <div class="defect-title">🛑 Braking System <span class="tag tag-red">CRITICAL</span></div>
+        <div class="defect-body">Eddy current, magnetic, or hydraulic brakes governing descent control. Service brakes, emergency brakes, and anti-rollback devices all require daily functional testing per ASTM F770 §7.1.1.6.</div>
+      </div>
+      <div class="defect-card critical">
+        <div class="defect-title">🖥️ Control System <span class="tag tag-red">CRITICAL</span></div>
+        <div class="defect-body">PLC (programmable logic controller), operator console, E-stop buttons at all required positions, and communication system. All require functional testing before opening. A non-functional E-stop means the ride stays closed.</div>
+      </div>
+      <div class="defect-card warning">
+        <div class="defect-title">🏗️ Tower Structure <span class="tag tag-amber">INSPECT DAILY</span></div>
+        <div class="defect-body">Steel guide rails, main structural column, gondola assembly, foundation hardware, and all visible fasteners. Look for corrosion, cracking, deformation, missing bolts, or foreign objects in the travel path.</div>
+      </div>
+      <div class="defect-card">
+        <div class="defect-title">🚪 Loading Platform <span class="tag tag-cyan">ROUTINE</span></div>
+        <div class="defect-body">Entry/exit gates, loading zone barriers, platform flooring, and operator safe zone boundaries. Must be clear, free of trip hazards, and gates must function correctly before first guest enters the station.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon-circle" style="background:rgba(16,185,129,0.1)">👁️</span> Recognizing Abnormal Operation</div>
+    <p class="body">Over time you will develop an intuitive awareness of what <em>normal</em> operation looks, sounds, and smells like. When anything deviates, your obligation is clear: report it and take appropriate action. Watch for:</p>
+    <div class="two-col">
+      <ul class="body-list">
+        <li><strong>Strange Sights:</strong> Sparks, fluid leaks, metal shavings, gondola stopping at different positions than normal, components that appear misaligned</li>
+        <li><strong>Unusual Smells:</strong> Burning rubber or metal, electrical smell, hydraulic fluid odor, chemical smell</li>
+      </ul>
+      <ul class="body-list">
+        <li><strong>Unfamiliar Sounds:</strong> Grinding, squeaking, thumping, popping, changes in motor tone, unusual vibration frequency</li>
+        <li><strong>Guest Comments:</strong> "That hurt," "Fix that," "Something feels wrong" — take all ride-related comments seriously and report immediately</li>
+      </ul>
+    </div>
+    <div class="callout amber" style="margin-top:0.5rem; margin-bottom:0;">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>The Golden Rule:</strong> You as a Ride Team Member have the right at any time to close the ride if you feel that an unsafe condition exists. This is not a suggestion — it is your authority and your obligation. Use it without hesitation.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     MODULE 2 — REGULATORY FRAMEWORK
+══════════════════════════════════════════════ -->
+<section class="screen" id="s-m2">
+  <div class="lesson-nav-bar">
+    <div class="lesson-title">
+      <h2>Module 2: Regulatory Framework</h2>
+      <p>Unit 1 · Foundations · ~10 min</p>
+    </div>
+    <div class="lesson-actions">
+      <button class="btn btn-ghost" onclick="go('m1')">← Back</button>
+      <button class="btn btn-primary" onclick="completeGo('m2','m3')">Mark Complete →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📜 The Regulatory Landscape</div>
+    <p class="body">Unlike many industries, fixed amusement parks have <strong>no federal oversight</strong>. The CPSC (Consumer Product Safety Commission) has jurisdiction only over portable rides. This means state law — and industry standards — govern your operations.</p>
+    <p class="body">ASTM International's Committee F24 on Amusement Rides and Devices publishes the standards that 38+ U.S. states have incorporated into law. These include:</p>
+    <div class="two-col" style="margin-top:0.5rem;">
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--cyan)">ASTM F770-18</div>
+        <div class="defect-body"><em>Standard Practice for Ownership, Operation, Maintenance, and Inspection of Amusement Rides and Devices.</em> The primary compliance document for your daily operations. This is the standard your inspection sheets, training records, and operating procedures are designed to satisfy.</div>
+      </div>
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--cyan)">ASTM F1193</div>
+        <div class="defect-body"><em>Standard Practice for Quality, Manufacture, and Construction of Amusement Rides and Devices.</em> Governs manufacturers — but creates important obligations for operators, including incident reporting timelines and the right to receive Safety Alerts from manufacturers.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">§8 — Training Program Requirements</div>
+    <p class="body">F770-18 Section 8 directly governs this training program. These are legally binding requirements:</p>
+    <ol class="step-ol">
+      <li><strong>§8.1 — Written Programs Required:</strong> Owner/operators must maintain documented training programs for all operators, attendants, and maintenance staff assigned to each ride. Your completion of this LMS generates that documentation.</li>
+      <li><strong>§8.2 — Minimum Content:</strong> Training must cover: (a) operating procedures, (b) assigned position duties, (c) general safety, (d) procedures for unusual conditions and ride interruptions, (e) evacuation plan, and (f) inspection and PM procedures for maintenance staff.</li>
+      <li><strong>§8.3 — Supervised Demonstration (REQUIRED):</strong> The trainer must first demonstrate all assigned duties. Then you must demonstrate competency under trainer supervision. This LMS course alone does NOT fulfill §8.3. A field sign-off from your supervisor is mandatory before solo operation.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="card-title">§7 — Inspection Program Requirements</div>
+    <div class="two-col">
+      <div>
+        <p class="body"><strong style="color:var(--text)">§7.1 Pre-Opening Inspection</strong><br>Daily documented and signed inspection prior to carrying riders. Covers all 9 elements detailed in Module 3. Your signature is a legal certification of compliance.</p>
+        <p class="body"><strong style="color:var(--text)">§7.2 Pre-Opening Test Cycle</strong><br>Minimum one complete operating cycle without riders before opening each day. This is mandatory — not optional and not waivable by any supervisor.</p>
+      </div>
+      <div>
+        <p class="body"><strong style="color:var(--text)">§7.3 Return to Service Protocol</strong><br>After any unscheduled stop (malfunction, adjustment, modification, environmental condition), the ride must be re-inspected and operated without riders for a minimum of one full cycle before carrying guests again.</p>
+        <p class="body"><strong style="color:var(--text)">§7.4 Documentation</strong><br>All inspection records must be maintained per F770 and F1193. These records are accessible to state inspectors, and falsification constitutes fraud.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">§10 — Incident Reporting Obligations</div>
+    <ul class="body-list">
+      <li><strong>Serious injury notification:</strong> Under F770 §10.3, the manufacturer must be notified within <strong>7 days</strong> of any incident resulting in serious injury. Your supervisor handles this, but your accurate incident documentation is what makes it possible.</li>
+      <li><strong>First-aid log:</strong> All first-aid treatments — including minor injuries — must be recorded. Every event, no matter how minor it seems, gets documented.</li>
+      <li><strong>Manufacturer Safety Alerts:</strong> Under F1193, manufacturers who learn of a critical component incident must evaluate it and issue a Safety Alert, Service Bulletin, or Notification to all known operators. Stay current with any bulletins applicable to your ride.</li>
+    </ul>
+    <div class="callout red" style="margin-top:0.5rem;margin-bottom:0;">
+      <span class="callout-icon">🚨</span>
+      <div><strong>Your Legal Exposure:</strong> When you sign a daily inspection sheet, you are certifying compliance under penalty of fraud. Falsifying safety records may result in termination, civil liability, and potential criminal prosecution. If you cannot complete an inspection item, notify your supervisor BEFORE opening — never after a problem occurs.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     MODULE 3 — PRE-OPENING INSPECTION
+══════════════════════════════════════════════ -->
+<section class="screen" id="s-m3">
+  <div class="lesson-nav-bar">
+    <div class="lesson-title">
+      <h2>Module 3: Pre-Opening Inspection Protocol</h2>
+      <p>Unit 2 · Daily Operations · ~15 min</p>
+    </div>
+    <div class="lesson-actions">
+      <button class="btn btn-ghost" onclick="go('m2')">← Back</button>
+      <button class="btn btn-primary" onclick="completeGo('m3','m4')">Mark Complete →</button>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <span class="callout-icon">⚠️</span>
+    <div><strong>ASTM F770-18 §7.1:</strong> "Prior to carrying riders, the owner/operator shall conduct or cause to be conducted a daily documented and signed preopening inspection." Maintenance must sign off first. You may never open a ride without their signature on the Ride Operations Inspection Checklist.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔑 Maintenance Sign-Off First</div>
+    <p class="body">Each morning, Maintenance will conduct a thorough inspection and test operation of the ride. At the conclusion, the Maintenance technician signs off on both the daily maintenance inspection report AND the Ride Operations Inspection Checklist. <strong style="color:var(--text)">You may not start the ride without this signature.</strong></p>
+    <p class="body"><em>"Ride operators are trained to never start any ride without a signature from Maintenance on the Ride Operations Inspection Checklist."</em> If you arrive and the sheet is incomplete or unsigned, contact your Supervisor immediately for direction. Do not open the ride.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">✅ ASTM F770 §7.1.1 — 9-Point Inspection Checklist</div>
+    <p class="body" style="margin-bottom:1rem;">The following 9 elements are mandatory per §7.1.1. Use this interactive checklist to practice the protocol before your practical assessment. All 9 must be checked before signing off.</p>
+    <div id="inspChecklist">
+      <div class="checklist-row" onclick="ckToggle(this)"><input type="checkbox"><label><strong>§7.1.1.1 — Rider-carrying devices:</strong> Physically inspect all seats, seat pans, seat backs. Check all restraint devices and latches for proper function, wear, cracking, or damage. OTSR must lock with a positive click. Lap bars must engage at correct position. Any questionable restraint: remove from service immediately.</label></div>
+      <div class="checklist-row" onclick="ckToggle(this)"><input type="checkbox"><label><strong>§7.1.1.2 — Entrances, exits, and ramps:</strong> Visual check of all entry/exit gates, stairs, ramps, and walkways. Confirm no damage, obstructions, or loose hardware. Gates must open, close, and latch correctly. Check slip resistance of all walking surfaces.</label></div>
+      <div class="checklist-row" onclick="ckToggle(this)"><input type="checkbox"><label><strong>§7.1.1.3 — Loading and unloading areas:</strong> Inspect platform surface for trip hazards, debris, wet spots, or damage. Confirm operator safe zone boundaries are clearly marked and clear. All barricades in correct position. No foreign objects in gondola travel path.</label></div>
+      <div class="checklist-row" onclick="ckToggle(this)"><input type="checkbox"><label><strong>§7.1.1.4 — Communication equipment:</strong> Functional test of all communication devices required for ride operation — intercom, radio, phone, emergency guest communication system. Test E-stop communication circuit. A non-functional communication system means the ride stays closed.</label></div>
+      <div class="checklist-row" onclick="ckToggle(this)"><input type="checkbox"><label><strong>§7.1.1.5 — Automatic and manual safety devices:</strong> Test all safety devices per ride-specific SOP. Includes safety interlock systems, sensor arrays, gondola position sensors, and manual E-stop buttons at all required positions. Document any fault codes displayed.</label></div>
+      <div class="checklist-row" onclick="ckToggle(this)"><input type="checkbox"><label><strong>§7.1.1.6 — All brake systems:</strong> Inspect and test service brakes, emergency brakes, parking brakes, and anti-rollback devices per SOP. Listen and watch for unusual behavior. Check for hydraulic fluid leaks, low fluid level indicators, or abnormal brake engagement sounds during test cycle.</label></div>
+      <div class="checklist-row" onclick="ckToggle(this)"><input type="checkbox"><label><strong>§7.1.1.7 — Fencing, guarding, and barricades:</strong> Visual inspection of entire ride perimeter fence, all clearance zone barriers, and restricted area barricades. Confirm no damaged sections, open gates, or compromised barriers. Fencing must be 42" tall and meet the 4" ball requirement.</label></div>
+      <div class="checklist-row" onclick="ckToggle(this)"><input type="checkbox"><label><strong>§7.1.1.8 — Ride structure:</strong> Walk-around visual inspection of main tower, support columns, guide rails, cable/chain systems, gondola assembly, and all visible hardware connections. Look for corrosion, cracks, missing fasteners, deformation, or foreign objects anywhere in the ride envelope.</label></div>
+      <div class="checklist-row" onclick="ckToggle(this)"><input type="checkbox"><label><strong>§7.1.1.9 — Signs and visual communication:</strong> Confirm all required signage is present, legible, and undamaged. Height/weight requirement signs, health restriction signs, rider conduct signs, and safety information. Any missing or damaged signage must be replaced or reported before opening.</label></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔍 Common Defects & Required Responses</div>
+    <div class="defect-grid">
+      <div class="defect-card critical">
+        <div class="defect-title">⛔ Restraint Will Not Lock <span class="tag tag-red">CLOSE SEAT / LOTO</span></div>
+        <div class="defect-body">Remove that seat from service via LOTO. Notify maintenance immediately. Do not carry riders in that seat. If multiple seats are affected, the ride may not open until maintenance evaluates and signs off.</div>
+      </div>
+      <div class="defect-card critical">
+        <div class="defect-title">⛔ E-Stop Non-Functional <span class="tag tag-red">DO NOT OPEN</span></div>
+        <div class="defect-body">A non-functional emergency stop at any required position means the ride is closed. Contact maintenance immediately. Document the time of discovery. No supervisor may authorize opening with a failed E-stop.</div>
+      </div>
+      <div class="defect-card warning">
+        <div class="defect-title">⚠️ Unusual Sound During Test Cycle <span class="tag tag-amber">NOTIFY MAINT</span></div>
+        <div class="defect-body">Describe the sound's nature, location, and when in the cycle it occurs. Contact maintenance before opening. Do not open until maintenance evaluates and provides written sign-off.</div>
+      </div>
+      <div class="defect-card warning">
+        <div class="defect-title">⚠️ Missing or Damaged Signage <span class="tag tag-amber">REPLACE FIRST</span></div>
+        <div class="defect-body">Height restriction and rider requirement signs are safety-critical. Guests rely on these to self-screen. Obtain replacement signage before opening. Document the condition and time of replacement.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔄 Pre-Opening Test Cycle (§7.2)</div>
+    <p class="body">After completing and signing your inspection checklist, perform a minimum of one complete operating cycle without riders:</p>
+    <ol class="step-ol">
+      <li>Confirm all required attendant positions are staffed and in position</li>
+      <li>Announce test cycle on communication system if your SOP requires it</li>
+      <li>Operate ride through the full cycle: observe loading zone, lift, apex, drop, brake sequence, and unload return</li>
+      <li>Listen and watch throughout — any abnormality during the test cycle is a stop-and-investigate situation</li>
+      <li>Confirm gondola returns to correct load position and all systems reset to ready state</li>
+      <li>Complete and sign inspection documentation. The ride is not open until you sign.</li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     MODULE 4 — RIDER SCREENING
+══════════════════════════════════════════════ -->
+<section class="screen" id="s-m4">
+  <div class="lesson-nav-bar">
+    <div class="lesson-title">
+      <h2>Module 4: Rider Screening & Loading</h2>
+      <p>Unit 2 · Daily Operations · ~15 min</p>
+    </div>
+    <div class="lesson-actions">
+      <button class="btn btn-ghost" onclick="go('m3')">← Back</button>
+      <button class="btn btn-primary" onclick="completeGo('m4','kc1')">Mark Complete →</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📏 Height & Size Requirements: Zero Exceptions</div>
+    <div class="callout red" style="margin-bottom:1rem;">
+      <span class="callout-icon">⛔</span>
+      <div><strong>Zero Exceptions Policy:</strong> "Even a Guest only 1/8 of an inch under the requirement is NOT ALLOWED to ride. Again there are NO exceptions." This applies regardless of parental pressure, emotional appeals, claims of prior rides elsewhere, or any other circumstance. Your signature on the dispatch is your legal certification of compliance.</div>
+    </div>
+    <p class="body"><strong style="color:var(--text)">Height Checking Procedure:</strong></p>
+    <ol class="step-ol">
+      <li>Guest stands erect with feet together, heels flat on the ground, looking straight ahead</li>
+      <li>No tip-toes. Shoes remain on (unless heel height &gt;1" and measurement is borderline)</li>
+      <li>Head must be on or above the minimum height indicator line</li>
+      <li>Use the Official Height Stick for borderline cases — not the estimation device</li>
+      <li>If a Guest cannot ride, direct them to rides they ARE eligible for — always offer a positive alternative</li>
+    </ol>
+    <div class="callout amber">
+      <span class="callout-icon">⚠️</span>
+      <div><strong>When a Guest claims "I rode this before":</strong> "If the Guest does not meet the requirement at the time of boarding, then they are not allowed to ride." Prior experience at this park or any other park is irrelevant. Different shoes or a different day's measurement do not authorize boarding below the requirement today.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏥 Health Restriction Screening</div>
+    <p class="body">Health restrictions are posted at ride entrance. You are not required to diagnose conditions, but when a guest discloses a restriction-listed condition, you must deny boarding. Common drop tower restrictions include:</p>
+    <div class="two-col">
+      <ul class="body-list">
+        <li>Heart conditions or cardiac disease</li>
+        <li>High blood pressure (uncontrolled)</li>
+        <li>Back, neck, or spinal conditions</li>
+        <li>Recent surgery (typically within 6 months)</li>
+        <li>Seizure disorders or epilepsy</li>
+      </ul>
+      <ul class="body-list">
+        <li>Pregnancy (all trimesters)</li>
+        <li>Osteoporosis or bone density conditions</li>
+        <li>Under the influence of alcohol or drugs</li>
+        <li>Extreme fear of heights (guest welfare)</li>
+        <li>Prosthetics or medical devices (SOP-specific)</li>
+      </ul>
+    </div>
+    <p class="body">"Only the person with the disability knows their ability and limitations." If any doubt exists about whether a guest can safely ride, contact your Supervisor for guidance.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔐 Restraint Verification — Every Seat, Every Cycle</div>
+    <p class="body">This is the most critical step before dispatch. Position accountability is clearly assigned:</p>
+    <div class="two-col" style="margin-bottom:1rem;">
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--cyan)">Attendant Role</div>
+        <div class="defect-body">Check height. Check security of restraint devices. Secure gates. Give proper hand signal. Assist in loading/unloading. Enforce proper body posture. Perform the Take 5 safety scan of your zone.</div>
+      </div>
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--cyan)">Operator Role</div>
+        <div class="defect-body">Deliver spiels. Receive proper hand signals from ALL attendants. Perform the Take 5 safety scan. The operator does NOT dispatch until all clear signals are received. The operator is the LAST safety check.</div>
+      </div>
+    </div>
+    <ol class="step-ol">
+      <li><strong>Body posture check:</strong> Rider seated correctly per SOP. Arms, legs, and loose items in required position before restraint is lowered.</li>
+      <li><strong>Physical restraint engagement:</strong> Confirm OTSR clicks/locks positively OR lap bar is within the approved engagement range. Never rely on the rider's word — physically verify every restraint every cycle.</li>
+      <li><strong>Size verification:</strong> OTSR must not bottom out (indicates rider too small) and must not be too loose (rider too large). Lap bar must engage within the approved measurement range per your ride's SOP.</li>
+      <li><strong>Loose articles check:</strong> No items in seat, lap, or pockets. No loose headwear, dangling jewelry, or items that could become projectiles at speed.</li>
+      <li><strong>Hand signal:</strong> After verifying your assigned zone, give the correct "All Clear" signal (right hand extended above head, thumb extended upward). Only signal from your designated Safe Zone.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔒 Loose Articles Program</div>
+    <p class="body">"Loose articles can be projectiles and can cause great harm, especially cameras and cell phones." Items that cannot be secured in the restraint area may not be taken on the ride. Common loose articles requiring action:</p>
+    <div class="two-col">
+      <ul class="body-list">
+        <li>Food and beverages (not permitted on ride)</li>
+        <li>Hats and headwear (not secured by restraint)</li>
+        <li>Glasses (unless secured with strap)</li>
+        <li>Phones, cameras, wallets, keys</li>
+      </ul>
+      <ul class="body-list">
+        <li>Backpacks and bags</li>
+        <li>Extremely long, loose scarves or ponchos</li>
+        <li>Stuffed animals and packages</li>
+        <li>Child harnesses that could interfere with restraint</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">👋 Hand Signals Reference</div>
+    <p class="body">Hand signals provide a redundant safety communication channel that works when audio fails. Memorize all signals before your practical assessment. Key signals for drop tower operation:</p>
+    <div class="two-col">
+      <div>
+        <p class="body"><strong style="color:var(--green)">✅ All Clear / Dispatch:</strong> Right hand extended above head, thumb extended upward. Given only from Safe Zone, only when zone is fully verified ready. Operator waits for this signal from ALL attendants before dispatching.</p>
+        <p class="body"><strong style="color:var(--red)">🛑 Stop / Hold:</strong> Both arms crossed in front of chest or raised overhead with fists clenched. Use verbal "STOP" when possible. Non-emergency only.</p>
+        <p class="body"><strong style="color:var(--amber)">⚡ Emergency Stop:</strong> Open palm over a clenched fist. Use with verbal "E-STOP!" Applies to mid-cycle emergencies only — last resort.</p>
+      </div>
+      <div>
+        <p class="body"><strong style="color:var(--cyan)">🔓 Unlock Restraints:</strong> Both fists clenched, thumbs extended pointing outward, bottom of fists touching. Signal to attendants to unlock restraints for unloading.</p>
+        <p class="body"><strong style="color:var(--cyan)">🔒 Lock Restraints:</strong> Both fists clenched, thumbs pointing inward and touching. Signal that restraints should now be engaged for dispatch.</p>
+        <p class="body"><strong style="color:var(--amber)">🆘 Assistance Needed:</strong> One arm extended overhead, open palm forward. All ride operations cease immediately when this signal is given. Medical or security situation.</p>
+      </div>
+    </div>
+    <div class="callout red" style="margin-bottom:0;">
+      <span class="callout-icon">⛔</span>
+      <div><strong>The Golden Rule:</strong> "The operator is responsible for starting or dispatching the ride. Therefore they are the last safety check to ensure all is ready to go. If the ride operator feels that any safety checks were not done in the proper method, they should not start the ride or dispatch."</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     KNOWLEDGE CHECK 1
+══════════════════════════════════════════════ -->
+<section class="screen" id="s-kc1">
+  <div class="lesson-nav-bar">
+    <div class="lesson-title">
+      <h2>Knowledge Check #1</h2>
+      <p>Units 1 & 2 · 8 Questions · Formative Assessment</p>
+    </div>
+  </div>
+  <div class="quiz-meta-bar">
+    <div class="quiz-track"><div class="quiz-fill" id="kc1-prog" style="width:12.5%"></div></div>
+    <div class="quiz-counter" id="kc1-ctr">Q 1 / 8</div>
+  </div>
+  <div id="kc1-body"></div>
+  <div id="kc1-result" class="result-panel">
+    <div class="card" style="text-align:center;">
+      <div class="score-donut" id="kc1-ring"><div class="score-big" id="kc1-score">0</div><div class="score-unit">%</div></div>
+      <div style="font-size:1.1rem;font-weight:800;margin-bottom:0.5rem;" id="kc1-rtitle"></div>
+      <p class="body" id="kc1-rmsg"></p>
+      <div style="display:flex;gap:0.75rem;justify-content:center;margin-top:1.25rem;">
+        <button class="btn btn-ghost" onclick="retake('kc1')">↩ Retake</button>
+        <button class="btn btn-primary" onclick="completeGo('kc1','m5')">Continue to Unit 3 →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     MODULE 5 — LOTO & SAFE ZONES
+══════════════════════════════════════════════ -->
+<section class="screen" id="s-m5">
+  <div class="lesson-nav-bar">
+    <div class="lesson-title">
+      <h2>Module 5: LOTO & Operator Safe Zones</h2>
+      <p>Unit 3 · Safety & Emergency · ~12 min</p>
+    </div>
+    <div class="lesson-actions">
+      <button class="btn btn-ghost" onclick="go('kc1')">← Back</button>
+      <button class="btn btn-primary" onclick="completeGo('m5','m6')">Mark Complete →</button>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <span class="callout-icon">🚨</span>
+    <div><strong>Lock Out / Tag Out is a life-saving procedure.</strong> The purpose is to prevent any part of machinery from being energized, set into motion, or started unexpectedly. A failure of LOTO protocol is a potential fatality event — for you, for maintenance staff, or for guests.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔒 When Is LOTO Required?</div>
+    <p class="body">LOTO is required in all of the following situations:</p>
+    <ul class="body-list">
+      <li>During maintenance inspection checks or when doing repair work on the ride or any machine component</li>
+      <li>Whenever entering a restricted ride perimeter or danger zone — for example, when retrieving lost articles</li>
+      <li>If a guest or team member is ill or injured and movement of the ride could endanger them</li>
+      <li>To close or secure a specific seat, unit, or the entire ride</li>
+      <li>When utilizing standard evacuation procedures of a stopped ride</li>
+    </ul>
+    <div class="callout red" style="margin-top:0.5rem;margin-bottom:0;">
+      <span class="callout-icon">⛔</span>
+      <div><strong>Absolute Rule — No Exceptions:</strong> "You may NEVER remove another Team Member's lock out/tag out from a ride or any other machine." Only the person whose name appears on the lock/tag may remove it. Removing someone else's LOTO device could injure or kill whoever placed it. This is a terminable offense subject to OSHA criminal penalties.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 What To Do When You Find a Lock at Your Ride</div>
+    <p class="body">If you arrive at your assigned ride and find a Lock Out/Tag Out device on the control panel or equipment:</p>
+    <ol class="step-ol">
+      <li>Do not attempt to start the ride under any circumstances</li>
+      <li>Read the tag — note whose name appears on the lock</li>
+      <li>Look around the area for the tagged team member — they may be in the ride area performing work</li>
+      <li>If you cannot locate the personnel, call your Supervisor immediately</li>
+      <li>Do not remove the lock — do not call the person and ask permission to remove their lock</li>
+      <li>Document the time you discovered the lock and who you contacted</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏃 Restricted Areas, Danger Zones & Safe Zones</div>
+    <p class="body">There are three escalating zones of restriction of restriction around every ride. As an operator, you must be able to identify all three on your assigned ride:</p>
+    <div class="defect-grid">
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--text2)">Ride Perimeter</div>
+        <div class="defect-body">Boundary fence encompassing the ride's entire footprint. Must be 42" minimum height, meet the 4" ball requirement, have locked gate(s), and have safety signage. Area inside is restricted to authorized personnel only.</div>
+      </div>
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--amber)">Ride Restricted Area</div>
+        <div class="defect-body">Inside the perimeter, excluding the station and authorized walkways. Off-limits without direct supervisor approval. Entry requires the ride to be locked out AND wearing a safety orange vest.</div>
+      </div>
+      <div class="defect-card critical">
+        <div class="defect-title">⚠️ Danger Zone <span class="tag tag-red">EXTREME HAZARD</span></div>
+        <div class="defect-body">The clearance envelope surrounding all moving parts. Requires LOTO, supervisor present, AND safety vest. "Entering a danger zone without proper authorization may result in being struck by the ride causing a serious catastrophic injury or death."</div>
+      </div>
+      <div class="defect-card" style="border-color:rgba(6,182,212,0.35);background:rgba(6,182,212,0.05);">
+        <div class="defect-title" style="color:var(--cyan)">Operator Safe Zone</div>
+        <div class="defect-body">A designated area at each position from which attendants must operate when the ride is moving. Safe zones are marked at each position. You must be inside your safe zone when giving the All Clear signal and during all ride movement in your area.</div>
+      </div>
+    </div>
+    <div class="callout red" style="margin-top:0.75rem;margin-bottom:0;">
+      <span class="callout-icon">⛔</span>
+      <div><strong>If you see a person in a danger zone during operation:</strong> Stop the ride IMMEDIATELY by pressing the nearest E-Stop. Do NOT enter the area. Attempt to communicate for them to stay flat and still. Notify Supervisor and Security immediately.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     MODULE 6 — EMERGENCY PROCEDURES
+══════════════════════════════════════════════ -->
+<section class="screen" id="s-m6">
+  <div class="lesson-nav-bar">
+    <div class="lesson-title">
+      <h2>Module 6: Emergency Procedures</h2>
+      <p>Unit 3 · Safety & Emergency · ~15 min</p>
+    </div>
+    <div class="lesson-actions">
+      <button class="btn btn-ghost" onclick="go('m5')">← Back</button>
+      <button class="btn btn-primary" onclick="completeGo('m6','sim')">Mark Complete →</button>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <span class="callout-icon">📞</span>
+    <div><strong>Memorize Before Your First Shift:</strong> Emergency Dispatch: <strong>Extension 6</strong> | Security/First Aid Emergency: <strong>ext. 5</strong> | Security Non-Emergency: <strong>ext. 2655</strong> | First Aid Non-Emergency: <strong>ext. 2655</strong>. Post these at your operator station.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚡ Ride Downtime Classification</div>
+    <p class="body">A downtime is any unplanned ride stoppage — but not necessarily an emergency. Downtimes are classified into two types that determine the required response:</p>
+    <div class="two-col">
+      <div class="defect-card">
+        <div class="defect-title" style="color:var(--cyan)">Operations Downtime</div>
+        <div class="defect-body">A stoppage under controlled conditions, quickly resolved without Maintenance sign-off. Examples: guest misbehavior (standing), weather (lightning, heavy rain), guest illness, open restraint, restricted area violation. Guests can typically be unloaded in the normal unloading area.</div>
+      </div>
+      <div class="defect-card critical">
+        <div class="defect-title">Maintenance Downtime <span class="tag tag-red">MAINT REQUIRED</span></div>
+        <div class="defect-body">Unanticipated closing requiring Maintenance Personnel and their written sign-off to resolve. Examples: unusual noise or function, ride control system fault, restraint that will not lock, power outage, equipment malfunction. Ride may NOT reopen without Maintenance sign-off.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔄 Ride Downtime Protocol — Step by Step</div>
+    <ol class="step-ol">
+      <li>All team members at the ride remain at their positions. Do NOT rotate or go on break without Supervisor approval.</li>
+      <li>Call Dispatch (Extension 6) immediately. Provide: your name, ride name, reason (if known), locations of any loaded units.</li>
+      <li>Record the downtime on the back of the turnstile.</li>
+      <li>The Certified Ride Operator remains at the operator position to host guests in station or bullpen.</li>
+      <li>Notify the ride entrance that the ride is experiencing minor technical difficulty and is temporarily closed.</li>
+      <li>If the ride must be unloaded, an Operations Supervisor must be present. Call Dispatch to notify of the unload.</li>
+      <li>If evacuation is required, Ride Supervisors and Operations Management make that decision — not the operator team alone (except in cases of immediate danger).</li>
+      <li>When the ride reopens: Supervisor tells you it's ready, call Dispatch (ext. 2113), record re-open time on turnstile.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚨 Emergency Downtime: Immediate Guest Danger</div>
+    <div class="callout amber" style="margin-bottom:1rem;">
+      <span class="callout-icon">⚠️</span>
+      <div>"If Guests are in immediate danger, do not wait for the Supervisor — SHUT DOWN THE RIDE." Your authority to act protectively is absolute in a genuine emergency.</div>
+    </div>
+    <p class="body">If guests are stopped at height and in distress:</p>
+    <ol class="step-ol">
+      <li><strong>Communicate first:</strong> Use the intercom immediately — calm, clear message. "Please remain seated with your restraints on. We have temporarily paused the ride and will update you shortly." A panicked guest attempting to self-evacuate at height is a fatal risk.</li>
+      <li>Activate E-Stop if not already triggered</li>
+      <li>Call Dispatch (Ext. 6) and Supervisor simultaneously</li>
+      <li>Assess: Is evacuation required? Are guests in immediate danger? Can the cause be quickly resolved?</li>
+      <li>Evacuation requires Supervisor authorization unless guests are in immediate life-threatening danger</li>
+      <li>During evacuation: ride must be locked out first. Follow ride-specific evacuation plan exactly — do not improvise.</li>
+    </ol>
+    <div class="callout red" style="margin-bottom:0;">
+      <span class="callout-icon">⛔</span>
+      <div><strong>Never improvise evacuation.</strong> Your ride-specific evacuation plan was engineered by safety professionals. Unauthorized improvisation during evacuation is a leading cause of secondary injuries. "During the evacuation never make comments regarding the possible reason for the ride breakdown."</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🏥 Guest Injury Response Protocol</div>
+    <ol class="step-ol">
+      <li>Activate E-Stop. Do not attempt to restart or assess the situation before stopping the ride.</li>
+      <li>Call First Aid (ext. 5) and Security simultaneously — do not assess severity first and then call. Call immediately.</li>
+      <li>Do NOT move an injured guest unless there is imminent danger of further injury (fire, structural collapse).</li>
+      <li>Keep bystanders — guests and unauthorized staff — away from the scene. Preserve the area exactly as found.</li>
+      <li>Do not discuss the incident with witnesses, guests, or media. Provide facts only to First Aid, Security, and park management.</li>
+      <li>Complete a detailed incident report as soon as possible while your memory is fresh and uninfluenced.</li>
+    </ol>
+    <p class="body" style="color:var(--text2); font-size:0.8rem;">Under ASTM F770 §10.3: any incident resulting in serious injury requires manufacturer notification within 7 days. Your supervisor handles the notification — but your accurate documentation enables it.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔥 Fire Emergency Protocol</div>
+    <ol class="step-ol">
+      <li>Activate the nearest fire alarm pull station if available</li>
+      <li>Call Security immediately — ext. 5</li>
+      <li>Evacuate guests from the ride and immediate area using the nearest designated exit route</li>
+      <li>You are NOT required to fight the fire — your priority is guest evacuation and safety</li>
+      <li>Only use a fire extinguisher if: the fire is small and contained, does NOT block your egress, and you are trained in its use</li>
+      <li>Account for all guests and team members in your area — report to emergency responders immediately upon their arrival</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🌩️ Weather Procedures</div>
+    <p class="body">Ride closures for weather are decided by Operations Management — not individual operators. However:</p>
+    <ul class="body-list">
+      <li>If guests are in immediate danger from weather (lightning strike imminent, structural damage visible), shut down the ride immediately without waiting for authorization</li>
+      <li>During severe weather downtimes, allow guests to remain in covered areas of the queue or station. Do not allow guests to wander in the ride or backstage area.</li>
+      <li>Never offer details or speculation about whether or when the ride will reopen — only that it is temporarily closed</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     DECISION SIMULATIONS
+══════════════════════════════════════════════ -->
+<section class="screen" id="s-sim">
+  <div class="lesson-nav-bar">
+    <div class="lesson-title">
+      <h2>Decision Simulations</h2>
+      <p>Unit 3 · 4 Emergency Scenarios · ~15 min</p>
+    </div>
+    <div class="lesson-actions">
+      <button class="btn btn-ghost" onclick="go('m6')">← Back</button>
+      <button class="btn btn-primary" id="sim-next-btn" style="display:none" onclick="completeGo('sim','kc2')">Continue →</button>
+    </div>
+  </div>
+
+  <div class="callout cyan" style="margin-bottom:1.25rem;">
+    <span class="callout-icon">🎯</span>
+    <div>These scenario simulations test your decision-making in realistic emergency situations. Read each scenario carefully, then select the best course of action. There are no retakes on simulations — but your selections inform what to reinforce before the final exam.</div>
+  </div>
+
+  <div id="sim-container"></div>
+
+  <div id="sim-complete" style="display:none;">
+    <div class="callout green">
+      <span class="callout-icon">✅</span>
+      <div><strong>All scenarios complete.</strong> Review your selections and the feedback above. Use any incorrect responses to guide your review before the Knowledge Check and Final Exam.</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     KNOWLEDGE CHECK 2
+══════════════════════════════════════════════ -->
+<section class="screen" id="s-kc2">
+  <div class="lesson-nav-bar">
+    <div class="lesson-title">
+      <h2>Knowledge Check #2</h2>
+      <p>Unit 3 · Safety & Emergency · 8 Questions</p>
+    </div>
+  </div>
+  <div class="quiz-meta-bar">
+    <div class="quiz-track"><div class="quiz-fill" id="kc2-prog" style="width:12.5%"></div></div>
+    <div class="quiz-counter" id="kc2-ctr">Q 1 / 8</div>
+  </div>
+  <div id="kc2-body"></div>
+  <div id="kc2-result" class="result-panel">
+    <div class="card" style="text-align:center;">
+      <div class="score-donut" id="kc2-ring"><div class="score-big" id="kc2-score">0</div><div class="score-unit">%</div></div>
+      <div style="font-size:1.1rem;font-weight:800;margin-bottom:0.5rem;" id="kc2-rtitle"></div>
+      <p class="body" id="kc2-rmsg"></p>
+      <div style="display:flex;gap:0.75rem;justify-content:center;margin-top:1.25rem;">
+        <button class="btn btn-ghost" onclick="retake('kc2')">↩ Retake</button>
+        <button class="btn btn-primary" onclick="completeGo('kc2','exam')">Proceed to Final Exam →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     FINAL EXAM
+══════════════════════════════════════════════ -->
+<section class="screen" id="s-exam">
+  <div class="lesson-nav-bar">
+    <div class="lesson-title">
+      <h2>Final Certification Exam</h2>
+      <p>20 Questions · 80% Required · 3 Attempts Max</p>
+    </div>
+  </div>
+
+  <div id="exam-gate">
+    <div class="exam-gate">
+      <div style="font-size:2.5rem;margin-bottom:1rem;">📋</div>
+      <h3>Ready to begin your certification exam?</h3>
+      <p class="body" style="max-width:480px;margin:0 auto 1.25rem;">This 20-question exam covers all three units. You need <strong style="color:var(--cyan)">80% (16/20)</strong> to pass and earn your operator certification. Take your time and read each question carefully.</p>
+      <div class="three-col" style="max-width:420px;margin:0 auto 1.5rem;">
+        <div class="stat-block"><div class="stat-num" style="font-size:1.4rem;color:var(--cyan)">20</div><div class="stat-label">Questions</div></div>
+        <div class="stat-block"><div class="stat-num" style="font-size:1.4rem;color:var(--amber)">80%</div><div class="stat-label">To Pass</div></div>
+        <div class="stat-block"><div class="stat-num" id="attemptsLeft" style="font-size:1.4rem;color:var(--green)">3</div><div class="stat-label">Attempts</div></div>
+      </div>
+      <button class="btn btn-primary" style="padding:0.7rem 2.5rem;font-size:0.95rem;" onclick="startExam()">Start Exam →</button>
+    </div>
+  </div>
+
+  <div id="exam-body" style="display:none;">
+    <div class="quiz-meta-bar">
+      <div class="quiz-track"><div class="quiz-fill" id="exam-prog" style="width:5%"></div></div>
+      <div class="quiz-counter" id="exam-ctr">Q 1 / 20</div>
+    </div>
+    <div id="exam-questions"></div>
+  </div>
+
+  <div id="exam-result" style="display:none;">
+    <div id="exam-pass-panel" style="display:none;">
+      <div class="cert-wrap" id="cert-content">
+        <div class="cert-emblem">🏆</div>
+        <div class="cert-org">Amusement Standards · Learning Management System</div>
+        <div class="cert-title">This certifies that</div>
+        <div class="cert-awardee-label">the following operator</div>
+        <div class="cert-name" id="cert-name-display">Operator Name</div>
+        <div class="cert-divider"></div>
+        <div class="cert-course">Drop Tower Operator Certification</div>
+        <div class="cert-standards">Successfully completed this program in full compliance with ASTM F770-18 §8 Training Requirements, ASTM F1193, and IAAPA Guidelines for Effective Operation Programs.</div>
+        <div class="cert-meta">
+          <div class="cert-meta-item"><strong id="cert-score-disp">—</strong><span>Exam Score</span></div>
+          <div class="cert-meta-item"><strong id="cert-issued">—</strong><span>Issue Date</span></div>
+          <div class="cert-meta-item"><strong id="cert-expires">—</strong><span>Valid Through</span></div>
+        </div>
+        <div class="cert-id" id="cert-id-disp">Cert ID: —</div>
+      </div>
+      <div style="display:flex;gap:0.75rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap;">
+        <button class="btn btn-amber" onclick="window.print()">🖨 Print Certificate</button>
+        <button class="btn btn-ghost" onclick="go('home')">Return to Dashboard</button>
+      </div>
+    </div>
+    <div id="exam-fail-panel" style="display:none;">
+      <div class="card" style="text-align:center;">
+        <div class="score-donut fail" style="margin:0 auto 1.25rem;"><div class="score-big" id="exam-fail-score">0</div><div class="score-unit">%</div></div>
+        <div style="font-size:1.1rem;font-weight:800;margin-bottom:0.5rem;">Not Passing — Review Required</div>
+        <p class="body" id="exam-fail-msg"></p>
+        <div style="display:flex;gap:0.75rem;justify-content:center;margin-top:1.25rem;">
+          <button class="btn btn-ghost" onclick="go('home')">Review Course</button>
+          <button class="btn btn-primary" id="exam-retry-btn" onclick="retryExam()">Retake Exam</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════ -->
+<script>
+// ── STATE ────────────────────────────────────────
+const APP = {
+  completed: new Set(),
+  operatorName: '',
+  finalAttempts: 0,
+  totalModules: 9
+};
+
+// ── NAV ──────────────────────────────────────────
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const ni = document.getElementById('nav-' + id);
+  if (ni) ni.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function completeGo(current, next) {
+  APP.completed.add(current);
+  markDone(current);
+  updateProgress();
+  go(next);
+}
+
+function markDone(id) {
+  const dot = document.getElementById('dot-' + id);
+  if (dot) { dot.className = 'nav-dot done'; dot.textContent = '✓'; }
+}
+
+function updateProgress() {
+  const pct = Math.round(APP.completed.size / APP.totalModules * 100);
+  document.getElementById('topProgress').style.width = pct + '%';
+  document.getElementById('topPct').textContent = pct + '%';
+  if (pct >= 100) {
+    document.getElementById('topStatus').textContent = 'Certified';
+    document.getElementById('topStatus').style.background = 'rgba(16,185,129,0.2)';
+    document.getElementById('topStatus').style.color = '#6ee7b7';
+    document.getElementById('topStatus').style.borderColor = 'rgba(16,185,129,0.4)';
+  }
+}
+
+// ── CHECKLIST ────────────────────────────────────
+function ckToggle(el) {
+  const cb = el.querySelector('input');
+  cb.checked = !cb.checked;
+  el.classList.toggle('checked', cb.checked);
+}
+
+// ── QUIZ ENGINE ──────────────────────────────────
+const quizStates = {};
+
+function initQuiz(id, questions) {
+  quizStates[id] = { questions, answers: {}, submitted: {}, idx: 0 };
+  renderQ(id);
+}
+
+function renderQ(id) {
+  const st = quizStates[id];
+  const body = document.getElementById(id + '-body');
+  const progEl = document.getElementById(id + '-prog');
+  const ctrEl = document.getElementById(id + '-ctr');
+  if (!body) return;
+
+  const q = st.questions[st.idx];
+  const subm = st.submitted[st.idx];
+  const sel = st.answers[st.idx];
+  const letters = ['A','B','C','D'];
+
+  if (progEl) progEl.style.width = ((st.idx + 1) / st.questions.length * 100) + '%';
+  if (ctrEl) ctrEl.textContent = `Q ${st.idx + 1} / ${st.questions.length}`;
+
+  let opts = q.opts.map((o, oi) => {
+    let cls = 'q-opt';
+    if (subm !== undefined) {
+      if (oi === q.correct) cls += ' correct';
+      else if (oi === sel && oi !== q.correct) cls += ' wrong';
+    } else if (oi === sel) cls += ' selected';
+    const clickable = subm === undefined;
+    return `<div class="${cls}" ${clickable ? `onclick="pickQ('${id}',${st.idx},${oi})"` : 'style="cursor:default"'}>
+      <div class="q-letter">${letters[oi]}</div>
+      <div class="q-opt-text">${o}</div>
+    </div>`;
+  }).join('');
+
+  let feedback = '';
+  if (subm !== undefined) {
+    const pass = sel === q.correct;
+    feedback = `<div class="q-feedback show ${pass ? 'pass' : 'fail'}">
+      <strong>${pass ? '✅ Correct!' : '❌ Incorrect.'}</strong> ${q.explain}
+    </div>`;
+  }
+
+  let actions = `<div class="q-actions">`;
+  if (st.idx > 0) actions += `<button class="btn btn-ghost" onclick="navQ('${id}',${st.idx-1})">← Back</button>`;
+  if (subm === undefined) {
+    actions += `<button class="btn btn-primary" onclick="submitQ('${id}',${st.idx})">Submit</button>`;
+  } else if (st.idx < st.questions.length - 1) {
+    actions += `<button class="btn btn-primary" onclick="navQ('${id}',${st.idx+1})">Next →</button>`;
+  } else {
+    actions += `<button class="btn btn-green" onclick="showQuizResult('${id}')">See Results →</button>`;
+  }
+  actions += `</div>`;
+
+  body.innerHTML = `<div class="q-card">
+    <div class="q-header">
+      <div class="q-num">Question ${st.idx + 1} of ${st.questions.length}</div>
+      <div class="q-text">${q.q}</div>
+    </div>
+    <div class="q-body">${opts}${feedback}${actions}</div>
+  </div>`;
+}
+
+function pickQ(id, qi, oi) {
+  if (quizStates[id].submitted[qi] !== undefined) return;
+  quizStates[id].answers[qi] = oi;
+  renderQ(id);
+}
+
+function submitQ(id, qi) {
+  const st = quizStates[id];
+  if (st.answers[qi] === undefined) return alert('Please select an answer first.');
+  st.submitted[qi] = true;
+  renderQ(id);
+}
+
+function navQ(id, qi) {
+  quizStates[id].idx = qi;
+  renderQ(id);
+}
+
+function showQuizResult(id) {
+  const st = quizStates[id];
+  const correct = st.questions.filter((q, i) => st.answers[i] === q.correct).length;
+  const pct = Math.round(correct / st.questions.length * 100);
+  const pass = pct >= 70;
+
+  document.getElementById(id + '-body').style.display = 'none';
+  const res = document.getElementById(id + '-result');
+  res.classList.add('show');
+  const ring = document.getElementById(id + '-ring');
+  ring.className = 'score-donut ' + (pass ? 'pass' : 'fail');
+  document.getElementById(id + '-score').textContent = pct;
+  document.getElementById(id + '-rtitle').textContent = pass ? '✅ Knowledge Check Passed' : '⚠️ Review Recommended';
+  document.getElementById(id + '-rmsg').textContent = pass
+    ? `You answered ${correct}/${st.questions.length} correctly. Review any missed questions, then continue.`
+    : `You answered ${correct}/${st.questions.length} correctly. Consider reviewing the relevant modules before continuing.`;
+}
+
+function retake(id) {
+  quizStates[id] = { questions: quizStates[id].questions, answers: {}, submitted: {}, idx: 0 };
+  const body = document.getElementById(id + '-body');
+  const res = document.getElementById(id + '-result');
+  body.style.display = 'block';
+  res.classList.remove('show');
+  const prog = document.getElementById(id + '-prog');
+  if (prog) prog.style.width = '12.5%';
+  renderQ(id);
+}
+
+// ── SCENARIOS ────────────────────────────────────
+const SCENARIOS = [
+  {
+    pill: 'Scenario 1 — Ride Stoppage',
+    title: 'Unscheduled Stoppage at Height',
+    desc: 'Your drop tower has stopped unexpectedly mid-cycle. The gondola is stationary approximately 180 feet in the air with 10 guests aboard. A fault code flashes on the control panel. Two guests appear visibly distressed and are reaching for their restraints. What is your IMMEDIATE first action?',
+    choices: [
+      { text: 'Attempt to clear the fault code and restart the ride immediately to bring the gondola down.', correct: false, outcome: '❌ Restarting without diagnosing the fault risks making the situation worse. A sensor fault may indicate a genuine mechanical failure. Do not restart without Maintenance evaluation.' },
+      { text: 'Use the intercom immediately with a calm, clear message: "Please remain seated with your restraints fastened. We have paused the ride and will update you shortly." Then call Dispatch (Ext. 6) and your Supervisor.', correct: true, outcome: '✅ Correct. Guest communication is your first action. A panicked guest attempting to self-evacuate from 180 feet is a fatal risk. Calm them first — "Please remain seated with your restraints on" — then follow your stoppage protocol. The operator remains at position while contacting Dispatch.' },
+      { text: 'Immediately activate the evacuation plan and call the fire department for ladder access.', correct: false, outcome: '⚠️ Evacuation is not the first step — guest communication and Supervisor notification come first. Evacuation requires Supervisor authorization and must follow the ride-specific plan. An unsupervised improvised evacuation at height is a serious secondary risk.' },
+      { text: 'Wait at your position and do nothing until Maintenance arrives and diagnoses the fault.', correct: false, outcome: '❌ Silence at this moment allows fear to escalate. A restrained guest attempting to free themselves at height could be fatal. Your first obligation is immediate, calm guest communication via intercom. Maintenance notification follows — it does not precede communication.' }
+    ]
+  },
+  {
+    pill: 'Scenario 2 — LOTO Discovery',
+    title: 'Lock Found on Control Panel',
+    desc: 'You arrive at your assigned drop tower 20 minutes before opening. The main control panel has a LOTO lock with a tag reading "J. Rivera — Maintenance." No maintenance personnel are visible anywhere in the area. Your supervisor is not immediately reachable. What do you do?',
+    choices: [
+      { text: 'Carefully remove the lock since J. Rivera appears to have left and opening time is approaching.', correct: false, outcome: '❌ You may NEVER remove another team member\'s LOTO device under any circumstances — even if they appear absent. This is an OSHA violation and a terminable offense. J. Rivera may be inside a ride component or access panel you cannot see.' },
+      { text: 'Radio J. Rivera and ask for verbal permission to remove the lock so you can open on time.', correct: false, outcome: '❌ Even with verbal permission, you may not remove someone else\'s lock. Only the person whose name is on the lock may physically remove it. Verbal authorization does not satisfy LOTO safety requirements.' },
+      { text: 'Do NOT touch the lock. Attempt to locate J. Rivera in the area. If not found within a few minutes, escalate to your supervisor or the supervisor on duty. Document the time and do not open the ride.', correct: true, outcome: '✅ Correct. You protect yourself, J. Rivera, and all guests by following LOTO protocol absolutely. Escalate immediately to the supervisor on duty — this is exactly the situation supervisors exist to resolve. Document everything including when you discovered the lock.' },
+      { text: 'Begin your §7.1 inspection of all other components and only report the lock when your supervisor becomes available.', correct: false, outcome: '⚠️ The inspection cannot proceed meaningfully with an unexplained LOTO in place, and you cannot open regardless of inspection results. Immediate escalation to a supervisor is required — do not delay reporting while completing other tasks.' }
+    ]
+  },
+  {
+    pill: 'Scenario 3 — Rider Screening',
+    title: 'Height Restriction Enforcement',
+    desc: 'A child measures exactly 1/2 inch below your ride\'s 52-inch minimum height requirement. The parent becomes confrontational, saying: "She\'s ridden this exact ride before at another Six Flags last week. Your measurement stick must be wrong — let her on." Other guests in line are watching. What is the correct response?',
+    choices: [
+      { text: 'Allow the child to board given the parent\'s credible account of previous rides at another park.', correct: false, outcome: '❌ Prior experience at another park — or this park — has no bearing on today\'s measurement. "If the Guest does not meet the requirement at the time of boarding, then they are not allowed to ride." The height requirement is an engineering specification for this ride, not a variable judgement call.' },
+      { text: 'Call your supervisor to make the final decision since there is guest pressure and a crowd forming.', correct: false, outcome: '⚠️ While supervisor support for a difficult guest interaction is always available, the decision itself is not a judgment call subject to supervisor override. Height requirements are not discretionary. You can invite your supervisor to handle the guest communication, but they cannot authorize boarding a sub-height rider.' },
+      { text: 'Politely but firmly decline boarding. Explain that the height requirement is a safety engineering specification that cannot be waived. Offer two or three alternative rides the child IS eligible for. Remain friendly and avoid escalation.', correct: true, outcome: '✅ Correct. Consistent, polite enforcement protects the child and satisfies ASTM F770 §5.3. Offering specific alternative rides (using the L.E.A.F. model: Listen, Empathize, Apologize, Fix It) redirects the conversation constructively and reduces confrontation.' },
+      { text: 'Allow boarding if a parent signs a waiver and rides in the adjacent seat.', correct: false, outcome: '❌ There is no waiver process that overrides height requirements. A parental signature and adjacent seat do not modify the engineering basis for the restriction. The child is below the manufacturer\'s specified safe height for this ride and may not board under any circumstances.' }
+    ]
+  },
+  {
+    pill: 'Scenario 4 — Injury Response',
+    title: 'Guest Injury During Unloading',
+    desc: 'During the unloading phase, a guest steps off the gondola and twists her ankle on the loading platform, falling. She is conscious and responsive but is lying on the platform. Other guests are watching. One bystander offers to help her up. What is your correct sequence of actions?',
+    choices: [
+      { text: 'Help the guest up immediately, offer reassurance, and document the incident at the end of your shift.', correct: false, outcome: '❌ Do not move an injured guest unless there is immediate danger. Moving an injured person can worsen a spinal or orthopedic injury. Document while memory is fresh — not hours later. Your first action is calling First Aid and Security.' },
+      { text: 'Stop the ride via E-Stop, call First Aid and Security simultaneously (ext. 5), politely ask bystanders to step back, do not move or allow anyone else to move the guest, and preserve the scene until First Aid arrives.', correct: true, outcome: '✅ Correct. Stopping the ride prevents another cycle while someone is on the platform. Simultaneous calls to First Aid and Security are faster than sequential calls. Preserving the scene is required for accurate incident investigation. The guest\'s safety is served by keeping her still until medical professionals arrive.' },
+      { text: 'Accept the bystander\'s offer to help — having more hands is safer than waiting alone.', correct: false, outcome: '❌ Well-intentioned bystanders can worsen injuries by moving the guest incorrectly. Keep unauthorized persons away from the scene. Your job is to secure the area and wait for trained First Aid personnel.' },
+      { text: 'Call First Aid only after you have assessed the injury severity yourself to prioritize the response level.', correct: false, outcome: '❌ You are not qualified to assess injury severity, and any delay in calling First Aid is inappropriate. Call immediately for any apparent injury. Let trained medical personnel determine severity and response level.' }
+    ]
+  }
+];
+
+const simState = {};
+
+function initSim() {
+  const container = document.getElementById('sim-container');
+  let html = '';
+  SCENARIOS.forEach((sc, si) => {
+    const letters = ['A','B','C','D'];
+    html += `
+    <div class="scenario-box">
+      <div class="scenario-pill">${sc.pill}</div>
+      <div class="scenario-title">${sc.title}</div>
+      <div class="scenario-desc">${sc.desc}</div>
+    </div>
+    <div id="sim-choices-${si}">
+      ${sc.choices.map((c, ci) => `
+        <div class="s-choice" id="sc-${si}-${ci}" onclick="pickSim(${si},${ci})">
+          <div class="s-letter">${letters[ci]}</div>
+          <div>${c.text}</div>
+        </div>`).join('')}
+      <div class="s-outcome" id="sim-out-${si}"></div>
+    </div>
+    ${si < SCENARIOS.length - 1 ? '<div class="scenario-divider"></div>' : ''}`;
+  });
+  container.innerHTML = html;
+}
+
+function pickSim(si, ci) {
+  if (simState[si] !== undefined) return;
+  simState[si] = ci;
+  const sc = SCENARIOS[si];
+  const ch = sc.choices[ci];
+
+  sc.choices.forEach((c, i) => {
+    const el = document.getElementById(`sc-${si}-${i}`);
+    el.style.cursor = 'default';
+    el.onclick = null;
+    if (i === ci) el.className = 's-choice ' + (ch.correct ? 'correct-choice' : 'wrong-choice');
+  });
+
+  const out = document.getElementById(`sim-out-${si}`);
+  out.className = 's-outcome show ' + (ch.correct ? 'good' : 'bad');
+  out.innerHTML = `<strong>${ch.correct ? '✅ Best Response' : '❌ Suboptimal Response'}</strong><br>${ch.outcome}`;
+
+  if (Object.keys(simState).length === SCENARIOS.length) {
+    document.getElementById('sim-complete').style.display = 'block';
+    document.getElementById('sim-next-btn').style.display = 'flex';
+  }
+}
+
+// ── FINAL EXAM ───────────────────────────────────
+const EXAM_QUESTIONS = [
+  // Unit 1
+  { q: "ASTM F770-18 §7.1 requires who to sign the Ride Operations Inspection Checklist BEFORE an operator may open the ride?", opts: ["The park's General Manager", "A Maintenance Department technician", "Any senior or certified ride operator", "The Safety Director or Risk Manager"], correct: 1, explain: "§7.1 requires Maintenance to conduct the inspection and sign the checklist first. Ride operators are trained to never start any ride without a signature from Maintenance on the Ride Operations Inspection Checklist." },
+  { q: "Which federal agency has direct regulatory jurisdiction over FIXED amusement parks in the United States?", opts: ["The CPSC — Consumer Product Safety Commission", "OSHA — Occupational Safety and Health Administration", "No federal agency — fixed parks are regulated at the state level only", "The DOT — Department of Transportation"], correct: 2, explain: "There is no federal law governing fixed amusement parks. The CPSC has jurisdiction only over portable rides. State law, most incorporating ASTM F24 standards, is the governing framework." },
+  { q: "ASTM F770-18 §8.3 requires which training element that completing this LMS course CANNOT fully satisfy?", opts: ["Written knowledge of operating procedures", "Understanding of the evacuation plan", "A trainer demonstrating duties, then the trainee demonstrating competency under direct supervision", "Completion of a 20-question certification exam"], correct: 2, explain: "§8.3 requires both components: the trainer demonstrates all assigned duties, THEN the trainee demonstrates competency under trainer supervision. Field practical demonstration with a qualified trainer is mandatory beyond LMS completion." },
+  { q: "During your ASTM §7.1 pre-opening inspection, you discover that an E-Stop button at a required position is non-functional. What is the correct action?", opts: ["Open the ride but flag the button for future maintenance", "Open at reduced capacity while other E-Stops remain functional", "Do not open the ride — contact maintenance. A non-functional E-Stop means the ride is closed.", "Tape a note on the button and update your supervisor at shift end"], correct: 2, explain: "A non-functional emergency stop at any required position is a ride-closing defect. There are no partial workarounds for failed safety devices. The ride does not open until Maintenance evaluates and restores the E-Stop to full function." },
+  { q: "Which ASTM F770-18 section requires a minimum of one complete operating cycle WITHOUT riders before opening the ride each day?", opts: ["§7.1.1 — Preopening Inspection Elements", "§7.2 — Test Cycle Requirement", "§7.3 — Return to Service Protocol", "§8.2 — Training Content Requirements"], correct: 1, explain: "§7.2 mandates a minimum one complete operating cycle without riders before carrying guests each day. This is not optional and cannot be waived by any supervisor or manager." },
+  // Unit 2
+  { q: "A guest measures exactly 1/4 inch below the ride's minimum height requirement. The parent insists they've ridden this ride before and demands access. You should:", opts: ["Allow boarding — the gap is too small to matter", "Allow boarding if the parent signs a liability waiver", "Deny boarding. Height requirements have zero exceptions regardless of prior experience or parental insistence.", "Call your supervisor and defer the decision to them"], correct: 2, explain: "'Even a Guest only 1/8 of an inch under the requirement is NOT ALLOWED to ride. Again there are NO exceptions.' Prior experience at any park is irrelevant to today's measurement." },
+  { q: "Under ASTM F770-18 §7.3, after an UNSCHEDULED stoppage of the ride, what must occur before the ride can carry guests again?", opts: ["A maintenance team member must verbally clear the ride", "An appropriate inspection AND minimum one complete test cycle without riders", "A supervisor must sign the turnstile and authorize re-opening", "The ride must remain closed for 30 minutes after any unscheduled stop"], correct: 1, explain: "§7.3 is explicit: after any unscheduled cessation, the ride must be appropriately inspected AND operated for a minimum of one complete cycle without riders to confirm proper function before resuming guest operations." },
+  { q: "When is the 'All Clear' hand signal to be given — and from where must it be given?", opts: ["From anywhere in the station, after visually checking the gondola only", "From the Operator Safe Zone, only after the attendant has scanned their zone and confirmed all riders and restraints are ready", "From the queue line gate, after all guests have boarded", "By the Grouper, once the bullpen is clear"], correct: 1, explain: "The All Clear signal must be given ONLY from the Safe Zone, and ONLY after the attendant has already scanned their area and confirmed riders, restraints, and zone are all ready. Giving the signal from outside the Safe Zone violates procedure." },
+  { q: "During restraint verification, you find that a lap bar will NOT engage within the approved range for a larger guest. What must you do?", opts: ["Assist by pushing the lap bar firmly to close it", "Allow the guest to hold the bar closed manually during the ride", "Do not force the restraint — if it won't close properly, the guest may not ride", "Seat the guest in a different position that might accommodate them better"], correct: 2, explain: "'The attendant or operator may not push with any extreme force to get the restraint to close. Restraints are not designed to be forced into the closed position.' An improperly closed restraint may not be effective — this is a safety-critical no-ride situation." },
+  { q: "Loose articles are prohibited on the ride primarily because:", opts: ["They make loading slower and reduce throughput", "They can become high-speed projectiles that cause serious injury to riders and bystanders", "Park policy requires all items be stored for liability reasons", "Guests often drop them in the ride mechanism, causing maintenance issues"], correct: 1, explain: "'Loose articles can be projectiles and can cause great harm, especially cameras and cell phones.' At drop tower speeds and heights, a loose cell phone or camera becomes a dangerous projectile." },
+  // Unit 3
+  { q: "You find a LOTO lock on the ride's control panel with a tag listing 'T. Johnson — Maintenance.' No one is visible. You should:", opts: ["Remove the lock since T. Johnson appears to have left the area", "Contact T. Johnson for permission to remove the lock", "Do NOT touch the lock. Contact your supervisor immediately. Document the time.", "Begin your §7.1 inspection of other systems while waiting"], correct: 2, explain: "You may NEVER remove another person's LOTO device. Only T. Johnson may remove it. Removing someone else's lock could injure or kill whoever placed it. Escalate immediately to your supervisor." },
+  { q: "An operator entering the 'Danger Zone' requires:", opts: ["Just a safety vest and supervisor permission", "LOTO on the ride, a supervisor present, AND an orange safety vest", "Ride in full stop position and written maintenance authorization", "Only direct supervisor verbal approval during daylight hours"], correct: 1, explain: "Entering the Danger Zone requires the ride to be locked out, a supervisor to be present, AND wearing an orange safety vest. All three conditions must be met simultaneously." },
+  { q: "Under ASTM F770-18 §10.3, within how many days of a serious injury incident must the ride manufacturer be notified?", opts: ["24 hours", "3 business days", "7 days", "30 days"], correct: 2, explain: "F770 §10.3 requires manufacturer notification within 7 days of any incident resulting in serious injury. The operator's supervisor handles the notification, but your accurate, detailed incident documentation makes it possible." },
+  { q: "A guest falls and is injured on the loading platform. You should NOT:", opts: ["Call First Aid and Security immediately (ext. 5)", "Stop the ride via E-Stop and secure the area", "Discuss what happened with bystanders while waiting for First Aid", "Complete a detailed incident report as soon as practical"], correct: 2, explain: "You must never discuss incident details with guests, witnesses, or bystanders. Statements made at the scene can compromise investigations and legal proceedings. Provide factual information only to First Aid, Security, and park management upon their arrival." },
+  { q: "What is the correct classification for a downtime that requires Maintenance Personnel sign-off before the ride can reopen?", opts: ["Operations Downtime", "Maintenance Downtime", "Emergency Downtime", "Supervisory Downtime"], correct: 1, explain: "A Maintenance Downtime is defined as a situation requiring Maintenance Personnel to resolve, with a written sign-off from appropriate Maintenance personnel required before reopening. Examples include unusual noise/function, ride control system fault, equipment malfunction, or power outage." },
+  // Integrated / Applied
+  { q: "You notice a strong burning smell coming from the motor housing during your pre-opening test cycle. There is no visible smoke or flame. What is the correct response?", opts: ["The smell is likely normal on cool mornings — proceed with opening", "Stop the test cycle, note the smell's characteristics and location, contact Maintenance, and do not open until Maintenance evaluates and signs off", "Complete the test cycle and note the smell on your inspection sheet, then open", "Spray the area with the fire extinguisher as a precaution"], correct: 1, explain: "A burning smell is an abnormal sensory indicator. 'Strange or unfamiliar smells' are explicitly listed as clues to potential problems. The ride does not open until Maintenance evaluates. Never ignore abnormal sensory information." },
+  { q: "During a ride downtime, 'At that time make the call into dispatch to notify them the ride will be unloading.' This call goes to which extension?", opts: ["Extension 5", "Extension 6", "Extension 2655", "Extension 2113"], correct: 1, explain: "Extension 6 is the Dispatch number for downtime reporting and operational status updates. Extension 5 is Security/First Aid Emergency. Extension 2113 is used to notify Dispatch when the ride is ready to REOPEN after a downtime." },
+  { q: "A guest in a motorized wheelchair asks to ride the drop tower. Per ADA guidelines and industry best practice, you should:", opts: ["Automatically deny boarding — wheelchairs indicate medical conditions that disqualify from drop towers", "Assess whether the guest can safely occupy the restraint, maintain required body posture, and respond to emergency instructions; if uncertain, contact your Supervisor", "Allow boarding if the guest provides verbal assurance they feel capable", "Only allow boarding if a companion of similar size accompanies them"], correct: 1, explain: "Under the ADA, access cannot be denied unless someone could be hurt. Focus on function: can the guest safely occupy the restraint and ride? If any doubt exists, contact your Supervisor." },
+  { q: "Which statement BEST describes the Operator's unique accountability at a drop tower relative to all other positions?", opts: ["The Operator controls throughput and is primarily responsible for ride efficiency", "The Operator is the LAST safety check before dispatch and must not start the ride if any safety check was not properly completed", "The Operator's responsibility ends once the All Clear signals are received from all attendants", "The Operator is responsible for all guest height checks in the loading zone"], correct: 1, explain: "The operator is responsible for starting or dispatching the ride. Therefore they are the last safety check to ensure all is ready to go. If the operator feels that any safety checks were not done in the proper method, they should not start the ride or dispatch." },
+  { q: "When you sign the daily Ride Operations Inspection Checklist, the act of signing constitutes:", opts: ["An informal acknowledgment that you reviewed the document", "A legally significant certification of safety compliance — falsification may result in criminal liability", "A completion record for your training file only", "A preliminary check that Maintenance will verify and countersign later"], correct: 1, explain: "Signing an inspection sheet certifies legal compliance with ASTM F770. Falsifying safety inspection records is fraudulent and constitutes potential criminal liability if a subsequent incident occurs. If you cannot complete an inspection item honestly, notify your supervisor BEFORE opening." },
+  { q: "When an unsafe or potentially dangerous situation arises and you must stop the ride, you should report to which extension?", opts: ["Extension 5 — Security/First Aid Emergency", "Extension 6 — Emergency Operations Dispatch", "Extension 2113 — Dispatch for ride re-open", "Extension 2655 — Security Non-Emergency"], correct: 1, explain: "Extension 6 is Emergency Operations Dispatch — the primary contact for equipment malfunctions and unplanned ride stoppages." }
+];
+
+let examState = { answers: {}, submitted: {}, idx: 0 };
+
+function startExam() {
+  if (APP.finalAttempts >= 3) return alert('All 3 attempts have been used. Please contact your supervisor for remediation.');
+  APP.finalAttempts++;
+  examState = { answers: {}, submitted: {}, idx: 0 };
+  document.getElementById('exam-gate').style.display = 'none';
+  document.getElementById('exam-body').style.display = 'block';
+  document.getElementById('exam-result').style.display = 'none';
+  renderExam();
+}
+
+function renderExam() {
+  const q = EXAM_QUESTIONS[examState.idx];
+  const subm = examState.submitted[examState.idx];
+  const sel = examState.answers[examState.idx];
+  const letters = ['A','B','C','D'];
+  const pct = ((examState.idx + 1) / EXAM_QUESTIONS.length * 100);
+
+  document.getElementById('exam-prog').style.width = pct + '%';
+  document.getElementById('exam-ctr').textContent = `Q ${examState.idx + 1} / ${EXAM_QUESTIONS.length}`;
+
+  let opts = q.opts.map((o, oi) => {
+    let cls = 'q-opt';
+    if (subm) {
+      if (oi === q.correct) cls += ' correct';
+      else if (oi === sel && oi !== q.correct) cls += ' wrong';
+    } else if (oi === sel) cls += ' selected';
+    return `<div class="${cls}" ${!subm ? `onclick="pickExam(${examState.idx},${oi})"` : 'style="cursor:default"'}>
+      <div class="q-letter">${letters[oi]}</div>
+      <div class="q-opt-text">${o}</div>
+    </div>`;
+  }).join('');
+
+  let feedback = subm ? `<div class="q-feedback show ${sel === q.correct ? 'pass' : 'fail'}">
+    <strong>${sel === q.correct ? '✅ Correct!' : '❌ Incorrect.'}</strong> ${q.explain}
+  </div>` : '';
+
+  let actions = `<div class="q-actions">`;
+  if (examState.idx > 0) actions += `<button class="btn btn-ghost" onclick="navExam(${examState.idx-1})">← Back</button>`;
+  if (!subm) {
+    actions += `<button class="btn btn-primary" onclick="submitExam(${examState.idx})">Submit Answer</button>`;
+  } else if (examState.idx < EXAM_QUESTIONS.length - 1) {
+    actions += `<button class="btn btn-primary" onclick="navExam(${examState.idx+1})">Next →</button>`;
+  } else {
+    actions += `<button class="btn btn-green" onclick="finishExam()">Submit Exam →</button>`;
+  }
+  actions += `</div>`;
+
+  document.getElementById('exam-questions').innerHTML = `<div class="q-card">
+    <div class="q-header">
+      <div class="q-num">Question ${examState.idx + 1} of ${EXAM_QUESTIONS.length} · Final Certification Exam</div>
+      <div class="q-text">${q.q}</div>
+    </div>
+    <div class="q-body">${opts}${feedback}${actions}</div>
+  </div>`;
+}
+
+function pickExam(qi, oi) {
+  if (examState.submitted[qi]) return;
+  examState.answers[qi] = oi;
+  renderExam();
+}
+
+function submitExam(qi) {
+  if (examState.answers[qi] === undefined) return alert('Please select an answer.');
+  examState.submitted[qi] = true;
+  renderExam();
+}
+
+function navExam(qi) {
+  examState.idx = qi;
+  renderExam();
+}
+
+function finishExam() {
+  const correct = EXAM_QUESTIONS.filter((q, i) => examState.answers[i] === q.correct).length;
+  const pct = Math.round(correct / EXAM_QUESTIONS.length * 100);
+  const pass = pct >= 80;
+
+  document.getElementById('exam-body').style.display = 'none';
+  document.getElementById('exam-result').style.display = 'block';
+
+  if (pass) {
+    APP.completed.add('exam');
+    updateProgress();
+    markDone('exam');
+    document.getElementById('exam-pass-panel').style.display = 'block';
+    document.getElementById('exam-fail-panel').style.display = 'none';
+
+    const now = new Date();
+    const exp = new Date(now); exp.setFullYear(exp.getFullYear() + 1);
+    const fmt = d => d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+    document.getElementById('cert-name-display').textContent = APP.operatorName || 'Certified Operator';
+    document.getElementById('cert-score-disp').textContent = pct + '%';
+    document.getElementById('cert-issued').textContent = fmt(now);
+    document.getElementById('cert-expires').textContent = fmt(exp);
+    document.getElementById('cert-id-disp').textContent = 'Cert ID: DT-' + now.getFullYear() + '-' + Math.random().toString(36).substr(2,9).toUpperCase();
+  } else {
+    document.getElementById('exam-pass-panel').style.display = 'none';
+    document.getElementById('exam-fail-panel').style.display = 'block';
+    document.getElementById('exam-fail-score').textContent = pct;
+    const left = 3 - APP.finalAttempts;
+    document.getElementById('exam-fail-msg').textContent = `You answered ${correct}/20 correctly (${pct}%). A score of 80% is required to pass. ${left > 0 ? `You have ${left} attempt(s) remaining.` : 'You have used all 3 attempts. Please contact your supervisor for a remediation review before retaking.'}`;
+    if (left <= 0) document.getElementById('exam-retry-btn').disabled = true;
+    document.getElementById('attemptsLeft').textContent = left;
+  }
+}
+
+function retryExam() {
+  document.getElementById('exam-result').style.display = 'none';
+  document.getElementById('exam-gate').style.display = 'block';
+}
+
+// ── INIT ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const name = prompt('Welcome to the Drop Tower Operator Certification Program.\n\nPlease enter your full name for your certificate record:');
+  APP.operatorName = (name || '').trim() || 'Operator';
+
+  initQuiz('kc1', [
+    { q: "How many complete operating cycles without riders must be performed before opening the ride each day?", opts: ["None required if Maintenance has already tested it","At least one full cycle","Two cycles — one slow, one at operating speed","Three cycles per ASTM F770 §7.2.3"], correct: 1, explain: "ASTM F770-18 §7.2 requires a minimum of one complete operating cycle without riders before carrying guests each day. This is mandatory and cannot be waived." },
+    { q: "Which of the following is an ASTM F770 §7.1.1 required pre-opening inspection element?", opts: ["Guest satisfaction surveys","Revenue reporting and ticketing systems","All brake systems — service, emergency, parking, and anti-rollback","Competitor ride performance benchmarks"], correct: 2, explain: "§7.1.1.6 requires inspection of all brake systems: service brakes, emergency brakes, parking brakes, and anti-rollback devices. Revenue and guest survey systems are not inspection items." },
+    { q: "Clues to potential ride problems include strange sights, unfamiliar smells, strange sounds, unusual guest comments, and unusual vibrations. If you notice any of these, you should:", opts: ["Continue operating and note it on your end-of-day report","Document it and wait for the next scheduled maintenance visit","Notify the Area Supervisor immediately and take appropriate action, which may include closing the ride","Ignore minor variations as normal mechanical wear"], correct: 2, explain: "Any of these clues requires immediate Supervisor notification and appropriate action — up to and including closing the ride." },
+    { q: "You are checking restraints before dispatch and find that one OTSR will not lock. You should:", opts: ["Tighten the harness strap manually and proceed","Allow the guest to hold the harness with both hands","Remove that seat from service via LOTO and notify Maintenance immediately","Switch the guest to the next available seat without documenting the defect"], correct: 2, explain: "A non-functional restraint is an immediate LOTO situation. The seat must be removed from service. Never create workarounds for failed restraints." },
+    { q: "Which position is described as 'the last safety check' before dispatch?", opts: ["The Grouper, who controls guest flow","The Lead Attendant, who verifies all signals","The Operator, who must not dispatch if any safety check was improperly completed","The Supervisor, who authorizes each cycle via radio"], correct: 2, explain: "The operator is responsible for starting or dispatching the ride. Therefore they are the last safety check. The operator has full authority to hold dispatch for any safety concern." },
+    { q: "A guest tells you they rode your ride 'all the time' last summer but currently measures 3/4 inch below the minimum height requirement. You should:", opts: ["Allow boarding — habitual riders may have body proportions that compensate for slight height differences","Allow boarding if a parent vouches for the child's prior riding history","Deny boarding — prior riding experience does not override the current measurement","Ask the child to stand up straighter and re-measure"], correct: 2, explain: "'If the Guest does not meet the requirement at the time of boarding, then they are not allowed to ride.' Prior experience at this or any other park has no bearing on today's measurement." },
+    { q: "The 'All Clear' hand signal — right hand extended above head, thumb up — must be given from where?", opts: ["From any position visible to the operator","From the designated Safe Zone only, after the attendant has scanned their zone","From the queue line gate after all guests are seated","From the unloading zone after confirming the area is clear"], correct: 1, explain: "'This hand signal should only be conducted from the Safe Zone and only when the attendant or operator is ready for the ride to be dispatched... the attendant or operator should have already scanned the area in their field of vision.'" },
+    { q: "Which type of article is considered the highest-risk projectile that must be secured before riding?", opts: ["Water bottles in sealed containers","Cell phones and cameras","Prescription eyeglasses with secure straps","Small coin purses stored in shirt pockets"], correct: 1, explain: "Cameras and cell phones are specifically identified as dangerous loose articles that 'can cause great harm' as projectiles. These must be secured in a storage area before boarding." }
+  ]);
+
+  initQuiz('kc2', [
+    { q: "Lock Out / Tag Out is best described as:", opts: ["A standard maintenance scheduling procedure","A life-saving procedure to prevent machinery from being energized, set into motion, or started unexpectedly","An optional protocol used only during major repairs","A documentation requirement for annual safety audits"], correct: 1, explain: "'Lock out/tag out is a life-saving procedure. The purpose of a lock out/tag out is to prevent any part of machinery from being energized, set into motion or in any other way started unexpectedly.'" },
+    { q: "Which individual is authorized to remove a LOTO lock from a ride?", opts: ["Any certified ride operator","Any Supervisor or Operations Manager","Any Maintenance team member","Only the person whose name appears on the lock/tag"], correct: 3, explain: "'Only the person whose name appears on the lock out/tag out may remove the lock out/tag out.' This rule is absolute — no supervisor, manager, or other team member may remove someone else's LOTO device." },
+    { q: "A 'Maintenance Downtime' differs from an 'Operations Downtime' in that a Maintenance Downtime:", opts: ["Can be resolved quickly without outside assistance","Requires a Supervisor to be present at all times","Requires Maintenance Personnel to resolve and requires Maintenance sign-off before reopening","Is caused only by weather conditions"], correct: 2, explain: "A Maintenance Downtime is the unanticipated closing of a ride that requires Maintenance Personnel to resolve and requires appropriate Maintenance sign-off before the ride can reopen. Examples: unusual noise, ride control fault, equipment malfunction." },
+    { q: "Immediately upon discovering a ride stoppage with guests at height, what is your FIRST action?", opts: ["Begin the evacuation protocol", "Activate the fire suppression system","Communicate immediately to guests via intercom: calm, clear message to remain seated with restraints on","Wait for Maintenance to arrive and diagnose the cause"], correct: 2, explain: "Immediate guest communication is the first action. Frightened guests at height may attempt to self-evacuate — with potentially fatal results. 'Please remain seated with your restraints fastened' must be communicated before anything else." },
+    { q: "An 'Emergency Unloading' before Supervisor arrival is justified only:", opts: ["Any time riders have been stopped for more than 5 minutes","When Maintenance has confirmed the cause of the stoppage","In extreme cases where riders are in immediate danger — in most situations, wait for Supervisor arrival","Only when the ride has experienced a Maintenance Downtime classification"], correct: 2, explain: "'In the event that the riders are in immediate danger, it may be necessary to initiate an emergency unload before Ride Supervisors and/or management have arrived. This is only in extreme cases.'" },
+    { q: "You see a guest enter a ride danger zone during normal operation. What do you do?", opts: ["Enter the area to escort the guest out","Shout at the guest to leave the area and continue operating","Stop the ride immediately via the nearest E-Stop, attempt to communicate for the person to stay flat, notify Supervisor and Security — do NOT enter the area","Reduce ride speed to minimum while monitoring the situation"], correct: 2, explain: "'If you see a person in a ride restricted area or ride danger zone, stop the ride immediately... Do not under any circumstance enter the area! Attempt to communicate to the person to lay flat on the ground... Notify your Supervisor and Security.'" },
+    { q: "Under ASTM F770 §10.3, manufacturer notification of a serious injury incident must occur within:", opts: ["24 hours","3 business days","7 days","30 days"], correct: 2, explain: "F770 §10.3 requires manufacturer notification within 7 days of any incident resulting in serious injury. Your supervisor handles the notification, but your accurate incident documentation enables it." },
+    { q: "Which Dispatch extension is used to REPORT a ride downtime when it occurs?", opts: ["Extension 5","Extension 6","Extension 2113","Extension 2655"], correct: 1, explain: "Extension 6 is Emergency Operations Dispatch — the number to call to report a downtime and provide ride name, reason, and location of loaded units. Extension 2113 is used to notify Dispatch when the ride is ready to reopen after a downtime." }
+  ]);
+
+  initSim();
+});
+</script>
+</body>
+</html>
