@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OEM SOP Creation | Amusement Standards</title>
+<meta name="description" content="Amusement Standards authors complete ride-specific Standard Operating Procedures from your OEM technical documentation — formatted for park operations and CRC course builds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#0052CC;--primary-dark:#003D99;--primary-light:#E8F0FC;--secondary:#FF6B35;--secondary-dark:#E55A2B;--success:#00875A;--navy:#0D2137;--teal:#0891B2;--teal-light:#E8F6FB;--amber:#B45309;--amber-light:#FEF9EE;--purp:#6D28D9;--purp-light:#EDE9FE;--bg-light:#F7F9FC;--bg-white:#FFFFFF;--text-primary:#172B4D;--text-secondary:#5E6C84;--text-light:#8993A4;--border:#DFE1E6;--border-strong:#C1C7D0;--shadow:rgba(9,30,66,0.08);--shadow-hover:rgba(9,30,66,0.16);--font-display:'DM Sans',sans-serif;--font-mono:'Space Mono',monospace;--radius:10px;--radius-sm:6px;--transition:0.2s ease}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-display);color:var(--text-primary);line-height:1.6;background:var(--bg-white);-webkit-font-smoothing:antialiased}
+a{text-decoration:none}
+.btn{display:inline-block;font-family:var(--font-display);font-weight:600;font-size:15px;padding:13px 28px;border-radius:var(--radius-sm);transition:all var(--transition);cursor:pointer;border:none;white-space:nowrap}
+.btn-primary{background:var(--secondary);color:#fff}.btn-primary:hover{background:var(--secondary-dark);transform:translateY(-1px);box-shadow:0 8px 20px rgba(255,107,53,.28)}
+.btn-blue{background:var(--primary);color:#fff}.btn-blue:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.28)}.btn-ghost:hover{background:rgba(255,255,255,.22)}
+.btn-lg{padding:16px 36px;font-size:16px}
+.btn-full{width:100%;text-align:center;display:block}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-family:var(--font-mono);font-size:17px;font-weight:700;color:var(--primary);letter-spacing:-.5px;flex-shrink:0}
+.nav{display:flex;align-items:center;gap:4px;list-style:none}
+.nav a{color:var(--text-secondary);font-weight:500;font-size:13.5px;padding:6px 10px;border-radius:var(--radius-sm);transition:all var(--transition)}
+.nav a:hover{color:var(--primary);background:var(--primary-light)}
+.nav .nav-cta{background:var(--secondary);color:#fff;padding:8px 16px}.nav .nav-cta:hover{background:var(--secondary-dark)}
+.nav .nav-mfr{background:linear-gradient(135deg,#0a2d6e 0%,#0052CC 100%);color:#fff;padding:7px 13px;font-size:13px}.nav .nav-mfr:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,82,204,.3)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#0a2d6e 50%,var(--primary) 100%);color:#fff;padding:88px 40px 96px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 70% 40%,rgba(255,107,53,.12) 0%,transparent 55%),radial-gradient(circle at 15% 80%,rgba(8,145,178,.1) 0%,transparent 45%)}
+.hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' fill='white' opacity='0.05'/%3E%3C/svg%3E") repeat;background-size:60px 60px}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.hero-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--secondary);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:2px;background:var(--secondary)}
+.hero h1{font-size:clamp(32px,4vw,52px);font-weight:700;line-height:1.1;letter-spacing:-1px;margin-bottom:22px}
+.hero h1 em{color:rgba(255,255,255,.45);font-style:normal}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.7);line-height:1.78;font-weight:300;margin-bottom:40px;max-width:500px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.hero-proof{display:flex;flex-direction:column;gap:14px}
+.proof-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);padding:22px 26px;backdrop-filter:blur(6px)}
+.proof-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.proof-num{font-family:var(--font-mono);font-size:28px;font-weight:700;color:#fff;line-height:1;margin-bottom:5px}
+.proof-num em{color:var(--secondary);font-style:normal;font-size:18px}
+.proof-label{font-size:12px;color:rgba(255,255,255,.48);line-height:1.4}
+
+/* SHARED */
+.section{padding:88px 40px}.section-alt{background:var(--bg-light)}
+.container{max-width:1200px;margin:0 auto}
+.section-head{margin-bottom:56px}
+.eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);margin-bottom:14px}
+.section-title{font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:14px}
+.section-sub{font-size:16px;color:var(--text-secondary);line-height:1.75;font-weight:300;max-width:620px}
+
+/* PROBLEM BAR */
+.problem-bar{background:var(--navy);padding:52px 40px}
+.problem-bar-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.08)}
+.pb-item{padding:28px 32px;background:var(--navy)}
+.pb-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
+.pb-text{font-size:15px;color:rgba(255,255,255,.75);line-height:1.6;font-weight:400}
+.pb-text strong{color:#fff;font-weight:600}
+
+/* WHAT IS IT */
+.what-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.what-body{font-size:16px;color:var(--text-secondary);line-height:1.8;font-weight:300;margin-bottom:20px}
+.callout{border-radius:var(--radius);padding:24px 28px;margin:24px 0}
+.callout.amber{background:var(--amber-light);border-left:4px solid var(--amber)}
+.callout.teal{background:var(--teal-light);border-left:4px solid var(--teal)}
+.callout.navy{background:rgba(13,33,55,.05);border-left:4px solid var(--navy)}
+.callout.purp{background:var(--purp-light);border-left:4px solid var(--purp)}
+.callout-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:7px}
+.callout p{font-size:15px;color:var(--text-primary);line-height:1.7}
+.dual-use{display:flex;flex-direction:column;gap:16px}
+.du-card{background:var(--bg-white);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px 26px}
+.du-card.featured{border-color:var(--primary)}
+.du-icon{font-size:24px;margin-bottom:12px}
+.du-title{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:7px}
+.du-desc{font-size:14px;color:var(--text-secondary);line-height:1.65;font-weight:300}
+
+/* WHAT'S INSIDE */
+.inside-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.inside-card{background:var(--bg-white);border:1px solid var(--border);border-radius:var(--radius);padding:26px 24px}
+.ic-num{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--text-light);margin-bottom:10px}
+.ic-title{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:8px}
+.ic-desc{font-size:13px;color:var(--text-secondary);line-height:1.65;font-weight:300}
+.ic-astm{display:inline-block;font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;background:var(--primary-light);color:var(--primary);border-radius:4px;padding:3px 8px;margin-top:10px}
+
+/* PROCESS */
+.process-flow{display:flex;flex-direction:column;gap:0}
+.process-step{display:grid;grid-template-columns:64px 1fr;gap:28px;padding:28px 0;border-bottom:1px solid var(--border);align-items:start}
+.process-step:last-child{border-bottom:none}
+.ps-num{width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;font-family:var(--font-mono);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px}
+.ps-body h3{font-size:17px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+.ps-body p{font-size:14px;color:var(--text-secondary);line-height:1.7;font-weight:300}
+.ps-tag{display:inline-block;font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:4px;margin-bottom:8px;background:var(--primary-light);color:var(--primary)}
+
+/* PRICING */
+.pricing-block{background:var(--bg-white);border:2px solid var(--primary);border-radius:14px;padding:48px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.price-left{}
+.price-tag{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);margin-bottom:12px}
+.price-headline{font-size:clamp(22px,2.5vw,32px);font-weight:700;color:var(--text-primary);letter-spacing:-.5px;line-height:1.2;margin-bottom:16px}
+.price-main{font-family:var(--font-mono);font-size:42px;font-weight:700;color:var(--primary);line-height:1;margin-bottom:6px}
+.price-main em{font-size:20px;font-style:normal;color:var(--text-secondary)}
+.price-sub{font-size:14px;color:var(--text-secondary);margin-bottom:28px}
+.price-right{}
+.price-includes{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.price-includes li{font-size:14px;color:var(--text-secondary);display:flex;align-items:flex-start;gap:10px;line-height:1.5}
+.price-includes li::before{content:'✓';color:var(--success);font-weight:700;font-size:12px;flex-shrink:0;margin-top:2px}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,var(--navy) 0%,var(--primary) 100%);padding:88px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='white' opacity='0.06'/%3E%3C/svg%3E") repeat;background-size:40px 40px}
+.cta-inner{position:relative;z-index:1;max-width:660px;margin:0 auto}
+.cta-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--secondary);margin-bottom:16px}
+.cta-section h2{font-size:clamp(26px,4vw,42px);font-weight:700;color:#fff;margin-bottom:14px;letter-spacing:-.5px;line-height:1.15}
+.cta-section p{font-size:17px;color:rgba(255,255,255,.62);margin-bottom:40px;font-weight:300;line-height:1.75}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+.footer{background:#0d1829;padding:48px 40px 28px}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:36px}
+.footer-brand-name{font-family:var(--font-mono);font-size:15px;font-weight:700;color:#fff;margin-bottom:10px}
+.footer-brand-desc{font-size:13px;color:rgba(255,255,255,.35);line-height:1.65;font-weight:300}
+.footer-col-title{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:14px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.45);transition:color var(--transition)}.footer-links a:hover{color:#fff}
+.footer-bottom{padding-top:22px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,.2)}
+
+@media(max-width:960px){
+  .hero-inner,.what-grid{grid-template-columns:1fr;gap:48px}
+  .proof-row{grid-template-columns:1fr 1fr}
+  .inside-grid{grid-template-columns:1fr 1fr}
+  .problem-bar-inner{grid-template-columns:1fr}
+  .pricing-block{grid-template-columns:1fr;gap:32px}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .section{padding:60px 20px}.hero{padding:60px 20px 72px}
+  .header-inner{padding:0 20px}
+  .nav{display:none}
+  .inside-grid{grid-template-columns:1fr}
+  .problem-bar{padding:40px 20px}
+  .footer{padding:40px 20px 24px}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:6px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo">amusement standards.</a>
+    <nav><ul class="nav">
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/#packages">Packages</a></li>
+      <li><a href="data-analytics.html">Data Analytics</a></li>
+      <li><a href="manufacturer-services.html" class="nav-mfr">⚙ Manufacturer Programs</a></li>
+      <li><a href="/#contact" class="nav-cta">Book Risk Review</a></li>
+    </ul></nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Manufacturer Services · OEM SOP Creation</div>
+      <h1>Your Ride Deserves a Document <em>As Precise As the Engineering Behind It.</em></h1>
+      <p class="hero-sub">Amusement Standards authors complete, ASTM-mapped Standard Operating Procedures from your OEM technical documentation — formatted for park operations and built to serve as the source document for your CRC certification program.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary btn-lg">Start a Conversation</a>
+        <a href="#whats-inside" class="btn btn-ghost btn-lg">See What's Included</a>
+      </div>
+    </div>
+    <div class="hero-proof">
+      <div class="proof-row">
+        <div class="proof-card">
+          <div class="proof-num">$3,500</div>
+          <div class="proof-label">Flat rate per ride type</div>
+        </div>
+        <div class="proof-card">
+          <div class="proof-num">12<em>mo</em></div>
+          <div class="proof-label">Updates included after delivery</div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-num" style="font-size:18px;letter-spacing:-.3px;">ASTM F770-18 §7 &amp; §8 · Dual-Use · Your Letterhead</div>
+        <div class="proof-label" style="margin-top:8px;">Operations manual + CRC course source document in one deliverable</div>
+      </div>
+      <div class="proof-row">
+        <div class="proof-card">
+          <div class="proof-num">100<em>%</em></div>
+          <div class="proof-label">Authored from your OEM documentation</div>
+        </div>
+        <div class="proof-card">
+          <div class="proof-num">0</div>
+          <div class="proof-label">Park SOP submissions required</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM BAR -->
+<div class="problem-bar">
+  <div class="problem-bar-inner">
+    <div class="pb-item">
+      <div class="pb-label">The Gap</div>
+      <div class="pb-text">When a park takes delivery of your ride, they write their own training binder — or nothing at all. <strong>Your OEM documentation never becomes a functioning operations document.</strong></div>
+    </div>
+    <div class="pb-item">
+      <div class="pb-label">The Risk</div>
+      <div class="pb-text">In the absence of a manufacturer-authored SOP, <strong>there is no paper trail from training back to your technical specifications.</strong> That gap matters when an incident happens.</div>
+    </div>
+    <div class="pb-item">
+      <div class="pb-label">The Fix</div>
+      <div class="pb-text">AS authors the SOP from your documentation. <strong>Every procedure traces back to the manufacturer.  </strong> The same document feeds your CRC certification course — one source, fully defensible.</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT IS IT -->
+<section class="section" id="what-is-it">
+  <div class="container">
+    <div class="what-grid">
+      <div>
+        <div class="eyebrow">What OEM SOP Creation Is</div>
+        <h2 class="section-title">One Document. Two Critical Jobs.</h2>
+        <p class="what-body">Most ride manufacturers provide technical specifications, maintenance manuals, and engineering drawings. Almost none provide a park-ready Standard Operating Procedure — the document that translates your engineering into daily operational practice.</p>
+        <p class="what-body">Amusement Standards bridges that gap. We take your OEM technical documentation and author a complete, structured SOP that a park can hand to their ride team and a regulator can review on-site.</p>
+        <div class="callout amber">
+          <div class="callout-label">Why This Matters for CRC</div>
+          <p>The CRC certification course is only as defensible as the source document it's built from. An AS-authored SOP grounded in your OEM documentation creates an unbroken paper trail: manufacturer spec → SOP → CRC course → certified operator. That chain doesn't exist without this document.</p>
+        </div>
+        <div class="callout teal">
+          <div class="callout-label">What You Receive</div>
+          <p>A single, professionally formatted SOP delivered under your letterhead — ready to include in your ride delivery package, post to your dealer portal, or reference in litigation. AS-authored, manufacturer-branded, ASTM-mapped throughout.</p>
+        </div>
+      </div>
+      <div class="dual-use">
+        <div class="du-card featured">
+          <div class="du-icon">🏭</div>
+          <div class="du-title">Job 1 — Park Operations Manual</div>
+          <div class="du-desc">A complete, structured document that translates your engineering into daily operational practice. Covers every procedure from pre-opening inspection through end-of-day shutdown. Written for the person who runs the ride, not the engineer who designed it.</div>
+        </div>
+        <div class="du-card featured">
+          <div class="du-icon">🎯</div>
+          <div class="du-title">Job 2 — CRC Course Source Document</div>
+          <div class="du-desc">The SOP serves directly as the content foundation for the Certified Ride Controller certification course. Every module, every exam question, every field demonstration requirement traces back to this document — and therefore back to your OEM specifications.</div>
+        </div>
+        <div class="du-card">
+          <div class="du-icon">📋</div>
+          <div class="du-title">Ride Delivery Package Insert</div>
+          <div class="du-desc">Formatted to be included in your standard ride delivery documentation alongside installation guides, maintenance schedules, and warranty materials. Parks receive it as part of the ride — not as an afterthought.</div>
+        </div>
+        <div class="du-card">
+          <div class="du-icon">⚖️</div>
+          <div class="du-title">Litigation-Ready Documentation</div>
+          <div class="du-desc">ASTM-mapped, manufacturer-attributed, professionally authored. Every procedure references the applicable standard. If the document is ever reviewed by a regulator, insurer, or attorney, it withstands scrutiny.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INSIDE -->
+<section class="section section-alt" id="whats-inside">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Document Structure</div>
+      <h2 class="section-title">Every Section Built to ASTM F770-18</h2>
+      <p class="section-sub">The SOP is structured to mirror ASTM F770-18 section requirements so that compliance mapping is explicit and auditable at every page.</p>
+    </div>
+    <div class="inside-grid">
+      <div class="inside-card">
+        <div class="ic-num">Section 01</div>
+        <div class="ic-title">Ride Overview &amp; Systems Description</div>
+        <div class="ic-desc">Ride type, capacity, cycle time, key mechanical and electrical systems, control panel layout, and manufacturer specifications. Written for operational staff, not engineers.</div>
+        <span class="ic-astm">ASTM §6 — General</span>
+      </div>
+      <div class="inside-card">
+        <div class="ic-num">Section 02</div>
+        <div class="ic-title">Pre-Opening Inspection Protocol</div>
+        <div class="ic-desc">Step-by-step daily inspection checklist covering mechanical, electrical, and safety systems. Formatted as a checkable field document with pass/fail criteria and escalation procedures.</div>
+        <span class="ic-astm">ASTM §7.1 — Pre-Opening</span>
+      </div>
+      <div class="inside-card">
+        <div class="ic-num">Section 03</div>
+        <div class="ic-title">Operator Qualification Standards</div>
+        <div class="ic-desc">Minimum qualifications, training requirements, competency demonstration criteria, and the documentation framework for operator qualification records.</div>
+        <span class="ic-astm">ASTM §8.1 — Qualifications</span>
+      </div>
+      <div class="inside-card">
+        <div class="ic-num">Section 04</div>
+        <div class="ic-title">Operational Duties &amp; Ride Cycle</div>
+        <div class="ic-desc">Full ride cycle procedure — rider screening, height and health restrictions, restraint verification, dispatch, monitoring, unload. Every step enumerated with decision criteria.</div>
+        <span class="ic-astm">ASTM §8.2 — Duties</span>
+      </div>
+      <div class="inside-card">
+        <div class="ic-num">Section 05</div>
+        <div class="ic-title">Emergency Procedures</div>
+        <div class="ic-desc">E-stop locations and activation, ride evacuation protocols, medical emergency response, fire and weather procedures, and incident command structure during an active event.</div>
+        <span class="ic-astm">ASTM §8.2.4 — Emergency</span>
+      </div>
+      <div class="inside-card">
+        <div class="ic-num">Section 06</div>
+        <div class="ic-title">LOTO &amp; Maintenance Handoff</div>
+        <div class="ic-desc">Lockout/tagout procedure for operational staff, maintenance notification protocols, and the documentation required before and after any maintenance activity affecting ride operation.</div>
+        <span class="ic-astm">ASTM §7.3 — Maintenance</span>
+      </div>
+      <div class="inside-card">
+        <div class="ic-num">Section 07</div>
+        <div class="ic-title">Field Demonstration Requirements</div>
+        <div class="ic-desc">Competency demonstration criteria for CRC certification — specific observable behaviors, pass/fail standards, and the documentation format for field demo sign-off.</div>
+        <span class="ic-astm">ASTM §8.3 — Field Demo</span>
+      </div>
+      <div class="inside-card">
+        <div class="ic-num">Section 08</div>
+        <div class="ic-title">Incident Reporting &amp; Documentation</div>
+        <div class="ic-desc">Incident classification, initial response documentation requirements, notification chain, and record retention standards aligned with CPSC and state reporting requirements.</div>
+        <span class="ic-astm">ASTM §10 — Incidents</span>
+      </div>
+      <div class="inside-card">
+        <div class="ic-num">Section 09</div>
+        <div class="ic-title">Signage &amp; Guest Communication Standards</div>
+        <div class="ic-desc">Required signage by ride zone, height and health restriction language, guest communication scripts for common scenarios, and queue management standards.</div>
+        <span class="ic-astm">ASTM §9 — Signage</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">How It Works</div>
+      <h2 class="section-title">From Technical Documentation to Delivered SOP</h2>
+      <p class="section-sub">You send us what you have. We do the rest. No park coordination required.</p>
+    </div>
+    <div class="process-flow">
+      <div class="process-step">
+        <div class="ps-num">01</div>
+        <div class="ps-body">
+          <div class="ps-tag">You</div>
+          <h3>Submit Your OEM Documentation</h3>
+          <p>Send AS your existing technical documentation — ride manual, engineering drawings, installation guide, maintenance schedule. Whatever you have. AS works from your source material, not from park-reported information. No site visit required for the SOP build.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="ps-num">02</div>
+        <div class="ps-body">
+          <div class="ps-tag">Amusement Standards</div>
+          <h3>AS Authors the Full SOP Draft</h3>
+          <p>Our team structures and authors all nine sections against your documentation. Every procedure is written for operational staff. Every section is mapped to the applicable ASTM F770-18 reference. Delivered as a formatted draft for your review — typically within 10 business days.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="ps-num">03</div>
+        <div class="ps-body">
+          <div class="ps-tag">You</div>
+          <h3>Review and Technical Approval</h3>
+          <p>Your engineering or operations team reviews the draft for technical accuracy. AS incorporates feedback and flags any gaps where additional OEM documentation would strengthen the document. One revision round included.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="ps-num">04</div>
+        <div class="ps-body">
+          <div class="ps-tag">Amusement Standards</div>
+          <h3>Final Delivery Under Your Letterhead</h3>
+          <p>The approved SOP is formatted and delivered under your brand — your logo, your document header, your name on the cover. Provided in editable and locked PDF formats. Simultaneously, if you're enrolled in the CRC program, AS begins course build using the SOP as the source document.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="ps-num">05</div>
+        <div class="ps-body">
+          <div class="ps-tag">Ongoing</div>
+          <h3>12-Month Update Coverage</h3>
+          <p>Any regulatory updates (ASTM F770-18 revisions), ride modification documentation, or content corrections within 12 months of delivery are incorporated at no additional charge. After 12 months, updates are billed at a reduced rate.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Pricing</div>
+      <h2 class="section-title">Flat Rate. No Surprises.</h2>
+      <p class="section-sub">One price per ride type. The same SOP structure serves every installation of that ride — no per-unit charge for the document itself.</p>
+    </div>
+    <div class="pricing-block">
+      <div class="price-left">
+        <div class="price-tag">OEM SOP Creation</div>
+        <div class="price-headline">Complete ride-specific SOP. Authored, formatted, and delivered under your brand.</div>
+        <div class="price-main">$3,500 <em>/ ride type</em></div>
+        <div class="price-sub">One-time flat fee · 12 months of updates included</div>
+        <a href="#contact" class="btn btn-primary btn-lg">Get Started</a>
+      </div>
+      <div class="price-right">
+        <ul class="price-includes">
+          <li>All nine ASTM-mapped sections authored from your OEM documentation</li>
+          <li>Formatted and delivered under your letterhead</li>
+          <li>Editable source file + locked PDF both provided</li>
+          <li>One revision round included</li>
+          <li>12 months of content updates at no additional charge</li>
+          <li>Serves directly as CRC course source document if enrolled</li>
+          <li>Ready for inclusion in ride delivery package</li>
+        </ul>
+        <div class="callout navy" style="margin:0">
+          <div class="callout-label">CRC Program Discount</div>
+          <p>OEM SOP Creation is included at no additional charge when bundled with a new CRC program build for the same ride type. The SOP build is part of the course development process — you don't pay for it twice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div class="cta-eyebrow">Get Started</div>
+    <h2>Ready to Give Your Ride the Documentation It Deserves?</h2>
+    <p>Send us what you have — OEM manual, engineering drawings, whatever exists. We'll scope the build and get you a delivery timeline within 48 hours.</p>
+    <div class="cta-btns">
+      <a href="mailto:info@amusementstandards.com" class="btn btn-primary btn-lg">Email Us Directly</a>
+      <a href="manufacturer-services.html" class="btn btn-ghost btn-lg">View Full Manufacturer Program</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">amusement standards.</div>
+        <p class="footer-brand-desc">Expert safety consulting, risk intelligence, and certification infrastructure for the amusement and attractions industry.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="services/training-programs.html">Training Programs</a></li>
+          <li><a href="services/operational-standards.html">Operational Standards</a></li>
+          <li><a href="services/compliance-regulatory-support.html">Compliance &amp; Regulatory</a></li>
+          <li><a href="services/insurance-risk-reduction.html">Insurance &amp; Risk</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Manufacturer Programs</div>
+        <ul class="footer-links">
+          <li><a href="manufacturer-services.html">Program Overview</a></li>
+          <li><a href="oem-sop-creation.html">OEM SOP Creation</a></li>
+          <li><a href="pre-launch-intensive.html">Pre-Launch Intensive</a></li>
+          <li><a href="data-analytics.html">Data Intelligence Pro</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links">
+          <li><a href="mailto:info@amusementstandards.com">info@amusementstandards.com</a></li>
+          <li><a href="https://www.linkedin.com/company/amusement-standards">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Amusement Standards. All rights reserved.</span>
+      <span>amusementstandards.com</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
