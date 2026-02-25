@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RMC / Larson Pilot Program | Amusement Standards</title>
+<meta name="description" content="A 90-day pilot program building ride-specific operator certification for two Larson rides. SCORM delivery, free Data Intelligence Pro analysis included.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D2137;
+  --primary: #0052CC;
+  --primary-dark: #003D99;
+  --primary-light: #E8F0FC;
+  --teal: #0891B2;
+  --teal-light: #E8F6FB;
+  --amber: #B45309;
+  --amber-light: #FEF9EE;
+  --orange: #FF6B35;
+  --orange-dark: #E55A2B;
+  --success: #00875A;
+  --purp: #6D28D9;
+  --purp-light: #EDE9FE;
+  --bg: #F7F9FC;
+  --white: #FFFFFF;
+  --text: #172B4D;
+  --text-2: #5E6C84;
+  --text-3: #8993A4;
+  --border: #DFE1E6;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'Space Mono', monospace;
+  --r: 10px;
+  --r-sm: 6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); line-height: 1.6; background: var(--white); -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; }
+
+/* HEADER */
+.header { position: sticky; top: 0; z-index: 500; background: rgba(255,255,255,.96); border-bottom: 1px solid var(--border); backdrop-filter: blur(12px); }
+.header-inner { max-width: 1100px; margin: 0 auto; padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--primary); letter-spacing: -.5px; }
+.header-right { display: flex; align-items: center; gap: 20px; }
+.header-label { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); }
+.btn { display: inline-block; font-family: var(--font); font-weight: 600; font-size: 14px; padding: 10px 22px; border-radius: var(--r-sm); transition: all .2s; border: none; cursor: pointer; white-space: nowrap; }
+.btn-orange { background: var(--orange); color: #fff; }
+.btn-orange:hover { background: var(--orange-dark); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(255,107,53,.3); }
+.btn-ghost { background: rgba(255,255,255,.1); color: #fff; border: 1px solid rgba(255,255,255,.25); }
+.btn-ghost:hover { background: rgba(255,255,255,.18); }
+.btn-outline { background: transparent; color: var(--primary); border: 1.5px solid var(--primary); }
+.btn-outline:hover { background: var(--primary); color: #fff; }
+.btn-lg { padding: 14px 32px; font-size: 15px; }
+
+/* HERO */
+.hero { background: var(--navy); color: #fff; padding: 72px 40px 0; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 20%, rgba(255,107,53,.12) 0%, transparent 55%), radial-gradient(ellipse at 10% 90%, rgba(8,145,178,.1) 0%, transparent 50%); }
+.hero::after { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h80v80H0z' fill='none'/%3E%3Ccircle cx='0' cy='0' r='1' fill='white' opacity='0.04'/%3E%3C/svg%3E") repeat; background-size: 80px 80px; }
+.hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-tag { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); margin-bottom: 24px; }
+.hero-tag::before { content: ''; display: block; width: 20px; height: 2px; background: var(--orange); }
+.hero h1 { font-size: clamp(34px, 4.5vw, 56px); font-weight: 700; line-height: 1.08; letter-spacing: -1.2px; margin-bottom: 20px; max-width: 780px; }
+.hero h1 span { color: rgba(255,255,255,.35); }
+.hero-sub { font-size: 17px; color: rgba(255,255,255,.65); line-height: 1.8; font-weight: 300; max-width: 580px; margin-bottom: 40px; }
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 64px; }
+
+/* RIDE STRIP */
+.ride-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1); border-radius: var(--r); overflow: hidden; }
+.ride-item { padding: 24px 28px; background: rgba(255,255,255,.04); backdrop-filter: blur(4px); display: flex; align-items: center; gap: 16px; }
+.ride-emoji { font-size: 32px; flex-shrink: 0; }
+.ride-name { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+.ride-loc { font-size: 13px; color: rgba(255,255,255,.45); font-family: var(--mono); }
+.ride-badge { margin-left: auto; font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; background: var(--teal); color: #fff; padding: 4px 10px; border-radius: 4px; white-space: nowrap; }
+
+/* TIMELINE SECTION */
+.timeline-section { background: var(--navy); padding: 0 40px 80px; }
+.timeline-inner { max-width: 1100px; margin: 0 auto; }
+.tl-label { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 28px; padding-top: 48px; border-top: 1px solid rgba(255,255,255,.08); }
+.tl-track { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+.tl-step { position: relative; }
+.tl-step-inner { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: var(--r-sm); padding: 16px 14px; height: 100%; }
+.tl-step.highlight .tl-step-inner { background: rgba(255,107,53,.12); border-color: rgba(255,107,53,.3); }
+.tl-step.data .tl-step-inner { background: rgba(8,145,178,.1); border-color: rgba(8,145,178,.25); }
+.tl-step.review .tl-step-inner { background: rgba(0,82,204,.15); border-color: rgba(0,82,204,.35); }
+.tl-marker { font-family: var(--mono); font-size: 10px; font-weight: 700; color: rgba(255,255,255,.35); margin-bottom: 8px; }
+.tl-step.highlight .tl-marker { color: var(--orange); }
+.tl-step.data .tl-marker { color: var(--teal); }
+.tl-step.review .tl-marker { color: #60A5FA; }
+.tl-text { font-size: 12px; color: rgba(255,255,255,.55); line-height: 1.5; }
+.tl-step.highlight .tl-text, .tl-step.data .tl-text, .tl-step.review .tl-text { color: rgba(255,255,255,.75); }
+
+/* SHARED SECTION */
+.section { padding: 80px 40px; }
+.section-alt { background: var(--bg); }
+.container { max-width: 1100px; margin: 0 auto; }
+.eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--primary); margin-bottom: 12px; }
+.section-title { font-size: clamp(24px, 3vw, 36px); font-weight: 700; letter-spacing: -.5px; line-height: 1.15; margin-bottom: 12px; }
+.section-sub { font-size: 15px; color: var(--text-2); line-height: 1.75; font-weight: 300; max-width: 580px; }
+.section-head { margin-bottom: 48px; }
+
+/* WHAT YOU GET */
+.get-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.get-card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--r); padding: 28px 26px; }
+.get-card.featured { border-color: var(--primary); }
+.get-card.amber { border-color: var(--amber); }
+.get-icon { font-size: 26px; margin-bottom: 12px; }
+.get-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.get-desc { font-size: 14px; color: var(--text-2); line-height: 1.7; font-weight: 300; }
+.get-tag { display: inline-block; font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 4px; margin-top: 12px; }
+.get-tag.free { background: var(--amber-light); color: var(--amber); }
+.get-tag.included { background: var(--teal-light); color: var(--teal); }
+.get-tag.scorm { background: var(--purp-light); color: var(--purp); }
+
+/* THREE COLUMNS */
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.info-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r); padding: 24px 22px; }
+.info-card-label { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; }
+.info-card-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.info-card-body { font-size: 13px; color: var(--text-2); line-height: 1.65; font-weight: 300; }
+
+/* PRICING */
+.pricing-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+.price-main { background: var(--navy); border-radius: var(--r); padding: 40px; color: #fff; position: relative; overflow: hidden; }
+.price-main::before { content: ''; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,107,53,.15) 0%, transparent 65%); }
+.price-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
+.price-name { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+.price-desc { font-size: 14px; color: rgba(255,255,255,.5); margin-bottom: 28px; font-weight: 300; line-height: 1.6; }
+.price-num { font-family: var(--mono); font-size: 52px; font-weight: 700; color: #fff; line-height: 1; margin-bottom: 4px; }
+.price-sub { font-size: 13px; color: rgba(255,255,255,.4); margin-bottom: 32px; }
+.price-rows { display: flex; flex-direction: column; gap: 0; border-top: 1px solid rgba(255,255,255,.1); }
+.price-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.07); gap: 16px; }
+.price-row-label { font-size: 13px; color: rgba(255,255,255,.5); }
+.price-row-val { font-family: var(--mono); font-size: 13px; font-weight: 700; color: #fff; white-space: nowrap; }
+.price-row-val.free { color: var(--orange); }
+.price-row-val.cost { color: rgba(255,255,255,.4); }
+.price-side { display: flex; flex-direction: column; gap: 16px; }
+.path-card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--r); padding: 24px 22px; }
+.path-card.featured { border-color: var(--teal); }
+.path-num { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 10px; }
+.path-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.path-desc { font-size: 13px; color: var(--text-2); line-height: 1.6; font-weight: 300; }
+
+/* CALLOUT */
+.callout { border-radius: var(--r); padding: 22px 26px; margin-top: 16px; }
+.callout.teal { background: var(--teal-light); border-left: 4px solid var(--teal); }
+.callout.amber { background: var(--amber-light); border-left: 4px solid var(--amber); }
+.callout.navy { background: rgba(13,33,55,.05); border-left: 4px solid var(--navy); }
+.callout-label { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; }
+.callout p { font-size: 14px; color: var(--text); line-height: 1.7; }
+
+/* CTA */
+.cta { background: linear-gradient(135deg, var(--navy) 0%, var(--primary) 100%); padding: 80px 40px; text-align: center; position: relative; overflow: hidden; }
+.cta::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='white' opacity='0.05'/%3E%3C/svg%3E") repeat; }
+.cta-inner { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+.cta-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
+.cta h2 { font-size: clamp(24px, 3.5vw, 38px); font-weight: 700; color: #fff; letter-spacing: -.5px; line-height: 1.15; margin-bottom: 14px; }
+.cta p { font-size: 16px; color: rgba(255,255,255,.6); margin-bottom: 36px; font-weight: 300; line-height: 1.75; }
+.cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* FOOTER */
+.footer { background: #0d1829; padding: 40px; }
+.footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+.footer-brand { font-family: var(--mono); font-size: 14px; font-weight: 700; color: #fff; }
+.footer-links { display: flex; gap: 24px; list-style: none; }
+.footer-links a { font-size: 13px; color: rgba(255,255,255,.35); transition: color .2s; }
+.footer-links a:hover { color: #fff; }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,.18); }
+
+@media (max-width: 900px) {
+  .tl-track { grid-template-columns: repeat(4, 1fr); }
+  .get-grid, .pricing-wrap { grid-template-columns: 1fr; }
+  .three-col { grid-template-columns: 1fr; }
+  .ride-strip { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .header-inner, .section, .hero, .timeline-section, .cta, .footer { padding-left: 20px; padding-right: 20px; }
+  .tl-track { grid-template-columns: repeat(2, 1fr); }
+  .hero { padding-top: 52px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo">amusement standards.</a>
+    <div class="header-right">
+      <span class="header-label">Prepared for RMC / Larson International</span>
+      <a href="#contact" class="btn btn-orange">Schedule a Call</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">90-Day Pilot Program</div>
+    <h1>Ride-Specific Operator Certification <span>for Your Equipment.</span> Built in 30 Days.</h1>
+    <p class="hero-sub">A transactional pilot — two Larson rides, two SCORM courses, 90 days. Parks certify their operators. Amusement Standards runs a full data intelligence analysis on the results at no additional charge. One call to decide whether to scale.</p>
+    <div class="hero-ctas">
+      <a href="#what-you-get" class="btn btn-orange btn-lg">See What's Included</a>
+      <a href="#pricing" class="btn btn-ghost btn-lg">View Pricing</a>
+    </div>
+
+    <!-- RIDE STRIP -->
+    <div class="ride-strip">
+      <div class="ride-item">
+        <div class="ride-emoji">🛸</div>
+        <div>
+          <div class="ride-name">Flying Scooter</div>
+          <div class="ride-loc">Parc Saint Paul · France · Larson International</div>
+        </div>
+        <div class="ride-badge">Ride 01</div>
+      </div>
+      <div class="ride-item">
+        <div class="ride-emoji">🔄</div>
+        <div>
+          <div class="ride-name">Larson Loop</div>
+          <div class="ride-loc">Larson International</div>
+        </div>
+        <div class="ride-badge">Ride 02</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-section">
+  <div class="timeline-inner">
+    <div class="tl-label">90-Day Pilot Timeline</div>
+    <div class="tl-track">
+      <div class="tl-step highlight">
+        <div class="tl-step-inner">
+          <div class="tl-marker">Pre</div>
+          <div class="tl-text">AS site visit — nearest Larson Loop installation. Live observation, operator interview, video documentation.</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-step-inner">
+          <div class="tl-marker">Wk 1</div>
+          <div class="tl-text">OEM documentation review. Course outline. Scope sign-off.</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-step-inner">
+          <div class="tl-marker">Wk 2</div>
+          <div class="tl-text">Full CRC course build for both rides.</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-step-inner">
+          <div class="tl-marker">Wk 3</div>
+          <div class="tl-text">Review, revisions, RMC / Larson branding applied.</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-step-inner">
+          <div class="tl-marker">Wk 4</div>
+          <div class="tl-text">SCORM packages delivered. Parks deploy in their existing LMS.</div>
+        </div>
+      </div>
+      <div class="tl-step data">
+        <div class="tl-step-inner">
+          <div class="tl-marker">Day 60</div>
+          <div class="tl-text">Pilot data closes. Completion rates, quiz scores, session time, operator counts collected.</div>
+        </div>
+      </div>
+      <div class="tl-step data">
+        <div class="tl-step-inner">
+          <div class="tl-marker">60–90</div>
+          <div class="tl-text">AS runs full Data Intelligence Pro analysis. Incident heatmap, performance patterns, risk brief. No charge.</div>
+        </div>
+      </div>
+      <div class="tl-step review">
+        <div class="tl-step-inner">
+          <div class="tl-marker">Day 90</div>
+          <div class="tl-text">Review call. Findings presented. Scale decision made.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU GET -->
+<section class="section section-alt" id="what-you-get">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">What's Included</div>
+      <h2 class="section-title">Two Courses. One Analysis. No Platform Required.</h2>
+      <p class="section-sub">Everything needed to certify operators on both pilot rides and get actionable data from the first 60 days — delivered against your OEM documentation, under your brand.</p>
+    </div>
+    <div class="get-grid">
+      <div class="get-card featured">
+        <div class="get-icon">🎯</div>
+        <div class="get-title">Certified Ride Controller Course — Flying Scooter</div>
+        <div class="get-desc">Ride-specific CRC course built from Larson International OEM documentation. Full ride systems, ASTM F770-18 §7.1 / §8.1 / §8.2 / §8.3, LOTO, emergency procedures, incident command. 20-question final exam, 80% pass threshold. Unique cert IDs, 12-month expiry, branded under RMC / Larson.</div>
+        <span class="get-tag scorm">SCORM 1.2 Package</span>
+      </div>
+      <div class="get-card featured">
+        <div class="get-icon">🎯</div>
+        <div class="get-title">Certified Ride Controller Course — Larson Loop</div>
+        <div class="get-desc">Same structure, ride-specific content. Built against Larson Loop OEM documentation and operational profile. Every e-stop location, load/unload sequence, and emergency procedure specific to this ride. Same certification standard, different ride.</div>
+        <span class="get-tag scorm">SCORM 1.2 Package</span>
+      </div>
+      <div class="get-card amber">
+        <div class="get-icon">📊</div>
+        <div class="get-title">Data Intelligence Pro Analysis — Included at No Charge</div>
+        <div class="get-desc">At Day 60, AS runs a full Data Intelligence Pro analysis across both pilot rides — completion rate patterns, quiz score distribution, operator cohort sizing, and incident heatmap against your install base. Delivered as a branded PDF report before the Day 90 review call. This is the data that determines whether and how to scale.</div>
+        <span class="get-tag free">Included Free</span>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">🏷️</div>
+        <div class="get-title">White-Labeled Under RMC / Larson Brand</div>
+        <div class="get-desc">Your logo on every course screen, every certificate, every report. Parks see your certification program — not Amusement Standards. The credential says what you want it to say. Amusement Standards operates in the background under NDA.</div>
+        <span class="get-tag included">Your Brand</span>
+      </div>
+    </div>
+
+    <div class="callout teal" style="margin-top:8px;">
+      <div class="callout-label">No New Platform Required</div>
+      <p>SCORM 1.2 packages drop into any LMS RMC, Larson, or the park already uses. If neither side has an LMS, AS can host temporarily for the pilot window at no additional charge. No platform commitment required to run the pilot.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THE CRC CREDENTIAL -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">The Credential</div>
+      <h2 class="section-title">What a Certified Ride Controller Actually Is</h2>
+      <p class="section-sub">One person per installation, per site. The manufacturer's designated qualified person of record — accountable before the first guest boards every operating day.</p>
+    </div>
+    <div class="three-col">
+      <div class="info-card">
+        <div class="info-card-label">Who Gets Certified</div>
+        <div class="info-card-title">The Site-Level Responsible Person</div>
+        <div class="info-card-body">The CRC is the person who owns daily ride oversight — pre-opening inspection sign-off, restraint verification accountability, and the first decision-maker in any emergency. One per installation per site. Not every operator — the accountable person.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">What the Course Covers</div>
+        <div class="info-card-title">Ride-Specific + ASTM-Mapped</div>
+        <div class="info-card-body">Full ride systems · Pre-opening inspection (§7.1) · Operator qualification (§8.1) · Daily duties (§8.2) · Field demonstration requirements (§8.3) · LOTO per OSHA 1910.147 · Emergency procedures · Incident command structure. Every module tied to the specific ride.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">What It Does For RMC / Larson</div>
+        <div class="info-card-title">A Documented Standard at Every Installation</div>
+        <div class="info-card-body">Right now, every park running your equipment defines "qualified operator" on their own. The CRC creates one manufacturer-authored standard across your fleet. If an incident happens, there's a paper trail from the certified operator back to your OEM documentation — not the park's binder.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section section-alt" id="pricing">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Pilot Investment</div>
+      <h2 class="section-title">Flat Fee. No Surprises. Free Data Built In.</h2>
+      <p class="section-sub">The pilot is designed to prove value before any larger commitment. One invoice, two courses, 90-day window, full data analysis included.</p>
+    </div>
+    <div class="pricing-wrap">
+      <div class="price-main">
+        <div class="price-eyebrow">Pilot Program — 2 Rides</div>
+        <div class="price-name">CRC Course Build · Flying Scooter + Larson Loop</div>
+        <div class="price-desc">SCORM packages delivered in 30 days. DIP analysis at Day 60–90 at no charge. Day 90 review call with full findings.</div>
+        <div class="price-num">$8,000</div>
+        <div class="price-sub">One-time flat fee · $4,000 per ride · No platform fee during pilot</div>
+        <div class="price-rows">
+          <div class="price-row">
+            <span class="price-row-label">Flying Scooter CRC course build</span>
+            <span class="price-row-val">$4,000</span>
+          </div>
+          <div class="price-row">
+            <span class="price-row-label">Larson Loop CRC course build</span>
+            <span class="price-row-val">$4,000</span>
+          </div>
+          <div class="price-row">
+            <span class="price-row-label">Site visit — nearest Larson Loop installation</span>
+            <span class="price-row-val cost">Travel at cost</span>
+          </div>
+          <div class="price-row">
+            <span class="price-row-label">Data Intelligence Pro analysis (Day 60–90)</span>
+            <span class="price-row-val free">Included</span>
+          </div>
+          <div class="price-row">
+            <span class="price-row-label">Day 90 review call — full findings</span>
+            <span class="price-row-val free">Included</span>
+          </div>
+        </div>
+      </div>
+      <div class="price-side">
+        <div class="path-card">
+          <div class="path-num">What you provide</div>
+          <div class="path-title">OEM Documentation + Brand Assets</div>
+          <div class="path-desc">Ride manual, technical spec, or installation documentation for both rides. Logo and brand colors. Amusement Standards builds everything else — course content, exam, certificates, report.</div>
+        </div>
+        <div class="path-card featured">
+          <div class="path-num">After the pilot — if it works</div>
+          <div class="path-title">Three Paths Forward</div>
+          <div class="path-desc">Scale the course catalog to additional ride types at $4,000 first type / $750 per repeat unit. Upgrade to the full AS-hosted CRC program with fleet-wide tracking and quarterly reports. Add Data Intelligence Pro on a quarterly basis at $6,000/quarter. All decisions made at Day 90 — no commitment before then.</div>
+        </div>
+        <div class="callout amber" style="margin-top:0;">
+          <div class="callout-label">Why Free DIP</div>
+          <p>The data analysis is free because it's the most compelling thing AS can show you. Sixty days of real completion data, quiz patterns, and incident overlay across two ride types — that's the argument for everything that comes after. We'd rather show you than tell you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="cta-inner">
+    <div class="cta-tag">Ready to Start</div>
+    <h2>Two Rides. Thirty Days to Build. Ninety Days to Know.</h2>
+    <p>Send us your OEM documentation for both rides and your brand assets. We scope the build and confirm delivery timeline within 48 hours. No obligation until you sign off on the outline.</p>
+    <div class="cta-btns">
+      <a href="mailto:info@amusementstandards.com" class="btn btn-orange btn-lg">Email Adam Directly</a>
+      <a href="manufacturer-services.html" class="btn btn-outline btn-lg" style="color:#fff;border-color:rgba(255,255,255,.4);">Full Manufacturer Program</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">amusement standards.</div>
+    <ul class="footer-links">
+      <li><a href="manufacturer-services.html">Manufacturer Programs</a></li>
+      <li><a href="data-analytics.html">Data Intelligence Pro</a></li>
+      <li><a href="mailto:info@amusementstandards.com">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 Amusement Standards. Confidential.</div>
+  </div>
+</footer>
+
+</body>
+</html>
