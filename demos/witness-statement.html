@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Witness Statement System — Amusement Standards</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F172A;--slate:#334155;--muted:#94A3B8;--border:#E2E8F0;
+  --bg:#F1F5F9;--card:#FFFFFF;
+  --indigo:#4F46E5;--indigo-dark:#3730A3;--indigo-light:#EEF2FF;
+  --amber:#D97706;--amber-light:#FEF3C7;
+  --red:#DC2626;--red-light:#FEE2E2;
+  --green:#059669;--green-light:#D1FAE5;
+  --blue:#2563EB;--blue-light:#DBEAFE;
+  --radius:10px;
+  --shadow:0 1px 3px rgba(15,23,42,.06),0 6px 16px rgba(15,23,42,.04);
+  --shadow-lg:0 4px 16px rgba(15,23,42,.1),0 12px 40px rgba(15,23,42,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh}
+
+/* NAV */
+.tab-nav{display:flex;background:var(--navy);position:sticky;top:0;z-index:100;overflow-x:auto}
+.tab-nav button{flex:1;min-width:110px;padding:15px 10px;background:none;border:none;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap}
+.tab-nav button.active{color:var(--indigo);border-bottom-color:var(--indigo);background:rgba(79,70,229,.06)}
+.tab-nav button:hover{color:#fff}
+
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* ═══ MOBILE FORM ═══ */
+.phone-frame{max-width:390px;margin:32px auto;background:#000;border-radius:40px;padding:12px;box-shadow:var(--shadow-lg)}
+.phone-screen{background:var(--bg);border-radius:30px;overflow:hidden;min-height:750px;position:relative}
+
+.form-header{background:linear-gradient(135deg,var(--indigo-dark) 0%,var(--indigo) 100%);padding:48px 24px 24px;color:#fff;position:relative;overflow:hidden}
+.form-header::after{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.05)}
+.form-header .badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#C7D2FE;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:16px;margin-bottom:10px}
+.form-header h1{font-size:21px;font-weight:700;margin-bottom:4px}
+.form-header p{font-size:13px;color:#A5B4FC}
+.form-header .loc-tag{margin-top:12px;display:inline-flex;align-items:center;gap:6px;background:rgba(5,150,105,.12);border:1px solid rgba(5,150,105,.25);color:#6EE7B7;font-size:12px;font-weight:500;padding:6px 12px;border-radius:8px}
+
+.form-body{padding:20px 24px 32px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);margin-bottom:5px}
+.field .required{color:var(--red);margin-left:2px}
+.field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);background:var(--card);transition:border-color .15s;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--indigo);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
+.field textarea{resize:vertical;min-height:100px}
+.field select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.auto-filled{background:var(--green-light)!important;border-color:var(--green)!important;color:#065F46!important;font-weight:500}
+.field-hint{font-size:11px;color:var(--muted);margin-top:3px;font-style:italic}
+
+/* Photo upload */
+.photo-section{margin-bottom:16px}
+.photo-section label{display:block;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);margin-bottom:5px}
+.photo-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.photo-slot{aspect-ratio:1;border:2px dashed var(--border);border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;background:var(--card);position:relative;overflow:hidden}
+.photo-slot:hover{border-color:var(--indigo);background:var(--indigo-light)}
+.photo-slot .icon{font-size:24px;margin-bottom:2px}
+.photo-slot .txt{font-size:10px;color:var(--muted)}
+.photo-slot.has-photo{border-style:solid;border-color:var(--green)}
+.photo-slot.has-photo .preview{position:absolute;inset:0;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:28px}
+.photo-slot.has-photo .remove{position:absolute;top:4px;right:4px;width:20px;height:20px;background:var(--red);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* Incident type selector */
+.type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.type-btn{padding:12px 10px;border:1.5px solid var(--border);border-radius:var(--radius);background:var(--card);cursor:pointer;text-align:center;transition:all .15s;font-family:'DM Sans',sans-serif}
+.type-btn .icon{font-size:20px;margin-bottom:3px}
+.type-btn .text{font-size:11px;font-weight:600;color:var(--slate)}
+.type-btn:hover{border-color:var(--indigo)}
+.type-btn.selected{border-color:var(--indigo);background:var(--indigo-light)}
+.type-btn.selected .text{color:var(--indigo)}
+
+/* Consent */
+.consent-box{display:flex;align-items:flex-start;gap:10px;padding:14px;background:var(--amber-light);border:1px solid rgba(217,119,6,.2);border-radius:var(--radius);margin-bottom:16px}
+.consent-check{width:22px;height:22px;border:2px solid var(--amber);border-radius:5px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px}
+.consent-check.checked{background:var(--green);border-color:var(--green);color:#fff}
+.consent-check.checked::after{content:'✓';font-size:13px;font-weight:700}
+.consent-text{font-size:12px;color:var(--slate);line-height:1.4}
+.consent-text strong{color:var(--navy)}
+
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--indigo) 0%,var(--indigo-dark) 100%);border:none;border-radius:12px;color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:4px;transition:transform .1s,box-shadow .15s;box-shadow:0 4px 12px rgba(79,70,229,.3)}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(79,70,229,.4)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Success overlay */
+.success-overlay{display:none;position:absolute;inset:0;background:rgba(15,23,42,.92);border-radius:30px;z-index:10;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:#fff;animation:fadeIn .3s}
+.success-overlay.show{display:flex}
+.success-overlay .check{font-size:64px;margin-bottom:16px}
+.success-overlay h2{font-size:22px;margin-bottom:8px}
+.success-overlay .ref{font-family:'IBM Plex Mono',monospace;font-size:14px;color:#A5B4FC;margin-bottom:8px}
+.success-overlay p{font-size:13px;color:var(--muted);line-height:1.5}
+.success-overlay .dismiss{margin-top:20px;padding:10px 32px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:#fff;font-family:'DM Sans',sans-serif;cursor:pointer}
+
+/* ═══ QR POSTER ═══ */
+.poster-container{max-width:600px;margin:32px auto;padding:0 16px}
+.poster{background:#fff;border-radius:4px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--border)}
+.poster-top{background:linear-gradient(135deg,var(--indigo-dark) 0%,var(--indigo) 100%);padding:40px 36px 32px;text-align:center;color:#fff;position:relative;overflow:hidden}
+.poster-top::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:rgba(255,255,255,.05);border-radius:50%}
+.poster-top .stripe{height:6px;background:repeating-linear-gradient(45deg,var(--indigo-dark),var(--indigo-dark) 12px,rgba(255,255,255,.15) 12px,rgba(255,255,255,.15) 24px);position:absolute;bottom:0;left:0;right:0}
+.poster-top .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#A5B4FC;margin-bottom:12px}
+.poster-top h1{font-size:30px;font-weight:700;line-height:1.2;margin-bottom:8px}
+.poster-top .sub{font-size:14px;color:#C7D2FE}
+
+.poster-mid{padding:36px;text-align:center;background:#FAFBFC;border-bottom:1px solid var(--border)}
+.qr-box{width:200px;height:200px;margin:0 auto 20px;background:#fff;border:2px solid var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative}
+.qr-grid{display:grid;grid-template-columns:repeat(11,1fr);gap:2px;width:150px;height:150px}
+.qr-center{position:absolute;background:var(--indigo);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:700;padding:4px 6px;border-radius:4px;letter-spacing:.5px}
+
+.poster-steps{display:flex;justify-content:center;gap:28px;margin-top:8px}
+.poster-step{text-align:center}
+.poster-step .num{width:36px;height:36px;background:var(--indigo);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;margin:0 auto 6px}
+.poster-step .label{font-size:13px;font-weight:600;color:var(--navy)}
+.poster-step .detail{font-size:11px;color:var(--muted);margin-top:1px}
+
+.poster-bottom{padding:24px 36px;background:#fff;text-align:center}
+.poster-notice{display:inline-flex;align-items:center;gap:8px;background:var(--indigo-light);border:1px solid rgba(79,70,229,.15);color:var(--indigo-dark);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;margin-bottom:12px}
+.poster-footer{font-size:11px;color:var(--muted);line-height:1.5}
+.poster-logo{margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--navy);font-weight:700}
+
+.poster-actions{text-align:center;margin-top:20px}
+.poster-actions button{padding:10px 24px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:14px}
+
+/* ═══ WORKFLOW ═══ */
+.wf-container{max-width:700px;margin:32px auto;padding:0 20px}
+.wf-header{text-align:center;margin-bottom:32px}
+.wf-header h2{font-size:24px;font-weight:700}
+.wf-header p{color:var(--muted);margin-top:4px}
+
+.wf-step{display:flex;gap:20px;position:relative}
+.wf-step:not(:last-child){padding-bottom:32px}
+.wf-timeline{display:flex;flex-direction:column;align-items:center;width:48px;flex-shrink:0}
+.wf-dot{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:2px solid}
+.wf-dot.scan{background:var(--indigo-light);border-color:var(--indigo)}
+.wf-dot.fill{background:var(--blue-light);border-color:var(--blue)}
+.wf-dot.photo{background:var(--amber-light);border-color:var(--amber)}
+.wf-dot.consent{background:var(--green-light);border-color:var(--green)}
+.wf-dot.submit{background:var(--indigo-light);border-color:var(--indigo)}
+.wf-dot.notify{background:#F3E8FF;border-color:#8B5CF6}
+.wf-dot.store{background:var(--blue-light);border-color:#0EA5E9}
+.wf-dot.review{background:var(--green-light);border-color:var(--green)}
+
+.wf-line{width:2px;flex:1;background:var(--border);margin:4px 0}
+.wf-card{flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow)}
+.wf-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.wf-card p{font-size:13px;color:var(--slate);line-height:1.5}
+.wf-card .tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;margin-top:8px;letter-spacing:.5px}
+.tag.auto{background:var(--green-light);color:#065F46}
+.tag.witness{background:var(--indigo-light);color:var(--indigo-dark)}
+.tag.legal{background:var(--amber-light);color:#92400E}
+
+/* ═══ DASHBOARD ═══ */
+.dash-container{max-width:900px;margin:24px auto;padding:0 20px}
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.dash-header h2{font-size:22px;font-weight:700}
+.dash-header .period{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);background:var(--card);padding:8px 14px;border-radius:8px;border:1px solid var(--border)}
+
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.stat-card .label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.stat-card .value{font-size:30px;font-weight:700;color:var(--navy);line-height:1}
+.stat-card .change{font-size:12px;margin-top:4px;font-weight:600}
+.stat-card .change.up{color:var(--green)}
+
+.dash-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.dash-card h3{font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);margin-bottom:16px}
+
+.stmt-table{width:100%;font-size:12px;border-collapse:collapse}
+.stmt-table th{text-align:left;padding:8px 6px;font-weight:700;color:var(--muted);font-size:10px;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.stmt-table td{padding:10px 6px;border-bottom:1px solid var(--bg);color:var(--slate)}
+.status-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.3px}
+.status-pill.new{background:var(--indigo-light);color:var(--indigo)}
+.status-pill.reviewed{background:var(--green-light);color:var(--green)}
+.status-pill.pending{background:var(--amber-light);color:var(--amber)}
+.status-pill.flagged{background:var(--red-light);color:var(--red)}
+
+.photo-count{display:inline-flex;align-items:center;gap:3px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--slate)}
+
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:640px){.dash-grid{grid-template-columns:1fr}}
+
+.bar-chart .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-row .bar-label{width:100px;font-size:12px;font-weight:500;color:var(--slate);text-align:right;flex-shrink:0}
+.bar-row .bar-track{flex:1;height:24px;background:var(--bg);border-radius:6px;overflow:hidden}
+.bar-row .bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff}
+
+/* ═══ POSTER TAB PRINT ═══ */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@media(max-width:480px){
+  .poster-steps{flex-direction:column;gap:14px}
+  .poster-top h1{font-size:22px}
+  .type-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="tab-nav">
+  <button class="active" onclick="showTab('form')">MOBILE FORM</button>
+  <button onclick="showTab('poster')">QR POSTER</button>
+  <button onclick="showTab('workflow')">WORKFLOW</button>
+  <button onclick="showTab('dashboard')">DASHBOARD</button>
+</nav>
+
+<!-- ═══════ TAB 1: MOBILE FORM ═══════ -->
+<div id="tab-form" class="tab-content active">
+  <div class="phone-frame">
+    <div class="phone-screen">
+      <div class="form-header">
+        <div class="badge">📝 Witness Statement</div>
+        <h1>Witness Statement Form</h1>
+        <p>Your account helps us understand what happened and keep everyone safe.</p>
+        <div class="loc-tag">📍 Auto-detected: Main Coaster — Platform 2</div>
+      </div>
+      <div class="form-body">
+
+        <!-- Auto-filled fields -->
+        <div class="field">
+          <label>Date & Time <span class="required">*</span></label>
+          <input type="text" class="auto-filled" id="dt-field" readonly>
+        </div>
+        <div class="field">
+          <label>Incident Location <span class="required">*</span></label>
+          <input type="text" class="auto-filled" value="Main Coaster — Platform 2, Zone A" readonly>
+        </div>
+
+        <!-- Incident Reference -->
+        <div class="field">
+          <label>Incident Reference #</label>
+          <input type="text" placeholder="e.g. INC-2026-0312 (if known)">
+          <div class="field-hint">Leave blank if you don't have a reference number</div>
+        </div>
+
+        <!-- Witness Info -->
+        <div class="field">
+          <label>Your Full Name <span class="required">*</span></label>
+          <input type="text" placeholder="First and last name">
+        </div>
+        <div class="field">
+          <label>Your Role</label>
+          <select>
+            <option value="">Select…</option>
+            <option>Ride Operator</option>
+            <option>Attendant / Spotter</option>
+            <option>Supervisor / Manager</option>
+            <option>Maintenance Staff</option>
+            <option>Guest Services</option>
+            <option>Guest / Visitor</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Contact Phone or Email</label>
+          <input type="text" placeholder="In case we need to follow up">
+        </div>
+
+        <!-- Incident Type -->
+        <div class="field">
+          <label>What Type of Incident? <span class="required">*</span></label>
+          <div class="type-grid">
+            <div class="type-btn" onclick="selectType(this)"><div class="icon">🤕</div><div class="text">Guest Injury</div></div>
+            <div class="type-btn" onclick="selectType(this)"><div class="icon">⚙️</div><div class="text">Equipment Issue</div></div>
+            <div class="type-btn" onclick="selectType(this)"><div class="icon">⚠️</div><div class="text">Near Miss</div></div>
+            <div class="type-btn" onclick="selectType(this)"><div class="icon">👤</div><div class="text">Behavioral</div></div>
+          </div>
+        </div>
+
+        <!-- Statement -->
+        <div class="field">
+          <label>Describe What You Saw <span class="required">*</span></label>
+          <textarea placeholder="In your own words, describe what happened. Include what you were doing at the time, what you saw or heard, and the sequence of events as you remember them."></textarea>
+          <div class="field-hint">Be specific — include positions, directions, and timing if possible</div>
+        </div>
+
+        <!-- Photos -->
+        <div class="photo-section">
+          <label>Photo / Video Evidence</label>
+          <div class="photo-grid">
+            <div class="photo-slot" id="photo-1" onclick="addPhoto(1)">
+              <span class="icon">📷</span><span class="txt">Add photo</span>
+            </div>
+            <div class="photo-slot" id="photo-2" onclick="addPhoto(2)">
+              <span class="icon">📷</span><span class="txt">Add photo</span>
+            </div>
+            <div class="photo-slot" id="photo-3" onclick="addPhoto(3)">
+              <span class="icon">📷</span><span class="txt">Add photo</span>
+            </div>
+          </div>
+          <div class="field-hint" style="margin-top:6px">Photos of the scene, equipment condition, or anything relevant. Max 3 files.</div>
+        </div>
+
+        <!-- Additional -->
+        <div class="field">
+          <label>Were There Other Witnesses?</label>
+          <textarea style="min-height:60px" placeholder="Names or descriptions of anyone else who saw what happened"></textarea>
+        </div>
+
+        <!-- Consent -->
+        <div class="consent-box">
+          <div class="consent-check" id="consent-check" onclick="toggleConsent()"></div>
+          <div class="consent-text">
+            <strong>I confirm this statement is accurate</strong> to the best of my knowledge. I understand it may be used for internal investigation, insurance purposes, or regulatory reporting.
+          </div>
+        </div>
+
+        <button class="submit-btn" id="submit-btn" onclick="submitForm()" disabled>Submit Witness Statement</button>
+      </div>
+
+      <!-- Success -->
+      <div class="success-overlay" id="success-overlay">
+        <div class="check">📋</div>
+        <h2>Statement Submitted</h2>
+        <div class="ref" id="ref-code">WS-2026-0089</div>
+        <p>Your statement has been securely logged. The Safety Lead and incident investigator have been notified. Thank you for helping document this event.</p>
+        <button class="dismiss" onclick="document.getElementById('success-overlay').classList.remove('show')">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ TAB 2: QR POSTER ═══════ -->
+<div id="tab-poster" class="tab-content">
+  <div class="poster-container">
+    <div class="poster">
+      <div class="poster-top">
+        <div class="eyebrow">Incident Documentation</div>
+        <h1>Witnessed an Incident?<br>Scan. Write. Submit.</h1>
+        <div class="sub">Your account is critical — capture it while it's fresh.</div>
+        <div class="stripe"></div>
+      </div>
+      <div class="poster-mid">
+        <div class="qr-box">
+          <div class="qr-grid" id="qr-grid"></div>
+          <div class="qr-center">WS</div>
+        </div>
+        <div class="poster-steps">
+          <div class="poster-step">
+            <div class="num">1</div>
+            <div class="label">Scan</div>
+            <div class="detail">Point your camera</div>
+          </div>
+          <div class="poster-step">
+            <div class="num">2</div>
+            <div class="label">Write</div>
+            <div class="detail">Describe what you saw</div>
+          </div>
+          <div class="poster-step">
+            <div class="num">3</div>
+            <div class="label">Attach</div>
+            <div class="detail">Add photos if you have them</div>
+          </div>
+        </div>
+      </div>
+      <div class="poster-bottom">
+        <div class="poster-notice">🔒 Statements are confidential and stored securely</div>
+        <div class="poster-footer">
+          All submissions are reviewed by the Safety Lead within 24 hours.<br>
+          You may be contacted for follow-up questions.<br>
+          Location: <strong>[STATION NAME]</strong>
+        </div>
+        <div class="poster-logo">AMUSEMENT STANDARDS</div>
+      </div>
+    </div>
+    <div class="poster-actions">
+      <button onclick="alert('In production: generates print-ready PDF with unique QR per location')">⬇ Download Print-Ready PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ TAB 3: WORKFLOW ═══════ -->
+<div id="tab-workflow" class="tab-content">
+  <div class="wf-container">
+    <div class="wf-header">
+      <h2>Witness Statement Workflow</h2>
+      <p>From QR scan to investigation file — fully documented chain of custody</p>
+    </div>
+
+    <div class="wf-step">
+      <div class="wf-timeline"><div class="wf-dot scan">📱</div><div class="wf-line"></div></div>
+      <div class="wf-card">
+        <h3>Witness Scans QR Code</h3>
+        <p>Location-specific QR code opens mobile-optimized statement form. No app needed — works in any smartphone browser. Location and timestamp auto-populate.</p>
+        <span class="tag witness">WITNESS ACTION</span>
+      </div>
+    </div>
+
+    <div class="wf-step">
+      <div class="wf-timeline"><div class="wf-dot fill">✍️</div><div class="wf-line"></div></div>
+      <div class="wf-card">
+        <h3>Statement Written (3–5 min)</h3>
+        <p>Witness provides their name, role, contact info, selects incident type, and writes a free-text account of what they observed. Guided prompts help capture key details.</p>
+        <span class="tag witness">WITNESS ACTION</span>
+      </div>
+    </div>
+
+    <div class="wf-step">
+      <div class="wf-timeline"><div class="wf-dot photo">📸</div><div class="wf-line"></div></div>
+      <div class="wf-card">
+        <h3>Photo Evidence Attached</h3>
+        <p>Witness uploads up to 3 photos directly from their camera or gallery — scene conditions, equipment state, injuries, signage, or anything relevant to the incident.</p>
+        <span class="tag witness">WITNESS ACTION (OPTIONAL)</span>
+      </div>
+    </div>
+
+    <div class="wf-step">
+      <div class="wf-timeline"><div class="wf-dot consent">✅</div><div class="wf-line"></div></div>
+      <div class="wf-card">
+        <h3>Accuracy Confirmation & Consent</h3>
+        <p>Witness confirms statement accuracy and acknowledges it may be used for investigation, insurance, and regulatory purposes. Creates a verifiable attestation record.</p>
+        <span class="tag legal">LEGAL REQUIREMENT</span>
+      </div>
+    </div>
+
+    <div class="wf-step">
+      <div class="wf-timeline"><div class="wf-dot submit">📤</div><div class="wf-line"></div></div>
+      <div class="wf-card">
+        <h3>Submission & Reference Number</h3>
+        <p>Statement submitted with unique reference (WS-2026-0089). Instant confirmation displayed. Timestamped and immutable — cannot be edited after submission.</p>
+        <span class="tag auto">AUTOMATED</span>
+      </div>
+    </div>
+
+    <div class="wf-step">
+      <div class="wf-timeline"><div class="wf-dot notify">🔔</div><div class="wf-line"></div></div>
+      <div class="wf-card">
+        <h3>Safety Lead & Investigator Notified</h3>
+        <p>Automatic notification sent to designated Safety Lead and incident investigator with statement summary. If linked to an existing incident report, auto-appended to the case file.</p>
+        <span class="tag auto">AUTOMATED</span>
+      </div>
+    </div>
+
+    <div class="wf-step">
+      <div class="wf-timeline"><div class="wf-dot store">💾</div><div class="wf-line"></div></div>
+      <div class="wf-card">
+        <h3>Secure Storage & Chain of Custody</h3>
+        <p>Statement, photos, and metadata stored with audit trail. Tamper-proof timestamps for regulatory and litigation defensibility. Accessible only to authorized personnel.</p>
+        <span class="tag legal">COMPLIANCE</span>
+      </div>
+    </div>
+
+    <div class="wf-step">
+      <div class="wf-timeline"><div class="wf-dot review">📊</div></div>
+      <div class="wf-card">
+        <h3>Investigation Integration</h3>
+        <p>Multiple witness statements cross-referenced for consistency. Photos tagged to incident timeline. Feeds into root cause analysis and corrective action tracking in Risk Intelligence Pro.</p>
+        <span class="tag auto">AUTOMATED + REVIEW</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ TAB 4: DASHBOARD ═══════ -->
+<div id="tab-dashboard" class="tab-content">
+  <div class="dash-container">
+    <div class="dash-header">
+      <h2>Witness Statement Tracker</h2>
+      <div class="period">📅 Feb 1 – Feb 26, 2026</div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="label">Statements Collected</div>
+        <div class="value">43</div>
+        <div class="change up">↑ Across 12 incidents</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Avg. per Incident</div>
+        <div class="value">3.6</div>
+        <div class="change up">↑ vs 2.1 last quarter</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">With Photos</div>
+        <div class="value">67%</div>
+        <div class="change up">↑ 22pts since QR launch</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Avg. Response Time</div>
+        <div class="value">18m</div>
+        <div class="change up">↑ vs 4.2 hrs (paper)</div>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <h3>Recent Statements</h3>
+      <div style="overflow-x:auto">
+        <table class="stmt-table">
+          <thead>
+            <tr><th>Ref</th><th>Incident</th><th>Witness</th><th>Role</th><th>Photos</th><th>Status</th><th>Time</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-family:'IBM Plex Mono',monospace;font-size:11px">WS-0089</td>
+              <td>INC-0312</td>
+              <td>J. Martinez</td>
+              <td>Ride Operator</td>
+              <td><span class="photo-count">📷 3</span></td>
+              <td><span class="status-pill new">New</span></td>
+              <td>18 min ago</td>
+            </tr>
+            <tr>
+              <td style="font-family:'IBM Plex Mono',monospace;font-size:11px">WS-0088</td>
+              <td>INC-0312</td>
+              <td>R. Chen</td>
+              <td>Supervisor</td>
+              <td><span class="photo-count">📷 1</span></td>
+              <td><span class="status-pill new">New</span></td>
+              <td>24 min ago</td>
+            </tr>
+            <tr>
+              <td style="font-family:'IBM Plex Mono',monospace;font-size:11px">WS-0087</td>
+              <td>INC-0311</td>
+              <td>K. Thompson</td>
+              <td>Guest</td>
+              <td><span class="photo-count">📷 2</span></td>
+              <td><span class="status-pill reviewed">Reviewed</span></td>
+              <td>3h ago</td>
+            </tr>
+            <tr>
+              <td style="font-family:'IBM Plex Mono',monospace;font-size:11px">WS-0086</td>
+              <td>INC-0311</td>
+              <td>A. Williams</td>
+              <td>Attendant</td>
+              <td><span class="photo-count">—</span></td>
+              <td><span class="status-pill reviewed">Reviewed</span></td>
+              <td>3h ago</td>
+            </tr>
+            <tr>
+              <td style="font-family:'IBM Plex Mono',monospace;font-size:11px">WS-0085</td>
+              <td>INC-0310</td>
+              <td>M. Davis</td>
+              <td>Maintenance</td>
+              <td><span class="photo-count">📷 3</span></td>
+              <td><span class="status-pill flagged">Flagged</span></td>
+              <td>Yesterday</td>
+            </tr>
+            <tr>
+              <td style="font-family:'IBM Plex Mono',monospace;font-size:11px">WS-0084</td>
+              <td>INC-0309</td>
+              <td>S. Patel</td>
+              <td>Guest Services</td>
+              <td><span class="photo-count">📷 1</span></td>
+              <td><span class="status-pill pending">Pending Review</span></td>
+              <td>Yesterday</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-card">
+        <h3>Statements by Witness Role</h3>
+        <div class="bar-chart">
+          <div class="bar-row"><div class="bar-label">Ride Operator</div><div class="bar-track"><div class="bar-fill" style="width:72%;background:var(--indigo)">14</div></div></div>
+          <div class="bar-row"><div class="bar-label">Supervisor</div><div class="bar-track"><div class="bar-fill" style="width:46%;background:#7C3AED">9</div></div></div>
+          <div class="bar-row"><div class="bar-label">Attendant</div><div class="bar-track"><div class="bar-fill" style="width:36%;background:#2563EB">7</div></div></div>
+          <div class="bar-row"><div class="bar-label">Guest</div><div class="bar-track"><div class="bar-fill" style="width:31%;background:#0EA5E9">6</div></div></div>
+          <div class="bar-row"><div class="bar-label">Maintenance</div><div class="bar-track"><div class="bar-fill" style="width:21%;background:var(--green)">4</div></div></div>
+          <div class="bar-row"><div class="bar-label">Guest Svcs</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--amber)">3</div></div></div>
+        </div>
+      </div>
+      <div class="dash-card">
+        <h3>Statements by Incident Type</h3>
+        <div class="bar-chart">
+          <div class="bar-row"><div class="bar-label">Guest Injury</div><div class="bar-track"><div class="bar-fill" style="width:65%;background:var(--red)">18</div></div></div>
+          <div class="bar-row"><div class="bar-label">Equipment</div><div class="bar-track"><div class="bar-fill" style="width:43%;background:var(--amber)">12</div></div></div>
+          <div class="bar-row"><div class="bar-label">Near Miss</div><div class="bar-track"><div class="bar-fill" style="width:29%;background:var(--indigo)">8</div></div></div>
+          <div class="bar-row"><div class="bar-label">Behavioral</div><div class="bar-track"><div class="bar-fill" style="width:18%;background:#0EA5E9">5</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab switching
+function showTab(name){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Auto-fill date
+document.getElementById('dt-field').value=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'})+' — '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+// Incident type selector
+function selectType(el){
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// Photo upload simulation
+function addPhoto(n){
+  const slot=document.getElementById('photo-'+n);
+  if(slot.classList.contains('has-photo'))return;
+  slot.classList.add('has-photo');
+  slot.innerHTML=`<div class="preview">📸</div><button class="remove" onclick="event.stopPropagation();removePhoto(${n})">✕</button>`;
+}
+function removePhoto(n){
+  const slot=document.getElementById('photo-'+n);
+  slot.classList.remove('has-photo');
+  slot.innerHTML='<span class="icon">📷</span><span class="txt">Add photo</span>';
+}
+
+// Consent toggle
+let consented=false;
+function toggleConsent(){
+  consented=!consented;
+  document.getElementById('consent-check').classList.toggle('checked',consented);
+  document.getElementById('submit-btn').disabled=!consented;
+}
+
+// Submit
+function submitForm(){
+  const code='WS-2026-'+String(Math.floor(Math.random()*9000)+1000);
+  document.getElementById('ref-code').textContent=code;
+  document.getElementById('success-overlay').classList.add('show');
+}
+
+// QR grid
+const grid=document.getElementById('qr-grid');
+const p=[1,1,1,1,1,1,1,0,0,1,1,1,0,0,0,0,0,1,0,1,0,0,1,0,1,1,1,0,1,0,1,0,1,1,0,1,1,1,0,1,0,0,0,1,0,1,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,1,1,0,1,0,1,0,0,0,0,0,0,0,1,0,1,0,1,0,1,1,0,1,0,0,1,1,1,1,1,1,1,1,1,0,0,1,1,0,0,1,0,0,1,0,1,1,0,1,0,1,0,1,1,0,1,0,1,1,0];
+p.forEach(v=>{const s=document.createElement('span');s.style.background=v?'var(--navy)':'white';s.style.borderRadius='1px';grid.appendChild(s)});
+</script>
+</body>
+</html>
