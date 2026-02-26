@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Guest Experience Performance Audit</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            -webkit-font-smoothing: antialiased;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            color: white;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+        .header h1 { font-size: 20px; margin-bottom: 4px; }
+        .header-sub { font-size: 13px; opacity: .85; }
+        .header-info { font-size: 13px; opacity: .9; margin-top: 8px; display: flex; flex-wrap: wrap; gap: 12px; }
+        .progress-bar { height: 5px; background: rgba(255,255,255,0.2); margin-top: 14px; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #48bb78; width: 0%; transition: width 0.3s ease; border-radius: 3px; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
+
+        /* Meta fields */
+        .meta-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .meta-card h3 {
+            font-size: 15px;
+            color: #0052CC;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        @media(max-width:500px){ .meta-grid { grid-template-columns: 1fr; } }
+        .meta-field label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: #5E6C84;
+            margin-bottom: 4px;
+        }
+        .meta-field input, .meta-field select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #DFE1E6;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            color: #172B4D;
+            -webkit-appearance: none;
+        }
+        .meta-field input:focus, .meta-field select:focus {
+            outline: none;
+            border-color: #0052CC;
+        }
+        .meta-field select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235E6C84' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 32px;
+        }
+        .auto-val {
+            background: #E3FCEF !important;
+            border-color: #00875A !important;
+            color: #006644 !important;
+            font-weight: 500;
+        }
+
+        /* Summary */
+        .summary-box {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+        }
+        .summary-item { text-align: center; }
+        .summary-item .num { font-size: 26px; font-weight: 700; line-height: 1; }
+        .summary-item .lbl { font-size: 11px; color: #5E6C84; text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+        .num-pass { color: #00875A; }
+        .num-fail { color: #DE350B; }
+        .num-na { color: #8993A4; }
+
+        /* Sections */
+        .section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 16px 20px;
+            border-bottom: 2px solid #F4F5F7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background .15s;
+        }
+        .section-header:hover { background: #FAFBFC; }
+        .section-header h2 {
+            font-size: 17px;
+            color: #172B4D;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-icon { font-size: 22px; }
+        .section-status {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .status-complete { background: #E3FCEF; color: #006644; }
+        .status-incomplete { background: #FFEBE6; color: #BF2600; }
+        .status-partial { background: #FFFAE6; color: #FF8B00; }
+
+        .section-content { padding: 16px 20px; }
+        .collapsed { display: none; }
+
+        /* Audit Items */
+        .audit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            border: 2px solid #F4F5F7;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all .15s;
+        }
+        .audit-item.pass { background: #E3FCEF; border-color: #00875A; }
+        .audit-item.fail { background: #FFEBE6; border-color: #DE350B; }
+        .audit-item.na-item { background: #F4F5F7; border-color: #DFE1E6; opacity: .65; }
+
+        .item-num {
+            width: 28px; height: 28px;
+            background: #F4F5F7;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #5E6C84;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .audit-item.pass .item-num { background: #00875A; color: #fff; }
+        .audit-item.fail .item-num { background: #DE350B; color: #fff; }
+
+        .item-body { flex: 1; min-width: 0; }
+        .item-text { font-size: 15px; font-weight: 500; color: #172B4D; }
+
+        .grade-btns { display: flex; gap: 6px; flex-shrink: 0; margin-top: 2px; }
+        .grade-btn {
+            width: 40px; height: 34px;
+            border: 2px solid #DFE1E6;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: inherit;
+            transition: all .1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .grade-btn:active { transform: scale(.95); }
+        .grade-btn.yes-active { background: #00875A; border-color: #00875A; color: #fff; }
+        .grade-btn.no-active { background: #DE350B; border-color: #DE350B; color: #fff; }
+        .grade-btn.na-active { background: #DFE1E6; border-color: #B3BAC5; color: #5E6C84; }
+
+        /* Fail notes */
+        .fail-notes {
+            display: none;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #FFBDAD;
+        }
+        .audit-item.fail .fail-notes { display: block; }
+        .fail-notes textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #FFBDAD;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 50px;
+            color: #172B4D;
+        }
+        .fail-notes textarea:focus { outline: none; border-color: #DE350B; }
+        .fail-notes .hint { font-size: 11px; color: #BF2600; margin-top: 4px; }
+
+        /* Overall notes */
+        .notes-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .notes-section h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #172B4D;
+            margin-bottom: 10px;
+        }
+        .notes-section textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #DFE1E6;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            color: #172B4D;
+        }
+        .notes-section textarea:focus { outline: none; border-color: #0052CC; }
+
+        /* Signature */
+        .sig-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .sig-section h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+        .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .sig-grid input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #DFE1E6;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+        .sig-grid input:focus { outline: none; border-color: #0052CC; }
+
+        /* Submit */
+        .submit-section {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #0052CC 0%, #003D99 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .15s;
+            font-family: inherit;
+        }
+        .submit-btn:active { transform: scale(.98); }
+        .submit-btn:disabled { background: #B3BAC5; cursor: not-allowed; }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,31,77,.9);
+            z-index: 200;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            color: #fff;
+        }
+        .overlay.show { display: flex; }
+        .overlay .big { font-size: 64px; margin-bottom: 16px; }
+        .overlay h2 { font-size: 24px; margin-bottom: 6px; }
+        .overlay .ref { font-family: monospace; font-size: 14px; color: #80A9E6; margin-bottom: 10px; }
+        .overlay p { font-size: 14px; color: #B3BAC5; max-width: 320px; line-height: 1.5; }
+        .overlay .score-big { font-size: 56px; font-weight: 700; margin: 12px 0; }
+        .overlay .score-big.high { color: #48bb78; }
+        .overlay .score-big.mid { color: #ECC94B; }
+        .overlay .score-big.low { color: #FC8181; }
+        .overlay .dismiss { margin-top: 20px; padding: 10px 28px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: 8px; color: #fff; font-family: inherit; cursor: pointer; font-size: 14px; }
+
+        @media (max-width: 500px) {
+            .header h1 { font-size: 18px; }
+            .section-header h2 { font-size: 15px; }
+            .sig-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Guest Experience Performance Audit</h1>
+    <div class="header-sub">Guest Experience Performance Program — Amusement Standards</div>
+    <div class="header-info">
+        <span>📅 <span id="audit-date"></span></span>
+        <span>🕐 <span id="audit-time"></span></span>
+    </div>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Audit Meta -->
+    <div class="meta-card">
+        <h3>Audit Details</h3>
+        <div class="meta-grid">
+            <div class="meta-field">
+                <label>Team Member Name</label>
+                <input type="text" id="meta-member" placeholder="Full name">
+            </div>
+            <div class="meta-field">
+                <label>Position / Role</label>
+                <select id="meta-role">
+                    <option value="">Select…</option>
+                    <option>Ride Operator</option>
+                    <option>Attendant</option>
+                    <option>Guest Services</option>
+                    <option>Supervisor</option>
+                    <option>Cashier / Admissions</option>
+                    <option>Food & Beverage</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div class="meta-field">
+                <label>Attraction / Area</label>
+                <input type="text" id="meta-area" placeholder="e.g. Zone A, Coaster Platform">
+            </div>
+            <div class="meta-field">
+                <label>Auditor Name</label>
+                <input type="text" id="meta-auditor" placeholder="Your name">
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-box">
+        <div class="summary-item"><div class="num" id="sum-graded">0</div><div class="lbl">Graded / <span id="sum-total">0</span></div></div>
+        <div class="summary-item"><div class="num num-pass" id="sum-yes">0</div><div class="lbl">Yes (Pass)</div></div>
+        <div class="summary-item"><div class="num num-fail" id="sum-no">0</div><div class="lbl">No (Fail)</div></div>
+        <div class="summary-item"><div class="num num-na" id="sum-na">0</div><div class="lbl">N/A</div></div>
+    </div>
+
+    <!-- Sections built by JS -->
+    <div id="sections-container"></div>
+
+    <!-- Corrective Steps -->
+    <div class="notes-section">
+        <h3>📝 Corrective Steps</h3>
+        <textarea id="corrective-notes" placeholder="Briefly describe corrective action necessary for the team member. Any 'No' in the above categories requires immediate corrective action and coaching."></textarea>
+    </div>
+
+    <!-- Overall Notes -->
+    <div class="notes-section">
+        <h3>💬 Additional Observations</h3>
+        <textarea id="additional-notes" placeholder="Positive behaviors observed, coaching opportunities, follow-up items…"></textarea>
+    </div>
+
+    <!-- Signatures -->
+    <div class="sig-section">
+        <h3>✍️ Signatures</h3>
+        <div class="sig-grid">
+            <input type="text" placeholder="Team Member Signature" id="sig-member">
+            <input type="text" placeholder="Auditor Signature" id="sig-auditor">
+        </div>
+    </div>
+</div>
+
+<div class="submit-section">
+    <button class="submit-btn" id="submit-btn" onclick="submitAudit()">📋 Submit Audit</button>
+</div>
+
+<div class="overlay" id="overlay">
+    <div class="big">📋</div>
+    <h2>Audit Submitted</h2>
+    <div class="ref" id="ref-code"></div>
+    <div class="score-big" id="final-score"></div>
+    <p id="final-msg"></p>
+    <button class="dismiss" onclick="document.getElementById('overlay').classList.remove('show')">Done</button>
+</div>
+
+<script>
+const SECTIONS = [
+    {
+        id: 'safety',
+        icon: '🛡️',
+        title: 'Safety',
+        items: [
+            'Knows who to contact in case of an emergency (e.g. dispatch, supervisor)',
+            'Actively scans the area for guest safety hazards',
+            'Friendly and professional when informing guests of loose article policy',
+            'Friendly and professional when explaining and enforcing code of conduct',
+            'Points out ride features to guests (levers, buttons, safety restraints)',
+            'Engaging while height checking (eye-to-eye contact with children)',
+            'Gentle and courteous while scanning guest wristbands or tickets',
+            'Properly checks and verifies all safety restraints before dispatch',
+            'Maintains awareness of rider behavior throughout the ride cycle',
+        ]
+    },
+    {
+        id: 'courtesy',
+        icon: '🤝',
+        title: 'Courtesy',
+        items: [
+            'Greets the guest warmly upon arrival to the attraction or area',
+            'Uses phrases like "please" and "thank you" in guest interactions',
+            'Follows the 10/5 Rule (acknowledge at 10 feet, greet at 5 feet)',
+            'Knows location of nearest ATM',
+            'Knows location of guest services',
+            'Knows location of first aid',
+            'Knows location of nearest restroom',
+            'Wishes guest a great day / positive closing interaction',
+            'Answers guest questions knowledgeably and confidently',
+            'Uses empathetic language when addressing guest concerns',
+            'Listens without interrupting when a guest has a question or complaint',
+        ]
+    },
+    {
+        id: 'show',
+        icon: '🎭',
+        title: 'Show',
+        items: [
+            'Meets facility grooming and uniform guidelines',
+            'Name tag, certification card, and ID are properly worn and visible',
+            'Attraction area is clean, organized, and guest-ready',
+            'Standing in a guest-ready manner (not sitting, arms not folded, not leaning)',
+            'Maintains a positive facial expression and smiles when engaging with guests',
+            'Personal phone is stored and not visible during shift',
+            'Body language is open, approachable, and welcoming',
+        ]
+    },
+    {
+        id: 'efficiency',
+        icon: '⚡',
+        title: 'Efficiency',
+        items: [
+            'Suggests alternative attractions when wait times are long or ride is temporarily closed',
+            'Works proactively to ensure guests are getting the most out of their visit',
+            'Manages ride loading/unloading in a timely and organized manner',
+            'Communicates wait times and ride status clearly to guests in queue',
+            'Transitions smoothly between tasks without unnecessary downtime',
+        ]
+    },
+    {
+        id: 'recovery',
+        icon: '🔄',
+        title: 'Service Recovery',
+        items: [
+            'Remains calm and professional when dealing with difficult or upset guests',
+            'Follows the HEARD framework: Hear, Empathize, Apologize, Resolve, Diagnose',
+            'Does not use negative language (avoids "that\'s not my job," "I don\'t know," "we can\'t do that")',
+            'Escalates to a supervisor when unable to resolve a guest issue',
+            'Follows up to ensure the guest\'s concern has been addressed',
+        ]
+    },
+];
+
+let state = {};
+let totalItems = 0;
+
+function build() {
+    const container = document.getElementById('sections-container');
+    let globalIdx = 0;
+
+    SECTIONS.forEach(sec => {
+        let html = `<div class="section">
+            <div class="section-header" onclick="toggleSection('${sec.id}')">
+                <h2><span class="section-icon">${sec.icon}</span> ${sec.title.toUpperCase()}</h2>
+                <span class="section-status status-incomplete" id="status-${sec.id}">0/${sec.items.length}</span>
+            </div>
+            <div class="section-content ${sec.id !== 'safety' ? 'collapsed' : ''}" id="content-${sec.id}">`;
+
+        sec.items.forEach((item, i) => {
+            globalIdx++;
+            const key = sec.id + '-' + i;
+            state[key] = { grade: null, note: '' };
+            totalItems++;
+
+            html += `
+            <div class="audit-item" id="item-${key}">
+                <div class="item-num">${globalIdx}</div>
+                <div class="item-body">
+                    <div class="item-text">${item}</div>
+                    <div class="fail-notes">
+                        <textarea placeholder="Describe the issue and corrective action…" oninput="state['${key}'].note=this.value"></textarea>
+                        <div class="hint">⚠ "No" requires immediate corrective action and coaching</div>
+                    </div>
+                </div>
+                <div class="grade-btns">
+                    <button class="grade-btn" onclick="grade('${key}','yes',this)" title="Yes">✓</button>
+                    <button class="grade-btn" onclick="grade('${key}','no',this)" title="No">✗</button>
+                    <button class="grade-btn" onclick="grade('${key}','na',this)" title="N/A">—</button>
+                </div>
+            </div>`;
+        });
+
+        html += `</div></div>`;
+        container.innerHTML += html;
+    });
+
+    document.getElementById('sum-total').textContent = totalItems;
+}
+
+function grade(key, value, btn) {
+    state[key].grade = value;
+    const el = document.getElementById('item-' + key);
+    el.className = 'audit-item';
+    if (value === 'yes') el.classList.add('pass');
+    else if (value === 'no') el.classList.add('fail');
+    else el.classList.add('na-item');
+
+    btn.parentElement.querySelectorAll('.grade-btn').forEach(b => b.className = 'grade-btn');
+    if (value === 'yes') btn.classList.add('yes-active');
+    else if (value === 'no') btn.classList.add('no-active');
+    else btn.classList.add('na-active');
+
+    updateSummary();
+}
+
+function updateSummary() {
+    const vals = Object.values(state);
+    const graded = vals.filter(s => s.grade !== null).length;
+    const yes = vals.filter(s => s.grade === 'yes').length;
+    const no = vals.filter(s => s.grade === 'no').length;
+    const na = vals.filter(s => s.grade === 'na').length;
+
+    document.getElementById('sum-graded').textContent = graded;
+    document.getElementById('sum-yes').textContent = yes;
+    document.getElementById('sum-no').textContent = no;
+    document.getElementById('sum-na').textContent = na;
+
+    const pct = totalItems > 0 ? (graded / totalItems * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+
+    // Section statuses
+    SECTIONS.forEach(sec => {
+        const items = sec.items;
+        const done = items.filter((_, i) => state[sec.id + '-' + i].grade !== null).length;
+        const el = document.getElementById('status-' + sec.id);
+        el.textContent = done + '/' + items.length;
+        el.className = 'section-status';
+        if (done === items.length) el.classList.add('status-complete');
+        else if (done > 0) el.classList.add('status-partial');
+        else el.classList.add('status-incomplete');
+    });
+}
+
+function toggleSection(id) {
+    document.getElementById('content-' + id).classList.toggle('collapsed');
+}
+
+function submitAudit() {
+    const vals = Object.values(state);
+    const graded = vals.filter(s => s.grade !== null).length;
+    if (graded < totalItems * 0.8) {
+        alert('Please grade at least 80% of items before submitting.');
+        return;
+    }
+
+    const yes = vals.filter(s => s.grade === 'yes').length;
+    const applicable = vals.filter(s => s.grade !== null && s.grade !== 'na').length;
+    const score = applicable > 0 ? Math.round((yes / applicable) * 100) : 0;
+
+    const code = 'GXA-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 9000) + 1000);
+    document.getElementById('ref-code').textContent = code;
+
+    const scoreEl = document.getElementById('final-score');
+    scoreEl.textContent = score + '%';
+    scoreEl.className = 'score-big';
+    if (score >= 90) scoreEl.classList.add('high');
+    else if (score >= 70) scoreEl.classList.add('mid');
+    else scoreEl.classList.add('low');
+
+    const no = vals.filter(s => s.grade === 'no').length;
+    let msg = '';
+    if (score >= 90) msg = 'Excellent performance. Continue to recognize and reinforce these behaviors.';
+    else if (score >= 70) msg = no + ' area(s) need corrective action. Schedule coaching within 24 hours.';
+    else msg = no + ' area(s) need immediate corrective action. Schedule retraining and follow-up audit within 7 days.';
+    document.getElementById('final-msg').textContent = msg;
+
+    document.getElementById('overlay').classList.add('show');
+}
+
+// Init
+document.getElementById('audit-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+document.getElementById('audit-time').textContent = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+build();
+</script>
+</body>
+</html>
