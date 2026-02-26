@@ -5,7 +5,6 @@
   <title>Guest Experience Performance Program | Amusement Standards</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Built‑in styling so the page looks polished even without external CSS -->
   <style>
     body {
       margin: 0;
@@ -30,19 +29,10 @@
       margin-left: 20px;
       font-weight: bold;
     }
-    
-    .nav { 
-      margin-left: auto; 
-    }
-    
-    .header-container {
-      display: flex;
-      align-items: center;
-    }
 
-    .header-container .nav {
-      margin-left: auto;
-    }
+    .nav { margin-left: auto; }
+    .header-container { display: flex; align-items: center; }
+    .header-container .nav { margin-left: auto; }
 
     .hero {
       background: linear-gradient(135deg, #002966, #80A9E6);
@@ -50,16 +40,8 @@
       padding: 80px 20px;
       text-align: center;
     }
-
-    .hero h1 {
-      font-size: 48px;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      font-size: 20px;
-      opacity: 0.9;
-    }
+    .hero h1 { font-size: 48px; margin-bottom: 10px; }
+    .hero p { font-size: 20px; opacity: 0.9; }
 
     .btn {
       display: inline-block;
@@ -92,13 +74,8 @@
       color: #0a3d62;
     }
 
-    ul {
-      padding-left: 20px;
-    }
-
-    ul li {
-      margin-bottom: 8px;
-    }
+    ul { padding-left: 20px; }
+    ul li { margin-bottom: 8px; }
 
     .cta {
       background: #607EAC;
@@ -115,21 +92,120 @@
       margin-top: 40px;
     }
 
-    /* Modal Styles */
+    /* ─── Feature Cards ─── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    @media (max-width: 640px) { .feature-grid { grid-template-columns: 1fr; } }
+
+    .feature-card {
+      background: #ffffff;
+      border: 2px solid #e8ecf1;
+      border-radius: 10px;
+      padding: 24px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      border-color: #0052CC;
+      box-shadow: 0 4px 16px rgba(0, 82, 204, 0.08);
+    }
+    .feature-card .card-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .feature-card h3 {
+      font-size: 17px;
+      margin: 0 0 6px 0;
+      color: #0a3d62;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: #4a5568;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* ─── Outcome Cards ─── */
+    .outcome-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+    .outcome-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 0;
+      border-bottom: 1px solid #e8ecf1;
+    }
+    .outcome-list li:last-child { border-bottom: none; }
+    .outcome-num {
+      width: 36px;
+      height: 36px;
+      background: #0052CC;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .outcome-content h4 {
+      font-size: 16px;
+      color: #0a3d62;
+      margin: 0 0 3px 0;
+    }
+    .outcome-content p {
+      font-size: 14px;
+      color: #4a5568;
+      margin: 0;
+    }
+
+    /* ─── Demo Link ─── */
+    .demo-link-inline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #0052CC;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.2s;
+      margin-top: 8px;
+    }
+    .demo-link-inline:hover { color: #FF6B35; }
+    .demo-badge {
+      display: inline-block;
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: #FF6B35;
+      color: #FFFFFF;
+      padding: 2px 8px;
+      border-radius: 4px;
+      line-height: 1.6;
+      white-space: nowrap;
+    }
+    .demo-link-inline:hover .demo-badge { background: #0052CC; }
+
+    /* Modal */
     #formModal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: rgba(0,0,0,0.6);
       z-index: 9999;
       justify-content: center;
       align-items: center;
       padding: 20px;
     }
-
     #formModal .modal-content {
       background: #fff;
       max-width: 600px;
@@ -138,11 +214,9 @@
       border-radius: 8px;
       position: relative;
     }
-
     #formModal .close-btn {
       position: absolute;
-      top: 10px;
-      right: 15px;
+      top: 10px; right: 15px;
       font-size: 24px;
       cursor: pointer;
       color: #333;
@@ -167,8 +241,6 @@
 <section class="hero">
   <h1>Guest Experience Performance Program</h1>
   <p>Your foundation for more consistent, higher‑performing guest service.</p>
-
-  <!-- Modal Trigger Button -->
   <a class="btn" onclick="openFormModal()">Request This Program</a>
 </section>
 
@@ -195,68 +267,88 @@
     We combine on‑site or remote observations, mobile audits, and structured standards to give you a
     practical, real‑world picture of how your guest experience actually performs.
   </p>
-  <p>You receive:</p>
 
-  <h3>Guest service standards review</h3>
-  <p>
-    Alignment of your current expectations (if they exist) with what's happening on the ground.
-  </p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="card-icon">📋</div>
+      <h3>Guest Service Standards Review</h3>
+      <p>Alignment of your current expectations (if they exist) with what's actually happening on the ground across shifts and teams.</p>
+    </div>
 
-  <h3>Mobile guest service audits</h3>
-  <p>
-    Secret‑shop style observations using digital checklists focused on greetings, courtesy, communication,
-    and service recovery.
-  </p>
+    <div class="feature-card">
+      <div class="card-icon">📱</div>
+      <h3>Mobile Guest Service Audits</h3>
+      <p>Secret‑shop style observations using digital checklists focused on greetings, courtesy, communication, and service recovery.</p>
+      <a href="/demos/guest-service-audit.html" class="demo-link-inline">Try the audit checklist <span class="demo-badge">Live Demo</span></a>
+    </div>
 
-  <h3>Queue &amp; guest flow assessment</h3>
-  <p>
-    How guests move, wait, and interact with staff in high‑friction areas (entrances, queues, food, and
-    key touchpoints).
-  </p>
+    <div class="feature-card">
+      <div class="card-icon">🚶</div>
+      <h3>Queue &amp; Guest Flow Assessment</h3>
+      <p>How guests move, wait, and interact with staff in high‑friction areas — entrances, queues, food service, and key touchpoints.</p>
+    </div>
 
-  <h3>Cleanliness &amp; presentation review</h3>
-  <p>
-    Front‑of‑house appearance, signage clarity, wayfinding, and first‑impression readiness.
-  </p>
+    <div class="feature-card">
+      <div class="card-icon">✨</div>
+      <h3>Cleanliness &amp; Presentation Review</h3>
+      <p>Front‑of‑house appearance, signage clarity, wayfinding, and first‑impression readiness across all guest‑facing areas.</p>
+    </div>
 
-  <h3>Service recovery snapshot</h3>
-  <p>
-    How staff respond when something goes wrong—delays, complaints, confusion, or guest frustration.
-  </p>
+    <div class="feature-card">
+      <div class="card-icon">🔄</div>
+      <h3>Service Recovery Snapshot</h3>
+      <p>How staff respond when something goes wrong — delays, complaints, confusion, or guest frustration. Evaluated against the HEARD framework.</p>
+    </div>
 
-  <h3>Prioritized recommendations</h3>
-  <p>
-    Clear, ranked actions: quick wins, behavior standards, and structural fixes that improve guest
-    experience fast.
-  </p>
+    <div class="feature-card">
+      <div class="card-icon">🎯</div>
+      <h3>Prioritized Recommendations</h3>
+      <p>Clear, ranked actions: quick wins, behavior standards, and structural fixes that improve guest experience fast.</p>
+    </div>
+  </div>
 </section>
 
 <section class="section">
   <h2>Outcomes</h2>
   <p>By the end of the engagement, you'll have:</p>
 
-  <h3>A clear view of your guest experience strengths and gaps</h3>
-  <p>
-    Not just "we need better service," but specific behaviors, locations, and patterns.
-  </p>
-
-  <h3>Defined, observable guest service standards</h3>
-  <p>
-    What "good" looks like for greetings, communication, queue management, and service recovery.
-  </p>
-
-  <h3>Immediate, practical steps your team can implement</h3>
-  <p>Quick wins for frontline staff, supervisors, and leadership.</p>
-
-  <h3>Documentation you can share with leadership and marketing</h3>
-  <p>
-    A concrete story about how you're improving guest experience, not just safety.
-  </p>
-
-  <h3>A foundation for training and LMS content</h3>
-  <p>
-    Real behaviors and scenarios that can be turned into targeted training modules.
-  </p>
+  <ul class="outcome-list">
+    <li>
+      <div class="outcome-num">1</div>
+      <div class="outcome-content">
+        <h4>A clear view of your guest experience strengths and gaps</h4>
+        <p>Not just "we need better service," but specific behaviors, locations, and patterns backed by structured observations.</p>
+      </div>
+    </li>
+    <li>
+      <div class="outcome-num">2</div>
+      <div class="outcome-content">
+        <h4>Defined, observable guest service standards</h4>
+        <p>What "good" looks like for greetings, communication, queue management, and service recovery — written down and measurable.</p>
+      </div>
+    </li>
+    <li>
+      <div class="outcome-num">3</div>
+      <div class="outcome-content">
+        <h4>Immediate, practical steps your team can implement</h4>
+        <p>Quick wins for frontline staff, supervisors, and leadership that create visible improvement within weeks.</p>
+      </div>
+    </li>
+    <li>
+      <div class="outcome-num">4</div>
+      <div class="outcome-content">
+        <h4>Documentation you can share with leadership and marketing</h4>
+        <p>A concrete story about how you're improving guest experience — not just safety — with data to back it up.</p>
+      </div>
+    </li>
+    <li>
+      <div class="outcome-num">5</div>
+      <div class="outcome-content">
+        <h4>A foundation for training and LMS content</h4>
+        <p>Real behaviors and scenarios from your operation that can be turned into targeted training modules in TalentLMS or any platform.</p>
+      </div>
+    </li>
+  </ul>
 </section>
 
 <section class="section">
@@ -268,7 +360,7 @@
 
 <section class="section">
   <h2>Pricing Breakdown</h2>
-  
+
   <h3>Base Package — $4,000</h3>
   <p>Remote‑first engagement including:</p>
   <ul>
@@ -296,15 +388,13 @@
 </section>
 
 <footer>
-  &copy; Amusement Standards. All rights reserved.
+  &copy; 2025 Amusement Standards. All rights reserved.
 </footer>
 
 <!-- Modal -->
 <div id="formModal">
   <div class="modal-content">
     <span class="close-btn" onclick="closeFormModal()">&times;</span>
-
-    <!-- HubSpot Form -->
     <script src="https://js-na2.hsforms.net/forms/embed/245118753.js" defer></script>
     <div class="hs-form-frame"
          data-region="na2"
@@ -314,12 +404,10 @@
   </div>
 </div>
 
-<!-- Modal Script -->
 <script>
 function openFormModal() {
   document.getElementById('formModal').style.display = 'flex';
 }
-
 function closeFormModal() {
   document.getElementById('formModal').style.display = 'none';
 }
