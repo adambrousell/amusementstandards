@@ -9,11 +9,42 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#0052CC;--primary-dark:#003D99;--primary-light:#E8F0FC;--secondary:#FF6B35;--secondary-dark:#E55A2B;--success:#00875A;--success-light:#E3FCEF;--navy:#0D2137;--teal:#0891B2;--teal-light:#E8F6FB;--amber:#B45309;--amber-light:#FEF9EE;--purp:#6D28D9;--purp-light:#EDE9FE;--red:#DC2626;--red-light:#FEF2F2;--bg-light:#F7F9FC;--bg-white:#FFFFFF;--text-primary:#172B4D;--text-secondary:#5E6C84;--text-light:#8993A4;--border:#DFE1E6;--border-strong:#C1C7D0;--font-display:'DM Sans',sans-serif;--font-mono:'Space Mono',monospace;--radius:10px;--radius-sm:6px}
+:root {
+    --primary: #0052CC;
+    --primary-dark: #003D99;
+    --primary-light: #E8F0FC;
+    --secondary: #FF6B35;
+    --secondary-dark: #E55A2B;
+    --success: #00875A;
+    --navy: #0D2137;
+    --teal: #0891B2;
+    --teal-light: #E8F6FB;
+    --amber: #B45309;
+    --amber-light: #FEF9EE;
+    --purp: #6D28D9;
+    --purp-light: #EDE9FE;
+    --red: #DC2626;
+    --red-light: #FEF2F2;
+    --bg-light: #F7F9FC;
+    --bg-white: #FFFFFF;
+    --text-primary: #172B4D;
+    --text-secondary: #5E6C84;
+    --text-light: #8993A4;
+    --border: #DFE1E6;
+    --border-strong: #C1C7D0;
+    --shadow: rgba(9,30,66,0.08);
+    --shadow-hover: rgba(9,30,66,0.16);
+    --font-display: 'DM Sans', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+    --radius: 10px;
+    --radius-sm: 6px;
+}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--font-display);color:var(--text-primary);line-height:1.6;background:var(--bg-white);-webkit-font-smoothing:antialiased}
 a{text-decoration:none}
+
+/* HEADER */
 .header{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
 .header-inner{max-width:1200px;margin:0 auto;padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:32px}
 .logo{font-family:var(--font-mono);font-size:17px;font-weight:700;color:var(--primary);letter-spacing:-.5px;flex-shrink:0}
@@ -23,6 +54,8 @@ a{text-decoration:none}
 .nav .nav-cta{background:var(--secondary);color:#fff;padding:9px 18px}
 .nav .nav-cta:hover{background:var(--secondary-dark)}
 .nav .nav-active{color:var(--primary);background:var(--primary-light)}
+
+/* HERO */
 .hero{background:linear-gradient(135deg,var(--navy) 0%,#0a2d6e 45%,var(--primary) 100%);color:#fff;padding:88px 40px 96px;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 75% 40%,rgba(255,107,53,.14) 0%,transparent 55%),radial-gradient(circle at 15% 85%,rgba(8,145,178,.12) 0%,transparent 45%)}
 .hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' fill='white' opacity='0.05'/%3E%3C/svg%3E") repeat;background-size:60px 60px}
@@ -38,51 +71,22 @@ a{text-decoration:none}
 .btn-primary:hover{background:var(--secondary-dark);transform:translateY(-1px);box-shadow:0 8px 20px rgba(255,107,53,.3)}
 .btn-ghost{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
 .btn-ghost:hover{background:rgba(255,255,255,.18)}
+.btn-blue{background:var(--primary);color:#fff}
+.btn-blue:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}
+.btn-outline:hover{background:var(--primary);color:#fff}
 .btn-lg{padding:16px 36px;font-size:16px}
-.hero-proof-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius)}
+
+/* HERO PROOF STRIP */
+.hero-proof-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius)}
 .proof-item{padding:22px 24px;background:rgba(255,255,255,.05);backdrop-filter:blur(6px)}
 .proof-item:first-child{border-radius:var(--radius) 0 0 var(--radius)}
 .proof-item:last-child{border-radius:0 var(--radius) var(--radius) 0}
 .proof-num{font-family:var(--font-mono);font-size:26px;font-weight:700;color:#fff;line-height:1;margin-bottom:5px}
 .proof-num em{color:var(--secondary);font-style:normal;font-size:18px}
 .proof-label{font-size:12px;color:rgba(255,255,255,.45);line-height:1.4}
-/* EFFICIENCY BANNER */
-.eff-banner{background:linear-gradient(135deg,#0D2137 0%,#162D47 50%,#0D2137 100%);padding:72px 40px;position:relative;overflow:hidden}
-.eff-banner::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30h60M30 0v60' stroke='white' stroke-opacity='0.03' stroke-width='1'/%3E%3C/svg%3E") repeat}
-.eff-inner{position:relative;z-index:1;max-width:1200px;margin:0 auto}
-.eff-headline{font-size:clamp(22px,3vw,32px);font-weight:700;color:#fff;line-height:1.2;letter-spacing:-.5px;margin-bottom:12px}
-.eff-headline em{font-style:normal;color:var(--secondary)}
-.eff-sub{font-size:16px;color:rgba(255,255,255,.5);line-height:1.75;max-width:720px;margin-bottom:40px;font-weight:300}
-.eff-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.eff-stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:28px 24px;text-align:center;position:relative;overflow:hidden}
-.eff-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.eff-stat.s1::before{background:var(--secondary)}
-.eff-stat.s2::before{background:var(--teal)}
-.eff-stat.s3::before{background:var(--success)}
-.eff-stat-icon{font-size:28px;margin-bottom:10px}
-.eff-stat-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
-.eff-stat-text{font-size:15px;color:rgba(255,255,255,.75);line-height:1.6}
-.eff-stat-text strong{color:#fff;font-weight:600}
-/* ALIGNMENT SECTION */
-.align-section{padding:88px 40px;background:var(--bg-white)}
-.align-grid{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:start}
-.align-card{border-radius:var(--radius);padding:32px 28px;min-height:100%}
-.align-card.park{background:#FFF8F5;border:1.5px solid #FDDCC8}
-.align-card.mfg{background:var(--primary-light);border:2px solid var(--primary);position:relative}
-.align-card.mfg::before{content:'OUR APPROACH';position:absolute;top:-11px;left:24px;font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;background:var(--primary);color:#fff;padding:3px 12px;border-radius:4px}
-.align-divider{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text-light);align-self:center}
-.align-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
-.align-card.park .align-tag{color:var(--amber)}
-.align-card.mfg .align-tag{color:var(--primary)}
-.align-card h3{font-size:20px;font-weight:700;margin-bottom:14px;line-height:1.2;letter-spacing:-.3px}
-.align-text{font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:18px}
-.align-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-.align-list li{font-size:14px;color:var(--text-secondary);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
-.align-list li::before{content:'›';font-weight:700;flex-shrink:0}
-.align-card.park .align-list li::before{color:var(--amber)}
-.align-card.mfg .align-list li::before{color:var(--primary)}
-.align-bottom{margin-top:18px;padding-top:16px;border-top:1px solid rgba(0,0,0,.08);font-size:13px;color:var(--text-light);line-height:1.6;font-style:italic}
-/* COMMON */
+
+/* PROBLEM STATEMENT */
 .problem{padding:80px 40px;background:var(--bg-light);border-bottom:1px solid var(--border)}
 .problem-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
 .problem-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);margin-bottom:16px}
@@ -93,9 +97,10 @@ a{text-decoration:none}
 .problem-callout{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 26px;border-left:4px solid var(--teal)}
 .problem-callout.amber{border-left-color:var(--amber)}
 .problem-callout.purp{border-left-color:var(--purp)}
-.problem-callout.green{border-left-color:var(--success)}
 .pc-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:7px}
 .pc-text{font-size:15px;color:var(--text-primary);line-height:1.55;font-weight:500}
+
+/* SECTION SHARED */
 .section{padding:88px 40px}
 .section-alt{background:var(--bg-light)}
 .container{max-width:1200px;margin:0 auto}
@@ -103,6 +108,8 @@ a{text-decoration:none}
 .section-title{font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:14px}
 .section-sub{font-size:16px;color:var(--text-secondary);line-height:1.75;font-weight:300;max-width:620px}
 .section-head{margin-bottom:56px}
+
+/* PILOT SECTION */
 .pilot-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
 .pilot-card{background:#fff;border:2px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .pilot-card.featured{border-color:var(--secondary)}
@@ -120,37 +127,95 @@ a{text-decoration:none}
 .pilot-detail-content{flex:1}
 .pilot-detail-label{font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.3;margin-bottom:2px}
 .pilot-detail-val{font-size:13px;color:var(--text-secondary);line-height:1.5}
+
 .pilot-price-row{display:flex;gap:12px;margin-top:20px}
 .pilot-price-box{flex:1;background:var(--bg-light);border-radius:var(--radius-sm);padding:14px 16px;text-align:center}
 .pilot-price-box .ppb-val{font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--primary);line-height:1}
 .pilot-price-box .ppb-label{font-size:11px;color:var(--text-light);margin-top:4px}
 .pilot-price-box.included{background:var(--teal-light)}
 .pilot-price-box.included .ppb-val{color:var(--teal)}
-.pilot-card-footer{background:var(--navy);padding:0;display:flex;align-items:stretch}
-.pilot-card-footer a{display:flex;align-items:center;justify-content:space-between;width:100%;padding:18px 28px;color:#fff;font-weight:600;font-size:15px;transition:all .2s;gap:12px}
-.pilot-card-footer a:hover{background:#162D47}
-.pilot-card-footer .pcf-label{display:flex;align-items:center;gap:10px}
-.pilot-card-footer .pcf-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;background:var(--secondary);color:#fff;padding:3px 10px;border-radius:4px;font-weight:700}
-.pilot-card-footer .pcf-arrow{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.5);transition:all .2s;flex-shrink:0}
-.pilot-card-footer a:hover .pcf-arrow{color:#fff;transform:translateX(3px)}
-.pilot-card-footer .pcf-arrow svg{width:18px;height:18px}
+
+/* PILOT CARD FOOTER */
+.pilot-card-footer{
+    background:var(--navy);
+    padding:0;
+    display:flex;
+    align-items:stretch;
+    border-top:none;
+}
+.pilot-card-footer a{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    padding:18px 28px;
+    color:#fff;
+    font-weight:600;
+    font-size:15px;
+    transition:all .2s;
+    gap:12px;
+}
+.pilot-card-footer a:hover{
+    background:#162D47;
+}
+.pilot-card-footer .pcf-label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.pilot-card-footer .pcf-tag{
+    font-family:var(--font-mono);
+    font-size:9px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    background:var(--secondary);
+    color:#fff;
+    padding:3px 10px;
+    border-radius:4px;
+    font-weight:700;
+}
+.pilot-card-footer .pcf-arrow{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    color:rgba(255,255,255,.5);
+    transition:all .2s;
+    flex-shrink:0;
+}
+.pilot-card-footer a:hover .pcf-arrow{
+    color:#fff;
+    transform:translateX(3px);
+}
+.pilot-card-footer .pcf-arrow svg{
+    width:18px;
+    height:18px;
+}
+
+/* TIMELINE */
 .timeline{display:flex;flex-direction:column;gap:0;margin-top:20px}
 .tl-item{display:grid;grid-template-columns:72px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--border);align-items:start}
 .tl-item:last-child{border-bottom:none}
 .tl-marker{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--primary);padding-top:2px}
 .tl-text{font-size:14px;color:var(--text-secondary);line-height:1.55}
 .tl-text strong{color:var(--text-primary);font-weight:600}
+
+/* HOW IT WORKS */
 .flow-grid{display:flex;flex-direction:column;gap:0}
 .flow-step{display:grid;grid-template-columns:80px 1fr;gap:32px;padding:32px 0;border-bottom:1px solid var(--border);align-items:start}
 .flow-step:last-child{border-bottom:none}
 .flow-num{width:56px;height:56px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--font-mono);font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:4px}
-.flow-num.teal{background:var(--teal)}.flow-num.amber{background:var(--amber)}.flow-num.purp{background:var(--purp)}
+.flow-num.teal{background:var(--teal)}
+.flow-num.amber{background:var(--amber)}
+.flow-num.purp{background:var(--purp)}
 .flow-body h3{font-size:20px;font-weight:700;color:var(--text-primary);margin-bottom:8px}
 .flow-body p{font-size:15px;color:var(--text-secondary);line-height:1.7;font-weight:300}
 .flow-tag{display:inline-block;font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:10px}
 .flow-tag.mfr{background:rgba(13,33,55,.08);color:var(--navy)}
 .flow-tag.as{background:var(--teal-light);color:var(--teal)}
 .flow-tag.park{background:var(--amber-light);color:var(--amber)}
+
+/* SERVICES GRID (Post-Pilot) */
 .services-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .svc-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 26px;position:relative}
 .svc-card.core{border-color:var(--primary);border-width:2px}
@@ -162,15 +227,21 @@ a{text-decoration:none}
 .svc-list{list-style:none;display:flex;flex-direction:column;gap:7px}
 .svc-list li{font-size:13px;color:var(--text-secondary);display:flex;align-items:flex-start;gap:8px;line-height:1.45}
 .svc-list li::before{content:'✓';color:var(--success);font-weight:700;font-size:11px;flex-shrink:0;margin-top:2px}
+
+/* DEMO LINK */
 .demo-link{display:inline-flex;align-items:center;gap:8px;color:var(--primary);font-weight:600;font-size:14px;transition:color .2s;margin-top:12px}
 .demo-link:hover{color:var(--secondary)}
 .demo-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;background:var(--secondary);color:#fff;padding:2px 8px;border-radius:4px;font-weight:700}
 .demo-link:hover .demo-badge{background:var(--primary)}
+
+/* CHANNEL CATALOG */
 .channel-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-.ch-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column}
+.ch-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 22px;display:flex;flex-direction:column}
 .ch-title{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px;line-height:1.3}
 .ch-desc{font-size:13px;color:var(--text-secondary);line-height:1.55;flex:1;margin-bottom:12px}
 .ch-price{font-family:var(--font-mono);font-size:12px;color:var(--primary);font-weight:700}
+
+/* RETROFIT */
 .retrofit-layout{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start}
 .retrofit-tracks{display:flex;flex-direction:column;gap:16px}
 .track-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden}
@@ -182,6 +253,8 @@ a{text-decoration:none}
 .track-body p:last-child{margin-bottom:0}
 .track-price-row{display:flex;gap:10px;margin-top:12px}
 .track-price-tag{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--primary);background:var(--primary-light);padding:5px 12px;border-radius:4px}
+
+/* WHITE-LABEL */
 .wl-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .wl-col{background:#fff;padding:32px 28px}
 .wl-col.dark{background:var(--navy)}
@@ -191,14 +264,17 @@ a{text-decoration:none}
 .wl-col.dark h3{color:#fff}
 .wl-col p{font-size:14px;color:var(--text-secondary);line-height:1.65}
 .wl-col.dark p{color:rgba(255,255,255,.55)}
+
+/* CALLOUT */
 .callout{border-radius:var(--radius);padding:28px 32px;margin:32px 0}
 .callout.teal{background:var(--teal-light);border-left:4px solid var(--teal)}
 .callout.navy{background:rgba(13,33,55,.05);border-left:4px solid var(--navy)}
 .callout.amber{background:var(--amber-light);border-left:4px solid var(--amber)}
 .callout.purp{background:var(--purp-light);border-left:4px solid var(--purp)}
-.callout.green{background:var(--success-light);border-left:4px solid var(--success)}
 .callout-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:7px}
 .callout p{font-size:15px;color:var(--text-primary);line-height:1.7}
+
+/* CTA */
 .cta-section{background:linear-gradient(135deg,var(--navy) 0%,var(--primary) 100%);padding:88px 40px;text-align:center;position:relative;overflow:hidden}
 .cta-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='white' opacity='0.06'/%3E%3C/svg%3E") repeat;background-size:40px 40px}
 .cta-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
@@ -206,6 +282,8 @@ a{text-decoration:none}
 .cta-section h2{font-size:clamp(28px,4vw,44px);font-weight:700;color:#fff;margin-bottom:16px;letter-spacing:-.5px;line-height:1.15}
 .cta-section p{font-size:17px;color:rgba(255,255,255,.62);margin-bottom:40px;font-weight:300;line-height:1.75}
 .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
 .footer{background:#0d1829;padding:48px 40px 28px}
 .footer-inner{max-width:1200px;margin:0 auto}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:36px}
@@ -216,199 +294,638 @@ a{text-decoration:none}
 .footer-links a{font-size:13px;color:rgba(255,255,255,.45);transition:color .2s}
 .footer-links a:hover{color:#fff}
 .footer-bottom{padding-top:22px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,.2)}
-@media(max-width:960px){.hero-proof-strip{grid-template-columns:1fr 1fr}.problem-inner,.pilot-layout{grid-template-columns:1fr}.services-grid,.channel-grid,.wl-grid{grid-template-columns:1fr}.retrofit-layout{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.align-grid{grid-template-columns:1fr;gap:16px}.align-divider{transform:rotate(90deg);padding:8px 0}.eff-stats{grid-template-columns:1fr}}
-@media(max-width:600px){.header-inner,.section,.problem,.cta-section,.footer,.eff-banner,.align-section{padding-left:20px;padding-right:20px}.hero{padding:60px 20px 72px}.hero-proof-strip{grid-template-columns:1fr 1fr}.nav{display:none}.pilot-card-footer a{flex-direction:column;text-align:center;gap:8px;padding:16px 20px}}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+    .hero-proof-strip{grid-template-columns:1fr 1fr}
+    .problem-inner{grid-template-columns:1fr;gap:48px}
+    .pilot-layout{grid-template-columns:1fr}
+    .services-grid{grid-template-columns:1fr}
+    .channel-grid{grid-template-columns:1fr}
+    .retrofit-layout{grid-template-columns:1fr}
+    .wl-grid{grid-template-columns:1fr}
+    .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+    .header-inner,.section,.problem,.cta-section,.footer{padding-left:20px;padding-right:20px}
+    .hero{padding:60px 20px 72px}
+    .hero-proof-strip{grid-template-columns:1fr 1fr}
+    .nav{display:none}
+    .pilot-card-footer a{flex-direction:column;text-align:center;gap:8px;padding:16px 20px}
+}
 </style>
 </head>
 <body>
-<header class="header"><div class="header-inner"><a href="/" class="logo">amusement standards.</a><nav><ul class="nav"><li><a href="/#services">Services</a></li><li><a href="/#packages">Packages</a></li><li><a href="data-analytics.html">Data Analytics</a></li><li><a href="manufacturer-services.html" class="nav-active">Manufacturer Programs</a></li><li><a href="/#contact" class="nav-cta">Book Risk Review</a></li></ul></nav></div></header>
 
-<!-- HERO -->
-<section class="hero"><div class="hero-inner">
-<div class="hero-eyebrow">Manufacturer Partnership Program</div>
-<h1>Your Equipment. <em>Your Verification Standard.</em><br>Running the Way You Designed It.</h1>
-<p class="hero-sub">No ride manufacturer in the amusement industry has a documented standard for verified operation of their equipment. We build one — ride-specific, ASTM-aligned, white-labeled, and deployed across your entire install base. Your operators, verified on your rides, running them to your engineering spec, under your name.</p>
-<div class="hero-actions"><a href="#pilot" class="btn btn-primary btn-lg">See the Pilot Program</a><a href="#post-pilot" class="btn btn-ghost btn-lg">Full Program →</a></div>
-<div class="hero-proof-strip">
-<div class="proof-item"><div class="proof-num">30<em>day</em></div><div class="proof-label">Course build — OEM docs to deployed SCORM</div></div>
-<div class="proof-item"><div class="proof-num">ASTM</div><div class="proof-label">F770-19 §7 + §8 aligned — documented on record</div></div>
-<div class="proof-item"><div class="proof-num">100<em>%</em></div><div class="proof-label">White-labeled — your verification, your brand</div></div>
-<div class="proof-item"><div class="proof-num">$4k</div><div class="proof-label">Per ride type — SCORM drops into any LMS</div></div>
-<div class="proof-item"><div class="proof-num">OEM</div><div class="proof-label">Spec-trained operators — closer to theoretical capacity</div></div>
-</div></div></section>
+<header class="header">
+    <div class="header-inner">
+        <a href="/" class="logo">amusement standards.</a>
+        <nav><ul class="nav">
+            <li><a href="/#services">Services</a></li>
+            <li><a href="/#packages">Packages</a></li>
+            <li><a href="data-analytics.html">Data Analytics</a></li>
+            <li><a href="manufacturer-services.html" class="nav-active">Manufacturer Programs</a></li>
+            <li><a href="/#contact" class="nav-cta">Book Risk Review</a></li>
+        </ul></nav>
+    </div>
+</header>
 
-<!-- EFFICIENCY BANNER -->
-<section class="eff-banner"><div class="eff-inner">
-<div class="eyebrow" style="color:var(--secondary)">The Efficiency Gap</div>
-<div class="eff-headline">Every Ride Has a <em>Theoretical Capacity Number.</em> Almost None Hit It.</div>
-<p class="eff-sub">You engineered your ride to move a specific number of riders per hour. But when operator training is park-authored, inconsistent, or improvised — dispatch intervals stretch, load times drift, and your product underperforms. Not because of engineering. Because of operations. Verified operators trained to your OEM spec close that gap.</p>
-<div class="eff-stats">
-<div class="eff-stat s1"><div class="eff-stat-icon">⏱</div><div class="eff-stat-title">Dispatch Efficiency</div><div class="eff-stat-text"><strong>Operators trained to OEM spec</strong> run tighter dispatch intervals because they understand the ride system — not just a park-authored checklist. Consistent procedures mean consistent cycle times.</div></div>
-<div class="eff-stat s2"><div class="eff-stat-icon">📊</div><div class="eff-stat-title">Theoretical → Actual</div><div class="eff-stat-text">Your ride was designed for a specific <strong>riders-per-hour capacity.</strong> Every second of hesitation at load, every unnecessary hold, every miscommunication at restraint check — it compounds. OEM-trained operators narrow the gap.</div></div>
-<div class="eff-stat s3"><div class="eff-stat-icon">🔄</div><div class="eff-stat-title">Fewer Stoppages</div><div class="eff-stat-text"><strong>Operators who understand the system</strong> don't panic-stop for normal conditions. They recognize the difference between a fault and a feature. Fewer unnecessary E-stops means more uptime and higher throughput.</div></div>
-</div></div></section>
+<!-- ═══════════════════════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-eyebrow">Manufacturer Partnership Program</div>
+        <h1>Your Equipment. <em>Your Verification Standard.</em><br>Built and Delivered Under Your Brand.</h1>
+        <p class="hero-sub">No ride manufacturer in the amusement industry has a documented standard for verified operation of their equipment. We build one — ride-specific, ASTM-aligned, white-labeled, and deployed across your entire install base. Your operators, verified on your rides, under your name.</p>
+        <div class="hero-actions">
+            <a href="#pilot" class="btn btn-primary btn-lg">See the Pilot Program</a>
+            <a href="#post-pilot" class="btn btn-ghost btn-lg">Full Program →</a>
+        </div>
+        <div class="hero-proof-strip">
+            <div class="proof-item">
+                <div class="proof-num">30<em>day</em></div>
+                <div class="proof-label">Course build — OEM docs to deployed SCORM</div>
+            </div>
+            <div class="proof-item">
+                <div class="proof-num">ASTM</div>
+                <div class="proof-label">F770-19 §7 + §8 aligned — documented on record</div>
+            </div>
+            <div class="proof-item">
+                <div class="proof-num">100<em>%</em></div>
+                <div class="proof-label">White-labeled — your verification, your brand</div>
+            </div>
+            <div class="proof-item">
+                <div class="proof-num">$4k</div>
+                <div class="proof-label">Per ride type — SCORM drops into any LMS</div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- PARK-ALIGNED vs MANUFACTURER-ALIGNED -->
-<section class="align-section"><div class="container">
-<div class="section-head">
-<div class="eyebrow">A Different Alignment</div>
-<h2 class="section-title">Most Training Programs Are Park-Aligned. This One Is Manufacturer-Aligned.</h2>
-<p class="section-sub">That's not a criticism — it's a different design point. Park-aligned programs solve park problems. Manufacturer-aligned verification solves manufacturer problems. Your equipment. Your spec. Your standard.</p>
-</div>
-<div class="align-grid">
-<div class="align-card park"><div class="align-tag">Park-Aligned Programs</div><h3>Designed Around Park Operations</h3><p class="align-text">Built to serve the facility's needs — scheduling, staffing, multi-ride coverage, guest service standards. Training is authored by the park to fit the park's operational model.</p>
-<ul class="align-list"><li>Training content written by the park, for the park</li><li>Covers all rides from all manufacturers under one umbrella</li><li>Optimized for rapid seasonal onboarding</li><li>Standards vary facility to facility</li><li>Manufacturer has no visibility or input</li><li>Procedures may drift from OEM engineering spec</li></ul>
-<div class="align-bottom">Valuable for parks. But the manufacturer's name is on the ride — not the park's training binder.</div></div>
-<div class="align-divider">vs</div>
-<div class="align-card mfg"><div class="align-tag">Manufacturer-Aligned Verification</div><h3>Designed Around the Equipment</h3><p class="align-text">Built from OEM documentation to ensure the ride is operated the way it was engineered. Every procedure traces back to the manufacturer's spec — not a park interpretation of it.</p>
-<ul class="align-list"><li>Training content built from manufacturer's OEM docs</li><li>Ride-specific — covers every system on your equipment</li><li>Consistent standard across every installation</li><li>Manufacturer gets fleet-wide visibility into verified operators</li><li>Procedures map to engineering specs and design intent</li><li>Operators run the ride closer to theoretical capacity</li></ul>
-<div class="align-bottom">Layers on top of park training — doesn't replace it. One verified lead operator per site, covering all your rides at that location.</div></div>
-</div>
-<div class="callout green" style="margin-top:40px"><div class="callout-label">Why This Matters for Your Sales Spec</div><p>When operators are trained to a park-authored standard, they learn "how we do it here." When they're verified to a manufacturer standard, they learn "how the ride was designed to run." The difference shows up in dispatch times, load efficiency, restraint check speed, and ultimately — whether your ride performs to the capacity number you published in the sales spec.</p></div>
-</div></section>
+<!-- ═══════════════════════════════════════════════════════════════
+     PROBLEM STATEMENT
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="problem">
+    <div class="problem-inner">
+        <div>
+            <div class="problem-eyebrow">The Problem Worth Solving</div>
+            <h2>Every Park Running Your Ride Is Operating Under a Standard You Never Set</h2>
+            <p>When a park takes delivery of your ride, they write their own training binder — or nothing at all. Every installation in your fleet is defining "qualified operator" independently. That's not their problem. That's yours.</p>
+            <p>One incident at a park running your equipment, with no documented manufacturer training standard on record, puts you in a very difficult conversation with your attorneys and insurers. The paper trail stops at delivery.</p>
+            <p>A ride-specific operator verification program changes that. Your equipment. Your standard. Your documented verification record at every installation. The manufacturer defines what "verified on our equipment" means — and every park has to meet it. The same principle Caterpillar applied to heavy equipment over three decades — no one in the amusement industry has done it yet.</p>
+        </div>
+        <div class="problem-callouts">
+            <div class="problem-callout">
+                <div class="pc-label">The Gap</div>
+                <div class="pc-text">Every installation in your fleet is defining "qualified operator" independently. No manufacturer standard anywhere in the chain of documentation.</div>
+            </div>
+            <div class="problem-callout amber">
+                <div class="pc-label">The Risk</div>
+                <div class="pc-text">Without a documented manufacturer training program, incident liability shifts toward design and engineering. A verification program closes that gap before the incident happens.</div>
+            </div>
+            <div class="problem-callout purp">
+                <div class="pc-label">The Opportunity</div>
+                <div class="pc-text">No coaster or flat ride manufacturer currently verifies operators on their equipment under their own brand. The first one to build it sets the industry standard — and creates compounding revenue from every installation.</div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- PROBLEM STATEMENT -->
-<section class="problem"><div class="problem-inner"><div>
-<div class="problem-eyebrow">The Problem Worth Solving</div>
-<h2>Every Park Running Your Ride Is Operating Under a Standard You Never Set</h2>
-<p>When a park takes delivery of your ride, they write their own training binder — or nothing at all. Every installation in your fleet is defining "qualified operator" independently. That's not their problem. That's yours.</p>
-<p>One incident at a park running your equipment, with no documented manufacturer training standard on record, puts you in a very difficult conversation with your attorneys and insurers. The paper trail stops at delivery.</p>
-<p>A ride-specific operator verification program changes that. Your equipment. Your standard. Your documented verification record at every installation — and operators running the ride the way you engineered it to run.</p>
-</div><div class="problem-callouts">
-<div class="problem-callout"><div class="pc-label">The Gap</div><div class="pc-text">Every installation in your fleet is defining "qualified operator" independently. No manufacturer standard anywhere in the chain of documentation.</div></div>
-<div class="problem-callout amber"><div class="pc-label">The Risk</div><div class="pc-text">Without a documented manufacturer training program, incident liability shifts toward design and engineering. A verification program closes that gap before the incident happens.</div></div>
-<div class="problem-callout purp"><div class="pc-label">The Opportunity</div><div class="pc-text">No coaster or flat ride manufacturer currently verifies operators on their equipment under their own brand. The first one to build it sets the industry standard — and creates compounding revenue from every installation.</div></div>
-<div class="problem-callout green"><div class="pc-label">The Efficiency Case</div><div class="pc-text">Your ride's published capacity number only holds up if operators run it to spec. OEM-verified operators close the gap between theoretical and actual throughput — making your equipment perform the way you sold it.</div></div>
-</div></div></section>
+<!-- ═══════════════════════════════════════════════════════════════
+     THE PILOT — 1 RIDE · 30 DAYS · 90-DAY OBSERVATION
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="pilot">
+    <div class="container">
+        <div class="section-head">
+            <div class="eyebrow">Start Here</div>
+            <h2 class="section-title">The Pilot — 1 Ride · 30-Day Build · 90-Day Pilot</h2>
+            <p class="section-sub">Prove the model on one ride at one park. One ride-specific verification course built against your OEM documentation. Data Intelligence Pro included at no additional charge. Parks get a completion record — you get a documented verification standard.</p>
+        </div>
 
-<!-- PILOT -->
-<section class="section" id="pilot"><div class="container">
-<div class="section-head"><div class="eyebrow">Start Here</div><h2 class="section-title">The Pilot — 1 Ride · 30-Day Build · 90-Day Pilot</h2><p class="section-sub">Prove the model on one ride at one park. One ride-specific verification course built against your OEM documentation. Data Intelligence Pro included at no additional charge. Parks get a completion record — you get a documented verification standard and operators running your equipment the way you designed it.</p></div>
-<div class="pilot-layout">
-<div class="pilot-card featured">
-<div class="pilot-card-header"><div class="pilot-tag">What Gets Built for Each Ride</div><h3>Operator Verification Course</h3></div>
-<div class="pilot-card-body">
-<div class="pilot-detail"><div class="pilot-detail-icon">📦</div><div class="pilot-detail-content"><div class="pilot-detail-label">Ride-specific SCORM 1.2 course</div><div class="pilot-detail-val">Drops into any LMS — no new platform required. Full ride systems, ASTM F770-19 §7.1 pre-opening inspection, §8.1 operator qualification, §8.2 duties, §8.3 field demo documentation. OEM-specified load and dispatch sequences built in.</div></div></div>
-<div class="pilot-detail"><div class="pilot-detail-icon">📋</div><div class="pilot-detail-content"><div class="pilot-detail-label">Built from your OEM documentation</div><div class="pilot-detail-val">Every procedure traces back to your technical specs — not park-authored binders. Rider screening, LOTO (OSHA 1910.147), emergency procedures, incident command. The engineered procedure is almost always the most efficient one.</div></div></div>
-<div class="pilot-detail"><div class="pilot-detail-icon">🏷️</div><div class="pilot-detail-content"><div class="pilot-detail-label">White-labeled under your brand</div><div class="pilot-detail-val">Your logo, your name on every verification record. Unique completion IDs, issue date, 12-month validity. 20-question final assessment, 80% pass threshold. Parks see your stamp — not ours.</div></div></div>
-<div class="pilot-detail"><div class="pilot-detail-icon">📊</div><div class="pilot-detail-content"><div class="pilot-detail-label">Data Intelligence Pro included</div><div class="pilot-detail-val">Full incident heatmap and risk brief for the pilot ride at Day 60–90, at no additional charge. Establishes data baselines and operational efficiency benchmarks for the full program.</div></div></div>
-<div class="pilot-price-row"><div class="pilot-price-box"><div class="ppb-val">$4,000</div><div class="ppb-label">1-ride course build</div></div><div class="pilot-price-box"><div class="ppb-val">At cost</div><div class="ppb-label">Site visit — travel + 1 overnight</div></div><div class="pilot-price-box included"><div class="ppb-val">Included</div><div class="ppb-label">Data Intelligence Pro</div></div></div>
-</div>
-<div class="pilot-card-footer"><a href="operator-verification.html"><span class="pcf-label">Full Operator Verification Program Details <span class="pcf-tag">Learn More</span></span><span class="pcf-arrow">operator-verification <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></span></a></div>
-</div>
-<div>
-<div class="pilot-card"><div class="pilot-card-header"><div class="pilot-tag">Build + Pilot Timeline</div><h3>30-Day Build → 90-Day Pilot</h3></div><div class="pilot-card-body"><div class="timeline">
-<div class="tl-item"><div class="tl-marker">PRE</div><div class="tl-text"><strong>AS site visit</strong> — live observation, operator interview, video documentation for course build.</div></div>
-<div class="tl-item"><div class="tl-marker">WK 1</div><div class="tl-text"><strong>OEM documentation review</strong> — course outline, scope sign-off.</div></div>
-<div class="tl-item"><div class="tl-marker">WK 2</div><div class="tl-text"><strong>Full verification course build</strong> — pilot ride.</div></div>
-<div class="tl-item"><div class="tl-marker">WK 3</div><div class="tl-text"><strong>Review, revisions</strong> — branding applied.</div></div>
-<div class="tl-item"><div class="tl-marker">WK 4</div><div class="tl-text"><strong>SCORM packages delivered</strong> — deploy in existing LMS.</div></div>
-<div class="tl-item"><div class="tl-marker">DAY 60</div><div class="tl-text"><strong>Pilot data collection closes</strong> — completion rates, assessment scores, session time, operator counts.</div></div>
-<div class="tl-item"><div class="tl-marker">DAY 60–90</div><div class="tl-text"><strong>Data Intelligence Pro analysis</strong> — full incident heatmap, performance patterns, and risk brief. Included at no charge.</div></div>
-<div class="tl-item"><div class="tl-marker">DAY 90</div><div class="tl-text"><strong>Review call</strong> — pilot findings presented, scale decision.</div></div>
-</div></div></div>
-<div class="callout teal" style="margin-top:20px"><div class="callout-label">Manufacturer Operator Verification</div><p>Not a new credential for parks to administer — a manufacturer verification record. Your lead operators complete the course, pass the assessment, and receive a completion record under your brand. You can tell every park in your install base: <strong>"Your operators have been verified on our equipment per ASTM F770-19."</strong> That's your stamp, not a third-party program. $350/person/year per site + $250/each additional ride for annual reverification — covers all rides at that location.</p></div>
-</div></div></div></section>
+        <div class="pilot-layout">
+            <!-- LEFT: What gets built -->
+            <div class="pilot-card featured">
+                <div class="pilot-card-header">
+                    <div class="pilot-tag">What Gets Built for Each Ride</div>
+                    <h3>Operator Verification Course</h3>
+                </div>
+                <div class="pilot-card-body">
+                    <div class="pilot-detail">
+                        <div class="pilot-detail-icon">📦</div>
+                        <div class="pilot-detail-content">
+                            <div class="pilot-detail-label">Ride-specific SCORM 1.2 course</div>
+                            <div class="pilot-detail-val">Drops into any LMS — no new platform required. Full ride systems, ASTM F770-19 §7.1 pre-opening inspection, §8.1 operator qualification, §8.2 duties, §8.3 field demo documentation.</div>
+                        </div>
+                    </div>
+                    <div class="pilot-detail">
+                        <div class="pilot-detail-icon">📋</div>
+                        <div class="pilot-detail-content">
+                            <div class="pilot-detail-label">Built from your OEM documentation</div>
+                            <div class="pilot-detail-val">Every procedure traces back to your technical specs — not park-authored binders. Rider screening, LOTO (OSHA 1910.147), emergency procedures, incident command.</div>
+                        </div>
+                    </div>
+                    <div class="pilot-detail">
+                        <div class="pilot-detail-icon">🏷️</div>
+                        <div class="pilot-detail-content">
+                            <div class="pilot-detail-label">White-labeled under your brand</div>
+                            <div class="pilot-detail-val">Your logo, your name on every verification record. Unique completion IDs, issue date, 12-month validity. 20-question final assessment, 80% pass threshold. Parks see your stamp — not ours.</div>
+                        </div>
+                    </div>
+                    <div class="pilot-detail">
+                        <div class="pilot-detail-icon">📊</div>
+                        <div class="pilot-detail-content">
+                            <div class="pilot-detail-label">Data Intelligence Pro included</div>
+                            <div class="pilot-detail-val">Full incident heatmap and risk brief for the pilot ride at Day 60–90, at no additional charge. Establishes the data baselines for the full program.</div>
+                        </div>
+                    </div>
 
-<!-- POST-PILOT -->
-<section class="section section-alt" id="post-pilot"><div class="container">
-<div class="section-head"><div class="eyebrow">After the Pilot</div><h2 class="section-title">The Full Program — Four Services</h2><p class="section-sub">Every new ride that sells gets a verification course. Every park that operates your equipment gets verified operators running it to spec and incident analysis on record. The program scales with your sales — no new negotiation required.</p></div>
-<div class="services-grid">
-<div class="svc-card core"><div class="svc-num">Service 1</div><div class="svc-icon">🎯</div><div class="svc-title">Operator Verification Program</div><div class="svc-desc">Ride-specific verification modules built against each ride's operating fact sheet. Operators learn the manufacturer's intended load procedure, restraint check order, and dispatch sequence — not a park approximation. AS-hosted portal under your brand, or SCORM delivery to park LMS. Quarterly verification report auto-generates.</div><div class="svc-price">Coasters $4,000/ride · Flat rides $4,000 first type, $750/unit repeat</div><ul class="svc-list"><li>Attendant SCORM add-on — $1,500/ride type</li><li>Operator SCORM add-on — $2,500/ride type</li><li>Annual reverification — $350/person/year per site + $250/each additional ride</li><li>Covers all rides at the site · one verification, one price</li></ul><a href="operator-verification.html" class="demo-link">Full verification program details <span class="demo-badge">Learn More</span></a></div>
-<div class="svc-card"><div class="svc-num">Service 2</div><div class="svc-icon">🖥️</div><div class="svc-title">Annual Platform Fee &amp; LMS Hosting</div><div class="svc-desc">AS-hosted learning portal under your brand. Parks access courses through a branded URL. Completion data, verification records, and billing artifacts all managed by AS. Compounds with every ride sold — $500 per unit per year, regardless of type.</div><div class="svc-price">$500/ride/year</div><ul class="svc-list"><li>Branded portal — your logo, your URL, your verification records</li><li>Quarterly verification report — auto-generated</li><li>Serves as both compliance record and billing artifact</li><li>Compounds forever — every new installation adds recurring revenue</li></ul><a href="training-programs.html" class="demo-link">LMS Training Programs <span class="demo-badge">Learn More</span></a></div>
-<div class="svc-card"><div class="svc-num">Service 3</div><div class="svc-icon">📊</div><div class="svc-title">Data Intelligence Pro</div><div class="svc-desc">Quarterly incident analysis across your full install base. CPSC NEISS data supplemented by park-provided incident logs, normalized by attendance, analyzed for spatial clustering and temporal patterns. Ride-type benchmarking so parks can see how their incident rate — and operational efficiency — compares to the fleet average.</div><div class="svc-price">$6,000/quarter flat — covers all enrolled parks</div><ul class="svc-list"><li>Quarterly incident heatmap — spatial clustering by ride zone</li><li>Ride-type benchmarking normalized by attendance volume</li><li>Pre-season risk brief before each operating season</li><li>ASTM F770-19 update integration flagged by ride type</li><li>R-based analytical pipeline — reproducible, documented</li></ul><a href="/demos/risk-heatmap-live.html" class="demo-link">See a sample dashboard <span class="demo-badge">Live Demo</span></a></div>
-<div class="svc-card"><div class="svc-num">Service 4</div><div class="svc-icon">🚨</div><div class="svc-title">Incident Response &amp; Remediation</div><div class="svc-desc">When something happens at a park operating your equipment, AS deploys within 48 hours. Documentation review, operator verification status check, corrective action plan, and a remediation report under your brand — before regulators arrive.</div><div class="svc-price">$1,500/month retainer · $3,500 per additional event</div><ul class="svc-list"><li>48-hour response SLA</li><li>Incident documentation and operator verification status</li><li>Corrective action plan and remediation report</li><li>Delivered under your brand — AS operates under NDA</li></ul><a href="emergency-incident-response.html" class="demo-link">Emergency Incident Response details <span class="demo-badge">Learn More</span></a></div>
-</div>
-<div class="callout navy" style="margin-top:40px"><div class="callout-label">The Compounding Revenue Model</div><p>Course builds front-load Year 1 revenue as the catalog gets built out. After that, the growth engine is the platform fee — $500 per unit per year, compounding with every ride sold. Annual reverifications add a second layer — $350 per verified operator per site, annually. Every new park enrolled adds reverification revenue. Every new ride sold into an enrolled park adds platform fee revenue. Course builds are the catalyst. Platform fees and reverifications are the floor that never goes away.</p></div>
-</div></section>
+                    <div class="pilot-price-row">
+                        <div class="pilot-price-box">
+                            <div class="ppb-val">$4,000</div>
+                            <div class="ppb-label">1-ride course build</div>
+                        </div>
+                        <div class="pilot-price-box">
+                            <div class="ppb-val">At cost</div>
+                            <div class="ppb-label">Site visit — travel + 1 overnight</div>
+                        </div>
+                        <div class="pilot-price-box included">
+                            <div class="ppb-val">Included</div>
+                            <div class="ppb-label">Data Intelligence Pro</div>
+                        </div>
+                    </div>
+                </div>
 
-<!-- WHITE-LABEL -->
-<section class="section"><div class="container">
-<div class="section-head"><div class="eyebrow">Invisible Delivery</div><h2 class="section-title">How the White-Label Model Works</h2><p class="section-sub">You present it to the park as your own offering. AS delivers under NDA. The margin between what you pay AS and what you charge the park is 100% yours to keep.</p></div>
-<div class="wl-grid">
-<div class="wl-col"><div class="wl-step">Step 1 — Manufacturer</div><h3>You Set the Park-Facing Price</h3><p>AS publishes floor prices — what you pay us. What you charge the park is entirely your decision. Verification program, DIP, incident response, channel services — you mark up however you choose.</p></div>
-<div class="wl-col dark"><div class="wl-step">Step 2 — Amusement Standards</div><h3>AS Builds and Delivers Invisibly</h3><p>Every deliverable carries your branding. No AS logo, no AS contact, no AS visibility to the park unless you choose otherwise. AS invoices you at the floor price. You invoice the park.</p></div>
-<div class="wl-col"><div class="wl-step">Step 3 — Parks</div><h3>Parks See Only Your Brand</h3><p>Courses, verification records, quarterly reports, incident response — all under your name. Parks with existing internal training can verify their lead staff through your program without replacing their LMS or retraining line-level operators.</p></div>
-</div></div></section>
+                <!-- ═══ NEW FULL-WIDTH FOOTER BAR ═══ -->
+                <div class="pilot-card-footer">
+                    <a href="operator-verification.html">
+                        <span class="pcf-label">
+                            Full Operator Verification Program Details
+                            <span class="pcf-tag">Learn More</span>
+                        </span>
+                        <span class="pcf-arrow">
+                            View Program
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
 
-<!-- RETROFIT -->
-<section class="section section-alt" id="retrofit"><div class="container">
-<div class="section-head"><div class="eyebrow">The Existing Install Base</div><h2 class="section-title">The Retrofit Opportunity</h2><p class="section-sub">New ride sales drive verification revenue going forward. But your existing install base — every park currently operating your equipment below theoretical capacity with no documented standard — is a separate market available right now.</p></div>
-<div class="retrofit-layout">
-<div class="retrofit-tracks">
-<div class="track-card"><div class="track-header t1"><h4>Track 1 — Operator Verification</h4></div><div class="track-body">
-<p>The easier first conversation. Parks in the existing install base already have lead staff who know the ride cold. The verification program documents those people as manufacturer-verified operators — no new training system, no LMS replacement. Just a documented verification record for a ride that's been running without one.</p>
-<p>AS builds the verification course against specs already on file — no SOP submission required from the park. Faster build, lower friction. Operators learn the OEM-specified sequences that close the gap between how the ride is running and how it was designed to run.</p>
-<p>The outreach angle: you contact existing parks as a manufacturer safety initiative — not a sales call. "We're establishing a documented verification standard for qualified operation across our fleet. As an existing operator, you're invited into the program."</p>
-<div class="track-price-row"><div class="track-price-tag">$4,000 course build</div><div class="track-price-tag">$5,100 retrofit bundle</div></div>
-<p style="font-size:12px;color:var(--text-light);margin-top:8px">Retrofit bundle: course build + first year platform fee + first cohort verification. One transaction — park is fully stood up.</p>
-</div></div>
-<div class="track-card"><div class="track-header t2"><h4>Track 2 — Data Intelligence Pro</h4></div><div class="track-body">
-<p>Every park operating an existing ride has incident history, seasonal patterns, and operational data that's currently invisible to you. Data Intelligence Pro surfaces it — benchmarked against every other installation of the same ride type, normalized by attendance.</p>
-<p>Lead with operator verification to get the park into the program, then introduce DIP at the first renewal. Once a park has verified operators and a quarterly incident report coming in under your brand, the relationship is established and the full program is a natural expansion.</p>
-<a href="/demos/risk-heatmap-live.html" class="demo-link">See a sample dashboard <span class="demo-badge">Live Demo</span></a>
-<div class="track-price-row"><div class="track-price-tag">$6,000/quarter flat</div><div class="track-price-tag">No build fee</div></div>
-</div></div>
-</div>
-<div>
-<div class="callout purp"><div class="callout-label">Sequencing Strategy</div><p>Operator verification is the easier first conversation — it only requires enrolling existing lead staff in a course built from specs you already hold. DIP requires data submission and a quarterly reporting relationship. Lead with verification, then introduce DIP at the first renewal.</p></div>
-<div class="callout amber" style="margin-top:16px"><div class="callout-label">For Parks That Say "We Already Have Training"</div><p>The verification program doesn't replace anything. It documents existing lead staff as manufacturer-verified operators on your equipment. It's not another credential to administer — it's a completion record the manufacturer can reference. That objection dissolves on contact.</p></div>
-<div class="callout green" style="margin-top:16px"><div class="callout-label">The Efficiency Argument</div><p>Parks with existing training programs may be training operators to a park-authored standard that drifts from OEM spec. Verification realigns their procedures to your engineering intent — which is almost always the most efficient procedure. Tighter dispatch, faster loads, fewer unnecessary stoppages. The safety case and the efficiency case are the same case.</p></div>
-</div></div></div></section>
+            <!-- RIGHT: Timeline + Verification callout -->
+            <div>
+                <div class="pilot-card">
+                    <div class="pilot-card-header">
+                        <div class="pilot-tag">Build + Pilot Timeline</div>
+                        <h3>30-Day Build → 90-Day Pilot</h3>
+                    </div>
+                    <div class="pilot-card-body">
+                        <div class="timeline">
+                            <div class="tl-item">
+                                <div class="tl-marker">PRE</div>
+                                <div class="tl-text"><strong>AS site visit</strong> — live observation, operator interview, video documentation for course build.</div>
+                            </div>
+                            <div class="tl-item">
+                                <div class="tl-marker">WK 1</div>
+                                <div class="tl-text"><strong>OEM documentation review</strong> — course outline, scope sign-off.</div>
+                            </div>
+                            <div class="tl-item">
+                                <div class="tl-marker">WK 2</div>
+                                <div class="tl-text"><strong>Full verification course build</strong> — pilot ride.</div>
+                            </div>
+                            <div class="tl-item">
+                                <div class="tl-marker">WK 3</div>
+                                <div class="tl-text"><strong>Review, revisions</strong> — branding applied.</div>
+                            </div>
+                            <div class="tl-item">
+                                <div class="tl-marker">WK 4</div>
+                                <div class="tl-text"><strong>SCORM packages delivered</strong> — deploy in existing LMS.</div>
+                            </div>
+                            <div class="tl-item">
+                                <div class="tl-marker">DAY 60</div>
+                                <div class="tl-text"><strong>Pilot data collection closes</strong> — completion rates, assessment scores, session time, operator counts for the pilot ride.</div>
+                            </div>
+                            <div class="tl-item">
+                                <div class="tl-marker">DAY 60–90</div>
+                                <div class="tl-text"><strong>Data Intelligence Pro analysis</strong> — full incident heatmap, performance patterns, and risk brief. Included at no charge.</div>
+                            </div>
+                            <div class="tl-item">
+                                <div class="tl-marker">DAY 90</div>
+                                <div class="tl-text"><strong>Review call</strong> — pilot findings presented, scale decision.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<!-- CHANNEL CATALOG -->
-<section class="section"><div class="container">
-<div class="section-head"><div class="eyebrow">Channel Partner Catalog</div><h2 class="section-title">Your Brand. Our Delivery. Your Margin.</h2><p class="section-sub">Beyond the core verification and DIP program, AS operates a full suite of safety services you can offer to park clients as white-labeled products. Every deliverable carries your branding. AS publishes floor prices — what you charge the park is your decision.</p></div>
-<div class="channel-grid">
-<div class="ch-card"><div class="ch-title">Safety Audit &amp; Inspection</div><div class="ch-desc">On-site ride inspection and compliance assessment. Delivered under your letterhead with manufacturer-level authority.</div><div class="ch-price">$2,500 first ride · $1,500 add'l same visit</div><a href="ride-verified.html" class="demo-link">Verified Audits <span class="demo-badge">Learn More</span></a></div>
-<div class="ch-card"><div class="ch-title">RIDE Safety Orientation LMS</div><div class="ch-desc">Full safety orientation course for park staff beyond the verification program. Covers general attraction safety for all front-line employees.</div><div class="ch-price">$3,500 build · $400/yr annual</div><a href="training-programs.html" class="demo-link">LMS Training Programs <span class="demo-badge">Learn More</span></a></div>
-<div class="ch-card"><div class="ch-title">Incident Response &amp; Remediation</div><div class="ch-desc">AS deploys when something happens. Documentation review, operator verification status, corrective action plan — delivered before regulators arrive.</div><div class="ch-price">$2,000 per event</div><a href="emergency-incident-response.html" class="demo-link">Learn more <span class="demo-badge">Details</span></a></div>
-<div class="ch-card"><div class="ch-title">Pre-Launch Intensive</div><div class="ch-desc">On-site in the 30 days before a new installation opens. Live operator verification, supervised §8.3 field demonstrations, emergency drills, compliance package.</div><div class="ch-price">$8,000–$12,000 per launch</div><a href="/pre-launch-intensive.html" class="demo-link">See more <span class="demo-badge">Details</span></a></div>
-<div class="ch-card"><div class="ch-title">Spanish-Language Verification</div><div class="ch-desc">Full verification course and supporting materials translated and culturally adapted. Creates a market position no competitor can immediately replicate.</div><div class="ch-price">$5,000 first build · $750/unit repeat</div></div>
-<div class="ch-card"><div class="ch-title">New Ride Operator Pre-Launch</div><div class="ch-desc">Puts you physically on-site at the highest-stakes moment of a new ride opening. Premium positioning recommended.</div><div class="ch-price">$8,000–$12,000 per launch</div></div>
-</div>
-<div class="callout teal" style="margin-top:40px"><div class="callout-label">The Channel Partner Advantage</div><p>Every service in this catalog gives you a reason to contact a park outside of the ride sales cycle. Together these services transform you from a hardware manufacturer into a year-round operational partner — and that relationship depth makes every future hardware sale easier to close.</p></div>
-</div></section>
+                <div class="callout teal" style="margin-top:20px">
+                    <div class="callout-label">Manufacturer Operator Verification</div>
+                    <p>Not a new credential for parks to administer — a manufacturer verification record. Your lead operators complete the course, pass the assessment, and receive a completion record under your brand. You can tell every park in your install base: <strong>"Your operators have been verified on our equipment per ASTM F770-19."</strong> That's your stamp, not a third-party program. $350/person/year per site + $250/each additional ride for annual reverification — covers all rides at that location.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<!-- ASTM -->
-<section class="section section-alt"><div class="container">
-<div class="section-head"><div class="eyebrow">Regulatory Foundation</div><h2 class="section-title">ASTM F770-19 Alignment</h2><p class="section-sub">The operator verification program is structured against the ASTM standard for ownership, operation, maintenance, and inspection of amusement rides. OSHA 29 CFR 1910.147 (LOTO) is incorporated under §8.2 duties.</p></div>
-<div style="display:flex;flex-direction:column;gap:0">
-<div class="flow-step"><div class="flow-num">§7.1</div><div class="flow-body"><h3>Pre-Opening Inspection</h3><p>Operator must perform and document a structured pre-opening inspection before each operating day. The verification course includes a ride-specific pre-opening checklist module. Verified operator signs off daily — record retained in LMS.</p></div></div>
-<div class="flow-step"><div class="flow-num teal">§8.1</div><div class="flow-body"><h3>General Operator Qualification</h3><p>Operators must be trained in proper ride operation and applicable guest safety rules, with training documented. The verification course covers full ride systems, restraint verification, rider screening, and guest communication — all from OEM documentation. Completion record with unique ID issued on 80% pass.</p></div></div>
-<div class="flow-step"><div class="flow-num amber">§8.2</div><div class="flow-body"><h3>Operator Duties</h3><p>Operator is responsible for safe loading, restraint verification, emergency response, and LOTO compliance during maintenance operations. The verification course includes LOTO per OSHA 1910.147, emergency stop and evacuation procedures, and incident command basics. OEM-specified load and dispatch sequences optimize both safety and throughput.</p></div></div>
-<div class="flow-step" style="border-bottom:none"><div class="flow-num purp">§8.3</div><div class="flow-body"><h3>Field Demonstration Requirement</h3><p>Training must include a supervised field demonstration by a qualified person who documents that the trainee performed all required tasks correctly. The verification program includes §8.3 documentation protocol and supervised demonstration facilitation. The verified lead operator is the manufacturer's qualified person of record — 1 per site.</p></div></div>
-</div></div></section>
+<!-- ═══════════════════════════════════════════════════════════════
+     POST-PILOT — THE FULL PROGRAM (4 SERVICES)
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section-alt" id="post-pilot">
+    <div class="container">
+        <div class="section-head">
+            <div class="eyebrow">After the Pilot</div>
+            <h2 class="section-title">The Full Program — Four Services</h2>
+            <p class="section-sub">Every new ride that sells gets a verification course. Every park that operates your equipment gets verified operators and incident analysis on record. The program scales with your sales — no new negotiation required.</p>
+        </div>
 
-<!-- HOW IT WORKS -->
-<section class="section" id="how-it-works"><div class="container">
-<div class="section-head"><div class="eyebrow">How It Works</div><h2 class="section-title">What Happens After Every Ride Sale</h2><p class="section-sub">Step by step, from contract to verified operators on the ground running your equipment to spec. Every new ride gets a course automatically — no new negotiation required.</p></div>
-<div class="flow-grid">
-<div class="flow-step"><div class="flow-num">01</div><div class="flow-body"><div class="flow-tag mfr">Manufacturer</div><h3>Ride Sold — Share OEM Documentation</h3><p>Ride manual, technical spec, or operating fact sheet for the installation. AS works from your source material — every procedure traces back to your engineering.</p></div></div>
-<div class="flow-step"><div class="flow-num teal">02</div><div class="flow-body"><div class="flow-tag as">Amusement Standards</div><h3>AS Builds the Course in 30 Days</h3><p>Ride-specific verification course with your branding on every deliverable. SCORM 1.2 package delivered — drops into any LMS, or hosted on the AS portal under your brand. ASTM F770-19 §8 aligned throughout. OEM dispatch and load sequences built into every module.</p></div></div>
-<div class="flow-step"><div class="flow-num amber">03</div><div class="flow-body"><div class="flow-tag park">Park</div><h3>Park Deploys — Operators Get Verified</h3><p>Park's lead operator completes the verification course, passes the 20-question assessment at 80%, receives a branded completion record with unique ID and 12-month validity. They now understand the ride the way you engineered it — not just the way their park runs it.</p></div></div>
-<div class="flow-step"><div class="flow-num teal">04</div><div class="flow-body"><div class="flow-tag as">Amusement Standards</div><h3>Data Intelligence Pro Activates at Day 60</h3><p>Pilot data collection feeds into the first quarterly incident analysis. Incident heatmap, ride-type benchmarking, performance patterns — delivered as a branded PDF under your name. Every subsequent quarter builds on the baseline.</p><a href="/demos/risk-heatmap-live.html" class="demo-link">See a sample dashboard <span class="demo-badge">Live Demo</span></a></div></div>
-<div class="flow-step" style="border-bottom:none"><div class="flow-num purp">05</div><div class="flow-body"><div class="flow-tag mfr">Manufacturer</div><h3>Annual Reverification + Platform Fee Compounds</h3><p>Annual reverification at $350/person/year per site plus $250/each additional ride onsite. Platform fee at $500/ride/year. Both compound with every new sale and every new park enrolled. Course builds are the catalyst — platform fees and reverifications are the floor that never goes away.</p></div></div>
-</div></div></section>
+        <div class="services-grid">
+            <!-- SERVICE 1: Operator Verification -->
+            <div class="svc-card core">
+                <div class="svc-num">Service 1</div>
+                <div class="svc-icon">🎯</div>
+                <div class="svc-title">Operator Verification Program</div>
+                <div class="svc-desc">Ride-specific verification modules built against each ride's operating fact sheet. AS-hosted portal under your brand, or SCORM delivery to park LMS. Quarterly verification report auto-generates showing every active verified operator, pass/fail records, and upcoming reverification dates. Parks don't manage a new credential — they receive a manufacturer completion record.</div>
+                <div class="svc-price">Coasters $4,000/ride · Flat rides $4,000 first type, $750/unit repeat</div>
+                <ul class="svc-list">
+                    <li>Attendant SCORM add-on — $1,500/ride type</li>
+                    <li>Operator SCORM add-on — $2,500/ride type</li>
+                    <li>Annual reverification — $350/person/year per site + $250/each additional ride</li>
+                    <li>Covers all rides at the site · one verification, one price</li>
+                </ul>
+                <a href="operator-verification.html" class="demo-link">Full verification program details <span class="demo-badge">Learn More</span></a>
+            </div>
 
-<!-- CONTRACT -->
-<section class="section section-alt"><div class="container">
-<div class="section-head"><div class="eyebrow">One Agreement</div><h2 class="section-title">Contract Structure</h2><p class="section-sub">One client relationship. No park-level procurement complexity. Clear obligations on all sides.</p></div>
-<div class="callout navy"><div class="callout-label">Master Services Agreement</div><p>You sign a single MSA with Amusement Standards covering: per-ride course build fee schedule, annual platform hosting fee per ride ($500/ride/year), quarterly Data Intelligence Pro delivery obligations, incident response retainer terms and SLA (48-hour response), white-label and IP ownership terms (you own the courses built for your rides), and park end-user terms incorporated by reference. Parks are named as end users — they never sign separately. You manage the park relationship. Amusement Standards manages the product.</p></div>
-</div></section>
+            <!-- SERVICE 2: Platform -->
+            <div class="svc-card">
+                <div class="svc-num">Service 2</div>
+                <div class="svc-icon">🖥️</div>
+                <div class="svc-title">Annual Platform Fee &amp; LMS Hosting</div>
+                <div class="svc-desc">AS-hosted learning portal under your brand. Parks access courses through a branded URL. Completion data, verification records, and billing artifacts all managed by AS. Compounds with every ride sold — $500 per unit per year, regardless of type.</div>
+                <div class="svc-price">$500/ride/year</div>
+                <ul class="svc-list">
+                    <li>Branded portal — your logo, your URL, your verification records</li>
+                    <li>Quarterly verification report — auto-generated</li>
+                    <li>Serves as both compliance record and billing artifact</li>
+                    <li>Compounds forever — every new installation adds recurring revenue</li>
+                </ul>
+                <a href="training-programs.html" class="demo-link">LMS Training Programs <span class="demo-badge">Learn More</span></a>
+            </div>
 
-<!-- CTA -->
-<section class="cta-section" id="contact"><div class="cta-inner">
-<div class="cta-eyebrow">Start With the Pilot</div>
-<h2>Your Ride. Your Spec. Your Operators Running It Right.</h2>
-<p>The pilot proves the model works — ride-specific courses built and deployed, manufacturer verification documentation on record, operators trained to your engineering spec, incident analysis baselines activated. Safer operations and higher throughput — from one signature.</p>
-<div class="cta-btns"><a href="mailto:adam@amusementstandards.com" class="btn btn-primary btn-lg">Start the Conversation</a><a href="/#contact" class="btn btn-ghost btn-lg">Book a Risk Review</a></div>
-</div></section>
+            <!-- SERVICE 3: DIP -->
+            <div class="svc-card">
+                <div class="svc-num">Service 3</div>
+                <div class="svc-icon">📊</div>
+                <div class="svc-title">Data Intelligence Pro</div>
+                <div class="svc-desc">Quarterly incident analysis across your full install base. CPSC NEISS data supplemented by park-provided incident logs, normalized by attendance, analyzed for spatial clustering and temporal patterns. Ride-type benchmarking so parks can see how their incident rate compares to the fleet average.</div>
+                <div class="svc-price">$6,000/quarter flat — covers all enrolled parks</div>
+                <ul class="svc-list">
+                    <li>Quarterly incident heatmap — spatial clustering by ride zone</li>
+                    <li>Ride-type benchmarking normalized by attendance volume</li>
+                    <li>Pre-season risk brief before each operating season</li>
+                    <li>ASTM F770-19 update integration flagged by ride type</li>
+                    <li>R-based analytical pipeline — reproducible, documented</li>
+                </ul>
+                <a href="/demos/risk-heatmap-live.html" class="demo-link">See a sample dashboard <span class="demo-badge">Live Demo</span></a>
+            </div>
 
-<footer class="footer"><div class="footer-inner"><div class="footer-grid">
-<div><div class="footer-brand-name">amusement standards.</div><p class="footer-brand-desc">Expert safety consulting, risk intelligence, and operator verification infrastructure for the amusement and attractions industry.</p></div>
-<div><div class="footer-col-title">Services</div><ul class="footer-links"><li><a href="services/training-programs.html">Training Programs</a></li><li><a href="services/operational-standards.html">Operational Standards</a></li><li><a href="services/compliance-regulatory-support.html">Compliance &amp; Regulatory</a></li><li><a href="services/insurance-risk-reduction.html">Insurance &amp; Risk</a></li></ul></div>
-<div><div class="footer-col-title">Manufacturer Programs</div><ul class="footer-links"><li><a href="manufacturer-services.html">Program Overview</a></li><li><a href="operator-verification.html">Operator Verification</a></li><li><a href="#pilot">Pilot Program</a></li><li><a href="#post-pilot">Full Program</a></li><li><a href="#retrofit">Retrofit Opportunity</a></li></ul></div>
-<div><div class="footer-col-title">Contact</div><ul class="footer-links"><li><a href="mailto:adam@amusementstandards.com">info@amusementstandards.com</a></li><li><a href="https://www.linkedin.com/company/amusement-standards">LinkedIn</a></li></ul></div>
-</div><div class="footer-bottom"><span>© 2025 Amusement Standards. All rights reserved.</span><span>Safety consulting · Risk intelligence · Operator verification</span></div></div></footer>
-</body></html>
+            <!-- SERVICE 4: Incident Response -->
+            <div class="svc-card">
+                <div class="svc-num">Service 4</div>
+                <div class="svc-icon">🚨</div>
+                <div class="svc-title">Incident Response &amp; Remediation</div>
+                <div class="svc-desc">When something happens at a park operating your equipment, AS deploys within 48 hours. Documentation review, operator verification status check, corrective action plan, and a remediation report under your brand — before regulators arrive.</div>
+                <div class="svc-price">$1,500/month retainer · $3,500 per additional event</div>
+                <ul class="svc-list">
+                    <li>48-hour response SLA</li>
+                    <li>Incident documentation and operator verification status</li>
+                    <li>Corrective action plan and remediation report</li>
+                    <li>Delivered under your brand — AS operates under NDA</li>
+                </ul>
+                <a href="emergency-incident-response.html" class="demo-link">Emergency Incident Response details <span class="demo-badge">Learn More</span></a>
+            </div>
+        </div>
+
+        <div class="callout navy" style="margin-top:40px">
+            <div class="callout-label">The Compounding Revenue Model</div>
+            <p>Course builds front-load Year 1 revenue as the catalog gets built out. After that, the growth engine is the platform fee — $500 per unit per year, compounding with every ride sold. Annual reverifications add a second layer — $350 per verified operator per site, annually. Every new park enrolled adds reverification revenue. Every new ride sold into an enrolled park adds platform fee revenue. Course builds are the catalyst. Platform fees and reverifications are the floor that never goes away.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     WHITE-LABEL MODEL
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div class="eyebrow">Invisible Delivery</div>
+            <h2 class="section-title">How the White-Label Model Works</h2>
+            <p class="section-sub">You present it to the park as your own offering. AS delivers under NDA. The margin between what you pay AS and what you charge the park is 100% yours to keep.</p>
+        </div>
+        <div class="wl-grid">
+            <div class="wl-col">
+                <div class="wl-step">Step 1 — Manufacturer</div>
+                <h3>You Set the Park-Facing Price</h3>
+                <p>AS publishes floor prices — what you pay us. What you charge the park is entirely your decision. Verification program, DIP, incident response, channel services — you mark up however you choose.</p>
+            </div>
+            <div class="wl-col dark">
+                <div class="wl-step">Step 2 — Amusement Standards</div>
+                <h3>AS Builds and Delivers Invisibly</h3>
+                <p>Every deliverable carries your branding. No AS logo, no AS contact, no AS visibility to the park unless you choose otherwise. AS invoices you at the floor price. You invoice the park.</p>
+            </div>
+            <div class="wl-col">
+                <div class="wl-step">Step 3 — Parks</div>
+                <h3>Parks See Only Your Brand</h3>
+                <p>Courses, verification records, quarterly reports, incident response — all under your name. Parks with existing internal training can verify their lead staff through your program without replacing their LMS or retraining line-level operators.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     RETROFIT OPPORTUNITY
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section-alt" id="retrofit">
+    <div class="container">
+        <div class="section-head">
+            <div class="eyebrow">The Existing Install Base</div>
+            <h2 class="section-title">The Retrofit Opportunity</h2>
+            <p class="section-sub">New ride sales drive verification revenue going forward. But your existing install base — every park currently operating your equipment — is a separate market available right now.</p>
+        </div>
+
+        <div class="retrofit-layout">
+            <div class="retrofit-tracks">
+                <div class="track-card">
+                    <div class="track-header t1">
+                        <h4>Track 1 — Operator Verification</h4>
+                    </div>
+                    <div class="track-body">
+                        <p>The easier first conversation. Parks in the existing install base already have lead staff who know the ride cold. The verification program documents those people as manufacturer-verified operators — no new training system, no LMS replacement. Just a documented verification record for a ride that's been running without one.</p>
+                        <p>AS builds the verification course against specs already on file — no SOP submission required from the park. Faster build, lower friction.</p>
+                        <p>The outreach angle: you contact existing parks as a manufacturer safety initiative — not a sales call. "We're establishing a documented verification standard for qualified operation across our fleet. As an existing operator, you're invited into the program."</p>
+                        <div class="track-price-row">
+                            <div class="track-price-tag">$4,000 course build</div>
+                            <div class="track-price-tag">$5,100 retrofit bundle</div>
+                        </div>
+                        <p style="font-size:12px;color:var(--text-light);margin-top:8px">Retrofit bundle: course build + first year platform fee + first cohort verification. One transaction — park is fully stood up.</p>
+                    </div>
+                </div>
+                <div class="track-card">
+                    <div class="track-header t2">
+                        <h4>Track 2 — Data Intelligence Pro</h4>
+                    </div>
+                    <div class="track-body">
+                        <p>Every park operating an existing ride has incident history, seasonal patterns, and operational data that's currently invisible to you. Data Intelligence Pro surfaces it — benchmarked against every other installation of the same ride type, normalized by attendance.</p>
+                        <p>Lead with operator verification to get the park into the program, then introduce DIP at the first renewal. Once a park has verified operators and a quarterly incident report coming in under your brand, the relationship is established and the full program is a natural expansion.</p>
+                        <a href="/demos/risk-heatmap-live.html" class="demo-link">See a sample dashboard <span class="demo-badge">Live Demo</span></a>
+                        <div class="track-price-row">
+                            <div class="track-price-tag">$6,000/quarter flat</div>
+                            <div class="track-price-tag">No build fee</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="callout purp">
+                    <div class="callout-label">Sequencing Strategy</div>
+                    <p>Operator verification is the easier first conversation — it only requires enrolling existing lead staff in a course built from specs you already hold. DIP requires data submission and a quarterly reporting relationship. Lead with verification, then introduce DIP at the first renewal.</p>
+                </div>
+                <div class="callout amber" style="margin-top:16px">
+                    <div class="callout-label">For Parks That Say "We Already Have Training"</div>
+                    <p>The verification program doesn't replace anything. It documents existing lead staff as manufacturer-verified operators on your equipment. It's not another credential to administer — it's a completion record the manufacturer can reference. That objection dissolves on contact.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHANNEL PARTNER CATALOG
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div class="eyebrow">Channel Partner Catalog</div>
+            <h2 class="section-title">Your Brand. Our Delivery. Your Margin.</h2>
+            <p class="section-sub">Beyond the core verification and DIP program, AS operates a full suite of safety services you can offer to park clients as white-labeled products. Every deliverable carries your branding. AS publishes floor prices — what you charge the park is your decision.</p>
+        </div>
+
+        <div class="channel-grid">
+            <div class="ch-card">
+                <div class="ch-title">Safety Audit &amp; Inspection</div>
+                <div class="ch-desc">On-site ride inspection and compliance assessment. Delivered under your letterhead with manufacturer-level authority.</div>
+                <div class="ch-price">$2,500 first ride · $1,500 add'l same visit</div>
+                <a href="ride-verified.html" class="demo-link">Verified Audits <span class="demo-badge">Learn More</span></a>
+            </div>
+            <div class="ch-card">
+                <div class="ch-title">RIDE Safety Orientation LMS</div>
+                <div class="ch-desc">Full safety orientation course for park staff beyond the verification program. Covers general attraction safety for all front-line employees.</div>
+                <div class="ch-price">$3,500 build · $400/yr annual</div>
+                <a href="training-programs.html" class="demo-link">LMS Training Programs <span class="demo-badge">Learn More</span></a>
+            </div>
+            <div class="ch-card">
+                <div class="ch-title">Incident Response &amp; Remediation</div>
+                <div class="ch-desc">AS deploys when something happens. Documentation review, operator verification status, corrective action plan — delivered before regulators arrive.</div>
+                <div class="ch-price">$2,000 per event</div>
+                <a href="emergency-incident-response.html" class="demo-link" style="margin-top:8px;font-size:12px">Learn more <span class="demo-badge">Details</span></a>
+            </div>
+            <div class="ch-card">
+                <div class="ch-title">Pre-Launch Intensive</div>
+                <div class="ch-desc">On-site in the 30 days before a new installation opens. Live operator verification, supervised §8.3 field demonstrations, emergency drills, compliance package.</div>
+                <div class="ch-price">$8,000–$12,000 per launch</div>
+                <a href="/pre-launch-intensive.html" class="demo-link">See more <span class="demo-badge">Details</span></a>
+            </div>
+            <div class="ch-card">
+                <div class="ch-title">Spanish-Language Verification</div>
+                <div class="ch-desc">Full verification course and supporting materials translated and culturally adapted. Creates a market position no competitor can immediately replicate.</div>
+                <div class="ch-price">$5,000 first build · $750/unit repeat</div>
+            </div>
+            <div class="ch-card">
+                <div class="ch-title">New Ride Operator Pre-Launch</div>
+                <div class="ch-desc">Puts you physically on-site at the highest-stakes moment of a new ride opening. Premium positioning recommended.</div>
+                <div class="ch-price">$8,000–$12,000 per launch</div>
+            </div>
+        </div>
+
+        <div class="callout teal" style="margin-top:40px">
+            <div class="callout-label">The Channel Partner Advantage</div>
+            <p>Every service in this catalog gives you a reason to contact a park outside of the ride sales cycle. Together these services transform you from a hardware manufacturer into a year-round operational partner — and that relationship depth makes every future hardware sale easier to close.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ASTM ALIGNMENT
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section-alt">
+    <div class="container">
+        <div class="section-head">
+            <div class="eyebrow">Regulatory Foundation</div>
+            <h2 class="section-title">ASTM F770-19 Alignment</h2>
+            <p class="section-sub">The operator verification program is structured against the ASTM standard for ownership, operation, maintenance, and inspection of amusement rides. OSHA 29 CFR 1910.147 (LOTO) is incorporated under §8.2 duties.</p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0">
+            <div class="flow-step">
+                <div class="flow-num">§7.1</div>
+                <div class="flow-body">
+                    <h3>Pre-Opening Inspection</h3>
+                    <p>Operator must perform and document a structured pre-opening inspection before each operating day. The verification course includes a ride-specific pre-opening checklist module. Verified operator signs off daily — record retained in LMS.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-num teal">§8.1</div>
+                <div class="flow-body">
+                    <h3>General Operator Qualification</h3>
+                    <p>Operators must be trained in proper ride operation and applicable guest safety rules, with training documented. The verification course covers full ride systems, restraint verification, rider screening, and guest communication. Completion record with unique ID issued on 80% pass.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-num amber">§8.2</div>
+                <div class="flow-body">
+                    <h3>Operator Duties</h3>
+                    <p>Operator is responsible for safe loading, restraint verification, emergency response, and LOTO compliance during maintenance operations. The verification course includes LOTO per OSHA 1910.147, emergency stop and evacuation procedures, and incident command basics. 20-question final assessment.</p>
+                </div>
+            </div>
+            <div class="flow-step" style="border-bottom:none">
+                <div class="flow-num purp">§8.3</div>
+                <div class="flow-body">
+                    <h3>Field Demonstration Requirement</h3>
+                    <p>Training must include a supervised field demonstration by a qualified person who documents that the trainee performed all required tasks correctly. The verification program includes §8.3 documentation protocol and supervised demonstration facilitation. The verified lead operator is the manufacturer's qualified person of record — 1 per site. Full §8 compliance for all operators requires the Attendant and Operator SCORM add-ons.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PROCESS — AFTER EVERY RIDE SALE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="how-it-works">
+    <div class="container">
+        <div class="section-head">
+            <div class="eyebrow">How It Works</div>
+            <h2 class="section-title">What Happens After Every Ride Sale</h2>
+            <p class="section-sub">Step by step, from contract to verified operators on the ground. Every new ride gets a course automatically — no new negotiation required.</p>
+        </div>
+        <div class="flow-grid">
+            <div class="flow-step">
+                <div class="flow-num">01</div>
+                <div class="flow-body">
+                    <div class="flow-tag mfr">Manufacturer</div>
+                    <h3>Ride Sold — Share OEM Documentation</h3>
+                    <p>Ride manual, technical spec, or operating fact sheet for the installation. AS works from your source material — every procedure traces back to your engineering.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-num teal">02</div>
+                <div class="flow-body">
+                    <div class="flow-tag as">Amusement Standards</div>
+                    <h3>AS Builds the Course in 30 Days</h3>
+                    <p>Ride-specific verification course with your branding on every deliverable. SCORM 1.2 package delivered — drops into any LMS, or hosted on the AS portal under your brand. ASTM F770-19 §8 aligned throughout.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-num amber">03</div>
+                <div class="flow-body">
+                    <div class="flow-tag park">Park</div>
+                    <h3>Park Deploys — Operators Get Verified</h3>
+                    <p>Park's lead operator completes the verification course, passes the 20-question assessment at 80%, receives a branded completion record with unique ID and 12-month validity. Completion data flows back to AS — quarterly verification report auto-generates. The park doesn't manage a new credential — they just complete the manufacturer's verification.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-num teal">04</div>
+                <div class="flow-body">
+                    <div class="flow-tag as">Amusement Standards</div>
+                    <h3>Data Intelligence Pro Activates at Day 60</h3>
+                    <p>Pilot data collection feeds into the first quarterly incident analysis. Incident heatmap, ride-type benchmarking, performance patterns — delivered as a branded PDF under your name. Every subsequent quarter builds on the baseline.</p>
+                    <a href="/demos/risk-heatmap-live.html" class="demo-link">See a sample dashboard <span class="demo-badge">Live Demo</span></a>
+                </div>
+            </div>
+            <div class="flow-step" style="border-bottom:none">
+                <div class="flow-num purp">05</div>
+                <div class="flow-body">
+                    <div class="flow-tag mfr">Manufacturer</div>
+                    <h3>Annual Reverification + Platform Fee Compounds</h3>
+                    <p>Annual reverification at $350/person/year per site plus $250/each additional ride onsite. Platform fee at $500/ride/year. Both compound with every new sale and every new park enrolled. Course builds are the catalyst — platform fees and reverifications are the floor that never goes away.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CONTRACT STRUCTURE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section-alt">
+    <div class="container">
+        <div class="section-head">
+            <div class="eyebrow">One Agreement</div>
+            <h2 class="section-title">Contract Structure</h2>
+            <p class="section-sub">One client relationship. No park-level procurement complexity. Clear obligations on all sides.</p>
+        </div>
+
+        <div class="callout navy">
+            <div class="callout-label">Master Services Agreement</div>
+            <p>You sign a single MSA with Amusement Standards covering: per-ride course build fee schedule, annual platform hosting fee per ride ($500/ride/year), quarterly Data Intelligence Pro delivery obligations, incident response retainer terms and SLA (48-hour response), white-label and IP ownership terms (you own the courses built for your rides), and park end-user terms incorporated by reference. Parks are named as end users — they never sign separately. You manage the park relationship. Amusement Standards manages the product.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CTA
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="cta-section" id="contact">
+    <div class="cta-inner">
+        <div class="cta-eyebrow">Start With the Pilot</div>
+        <h2>One Ride. Thirty Days. See What It Looks Like.</h2>
+        <p>The pilot proves the model works — ride-specific courses built and deployed, manufacturer verification documentation on record, incident analysis baselines activated. Everything after that scales from one signature.</p>
+        <div class="cta-btns">
+            <a href="mailto:adam@amusementstandards.com" class="btn btn-primary btn-lg">Start the Conversation</a>
+            <a href="/#contact" class="btn btn-ghost btn-lg">Book a Risk Review</a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand-name">amusement standards.</div>
+                <p class="footer-brand-desc">Expert safety consulting, risk intelligence, and operator verification infrastructure for the amusement and attractions industry.</p>
+            </div>
+            <div>
+                <div class="footer-col-title">Services</div>
+                <ul class="footer-links">
+                    <li><a href="services/training-programs.html">Training Programs</a></li>
+                    <li><a href="services/operational-standards.html">Operational Standards</a></li>
+                    <li><a href="services/compliance-regulatory-support.html">Compliance &amp; Regulatory</a></li>
+                    <li><a href="services/insurance-risk-reduction.html">Insurance &amp; Risk</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-col-title">Manufacturer Programs</div>
+                <ul class="footer-links">
+                    <li><a href="manufacturer-services.html">Program Overview</a></li>
+                    <li><a href="operator-verification.html">Operator Verification</a></li>
+                    <li><a href="#pilot">Pilot Program</a></li>
+                    <li><a href="#post-pilot">Full Program</a></li>
+                    <li><a href="#retrofit">Retrofit Opportunity</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="footer-col-title">Contact</div>
+                <ul class="footer-links">
+                    <li><a href="mailto:adam@amusementstandards.com">info@amusementstandards.com</a></li>
+                    <li><a href="https://www.linkedin.com/company/amusement-standards">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2025 Amusement Standards. All rights reserved.</span>
+            <span>Safety consulting · Risk intelligence · Operator verification</span>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
