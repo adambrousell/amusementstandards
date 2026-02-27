@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ride Entertainment Pilot Program | Amusement Standards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0f0c;
+  --bg2: #0f1712;
+  --bg3: #141e18;
+  --surface: #1a2820;
+  --surface2: #1f3028;
+  --border: #2a3d32;
+  --border2: #3a5245;
+  --gold: #c8a84b;
+  --gold-glow: rgba(200,168,75,0.12);
+  --gold-soft: rgba(200,168,75,0.06);
+  --green: #4ade80;
+  --green-dim: #2a8a4a;
+  --green-glow: rgba(74,222,128,0.08);
+  --text: #e8ede9;
+  --text2: #a8b8ad;
+  --text3: #6b8572;
+  --danger: #ef6b6b;
+  --danger-bg: rgba(239,107,107,0.08);
+  --blue: #6ba5ef;
+  --radius: 6px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Nav ── */
+.nav {
+  background: rgba(10,15,12,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-inner {
+  max-width: 980px; margin: 0 auto;
+  display: flex; align-items: center; gap: 16px;
+}
+.nav-logo {
+  font-weight: 700; font-size: 15px; color: var(--text);
+  letter-spacing: -0.02em; white-space: nowrap;
+}
+.nav-logo span { color: var(--gold); font-weight: 400; }
+.nav-links {
+  margin-left: auto; display: flex; gap: 4px;
+}
+.nav-links a {
+  color: var(--text3); font-size: 12.5px; font-weight: 500;
+  text-decoration: none; padding: 7px 13px; border-radius: 4px;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+
+/* ── Hero ── */
+.hero {
+  padding: 80px 24px 64px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 70% 20%, rgba(200,168,75,0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(74,222,128,0.03) 0%, transparent 60%);
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.hero-inner {
+  max-width: 980px; margin: 0 auto; position: relative; z-index: 1;
+}
+.hero-prep {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 500; color: var(--gold);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 24px;
+  background: var(--gold-soft); border: 1px solid rgba(200,168,75,0.15);
+  padding: 6px 14px; border-radius: 3px;
+}
+.hero h1 {
+  font-size: 42px; font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.03em; margin-bottom: 20px; max-width: 780px;
+}
+.hero h1 em { font-style: italic; color: var(--gold); font-weight: 400; }
+.hero-desc {
+  font-size: 17px; color: var(--text2); line-height: 1.65;
+  max-width: 640px; margin-bottom: 36px;
+}
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 56px; }
+
+.btn-gold {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--gold); color: var(--bg);
+  padding: 13px 26px; border-radius: 4px;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  text-decoration: none; transition: all 0.2s; border: none; cursor: pointer;
+}
+.btn-gold:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--text2);
+  border: 1px solid var(--border2); padding: 12px 22px;
+  border-radius: 4px; font-family: inherit; font-size: 14px;
+  font-weight: 500; text-decoration: none; transition: all 0.2s;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Hero stats */
+.hero-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--border); border-radius: 6px; overflow: hidden;
+}
+.hero-stat {
+  background: var(--surface); padding: 20px;
+}
+.hero-stat-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px; font-weight: 700; color: var(--gold);
+  line-height: 1;
+}
+.hero-stat-val em {
+  font-style: normal; font-size: 14px; font-weight: 400;
+  color: var(--text3); vertical-align: super;
+}
+.hero-stat-label {
+  font-size: 12px; color: var(--text3); margin-top: 6px; line-height: 1.4;
+}
+
+/* ── Sections ── */
+.section {
+  max-width: 980px; margin: 0 auto; padding: 64px 24px;
+}
+.section-divider {
+  max-width: 980px; margin: 0 auto;
+  height: 1px; background: var(--border);
+}
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.14em; color: var(--gold); margin-bottom: 12px;
+}
+.eyebrow-line { width: 20px; height: 1.5px; background: var(--gold); }
+
+.section-title {
+  font-size: 30px; font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.15; margin-bottom: 12px; max-width: 700px;
+}
+
+.section-desc {
+  font-size: 15px; color: var(--text2); line-height: 1.65;
+  max-width: 600px; margin-bottom: 40px;
+}
+
+/* ── Three-column info cards ── */
+.info-cols {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border); border-radius: 6px; overflow: hidden;
+  margin-bottom: 40px;
+}
+.info-col {
+  background: var(--surface); padding: 24px;
+}
+.info-col h4 {
+  font-size: 14px; font-weight: 600; color: var(--gold); margin-bottom: 8px;
+}
+.info-col p { font-size: 13.5px; color: var(--text2); line-height: 1.55; }
+
+/* ── Install Base ── */
+.install-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.install-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  position: relative;
+}
+.install-card::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 100%; height: 2px;
+}
+.install-card.gerstlauer::before { background: var(--gold); }
+.install-card.funtime::before { background: var(--green); }
+.install-card.skycoaster::before { background: var(--blue); }
+.install-card.skyline::before { background: var(--danger); }
+.install-card.extreme::before { background: #c47a2e; }
+.install-card.parks::before { background: var(--text3); }
+
+.install-card h3 {
+  font-size: 17px; font-weight: 600; margin-bottom: 4px;
+}
+.install-card .install-sub {
+  font-size: 13px; color: var(--gold); font-weight: 500;
+  margin-bottom: 12px;
+}
+.install-card p { font-size: 13px; color: var(--text2); line-height: 1.55; margin-bottom: 16px; }
+
+.install-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+.install-stat {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 4px; padding: 10px 14px; text-align: center;
+}
+.install-stat-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 20px; font-weight: 700; color: var(--gold);
+}
+.install-stat-label {
+  font-size: 10px; color: var(--text3); text-transform: uppercase;
+  letter-spacing: 0.08em; margin-top: 2px;
+}
+
+/* ── Pilot Section ── */
+.pilot-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  margin-bottom: 32px;
+}
+.pilot-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.pilot-card .pilot-icon { font-size: 24px; margin-bottom: 12px; }
+.pilot-card h4 {
+  font-size: 15px; font-weight: 600; margin-bottom: 8px;
+}
+.pilot-card p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+.pilot-pricing {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border); border-radius: 6px; overflow: hidden;
+}
+.pilot-price {
+  background: var(--surface); padding: 20px; text-align: center;
+}
+.pilot-price-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 26px; font-weight: 700; color: var(--gold);
+}
+.pilot-price-label { font-size: 12px; color: var(--text3); margin-top: 4px; }
+
+/* ── Timeline ── */
+.timeline { margin: 40px 0; }
+.timeline-step {
+  display: flex; gap: 20px; margin-bottom: 0;
+  position: relative;
+}
+.timeline-marker {
+  display: flex; flex-direction: column; align-items: center;
+  width: 56px; flex-shrink: 0;
+}
+.timeline-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; font-weight: 700; color: var(--gold);
+  background: var(--gold-glow); border: 1px solid rgba(200,168,75,0.2);
+  border-radius: 3px; padding: 4px 8px; text-align: center;
+  white-space: nowrap;
+}
+.timeline-line {
+  width: 1px; flex: 1; background: var(--border); min-height: 40px;
+}
+.timeline-content {
+  padding-bottom: 28px;
+}
+.timeline-content h4 {
+  font-size: 14px; font-weight: 600; margin-bottom: 4px;
+}
+.timeline-content p { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+/* ── Pricing Tables ── */
+.pricing-table {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden; margin-bottom: 20px;
+}
+.pricing-row {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+}
+.pricing-row:last-child { border-bottom: none; }
+.pricing-row:hover { background: rgba(255,255,255,0.01); }
+
+.pricing-item { flex: 1; }
+.pricing-item strong {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  display: block; margin-bottom: 2px;
+}
+.pricing-item span {
+  font-size: 12px; color: var(--text3); line-height: 1.4;
+}
+
+.pricing-val {
+  font-family: 'Space Mono', monospace;
+  font-size: 16px; font-weight: 700; color: var(--gold);
+  white-space: nowrap; text-align: right;
+}
+
+/* ── Callout Boxes ── */
+.callout {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 24px 28px; margin: 32px 0;
+}
+.callout h4 {
+  font-size: 15px; font-weight: 600; color: var(--gold); margin-bottom: 8px;
+}
+.callout p { font-size: 13.5px; color: var(--text2); line-height: 1.6; }
+
+/* ── Service Pages ── */
+.service-compare {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  margin: 32px 0;
+}
+.service-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.service-box-header {
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  font-size: 12px; font-weight: 600; color: var(--text3);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.service-box-header.after { color: var(--gold); }
+
+.service-item {
+  padding: 10px 20px; border-bottom: 1px solid rgba(42,61,50,0.5);
+  font-size: 13px; color: var(--text2);
+}
+.service-item:last-child { border-bottom: none; }
+.service-item.highlight {
+  color: var(--gold); font-weight: 600;
+  background: var(--gold-soft);
+}
+
+/* ── Why Ride Entertainment ── */
+.why-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.why-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.why-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 28px; font-weight: 700; color: var(--border2);
+  margin-bottom: 12px;
+}
+.why-card h4 {
+  font-size: 15px; font-weight: 600; margin-bottom: 8px;
+}
+.why-card p { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+/* ── CTA ── */
+.cta-section {
+  text-align: center; padding: 64px 24px;
+  position: relative;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.3;
+}
+.cta-section h2 {
+  font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.cta-section h2 em { font-style: italic; color: var(--gold); font-weight: 400; }
+.cta-section p {
+  font-size: 15px; color: var(--text2); max-width: 520px;
+  margin: 0 auto 32px; line-height: 1.6;
+}
+.cta-actions { display: flex; gap: 12px; justify-content: center; }
+
+/* ── Footer ── */
+.footer {
+  max-width: 980px; margin: 0 auto; padding: 24px;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-left { font-size: 12px; color: var(--text3); }
+.footer-right a {
+  font-size: 12px; color: var(--text3); text-decoration: none;
+  margin-left: 16px;
+}
+.footer-right a:hover { color: var(--gold); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 28px; }
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .info-cols { grid-template-columns: 1fr; }
+  .install-grid { grid-template-columns: 1fr; }
+  .pilot-grid { grid-template-columns: 1fr; }
+  .pilot-pricing { grid-template-columns: 1fr; }
+  .service-compare { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<div class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">amusement <span>standards.</span></div>
+    <nav class="nav-links">
+      <a href="manufacturer-services.html">Manufacturer Programs</a>
+      <a href="operator-verification.html">Operator Verification</a>
+      <a href="data-analytics.html">Data Analytics</a>
+      <a href="/#contact">Start a Conversation</a>
+    </nav>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-prep">Prepared for Ride Entertainment</div>
+    <h1>113+ Gerstlauer Coasters. Hundreds of Flat Ride Installations. <em>Zero Manufacturer-Verified Operators.</em></h1>
+    <p class="hero-desc">Ride Entertainment sells, installs, operates, and finances rides from the industry's top manufacturers — but no one in the chain is verifying the people who run them. RE is uniquely positioned to change that: one company, four divisions, one verification standard across every manufacturer you represent.</p>
+    <div class="hero-actions">
+      <a href="#pilot" class="btn-gold">See the Pilot Program</a>
+      <a href="#install-base" class="btn-ghost">The Install Base Opportunity →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-val">30<em>day</em></div>
+        <div class="hero-stat-label">Course build — OEM docs to deployed SCORM</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">ASTM</div>
+        <div class="hero-stat-label">F770-19 §7 + §8 aligned — documented on record</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">100<em>%</em></div>
+        <div class="hero-stat-label">White-labeled — your verification, your brand</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">$4k</div>
+        <div class="hero-stat-label">Per ride type — SCORM drops into any LMS</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Problem -->
+<div class="section">
+  <div class="eyebrow"><div class="eyebrow-line"></div>The Problem Worth Solving</div>
+  <div class="section-title">Every Park Running a Ride You Sold, Installed, or Operate Is Using a Standard You Never Set</div>
+  <div class="section-desc">Ride Entertainment touches the full lifecycle — sales, installation, operation, financial partnerships. But at every stage, operator qualification is defined by the park, not by you or the manufacturer. The documentation gap exists across every division.</div>
+
+  <div class="info-cols">
+    <div class="info-col">
+      <h4>The Gap</h4>
+      <p>Parks running Gerstlauer coasters, Funtime Star Flyers, and Skyline Skywarps are all defining "qualified operator" independently. No manufacturer standard exists. No RE standard exists. Every installation is a separate training island.</p>
+    </div>
+    <div class="info-col">
+      <h4>The Risk</h4>
+      <p>Without a documented manufacturer or distributor verification standard, incident liability flows upstream — toward the people who sold, installed, and in some cases still operate the equipment. The paper trail currently stops at the sales contract.</p>
+    </div>
+    <div class="info-col">
+      <h4>The Advantage</h4>
+      <p>No other company in the amusement industry spans sales, installation, operation, and financial partnerships under one roof. RE can offer verified operator programs across every manufacturer it represents — a new revenue layer on existing relationships.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- Install Base -->
+<div class="section" id="install-base">
+  <div class="eyebrow"><div class="eyebrow-line"></div>The Combined Portfolio</div>
+  <div class="section-title">Four Divisions. Six+ Manufacturer Partners. One Verification Standard.</div>
+  <div class="section-desc">RE's unique position — representing multiple manufacturers and operating its own attractions — means a single verification infrastructure compounds across every ride type, every park, every division.</div>
+
+  <div class="install-grid">
+    <div class="install-card gerstlauer">
+      <h3>Gerstlauer Amusement Rides</h3>
+      <div class="install-sub">Exclusive Western Hemisphere Sales &amp; Installation</div>
+      <p>Euro-Fighters, Infinity Coasters, Spinning Coasters, Bobsled Coasters, Launched Coasters, Family Coasters, flat rides, and custom trains. Every Gerstlauer sale in North America runs through RE. Notable installations include TMNT Shellraiser, Dare Devil Dive, FireChaser Express, Untamed, and Hydrus. All manufactured to EN 13814 standards in Münsterhausen, Germany.</p>
+      <div class="install-stats">
+        <div class="install-stat">
+          <div class="install-stat-val">113+</div>
+          <div class="install-stat-label">Operating coasters</div>
+        </div>
+        <div class="install-stat">
+          <div class="install-stat-val">8+</div>
+          <div class="install-stat-label">Coaster types</div>
+        </div>
+        <div class="install-stat">
+          <div class="install-stat-val">$4,000</div>
+          <div class="install-stat-label">Per course</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="install-card funtime">
+      <h3>Funtime</h3>
+      <div class="install-sub">North American Installations</div>
+      <p>Star Flyers and Slingshots installed across Six Flags properties and major parks nationwide. The SkyScreamer program alone spans multiple Six Flags locations. Standardized ride models — one course per model type covers every installation.</p>
+      <div class="install-stats">
+        <div class="install-stat">
+          <div class="install-stat-val">20+</div>
+          <div class="install-stat-label">Installations</div>
+        </div>
+        <div class="install-stat">
+          <div class="install-stat-val">$4,000</div>
+          <div class="install-stat-label">First type</div>
+        </div>
+        <div class="install-stat">
+          <div class="install-stat-val">$750</div>
+          <div class="install-stat-label">Repeat unit</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="install-card skyline">
+      <h3>Skyline Attractions</h3>
+      <div class="install-sub">Sales Partner — Orlando, FL</div>
+      <p>Skywarp powered coaster models, Strike-U-Up rideable games, and station/queue design. Unique product types that benefit from model-specific verification — especially the Skywarp, which is a distinct ride system with specific operational requirements.</p>
+      <div class="install-stats">
+        <div class="install-stat">
+          <div class="install-stat-val">$4,000</div>
+          <div class="install-stat-label">First type</div>
+        </div>
+        <div class="install-stat">
+          <div class="install-stat-val">$750</div>
+          <div class="install-stat-label">Repeat</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="install-card extreme">
+      <h3>Extreme Engineering / RCI / V&amp;P / KCL</h3>
+      <div class="install-sub">Additional Sales Partners</div>
+      <p>Cloud Coasters, ziplines, climbing walls, Sky Trail ropes courses, flying theaters, and LED lighting systems. Each category has distinct operator qualifications. Ropes courses and ziplines in particular carry significant operator certification requirements that currently have no manufacturer standard.</p>
+      <div class="install-stats">
+        <div class="install-stat">
+          <div class="install-stat-val">5+</div>
+          <div class="install-stat-label">Product categories</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="install-card parks">
+      <h3>Parks &amp; Attractions Division</h3>
+      <div class="install-sub">Operated Properties</div>
+      <p>RE operates parks and entertainment facilities at Forest Park and Fantasy Forest (NY), Rose Fitzgerald Kennedy Greenway (Boston), Seaglass Carousel (NY), and other North American locations. Revenue-share attractions at zoos, waterparks, and amusement parks. These are parks where RE controls operations — verification can be mandated, not just offered.</p>
+      <div class="install-stats">
+        <div class="install-stat">
+          <div class="install-stat-val">200+</div>
+          <div class="install-stat-label">Personnel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- Pilot -->
+<div class="section" id="pilot">
+  <div class="eyebrow"><div class="eyebrow-line"></div>Start Here</div>
+  <div class="section-title">The Pilot — Pandemonium + SUPERGIRL™ Sky Flight · Six Flags Fiesta Texas · 30-Day Build</div>
+  <div class="section-desc">Prove the model on both a custom Gerstlauer coaster and a standardized Funtime flat ride at the same park. One custom spinning coaster course, one model-wide Star Flyer course. Same facility, two manufacturer programs, one verification infrastructure. Data Intelligence Pro included at no charge.</div>
+
+  <div class="pilot-grid">
+    <div class="pilot-card">
+      <div class="pilot-icon">🎢</div>
+      <h4>Pandemonium — Gerstlauer Spinning Coaster · Custom Build</h4>
+      <p>Gerstlauer Spinning Coaster at Six Flags Fiesta Texas. Free-spinning vehicles on a vertical axis, beyond-vertical drop elements, lap bar restraint systems. Custom course built against Pandemonium's specific OEM documentation and site configuration — track layout, spin dynamics, rider screening for free-spin forces, ASTM F770-19 §7.1–§8.3 aligned. Every Gerstlauer layout is different; this course is built for this ride.</p>
+    </div>
+    <div class="pilot-card">
+      <div class="pilot-icon">🎡</div>
+      <h4>SUPERGIRL™ Sky Flight — Funtime Star Flyer · Model-Wide Build</h4>
+      <p>Funtime Star Flyer at Six Flags Fiesta Texas — the same ride system installed as SkyScreamers across the Six Flags chain. One course covers every Star Flyer installation nationwide. Swing arm mechanics, chain/cable containment systems, wind speed protocols, emergency descent procedures, and rider weight distribution verification. Build once for SUPERGIRL Sky Flight, deploy to every SkyScreamer in the Six Flags system.</p>
+    </div>
+    <div class="pilot-card">
+      <div class="pilot-icon">🏷️</div>
+      <h4>White-Labeled Under Ride Entertainment Brand</h4>
+      <p>Your logo, your name on every verification record. Unique completion IDs, issue date, 12-month validity. 20-question final assessment, 80% pass threshold. Six Flags Fiesta Texas sees "Ride Entertainment Verified Operator" on both Pandemonium and SUPERGIRL Sky Flight — two rides, one program, your brand on every document.</p>
+    </div>
+    <div class="pilot-card">
+      <div class="pilot-icon">📊</div>
+      <h4>Data Intelligence Pro Included</h4>
+      <p>Full incident heatmap and risk brief for both pilot rides at Day 60–90, at no additional charge. Establishes data baselines for the full program. CPSC NEISS data supplemented by park-provided incident logs, normalized by attendance.</p>
+    </div>
+  </div>
+
+  <div class="pilot-pricing">
+    <div class="pilot-price">
+      <div class="pilot-price-val">$8,000</div>
+      <div class="pilot-price-label">2-ride pilot (1 coaster + 1 flat ride)</div>
+    </div>
+    <div class="pilot-price">
+      <div class="pilot-price-val">At cost</div>
+      <div class="pilot-price-label">Site visit — travel + 1 overnight</div>
+    </div>
+    <div class="pilot-price">
+      <div class="pilot-price-val">Included</div>
+      <div class="pilot-price-label">Data Intelligence Pro</div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline">
+    <h3 style="font-size: 18px; margin-bottom: 24px;">30-Day Build → 90-Day Pilot</h3>
+
+    <div class="timeline-step">
+      <div class="timeline-marker"><div class="timeline-tag">PRE</div><div class="timeline-line"></div></div>
+      <div class="timeline-content">
+        <h4>AS site visit</h4>
+        <p>Live observation at Six Flags Fiesta Texas — Pandemonium and SUPERGIRL Sky Flight. Operator interviews, video documentation for both course builds. One trip, both rides.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-marker"><div class="timeline-tag">WK 1</div><div class="timeline-line"></div></div>
+      <div class="timeline-content">
+        <h4>OEM documentation review</h4>
+        <p>Course outlines for both rides, scope sign-off. Gerstlauer spinning coaster docs and Funtime Star Flyer docs sourced through RE's existing manufacturer relationships.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-marker"><div class="timeline-tag">WK 2–3</div><div class="timeline-line"></div></div>
+      <div class="timeline-content">
+        <h4>Full course builds</h4>
+        <p>Pandemonium (custom per installation) + SUPERGIRL Sky Flight / Star Flyer (model-wide). Parallel builds.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-marker"><div class="timeline-tag">WK 4</div><div class="timeline-line"></div></div>
+      <div class="timeline-content">
+        <h4>Review, revisions, branding</h4>
+        <p>SCORM packages delivered with RE branding. Deploy in existing park LMS or AS-hosted portal.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-marker"><div class="timeline-tag">DAY 60</div><div class="timeline-line"></div></div>
+      <div class="timeline-content">
+        <h4>Pilot data collection closes</h4>
+        <p>Completion rates, assessment scores, session time, operator counts for both rides.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-marker"><div class="timeline-tag">D60–90</div><div class="timeline-line"></div></div>
+      <div class="timeline-content">
+        <h4>Data Intelligence Pro analysis</h4>
+        <p>Full incident heatmap, performance patterns, and risk brief. Included at no charge.</p>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="timeline-marker"><div class="timeline-tag">DAY 90</div></div>
+      <div class="timeline-content">
+        <h4>Review call</h4>
+        <p>Pilot findings presented, scale decision for both product lines and additional manufacturer partners.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- Pricing -->
+<div class="section">
+  <div class="eyebrow"><div class="eyebrow-line"></div>Pricing — Ride Entertainment Specific</div>
+  <div class="section-title">Build Once Per Ride Type. Verify Annually. Revenue Compounds.</div>
+  <div class="section-desc">Course builds are the catalyst. Platform fees and annual reverifications are the recurring floor. Every manufacturer partner RE represents adds another course catalog — and another revenue layer you can bundle and sell to your clients.</div>
+
+  <h3 style="font-size: 16px; margin-bottom: 16px;">Course Build Pricing</h3>
+  <p style="font-size: 12px; color: var(--text3); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.08em;">AS Floor Price to Ride Entertainment</p>
+
+  <div class="pricing-table">
+    <div class="pricing-row">
+      <div class="pricing-item">
+        <strong>Gerstlauer Coasters — Custom per installation</strong>
+        <span>Each Euro-Fighter, Infinity, Spinning, or Launched Coaster gets its own course. Built against that specific ride's OEM documentation.</span>
+      </div>
+      <div class="pricing-val">$4,000</div>
+    </div>
+    <div class="pricing-row">
+      <div class="pricing-item">
+        <strong>Funtime / Skyline / Extreme — First ride type</strong>
+        <span>One Star Flyer course covers every Star Flyer. One SkyScreamer course covers every SkyScreamer. Model-wide per manufacturer.</span>
+      </div>
+      <div class="pricing-val">$4,000</div>
+    </div>
+    <div class="pricing-row">
+      <div class="pricing-item">
+        <strong>Repeat unit (same model, new site)</strong>
+        <span>Site-specific customization of existing course template if needed.</span>
+      </div>
+      <div class="pricing-val">$750</div>
+    </div>
+    <div class="pricing-row">
+      <div class="pricing-item">
+        <strong>Service custom layer</strong>
+        <span>Add-on for site-specific service procedures, unique configurations, or RE installation-specific documentation.</span>
+      </div>
+      <div class="pricing-val">+$1,000</div>
+    </div>
+    <div class="pricing-row">
+      <div class="pricing-item">
+        <strong>Annual reverification — first ride type</strong>
+        <span>Per person, per year, per site.</span>
+      </div>
+      <div class="pricing-val">$350/yr</div>
+    </div>
+    <div class="pricing-row">
+      <div class="pricing-item">
+        <strong>Annual reverification — each additional ride type at same site</strong>
+        <span>Stacks per ride type the operator is verified on at that location.</span>
+      </div>
+      <div class="pricing-val">$250/yr</div>
+    </div>
+    <div class="pricing-row">
+      <div class="pricing-item">
+        <strong>Annual platform fee (hosted option)</strong>
+        <span>Per ride, per year — AS-hosted portal with quarterly verification reports.</span>
+      </div>
+      <div class="pricing-val">$500/yr</div>
+    </div>
+    <div class="pricing-row">
+      <div class="pricing-item">
+        <strong>Retrofit bundle</strong>
+        <span>Existing install base — course build + first year platform + first cohort verification. One transaction.</span>
+      </div>
+      <div class="pricing-val">$5,100</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>How RE Keeps the Margin</h4>
+    <p>These are AS floor prices — what RE pays us. What RE charges the park is entirely RE's decision. A park never sees AS. A park sees "Ride Entertainment Operator Verification" on the invoice, the completion record, the portal login, and the quarterly report. The spread between the AS floor price and the park-facing price is 100% RE margin. Bundle verification with a Gerstlauer sale, roll it into a SkyCoaster revenue-share deal, or sell it standalone as a post-sale service — the pricing model is yours to set.</p>
+  </div>
+
+  <div class="callout">
+    <h4>How Multi-Ride Parks Compound</h4>
+    <p>Start with the pilot at Six Flags Fiesta Texas: $4,000 (Pandemonium course, custom) + $4,000 (Star Flyer course, model-wide) = $8,000 initial. Then that Star Flyer course deploys to every SkyScreamer in the Six Flags chain at $750/park — no new course development. Add a Skywarp at another park: $750 deploy. $500/ride/yr platform fees + $600/yr reverification per lead operator ($350 base + $250 additional ride type) = recurring stack per park. RE marks up every line item. The Fiesta Texas pilot seeds the entire Six Flags network.</p>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- Where This Fits -->
+<div class="section">
+  <div class="eyebrow"><div class="eyebrow-line"></div>Where This Fits</div>
+  <div class="section-title">Operator Verification Slots Into Every RE Division</div>
+  <div class="section-desc">RE already touches parks through sales, installation, operations, and financial partnerships. Verification adds a new revenue layer to each — and creates a reason to maintain annual contact with every park in the install base.</div>
+
+  <div class="service-compare">
+    <div class="service-box">
+      <div class="service-box-header">RE Service Offerings — Current</div>
+      <div class="service-item">Ride Sales (Gerstlauer, Funtime, Skyline, etc.)</div>
+      <div class="service-item">Installation &amp; Rehabilitation</div>
+      <div class="service-item">Parks &amp; Attractions Operations</div>
+      <div class="service-item">Financial Partnerships (Revenue Share)</div>
+    </div>
+    <div class="service-box">
+      <div class="service-box-header after">RE Service Offerings — With Operator Verification</div>
+      <div class="service-item">Ride Sales (Gerstlauer, Funtime, Skyline, etc.)</div>
+      <div class="service-item">Installation &amp; Rehabilitation</div>
+      <div class="service-item">Parks &amp; Attractions Operations</div>
+      <div class="service-item">Financial Partnerships (Revenue Share)</div>
+      <div class="service-item highlight">Operator Verification &amp; Data Intelligence</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>The Revenue-Share Angle</h4>
+    <p>RE's Financial Partnerships division already structures deals where RE funds the ride and shares revenue with the venue. Operator verification is a natural add-on to every revenue-share agreement: "We provide the ride, we verify your operators, we monitor incident data." It deepens the relationship, adds recurring revenue, and gives RE documented safety oversight at every revenue-share installation — which protects the asset RE has financed.</p>
+  </div>
+
+  <div class="callout">
+    <h4>The Installation Angle</h4>
+    <p>RE's installations team is considered the best in the industry — they've worked with Six Flags, Cedar Fair, and OCT. Every ride RE installs is a natural candidate for operator verification at handoff. "We installed it, we'll verify your operators on it." The verification conversation happens at the moment of maximum trust — immediately after a successful installation.</p>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- Why RE -->
+<div class="section">
+  <div class="eyebrow"><div class="eyebrow-line"></div>Why You — and Why Now</div>
+  <div class="section-title">Why Ride Entertainment Is the Right First Mover</div>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-num">01</div>
+      <h4>Multi-Manufacturer Reach No One Else Has</h4>
+      <p>No other company in the industry represents Gerstlauer, Funtime, Skyline, Extreme Engineering, Lagotronics, and more — while also owning and operating its own attractions. A single verification infrastructure compounds across every manufacturer partner. One MSA with AS, courses for every brand you represent.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">02</div>
+      <h4>Four Divisions = Four Revenue Channels</h4>
+      <p>Verification plugs into Sales (bundle with new ride purchases), Installations (verify at handoff), Parks &amp; Attractions (mandate at operated properties), and Financial Partnerships (add to revenue-share agreements). No other company has four separate entry points for the same program.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">03</div>
+      <h4>25+ Years of Park Relationships</h4>
+      <p>RE has worked with Six Flags, Cedar Fair, OCT, and hundreds of parks, zoos, and FECs over more than two decades. Operator verification is not cold outreach — it's a new service offered to parks that already know and trust RE. The sales conversation is already warm.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-num">04</div>
+      <h4>Operated Properties = Built-In Proof of Concept</h4>
+      <p>RE operates parks and attractions at multiple North American locations — Forest Park, Fantasy Forest, Rose Fitzgerald Kennedy Greenway, and more. These are properties where RE controls operations directly. Deploy verification at your own parks first, collect 90 days of data, then present results to every park you sell to. Your own properties become the case study.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>The "Gold Standard" — Made Tangible</h4>
+    <p>Ride Entertainment has branded itself as "The Gold Standard" in the attractions industry for over two decades. Operator verification makes that tagline tangible and documented. "Gold Standard" stops being a marketing claim and starts being a verifiable record: every operator at every park running RE-sold, RE-installed, or RE-operated equipment is verified to a documented standard. That's a positioning advantage no competitor can match without building the same infrastructure.</p>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Pandemonium. SUPERGIRL™ Sky Flight. <em>One Park. Thirty Days.</em></h2>
+  <p>Two rides, two manufacturers, one park, one pilot. The Fiesta Texas pilot proves the model — then the Star Flyer course deploys across every Six Flags SkyScreamer in the chain. Everything after that scales from one signature.</p>
+  <div class="cta-actions">
+    <a href="mailto:adam@amusementstandards.com?subject=Ride%20Entertainment%20Pilot%20Program" class="btn-gold">Start the Conversation</a>
+    <a href="manufacturer-services.html" class="btn-ghost">Full Program Details</a>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-left">© 2025 Amusement Standards. All rights reserved. Prepared for Ride Entertainment.</div>
+  <div class="footer-right">
+    <a href="manufacturer-services.html">Full Manufacturer Program</a>
+  </div>
+</div>
+
+</body>
+</html>
