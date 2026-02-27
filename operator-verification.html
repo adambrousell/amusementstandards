@@ -124,6 +124,54 @@ img{max-width:100%;display:block}
 .ss{font-size:16px;color:var(--text-2);line-height:1.75;font-weight:300;max-width:620px}
 .sh{margin-bottom:56px}
 
+/* ── EFFICIENCY BANNER ── */
+.eff-banner{
+    background:linear-gradient(135deg, #0D2137 0%, #162D47 50%, #0D2137 100%);
+    padding:72px 40px;position:relative;overflow:hidden;
+}
+.eff-banner::before{
+    content:'';position:absolute;inset:0;
+    background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 30h60M30 0v60' stroke='white' stroke-opacity='0.03' stroke-width='1'/%3E%3C/svg%3E") repeat;
+}
+.eff-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto}
+.eff-headline{font-size:clamp(22px,3vw,32px);font-weight:700;color:#fff;line-height:1.2;letter-spacing:-.5px;margin-bottom:12px}
+.eff-headline em{font-style:normal;color:var(--secondary)}
+.eff-sub{font-size:16px;color:rgba(255,255,255,.5);line-height:1.75;max-width:720px;margin-bottom:40px;font-weight:300}
+.eff-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.eff-stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:28px 24px;text-align:center;position:relative;overflow:hidden}
+.eff-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.eff-stat.s1::before{background:var(--secondary)}
+.eff-stat.s2::before{background:var(--teal)}
+.eff-stat.s3::before{background:var(--success)}
+.eff-stat-icon{font-size:28px;margin-bottom:10px}
+.eff-stat-title{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
+.eff-stat-text{font-size:15px;color:rgba(255,255,255,.75);line-height:1.6}
+.eff-stat-text strong{color:#fff;font-weight:600}
+
+/* ── ALIGNMENT COMPARISON ── */
+.align-section{padding:88px 40px;background:var(--white)}
+.align-grid{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:start}
+.align-card{border-radius:var(--r);padding:32px 28px;min-height:100%}
+.align-card.park{background:#FFF8F5;border:1.5px solid #FDDCC8}
+.align-card.mfg{background:var(--primary-light);border:2px solid var(--primary);position:relative}
+.align-card.mfg::before{
+    content:'OUR APPROACH';position:absolute;top:-11px;left:24px;
+    font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+    background:var(--primary);color:#fff;padding:3px 12px;border-radius:4px;
+}
+.align-divider{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text-3);align-self:center}
+.align-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.align-card.park .align-tag{color:var(--amber)}
+.align-card.mfg .align-tag{color:var(--primary)}
+.align-card h3{font-size:20px;font-weight:700;margin-bottom:14px;line-height:1.2;letter-spacing:-.3px}
+.align-text{font-size:14px;color:var(--text-2);line-height:1.7;margin-bottom:18px}
+.align-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.align-list li{font-size:14px;color:var(--text-2);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.align-list li::before{content:'›';font-weight:700;flex-shrink:0;margin-top:0}
+.align-card.park .align-list li::before{color:var(--amber)}
+.align-card.mfg .align-list li::before{color:var(--primary)}
+.align-bottom{margin-top:18px;padding-top:16px;border-top:1px solid rgba(0,0,0,.08);font-size:13px;color:var(--text-3);line-height:1.6;font-style:italic}
+
 /* ── WHO GETS VERIFIED ── */
 .who-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
 .who-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:32px 28px}
@@ -206,6 +254,7 @@ img{max-width:100%;display:block}
 .callout.navy{background:rgba(13,33,55,.05);border-left:4px solid var(--navy)}
 .callout.amber{background:var(--amber-light);border-left:4px solid var(--amber)}
 .callout.purp{background:var(--purp-light);border-left:4px solid var(--purp)}
+.callout.green{background:var(--success-light);border-left:4px solid var(--success)}
 .callout-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:7px}
 .callout p{font-size:15px;color:var(--text);line-height:1.7}
 
@@ -249,9 +298,12 @@ img{max-width:100%;display:block}
     .delivery-cards{grid-template-columns:1fr}
     .spec-grid{grid-template-columns:1fr 1fr}
     .compare{grid-template-columns:1fr}
+    .align-grid{grid-template-columns:1fr;gap:16px}
+    .align-divider{transform:rotate(90deg);padding:8px 0}
+    .eff-stats{grid-template-columns:1fr}
 }
 @media(max-width:600px){
-    .hero,.section,.cta{padding-left:20px;padding-right:20px}
+    .hero,.section,.cta,.eff-banner,.align-section{padding-left:20px;padding-right:20px}
     .header-inner{padding:0 20px}
     .nav{display:none}
     .spec-grid{grid-template-columns:1fr 1fr}
@@ -278,8 +330,8 @@ img{max-width:100%;display:block}
 <section class="hero">
     <div class="hero-text">
         <div class="hero-eyebrow">Operator Verification Program</div>
-        <h1>Your Operators. <span>Verified on Your Equipment. Under Your Brand.</span></h1>
-        <p class="hero-sub">Not a new credential for parks to administer — a manufacturer verification record. Ride-specific training built from your OEM documentation, aligned with ASTM F770-19 §8, delivered as SCORM 1.2. Parks complete the course and you can say: "Every operator on our equipment has been verified."</p>
+        <h1>Your Operators. <span>Verified on Your Equipment. Running It the Way You Designed It.</span></h1>
+        <p class="hero-sub">Not a new credential for parks to administer — a manufacturer verification record. Ride-specific training built from your OEM documentation, aligned with ASTM F770-19 §8, delivered as SCORM 1.2. Parks complete the course and you can say: "Every operator on our equipment has been verified — and running it the way we engineered it to run."</p>
         <div class="hero-actions">
             <a href="#pricing" class="btn btn-primary btn-lg">See Pricing</a>
             <a href="#course-content" class="btn btn-ghost btn-lg">What the Course Covers</a>
@@ -313,9 +365,90 @@ img{max-width:100%;display:block}
 </section>
 
 <!-- ═══════════════════════════════════════════════════
+     EFFICIENCY BANNER — NEW SECTION
+     ═══════════════════════════════════════════════════ -->
+<section class="eff-banner">
+    <div class="eff-inner">
+        <div class="ey" style="color:var(--secondary)">The Efficiency Gap</div>
+        <div class="eff-headline">Every Ride Has a <em>Theoretical Capacity Number.</em> Almost None Hit It.</div>
+        <p class="eff-sub">You engineered your ride to move a specific number of riders per hour. But when operator training is park-authored, inconsistent, or improvised — dispatch intervals stretch, load times drift, and your product underperforms. Not because of engineering. Because of operations. Verified operators trained to your OEM spec close that gap.</p>
+
+        <div class="eff-stats">
+            <div class="eff-stat s1">
+                <div class="eff-stat-icon">⏱</div>
+                <div class="eff-stat-title">Dispatch Efficiency</div>
+                <div class="eff-stat-text"><strong>Operators trained to OEM spec</strong> run tighter dispatch intervals because they understand the ride system — not just a park-authored checklist. Consistent procedures mean consistent cycle times.</div>
+            </div>
+            <div class="eff-stat s2">
+                <div class="eff-stat-icon">📊</div>
+                <div class="eff-stat-title">Theoretical → Actual</div>
+                <div class="eff-stat-text">Your ride was designed for a specific <strong>riders-per-hour capacity.</strong> Every second of hesitation at load, every unnecessary hold, every miscommunication at restraint check — it compounds. OEM-trained operators narrow the gap between theoretical and actual.</div>
+            </div>
+            <div class="eff-stat s3">
+                <div class="eff-stat-icon">🔄</div>
+                <div class="eff-stat-title">Fewer Stoppages</div>
+                <div class="eff-stat-text"><strong>Operators who understand the system</strong> don't panic-stop for normal conditions. They recognize the difference between a fault and a feature. Fewer unnecessary E-stops means more uptime and higher throughput.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PARK-ALIGNED vs MANUFACTURER-ALIGNED — NEW SECTION
+     ═══════════════════════════════════════════════════ -->
+<section class="align-section">
+    <div class="container">
+        <div class="sh">
+            <div class="ey">A Different Alignment</div>
+            <h2 class="st">Most Training Programs Are Park-Aligned. This One Is Manufacturer-Aligned.</h2>
+            <p class="ss">That's not a criticism — it's a different design point. Park-aligned programs solve park problems. Manufacturer-aligned verification solves manufacturer problems. Your equipment. Your spec. Your standard.</p>
+        </div>
+
+        <div class="align-grid">
+            <div class="align-card park">
+                <div class="align-tag">Park-Aligned Programs</div>
+                <h3>Designed Around Park Operations</h3>
+                <p class="align-text">Built to serve the facility's needs — scheduling, staffing, multi-ride coverage, guest service standards. Training is authored by the park to fit the park's operational model.</p>
+                <ul class="align-list">
+                    <li>Training content written by the park, for the park</li>
+                    <li>Covers all rides from all manufacturers under one umbrella</li>
+                    <li>Optimized for rapid seasonal onboarding</li>
+                    <li>Standards vary facility to facility</li>
+                    <li>Manufacturer has no visibility or input</li>
+                    <li>Procedures may drift from OEM engineering spec</li>
+                </ul>
+                <div class="align-bottom">Valuable for parks. But the manufacturer's name is on the ride — not the park's training binder.</div>
+            </div>
+
+            <div class="align-divider">vs</div>
+
+            <div class="align-card mfg">
+                <div class="align-tag">Manufacturer-Aligned Verification</div>
+                <h3>Designed Around the Equipment</h3>
+                <p class="align-text">Built from OEM documentation to ensure the ride is operated the way it was engineered. Every procedure traces back to the manufacturer's spec — not a park interpretation of it.</p>
+                <ul class="align-list">
+                    <li>Training content built from manufacturer's OEM docs</li>
+                    <li>Ride-specific — covers every system on your equipment</li>
+                    <li>Consistent standard across every installation</li>
+                    <li>Manufacturer gets fleet-wide visibility into verified operators</li>
+                    <li>Procedures map to engineering specs and design intent</li>
+                    <li>Operators run the ride closer to theoretical capacity</li>
+                </ul>
+                <div class="align-bottom">Layers on top of park training — doesn't replace it. One verified lead operator per site, covering all your rides at that location.</div>
+            </div>
+        </div>
+
+        <div class="callout green" style="margin-top:40px">
+            <div class="callout-label">Why This Matters for Efficiency</div>
+            <p>When operators are trained to a park-authored standard, they learn "how we do it here." When they're verified to a manufacturer standard, they learn "how the ride was designed to run." The difference shows up in dispatch times, load efficiency, restraint check speed, and ultimately — whether your ride performs to the capacity number you published in the sales spec.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
      WHO GETS VERIFIED
      ═══════════════════════════════════════════════════ -->
-<section class="section">
+<section class="section section-alt">
     <div class="container">
         <div class="sh">
             <div class="ey">Who Gets Verified</div>
@@ -328,14 +461,14 @@ img{max-width:100%;display:block}
                 <div class="who-icon">✓</div>
                 <div class="who-title">What the Verified Operator Does</div>
                 <div class="who-text">
-                    The person who oversees the ride training for the facility. <strong>Accountable for pre-opening inspection, restraint verification, emergency response, and on-site documentation.</strong> Oversight role — not required to be physically present at the ride at all times. One verified lead operator per site, covering all manufacturer rides at that location.
+                    The person who oversees the ride training for the facility. <strong>Accountable for pre-opening inspection, restraint verification, emergency response, and on-site documentation.</strong> Oversight role — not required to be physically present at the ride at all times. One verified lead operator per site, covering all manufacturer rides at that location. They're the person who ensures your equipment runs at OEM spec — not a park approximation of it.
                 </div>
             </div>
             <div class="who-card">
                 <div class="who-icon">🏢</div>
                 <div class="who-title">For Parks With Existing Training</div>
                 <div class="who-text">
-                    Parks with internal training programs can verify their existing lead staff through the manufacturer's program — <strong>no LMS replacement, no retraining line-level operators.</strong> This isn't a new credential to administer. It's a manufacturer verification on top of what they already have. The park gets a completion record. You get a documented standard.
+                    Parks with internal training programs can verify their existing lead staff through the manufacturer's program — <strong>no LMS replacement, no retraining line-level operators.</strong> This isn't a new credential to administer. It's a manufacturer verification on top of what they already have. The park gets a completion record. You get a documented standard — and confidence that their procedures align with your engineering specs.
                 </div>
             </div>
             <div class="who-card">
@@ -346,10 +479,10 @@ img{max-width:100%;display:block}
                 </div>
             </div>
             <div class="who-card">
-                <div class="who-icon">🔑</div>
-                <div class="who-title">One Verification, One Price</div>
+                <div class="who-icon">⚡</div>
+                <div class="who-title">Why It Matters Operationally</div>
                 <div class="who-text">
-                    <strong>$350/person/year per site plus $250/each for every other RMC/Larson ride on property.</strong> Covers all manufacturer rides at that location. One course with ride-specific modules for every unit at the park. One annual reverification. The quarterly verification report auto-generates — serves as both compliance record and billing artifact.
+                    <strong>A verified lead operator trained to OEM spec sets the standard for the entire crew.</strong> When the person overseeing the ride understands the engineering intent — dispatch procedures, restraint sequencing, load protocols — the whole operation tightens. Parks get higher throughput. You get equipment running the way you designed it. Everybody wins.
                 </div>
             </div>
         </div>
@@ -359,12 +492,12 @@ img{max-width:100%;display:block}
 <!-- ═══════════════════════════════════════════════════
      WHAT THE COURSE COVERS
      ═══════════════════════════════════════════════════ -->
-<section class="section section-alt" id="course-content">
+<section class="section" id="course-content">
     <div class="container">
         <div class="sh">
             <div class="ey">Course Content</div>
             <h2 class="st">What the Verification Course Covers</h2>
-            <p class="ss">Every module is ride-specific — built from the manufacturer's OEM documentation. Every procedure traces back to engineering specs, not park-authored binders.</p>
+            <p class="ss">Every module is ride-specific — built from the manufacturer's OEM documentation. Every procedure traces back to engineering specs, not park-authored binders. The result: operators who understand why each step exists, not just that it's required.</p>
         </div>
 
         <div class="covers-grid">
@@ -429,13 +562,18 @@ img{max-width:100%;display:block}
                 </ul>
             </div>
         </div>
+
+        <div class="callout green" style="margin-top:32px">
+            <div class="callout-label">Efficiency by Design</div>
+            <p>Every module teaches the OEM-specified sequence — not a park's improvised version. When operators learn the manufacturer's intended load procedure, restraint check order, and dispatch sequence, cycle times tighten naturally. The course doesn't just make operations safer. It makes them faster — because the engineered procedure is almost always the most efficient one.</p>
+        </div>
     </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════════
      ASSESSMENT SPEC
      ═══════════════════════════════════════════════════ -->
-<section class="section">
+<section class="section section-alt">
     <div class="container">
         <div class="sh">
             <div class="ey">Assessment &amp; Verification</div>
@@ -472,7 +610,7 @@ img{max-width:100%;display:block}
 <!-- ═══════════════════════════════════════════════════
      ASTM ALIGNMENT TABLE
      ═══════════════════════════════════════════════════ -->
-<section class="section section-alt">
+<section class="section">
     <div class="container">
         <div class="sh">
             <div class="ey">Regulatory Foundation</div>
@@ -495,12 +633,12 @@ img{max-width:100%;display:block}
                 <div class="astm-row">
                     <div class="astm-cell astm-ref">§8.1</div>
                     <div class="astm-cell astm-req">Operators must be trained in proper ride operation and applicable guest safety rules. Training must be documented.</div>
-                    <div class="astm-cell astm-how">Course covers full ride systems, restraint verification, rider screening, and guest communication. Completion record with unique ID issued on 80% pass.</div>
+                    <div class="astm-cell astm-how">Course covers full ride systems, restraint verification, rider screening, and guest communication — all from OEM documentation. Completion record with unique ID issued on 80% pass.</div>
                 </div>
                 <div class="astm-row">
                     <div class="astm-cell astm-ref">§8.2</div>
                     <div class="astm-cell astm-req">Operator is responsible for safe loading, restraint verification, emergency response, and LOTO compliance during maintenance.</div>
-                    <div class="astm-cell astm-how">Course includes LOTO per OSHA 1910.147, emergency stop and evacuation procedures, and incident command basics. 20-question final assessment.</div>
+                    <div class="astm-cell astm-how">Course includes LOTO per OSHA 1910.147, emergency stop and evacuation procedures, and incident command basics. OEM-specified load and dispatch sequences optimize both safety and throughput.</div>
                 </div>
                 <div class="astm-row">
                     <div class="astm-cell astm-ref">§8.3</div>
@@ -520,7 +658,7 @@ img{max-width:100%;display:block}
 <!-- ═══════════════════════════════════════════════════
      DELIVERY FORMAT
      ═══════════════════════════════════════════════════ -->
-<section class="section">
+<section class="section section-alt">
     <div class="container">
         <div class="sh">
             <div class="ey">Delivery</div>
@@ -551,7 +689,7 @@ img{max-width:100%;display:block}
 <!-- ═══════════════════════════════════════════════════
      PRICING
      ═══════════════════════════════════════════════════ -->
-<section class="section section-alt" id="pricing">
+<section class="section" id="pricing">
     <div class="container">
         <div class="sh">
             <div class="ey">Pricing</div>
@@ -616,7 +754,7 @@ img{max-width:100%;display:block}
 <!-- ═══════════════════════════════════════════════════
      BEFORE / AFTER
      ═══════════════════════════════════════════════════ -->
-<section class="section">
+<section class="section section-alt">
     <div class="container">
         <div class="sh">
             <div class="ey">The Difference</div>
@@ -634,6 +772,8 @@ img{max-width:100%;display:block}
                     <li>Incident liability shifts toward design and engineering</li>
                     <li>No visibility into operator competency across the install base</li>
                     <li>Paper trail stops at ride delivery</li>
+                    <li>Ride operates below theoretical capacity due to inconsistent procedures</li>
+                    <li>Unnecessary E-stops and extended load times from undertrained staff</li>
                 </ul>
             </div>
             <div class="cmp-card after">
@@ -646,6 +786,8 @@ img{max-width:100%;display:block}
                     <li>Verification report auto-generates — compliance + billing artifact</li>
                     <li>Fleet-wide visibility into who is verified and when reverifications expire</li>
                     <li>Paper trail extends through the life of every installation</li>
+                    <li>Ride operates closer to theoretical capacity — your published spec holds up</li>
+                    <li>Tighter dispatch intervals, faster load times, fewer unnecessary stoppages</li>
                 </ul>
             </div>
         </div>
@@ -658,8 +800,8 @@ img{max-width:100%;display:block}
 <section class="cta">
     <div class="cta-inner">
         <div class="ey">Get Started</div>
-        <h2>One Ride Type. Thirty Days. Your Brand on Every Verification Record.</h2>
-        <p>Send us your OEM documentation for one ride type. We'll scope the verification course, confirm the 30-day build timeline, and show you what the finished completion record looks like before you commit.</p>
+        <h2>Your Ride. Your Spec. Your Operators Running It Right.</h2>
+        <p>Send us your OEM documentation for one ride type. We'll scope the verification course, confirm the 30-day build timeline, and show you what the finished completion record looks like before you commit. Safer operations and higher throughput — built from the same engineering specs you already have.</p>
         <div class="cta-btns">
             <a href="manufacturer-services.html#pilot" class="btn btn-primary btn-lg">See the Pilot Program</a>
             <a href="mailto:info@amusementstandards.com" class="btn btn-ghost btn-lg">Email Us Directly</a>
