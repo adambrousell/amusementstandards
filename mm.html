@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HYPER FREQUENT™ — Amusement Standards | Madison Marquette</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0a1628;
+            --deep-blue: #0f2847;
+            --ocean: #1a5276;
+            --teal: #17a2b8;
+            --aqua: #4dd9e8;
+            --sand: #f4e8c1;
+            --warm-white: #faf7f0;
+            --coral: #e8634a;
+            --gold: #d4a03c;
+            --text: #1a1a2e;
+            --muted: #5a6a7a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--warm-white);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1.25rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(77, 217, 232, 0.15);
+        }
+
+        .logo {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .logo span { color: var(--aqua); }
+
+        .nav-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--aqua);
+            background: rgba(77, 217, 232, 0.1);
+            border: 1px solid rgba(77, 217, 232, 0.25);
+            padding: 0.35rem 0.85rem;
+            border-radius: 100px;
+            letter-spacing: 0.08em;
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(165deg, var(--navy) 0%, var(--deep-blue) 40%, var(--ocean) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 80vw; height: 80vw;
+            background: radial-gradient(circle, rgba(77, 217, 232, 0.08) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 200px;
+            background: linear-gradient(to top, var(--warm-white), transparent);
+            z-index: 2;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(77, 217, 232, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(77, 217, 232, 0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 70%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 3rem 6rem;
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--aqua);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .eyebrow::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--aqua);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            line-height: 0.95;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--aqua);
+            display: block;
+        }
+
+        .hero-sub {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.65);
+            max-width: 600px;
+            margin-top: 1.5rem;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .hero-sub strong {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-item { text-align: left; }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--aqua);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 0.5rem;
+        }
+
+        /* CLIENT BADGE */
+        .client-section {
+            padding: 5rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .client-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            box-shadow: 0 4px 40px rgba(10, 22, 40, 0.06);
+            border: 1px solid rgba(10, 22, 40, 0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .client-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--teal), var(--aqua), var(--gold));
+        }
+
+        .client-info h3 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .client-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .client-location {
+            font-size: 1rem;
+            color: var(--muted);
+            margin-top: 0.5rem;
+        }
+
+        .client-location strong { color: var(--ocean); }
+
+        .scope-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .scope-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(26, 82, 118, 0.06), rgba(77, 217, 232, 0.08));
+            border: 1px solid rgba(26, 82, 118, 0.1);
+            padding: 0.6rem 1.2rem;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--ocean);
+        }
+
+        .scope-tag .icon { font-size: 1.1rem; }
+
+        .season-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: linear-gradient(135deg, rgba(212, 160, 60, 0.08), rgba(212, 160, 60, 0.15));
+            border: 1px solid rgba(212, 160, 60, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-top: 1rem;
+        }
+
+        .frequency-display {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(145deg, var(--navy), var(--deep-blue));
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .freq-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--aqua);
+            line-height: 1;
+        }
+
+        .freq-unit {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 0.25rem;
+        }
+
+        .freq-desc {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            margin-top: 1.25rem;
+            line-height: 1.6;
+        }
+
+        .freq-desc strong { color: var(--aqua); }
+
+        /* VALUE PROP BANNER */
+        .value-banner {
+            padding: 0 3rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .value-banner-inner {
+            background: linear-gradient(135deg, #f0f9fb, #eef3f8);
+            border: 1px solid rgba(23, 162, 184, 0.12);
+            border-radius: 16px;
+            padding: 2.5rem 3rem;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .value-icon {
+            width: 64px; height: 64px;
+            background: linear-gradient(135deg, var(--ocean), var(--teal));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 15px rgba(23, 162, 184, 0.25);
+        }
+
+        .value-text h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .value-text p {
+            font-size: 0.92rem;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        .value-text p strong { color: var(--ocean); }
+
+        /* SECTION SHARED */
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--muted);
+            max-width: 700px;
+            line-height: 1.65;
+            margin-bottom: 2.5rem;
+        }
+
+        /* WHAT'S AUDITED */
+        .audit-section {
+            padding: 4rem 3rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .audit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .audit-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 2px 20px rgba(10, 22, 40, 0.04);
+            border: 1px solid rgba(10, 22, 40, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .audit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(10, 22, 40, 0.08);
+        }
+
+        .audit-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .audit-card-icon {
+            width: 56px; height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+
+        .audit-card.splash .audit-card-icon {
+            background: linear-gradient(135deg, rgba(23, 162, 184, 0.1), rgba(77, 217, 232, 0.15));
+        }
+
+        .audit-card.golf .audit-card-icon {
+            background: linear-gradient(135deg, rgba(212, 160, 60, 0.1), rgba(212, 160, 60, 0.18));
+        }
+
+        .audit-card-title-group h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--navy);
+        }
+
+        .audit-card-title-group .facility-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-top: 0.2rem;
+        }
+
+        .checklist { list-style: none; }
+
+        .checklist li {
+            padding: 0.5rem 0;
+            font-size: 0.92rem;
+            color: var(--muted);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            line-height: 1.5;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            color: var(--teal);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* SCHEDULE */
+        .schedule-section {
+            padding: 4rem 3rem 5rem;
+            background: linear-gradient(180deg, var(--warm-white), #eef6f8, var(--warm-white));
+        }
+
+        .schedule-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .schedule-timeline {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .time-block {
+            background: #fff;
+            border-radius: 16px;
+            padding: 2.5rem;
+            border: 1px solid rgba(10, 22, 40, 0.05);
+            box-shadow: 0 2px 20px rgba(10, 22, 40, 0.04);
+        }
+
+        .time-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 0.5rem;
+        }
+
+        .time-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .time-desc {
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-top: 1rem;
+        }
+
+        .time-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .time-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            background: rgba(23, 162, 184, 0.07);
+            color: var(--ocean);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            letter-spacing: 0.03em;
+        }
+
+        /* OPS SUPPORT */
+        .ops-section {
+            padding: 5rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ops-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .ops-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 2rem;
+            border: 1px solid rgba(10, 22, 40, 0.05);
+            box-shadow: 0 2px 15px rgba(10, 22, 40, 0.03);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ops-card:hover { transform: translateY(-3px); }
+
+        .ops-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--teal), var(--aqua));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .ops-card:hover::after { opacity: 1; }
+
+        .ops-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+
+        .ops-card h4 {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--navy);
+            margin-bottom: 0.6rem;
+        }
+
+        .ops-card p {
+            font-size: 0.85rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* COMPLIANCE */
+        .compliance-section {
+            padding: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .compliance-strip {
+            background: var(--navy);
+            border-radius: 16px;
+            padding: 2.5rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .compliance-item { text-align: center; }
+
+        .compliance-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--aqua);
+            letter-spacing: 0.05em;
+        }
+
+        .compliance-desc {
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 0.3rem;
+        }
+
+        /* DELIVERABLES */
+        .deliverables-section {
+            padding: 5rem 3rem;
+            background: linear-gradient(180deg, var(--warm-white), #f5f0e6, var(--warm-white));
+        }
+
+        .deliverables-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .deliverables-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .del-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 2rem;
+            border: 1px solid rgba(10, 22, 40, 0.05);
+            box-shadow: 0 2px 15px rgba(10, 22, 40, 0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .del-card:hover { transform: translateY(-3px); }
+
+        .del-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+
+        .del-card h4 {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--navy);
+            margin-bottom: 0.6rem;
+        }
+
+        .del-card p {
+            font-size: 0.85rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* SEASON TIMELINE */
+        .season-section {
+            padding: 5rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .season-timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-top: 2.5rem;
+        }
+
+        .season-phase {
+            background: #fff;
+            border-radius: 14px;
+            padding: 1.75rem;
+            border: 1px solid rgba(10, 22, 40, 0.05);
+            box-shadow: 0 2px 15px rgba(10, 22, 40, 0.03);
+            position: relative;
+        }
+
+        .season-phase::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 1.5rem; right: 1.5rem;
+            height: 3px;
+            border-radius: 3px;
+        }
+
+        .season-phase.pre::before { background: var(--gold); }
+        .season-phase.peak::before { background: var(--coral); }
+        .season-phase.shoulder::before { background: var(--teal); }
+        .season-phase.post::before { background: var(--ocean); }
+
+        .phase-month {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+            padding-top: 0.25rem;
+        }
+
+        .phase-name {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--navy);
+            margin-bottom: 0.6rem;
+        }
+
+        .phase-desc {
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        /* WHY HYPER FREQUENT */
+        .why-section {
+            padding: 5rem 3rem;
+            background: linear-gradient(165deg, var(--navy), var(--deep-blue));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .why-section::before {
+            content: '';
+            position: absolute;
+            top: -30%; right: -10%;
+            width: 60vw; height: 60vw;
+            background: radial-gradient(circle, rgba(77, 217, 232, 0.06) 0%, transparent 60%);
+        }
+
+        .why-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .why-section .section-label { color: var(--aqua); }
+        .why-section .section-title { color: #fff; }
+        .why-section .section-subtitle { color: rgba(255,255,255,0.5); }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .why-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: background 0.3s ease;
+        }
+
+        .why-card:hover { background: rgba(255, 255, 255, 0.07); }
+
+        .why-card h4 {
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.6rem;
+            font-size: 1.05rem;
+        }
+
+        .why-card p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.88rem;
+            line-height: 1.65;
+        }
+
+        /* PRICING */
+        .pricing-section {
+            padding: 5rem 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            align-items: start;
+        }
+
+        .pricing-card {
+            background: var(--card, #fff);
+            border-radius: 18px;
+            border: 1px solid rgba(10, 22, 40, 0.06);
+            box-shadow: 0 4px 25px rgba(10, 22, 40, 0.04);
+            padding: 2.5rem 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(10, 22, 40, 0.08);
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(165deg, var(--navy), var(--deep-blue));
+            border: 2px solid rgba(77, 217, 232, 0.25);
+            box-shadow: 0 8px 40px rgba(10, 22, 40, 0.15);
+        }
+
+        .pricing-card.featured:hover {
+            box-shadow: 0 16px 50px rgba(10, 22, 40, 0.2);
+        }
+
+        .pricing-recommended {
+            position: absolute;
+            top: 1.25rem; right: -2rem;
+            background: var(--aqua);
+            color: var(--navy);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 0.35rem 2.5rem;
+            transform: rotate(35deg);
+        }
+
+        .pricing-tier {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 0.75rem;
+        }
+
+        .pricing-card.featured .pricing-tier {
+            color: var(--aqua);
+        }
+
+        .pricing-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.35rem;
+        }
+
+        .pricing-card.featured .pricing-name {
+            color: #fff;
+        }
+
+        .pricing-tagline {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 1.75rem;
+            line-height: 1.5;
+        }
+
+        .pricing-card.featured .pricing-tagline {
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .pricing-amount {
+            display: flex;
+            align-items: baseline;
+            gap: 0.35rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-dollar {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .pricing-card.featured .pricing-dollar {
+            color: var(--aqua);
+        }
+
+        .pricing-period {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+        }
+
+        .pricing-card.featured .pricing-period {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .pricing-annual {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--muted-light, #9ca3af);
+            margin-bottom: 1.75rem;
+        }
+
+        .pricing-card.featured .pricing-annual {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .pricing-divider {
+            height: 1px;
+            background: rgba(10, 22, 40, 0.06);
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card.featured .pricing-divider {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .pricing-features {
+            list-style: none;
+        }
+
+        .pricing-features li {
+            font-size: 0.85rem;
+            color: var(--muted);
+            padding: 0.45rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            line-height: 1.45;
+        }
+
+        .pricing-card.featured .pricing-features li {
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--teal);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .pricing-card.featured .pricing-features li::before {
+            color: var(--aqua);
+        }
+
+        .pricing-features li.highlight {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .pricing-card.featured .pricing-features li.highlight {
+            color: #fff;
+        }
+
+        .pricing-cta {
+            display: block;
+            text-align: center;
+            padding: 0.85rem 1.5rem;
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 1.75rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .pricing-cta-outline {
+            background: transparent;
+            color: var(--ocean);
+            border: 2px solid rgba(26, 82, 118, 0.15);
+        }
+
+        .pricing-cta-outline:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+        }
+
+        .pricing-cta-primary {
+            background: linear-gradient(135deg, var(--teal), var(--aqua));
+            color: var(--navy);
+            border: none;
+            box-shadow: 0 4px 15px rgba(77, 217, 232, 0.3);
+            font-weight: 700;
+        }
+
+        .pricing-cta-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(77, 217, 232, 0.4);
+        }
+
+        .pricing-cta-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .pricing-cta-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .pricing-footnote {
+            text-align: center;
+            margin-top: 2.5rem;
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.65;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pricing-footnote strong {
+            color: var(--ocean);
+        }
+
+        @media (max-width: 768px) {
+            .pricing-grid { grid-template-columns: 1fr; max-width: 420px; margin-left: auto; margin-right: auto; }
+            .pricing-card.featured { order: -1; }
+        }
+
+        /* CTA */
+        .cta-section {
+            padding: 6rem 3rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.25rem;
+            background: linear-gradient(135deg, var(--ocean), var(--teal));
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(23, 162, 184, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(23, 162, 184, 0.4);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.25rem;
+            background: transparent;
+            color: var(--ocean);
+            border: 2px solid rgba(26, 82, 118, 0.15);
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--navy);
+            padding: 3rem;
+            text-align: center;
+            border-top: 1px solid rgba(77, 217, 232, 0.08);
+        }
+
+        .footer-logo {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .footer-logo span { color: var(--aqua); }
+
+        .footer-text {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.25);
+            margin-top: 0.75rem;
+        }
+
+        .footer-text a {
+            color: rgba(255, 255, 255, 0.35);
+            text-decoration: none;
+        }
+
+        /* ANIMATIONS */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { padding: 1rem 1.5rem; }
+            .hero-content { padding: 7rem 1.5rem 5rem; }
+            .hero-stats { flex-direction: column; gap: 1.5rem; }
+            .client-card { grid-template-columns: 1fr; }
+            .audit-grid { grid-template-columns: 1fr; }
+            .schedule-timeline { grid-template-columns: 1fr; }
+            .ops-grid { grid-template-columns: 1fr; }
+            .deliverables-grid { grid-template-columns: 1fr; }
+            .why-grid { grid-template-columns: 1fr; }
+            .season-timeline { grid-template-columns: 1fr 1fr; }
+            .compliance-strip { justify-content: center; }
+            .value-banner-inner { grid-template-columns: 1fr; text-align: center; }
+            .value-icon { margin: 0 auto; }
+            section, .value-banner, .compliance-section {
+                padding-left: 1.5rem !important;
+                padding-right: 1.5rem !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="logo">Amusement <span>Standards</span></div>
+    <div class="nav-badge">HYPER FREQUENT™ SERVICE</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+        <div class="eyebrow">Prepared Exclusively for Madison Marquette</div>
+        <h1>Hyper<br><em>Frequent</em></h1>
+        <p class="hero-sub">
+            Twice-daily, on-site safety and operations audits for <strong>Asbury Splash Park</strong> and <strong>Asbury Eighteen</strong> on the Asbury Park Boardwalk. An independent safety layer that supports your Operations Manager and protects your guests, staff, and brand — every operating day of the season.
+        </p>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number">2×</div>
+                <div class="stat-label">Daily Audits</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">~420</div>
+                <div class="stat-label">Audits per Season</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Facilities Covered</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">&lt;1hr</div>
+                <div class="stat-label">Critical Finding Alert</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CLIENT -->
+<section class="client-section fade-in">
+    <div class="client-card">
+        <div class="client-info">
+            <h3>Prepared Exclusively For</h3>
+            <div class="client-name">Madison Marquette</div>
+            <div class="client-location">Asbury Park Boardwalk — <strong>Asbury Park, NJ</strong></div>
+            <div class="scope-tags">
+                <div class="scope-tag"><span class="icon">💦</span> Asbury Splash Park</div>
+                <div class="scope-tag"><span class="icon">⛳</span> Asbury Eighteen</div>
+            </div>
+            <div class="season-tag">📅 Seasonal: March/April — October</div>
+        </div>
+        <div class="frequency-display">
+            <div class="freq-number">2×</div>
+            <div class="freq-unit">Per Day</div>
+            <p class="freq-desc">Morning pre-open + afternoon peak-operations audits. <strong>Every single operating day</strong> from season open through close.</p>
+        </div>
+    </div>
+</section>
+
+<!-- VALUE PROP BANNER -->
+<div class="value-banner fade-in">
+    <div class="value-banner-inner">
+        <div class="value-icon">🛡️</div>
+        <div class="value-text">
+            <h3>An Independent Safety Layer for Your Operations Team</h3>
+            <p>Your Amusements Operations Manager is responsible for staff scheduling and supervision, guest services, facility maintenance, water balance and levels, cash management, inventory, social media, group sales, and regulatory compliance — all at once, all season long. Hyper Frequent™ provides a <strong>dedicated, independent set of eyes</strong> focused exclusively on safety and compliance, so your Director of Operations has documented assurance that standards are being met even during the highest-pressure days on the boardwalk.</p>
+        </div>
+    </div>
+</div>
+
+<!-- WHAT'S AUDITED -->
+<section class="audit-section fade-in">
+    <div class="section-label">Scope of Coverage</div>
+    <div class="section-title">What We Audit — Twice Daily</div>
+    <div class="section-subtitle">Every audit covers the full operational footprint of both facilities, aligned to the specific safety, maintenance, and guest experience requirements of each attraction.</div>
+    <div class="audit-grid">
+        <div class="audit-card splash">
+            <div class="audit-card-header">
+                <div class="audit-card-icon">💦</div>
+                <div class="audit-card-title-group">
+                    <h3>Asbury Splash Park</h3>
+                    <div class="facility-name">Interactive Water Play Area</div>
+                </div>
+            </div>
+            <ul class="checklist">
+                <li>Water balance verification — pH, chlorine, alkalinity, turbidity</li>
+                <li>Water level monitoring & recirculation system checks</li>
+                <li>Slip/fall hazard surface assessment across all play zones</li>
+                <li>Nozzle, spray feature & interactive element functionality</li>
+                <li>Drain cover integrity & entrapment prevention (VGB Act)</li>
+                <li>Perimeter fencing, gates & access control points</li>
+                <li>ADA accessibility compliance verification</li>
+                <li>Health & safety signage — presence, legibility, regulatory compliance</li>
+                <li>Ground surface condition, drainage flow & standing water</li>
+                <li>Facility cleanliness — restrooms, seating areas, walkways</li>
+                <li>Guest capacity monitoring & behavior observation</li>
+                <li>Staff positioning, attentiveness & protocol adherence</li>
+                <li>Emergency equipment access — first aid kits, AED, emergency phone</li>
+                <li>CPR/First Aid certification currency verification (staff spot-check)</li>
+            </ul>
+        </div>
+        <div class="audit-card golf">
+            <div class="audit-card-header">
+                <div class="audit-card-icon">⛳</div>
+                <div class="audit-card-title-group">
+                    <h3>Asbury Eighteen</h3>
+                    <div class="facility-name">18-Hole Miniature Golf</div>
+                </div>
+            </div>
+            <ul class="checklist">
+                <li>Full 18-hole course walkthrough for trip, slip & fall hazards</li>
+                <li>Structural integrity of course features, obstacles & props</li>
+                <li>Boundary edging, elevation transitions & step safety</li>
+                <li>Lighting adequacy — all playing areas, walkways & parking</li>
+                <li>Equipment condition — putters, balls, scorecards, pencils</li>
+                <li>Equipment inventory check & par stock verification</li>
+                <li>Landscape maintenance, sight-line clearance & overgrowth</li>
+                <li>Queue area, gathering space & POS station safety</li>
+                <li>Emergency egress pathway verification & clearance</li>
+                <li>Guest-facing signage — rules, pricing, safety & emergency postings</li>
+                <li>Facility cleanliness — course, common areas, restrooms</li>
+                <li>Staff presence, guest interaction quality & conflict resolution</li>
+                <li>Cash handling area security & MICROS POS station condition</li>
+                <li>Guest complaint/incident log review (if accessible)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule-section fade-in">
+    <div class="schedule-inner">
+        <div class="section-label">Daily Rhythm</div>
+        <div class="section-title">Audit Schedule</div>
+        <div class="section-subtitle">Timed to capture both pre-open readiness and peak-load conditions — the two most critical operational windows.</div>
+        <div class="schedule-timeline">
+            <div class="time-block">
+                <div class="time-label">Audit 1 — Morning</div>
+                <div class="time-value">Pre-Open Readiness</div>
+                <p class="time-desc">Conducted before or at the start of daily operations. Verifies overnight condition changes, equipment functionality, water quality baseline, facility cleanliness, staff scheduling adequacy, and overall opening readiness. Confirms everything is set before the first guest arrives.</p>
+                <div class="time-items">
+                    <span class="time-item">Opening Readiness</span>
+                    <span class="time-item">Overnight Changes</span>
+                    <span class="time-item">Water Quality Baseline</span>
+                    <span class="time-item">Equipment Check</span>
+                    <span class="time-item">Staff Scheduling Review</span>
+                    <span class="time-item">Cleanliness Baseline</span>
+                </div>
+            </div>
+            <div class="time-block">
+                <div class="time-label">Audit 2 — Afternoon</div>
+                <div class="time-value">Peak Operations</div>
+                <p class="time-desc">Conducted during peak guest volume. Evaluates wear-and-tear under load, water quality drift, staff protocol compliance under pressure, guest flow dynamics, conflict resolution effectiveness, and real-time hazard development in high-traffic boardwalk conditions.</p>
+                <div class="time-items">
+                    <span class="time-item">Peak Load Conditions</span>
+                    <span class="time-item">Water Quality Drift</span>
+                    <span class="time-item">Staff Compliance</span>
+                    <span class="time-item">Guest Capacity & Flow</span>
+                    <span class="time-item">Hazard Development</span>
+                    <span class="time-item">Conflict Management</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- OPS SUPPORT -->
+<section class="ops-section fade-in">
+    <div class="section-label">Beyond the Checklist</div>
+    <div class="section-title">Operations Manager Support</div>
+    <div class="section-subtitle">Hyper Frequent™ doesn't replace your operations team — it reinforces them. We provide independent verification across every critical area your Operations Manager is responsible for, from staff supervision to water chemistry.</div>
+    <div class="ops-grid">
+        <div class="ops-card">
+            <div class="ops-icon">👥</div>
+            <h4>Staff Supervision Verification</h4>
+            <p>Independent observation of staff scheduling adequacy, positioning, attentiveness, guest interaction quality, and adherence to service and safety protocols — including nights, weekends, and holiday shifts.</p>
+        </div>
+        <div class="ops-card">
+            <div class="ops-icon">🧪</div>
+            <h4>Water Balance & Levels</h4>
+            <p>Twice-daily independent verification of proper water chemical balance and levels at Asbury Splash Park — supporting your CPO-certified operator with documented compliance checks every operating day.</p>
+        </div>
+        <div class="ops-card">
+            <div class="ops-icon">🧹</div>
+            <h4>Facility Cleanliness</h4>
+            <p>Comprehensive cleanliness assessment across both facilities — restrooms, common areas, play surfaces, course conditions, seating, and all guest-facing touchpoints scored and documented.</p>
+        </div>
+        <div class="ops-card">
+            <div class="ops-icon">🔧</div>
+            <h4>Maintenance Condition Tracking</h4>
+            <p>Ongoing documentation of equipment and facility maintenance conditions, including pre-season and post-season assessments. Early identification of developing issues before they become safety hazards or costly repairs.</p>
+        </div>
+        <div class="ops-card">
+            <div class="ops-icon">🚨</div>
+            <h4>Emergency Readiness</h4>
+            <p>Every audit verifies emergency response equipment access, egress pathway clearance, first aid kit stocking, AED functionality, emergency procedure postings, and CPR/First Aid certification currency of on-duty staff.</p>
+        </div>
+        <div class="ops-card">
+            <div class="ops-icon">😊</div>
+            <h4>Guest Experience Quality</h4>
+            <p>Observation of guest inquiry handling, conflict resolution effectiveness, satisfaction indicators, and overall atmosphere — ensuring customer relations and satisfaction remain the highest priority across both facilities.</p>
+        </div>
+        <div class="ops-card">
+            <div class="ops-icon">📦</div>
+            <h4>Equipment & Inventory Spot Checks</h4>
+            <p>Verification of equipment availability and condition — putters, balls, scorecards at Asbury Eighteen; spray features and play elements at Asbury Splash Park. Par stock levels documented each visit.</p>
+        </div>
+        <div class="ops-card">
+            <div class="ops-icon">📋</div>
+            <h4>Regulatory Compliance Alignment</h4>
+            <p>Continuous verification against ASTM, CPSC, NJ DEP, OSHA, VGB Act, ADA, and Monmouth County health department requirements. Your independent compliance record for any regulatory inquiry or insurance audit.</p>
+        </div>
+        <div class="ops-card">
+            <div class="ops-icon">🌊</div>
+            <h4>Environmental Condition Monitoring</h4>
+            <p>Salt air corrosion tracking, sand intrusion assessment, weather damage documentation, and coastal condition monitoring specific to the Asbury Park Boardwalk environment — issues your inland competitors never face.</p>
+        </div>
+    </div>
+</section>
+
+<!-- COMPLIANCE STRIP -->
+<section class="compliance-section fade-in">
+    <div class="compliance-strip">
+        <div class="compliance-item">
+            <div class="compliance-badge">ASTM F24</div>
+            <div class="compliance-desc">Amusement Safety</div>
+        </div>
+        <div class="compliance-item">
+            <div class="compliance-badge">NJ DEP</div>
+            <div class="compliance-desc">Environmental</div>
+        </div>
+        <div class="compliance-item">
+            <div class="compliance-badge">CPSC</div>
+            <div class="compliance-desc">Consumer Product Safety</div>
+        </div>
+        <div class="compliance-item">
+            <div class="compliance-badge">VGB Act</div>
+            <div class="compliance-desc">Drain Entrapment</div>
+        </div>
+        <div class="compliance-item">
+            <div class="compliance-badge">OSHA</div>
+            <div class="compliance-desc">Workplace Safety</div>
+        </div>
+        <div class="compliance-item">
+            <div class="compliance-badge">ADA</div>
+            <div class="compliance-desc">Accessibility</div>
+        </div>
+        <div class="compliance-item">
+            <div class="compliance-badge">Monmouth Co.</div>
+            <div class="compliance-desc">Local Health Dept</div>
+        </div>
+    </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section class="deliverables-section fade-in">
+    <div class="deliverables-inner">
+        <div class="section-label">What You Receive</div>
+        <div class="section-title">Deliverables</div>
+        <div class="deliverables-grid">
+            <div class="del-card">
+                <div class="del-icon">📋</div>
+                <h4>Same-Day Audit Reports</h4>
+                <p>Detailed findings delivered digitally after each audit. Timestamped, photo-documented, severity-ranked. Available to your Director of Operations and Operations Manager same-day.</p>
+            </div>
+            <div class="del-card">
+                <div class="del-icon">🚨</div>
+                <h4>Immediate Escalation Alerts</h4>
+                <p>Critical and high-severity findings communicated in real-time via phone/text to your Operations Manager and Director of Operations. No waiting for the report — you know when it matters.</p>
+            </div>
+            <div class="del-card">
+                <div class="del-icon">📊</div>
+                <h4>Weekly Trend Dashboards</h4>
+                <p>Risk Intelligence Pro analytics showing trends, recurring issues, and compliance scores across Asbury Splash Park and Asbury Eighteen with week-over-week comparisons.</p>
+            </div>
+            <div class="del-card">
+                <div class="del-icon">📈</div>
+                <h4>Monthly Executive Summary</h4>
+                <p>Board-ready report for Madison Marquette leadership with KPIs, risk trajectory, remediation tracking, staff performance trends, and strategic recommendations.</p>
+            </div>
+            <div class="del-card">
+                <div class="del-icon">🔒</div>
+                <h4>Compliance Documentation</h4>
+                <p>Audit-ready records aligned with ASTM, CPSC, NJ DEP, VGB Act, OSHA, ADA, and Monmouth County health department requirements — ready for any regulatory inquiry or insurance review.</p>
+            </div>
+            <div class="del-card">
+                <div class="del-icon">🤝</div>
+                <h4>Dedicated Consultant Access</h4>
+                <p>Direct line to your assigned Amusement Standards safety consultant for questions, incident support, emergency response coordination, and operational guidance throughout the entire March–October season.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEASON TIMELINE -->
+<section class="season-section fade-in">
+    <div class="section-label">Full Season Coverage</div>
+    <div class="section-title">March Through October</div>
+    <div class="section-subtitle">Hyper Frequent™ aligns to your seasonal operating rhythm — from pre-season ramp-up through post-season closeout.</div>
+    <div class="season-timeline">
+        <div class="season-phase pre">
+            <div class="phase-month">March / Early April</div>
+            <div class="phase-name">Pre-Season Launch</div>
+            <div class="phase-desc">Baseline facility assessments, pre-season maintenance verification, equipment condition documentation, and initial staff protocol observations as operations ramp up.</div>
+        </div>
+        <div class="season-phase peak">
+            <div class="phase-month">May — September</div>
+            <div class="phase-name">Peak Season</div>
+            <div class="phase-desc">Full twice-daily audit cadence. Maximum guest volumes, highest risk exposure, intensive water quality monitoring, peak staff supervision observations, and holiday coverage.</div>
+        </div>
+        <div class="season-phase shoulder">
+            <div class="phase-month">April & Late Sept</div>
+            <div class="phase-name">Shoulder Periods</div>
+            <div class="phase-desc">Scaled audit frequency aligned to your operating schedule. Weather-dependent condition monitoring, transitional staffing observations, and variable-hour coverage.</div>
+        </div>
+        <div class="season-phase post">
+            <div class="phase-month">October</div>
+            <div class="phase-name">Post-Season Close</div>
+            <div class="phase-desc">End-of-season condition documentation, winterization readiness assessment, equipment inventory reconciliation, and comprehensive season summary with next-year recommendations.</div>
+        </div>
+    </div>
+</section>
+
+<!-- WHY HYPER FREQUENT -->
+<section class="why-section fade-in">
+    <div class="why-inner">
+        <div class="section-label">The Advantage</div>
+        <div class="section-title">Why Hyper Frequent?</div>
+        <div class="section-subtitle">Traditional audit services visit weekly, monthly, or quarterly. By the time they find a problem, your guests have already been exposed to it. Hyper Frequent changes the equation.</div>
+        <div class="why-grid">
+            <div class="why-card">
+                <h4>Liability Protection</h4>
+                <p>Twice-daily documentation creates an unassailable record of due diligence. In the event of an incident, Madison Marquette has timestamped, photo-documented proof of proactive safety management — every single operating day of the season.</p>
+            </div>
+            <div class="why-card">
+                <h4>Real-Time Risk Capture</h4>
+                <p>Hazards develop between audits — a loose drain cover at 10am, chemical drift by 2pm, a trip hazard from last night's storm. Hyper Frequent means issues are identified within hours of developing, not days or weeks.</p>
+            </div>
+            <div class="why-card">
+                <h4>Boardwalk-Specific Expertise</h4>
+                <p>Salt air corrosion, sand intrusion, tidal moisture, coastal weather events, high seasonal tourist volume — we understand the unique environmental and operational challenges of the Asbury Park Boardwalk that generic safety firms miss.</p>
+            </div>
+            <div class="why-card">
+                <h4>Predictive Intelligence</h4>
+                <p>With ~420 data points per season, we don't just find problems — we predict them. Pattern recognition identifies recurring failure modes, seasonal risk curves, and operational vulnerabilities before they impact guests.</p>
+            </div>
+            <div class="why-card">
+                <h4>Operations Team Force Multiplier</h4>
+                <p>Your Operations Manager juggles staff scheduling, guest services, facility maintenance, water chemistry, cash reconciliation, inventory, social media, group sales, and multi-agency compliance — all at once. Hyper Frequent is the dedicated safety resource that ensures nothing slips through the cracks.</p>
+            </div>
+            <div class="why-card">
+                <h4>Regulatory Confidence</h4>
+                <p>NJ DEP, Monmouth County Health, OSHA, CPSC, ADA — multiple agencies have jurisdiction over these facilities. Independent third-party audit documentation demonstrates a compliance commitment that internal records alone cannot match.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section fade-in">
+    <div class="section-label">Investment</div>
+    <div class="section-title">Season Pricing</div>
+    <div class="section-subtitle">All plans run the full March/April–October season. Pricing covers both Asbury Splash Park and Asbury Eighteen. No hidden fees, no per-finding surcharges.</div>
+    <div class="pricing-grid">
+
+        <!-- TIER 1: CORE -->
+        <div class="pricing-card">
+            <div class="pricing-tier">Core</div>
+            <div class="pricing-name">Hyper Frequent</div>
+            <div class="pricing-tagline">Twice-daily audits with same-day reporting — the essential independent safety layer.</div>
+            <div class="pricing-amount">
+                <div class="pricing-dollar">$4,500</div>
+                <div class="pricing-period">/month</div>
+            </div>
+            <div class="pricing-annual">~$31,500 full season (7 months)</div>
+            <div class="pricing-divider"></div>
+            <ul class="pricing-features">
+                <li class="highlight">2× daily on-site audits (AM + PM)</li>
+                <li>Both facilities covered every visit</li>
+                <li>Same-day digital audit reports</li>
+                <li>Photo-documented findings</li>
+                <li>Severity-ranked observations</li>
+                <li>Real-time critical finding phone alerts</li>
+                <li>Dedicated auditor assigned to your site</li>
+                <li>Pre-season baseline assessment</li>
+                <li>Post-season closeout report</li>
+            </ul>
+            <a href="mailto:info@amusementstandards.com?subject=Hyper%20Frequent%20Core%20—%20Madison%20Marquette" class="pricing-cta pricing-cta-outline">Get Started →</a>
+        </div>
+
+        <!-- TIER 2: PRO (FEATURED) -->
+        <div class="pricing-card featured">
+            <div class="pricing-recommended">Recommended</div>
+            <div class="pricing-tier">Pro</div>
+            <div class="pricing-name">Hyper Frequent +<br>Risk Intelligence</div>
+            <div class="pricing-tagline">Everything in Core plus weekly analytics, monthly executive reporting, and predictive trend intelligence.</div>
+            <div class="pricing-amount">
+                <div class="pricing-dollar">$6,200</div>
+                <div class="pricing-period">/month</div>
+            </div>
+            <div class="pricing-annual">~$43,400 full season (7 months)</div>
+            <div class="pricing-divider"></div>
+            <ul class="pricing-features">
+                <li class="highlight">Everything in Core, plus:</li>
+                <li class="highlight">Weekly Risk Intelligence dashboards</li>
+                <li class="highlight">Monthly executive summary reports</li>
+                <li>Trend analysis & predictive risk scoring</li>
+                <li>Compliance score tracking per facility</li>
+                <li>Week-over-week comparison analytics</li>
+                <li>Remediation tracking & verification</li>
+                <li>Staff performance trend data</li>
+                <li>Board-ready reporting for leadership</li>
+                <li>Quarterly strategy call with consultant</li>
+            </ul>
+            <a href="mailto:info@amusementstandards.com?subject=Hyper%20Frequent%20Pro%20—%20Madison%20Marquette" class="pricing-cta pricing-cta-primary">Recommended — Let's Talk →</a>
+        </div>
+
+        <!-- TIER 3: ENTERPRISE -->
+        <div class="pricing-card">
+            <div class="pricing-tier">Enterprise</div>
+            <div class="pricing-name">Hyper Frequent +<br>Managed Safety</div>
+            <div class="pricing-tagline">Full-service safety management — audits, analytics, training support, incident response, and regulatory liaison.</div>
+            <div class="pricing-amount">
+                <div class="pricing-dollar">$8,750</div>
+                <div class="pricing-period">/month</div>
+            </div>
+            <div class="pricing-annual">~$61,250 full season (7 months)</div>
+            <div class="pricing-divider"></div>
+            <ul class="pricing-features">
+                <li class="highlight">Everything in Pro, plus:</li>
+                <li class="highlight">Dedicated safety consultant on-call</li>
+                <li class="highlight">Incident response & investigation support</li>
+                <li>Staff safety training curriculum (ASOC)</li>
+                <li>Emergency action plan development & review</li>
+                <li>Regulatory liaison (NJ DEP, Health Dept, OSHA)</li>
+                <li>Insurance documentation packages</li>
+                <li>New Operations Manager onboarding support</li>
+                <li>Pre/post-season maintenance planning assistance</li>
+                <li>Monthly on-site strategy session</li>
+                <li>24/7 emergency consultation line</li>
+            </ul>
+            <a href="mailto:adam@amusementstandards.com?subject=Hyper%20Frequent%20Enterprise%20—%20Madison%20Marquette" class="pricing-cta pricing-cta-outline">Contact for Enterprise →</a>
+        </div>
+
+    </div>
+    <div class="pricing-footnote">All pricing based on the March/April–October seasonal operating window with twice-daily audit frequency during operating days. Shoulder-period frequency adjusts to your operating schedule. <strong>Multi-year agreements receive a 10% discount.</strong> Custom scoping available — let's build the right package for your operation.</div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section fade-in">
+    <h2>Let's Protect the Boardwalk Together</h2>
+    <p>We're ready to discuss how Hyper Frequent™ integrates with your Asbury Park Boardwalk operations for the upcoming season. Whether you're onboarding a new Amusements Operations Manager or reinforcing an experienced team, we're here to ensure safety never takes a day off.</p>
+    <div class="cta-buttons">
+        <a href="/cdn-cgi/l/email-protection#c3aaada5ac83a2aeb6b0a6aea6adb7b0b7a2ada7a2b1a7b0eda0acaefcb0b6a1a9a6a0b7fe8bbab3a6b1e6f1f385b1a6b2b6a6adb7e6f1f3214357e6f1f38ea2a7aab0acade6f1f38ea2b1b2b6a6b7b7a6e6f1f382b0a1b6b1bae6f1f393a2b1a8" class="btn-primary">
+            Schedule a Conversation →
+        </a>
+        <a href="https://amusementstandards.com" class="btn-secondary">
+            Visit amusementstandards.com
+        </a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-logo">Amusement <span>Standards</span></div>
+    <div class="footer-text">© 2025 Amusement Standards. All rights reserved. &nbsp;|&nbsp; <a href="https://amusementstandards.com">amusementstandards.com</a></div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry =
