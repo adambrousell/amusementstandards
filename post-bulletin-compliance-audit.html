@@ -1,1 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Bulletin Compliance Audits | Amusement Standards</title>
+<meta name="description" content="Third-party compliance audit programs for manufacturer service bulletins. Fleet-wide verification, operator spot-checks, photo documentation, and insurer-ready reporting.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#0052CC;--primary-dark:#003D99;--primary-light:#E8F0FC;--secondary:#FF6B35;--secondary-dark:#E55A2B;--success:#00875A;--danger:#DC2626;--danger-dark:#B91C1C;--warning:#D97706;--bg-light:#F7F9FC;--bg-white:#FFFFFF;--text-primary:#172B4D;--text-secondary:#5E6C84;--text-light:#8993A4;--border:#DFE1E6;--border-strong:#C1C7D0;--shadow:rgba(9,30,66,0.08);--shadow-hover:rgba(9,30,66,0.16);--font-display:'DM Sans',sans-serif;--font-mono:'Space Mono',monospace;--radius:10px;--radius-sm:6px;--transition:0.2s ease}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-display);color:var(--text-primary);line-height:1.6;background:var(--bg-white);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:var(--primary)}
+a:hover{color:var(--primary-dark)}
+img{max-width:100%;display:block}
 
+/* BUTTONS */
+.btn{display:inline-block;font-family:var(--font-display);font-weight:600;font-size:15px;padding:13px 28px;border-radius:var(--radius-sm);transition:all var(--transition);cursor:pointer;border:none;white-space:nowrap}
+.btn-primary{background:var(--secondary);color:#fff}.btn-primary:hover{background:var(--secondary-dark);transform:translateY(-1px);box-shadow:0 8px 20px rgba(255,107,53,.28)}
+.btn-blue{background:var(--primary);color:#fff}.btn-blue:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,82,204,.25)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.28)}.btn-ghost:hover{background:rgba(255,255,255,.22)}
+.btn-ghost-dk{background:transparent;color:rgba(255,255,255,.78);border:1.5px solid rgba(255,255,255,.28)}.btn-ghost-dk:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.48)}
+.btn-danger{background:var(--danger);color:#fff}.btn-danger:hover{background:var(--danger-dark);transform:translateY(-1px)}
+.btn-lg{padding:16px 36px;font-size:16px}
+.btn-full{width:100%;text-align:center;display:block}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-family:var(--font-mono);font-size:17px;font-weight:700;color:var(--primary);letter-spacing:-.5px;flex-shrink:0}
+.nav{display:flex;align-items:center;gap:3px;list-style:none}
+.nav a{color:var(--text-secondary);font-weight:500;font-size:13.5px;padding:6px 10px;border-radius:var(--radius-sm);transition:all var(--transition)}
+.nav a:hover{color:var(--primary);background:var(--primary-light)}
+.nav .nav-cta{background:var(--secondary);color:#fff;padding:8px 16px}.nav .nav-cta:hover{background:var(--secondary-dark)}
+.nav .nav-mfr{background:linear-gradient(135deg,#0a2d6e 0%,#0052CC 100%);color:#fff;padding:7px 13px;font-size:13px}.nav .nav-mfr:hover{background:linear-gradient(135deg,#0c3585 0%,#0060ee 100%);box-shadow:0 3px 10px rgba(0,82,204,.3);transform:translateY(-1px)}
+
+/* HERO — URGENT DARK RED GRADIENT */
+.hero{background:linear-gradient(135deg,#1a0a0a 0%,#3b0d0d 40%,#5c1515 100%);color:#fff;padding:80px 40px 88px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 75% 40%,rgba(255,107,53,.1) 0%,transparent 55%),radial-gradient(circle at 15% 75%,rgba(220,38,38,.08) 0%,transparent 50%)}
+.hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' fill='white' opacity='0.04'/%3E%3C/svg%3E") repeat;background-size:60px 60px}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center}
+.hero-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--danger)}
+.hero h1{font-size:clamp(30px,3.8vw,48px);font-weight:700;line-height:1.1;letter-spacing:-1px;margin-bottom:20px}
+.hero h1 span{color:rgba(255,255,255,.4)}
+.hero-sub{font-size:16px;color:rgba(255,255,255,.6);line-height:1.75;font-weight:300;margin-bottom:36px;max-width:520px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.hero-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.hero-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:var(--radius);padding:22px 24px;backdrop-filter:blur(8px)}
+.hero-stat:hover{background:rgba(255,255,255,.09)}
+.hero-stat-num{font-family:var(--font-mono);font-size:28px;font-weight:700;color:#fff;line-height:1;margin-bottom:5px}
+.hero-stat-num em{color:var(--secondary);font-style:normal}
+.hero-stat-label{font-size:11px;color:rgba(255,255,255,.4);line-height:1.4}
+.hero-stat-wide{grid-column:1/-1}
+.hero-stat-wide .hero-stat-num{font-size:17px;letter-spacing:-.3px}
+
+/* URGENCY BANNER */
+.urgency-banner{background:linear-gradient(90deg,#7f1d1d,#991b1b,#7f1d1d);padding:14px 40px;text-align:center;border-bottom:1px solid #b91c1c}
+.urgency-banner p{font-size:13px;color:#fecaca;font-weight:500;max-width:900px;margin:0 auto}
+.urgency-banner strong{color:#fff}
+
+/* SECTIONS */
+.section{padding:88px 40px}.section-alt{background:var(--bg-light)}
+.container{max-width:1200px;margin:0 auto}
+.section-head{margin-bottom:52px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:12px}
+.eyebrow-danger{color:var(--danger)}
+.section-title{font-size:clamp(24px,3vw,36px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:12px}
+.section-sub{font-size:15px;color:var(--text-secondary);line-height:1.7;font-weight:300;max-width:620px}
+
+/* WHY THIRD-PARTY */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.why-card{background:var(--bg-white);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 24px;transition:all var(--transition)}
+.why-card:hover{box-shadow:0 10px 28px var(--shadow-hover);transform:translateY(-2px);border-color:var(--border-strong)}
+.why-icon{width:44px;height:44px;background:var(--primary-light);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
+.why-title{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+.why-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;font-weight:300}
+
+/* AUDIT SCOPE — CHECKLIST STYLE */
+.scope-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.scope-list{list-style:none;display:flex;flex-direction:column;gap:0}
+.scope-item{padding:18px 0 18px 48px;position:relative;border-bottom:1px solid var(--border)}
+.scope-item:last-child{border-bottom:none}
+.scope-item::before{content:'✓';position:absolute;left:0;top:18px;width:30px;height:30px;background:var(--success);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.scope-item strong{display:block;font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:3px}
+.scope-item span{font-size:13px;color:var(--text-secondary);line-height:1.55;font-weight:300}
+.scope-sidebar{background:var(--bg-light);border:1.5px solid var(--border);border-radius:var(--radius);padding:32px 28px}
+.scope-sidebar-title{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:16px}
+.addon-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.addon-item{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.addon-item:last-child{border-bottom:none;padding-bottom:0}
+.addon-name{font-size:14px;font-weight:600;color:var(--text-primary)}
+.addon-price{font-family:var(--font-mono);font-size:13px;color:var(--primary);font-weight:700}
+.addon-desc{font-size:12px;color:var(--text-secondary);font-weight:300;margin-top:2px}
+
+/* PRICING TIERS */
+.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.tier{background:var(--bg-white);border:1.5px solid var(--border);border-radius:var(--radius);padding:32px 28px;display:flex;flex-direction:column;transition:all var(--transition);position:relative}
+.tier:hover{box-shadow:0 10px 28px var(--shadow-hover);transform:translateY(-2px);border-color:var(--border-strong)}
+.tier.recommended{border-color:var(--primary);border-width:2px}
+.tier.recommended::before{content:'Recommended';position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 14px;border-radius:0 0 8px 8px;white-space:nowrap}
+.tier-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:6px}
+.tier-name{font-size:20px;font-weight:700;color:var(--text-primary);margin-bottom:8px;line-height:1.2}
+.tier-price{font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--primary);margin-bottom:4px}
+.tier-price em{font-size:14px;font-style:normal;color:var(--text-light);font-weight:500}
+.tier-note{font-size:12px;color:var(--text-secondary);margin-bottom:18px;font-weight:300}
+.tier-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;font-weight:300;margin-bottom:18px;flex:1}
+.tier-includes{list-style:none;margin-bottom:20px;display:flex;flex-direction:column;gap:7px}
+.tier-includes li{font-size:13px;color:var(--text-secondary);display:flex;align-items:flex-start;gap:8px;line-height:1.4}
+.tier-includes li::before{content:'✓';color:var(--success);font-weight:700;font-size:11px;flex-shrink:0;margin-top:1px}
+
+/* VOLUME CALLOUT */
+.volume-callout{background:linear-gradient(135deg,var(--primary-light),#dbeafe);border:1.5px solid #93c5fd;border-radius:var(--radius);padding:24px 32px;margin-top:20px;display:flex;align-items:center;gap:20px}
+.volume-callout-icon{font-size:32px;flex-shrink:0}
+.volume-callout h4{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+.volume-callout p{font-size:13px;color:var(--text-secondary);line-height:1.6;font-weight:300}
+
+/* TIMELINE */
+.timeline{display:flex;flex-direction:column;gap:0;position:relative;padding-left:36px}
+.timeline::before{content:'';position:absolute;left:14px;top:8px;bottom:8px;width:2px;background:var(--border)}
+.tl-item{position:relative;padding:20px 0 20px 28px}
+.tl-item::before{content:'';position:absolute;left:-24px;top:24px;width:12px;height:12px;border-radius:50%;background:var(--primary);border:3px solid var(--bg-white);box-shadow:0 0 0 2px var(--primary);z-index:1}
+.tl-item:first-child::before{background:var(--danger);box-shadow:0 0 0 2px var(--danger)}
+.tl-phase{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:4px}
+.tl-title{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+.tl-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;font-weight:300}
+.timeline-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.timeline-aside{background:linear-gradient(135deg,#0a2d6e 0%,#0052CC 100%);border-radius:var(--radius);padding:36px;color:#fff}
+.timeline-aside h4{font-size:18px;font-weight:700;margin-bottom:12px}
+.timeline-aside p{font-size:14px;color:rgba(255,255,255,.6);line-height:1.7;font-weight:300;margin-bottom:20px}
+.timeline-aside .as-cap{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.55);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:4px 9px;display:inline-block;margin:0 4px 6px 0}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,#0052CC 0%,#003D99 100%);padding:80px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='white' opacity='0.07'/%3E%3C/svg%3E") repeat;background-size:40px 40px}
+.cta-inner{position:relative;z-index:1;max-width:660px;margin:0 auto}
+.cta-section h2{font-size:clamp(24px,3.5vw,38px);font-weight:700;color:#fff;margin-bottom:14px;letter-spacing:-.5px}
+.cta-section p{font-size:16px;color:rgba(255,255,255,.6);margin-bottom:36px;font-weight:300;line-height:1.7}
+.cta-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+.footer{background:#0d1829;padding:48px 40px 24px}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:36px}
+.footer-brand-name{font-family:var(--font-mono);font-size:15px;font-weight:700;color:#fff;margin-bottom:10px}
+.footer-brand-desc{font-size:13px;color:rgba(255,255,255,.38);line-height:1.65;font-weight:300}
+.footer-col-title{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:14px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:9px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.48);transition:color var(--transition)}.footer-links a:hover{color:#fff}
+.footer-bottom{padding-top:20px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,.22)}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .hero-inner{grid-template-columns:1fr;gap:48px}
+  .why-grid{grid-template-columns:1fr 1fr}
+  .tier-grid{grid-template-columns:1fr 1fr}
+  .scope-grid,.timeline-wrapper{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .section{padding:56px 20px}.hero{padding:56px 20px 64px}
+  .header-inner{padding:0 20px}
+  .why-grid,.tier-grid{grid-template-columns:1fr}
+  .hero-stat-grid{grid-template-columns:1fr}
+  .volume-callout{flex-direction:column;text-align:center;padding:20px}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;gap:6px;text-align:center}
+  .nav{display:none}
+  .cta-buttons{flex-direction:column;align-items:center}
+  .urgency-banner{padding:12px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo">amusement standards.</a>
+    <nav><ul class="nav">
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/#packages">Packages</a></li>
+      <li><a href="data-analytics.html">Data Analytics</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="manufacturer-services.html" class="nav-mfr">⚙ Manufacturer Programs</a></li>
+      <li><a href="#contact" class="nav-cta">Request Audit Proposal</a></li>
+    </ul></nav>
+  </div>
+</header>
+
+<!-- URGENCY BANNER -->
+<div class="urgency-banner">
+  <p>⚠️ <strong>Service bulletin issued for your ride system?</strong> Self-certification is not enough. Third-party verification protects your operators, your insurers, and your brand. <a href="#contact" style="color:#fff;text-decoration:underline;font-weight:700;">Talk to us now →</a></p>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Service Bulletin Compliance Audit Program</div>
+      <h1>A Bulletin Was Issued. <span>Now Prove Every Site Complied.</span></h1>
+      <p class="hero-sub">When a manufacturer issues a safety-critical service bulletin, operators are required to act — and you need documented proof they did. Amusement Standards deploys fleet-wide, third-party compliance audits that satisfy insurers, regulators, and state ride inspection authorities.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary btn-lg">Request Custom Proposal</a>
+        <a href="#scope" class="btn btn-ghost btn-lg">See What's Audited</a>
+      </div>
+    </div>
+    <div class="hero-stat-grid">
+      <div class="hero-stat"><div class="hero-stat-num">100<em>%</em></div><div class="hero-stat-label">Insurer-ready documentation every audit</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">48<em>hr</em></div><div class="hero-stat-label">Mobilization for urgent bulletins</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">20<em>+</em></div><div class="hero-stat-label">Years amusement industry experience</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Tiered audit programs to fit any fleet</div></div>
+      <div class="hero-stat hero-stat-wide">
+        <div class="hero-stat-num">Operations · Analytics · Regulatory · Legal</div>
+        <div class="hero-stat-label" style="margin-top:6px;">Cross-disciplinary team. Every audit defensible.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY THIRD-PARTY VERIFICATION -->
+<section class="section" id="why">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow eyebrow-danger">Why Third-Party Verification</div>
+      <h2 class="section-title">Self-certification leaves gaps. We close them.</h2>
+      <p class="section-sub">When a safety-critical bulletin is issued, self-reported compliance creates risk — for the manufacturer, the operator, and the insurer. Independent verification eliminates ambiguity.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">📄</div>
+        <div class="why-title">Documented Compliance Evidence</div>
+        <div class="why-desc">Photo-documented, time-stamped proof of compliance for every verification point — formatted for insurers, regulators, and state ride inspection authorities.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🛡️</div>
+        <div class="why-title">Manufacturer Liability Protection</div>
+        <div class="why-desc">Demonstrates that the manufacturer took affirmative, documented steps to verify operator compliance across the entire installed base — not just sent a letter.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📏</div>
+        <div class="why-title">Consistent Audit Standards</div>
+        <div class="why-desc">Uniform criteria applied to every installation. Eliminates variance in self-reported compliance and closes the "we thought we did it" gap.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">👷</div>
+        <div class="why-title">Operator Competency Verification</div>
+        <div class="why-desc">Live observation of frontline staff executing the updated procedures — confirming they understand the changes, not just that the paperwork was filed.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📊</div>
+        <div class="why-title">Fleet-Wide Risk Intelligence</div>
+        <div class="why-desc">Aggregated compliance data across every site, identifying systemic gaps, regional patterns, and sites requiring follow-up — delivered via real-time dashboard.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⚖️</div>
+        <div class="why-title">Litigation-Ready Records</div>
+        <div class="why-desc">Every audit file structured for legal defensibility. If an incident occurs post-bulletin, you'll have third-party evidence that compliance was verified.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIT SCOPE -->
+<section class="section section-alt" id="scope">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Per-Site Audit Scope</div>
+      <h2 class="section-title">What every standard compliance audit covers</h2>
+      <p class="section-sub">Each site receives a structured on-site audit mapped directly to the service bulletin requirements. Scope is customized to the specific bulletin — the framework below applies to every engagement.</p>
+    </div>
+    <div class="scope-grid">
+      <ul class="scope-list">
+        <li class="scope-item">
+          <strong>Operational Procedures Review</strong>
+          <span>Verify that the operator's manual has been updated per bulletin requirements. Confirm the original procedures have been replaced and are no longer accessible to staff.</span>
+        </li>
+        <li class="scope-item">
+          <strong>Hardware / Equipment Inspection</strong>
+          <span>Physical inspection of any equipment modifications, component replacements, or configuration changes specified in the bulletin. Verified against manufacturer specifications.</span>
+        </li>
+        <li class="scope-item">
+          <strong>Operator Competency Spot-Check</strong>
+          <span>Live observation of operator loading, dispatch, and/or maintenance procedures to confirm frontline staff understand and can execute the updated requirements.</span>
+        </li>
+        <li class="scope-item">
+          <strong>Photo Documentation</strong>
+          <span>Before/after photographic evidence for each verification point. Time-stamped, geo-tagged where applicable, and included in the audit record.</span>
+        </li>
+        <li class="scope-item">
+          <strong>Individual Site Compliance Report</strong>
+          <span>Pass/fail status for each audit checkpoint, narrative findings, and specific recommendations. Delivered within 5 business days of the on-site visit.</span>
+        </li>
+        <li class="scope-item">
+          <strong>Portfolio Compliance Dashboard</strong>
+          <span>Aggregated, real-time compliance status across all audited sites. Color-coded pass/fail/pending view with drill-down capability for manufacturer leadership.</span>
+        </li>
+      </ul>
+      <div class="scope-sidebar">
+        <div class="scope-sidebar-title">Optional Add-On Services</div>
+        <ul class="addon-list">
+          <li class="addon-item">
+            <div>
+              <div class="addon-name">Full Operator Verification</div>
+              <div class="addon-desc">Competency assessment per operator — restraints, emergency protocols, loading/unloading</div>
+            </div>
+            <div class="addon-price">Per Operator</div>
+          </li>
+          <li class="addon-item">
+            <div>
+              <div class="addon-name">Emergency Response Protocol Review</div>
+              <div class="addon-desc">Evaluate site-specific emergency procedures against OSHA, CPSC, and ASTM standards</div>
+            </div>
+            <div class="addon-price">Per Site</div>
+          </li>
+          <li class="addon-item">
+            <div>
+              <div class="addon-name">Risk Intelligence Dashboard</div>
+              <div class="addon-desc">Ongoing compliance monitoring and risk scoring integrated into AS analytics platform</div>
+            </div>
+            <div class="addon-price">Annual</div>
+          </li>
+          <li class="addon-item">
+            <div>
+              <div class="addon-name">Annual Re-Verification</div>
+              <div class="addon-desc">Follow-up audit 12 months post-initial to confirm sustained compliance and address new bulletins</div>
+            </div>
+            <div class="addon-price">Per Site</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING TIERS -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Audit Program Tiers</div>
+      <h2 class="section-title">Volume-based pricing. Scaled to your fleet.</h2>
+      <p class="section-sub">Every tier includes travel for domestic U.S. installations. International sites quoted at actual travel cost. All pricing is per-site and scales with fleet size.</p>
+    </div>
+    <div class="tier-grid">
+      <div class="tier">
+        <div class="tier-tag">Tier 1</div>
+        <div class="tier-name">Document Review Only</div>
+        <div class="tier-price">Custom <em>/ per site</em></div>
+        <div class="tier-note">Remote engagement — no site visit required</div>
+        <div class="tier-desc">Remote review of updated manuals, procedures, and operator documentation against bulletin requirements. Best for low-risk bulletins or as a first-pass triage before on-site audits.</div>
+        <ul class="tier-includes">
+          <li>Remote manual &amp; procedure review</li>
+          <li>Compliance certification per site</li>
+          <li>Portfolio summary report</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline btn-full">Request Quote</a>
+      </div>
+      <div class="tier recommended">
+        <div class="tier-tag">Tier 2</div>
+        <div class="tier-name">Standard On-Site Audit</div>
+        <div class="tier-price">Custom <em>/ per site</em></div>
+        <div class="tier-note">Full 6-point on-site verification</div>
+        <div class="tier-desc">Complete on-site audit covering all six standard verification points — procedures, hardware, operator spot-checks, photo documentation, individual reports, and portfolio dashboard.</div>
+        <ul class="tier-includes">
+          <li>Full 6-point on-site audit</li>
+          <li>Photo-documented evidence package</li>
+          <li>Individual site compliance report</li>
+          <li>Real-time portfolio dashboard</li>
+          <li>Domestic travel included</li>
+        </ul>
+        <a href="#contact" class="btn btn-blue btn-full">Request Quote</a>
+      </div>
+      <div class="tier">
+        <div class="tier-tag">Tier 3</div>
+        <div class="tier-name">Comprehensive Audit + Operator Verification</div>
+        <div class="tier-price">Custom <em>/ per site</em></div>
+        <div class="tier-note">Audit + live operator competency testing</div>
+        <div class="tier-desc">Everything in Standard plus full operator verification for up to 3 operators per site. Confirms that frontline staff can execute the updated procedures — not just that the paperwork exists.</div>
+        <ul class="tier-includes">
+          <li>Everything in Standard On-Site Audit</li>
+          <li>Live operator competency assessment (up to 3/site)</li>
+          <li>Individual operator verification records</li>
+          <li>Competency gap analysis per site</li>
+          <li>Remediation recommendations</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline btn-full">Request Quote</a>
+      </div>
+    </div>
+    <div class="volume-callout">
+      <div class="volume-callout-icon">💰</div>
+      <div>
+        <h4>Volume Discounts Available</h4>
+        <p>Fleet-wide commitments receive tiered volume discounts. The more sites in scope, the lower your per-site cost. We'll build a custom proposal based on your installed base, geographic distribution, and compliance timeline.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section section-alt" id="timeline">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Engagement Timeline</div>
+      <h2 class="section-title">Structured to complete within your compliance window</h2>
+      <p class="section-sub">Every audit program is phased to prioritize highest-risk sites first and deliver full portfolio verification before the bulletin deadline.</p>
+    </div>
+    <div class="timeline-wrapper">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-phase">Phase 0</div>
+          <div class="tl-title">Program Kickoff &amp; Scheduling</div>
+          <div class="tl-desc">Site audit schedule, operator contact list, logistics plan, and geographic clustering for travel efficiency. Typically 1–2 weeks.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-phase">Phase 1</div>
+          <div class="tl-title">Priority Sites</div>
+          <div class="tl-desc">Audit of highest-traffic and highest-risk installations first. Dashboard goes live with real-time compliance tracking from day one.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-phase">Phase 2</div>
+          <div class="tl-title">Remaining Fleet</div>
+          <div class="tl-desc">Systematic audit of all remaining sites, clustered by region. Individual site reports delivered within 5 business days of each visit.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-phase">Phase 3</div>
+          <div class="tl-title">Final Reporting &amp; Remediation</div>
+          <div class="tl-desc">Portfolio compliance summary, executive dashboard delivery, and remediation follow-up for any non-compliant sites — completed before the bulletin deadline.</div>
+        </div>
+      </div>
+      <div class="timeline-aside">
+        <h4>Designed for Bulletin Deadlines</h4>
+        <p>Service bulletins typically carry 30-, 60-, 90-, or 120-day compliance windows. We build your audit schedule backward from the deadline to ensure every site is verified with time for remediation if needed.</p>
+        <p style="margin-bottom:16px;">Our geographic clustering approach minimizes travel costs while maximizing audit throughput — we can cover 50+ domestic sites in 8–10 weeks.</p>
+        <div>
+          <span class="as-cap">30-Day Bulletins</span>
+          <span class="as-cap">60-Day Bulletins</span>
+          <span class="as-cap">90-Day Bulletins</span>
+          <span class="as-cap">120-Day Bulletins</span>
+          <span class="as-cap">Ongoing Monitoring</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOARING EAGLE CASE REFERENCE -->
+<section class="section">
+  <div class="container">
+    <div style="background:linear-gradient(135deg,#0D2137 0%,#0a2d6e 55%,#0D2137 100%);border-radius:14px;padding:48px 52px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.07)">
+      <div style="position:relative;z-index:1">
+        <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:16px;display:flex;align-items:center;gap:10px"><span style="display:block;width:20px;height:1px;background:rgba(255,255,255,.2)"></span>Active Program</div>
+        <h3 style="font-size:clamp(20px,2.5vw,28px);font-weight:700;color:#fff;line-height:1.2;letter-spacing:-.5px;margin-bottom:14px">Soaring Eagle Zipline — SB-SEZ-02-2026</h3>
+        <p style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;font-weight:300;margin-bottom:24px">Amusement Standards is currently deploying a fleet-wide compliance audit program for the Soaring Eagle Zipline service bulletin affecting all models and serial numbers. This program covers 60 installations across multiple countries with a June 2026 deadline.</p>
+        <a href="soaring-eagle.html" class="btn btn-primary">View Soaring Eagle Program →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;position:relative;z-index:1">
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:18px"><div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:#fff;line-height:1;margin-bottom:4px">60</div><div style="font-size:11px;color:rgba(255,255,255,.38)">Installations in scope</div></div>
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:18px"><div style="font-family:var(--font-mono);font-size:24px;font-weight:700;color:#fff;line-height:1;margin-bottom:4px">120<span style="color:var(--secondary);font-size:14px">day</span></div><div style="font-size:11px;color:rgba(255,255,255,.38)">Compliance window</div></div>
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:18px;grid-column:1/-1"><div style="font-family:var(--font-mono);font-size:15px;font-weight:700;color:#fff;line-height:1;margin-bottom:4px">U.S. · Canada · Saudi Arabia · Brazil</div><div style="font-size:11px;color:rgba(255,255,255,.38)">Global coverage with domestic travel included</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div class="eyebrow" style="color:rgba(255,255,255,.45);margin-bottom:14px;">Get Started</div>
+    <h2>Service Bulletin Issued? Let's Build Your Audit Program.</h2>
+    <p>Send us the bulletin and your site list. We'll return a custom proposal with pricing, timeline, and scope — typically within 48 hours.</p>
+    <div class="cta-buttons">
+      <a href="mailto:adam@amusementstandards.com" class="btn btn-primary btn-lg">Email Us the Bulletin</a>
+      <a href="/#contact" class="btn btn-ghost btn-lg">Schedule a Call</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">amusement standards.</div>
+        <p class="footer-brand-desc">Expert safety consulting, risk intelligence, and compliance services for the amusement and attractions industry. We stay with you from assessment through implementation.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="services/training-programs.html">Training Programs</a></li>
+          <li><a href="services/operational-standards.html">Operational Standards</a></li>
+          <li><a href="services/compliance-regulatory-support.html">Compliance &amp; Regulatory</a></li>
+          <li><a href="services/insurance-risk-reduction.html">Insurance &amp; Risk</a></li>
+          <li><a href="service-bulletin-audits.html">Service Bulletin Audits</a></li>
+          <li><a href="services/ongoing-managed-services.html">Managed Services</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Analytics</div>
+        <ul class="footer-links">
+          <li><a href="data-analytics.html">Risk Intelligence Pro</a></li>
+          <li><a href="data-analytics.html">Portfolio Analysis</a></li>
+          <li><a href="data-analytics.html">Renewal Intelligence</a></li>
+          <li><a href="data-analytics.html">Continuous Retainer</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">For Manufacturers</div>
+        <ul class="footer-links">
+          <li><a href="manufacturer-services.html">Program Overview</a></li>
+          <li><a href="manufacturer-services.html#how-it-works">How It Works</a></li>
+          <li><a href="operator-verification.html">Operator Verification</a></li>
+          <li><a href="manufacturer-services.html#contact">Get in Touch</a></li>
+          <li><a href="https://www.linkedin.com/company/amusement-standards">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 Amusement Standards. All rights reserved.</span>
+      <span>amusementstandards.com</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
