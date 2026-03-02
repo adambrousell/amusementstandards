@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIDE Score — Safety & Operational Intelligence | Amusement Standards</title>
+<meta name="description" content="The RIDE Score is a multi-stream safety and operational intelligence system that gives amusement parks, water parks, and FECs a single trusted number backed by real data.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0E17;
+  --bg-card: #111827;
+  --bg-elevated: #1A2235;
+  --border: #1E293B;
+  --border-accent: #2D3B52;
+  --text: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --green: #10B981;
+  --blue: #3B82F6;
+  --amber: #F59E0B;
+  --red: #EF4444;
+  --cyan: #06B6D4;
+  --purple: #8B5CF6;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:16px; scroll-behavior:smooth; }
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; }
+a { color:var(--green); text-decoration:none; }
+a:hover { text-decoration:underline; }
+
+.nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:16px 40px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(10,14,23,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(30,41,59,0.5);
+}
+.nav-brand { display:flex; align-items:center; gap:10px; }
+.nav-logo {
+  font-family:'JetBrains Mono',monospace;
+  font-weight:700; font-size:0.8rem;
+  background:var(--green); color:var(--bg);
+  padding:5px 9px; border-radius:5px;
+}
+.nav-name { font-weight:600; font-size:0.9rem; color:var(--text-secondary); }
+.nav-cta {
+  background:var(--green); color:var(--bg);
+  padding:9px 22px; border-radius:6px;
+  font-weight:600; font-size:0.85rem;
+  border:none; cursor:pointer; transition:all 0.15s;
+}
+.nav-cta:hover { background:#34D399; text-decoration:none; }
+
+.hero {
+  padding:160px 40px 100px;
+  max-width:1100px; margin:0 auto;
+}
+.hero-tag {
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.72rem; font-weight:600;
+  color:var(--green); text-transform:uppercase;
+  letter-spacing:0.12em; margin-bottom:20px;
+}
+.hero h1 {
+  font-size:clamp(2.4rem,5vw,3.8rem);
+  font-weight:700; line-height:1.1;
+  letter-spacing:-0.03em; margin-bottom:24px;
+}
+.hero h1 .accent { color:var(--green); }
+.hero-sub {
+  font-size:1.15rem; color:var(--text-secondary);
+  max-width:640px; line-height:1.7; margin-bottom:40px;
+}
+
+.ride-display { display:flex; gap:12px; margin-bottom:48px; flex-wrap:wrap; }
+.ride-pill {
+  display:flex; align-items:center; gap:10px;
+  background:var(--bg-card); border:1px solid var(--border-accent);
+  border-radius:10px; padding:14px 20px; min-width:200px; flex:1;
+}
+.ride-pill-letter {
+  font-family:'JetBrains Mono',monospace;
+  font-size:1.5rem; font-weight:700;
+  width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:8px;
+}
+.ride-pill-letter.r { background:rgba(59,130,246,0.12); color:var(--blue); }
+.ride-pill-letter.i { background:rgba(16,185,129,0.12); color:var(--green); }
+.ride-pill-letter.d { background:rgba(139,92,246,0.12); color:var(--purple); }
+.ride-pill-letter.e { background:rgba(6,182,212,0.12); color:var(--cyan); }
+.ride-pill-word { font-weight:700; font-size:0.95rem; }
+.ride-pill-desc { font-size:0.72rem; color:var(--text-muted); }
+
+.hero-actions { display:flex; gap:12px; flex-wrap:wrap; }
+.btn-primary {
+  background:var(--green); color:var(--bg);
+  padding:13px 28px; border-radius:8px;
+  font-weight:700; font-size:0.92rem;
+  border:none; cursor:pointer; transition:all 0.15s;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.btn-primary:hover { background:#34D399; text-decoration:none; }
+.btn-ghost {
+  background:transparent; color:var(--text-secondary);
+  padding:13px 28px; border-radius:8px;
+  font-weight:600; font-size:0.92rem;
+  border:1px solid var(--border-accent);
+  cursor:pointer; transition:all 0.15s;
+}
+.btn-ghost:hover { border-color:var(--text-muted); color:var(--text); text-decoration:none; }
+
+.section { padding:80px 40px; max-width:1100px; margin:0 auto; }
+.section-tag {
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.68rem; font-weight:600;
+  color:var(--green); text-transform:uppercase;
+  letter-spacing:0.12em; margin-bottom:14px;
+}
+.section h2 {
+  font-size:clamp(1.6rem,3vw,2.2rem);
+  font-weight:700; letter-spacing:-0.02em;
+  margin-bottom:16px; line-height:1.2;
+}
+.section-sub {
+  font-size:1.05rem; color:var(--text-secondary);
+  max-width:600px; margin-bottom:40px;
+}
+
+.problem-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+.problem-card {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:10px; padding:24px;
+}
+.problem-card .num { font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--text-muted); margin-bottom:8px; }
+.problem-card h3 { font-size:1rem; font-weight:700; margin-bottom:8px; }
+.problem-card p { font-size:0.88rem; color:var(--text-secondary); line-height:1.6; }
+
+.stream-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; }
+.stream-card {
+  display:flex; align-items:flex-start; gap:14px;
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:10px; padding:20px;
+}
+.stream-icon {
+  width:38px; height:38px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; flex-shrink:0;
+}
+.stream-card h4 { font-size:0.92rem; font-weight:700; margin-bottom:4px; }
+.stream-card p { font-size:0.8rem; color:var(--text-secondary); line-height:1.5; }
+.stream-tag {
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.55rem; font-weight:600;
+  padding:2px 5px; border-radius:3px;
+  display:inline-block; margin-top:6px;
+}
+
+.convergence-block {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:14px; padding:40px;
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:40px; align-items:center;
+}
+.convergence-text h3 { font-size:1.3rem; font-weight:700; margin-bottom:12px; }
+.convergence-text p { font-size:0.92rem; color:var(--text-secondary); line-height:1.7; }
+.conv-bar { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.conv-label { font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--text-muted); width:90px; text-align:right; }
+.conv-track { flex:1; height:8px; background:var(--bg-elevated); border-radius:4px; overflow:hidden; }
+.conv-fill { height:100%; border-radius:4px; }
+.conv-val { font-family:'JetBrains Mono',monospace; font-size:0.75rem; font-weight:600; min-width:30px; }
+
+.venue-row { display:flex; gap:12px; flex-wrap:wrap; }
+.venue-chip {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:8px; padding:16px 22px; text-align:center;
+  flex:1; min-width:140px;
+}
+.venue-chip .icon { font-size:1.5rem; margin-bottom:6px; }
+.venue-chip .name { font-size:0.88rem; font-weight:600; }
+.venue-chip .note { font-size:0.7rem; color:var(--text-muted); margin-top:3px; }
+
+.cta-section { padding:80px 40px; max-width:1100px; margin:0 auto; }
+.cta-block {
+  background:linear-gradient(135deg,#0F2A1D 0%,#111827 50%,#1A1A3E 100%);
+  border:1px solid var(--border-accent);
+  border-radius:16px; padding:56px; text-align:center;
+}
+.cta-block h2 { font-size:clamp(1.5rem,3vw,2rem); font-weight:700; margin-bottom:14px; }
+.cta-block p { font-size:1rem; color:var(--text-secondary); max-width:520px; margin:0 auto 30px; }
+.cta-tiers { font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--text-muted); margin-top:16px; }
+
+.footer {
+  padding:40px; border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  max-width:1100px; margin:0 auto; flex-wrap:wrap; gap:12px;
+}
+.footer-left { font-size:0.78rem; color:var(--text-muted); }
+.footer-right { font-size:0.72rem; color:var(--text-muted); display:flex; gap:20px; }
+
+.divider { max-width:1100px; margin:0 auto; height:1px; background:var(--border); }
+
+@media (max-width:768px) {
+  .nav { padding:14px 20px; }
+  .hero,.section,.cta-section { padding-left:20px; padding-right:20px; }
+  .hero { padding-top:120px; padding-bottom:60px; }
+  .convergence-block { grid-template-columns:1fr; padding:24px; }
+  .cta-block { padding:32px 20px; }
+  .ride-pill { min-width:160px; padding:10px 14px; }
+  .ride-pill-letter { width:36px; height:36px; font-size:1.2rem; }
+  .nav-name { display:none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="nav-logo">AS</span>
+    <span class="nav-name">Amusement Standards</span>
+  </div>
+  <a href="#contact" class="nav-cta">Request a Demo</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">AS 360 Intelligence Platform</div>
+  <h1>One score. <span class="accent">Every signal.</span><br>No blind spots.</h1>
+  <p class="hero-sub">The RIDE Score is a multi-stream safety and operational intelligence system that tells you — and your insurer — exactly where your facility stands. Not based on a single audit. Not based on a guess. Based on every data source that matters, measured against each other.</p>
+
+  <div class="ride-display">
+    <div class="ride-pill">
+      <div class="ride-pill-letter r">R</div>
+      <div class="ride-pill-info">
+        <div class="ride-pill-word">Readiness</div>
+        <div class="ride-pill-desc">Operational preparedness</div>
+      </div>
+    </div>
+    <div class="ride-pill">
+      <div class="ride-pill-letter i">I</div>
+      <div class="ride-pill-info">
+        <div class="ride-pill-word">Integrity</div>
+        <div class="ride-pill-desc">Asset &amp; infrastructure condition</div>
+      </div>
+    </div>
+    <div class="ride-pill">
+      <div class="ride-pill-letter d">D</div>
+      <div class="ride-pill-info">
+        <div class="ride-pill-word">Delivery</div>
+        <div class="ride-pill-desc">Guest experience execution</div>
+      </div>
+    </div>
+    <div class="ride-pill">
+      <div class="ride-pill-letter e">E</div>
+      <div class="ride-pill-info">
+        <div class="ride-pill-word">Environment</div>
+        <div class="ride-pill-desc">Conditions &amp; comfort</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Schedule a Walkthrough &#8594;</a>
+    <a href="#how" class="btn-ghost">See How It Works</a>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-tag">The Problem</div>
+  <h2>A single audit is a snapshot.<br>Your risk is a moving picture.</h2>
+  <p class="section-sub">Most facilities rely on one data source at a time. That leaves gaps that incidents find first.</p>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="num">01</div>
+      <h3>Audits capture one day</h3>
+      <p>Your team performs well during a scheduled visit. But what about Tuesday afternoon when the regional manager isn't watching? A single audit tells you what happened on that date. It doesn't tell you what's happening now.</p>
+    </div>
+    <div class="problem-card">
+      <div class="num">02</div>
+      <h3>Data lives in silos</h3>
+      <p>Safety audits in one binder. Guest complaints in another system. Maintenance logs somewhere else. Near-misses in nobody's system. Without connecting these signals, patterns stay hidden until something breaks.</p>
+    </div>
+    <div class="problem-card">
+      <div class="num">03</div>
+      <h3>No way to measure confidence</h3>
+      <p>When your internal audit says 85% but guests are complaining online, which number do you trust? Without a way to measure whether your data sources agree with each other, you're guessing which signal is real.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section" id="how">
+  <div class="section-tag">How It Works</div>
+  <h2>Six independent data streams.<br>One trusted score.</h2>
+  <p class="section-sub">The RIDE Score doesn't rely on any single source. It cross-references multiple independent signals and measures how much they agree — because agreement between independent sources is the closest thing to truth.</p>
+
+  <div class="stream-grid">
+    <div class="stream-card">
+      <div class="stream-icon" style="background:rgba(59,130,246,0.1);">&#127919;</div>
+      <div>
+        <h4>Guest-Flow Field Audit</h4>
+        <p>Our auditors walk your park as a guest, scoring 44 items across 10 sections in the exact order a visitor experiences them. No clipboard. No lanyard. Just a phone and trained eyes.</p>
+        <span class="stream-tag" style="background:rgba(59,130,246,0.1); color:var(--blue);">SCHEDULED</span>
+      </div>
+    </div>
+    <div class="stream-card">
+      <div class="stream-icon" style="background:rgba(16,185,129,0.1);">&#128295;</div>
+      <div>
+        <h4>Safety &amp; Compliance Audit</h4>
+        <p>ASTM F770, F2291, and state-specific code compliance checked by auditors with 20+ years of operational experience. We don't just read standards — we've operated under them.</p>
+        <span class="stream-tag" style="background:rgba(16,185,129,0.1); color:var(--green);">SCHEDULED</span>
+      </div>
+    </div>
+    <div class="stream-card">
+      <div class="stream-icon" style="background:rgba(6,182,212,0.1);">&#9201;</div>
+      <div>
+        <h4>Live Queue Intelligence</h4>
+        <p>Real-time wait times, ride availability, and dispatch efficiency pulled from park APIs every five minutes. Covers 80+ major parks. Produces a Dispatch Efficiency Index that measures operational throughput objectively — no human bias, no gaming.</p>
+        <span class="stream-tag" style="background:rgba(6,182,212,0.1); color:var(--cyan);">CONTINUOUS &middot; MACHINE-COLLECTED</span>
+      </div>
+    </div>
+    <div class="stream-card">
+      <div class="stream-icon" style="background:rgba(245,158,11,0.1);">&#128203;</div>
+      <div>
+        <h4>Operational Load Observer</h4>
+        <p>For venues without live queue data — FECs, water parks, zoos, independent parks — our auditors capture standardized busyness indicators that produce a comparable efficiency proxy. Every facility type gets measured.</p>
+        <span class="stream-tag" style="background:rgba(245,158,11,0.1); color:var(--amber);">UNIVERSAL &middot; ALL VENUES</span>
+      </div>
+    </div>
+    <div class="stream-card">
+      <div class="stream-icon" style="background:rgba(239,68,68,0.1);">&#9889;</div>
+      <div>
+        <h4>Near-Miss Intelligence</h4>
+        <p>The incidents that almost happened are the best predictor of the ones that will. Our near-miss reporting program captures frequency, severity, and reporting culture — because zero reports isn't safety, it's silence.</p>
+        <span class="stream-tag" style="background:rgba(239,68,68,0.1); color:var(--red);">CONTINUOUS &middot; PREDICTIVE</span>
+      </div>
+    </div>
+    <div class="stream-card">
+      <div class="stream-icon" style="background:rgba(139,92,246,0.1);">&#9925;</div>
+      <div>
+        <h4>Weather &amp; Conditions</h4>
+        <p>Temperature, wind, UV, precipitation, and storm data captured at audit time and correlated with safety performance. A 97-degree day with no shaded queues isn't just uncomfortable — it's a risk factor your score should reflect.</p>
+        <span class="stream-tag" style="background:rgba(139,92,246,0.1); color:var(--purple);">REAL-TIME &middot; AUTOMATED</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-tag">What Makes It Different</div>
+  <h2>We don't just score you.<br>We measure how much we trust the score.</h2>
+  <p class="section-sub">Every RIDE Score comes with a convergence indicator — a measure of how much the independent data streams agree. High convergence means you can trust the number. Low convergence means something is being masked.</p>
+
+  <div class="convergence-block">
+    <div class="convergence-text">
+      <h3>Convergence in action</h3>
+      <p>Imagine your field audit scores dispatch at 85%. But live queue data shows 45-minute average waits with six rides down. And near-miss reports in the dispatch category are spiking.</p>
+      <p style="margin-top:12px;">A traditional audit would hand you the 85% and call it a day. The RIDE Score flags the disagreement. Your Readiness score adjusts downward, and the convergence indicator tells you: <em>"The data doesn't agree here — investigate."</em></p>
+      <p style="margin-top:12px;">That signal is worth more than any single number.</p>
+    </div>
+    <div class="convergence-visual">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:0.68rem; color:var(--text-muted); margin-bottom:10px;">SAMPLE: DISPATCH SECTION</div>
+      <div class="conv-bar">
+        <span class="conv-label">Field Audit</span>
+        <div class="conv-track"><div class="conv-fill" style="width:85%; background:var(--blue);"></div></div>
+        <span class="conv-val" style="color:var(--blue);">85</span>
+      </div>
+      <div class="conv-bar">
+        <span class="conv-label">Safety Audit</span>
+        <div class="conv-track"><div class="conv-fill" style="width:88%; background:var(--green);"></div></div>
+        <span class="conv-val" style="color:var(--green);">88</span>
+      </div>
+      <div class="conv-bar">
+        <span class="conv-label">Queue Intel</span>
+        <div class="conv-track"><div class="conv-fill" style="width:44%; background:var(--red);"></div></div>
+        <span class="conv-val" style="color:var(--red);">44</span>
+      </div>
+      <div class="conv-bar">
+        <span class="conv-label">Near-Miss</span>
+        <div class="conv-track"><div class="conv-fill" style="width:38%; background:var(--amber);"></div></div>
+        <span class="conv-val" style="color:var(--amber);">38</span>
+      </div>
+      <div style="margin-top:14px; padding:10px 14px; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.78rem; color:var(--text-secondary);">Convergence</span>
+          <span style="font-family:'JetBrains Mono',monospace; font-weight:700; color:var(--amber);">0.62 &middot; NOTABLE DIVERGENCE</span>
+        </div>
+        <div style="font-size:0.68rem; color:var(--text-muted); margin-top:4px;">Streams disagree — investigation recommended</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-tag">Built For Your Venue</div>
+  <h2>Same framework. Adapted to your operation.</h2>
+  <p class="section-sub">RIDE automatically adjusts its pillar weights based on your venue type. A water park gets heavier environmental scoring. An FEC gets heavier experience scoring. The framework is universal — the calibration is yours.</p>
+
+  <div class="venue-row">
+    <div class="venue-chip">
+      <div class="icon">&#127906;</div>
+      <div class="name">Theme Parks</div>
+      <div class="note">Full live queue data + all streams</div>
+    </div>
+    <div class="venue-chip">
+      <div class="icon">&#127754;</div>
+      <div class="name">Water Parks</div>
+      <div class="note">Enhanced environment scoring</div>
+    </div>
+    <div class="venue-chip">
+      <div class="icon">&#128377;</div>
+      <div class="name">FECs</div>
+      <div class="note">Experience-weighted delivery</div>
+    </div>
+    <div class="venue-chip">
+      <div class="icon">&#129409;</div>
+      <div class="name">Zoos &amp; Animal Parks</div>
+      <div class="note">Integrity-focused barriers</div>
+    </div>
+    <div class="venue-chip">
+      <div class="icon">&#127981;</div>
+      <div class="name">Manufacturers</div>
+      <div class="note">Post-install compliance</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-tag">Our Background</div>
+  <h2>Built by operators. Not consultants.</h2>
+  <p class="section-sub" style="max-width:700px;">We spent 20+ years on the operations side of this industry — running rides, training staff, managing safety programs, responding to incidents. We built the RIDE Score because we know what data a park actually needs, what questions an insurer actually asks, and where the gap between "audit day performance" and "real performance" actually lives. This isn't theoretical. It's built from the floor up.</p>
+</div>
+
+<div class="divider"></div>
+
+<div class="cta-section" id="contact">
+  <div class="cta-block">
+    <div class="section-tag" style="text-align:center;">Get Started</div>
+    <h2>See your RIDE Score.</h2>
+    <p>We'll walk your facility with you, show you exactly how the scoring works, and deliver a sample RIDE report — so you can see the value before you commit to anything.</p>
+    <a href="mailto:info@amusementstandards.com?subject=RIDE%20Score%20Demo%20Request" class="btn-primary">Request a Demo &#8594;</a>
+    <div class="cta-tiers">Available in Essential, Professional, and Managed tiers — scaled to your operation.</div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-left">&copy; 2026 Amusement Standards. All rights reserved. RIDE Score is a proprietary framework of Amusement Standards.</div>
+  <div class="footer-right">
+    <a href="https://amusementstandards.com">Home</a>
+    <a href="mailto:info@amusementstandards.com">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
