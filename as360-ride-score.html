@@ -55,7 +55,6 @@ a{text-decoration:none}
 .dash-tab{font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.25);padding:4px 12px;border-radius:4px;cursor:default;margin-left:4px}
 .dash-tab.active{color:rgba(255,255,255,.8);background:rgba(255,255,255,.06)}
 .dash-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.3)}
-.dash-live{width:6px;height:6px;border-radius:50%;background:#28C840;animation:blink 2s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .dash-body{padding:24px}
 .dash-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
@@ -85,9 +84,6 @@ a{text-decoration:none}
 .conv-high{background:rgba(0,135,90,.12);color:rgba(40,200,64,.8)}
 .conv-mixed{background:rgba(255,107,53,.1);color:rgba(255,107,53,.7)}
 .conv-limited{background:rgba(255,255,255,.06);color:rgba(255,255,255,.3)}
-.dp-r .dash-conv,.dp-e .dash-conv{color:rgba(0,135,90,.5)}
-.dp-i .dash-conv{color:rgba(0,135,90,.6)}
-.dp-d .dash-conv{color:rgba(255,107,53,.5)}
 .dash-fresh{width:6px;height:6px;border-radius:50%;background:#28C840;display:inline-block}
 .dash-trend{font-family:var(--font-mono);font-size:10px}
 .trend-up{color:#28C840}
@@ -156,13 +152,13 @@ a{text-decoration:none}
 .feed-d{background:rgba(255,107,53,.2);color:rgba(255,107,53,.8)}
 .feed-e{background:rgba(139,92,246,.2);color:rgba(139,92,246,.8)}
 
-/* VENUE TYPES */
-.venue-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.venue-card{background:var(--bg-white);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px 20px;text-align:center;transition:all var(--transition)}
-.venue-card:hover{border-color:var(--primary);box-shadow:0 6px 20px var(--shadow)}
-.venue-icon{font-size:32px;margin-bottom:12px}
-.venue-name{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
-.venue-desc{font-size:12px;color:var(--text-secondary);line-height:1.5;font-weight:300}
+/* VENUE STRIP (inside How It Works) */
+.venue-strip{margin-top:36px;padding-top:32px;border-top:1.5px solid var(--border)}
+.venue-strip-title{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:16px;font-weight:700}
+.venue-strip-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.venue-chip{font-size:13px;color:var(--text-primary);font-weight:600;padding:12px 16px;background:var(--bg-light);border:1px solid var(--border);border-radius:var(--radius-sm);display:flex;align-items:center;gap:8px;line-height:1.4}
+.venue-chip span{font-size:18px;flex-shrink:0}
+.venue-chip em{font-style:normal;font-weight:300;color:var(--text-secondary);font-size:12px}
 
 /* HOW IT WORKS */
 .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -246,17 +242,16 @@ a{text-decoration:none}
   .hero-inner{grid-template-columns:1fr;gap:48px}
   .pillar-grid{grid-template-columns:1fr}
   .streams-grid{grid-template-columns:1fr 1fr}
-  .venue-grid{grid-template-columns:1fr 1fr}
   .how-grid{grid-template-columns:1fr}
   .convergence-block{grid-template-columns:1fr}
   .ba-grid{grid-template-columns:1fr}
   .pricing-grid{grid-template-columns:1fr}
+  .venue-strip-row{grid-template-columns:1fr}
 }
 @media(max-width:600px){
   .section,.streams-section{padding:60px 20px}.hero{padding:60px 20px 68px}
   .header-inner{padding:0 20px}
-  .streams-grid,.venue-grid{grid-template-columns:1fr}
-  .ride-pillars{grid-template-columns:1fr}
+  .streams-grid{grid-template-columns:1fr}
   .nav{display:none}
   .cta-buttons{flex-direction:column;align-items:center}
 }
@@ -497,12 +492,47 @@ a{text-decoration:none}
   </div>
 </section>
 
+<!-- BEFORE / AFTER -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">The Difference</div>
+      <h2 class="section-title">What changes when you have a RIDE Score</h2>
+      <p class="section-sub">The same data, the same facility, the same Tuesday afternoon. The difference is what you can see — and what you do next.</p>
+    </div>
+    <div class="ba-grid">
+      <div class="ba-card ba-before">
+        <div class="ba-label">Before RIDE</div>
+        <div class="ba-scenario">Your audit comes back at 78%. Your GM looks at it and asks:</div>
+        <div class="ba-questions">
+          <div class="ba-q">"Is this a safety problem or a guest experience problem?"</div>
+          <div class="ba-q">"Should I be worried about rides or restrooms?"</div>
+          <div class="ba-q">"Are we understaffed or undertrained?"</div>
+          <div class="ba-q">"What do I fix first?"</div>
+        </div>
+        <div class="ba-outcome">One number. No context. No prioritization. The GM either panics about everything or ignores it entirely.</div>
+      </div>
+      <div class="ba-card ba-after">
+        <div class="ba-label">After RIDE</div>
+        <div class="ba-scenario">The same facility. The same audit period. But now the GM sees:</div>
+        <div class="ba-scores">
+          <div class="ba-score-row"><span class="ba-letter ba-r">R</span><span class="ba-val">82</span><span class="ba-read">Operations solid. Staff in position.</span></div>
+          <div class="ba-score-row"><span class="ba-letter ba-i">I</span><span class="ba-val">91</span><span class="ba-read">Physical plant excellent.</span></div>
+          <div class="ba-score-row"><span class="ba-letter ba-d">D</span><span class="ba-val">74</span><span class="ba-read ba-flag">Guest experience is the gap. ← Fix this.</span></div>
+          <div class="ba-score-row"><span class="ba-letter ba-e">E</span><span class="ba-val">88</span><span class="ba-read">Environment clean, weather favorable.</span></div>
+        </div>
+        <div class="ba-outcome ba-outcome-good">The 78% is a <strong>Delivery</strong> problem — not a safety problem. The GM reprioritizes to food service and signage instead of panicking about ride safety. Convergence says "Mixed Signals" on D, so they dig into which specific areas are dragging. Three of the four pillars are strong. That distinction changes the meeting, changes the budget request, and changes the timeline.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- DATA STREAMS -->
 <section class="streams-section">
   <div class="streams-inner">
     <div class="streams-head">
       <div class="eyebrow">Multi-Stream Convergence</div>
-      <h2 class="section-title">Seven+ independent data streams. One unified score.</h2>
+      <h2 class="section-title">Multiple independent data streams. One unified score.</h2>
       <p class="section-sub">No single source tells the whole story. The RIDE Score converges multiple independent inputs so every pillar is cross-validated by different observation methods.</p>
     </div>
     <div class="streams-grid">
@@ -573,39 +603,6 @@ a{text-decoration:none}
   </div>
 </section>
 
-<!-- VENUE TYPES -->
-<section class="section">
-  <div class="container">
-    <div class="section-head">
-      <div class="eyebrow">Venue-Adaptive</div>
-      <h2 class="section-title">Same four letters. Tuned for your venue type.</h2>
-      <p class="section-sub">The RIDE framework adapts its pillar emphasis based on what matters most for your specific operation — while always outputting the same readable four-score structure.</p>
-    </div>
-    <div class="venue-grid">
-      <div class="venue-card">
-        <div class="venue-icon">🎢</div>
-        <div class="venue-name">Theme Parks</div>
-        <div class="venue-desc">Full RIDE with all streams active. Standard pillar weights. Queue time data drives operational load.</div>
-      </div>
-      <div class="venue-card">
-        <div class="venue-icon">🎮</div>
-        <div class="venue-name">FECs</div>
-        <div class="venue-desc">Delivery pillar weighted higher — guest experience is central to the FEC business model. Adapted for arcade and attraction ops.</div>
-      </div>
-      <div class="venue-card">
-        <div class="venue-icon">🌊</div>
-        <div class="venue-name">Water Parks</div>
-        <div class="venue-desc">Environment pillar increases — water quality, deck conditions, and sun exposure are more critical. Adapted for slide dispatch and lifeguard positioning.</div>
-      </div>
-      <div class="venue-card">
-        <div class="venue-icon">🦁</div>
-        <div class="venue-name">Zoos &amp; Animal Parks</div>
-        <div class="venue-desc">Integrity pillar weighted higher — exhibit barriers, guest-animal separation. Delivery emphasizes education and guided experience quality.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- HOW IT WORKS -->
 <section class="section section-alt">
   <div class="container">
@@ -631,39 +628,13 @@ a{text-decoration:none}
         <div class="how-desc">Four pillar scores, convergence confidence, trend direction, contributing sources, and weather snapshot — transmitted to your dashboard every audit period. Compatible with overVUE and custom integrations. Your GM reads four numbers, not a 40-page report.</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- BEFORE / AFTER -->
-<section class="section">
-  <div class="container">
-    <div class="section-head">
-      <div class="eyebrow">The Difference</div>
-      <h2 class="section-title">What changes when you have a RIDE Score</h2>
-      <p class="section-sub">The same data, the same facility, the same Tuesday afternoon. The difference is what you can see — and what you do next.</p>
-    </div>
-    <div class="ba-grid">
-      <div class="ba-card ba-before">
-        <div class="ba-label">Before RIDE</div>
-        <div class="ba-scenario">Your audit comes back at 78%. Your GM looks at it and asks:</div>
-        <div class="ba-questions">
-          <div class="ba-q">"Is this a safety problem or a guest experience problem?"</div>
-          <div class="ba-q">"Should I be worried about rides or restrooms?"</div>
-          <div class="ba-q">"Are we understaffed or undertrained?"</div>
-          <div class="ba-q">"What do I fix first?"</div>
-        </div>
-        <div class="ba-outcome">One number. No context. No prioritization. The GM either panics about everything or ignores it entirely.</div>
-      </div>
-      <div class="ba-card ba-after">
-        <div class="ba-label">After RIDE</div>
-        <div class="ba-scenario">The same facility. The same audit period. But now the GM sees:</div>
-        <div class="ba-scores">
-          <div class="ba-score-row"><span class="ba-letter ba-r">R</span><span class="ba-val">82</span><span class="ba-read">Operations solid. Staff in position.</span></div>
-          <div class="ba-score-row"><span class="ba-letter ba-i">I</span><span class="ba-val">91</span><span class="ba-read">Physical plant excellent.</span></div>
-          <div class="ba-score-row"><span class="ba-letter ba-d">D</span><span class="ba-val">74</span><span class="ba-read ba-flag">Guest experience is the gap. ← Fix this.</span></div>
-          <div class="ba-score-row"><span class="ba-letter ba-e">E</span><span class="ba-val">88</span><span class="ba-read">Environment clean, weather favorable.</span></div>
-        </div>
-        <div class="ba-outcome ba-outcome-good">The 78% is a <strong>Delivery</strong> problem — not a safety problem. The GM reprioritizes to food service and signage instead of panicking about ride safety. Convergence says "Mixed Signals" on D, so they dig into which specific areas are dragging. Three of the four pillars are strong. That distinction changes the meeting, changes the budget request, and changes the timeline.</div>
+    <div class="venue-strip">
+      <div class="venue-strip-title">Venue-Adaptive — same four letters, tuned for your operation</div>
+      <div class="venue-strip-row">
+        <div class="venue-chip"><span>🎢</span> Theme Parks <em>— full RIDE, standard weights, QTX-driven load</em></div>
+        <div class="venue-chip"><span>🎮</span> FECs <em>— Delivery weighted higher for guest experience focus</em></div>
+        <div class="venue-chip"><span>🌊</span> Water Parks <em>— Environment weighted higher for water safety &amp; conditions</em></div>
+        <div class="venue-chip"><span>🦁</span> Zoos &amp; Animal Parks <em>— Integrity weighted higher for exhibit barriers &amp; separation</em></div>
       </div>
     </div>
   </div>
@@ -706,6 +677,7 @@ a{text-decoration:none}
       </div>
       <div class="price-card">
         <div class="price-tag">What It Protects</div>
+        <div class="price-range">The Math</div>
         <div class="price-context">
           <div class="price-context-row"><span class="price-context-label">Average amusement liability claim</span><span class="price-context-val">$150K–$500K+</span></div>
           <div class="price-context-row"><span class="price-context-label">Annual insurance premium (mid-size park)</span><span class="price-context-val">$200K–$800K</span></div>
@@ -725,7 +697,7 @@ a{text-decoration:none}
     <h2>Ready to see your RIDE Score?</h2>
     <p>We'll walk you through the framework, show you how it maps to your existing data, and build a sample score from your most recent audit period. No commitment required.</p>
     <div class="cta-buttons">
-      <a href="/cdn-cgi/l/email-protection#d6b7b2b7bb96b7bba3a5b3bbb3b8a2a5a2b7b8b2b7a4b2a5f8b5b9bbe9a5a3b4bcb3b5a2eb9785f3e4e6e5e0e6f3e4e6849f9293f3e4e685b5b9a4b3f3e4e692b3bbb9" class="btn btn-primary btn-lg">Schedule a Demo</a>
+      <a href="mailto:adam@amusementstandards.com?subject=AS%20360%20RIDE%20Score%20Demo" class="btn btn-primary btn-lg">Schedule a Demo</a>
       <a href="/" class="btn btn-ghost btn-lg">← Back to Services</a>
     </div>
   </div>
@@ -734,4 +706,9 @@ a{text-decoration:none}
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">amusement standards.</div>
-    <div class="footer-right">&copy;
+    <div class="footer-right">&copy; 2025 Amusement Standards. All rights reserved.</div>
+  </div>
+</footer>
+
+</body>
+</html>
