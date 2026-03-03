@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 RIDE Score | Amusement Standards</title>
+<meta name="description" content="The RIDE Score — Readiness, Integrity, Delivery, Environment. Four pillar scores powered by multi-stream data convergence. Built by Amusement Standards.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#0052CC;--primary-dark:#003D99;--primary-light:#E8F0FC;--secondary:#FF6B35;--secondary-dark:#E55A2B;--success:#00875A;--bg-light:#F7F9FC;--bg-white:#FFFFFF;--text-primary:#172B4D;--text-secondary:#5E6C84;--text-light:#8993A4;--border:#DFE1E6;--border-strong:#C1C7D0;--shadow:rgba(9,30,66,0.08);--font-display:'DM Sans',sans-serif;--font-mono:'Space Mono',monospace;--radius:10px;--radius-sm:6px;--transition:0.2s ease}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-display);color:var(--text-primary);line-height:1.6;background:var(--bg-white);-webkit-font-smoothing:antialiased}
+a{text-decoration:none}
+.btn{display:inline-block;font-family:var(--font-display);font-weight:600;font-size:15px;padding:13px 28px;border-radius:var(--radius-sm);transition:all var(--transition);cursor:pointer;border:none;white-space:nowrap}
+.btn-primary{background:var(--secondary);color:#fff}.btn-primary:hover{background:var(--secondary-dark);transform:translateY(-1px);box-shadow:0 8px 20px rgba(255,107,53,.28)}
+.btn-blue{background:var(--primary);color:#fff}.btn-blue:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,82,204,.25)}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.28)}.btn-ghost:hover{background:rgba(255,255,255,.22)}
+.btn-ghost-dk{background:transparent;color:rgba(255,255,255,.78);border:1.5px solid rgba(255,255,255,.28)}.btn-ghost-dk:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.48)}
+.btn-outline{background:transparent;color:var(--primary);border:1.5px solid var(--primary)}.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-lg{padding:16px 36px;font-size:16px}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.header-inner{max-width:1200px;margin:0 auto;padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{font-family:var(--font-mono);font-size:17px;font-weight:700;color:var(--primary);letter-spacing:-.5px}
+.nav{display:flex;align-items:center;gap:3px;list-style:none}
+.nav a{color:var(--text-secondary);font-weight:500;font-size:13.5px;padding:6px 10px;border-radius:var(--radius-sm);transition:all var(--transition)}
+.nav a:hover{color:var(--primary);background:var(--primary-light)}
+.nav .nav-cta{background:var(--secondary);color:#fff;padding:8px 16px}.nav .nav-cta:hover{background:var(--secondary-dark)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0a2d6e 0%,#003D99 50%,#0052CC 100%);color:#fff;padding:88px 40px 96px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 30% 40%,rgba(255,107,53,.1) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(255,255,255,.04) 0%,transparent 40%)}
+.hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' fill='white' opacity='0.05'/%3E%3C/svg%3E") repeat;background-size:60px 60px}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.hero-eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--secondary)}
+.hero h1{font-size:clamp(34px,4vw,52px);font-weight:700;line-height:1.1;letter-spacing:-1px;margin-bottom:22px}
+.hero h1 span{color:var(--secondary)}
+.hero h1 em{color:rgba(255,255,255,.45);font-style:normal}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.68);line-height:1.75;font-weight:300;margin-bottom:40px;max-width:500px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+
+/* DASHBOARD WIDGET */
+.dash-widget{background:#0D1117;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.05)}
+.dash-chrome{background:#161B22;padding:10px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.dash-dots{display:flex;gap:6px}
+.dash-dots span{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06)}
+.dash-dots span:first-child{background:#FF5F57;border-color:#E0443E}
+.dash-dots span:nth-child(2){background:#FEBC2E;border-color:#DEA123}
+.dash-dots span:last-child{background:#28C840;border-color:#1AAB29}
+.dash-tab{font-family:var(--font-mono);font-size:11px;color:rgba(255,255,255,.25);padding:4px 12px;border-radius:4px;cursor:default;margin-left:4px}
+.dash-tab.active{color:rgba(255,255,255,.8);background:rgba(255,255,255,.06)}
+.dash-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.3)}
+.dash-live{width:6px;height:6px;border-radius:50%;background:#28C840;animation:blink 2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.dash-body{padding:24px}
+.dash-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.dash-facility-name{font-size:16px;font-weight:700;color:rgba(255,255,255,.9);margin-bottom:4px}
+.dash-facility-meta{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.02em}
+.dash-wx{color:rgba(139,92,246,.6)}
+.dash-composite-wrap{position:relative;width:100px;height:100px;flex-shrink:0}
+.dash-ring{width:100%;height:100%}
+.dash-ring-fill{transition:stroke-dashoffset 1.5s ease}
+.dash-composite-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.dash-composite-num{font-family:var(--font-mono);font-size:32px;font-weight:700;color:#fff;line-height:1}
+.dash-composite-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;color:var(--success);text-transform:uppercase;margin-top:2px}
+.dash-divider{height:1px;background:rgba(255,255,255,.06);margin:16px 0}
+.dash-pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.dash-pill{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:14px 12px;position:relative;overflow:hidden}
+.dash-pill::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.dp-r::before{background:var(--primary)}.dp-i::before{background:var(--success)}.dp-d::before{background:var(--secondary)}.dp-e::before{background:#8B5CF6}
+.dash-pill-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px}
+.dash-pill-letter{font-family:var(--font-mono);font-size:14px;font-weight:700;color:rgba(255,255,255,.2)}
+.dash-pill-score{font-family:var(--font-mono);font-size:26px;font-weight:700;color:#fff;line-height:1}
+.dash-pill-name{font-size:10px;color:rgba(255,255,255,.3);margin-bottom:10px;font-weight:500}
+.dash-pill-bar{height:4px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden}
+.dash-pill-fill{height:100%;border-radius:2px;width:0;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+.dp-r .dash-pill-fill{background:var(--primary)}.dp-i .dash-pill-fill{background:var(--success)}.dp-d .dash-pill-fill{background:var(--secondary)}.dp-e .dash-pill-fill{background:#8B5CF6}
+.dash-pill-foot{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.dash-conv{font-size:10px;letter-spacing:2px}
+.dp-r .dash-conv,.dp-e .dash-conv{color:rgba(0,135,90,.5)}
+.dp-i .dash-conv{color:rgba(0,135,90,.6)}
+.dp-d .dash-conv{color:rgba(255,107,53,.5)}
+.dash-trend{font-family:var(--font-mono);font-size:10px}
+.trend-up{color:#28C840}
+.trend-down{color:#F85149}
+.trend-flat{color:rgba(255,255,255,.2)}
+.dash-footer-row{display:flex;align-items:center;gap:12px}
+.dash-sources-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.15);flex-shrink:0}
+.dash-sources-pills{display:flex;gap:4px;flex:1}
+.ds-pill{font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;padding:3px 7px;border-radius:3px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.06)}
+.ds-pill.ds-active{background:rgba(0,82,204,.12);color:rgba(0,82,204,.7);border-color:rgba(0,82,204,.2)}
+.dash-nmr{margin-left:auto;display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.25)}
+.dash-nmr-dot{width:5px;height:5px;border-radius:50%;background:#28C840;animation:blink 2s ease infinite}
+
+/* SECTION */
+.section{padding:96px 40px}.section-alt{background:var(--bg-light)}
+.container{max-width:1200px;margin:0 auto}
+.section-head{margin-bottom:56px}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:12px}
+.section-title{font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin-bottom:12px}
+.section-sub{font-size:16px;color:var(--text-secondary);line-height:1.7;font-weight:300;max-width:600px}
+
+/* PILLAR DETAIL CARDS */
+.pillar-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.pillar-card{background:var(--bg-white);border:1.5px solid var(--border);border-radius:var(--radius);padding:32px 28px;position:relative;overflow:hidden;transition:all var(--transition)}
+.pillar-card:hover{box-shadow:0 10px 28px var(--shadow);transform:translateY(-2px)}
+.pillar-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px}
+.pillar-card.pc-r::before{background:var(--primary)}
+.pillar-card.pc-i::before{background:var(--success)}
+.pillar-card.pc-d::before{background:var(--secondary)}
+.pillar-card.pc-e::before{background:#8B5CF6}
+.pc-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.pc-letter{font-family:var(--font-mono);font-size:36px;font-weight:700;line-height:1}
+.pc-r .pc-letter{color:var(--primary)}
+.pc-i .pc-letter{color:var(--success)}
+.pc-d .pc-letter{color:var(--secondary)}
+.pc-e .pc-letter{color:#8B5CF6}
+.pc-name{font-size:20px;font-weight:700;color:var(--text-primary)}
+.pc-question{font-size:13px;color:var(--text-light);font-style:italic}
+.pc-desc{font-size:14px;color:var(--text-secondary);line-height:1.7;font-weight:300;margin-bottom:18px}
+.pc-examples{display:flex;flex-direction:column;gap:10px}
+.pc-example{background:var(--bg-light);border-radius:6px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.pc-score{font-family:var(--font-mono);font-size:20px;font-weight:700;flex-shrink:0;min-width:36px}
+.pc-score.high{color:var(--success)}
+.pc-score.low{color:var(--secondary)}
+.pc-meaning{font-size:12.5px;color:var(--text-secondary);line-height:1.5}
+
+/* DATA STREAMS */
+.streams-section{background:linear-gradient(135deg,#0a2d6e 0%,#0052CC 100%);padding:96px 40px;position:relative;overflow:hidden}
+.streams-section::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(255,107,53,.12) 0%,transparent 70%);pointer-events:none}
+.streams-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.streams-head{margin-bottom:48px}
+.streams-head .eyebrow{color:var(--secondary)}
+.streams-head .section-title{color:#fff}
+.streams-head .section-sub{color:rgba(255,255,255,.55)}
+.streams-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.stream-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:22px 20px;transition:background var(--transition)}
+.stream-card:hover{background:rgba(255,255,255,.08)}
+.stream-icon{font-size:22px;margin-bottom:10px}
+.stream-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
+.stream-code{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-bottom:8px}
+.stream-desc{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.55;font-weight:300}
+.stream-feeds{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
+.stream-feed{font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;padding:2px 6px;border-radius:3px;font-weight:700}
+.feed-r{background:rgba(0,82,204,.2);color:rgba(0,82,204,.8)}
+.feed-i{background:rgba(0,135,90,.2);color:rgba(0,135,90,.8)}
+.feed-d{background:rgba(255,107,53,.2);color:rgba(255,107,53,.8)}
+.feed-e{background:rgba(139,92,246,.2);color:rgba(139,92,246,.8)}
+
+/* VENUE TYPES */
+.venue-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.venue-card{background:var(--bg-white);border:1.5px solid var(--border);border-radius:var(--radius);padding:24px 20px;text-align:center;transition:all var(--transition)}
+.venue-card:hover{border-color:var(--primary);box-shadow:0 6px 20px var(--shadow)}
+.venue-icon{font-size:32px;margin-bottom:12px}
+.venue-name{font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+.venue-desc{font-size:12px;color:var(--text-secondary);line-height:1.5;font-weight:300}
+
+/* HOW IT WORKS */
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.how-card{background:var(--bg-white);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px 24px;position:relative;transition:all var(--transition)}
+.how-card:hover{box-shadow:0 10px 28px var(--shadow);transform:translateY(-2px)}
+.how-num{font-family:var(--font-mono);font-size:36px;font-weight:700;color:var(--primary);opacity:.2;line-height:1;margin-bottom:14px}
+.how-title{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:8px}
+.how-desc{font-size:13px;color:var(--text-secondary);line-height:1.65;font-weight:300}
+
+/* CONVERGENCE EXPLAINER */
+.convergence-block{background:var(--bg-light);border:1.5px solid var(--border);border-radius:14px;padding:40px;margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.conv-title{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:12px}
+.conv-desc{font-size:14px;color:var(--text-secondary);line-height:1.7;font-weight:300;margin-bottom:18px}
+.conv-example{background:var(--bg-white);border:1px solid var(--border);border-radius:8px;padding:20px}
+.conv-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.conv-row:last-child{border-bottom:none}
+.conv-label{font-size:13px;color:var(--text-secondary);flex:1}
+.conv-val{font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--text-primary)}
+.conv-conf{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;padding:3px 8px;border-radius:3px}
+.conf-strong{background:rgba(0,135,90,.1);color:var(--success)}
+.conf-acceptable{background:rgba(255,107,53,.1);color:var(--secondary)}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,#0052CC 0%,#003D99 100%);padding:88px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='white' opacity='0.07'/%3E%3C/svg%3E") repeat;background-size:40px 40px}
+.cta-inner{position:relative;z-index:1;max-width:660px;margin:0 auto}
+.cta-section h2{font-size:clamp(26px,4vw,42px);font-weight:700;color:#fff;margin-bottom:14px;letter-spacing:-.5px}
+.cta-section p{font-size:17px;color:rgba(255,255,255,.65);margin-bottom:40px;font-weight:300;line-height:1.7}
+.cta-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+.footer{background:#0d1829;padding:36px 40px}
+.footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-family:var(--font-mono);font-size:14px;font-weight:700;color:rgba(255,255,255,.5)}
+.footer-right{font-size:12px;color:rgba(255,255,255,.22)}
+
+@media(max-width:960px){
+  .hero-inner{grid-template-columns:1fr;gap:48px}
+  .pillar-grid{grid-template-columns:1fr}
+  .streams-grid{grid-template-columns:1fr 1fr}
+  .venue-grid{grid-template-columns:1fr 1fr}
+  .how-grid{grid-template-columns:1fr}
+  .convergence-block{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .section,.streams-section{padding:60px 20px}.hero{padding:60px 20px 68px}
+  .header-inner{padding:0 20px}
+  .streams-grid,.venue-grid{grid-template-columns:1fr}
+  .ride-pillars{grid-template-columns:1fr}
+  .nav{display:none}
+  .cta-buttons{flex-direction:column;align-items:center}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="logo">amusement standards.</a>
+    <nav><ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/#services">Services</a></li>
+      <li><a href="data-analytics.html">Data Analytics</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Get Started</a></li>
+    </ul></nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">AS 360 Data Analytics</div>
+      <h1>The <span>RIDE</span> Score. <em>Four numbers that tell you everything.</em></h1>
+      <p class="hero-sub">Readiness. Integrity. Delivery. Environment. One composite score built from multiple independent data streams — so when you make a decision, every source agrees.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary btn-lg">Schedule a Demo</a>
+        <a href="#pillars" class="btn btn-ghost btn-lg">See the Four Pillars</a>
+      </div>
+    </div>
+    <div class="dash-widget">
+      <div class="dash-chrome">
+        <div class="dash-dots"><span></span><span></span><span></span></div>
+        <div class="dash-tab active">RIDE Score</div>
+        <div class="dash-tab">Trends</div>
+        <div class="dash-tab">History</div>
+        <div class="dash-status"><span class="dash-live"></span>Live</div>
+      </div>
+      <div class="dash-body">
+        <div class="dash-topbar">
+          <div class="dash-facility">
+            <div class="dash-facility-name">Coastal Adventure Park</div>
+            <div class="dash-facility-meta">Audit: Mar 2, 2026 · PM Shift · <span class="dash-wx">72°F Partly Cloudy</span></div>
+          </div>
+          <div class="dash-composite-wrap">
+            <svg class="dash-ring" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="8"/>
+              <circle cx="60" cy="60" r="52" fill="none" stroke="url(#comp-grad)" stroke-width="8" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="62" transform="rotate(-90 60 60)" class="dash-ring-fill"/>
+              <defs><linearGradient id="comp-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#00875A"/><stop offset="100%" stop-color="#0052CC"/></linearGradient></defs>
+            </svg>
+            <div class="dash-composite-inner">
+              <div class="dash-composite-num" data-target="81">0</div>
+              <div class="dash-composite-label">STRONG</div>
+            </div>
+          </div>
+        </div>
+        <div class="dash-divider"></div>
+        <div class="dash-pillars">
+          <div class="dash-pill dp-r">
+            <div class="dash-pill-top">
+              <div class="dash-pill-letter">R</div>
+              <div class="dash-pill-score" data-target="82">0</div>
+            </div>
+            <div class="dash-pill-name">Readiness</div>
+            <div class="dash-pill-bar"><div class="dash-pill-fill" data-width="82"></div></div>
+            <div class="dash-pill-foot">
+              <span class="dash-conv">●●●●○</span>
+              <span class="dash-trend trend-up">+3 ▲</span>
+            </div>
+          </div>
+          <div class="dash-pill dp-i">
+            <div class="dash-pill-top">
+              <div class="dash-pill-letter">I</div>
+              <div class="dash-pill-score" data-target="91">0</div>
+            </div>
+            <div class="dash-pill-name">Integrity</div>
+            <div class="dash-pill-bar"><div class="dash-pill-fill" data-width="91"></div></div>
+            <div class="dash-pill-foot">
+              <span class="dash-conv">●●●●●</span>
+              <span class="dash-trend trend-flat">0 —</span>
+            </div>
+          </div>
+          <div class="dash-pill dp-d">
+            <div class="dash-pill-top">
+              <div class="dash-pill-letter">D</div>
+              <div class="dash-pill-score" data-target="74">0</div>
+            </div>
+            <div class="dash-pill-name">Delivery</div>
+            <div class="dash-pill-bar"><div class="dash-pill-fill" data-width="74"></div></div>
+            <div class="dash-pill-foot">
+              <span class="dash-conv">●●●○○</span>
+              <span class="dash-trend trend-down">-2 ▼</span>
+            </div>
+          </div>
+          <div class="dash-pill dp-e">
+            <div class="dash-pill-top">
+              <div class="dash-pill-letter">E</div>
+              <div class="dash-pill-score" data-target="88">0</div>
+            </div>
+            <div class="dash-pill-name">Environment</div>
+            <div class="dash-pill-bar"><div class="dash-pill-fill" data-width="88"></div></div>
+            <div class="dash-pill-foot">
+              <span class="dash-conv">●●●●○</span>
+              <span class="dash-trend trend-up">+1 ▲</span>
+            </div>
+          </div>
+        </div>
+        <div class="dash-divider"></div>
+        <div class="dash-footer-row">
+          <div class="dash-sources-label">Sources</div>
+          <div class="dash-sources-pills">
+            <span class="ds-pill ds-active">GSA</span>
+            <span class="ds-pill ds-active">IHS</span>
+            <span class="ds-pill ds-active">EXS</span>
+            <span class="ds-pill ds-active">QTX</span>
+            <span class="ds-pill ds-active">REV</span>
+            <span class="ds-pill ds-active">WX</span>
+          </div>
+          <div class="dash-nmr"><span class="dash-nmr-dot"></span>NMR Active</div>
+        </div>
+      </div>
+    </div>
+    <script>
+    (function(){
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            // Animate score counters
+            document.querySelectorAll('[data-target]').forEach(el => {
+              const target = parseInt(el.dataset.target);
+              let current = 0;
+              const step = target / 40;
+              const interval = setInterval(() => {
+                current += step;
+                if(current >= target){ current = target; clearInterval(interval); }
+                el.textContent = Math.round(current);
+              }, 30);
+            });
+            // Animate bars
+            setTimeout(() => {
+              document.querySelectorAll('.dash-pill-fill').forEach(bar => {
+                bar.style.width = bar.dataset.width + '%';
+              });
+            }, 200);
+            observer.disconnect();
+          }
+        });
+      }, {threshold: 0.3});
+      observer.observe(document.querySelector('.dash-widget'));
+    })();
+    </script>
+  </div>
+</section>
+
+<!-- FOUR PILLARS -->
+<section class="section" id="pillars">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">The Four Pillars</div>
+      <h2 class="section-title">Every letter answers a different question about your operation</h2>
+      <p class="section-sub">Each pillar scores 0–100, fed by multiple independent data streams. Together they form a composite that captures the full operational and safety picture.</p>
+    </div>
+    <div class="pillar-grid">
+      <div class="pillar-card pc-r">
+        <div class="pc-header">
+          <div class="pc-letter">R</div>
+          <div><div class="pc-name">Readiness</div><div class="pc-question">Are you operationally prepared to run today?</div></div>
+        </div>
+        <div class="pc-desc">The question every GM should ask at rope drop: "If something goes wrong in the next hour, are we set up to handle it?" Readiness scores staffing, dispatch efficiency, emergency protocols, and communication systems — adjusted for real-time operational pressure.</div>
+        <div class="pc-examples">
+          <div class="pc-example"><div class="pc-score high">82</div><div class="pc-meaning">Operations are solid. Dispatch running clean, staff in position, emergency systems ready.</div></div>
+          <div class="pc-example"><div class="pc-score low">58</div><div class="pc-meaning">Operations are strained. High wait times, dispatch gaps observed, emergency preparedness has holes.</div></div>
+        </div>
+      </div>
+      <div class="pillar-card pc-i">
+        <div class="pc-header">
+          <div class="pc-letter">I</div>
+          <div><div class="pc-name">Integrity</div><div class="pc-question">Are your assets and infrastructure sound?</div></div>
+        </div>
+        <div class="pc-desc">The physical plant score. Are rides mechanically sound? Are structures maintained? Are barriers intact? This is the score an insurer cares about most — ride availability, safety infrastructure condition, and structural soundness across the entire facility.</div>
+        <div class="pc-examples">
+          <div class="pc-example"><div class="pc-score high">94</div><div class="pc-meaning">Physical plant excellent. Rides running, structures maintained, safety infrastructure intact.</div></div>
+          <div class="pc-example"><div class="pc-score low">61</div><div class="pc-meaning">Infrastructure concerns. Multiple rides down, walkway hazards noted, barrier condition issues.</div></div>
+        </div>
+      </div>
+      <div class="pillar-card pc-d">
+        <div class="pc-header">
+          <div class="pc-letter">D</div>
+          <div><div class="pc-name">Delivery</div><div class="pc-question">Is the guest experience being executed?</div></div>
+        </div>
+        <div class="pc-desc">The experience quality score. Service interactions, food quality, cleanliness, queue experience — the things guests write reviews about. This is where exit survey data, online reviews, and guest service audits converge into a single performance measure.</div>
+        <div class="pc-examples">
+          <div class="pc-example"><div class="pc-score high">87</div><div class="pc-meaning">Guest experience strong. Clean, friendly, good food service. Reviews align with audits.</div></div>
+          <div class="pc-example"><div class="pc-score low">63</div><div class="pc-meaning">Guest experience gaps. Food service slow, signage lacking, exit surveys and reviews confirm issues.</div></div>
+        </div>
+      </div>
+      <div class="pillar-card pc-e">
+        <div class="pc-header">
+          <div class="pc-letter">E</div>
+          <div><div class="pc-name">Environment</div><div class="pc-question">Is the physical environment safe and comfortable?</div></div>
+        </div>
+        <div class="pc-desc">The conditions score. Weather-adjusted safety, restroom quality, ADA compliance, lighting — factors that affect guest comfort and safety independent of ride operations. This is where real-time weather data becomes actionable intelligence.</div>
+        <div class="pc-examples">
+          <div class="pc-example"><div class="pc-score high">91</div><div class="pc-meaning">Environment excellent. Restrooms clean, conditions favorable, no weather concerns.</div></div>
+          <div class="pc-example"><div class="pc-score low">52</div><div class="pc-meaning">Environmental stress. Heat advisory conditions, restroom issues, slip hazards from rain.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Convergence Explainer -->
+    <div class="convergence-block">
+      <div>
+        <div class="conv-title">Every score comes with a confidence level</div>
+        <div class="conv-desc">Each pillar includes a convergence indicator that tells you how strongly the underlying data streams agree. High convergence means every source is telling the same story. Lower convergence means there's data disagreement worth investigating — the score is directionally correct, but the picture is more nuanced.</div>
+        <div class="conv-desc">This is what separates RIDE from a single-source audit score. When multiple independent streams converge on the same conclusion, you can act with confidence.</div>
+      </div>
+      <div class="conv-example">
+        <div class="conv-row">
+          <div class="conv-label">R — Readiness: 82</div>
+          <div class="conv-val">0.87</div>
+          <div class="conv-conf conf-strong">Strong Agreement</div>
+        </div>
+        <div class="conv-row">
+          <div class="conv-label">I — Integrity: 91</div>
+          <div class="conv-val">0.92</div>
+          <div class="conv-conf conf-strong">Strong Agreement</div>
+        </div>
+        <div class="conv-row">
+          <div class="conv-label">D — Delivery: 74</div>
+          <div class="conv-val">0.71</div>
+          <div class="conv-conf conf-acceptable">Acceptable</div>
+        </div>
+        <div class="conv-row">
+          <div class="conv-label">E — Environment: 88</div>
+          <div class="conv-val">0.85</div>
+          <div class="conv-conf conf-strong">Strong Agreement</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA STREAMS -->
+<section class="streams-section">
+  <div class="streams-inner">
+    <div class="streams-head">
+      <div class="eyebrow">Multi-Stream Convergence</div>
+      <h2 class="section-title">Seven+ independent data streams. One unified score.</h2>
+      <p class="section-sub">No single source tells the whole story. The RIDE Score converges multiple independent inputs so every pillar is cross-validated by different observation methods.</p>
+    </div>
+    <div class="streams-grid">
+      <div class="stream-card">
+        <div class="stream-icon">📋</div>
+        <div class="stream-name">Guest Service Audit</div>
+        <div class="stream-code">GSA</div>
+        <div class="stream-desc">Structured on-site audit covering operations, safety, service, and physical conditions across the full guest journey.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-icon">🔒</div>
+        <div class="stream-name">In-House Safety</div>
+        <div class="stream-code">IHS</div>
+        <div class="stream-desc">Internal safety audit data focused on physical plant, ride systems, and structural integrity assessments.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-icon">🛡️</div>
+        <div class="stream-name">Third-Party Safety</div>
+        <div class="stream-code">TPS</div>
+        <div class="stream-desc">External safety audit results from independent inspection firms — an objective asset integrity check.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-i">I</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-icon">📧</div>
+        <div class="stream-name">Exit Surveys</div>
+        <div class="stream-code">EXS</div>
+        <div class="stream-desc">Post-visit emailed surveys capturing guest sentiment, satisfaction, and experience quality at the point of departure — structured data from your silent majority.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-icon">⭐</div>
+        <div class="stream-name">Online Reviews</div>
+        <div class="stream-code">REV</div>
+        <div class="stream-desc">Real guest satisfaction signals from review platforms — the unfiltered voice of your visitors.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-icon">⏱️</div>
+        <div class="stream-name">Queue Times &amp; Load</div>
+        <div class="stream-code">QTX</div>
+        <div class="stream-desc">Real-time queue data and ride availability rates — objective measures of operational pressure and throughput.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-icon">⚠️</div>
+        <div class="stream-name">Near-Miss Reports</div>
+        <div class="stream-code">NMR</div>
+        <div class="stream-desc">Internal near-miss reporting data correlated to specific pillar categories — early warning signals before incidents occur.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-e">E</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-icon">🌤️</div>
+        <div class="stream-name">Weather Conditions</div>
+        <div class="stream-code">WX</div>
+        <div class="stream-desc">Real-time weather data at time of audit — temperature, UV, wind, precipitation — factored into environmental risk scoring.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-e">E</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-icon">👁️</div>
+        <div class="stream-name">Operational Load</div>
+        <div class="stream-code">OLI</div>
+        <div class="stream-desc">Auditor-observed operational pressure when queue time data isn't available — a manual substitute that maintains scoring consistency.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VENUE TYPES -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Venue-Adaptive</div>
+      <h2 class="section-title">Same four letters. Tuned for your venue type.</h2>
+      <p class="section-sub">The RIDE framework adapts its pillar emphasis based on what matters most for your specific operation — while always outputting the same readable four-score structure.</p>
+    </div>
+    <div class="venue-grid">
+      <div class="venue-card">
+        <div class="venue-icon">🎢</div>
+        <div class="venue-name">Theme Parks</div>
+        <div class="venue-desc">Full RIDE with all streams active. Standard pillar weights. Queue time data drives operational load.</div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-icon">🎮</div>
+        <div class="venue-name">FECs</div>
+        <div class="venue-desc">Delivery pillar weighted higher — guest experience is central to the FEC business model. Adapted for arcade and attraction ops.</div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-icon">🌊</div>
+        <div class="venue-name">Water Parks</div>
+        <div class="venue-desc">Environment pillar increases — water quality, deck conditions, and sun exposure are more critical. Adapted for slide dispatch and lifeguard positioning.</div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-icon">🦁</div>
+        <div class="venue-name">Zoos &amp; Animal Parks</div>
+        <div class="venue-desc">Integrity pillar weighted higher — exhibit barriers, guest-animal separation. Delivery emphasizes education and guided experience quality.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">How It Works</div>
+      <h2 class="section-title">From your data to your dashboard</h2>
+      <p class="section-sub">The RIDE Score integrates with your existing audit and reporting infrastructure — we add the analytical layer, not another tool to manage.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <div class="how-title">Connect Your Data Streams</div>
+        <div class="how-desc">We ingest your existing audit data, safety reports, exit survey results, incident logs, and near-miss reports. Weather and queue time data feeds automatically. No new data collection required — we work with what you already have.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <div class="how-title">AS 360 Computes the Scores</div>
+        <div class="how-desc">Our convergence engine processes every stream, maps inputs to the four RIDE pillars, computes convergence confidence, and generates per-period scores with trend analysis. Built in R. Reproducible. Auditable.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <div class="how-title">Scores Delivered via API</div>
+        <div class="how-desc">Four pillar scores, convergence confidence, trend direction, contributing sources, and weather snapshot — transmitted to your dashboard every audit period. Compatible with overVUE and custom integrations. Your GM reads four numbers, not a 40-page report.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div class="eyebrow" style="color:rgba(255,255,255,.45);margin-bottom:14px;">Get Started</div>
+    <h2>Ready to see your RIDE Score?</h2>
+    <p>We'll walk you through the framework, show you how it maps to your existing data, and build a sample score from your most recent audit period. No commitment required.</p>
+    <div class="cta-buttons">
+      <a href="/cdn-cgi/l/email-protection#d6b7b2b7bb96b7bba3a5b3bbb3b8a2a5a2b7b8b2b7a4b2a5f8b5b9bbe9a5a3b4bcb3b5a2eb9785f3e4e6e5e0e6f3e4e6849f9293f3e4e685b5b9a4b3f3e4e692b3bbb9" class="btn btn-primary btn-lg">Schedule a Demo</a>
+      <a href="/" class="btn btn-ghost btn-lg">← Back to Services</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">amusement standards.</div>
+    <div class="footer-right">&copy;
