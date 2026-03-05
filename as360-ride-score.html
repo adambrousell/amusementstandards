@@ -91,7 +91,7 @@ a{text-decoration:none}
 .trend-flat{color:rgba(255,255,255,.2)}
 .dash-footer-row{display:flex;align-items:center;gap:12px}
 .dash-sources-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.15);flex-shrink:0}
-.dash-sources-pills{display:flex;gap:4px;flex:1}
+.dash-sources-pills{display:flex;gap:4px;flex:1;flex-wrap:wrap}
 .ds-pill{font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;padding:3px 7px;border-radius:3px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.06)}
 .ds-pill.ds-active{background:rgba(0,82,204,.12);color:rgba(0,82,204,.7);border-color:rgba(0,82,204,.2)}
 .dash-nmr{margin-left:auto;display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.25)}
@@ -131,28 +131,38 @@ a{text-decoration:none}
 .pc-meaning{font-size:12.5px;color:var(--text-secondary);line-height:1.5}
 
 /* DATA STREAMS */
-.streams-section{background:linear-gradient(135deg,#0a2d6e 0%,#0052CC 100%);padding:96px 40px;position:relative;overflow:hidden}
+.streams-section{background:linear-gradient(135deg,#060f24 0%,#0a2d6e 50%,#0052CC 100%);padding:96px 40px;position:relative;overflow:hidden}
 .streams-section::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(255,107,53,.12) 0%,transparent 70%);pointer-events:none}
+.streams-section::after{content:'';position:absolute;bottom:-80px;left:-80px;width:400px;height:400px;background:radial-gradient(circle,rgba(59,130,246,.08) 0%,transparent 65%);pointer-events:none}
 .streams-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
 .streams-head{margin-bottom:48px}
 .streams-head .eyebrow{color:var(--secondary)}
 .streams-head .section-title{color:#fff}
 .streams-head .section-sub{color:rgba(255,255,255,.55)}
-.streams-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.stream-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:22px 20px;transition:background var(--transition)}
+/* 12 streams → 4-col, 3 rows */
+.streams-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.stream-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:22px 20px;transition:background var(--transition);position:relative}
 .stream-card:hover{background:rgba(255,255,255,.08)}
+/* visual indicator for bias-reduction scheduling */
+.stream-card.scheduled::after{content:'SCHEDULED';position:absolute;top:10px;right:10px;font-family:var(--font-mono);font-size:7px;letter-spacing:.1em;color:rgba(255,255,255,.25);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:2px 6px;border-radius:3px}
 .stream-icon{font-size:22px;margin-bottom:10px}
 .stream-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
 .stream-code{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-bottom:8px}
 .stream-desc{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.55;font-weight:300}
 .stream-feeds{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
 .stream-feed{font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;padding:2px 6px;border-radius:3px;font-weight:700}
-.feed-r{background:rgba(0,82,204,.2);color:rgba(0,82,204,.8)}
-.feed-i{background:rgba(0,135,90,.2);color:rgba(0,135,90,.8)}
-.feed-d{background:rgba(255,107,53,.2);color:rgba(255,107,53,.8)}
-.feed-e{background:rgba(139,92,246,.2);color:rgba(139,92,246,.8)}
+.feed-r{background:rgba(0,82,204,.2);color:rgba(99,160,255,.9)}
+.feed-i{background:rgba(0,135,90,.2);color:rgba(0,200,110,.9)}
+.feed-d{background:rgba(255,107,53,.2);color:rgba(255,140,90,.9)}
+.feed-e{background:rgba(139,92,246,.2);color:rgba(180,140,255,.9)}
 
-/* VENUE STRIP (inside How It Works) */
+/* SCHEDULED NOTE */
+.streams-note{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;display:flex;align-items:flex-start;gap:12px}
+.streams-note-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.streams-note-text{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.6;font-weight:300}
+.streams-note-text strong{color:rgba(255,255,255,.65);font-weight:600}
+
+/* VENUE STRIP */
 .venue-strip{margin-top:36px;padding-top:32px;border-top:1.5px solid var(--border)}
 .venue-strip-title{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:16px;font-weight:700}
 .venue-strip-row{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -225,7 +235,7 @@ a{text-decoration:none}
 .price-bottom-line{font-size:13px;color:var(--text-secondary);line-height:1.65;padding-top:16px;border-top:1px solid var(--border)}
 
 /* CTA */
-.cta-section{background:linear-gradient(135deg,#0052CC 0%,#003D99 100%);padding:88px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-section{background:linear-gradient(135deg,#060f24 0%,#0a2d6e 50%,#0052CC 100%);padding:88px 40px;text-align:center;position:relative;overflow:hidden}
 .cta-section::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='white' opacity='0.07'/%3E%3C/svg%3E") repeat;background-size:40px 40px}
 .cta-inner{position:relative;z-index:1;max-width:660px;margin:0 auto}
 .cta-section h2{font-size:clamp(26px,4vw,42px);font-weight:700;color:#fff;margin-bottom:14px;letter-spacing:-.5px}
@@ -233,7 +243,7 @@ a{text-decoration:none}
 .cta-buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 
 /* FOOTER */
-.footer{background:#0d1829;padding:36px 40px}
+.footer{background:#060f24;padding:36px 40px}
 .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
 .footer-brand{font-family:var(--font-mono);font-size:14px;font-weight:700;color:rgba(255,255,255,.5)}
 .footer-right{font-size:12px;color:rgba(255,255,255,.22)}
@@ -265,8 +275,8 @@ a{text-decoration:none}
     <nav><ul class="nav">
       <li><a href="/">Home</a></li>
       <li><a href="/#services">Services</a></li>
-      <li><a href="data-analytics.html">Data Analytics</a></li>
       <li><a href="/#about">About</a></li>
+      <li><a href="manufacturer-services.html">⚙ Manufacturers</a></li>
       <li><a href="#contact" class="nav-cta">Get Started</a></li>
     </ul></nav>
   </div>
@@ -278,7 +288,7 @@ a{text-decoration:none}
     <div>
       <div class="hero-eyebrow">AS 360 Data Analytics</div>
       <h1>The <span>RIDE</span> Score. <em>Four numbers that tell you everything.</em></h1>
-      <p class="hero-sub">Readiness. Integrity. Delivery. Environment. One composite score built from multiple independent data streams — so when you make a decision, every source agrees.</p>
+      <p class="hero-sub">Readiness. Integrity. Delivery. Environment. One composite score built from 12 independent data streams — so when you make a decision, every source agrees.</p>
       <div class="hero-actions">
         <a href="#contact" class="btn btn-primary btn-lg">Schedule a Demo</a>
         <a href="#pillars" class="btn btn-ghost btn-lg">See the Four Pillars</a>
@@ -313,64 +323,46 @@ a{text-decoration:none}
         <div class="dash-divider"></div>
         <div class="dash-pillars">
           <div class="dash-pill dp-r">
-            <div class="dash-pill-top">
-              <div class="dash-pill-letter">R</div>
-              <div class="dash-pill-score" data-target="82">0</div>
-            </div>
+            <div class="dash-pill-top"><div class="dash-pill-letter">R</div><div class="dash-pill-score" data-target="82">0</div></div>
             <div class="dash-pill-name">Readiness</div>
             <div class="dash-pill-bar"><div class="dash-pill-fill" data-width="82"></div></div>
-            <div class="dash-pill-foot">
-              <span class="dash-conv conv-high">High Confidence</span>
-              <span class="dash-trend trend-up">+3 ▲</span>
-            </div>
+            <div class="dash-pill-foot"><span class="dash-conv conv-high">High Confidence</span><span class="dash-trend trend-up">+3 ▲</span></div>
           </div>
           <div class="dash-pill dp-i">
-            <div class="dash-pill-top">
-              <div class="dash-pill-letter">I</div>
-              <div class="dash-pill-score" data-target="91">0</div>
-            </div>
+            <div class="dash-pill-top"><div class="dash-pill-letter">I</div><div class="dash-pill-score" data-target="91">0</div></div>
             <div class="dash-pill-name">Integrity</div>
             <div class="dash-pill-bar"><div class="dash-pill-fill" data-width="91"></div></div>
-            <div class="dash-pill-foot">
-              <span class="dash-conv conv-high">High Confidence</span>
-              <span class="dash-trend trend-flat">0 —</span>
-            </div>
+            <div class="dash-pill-foot"><span class="dash-conv conv-high">High Confidence</span><span class="dash-trend trend-flat">0 —</span></div>
           </div>
           <div class="dash-pill dp-d">
-            <div class="dash-pill-top">
-              <div class="dash-pill-letter">D</div>
-              <div class="dash-pill-score" data-target="74">0</div>
-            </div>
+            <div class="dash-pill-top"><div class="dash-pill-letter">D</div><div class="dash-pill-score" data-target="74">0</div></div>
             <div class="dash-pill-name">Delivery</div>
             <div class="dash-pill-bar"><div class="dash-pill-fill" data-width="74"></div></div>
-            <div class="dash-pill-foot">
-              <span class="dash-conv conv-mixed">Mixed Signals</span>
-              <span class="dash-trend trend-down">-2 ▼</span>
-            </div>
+            <div class="dash-pill-foot"><span class="dash-conv conv-mixed">Mixed Signals</span><span class="dash-trend trend-down">-2 ▼</span></div>
           </div>
           <div class="dash-pill dp-e">
-            <div class="dash-pill-top">
-              <div class="dash-pill-letter">E</div>
-              <div class="dash-pill-score" data-target="88">0</div>
-            </div>
+            <div class="dash-pill-top"><div class="dash-pill-letter">E</div><div class="dash-pill-score" data-target="88">0</div></div>
             <div class="dash-pill-name">Environment</div>
             <div class="dash-pill-bar"><div class="dash-pill-fill" data-width="88"></div></div>
-            <div class="dash-pill-foot">
-              <span class="dash-conv conv-high">High Confidence</span>
-              <span class="dash-trend trend-up">+1 ▲</span>
-            </div>
+            <div class="dash-pill-foot"><span class="dash-conv conv-high">High Confidence</span><span class="dash-trend trend-up">+1 ▲</span></div>
           </div>
         </div>
         <div class="dash-divider"></div>
         <div class="dash-footer-row">
-          <div class="dash-sources-label">Sources</div>
+          <div class="dash-sources-label">Streams</div>
           <div class="dash-sources-pills">
-            <span class="ds-pill ds-active">GSA</span>
+            <span class="ds-pill ds-active">iGSA</span>
+            <span class="ds-pill ds-active">mGSA</span>
             <span class="ds-pill ds-active">IHS</span>
+            <span class="ds-pill ds-active">TPS</span>
+            <span class="ds-pill ds-active">POI</span>
             <span class="ds-pill ds-active">EXS</span>
-            <span class="ds-pill ds-active">QTX</span>
-            <span class="ds-pill ds-active">REV</span>
+            <span class="ds-pill ds-active">QR</span>
             <span class="ds-pill ds-active">WX</span>
+            <span class="ds-pill ds-active">QTX</span>
+            <span class="ds-pill ds-active">OLI</span>
+            <span class="ds-pill ds-active">CAR</span>
+            <span class="ds-pill ds-active">NMR</span>
           </div>
           <div class="dash-nmr"><span class="dash-nmr-dot"></span>NMR Active</div>
         </div>
@@ -381,7 +373,6 @@ a{text-decoration:none}
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if(entry.isIntersecting){
-            // Animate score counters
             document.querySelectorAll('[data-target]').forEach(el => {
               const target = parseInt(el.dataset.target);
               let current = 0;
@@ -392,7 +383,6 @@ a{text-decoration:none}
                 el.textContent = Math.round(current);
               }, 30);
             });
-            // Animate bars
             setTimeout(() => {
               document.querySelectorAll('.dash-pill-fill').forEach(bar => {
                 bar.style.width = bar.dataset.width + '%';
@@ -422,21 +412,21 @@ a{text-decoration:none}
           <div class="pc-letter">R</div>
           <div><div class="pc-name">Readiness</div><div class="pc-question">Are you operationally prepared to run today?</div></div>
         </div>
-        <div class="pc-desc">The question every GM should ask at rope drop: "If something goes wrong in the next hour, are we set up to handle it?" Readiness scores staffing, dispatch efficiency, emergency protocols, and communication systems — adjusted for real-time operational pressure.</div>
+        <div class="pc-desc">The question every GM should ask at rope drop: "If something goes wrong in the next hour, are we set up to handle it?" Readiness scores staffing, dispatch efficiency, pre-opening inspection completion, training currency, and emergency protocols — adjusted for real-time operational pressure.</div>
         <div class="pc-examples">
-          <div class="pc-example"><div class="pc-score high">82</div><div class="pc-meaning">Operations are solid. Dispatch running clean, staff in position, emergency systems ready.</div></div>
-          <div class="pc-example"><div class="pc-score low">58</div><div class="pc-meaning">Operations are strained. High wait times, dispatch gaps observed, emergency preparedness has holes.</div></div>
+          <div class="pc-example"><div class="pc-score high">82</div><div class="pc-meaning">Operations are solid. Dispatch running clean, staff in position, pre-opening inspections completed, emergency systems ready.</div></div>
+          <div class="pc-example"><div class="pc-score low">58</div><div class="pc-meaning">Operations are strained. High wait times, dispatch gaps observed, incomplete pre-opening sign-offs, emergency preparedness has holes.</div></div>
         </div>
       </div>
       <div class="pillar-card pc-i">
         <div class="pc-header">
           <div class="pc-letter">I</div>
-          <div><div class="pc-name">Integrity</div><div class="pc-question">Are your assets and infrastructure sound?</div></div>
+          <div><div class="pc-name">Integrity</div><div class="pc-question">Are your assets, procedures, and infrastructure sound?</div></div>
         </div>
-        <div class="pc-desc">The physical plant score. Are rides mechanically sound? Are structures maintained? Are barriers intact? This is the score an insurer cares about most — ride availability, safety infrastructure condition, and structural soundness across the entire facility.</div>
+        <div class="pc-desc">The physical plant and procedural compliance score. Are rides mechanically sound? Are restraint and height check procedures being followed? Are service bulletins closed? This is the score an insurer cares about most — and the one that third-party and in-house safety auditors validate independently.</div>
         <div class="pc-examples">
-          <div class="pc-example"><div class="pc-score high">94</div><div class="pc-meaning">Physical plant excellent. Rides running, structures maintained, safety infrastructure intact.</div></div>
-          <div class="pc-example"><div class="pc-score low">61</div><div class="pc-meaning">Infrastructure concerns. Multiple rides down, walkway hazards noted, barrier condition issues.</div></div>
+          <div class="pc-example"><div class="pc-score high">94</div><div class="pc-meaning">Physical plant excellent. Rides running, procedures followed, all service bulletins closed, safety infrastructure intact.</div></div>
+          <div class="pc-example"><div class="pc-score low">61</div><div class="pc-meaning">Infrastructure concerns. Multiple rides down, height check gaps observed, open service bulletin, barrier condition issues.</div></div>
         </div>
       </div>
       <div class="pillar-card pc-d">
@@ -444,10 +434,10 @@ a{text-decoration:none}
           <div class="pc-letter">D</div>
           <div><div class="pc-name">Delivery</div><div class="pc-question">Is the guest experience being executed?</div></div>
         </div>
-        <div class="pc-desc">The experience quality score. Service interactions, food quality, cleanliness, queue experience — the things guests write reviews about. This is where exit survey data, online reviews, and guest service audits converge into a single performance measure.</div>
+        <div class="pc-desc">The experience quality score. Service interactions, queue flow, operator conduct, and throughput — the things guests write reviews about. This is where mystery shopper GSA scores, in-house GSA data, post-visit email feedback, QR guest captures, and online reviews converge into a single performance measure.</div>
         <div class="pc-examples">
-          <div class="pc-example"><div class="pc-score high">87</div><div class="pc-meaning">Guest experience strong. Clean, friendly, good food service. Reviews align with audits.</div></div>
-          <div class="pc-example"><div class="pc-score low">63</div><div class="pc-meaning">Guest experience gaps. Food service slow, signage lacking, exit surveys and reviews confirm issues.</div></div>
+          <div class="pc-example"><div class="pc-score high">87</div><div class="pc-meaning">Guest experience strong. Friendly staff, smooth throughput, post-visit surveys and reviews align with covert audit scores.</div></div>
+          <div class="pc-example"><div class="pc-score low">63</div><div class="pc-meaning">Guest experience gaps. In-house and mystery shopper scores diverge — staff perform differently when observed. Exit surveys confirm gaps.</div></div>
         </div>
       </div>
       <div class="pillar-card pc-e">
@@ -455,10 +445,10 @@ a{text-decoration:none}
           <div class="pc-letter">E</div>
           <div><div class="pc-name">Environment</div><div class="pc-question">Is the physical environment safe and comfortable?</div></div>
         </div>
-        <div class="pc-desc">The conditions score. Weather-adjusted safety, restroom quality, ADA compliance, lighting — factors that affect guest comfort and safety independent of ride operations. This is where real-time weather data becomes actionable intelligence.</div>
+        <div class="pc-desc">The conditions score. Weather-adjusted safety, cleanliness, emergency access, signage visibility, and ADA compliance — factors that affect guest comfort and safety independent of ride operations. Real-time weather and third-party audit observations both feed this pillar.</div>
         <div class="pc-examples">
-          <div class="pc-example"><div class="pc-score high">91</div><div class="pc-meaning">Environment excellent. Restrooms clean, conditions favorable, no weather concerns.</div></div>
-          <div class="pc-example"><div class="pc-score low">52</div><div class="pc-meaning">Environmental stress. Heat advisory conditions, restroom issues, slip hazards from rain.</div></div>
+          <div class="pc-example"><div class="pc-score high">91</div><div class="pc-meaning">Environment excellent. Conditions favorable, emergency access clear, cleanliness confirmed across all observation methods.</div></div>
+          <div class="pc-example"><div class="pc-score low">52</div><div class="pc-meaning">Environmental stress. Heat advisory conditions, blocked emergency exit observed in third-party audit, slip hazards from rain.</div></div>
         </div>
       </div>
     </div>
@@ -468,7 +458,7 @@ a{text-decoration:none}
       <div>
         <div class="conv-title">Every score comes with a confidence level</div>
         <div class="conv-desc">Each pillar includes a plain-language confidence label that tells you how strongly the underlying data streams agree. <strong>High Confidence</strong> means every source is telling the same story — act on it. <strong>Mixed Signals</strong> means there's data disagreement worth investigating before committing resources. <strong>Limited Data</strong> means more streams are needed for a reliable read.</div>
-        <div class="conv-desc">This is what separates RIDE from a single-source audit score. When multiple independent streams converge on the same conclusion, you can act with confidence. When they don't, you know exactly where to dig deeper.</div>
+        <div class="conv-desc">This is what separates RIDE from a single-source audit score. When your in-house GSA, mystery shopper GSA, and third-party safety audit all converge on the same conclusion, you can act with confidence. When they diverge — and especially when staff perform differently for a known observer versus an unknown one — that gap is itself a critical signal.</div>
       </div>
       <div class="conv-example">
         <div class="conv-row">
@@ -516,90 +506,131 @@ a{text-decoration:none}
         <div class="ba-label">After RIDE</div>
         <div class="ba-scenario">The same facility. The same audit period. But now the GM sees:</div>
         <div class="ba-scores">
-          <div class="ba-score-row"><span class="ba-letter ba-r">R</span><span class="ba-val">82</span><span class="ba-read">Operations solid. Staff in position.</span></div>
-          <div class="ba-score-row"><span class="ba-letter ba-i">I</span><span class="ba-val">91</span><span class="ba-read">Physical plant excellent.</span></div>
-          <div class="ba-score-row"><span class="ba-letter ba-d">D</span><span class="ba-val">74</span><span class="ba-read ba-flag">Guest experience is the gap. ← Fix this.</span></div>
+          <div class="ba-score-row"><span class="ba-letter ba-r">R</span><span class="ba-val">82</span><span class="ba-read">Operations solid. Pre-opening inspections complete.</span></div>
+          <div class="ba-score-row"><span class="ba-letter ba-i">I</span><span class="ba-val">91</span><span class="ba-read">Physical plant excellent. All bulletins closed.</span></div>
+          <div class="ba-score-row"><span class="ba-letter ba-d">D</span><span class="ba-val">74</span><span class="ba-read ba-flag">iGSA vs. mGSA gap detected. ← Fix this.</span></div>
           <div class="ba-score-row"><span class="ba-letter ba-e">E</span><span class="ba-val">88</span><span class="ba-read">Environment clean, weather favorable.</span></div>
         </div>
-        <div class="ba-outcome ba-outcome-good">The 78% is a <strong>Delivery</strong> problem — not a safety problem. The GM reprioritizes to food service and signage instead of panicking about ride safety. Convergence says "Mixed Signals" on D, so they dig into which specific areas are dragging. Three of the four pillars are strong. That distinction changes the meeting, changes the budget request, and changes the timeline.</div>
+        <div class="ba-outcome ba-outcome-good">The 78% is a <strong>Delivery</strong> problem — specifically, staff performing differently when they know they're being observed. The in-house GSA scores are higher than the mystery shopper scores. That gap is the finding. The GM doesn't need a budget meeting — they need a conversation about consistency and a retraining cycle. Three of four pillars are strong. The corrective action closure rate is 94%. That story walks into an insurer renewal meeting.</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- DATA STREAMS -->
-<section class="streams-section">
+<section class="streams-section" id="streams">
   <div class="streams-inner">
     <div class="streams-head">
-      <div class="eyebrow">Multi-Stream Convergence</div>
-      <h2 class="section-title">Multiple independent data streams. One unified score.</h2>
-      <p class="section-sub">No single source tells the whole story. The RIDE Score converges multiple independent inputs so every pillar is cross-validated by different observation methods.</p>
+      <div class="eyebrow">12 Independent Data Streams</div>
+      <h2 class="section-title">Multiple independent inputs. One unified score.</h2>
+      <p class="section-sub">No single source tells the whole story. The RIDE Score converges 12 independent streams so every pillar is cross-validated — and when sources disagree, you see exactly where and why.</p>
     </div>
+
     <div class="streams-grid">
-      <div class="stream-card">
-        <div class="stream-icon">📋</div>
-        <div class="stream-name">Guest Service Audit</div>
-        <div class="stream-code">GSA</div>
-        <div class="stream-desc">Structured on-site audit covering operations, safety, service, and physical conditions across the full guest journey.</div>
+
+      <div class="stream-card scheduled">
+        <div class="stream-icon">📝</div>
+        <div class="stream-name">In-House GSA</div>
+        <div class="stream-code">iGSA</div>
+        <div class="stream-desc">Operator-conducted guest services audit run on a rotating schedule by all management — not one supervisor. Distributed execution reduces bias and builds a consensus operational baseline across the leadership team.</div>
         <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
       </div>
+
       <div class="stream-card">
-        <div class="stream-icon">🔒</div>
-        <div class="stream-name">In-House Safety</div>
+        <div class="stream-icon">🕵️</div>
+        <div class="stream-name">Mystery Shopper GSA</div>
+        <div class="stream-code">mGSA</div>
+        <div class="stream-desc">AS-deployed covert auditor — identity unknown to staff — scoring queue entry through exit ramp exactly as a guest would experience it. Divergence from iGSA scores is itself a critical finding: it reveals the gap between observed and unobserved performance.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
+      </div>
+
+      <div class="stream-card scheduled">
+        <div class="stream-icon">🏢</div>
+        <div class="stream-name">In-House Safety Audit</div>
         <div class="stream-code">IHS</div>
-        <div class="stream-desc">Internal safety audit data focused on physical plant, ride systems, and structural integrity assessments.</div>
+        <div class="stream-desc">Internal operational safety inspection — SOPs, pre-opening checklists, maintenance logs, and equipment condition reviewed against standard. Run on a fixed schedule by all management to distribute the observation load and reduce single-observer bias.</div>
         <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span></div>
       </div>
+
       <div class="stream-card">
-        <div class="stream-icon">🛡️</div>
-        <div class="stream-name">Third-Party Safety</div>
+        <div class="stream-icon">🔍</div>
+        <div class="stream-name">Third-Party Safety Audit</div>
         <div class="stream-code">TPS</div>
-        <div class="stream-desc">External safety audit results from independent inspection firms — an objective asset integrity check.</div>
-        <div class="stream-feeds"><span class="stream-feed feed-i">I</span></div>
+        <div class="stream-desc">Independent AS-conducted ASTM-aligned compliance inspection — ride operations, staffing, hardware, and documentation reviewed from an outside auditor perspective. Provides an objective integrity check that no internal process can replicate.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-e">E</span></div>
       </div>
+
       <div class="stream-card">
-        <div class="stream-icon">📧</div>
-        <div class="stream-name">Exit Surveys</div>
-        <div class="stream-code">EXS</div>
-        <div class="stream-desc">Post-visit emailed surveys capturing guest sentiment, satisfaction, and experience quality at the point of departure — structured data from your silent majority.</div>
-        <div class="stream-feeds"><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
+        <div class="stream-icon">📅</div>
+        <div class="stream-name">Pre-Opening Inspection Log</div>
+        <div class="stream-code">POI</div>
+        <div class="stream-desc">Daily ride inspection sign-offs captured at the source — already happening at most facilities every morning. Logged here, it becomes a high-frequency Readiness signal that catches equipment and procedural degradation between full audit cycles.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span></div>
       </div>
-      <div class="stream-card">
-        <div class="stream-icon">⭐</div>
-        <div class="stream-name">Online Reviews</div>
-        <div class="stream-code">REV</div>
-        <div class="stream-desc">Real guest satisfaction signals from review platforms — the unfiltered voice of your visitors.</div>
-        <div class="stream-feeds"><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
-      </div>
-      <div class="stream-card">
-        <div class="stream-icon">⏱️</div>
-        <div class="stream-name">Queue Times &amp; Load</div>
-        <div class="stream-code">QTX</div>
-        <div class="stream-desc">Real-time queue data and ride availability rates — objective measures of operational pressure and throughput.</div>
-        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span></div>
-      </div>
+
       <div class="stream-card">
         <div class="stream-icon">⚠️</div>
         <div class="stream-name">Near-Miss Reports</div>
         <div class="stream-code">NMR</div>
-        <div class="stream-desc">Internal near-miss reporting data correlated to specific pillar categories — early warning signals before incidents occur.</div>
-        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-e">E</span></div>
+        <div class="stream-desc">Structured incident and near-miss flags with urgency triage — each report adjusts Readiness and Integrity scores immediately and triggers corrective action tracking. Frequency trends are a leading indicator of incident risk before events occur.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span></div>
       </div>
+
+      <div class="stream-card">
+        <div class="stream-icon">📱</div>
+        <div class="stream-name">In-Park Guest Feedback</div>
+        <div class="stream-code">QR</div>
+        <div class="stream-desc">Real-time QR-captured guest sentiment at the attraction — immediate, in-the-moment reaction to ride experience, staff interaction, and environment. Feeds Delivery and Environment with the highest-recency signal available.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
+      </div>
+
+      <div class="stream-card">
+        <div class="stream-icon">✉️</div>
+        <div class="stream-name">Post-Visit Email Feedback</div>
+        <div class="stream-code">EXS</div>
+        <div class="stream-desc">Triggered survey sent after the visit — captures reflective sentiment at home, routes reviews away from Yelp and Google before guests post publicly, and delivers bounce-back coupons that drive return visits and build loyalty data.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
+      </div>
+
       <div class="stream-card">
         <div class="stream-icon">🌤️</div>
-        <div class="stream-name">Weather Conditions</div>
+        <div class="stream-name">Live Weather Data</div>
         <div class="stream-code">WX</div>
-        <div class="stream-desc">Real-time weather data at time of audit — temperature, UV, wind, precipitation — factored into environmental risk scoring.</div>
+        <div class="stream-desc">Open-Meteo API — real-time temperature, precipitation, wind, UV index, and heat advisory data at the time of each scoring period. Contextualizes Environment scoring and flags elevated operational risk conditions automatically.</div>
         <div class="stream-feeds"><span class="stream-feed feed-e">E</span></div>
       </div>
+
       <div class="stream-card">
-        <div class="stream-icon">👁️</div>
-        <div class="stream-name">Operational Load</div>
-        <div class="stream-code">OLI</div>
-        <div class="stream-desc">Auditor-observed operational pressure when queue time data isn't available — a manual substitute that maintains scoring consistency.</div>
-        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span></div>
+        <div class="stream-icon">⏱️</div>
+        <div class="stream-name">Live Queue &amp; Wait Data</div>
+        <div class="stream-code">QTX</div>
+        <div class="stream-desc">ThemeParks.wiki API with Queue-Times.com fallback — real-time posted and actual wait times and ride availability feed operational load context into Readiness and Delivery scoring each period.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-d">D</span></div>
       </div>
+
+      <div class="stream-card">
+        <div class="stream-icon">🧑‍💼</div>
+        <div class="stream-name">Operational Load Observer</div>
+        <div class="stream-code">OLI</div>
+        <div class="stream-desc">Field observer-logged staffing adequacy, queue management quality, and operational pressure indicators — human context that no API can capture. Activates when queue API data is unavailable or when manual validation of automated signals is warranted.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-d">D</span></div>
+      </div>
+
+      <div class="stream-card">
+        <div class="stream-icon">✅</div>
+        <div class="stream-name">Corrective Action Closure Rate</div>
+        <div class="stream-code">CAR</div>
+        <div class="stream-desc">Tracks what percentage of flagged items from any audit stream get resolved — and how fast. A facility closing 95% of actions within 48 hours tells an underwriter a fundamentally different story than one sitting at 40%. This is the meta-signal: management responsiveness across all four pillars.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
+      </div>
+
     </div>
+
+    <div class="streams-note">
+      <div class="streams-note-icon">📋</div>
+      <div class="streams-note-text"><strong>On In-House Audit Design:</strong> Both the In-House GSA (iGSA) and In-House Safety Audit (IHS) are run on a fixed rotating schedule, completed by all members of the management team — not a single designated auditor. This distributed execution model reduces observer bias, builds cross-functional accountability, and ensures the RIDE Score reflects a true organizational consensus rather than one person's perspective. The contrast with unannounced mystery shopper results is intentional: when iGSA and mGSA scores align, you have strong convergence. When they diverge, you have your most important finding.</div>
+    </div>
+
   </div>
 </section>
 
@@ -615,17 +646,17 @@ a{text-decoration:none}
       <div class="how-card">
         <div class="how-num">01</div>
         <div class="how-title">Connect Your Data Streams</div>
-        <div class="how-desc">We ingest your existing audit data, safety reports, exit survey results, incident logs, and near-miss reports. Weather and queue time data feeds automatically. No new data collection required — we work with what you already have.</div>
+        <div class="how-desc">We ingest your existing audit data, safety reports, pre-opening inspection logs, incident reports, and near-miss records. Post-visit email feedback, weather, and queue time data feed automatically. Most facilities already generate 80% of the required data — we capture and structure what's already happening.</div>
       </div>
       <div class="how-card">
         <div class="how-num">02</div>
         <div class="how-title">AS 360 Computes the Scores</div>
-        <div class="how-desc">Our convergence engine processes every stream, maps inputs to the four RIDE pillars, computes convergence confidence, and generates per-period scores with trend analysis. Built in R. Reproducible. Auditable.</div>
+        <div class="how-desc">Our convergence engine processes all 12 streams, maps inputs to the four RIDE pillars, computes convergence confidence, and generates per-period scores with trend analysis and corrective action closure tracking. Built in R. Reproducible. Auditable.</div>
       </div>
       <div class="how-card">
         <div class="how-num">03</div>
         <div class="how-title">Scores Delivered via API</div>
-        <div class="how-desc">Four pillar scores, convergence confidence, trend direction, contributing sources, and weather snapshot — transmitted to your dashboard every audit period. Compatible with overVUE and custom integrations. Your GM reads four numbers, not a 40-page report.</div>
+        <div class="how-desc">Four pillar scores, convergence confidence, trend direction, contributing sources, corrective action status, and weather snapshot — transmitted to your dashboard every audit period. Compatible with overVUE and custom integrations. Your GM reads four numbers, not a 40-page report.</div>
       </div>
     </div>
     <div class="venue-strip">
@@ -652,10 +683,12 @@ a{text-decoration:none}
       <div class="price-card">
         <div class="price-tag">Single Facility</div>
         <div class="price-range">$25,000<span>/year</span></div>
-        <div class="price-desc">Full RIDE Score deployment for one facility. All data streams active, quarterly scoring periods, convergence analysis, trend tracking, and API delivery to your dashboard.</div>
+        <div class="price-desc">Full RIDE Score deployment for one facility. All 12 data streams active, quarterly scoring periods, convergence analysis, corrective action tracking, and API delivery to your dashboard.</div>
         <ul class="price-includes">
           <li>Four quarterly RIDE Score reports</li>
-          <li>All available data stream integration</li>
+          <li>All 12 data stream integration</li>
+          <li>iGSA + mGSA divergence analysis</li>
+          <li>Corrective action closure rate tracking</li>
           <li>Convergence confidence per pillar</li>
           <li>Trend analysis &amp; period-over-period tracking</li>
           <li>API feed to your dashboard platform</li>
@@ -671,6 +704,7 @@ a{text-decoration:none}
           <li>Portfolio composite dashboard</li>
           <li>Cross-facility benchmarking &amp; percentile ranking</li>
           <li>Pillar-level comparison across properties</li>
+          <li>Portfolio-wide corrective action closure dashboard</li>
           <li>Quarterly portfolio review call</li>
           <li>Volume pricing scales with facility count</li>
         </ul>
