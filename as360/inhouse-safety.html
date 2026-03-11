@@ -163,6 +163,58 @@ video{width:100%;height:100%;object-fit:cover;display:none;}
 /* ── EMPTY ── */
 .empty{text-align:center;padding:28px 16px;color:var(--slate-light);font-size:13px;}
 .empty-icon{font-size:36px;margin-bottom:8px;}
+
+/* ── CORRECTIVE ACTION MODAL ── */
+#caModal{display:none;position:fixed;inset:0;z-index:500;background:rgba(15,23,42,.72);backdrop-filter:blur(3px);overflow-y:auto;padding:16px 12px 40px;}
+#caModal.show{display:block;}
+.ca-sheet{background:#fff;border-radius:16px;max-width:520px;margin:0 auto;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.ca-header{background:var(--navy);padding:18px 20px 14px;display:flex;align-items:flex-start;justify-content:space-between;}
+.ca-header-left{flex:1;}
+.ca-alert-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(239,68,68,.2);border:1px solid rgba(239,68,68,.4);color:#FCA5A5;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;padding:3px 10px;border-radius:20px;margin-bottom:8px;}
+.ca-header h2{font-size:17px;font-weight:700;color:#fff;line-height:1.2;}
+.ca-header p{font-size:12px;color:rgba(148,163,184,.8);margin-top:4px;}
+.ca-close{background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.5);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:12px;}
+.ca-close:hover{background:rgba(255,255,255,.2);color:#fff;}
+.ca-body{padding:18px 18px 0;}
+.ca-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.ca-row.single{grid-template-columns:1fr;}
+.ca-field{display:flex;flex-direction:column;gap:4px;}
+.ca-field label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--slate-light);font-weight:700;}
+.ca-field input,.ca-field select,.ca-field textarea{padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);background:#F8FAFC;-webkit-appearance:none;}
+.ca-field input:focus,.ca-field select:focus,.ca-field textarea:focus{outline:none;border-color:var(--red);background:#fff;}
+.ca-field textarea{min-height:70px;resize:vertical;line-height:1.5;}
+.ca-field .auto{background:var(--red-light)!important;border-color:rgba(239,68,68,.3)!important;color:#7F1D1D!important;font-weight:600;}
+.ca-section{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate-light);border-bottom:1px solid var(--border);padding-bottom:6px;margin:16px 0 12px;}
+/* Violation checkboxes */
+.ca-violations{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}
+.ca-viol-item{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;background:#F8FAFC;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:all .12s;}
+.ca-viol-item:hover{border-color:var(--red);background:var(--red-light);}
+.ca-viol-item.checked{border-color:var(--red);background:var(--red-light);}
+.ca-viol-cb{width:14px;height:14px;border:2px solid var(--slate-light);border-radius:3px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;}
+.ca-viol-item.checked .ca-viol-cb{background:var(--red);border-color:var(--red);}
+.ca-viol-cb::after{content:'✓';color:white;font-size:9px;font-weight:700;display:none;}
+.ca-viol-item.checked .ca-viol-cb::after{display:block;}
+.ca-viol-text{font-size:12px;color:var(--navy);line-height:1.35;}
+/* Discipline type */
+.ca-disc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:12px;}
+.ca-disc-btn{padding:8px 6px;border:1.5px solid var(--border);border-radius:8px;background:#F8FAFC;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--slate);cursor:pointer;text-align:center;transition:all .12s;line-height:1.3;}
+.ca-disc-btn:hover{border-color:var(--red);color:var(--red);}
+.ca-disc-btn.sel{border-color:var(--red);background:var(--red-light);color:var(--red);}
+/* Signature pads */
+.sig-wrap{border:1.5px solid var(--border);border-radius:10px;overflow:hidden;background:#fff;margin-bottom:4px;}
+.sig-label-bar{background:#F8FAFC;padding:6px 10px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--slate-light);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.sig-clear{cursor:pointer;color:var(--red);font-size:9px;text-decoration:underline;font-family:'DM Sans',sans-serif;font-weight:600;text-transform:none;letter-spacing:0;}
+canvas.sig-canvas{display:block;width:100%;height:80px;touch-action:none;cursor:crosshair;}
+.sig-hint{font-size:10px;color:var(--slate-light);text-align:center;padding:4px;font-style:italic;}
+.ca-footer{padding:14px 18px 20px;border-top:1px solid var(--border);margin-top:14px;display:flex;flex-direction:column;gap:8px;}
+.ca-submit{padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--red),#DC2626);color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.2px;}
+.ca-submit:hover{filter:brightness(1.08);}
+.ca-skip{padding:10px;border:1.5px solid var(--border);border-radius:10px;background:transparent;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--slate-light);cursor:pointer;}
+.ca-skip:hover{border-color:var(--slate);color:var(--slate);}
+.ca-agree-row{display:flex;gap:10px;}
+.ca-agree-btn{flex:1;padding:8px;border:1.5px solid var(--border);border-radius:8px;background:#F8FAFC;font-size:12px;font-weight:600;cursor:pointer;transition:all .12s;}
+.ca-agree-btn.agree.sel{border-color:var(--green);background:var(--green-light);color:#065F46;}
+.ca-agree-btn.disagree.sel{border-color:var(--red);background:var(--red-light);color:var(--red);}
 </style>
 </head>
 <body>
@@ -171,6 +223,123 @@ video{width:100%;height:100%;object-fit:cover;display:none;}
 <div class="topbar">
   <div class="brand">🛡️ In-House Safety Audit</div>
   <div class="clock" id="clock">--:--</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- CORRECTIVE ACTION MODAL -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="caModal">
+  <div class="ca-sheet">
+    <div class="ca-header">
+      <div class="ca-header-left">
+        <div class="ca-alert-badge">🚩 Corrective Action Required</div>
+        <h2>Employee Coaching / Counseling Session</h2>
+        <p>Complete and sign on the spot. This record will be attached to the audit.</p>
+      </div>
+      <button class="ca-close" onclick="dismissCA()" title="Skip without saving">✕</button>
+    </div>
+    <div class="ca-body">
+
+      <!-- Employee info -->
+      <div class="ca-row">
+        <div class="ca-field">
+          <label>Employee Name</label>
+          <input type="text" id="ca-emp-name" class="auto" readonly>
+        </div>
+        <div class="ca-field">
+          <label>Employee ID</label>
+          <input type="text" id="ca-emp-id" class="auto" readonly>
+        </div>
+      </div>
+      <div class="ca-row">
+        <div class="ca-field">
+          <label>Position / Role</label>
+          <input type="text" id="ca-position" placeholder="Team Member">
+        </div>
+        <div class="ca-field">
+          <label>Department / Attraction</label>
+          <input type="text" id="ca-dept" class="auto" readonly>
+        </div>
+      </div>
+      <div class="ca-row">
+        <div class="ca-field">
+          <label>Date of Warning</label>
+          <input type="text" id="ca-date" class="auto" readonly>
+        </div>
+        <div class="ca-field">
+          <label>Date of Violation</label>
+          <input type="text" id="ca-violation-date" class="auto" readonly>
+        </div>
+      </div>
+      <div class="ca-row single">
+        <div class="ca-field">
+          <label>Last Disciplinary Action &amp; Date</label>
+          <input type="text" id="ca-last-action" placeholder="None on record">
+        </div>
+      </div>
+
+      <!-- Nature of violation -->
+      <div class="ca-section">Nature of Violation</div>
+      <div class="ca-violations" id="ca-violations-list">
+        <!-- Populated dynamically from audit flags -->
+      </div>
+
+      <!-- Discipline type -->
+      <div class="ca-section">Type of Corrective Discipline</div>
+      <div class="ca-disc-grid">
+        <button class="ca-disc-btn sel" id="disc-verbal" onclick="selDisc('verbal')">Verbal Coaching</button>
+        <button class="ca-disc-btn" id="disc-written" onclick="selDisc('written')">Written Warning</button>
+        <button class="ca-disc-btn" id="disc-final" onclick="selDisc('final')">Final Written Warning</button>
+        <button class="ca-disc-btn" id="disc-suspension" onclick="selDisc('suspension')">Suspension</button>
+        <button class="ca-disc-btn" id="disc-termination" onclick="selDisc('termination')">Termination</button>
+        <button class="ca-disc-btn" id="disc-other" onclick="selDisc('other')">Other</button>
+      </div>
+
+      <!-- Employer statement -->
+      <div class="ca-section">Employer Statement</div>
+      <div class="ca-field" style="margin-bottom:10px;">
+        <label>Describe Incident</label>
+        <textarea id="ca-incident" placeholder="Describe the violation(s) observed during this audit…"></textarea>
+      </div>
+      <div class="ca-field" style="margin-bottom:10px;">
+        <label>Describe Expected Behavior</label>
+        <textarea id="ca-expected" placeholder="Describe the standard(s) this employee is expected to meet…"></textarea>
+      </div>
+
+      <!-- Employee statement -->
+      <div class="ca-section">Employee Statement</div>
+      <div class="ca-agree-row" style="margin-bottom:10px;">
+        <button class="ca-agree-btn agree" id="ca-agree-yes" onclick="selAgree('agree')">☐ I agree with the Employer's Statement</button>
+        <button class="ca-agree-btn disagree" id="ca-agree-no" onclick="selAgree('disagree')">☐ I disagree with the Employer's Statement</button>
+      </div>
+      <div class="ca-field" style="margin-bottom:10px;">
+        <label>Employee Comments (optional)</label>
+        <textarea id="ca-emp-comment" placeholder="Employee may add any clarifications or comments…" style="min-height:54px;"></textarea>
+      </div>
+
+      <!-- Signatures -->
+      <div class="ca-section">Signatures</div>
+      <div style="margin-bottom:10px;">
+        <div class="sig-wrap">
+          <div class="sig-label-bar">Employee Signature <span class="sig-clear" onclick="clearSig('sig-emp')">Clear</span></div>
+          <canvas class="sig-canvas" id="sig-emp" width="480" height="80"></canvas>
+          <div class="sig-hint">Sign with finger or stylus</div>
+        </div>
+      </div>
+      <div style="margin-bottom:10px;">
+        <div class="sig-wrap">
+          <div class="sig-label-bar">Supervisor / Auditor Signature <span class="sig-clear" onclick="clearSig('sig-sup')">Clear</span></div>
+          <canvas class="sig-canvas" id="sig-sup" width="480" height="80"></canvas>
+          <div class="sig-hint">Sign with finger or stylus</div>
+        </div>
+      </div>
+
+    </div><!-- /ca-body -->
+    <div class="ca-footer">
+      <button class="ca-submit" onclick="submitCA()">✓ Save Corrective Action &amp; Continue</button>
+      <button class="ca-skip" onclick="dismissCA()">Skip — continue without corrective action record</button>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════ -->
@@ -262,7 +431,7 @@ video{width:100%;height:100%;object-fit:cover;display:none;}
     <h1>Observe from Afar</h1>
     <p>Score these items before approaching the ride. Operator behavior changes when they know they're being watched.</p>
     <div class="prog-wrap" style="margin-top:16px;margin-bottom:0;">
-      <div class="prog-label" id="afar-prog-label">0 of 4 items scored</div>
+      <div class="prog-label" id="afar-prog-label">0 of 9 items scored</div>
       <div class="prog-track"><div class="prog-fill" id="afar-prog-fill"></div></div>
     </div>
   </div>
@@ -309,6 +478,59 @@ video{width:100%;height:100%;object-fit:cover;display:none;}
   </div>
   <div class="no-note" id="afar-note-b4"><textarea placeholder="Describe finding…" id="afar-note-text-b4"></textarea></div>
 
+  <div class="section-rule">OLI — Queue Flow &amp; Operational Pressure</div>
+  <p style="font-size:12px;color:var(--slate-light);margin:-8px 0 14px;line-height:1.5;">Score queue-side pressure and flow behaviors while observing from a distance.</p>
+
+  <div class="audit-item" id="afar-q1">
+    <div class="item-text">Queue flow managed actively — guests directed by operator, not self-directing</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreAfar('q1','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreAfar('q1','no')">NO</button>
+      <button class="audit-btn" onclick="scoreAfar('q1','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="afar-note-q1"><textarea placeholder="Describe finding…" id="afar-note-text-q1"></textarea></div>
+
+  <div class="audit-item" id="afar-q2">
+    <div class="item-text">Single rider / re-queue lane is visible, marked, and managed</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreAfar('q2','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreAfar('q2','no')">NO</button>
+      <button class="audit-btn" onclick="scoreAfar('q2','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="afar-note-q2"><textarea placeholder="Describe finding…" id="afar-note-text-q2"></textarea></div>
+
+  <div class="audit-item" id="afar-q3">
+    <div class="item-text">Operator appeared calm and composed under queue pressure (not rushed or reactive)</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreAfar('q3','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreAfar('q3','no')">NO</button>
+      <button class="audit-btn" onclick="scoreAfar('q3','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="afar-note-q3"><textarea placeholder="Describe finding…" id="afar-note-text-q3"></textarea></div>
+
+  <div class="audit-item" id="afar-q4">
+    <div class="item-text">No visible guest pressure on operator to dispatch sooner</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreAfar('q4','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreAfar('q4','no')">NO</button>
+      <button class="audit-btn" onclick="scoreAfar('q4','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="afar-note-q4"><textarea placeholder="Describe finding…" id="afar-note-text-q4"></textarea></div>
+
+  <div class="audit-item" id="afar-q5">
+    <div class="item-text">Operator maintained safety protocol pacing despite queue depth</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreAfar('q5','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreAfar('q5','no')">NO</button>
+      <button class="audit-btn" onclick="scoreAfar('q5','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="afar-note-q5"><textarea placeholder="Describe finding…" id="afar-note-text-q5"></textarea></div>
+
   <button class="btn btn-primary" onclick="gp(1.5)" style="margin-top:8px;">Approach the Ride →</button>
   <button class="btn btn-danger" onclick="cancelSession()">✕ Cancel Session</button>
 </div>
@@ -333,7 +555,7 @@ video{width:100%;height:100%;object-fit:cover;display:none;}
     <h1>Area &amp; Equipment Check</h1>
     <p>These items are scored once for the area — not per operator. Check facility condition, documentation, and signage.</p>
     <div class="prog-wrap" style="margin-top:16px;margin-bottom:0;">
-      <div class="prog-label" id="area-prog-label">0 of 8 items scored</div>
+      <div class="prog-label" id="area-prog-label">0 of 13 items scored</div>
       <div class="prog-track"><div class="prog-fill" id="area-prog-fill"></div></div>
     </div>
   </div>
@@ -424,6 +646,59 @@ video{width:100%;height:100%;object-fit:cover;display:none;}
   </div>
   <div class="no-note" id="area-note-f8"><textarea placeholder="Describe finding…" id="area-note-text-f8"></textarea></div>
 
+  <div class="section-rule">OLI — Staffing Adequacy &amp; Pressure Indicators</div>
+  <p style="font-size:12px;color:var(--slate-light);margin:-8px 0 14px;line-height:1.5;">Score staffing adequacy and observable pressure signals at the attraction.</p>
+
+  <div class="audit-item" id="area-st1">
+    <div class="item-text">Second operator present when required by ride type or staffing standard</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('st1','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('st1','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('st1','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-st1"><textarea placeholder="Describe finding…" id="area-note-text-st1"></textarea></div>
+
+  <div class="audit-item" id="area-st2">
+    <div class="item-text">No position appeared visibly understaffed or doubled-up beyond safe capacity</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('st2','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('st2','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('st2','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-st2"><textarea placeholder="Describe finding…" id="area-note-text-st2"></textarea></div>
+
+  <div class="audit-item" id="area-st3">
+    <div class="item-text">Throughput not prioritized over safety protocol — no rushing of cycles observed</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('st3','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('st3','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('st3','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-st3"><textarea placeholder="Describe finding…" id="area-note-text-st3"></textarea></div>
+
+  <div class="audit-item" id="area-st4">
+    <div class="item-text">No shortcuts observed under crowd pressure (spiel, restraint check, dispatch scan)</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('st4','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('st4','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('st4','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-st4"><textarea placeholder="Describe finding…" id="area-note-text-st4"></textarea></div>
+
+  <div class="audit-item" id="area-st5">
+    <div class="item-text">Operator staffing level appropriate for attraction type at this crowd level</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('st5','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('st5','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('st5','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-st5"><textarea placeholder="Describe finding…" id="area-note-text-st5"></textarea></div>
+
   <button class="btn btn-primary" onclick="goOperators()" style="margin-top:8px;">Audit Operators →</button>
   <button class="btn btn-danger" onclick="cancelSession()">✕ Cancel Session</button>
 </div>
@@ -502,7 +777,7 @@ video{width:100%;height:100%;object-fit:cover;display:none;}
     <h1>Per-Operator Inspection</h1>
     <p id="p4OpMeta">—</p>
     <div class="prog-wrap" style="margin-top:16px;margin-bottom:0;">
-      <div class="prog-label" id="op-prog-label">0 of 13 items scored</div>
+      <div class="prog-label" id="op-prog-label">0 of 17 items scored</div>
       <div class="prog-track"><div class="prog-fill" id="op-prog-fill"></div></div>
     </div>
   </div>
@@ -643,6 +918,49 @@ video{width:100%;height:100%;object-fit:cover;display:none;}
   </div>
   <div class="no-note" id="op-note-e2"><textarea placeholder="Describe finding…" id="op-note-text-e2"></textarea></div>
 
+  <div class="section-rule">OLI — Human Context &amp; Fatigue Indicators</div>
+  <p style="font-size:12px;color:var(--slate-light);margin:-8px 0 14px;line-height:1.5;">Score operator-level human factors during close interaction.</p>
+
+  <div class="audit-item" id="op-h1">
+    <div class="item-text">Staffing schedule / post chart visible at or near ride control station</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('h1','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('h1','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('h1','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-h1"><textarea placeholder="Describe finding…" id="op-note-text-h1"></textarea></div>
+
+  <div class="audit-item" id="op-h2">
+    <div class="item-text">Operator shows no visible signs of fatigue (yawning, inattentiveness)</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('h2','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('h2','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('h2','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-h2"><textarea placeholder="Describe finding…" id="op-note-text-h2"></textarea></div>
+
+  <div class="audit-item" id="op-h3">
+    <div class="item-text">Operator demeanor consistent throughout observation (no mood shift)</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('h3','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('h3','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('h3','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-h3"><textarea placeholder="Describe finding…" id="op-note-text-h3"></textarea></div>
+
+  <div class="audit-item" id="op-h4">
+    <div class="item-text">No off-task behavior observed (phone, socializing mid-cycle, leaving post)</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('h4','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('h4','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('h4','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-h4"><textarea placeholder="Describe finding…" id="op-note-text-h4"></textarea></div>
+
   <button class="btn btn-primary" onclick="saveOperator()" style="margin-top:8px;">Save Operator &amp; Continue →</button>
   <button class="btn btn-danger" onclick="gp(2)">← Back</button>
 </div>
@@ -710,15 +1028,20 @@ let session = null;
 let curOp   = null;  // { operator:{id,name,role}, scores:{} }
 let camStr  = null, scanTick = null, curCamCb = null;
 
-const AFAR_KEYS = ['b1','b2','b3','b4'];
-const AREA_KEYS = ['f1','f2','f3','f4','f5','f6','f7','f8'];
-const OP_KEYS   = ['u1','u2','u3','s1','s2','s3','s4','s5','s6','c1','c2','e1','e2'];
+const AFAR_KEYS = ['b1','b2','b3','b4','q1','q2','q3','q4','q5'];
+const AREA_KEYS = ['f1','f2','f3','f4','f5','f6','f7','f8','st1','st2','st3','st4','st5'];
+const OP_KEYS   = ['u1','u2','u3','s1','s2','s3','s4','s5','s6','c1','c2','e1','e2','h1','h2','h3','h4'];
 
 const AFAR_LABELS = {
   b1:'Operator remains in safety zone',
   b2:'Visually scans attraction while in motion',
   b3:'Closes and secures all gates',
   b4:'Displays and reacts to hand signals',
+  q1:'Queue flow managed actively',
+  q2:'Single rider / re-queue lane visible and managed',
+  q3:'Operator calm and composed under queue pressure',
+  q4:'No visible guest pressure to dispatch sooner',
+  q5:'Safety protocol pacing maintained despite queue depth',
 };
 const AREA_LABELS = {
   f1:'Perimeter fencing and gates functioning',
@@ -729,6 +1052,11 @@ const AREA_LABELS = {
   f6:'Safety area clearly marked',
   f7:'Height sticks in place and accurate',
   f8:'All rider policy signs in good condition',
+  st1:'Second operator present when required',
+  st2:'No position understaffed or doubled-up unsafely',
+  st3:'Throughput not prioritized over safety protocol',
+  st4:'No shortcuts observed under crowd pressure',
+  st5:'Staffing level appropriate for crowd level',
 };
 const OP_LABELS = {
   u1:'Uniform/Name Tag/Cert Tag',
@@ -744,6 +1072,10 @@ const OP_LABELS = {
   c2:'Safety spiels communicated',
   e1:'Minimizes conversation/stays focused',
   e2:'Works with a purpose',
+  h1:'Post chart visible at control station',
+  h2:'No visible signs of fatigue',
+  h3:'Demeanor consistent throughout observation',
+  h4:'No off-task behavior observed',
 };
 
 // ── Clock ───────────────────────────────────────────────────────────────────
@@ -931,18 +1263,210 @@ function saveOperator(){
     const ta = document.getElementById('op-note-text-'+k);
     if(ta && ta.value.trim()) notes[k] = ta.value.trim();
   });
+  // Save operator to session
   session.operators.push({
     operator: curOp.operator,
     scores: {...curOp.scores},
     notes,
     timestamp: new Date().toISOString(),
+    correctiveAction: null,
   });
   renderOperatorList();
   document.getElementById('btnFinishSession').style.display='block';
-  toast(curOp.operator.name.split(' ')[0]+' saved ✓');
+  // If any NOs — launch corrective action modal
+  const flags = OP_KEYS.filter(k=>curOp.scores[k]==='no');
+  if(flags.length){
+    openCA(curOp.operator, flags, notes);
+  } else {
+    toast(curOp.operator.name.split(' ')[0]+' saved ✓');
+    curOp = null;
+    resetOpScan();
+    gp(2);
+  }
+}
+
+// ── Corrective Action Modal ──────────────────────────────────────────────────
+let caOpRef = null; // index into session.operators for the op we're writing up
+let caDiscSel = 'verbal';
+let caAgreeSel = null;
+const CA_VIOL_MAP = {
+  // Maps audit item keys to Playland violation categories
+  u1:'Unprofessional Conduct',
+  u2:'Falsifying Company Records',
+  u3:'Negligent/Abusive use of Equipment or Materials',
+  s1:'Violating and/or Disregarding Company Safety Rules',
+  s2:'Violating and/or Disregarding Company Safety Rules',
+  s3:'Carelessness or Recklessness',
+  s4:'Carelessness or Recklessness',
+  s5:'Carelessness or Recklessness',
+  s6:'Carelessness or Recklessness',
+  c1:'Unprofessional Conduct',
+  c2:'Unsatisfactory Performance',
+  e1:'Sleeping or Loafing',
+  e2:'Unsatisfactory Performance',
+  h1:'Unsatisfactory Performance',
+  h2:'Sleeping or Loafing',
+  h3:'Unprofessional Conduct',
+  h4:'Leaving Assigned Work Area without Permission',
+};
+
+function openCA(operator, flaggedKeys, notes){
+  caOpRef = session.operators.length - 1; // last saved operator
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+  // Auto-fill header fields
+  document.getElementById('ca-emp-name').value = operator.name;
+  document.getElementById('ca-emp-id').value = operator.id;
+  document.getElementById('ca-dept').value = session.attraction;
+  document.getElementById('ca-date').value = dateStr;
+  document.getElementById('ca-violation-date').value = dateStr;
+  document.getElementById('ca-position').value = operator.role || '';
+  document.getElementById('ca-last-action').value = '';
+  document.getElementById('ca-emp-comment').value = '';
+
+  // Build violation checkboxes — deduplicate by category
+  const seen = new Set();
+  const violItems = [];
+  flaggedKeys.forEach(k=>{
+    const cat = CA_VIOL_MAP[k] || 'Unsatisfactory Performance';
+    const label = OP_LABELS[k];
+    const key = cat+'|'+label;
+    if(!seen.has(key)){
+      seen.add(key);
+      violItems.push({cat, label, k});
+    }
+  });
+  document.getElementById('ca-violations-list').innerHTML = violItems.map((v,i)=>`
+    <div class="ca-viol-item checked" id="ca-viol-${i}" onclick="toggleViol(${i})">
+      <div class="ca-viol-cb"></div>
+      <div class="ca-viol-text"><strong>${v.cat}</strong><br><span style="color:var(--slate-light);font-size:11px;">${v.label}${notes[v.k]?' — '+notes[v.k]:''}</span></div>
+    </div>`).join('');
+
+  // Auto-fill incident description
+  const violList = violItems.map(v=>'• '+v.label+(notes[v.k]?' ('+notes[v.k]+')':'')).join('\n');
+  document.getElementById('ca-incident').value = 'The following violation(s) were observed during In-House Safety Audit on '+dateStr+' at '+session.attraction+':\n'+violList;
+  document.getElementById('ca-expected').value = 'All operators are expected to follow established SOPs and safety protocols as trained. Compliance with all items on the IHS audit checklist is required at all times.';
+
+  // Reset discipline / agreement
+  selDisc('verbal');
+  caAgreeSel = null;
+  ['ca-agree-yes','ca-agree-no'].forEach(id=>document.getElementById(id).classList.remove('sel'));
+
+  // Clear signature pads
+  clearSig('sig-emp'); clearSig('sig-sup');
+
+  // Show modal
+  document.getElementById('caModal').classList.add('show');
+  window.scrollTo(0,0);
+}
+
+function dismissCA(){
+  document.getElementById('caModal').classList.remove('show');
+  toast((curOp||{name:''}).name?.split(' ')[0]||'Operator'+' saved ✓');
   curOp = null;
   resetOpScan();
   gp(2);
+}
+
+function submitCA(){
+  // Require at least one signature
+  if(isSigEmpty('sig-emp') && isSigEmpty('sig-sup')){
+    toast('At least one signature required',1); return;
+  }
+  const incident = document.getElementById('ca-incident').value.trim();
+  if(!incident){toast('Describe the incident',1);return;}
+
+  // Collect checked violations
+  const violEls = document.querySelectorAll('.ca-viol-item.checked .ca-viol-text');
+  const violations = Array.from(violEls).map(el=>el.querySelector('strong').textContent);
+
+  // Capture signatures as data URLs
+  const empSig = document.getElementById('sig-emp').toDataURL();
+  const supSig = document.getElementById('sig-sup').toDataURL();
+
+  const ca = {
+    timestamp: new Date().toISOString(),
+    discipline: caDiscSel,
+    violations,
+    incident,
+    expectedBehavior: document.getElementById('ca-expected').value.trim(),
+    employeeStatement: caAgreeSel,
+    employeeComment: document.getElementById('ca-emp-comment').value.trim(),
+    lastAction: document.getElementById('ca-last-action').value.trim(),
+    signatures: {
+      employee: isSigEmpty('sig-emp') ? null : empSig,
+      supervisor: isSigEmpty('sig-sup') ? null : supSig,
+    },
+    signedAt: new Date().toISOString(),
+  };
+
+  // Attach to the operator record
+  if(session.operators[caOpRef]) session.operators[caOpRef].correctiveAction = ca;
+
+  document.getElementById('caModal').classList.remove('show');
+  toast('Corrective action saved ✓');
+  curOp = null;
+  resetOpScan();
+  gp(2);
+}
+
+function selDisc(val){
+  caDiscSel = val;
+  ['verbal','written','final','suspension','termination','other'].forEach(d=>{
+    document.getElementById('disc-'+d).classList.toggle('sel', d===val);
+  });
+}
+
+function selAgree(val){
+  caAgreeSel = val;
+  document.getElementById('ca-agree-yes').classList.toggle('sel', val==='agree');
+  document.getElementById('ca-agree-no').classList.toggle('sel', val==='disagree');
+}
+
+function toggleViol(i){
+  const el = document.getElementById('ca-viol-'+i);
+  el.classList.toggle('checked');
+}
+
+// ── Signature Pad ────────────────────────────────────────────────────────────
+(function initSigPads(){
+  ['sig-emp','sig-sup'].forEach(id=>{
+    const canvas = document.getElementById(id);
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let drawing = false, lx, ly;
+
+    function getPos(e){
+      const r = canvas.getBoundingClientRect();
+      const src = e.touches ? e.touches[0] : e;
+      return {
+        x: (src.clientX - r.left) * (canvas.width / r.width),
+        y: (src.clientY - r.top)  * (canvas.height / r.height),
+      };
+    }
+    function start(e){ e.preventDefault(); drawing=true; const p=getPos(e); lx=p.x; ly=p.y; }
+    function move(e){ if(!drawing) return; e.preventDefault(); const p=getPos(e); ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(p.x,p.y); ctx.strokeStyle='#0F172A'; ctx.lineWidth=2; ctx.lineCap='round'; ctx.stroke(); lx=p.x; ly=p.y; }
+    function end(){ drawing=false; }
+
+    canvas.addEventListener('mousedown', start);
+    canvas.addEventListener('mousemove', move);
+    canvas.addEventListener('mouseup', end);
+    canvas.addEventListener('touchstart', start, {passive:false});
+    canvas.addEventListener('touchmove', move, {passive:false});
+    canvas.addEventListener('touchend', end);
+  });
+})();
+
+function clearSig(id){
+  const c = document.getElementById(id);
+  c.getContext('2d').clearRect(0,0,c.width,c.height);
+}
+
+function isSigEmpty(id){
+  const c = document.getElementById(id);
+  const d = c.getContext('2d').getImageData(0,0,c.width,c.height).data;
+  return !d.some(v=>v!==0);
 }
 
 function renderOperatorList(){
@@ -957,10 +1481,13 @@ function renderOperatorList(){
     const badgeClass = hasNo ? 'fail' : scored===OP_KEYS.length ? 'pass' : 'part';
     const badgeTxt = hasNo ? 'FLAG' : scored===OP_KEYS.length ? 'PASS' : 'PART';
     const t = new Date(o.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    const caTag = o.correctiveAction
+      ? `<span style="font-size:10px;background:var(--red-light);color:var(--red);border:1px solid rgba(239,68,68,.3);padding:1px 6px;border-radius:4px;font-family:'Space Mono',monospace;margin-left:4px;">CA ✓</span>`
+      : (hasNo ? `<span style="font-size:10px;background:var(--amber-light);color:var(--amber-dark);border:1px solid rgba(245,158,11,.3);padding:1px 6px;border-radius:4px;font-family:'Space Mono',monospace;margin-left:4px;">CA skipped</span>` : '');
     return `<div class="op-row">
       <div class="op-badge ${badgeClass}">${badgeTxt}</div>
       <div style="flex:1;min-width:0;">
-        <div class="op-name">${o.operator.name}</div>
+        <div class="op-name">${o.operator.name}${caTag}</div>
         <div class="op-meta">${o.operator.role} · ID: ${o.operator.id} · ${t}</div>
       </div>
     </div>`;
@@ -990,6 +1517,20 @@ function buildSummary(){
   let opHtml = '';
   session.operators.forEach(o=>{
     const hasNo = Object.values(o.scores).includes('no');
+    const ca = o.correctiveAction;
+    const caHtml = ca
+      ? `<div style="margin:0;padding:10px 14px;background:var(--red-light);border-top:1px solid rgba(239,68,68,.15);">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--red);text-transform:uppercase;font-weight:700;margin-bottom:4px;">📋 Corrective Action on File</div>
+          <div style="font-size:12px;color:#7F1D1D;line-height:1.4;">
+            <strong>Discipline:</strong> ${ca.discipline.charAt(0).toUpperCase()+ca.discipline.slice(1).replace(/([A-Z])/g,' $1')} &nbsp;·&nbsp;
+            <strong>Signed:</strong> ${new Date(ca.signedAt).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}<br>
+            <strong>Violations:</strong> ${(ca.violations||[]).join('; ') || '—'}<br>
+            <strong>Employee agrees:</strong> ${ca.employeeStatement||'Not recorded'}
+            ${ca.signatures.employee?'&nbsp;·&nbsp;<strong>Emp. sig:</strong> ✓':''}
+            ${ca.signatures.supervisor?'&nbsp;·&nbsp;<strong>Sup. sig:</strong> ✓':''}
+          </div>
+        </div>`
+      : (hasNo ? `<div style="margin:0;padding:8px 14px;background:var(--amber-light);border-top:1px solid rgba(245,158,11,.2);font-size:11px;color:var(--amber-dark);font-weight:600;">⚠️ Corrective action was skipped for this operator</div>` : '');
     opHtml += `<div class="sum-section" style="margin-bottom:12px;">
       <div class="sum-section-hdr" style="${hasNo?'color:var(--red)':''}">
         🪪 ${o.operator.name} — ID: ${o.operator.id}${hasNo?' · ⚠️ Flags':''}
@@ -999,6 +1540,7 @@ function buildSummary(){
         const cls=v==='yes'?'pass':v==='no'?'fail':'na';
         return `<div class="sum-row"><span class="sum-label">${OP_LABELS[k]}</span><span class="sum-val ${cls}">${(v||'—').toUpperCase()}</span></div>`;
       }).join('')}
+      ${caHtml}
     </div>`;
   });
   document.getElementById('operatorSummaries').innerHTML = opHtml;
@@ -1062,7 +1604,7 @@ function resetAll(){
     if(note){note.classList.remove('show');const ta=document.getElementById('afar-note-text-'+k);if(ta)ta.value='';}
   });
   document.getElementById('afar-prog-fill').style.width='0%';
-  document.getElementById('afar-prog-label').textContent='0 of 4 items scored';
+  document.getElementById('afar-prog-label').textContent='0 of 9 items scored';
   // Reset P1b area items
   AREA_KEYS.forEach(k=>{
     const row=document.getElementById('area-'+k);
@@ -1071,7 +1613,7 @@ function resetAll(){
     if(note){note.classList.remove('show');const ta=document.getElementById('area-note-text-'+k);if(ta)ta.value='';}
   });
   document.getElementById('area-prog-fill').style.width='0%';
-  document.getElementById('area-prog-label').textContent='0 of 8 items scored';
+  document.getElementById('area-prog-label').textContent='0 of 13 items scored';
   // Reset fields
   ['auditorName','auditNotes'].forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.style.display='';}});
   clearAuditor();
