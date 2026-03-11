@@ -85,23 +85,22 @@
   }
   .form-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
   .form-header .sub { font-size: 13px; color: var(--slate-light); line-height: 1.6; max-width: 560px; }
-  .form-header .header-link {
-    display: inline-block;
-    margin-top: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.55);
+  /* ── SAFETY BANNER ── */
+  .safety-banner {
+    display: block;
+    width: 100%;
+    padding: 13px 24px;
+    background: var(--amber);
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
     text-decoration: none;
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 6px;
-    padding: 5px 12px;
-    transition: all 0.15s;
+    text-align: center;
+    letter-spacing: 0.2px;
+    transition: background 0.15s;
   }
-  .form-header .header-link:hover {
-    color: var(--amber);
-    border-color: rgba(245,158,11,0.4);
-    background: rgba(245,158,11,0.08);
-  }
+  .safety-banner:hover { background: var(--amber-dark); color: white; }
 
   /* ── FORM BODY ── */
   .form-wrap {
@@ -394,17 +393,18 @@
 
 <!-- TOP BAR -->
 <div class="topbar">
-  <div class="brand">Amusement Standards</div>
+  <div class="brand">💬 Guest Feedback</div>
   <div class="badge-pill">AS 360 · GFB</div>
 </div>
 
 <!-- HERO HEADER -->
 <div class="form-header">
-  <div class="badge">💬 Guest Feedback</div>
   <h1>How Was Your Ride?</h1>
   <div class="sub">Real-time guest sentiment captured at the attraction — your feedback helps us improve every ride, every interaction, every visit.</div>
-  <a href="nmr.html" class="header-link">⚠️ Report a Safety Near-Miss instead →</a>
 </div>
+
+<!-- SAFETY BANNER -->
+<a href="nmr.html" class="safety-banner">⚠️ Report a Safety Near-Miss instead →</a>
 
 <!-- FORM BODY -->
 <div id="form-view">
@@ -616,8 +616,9 @@
 
   // ── Chip select (single) ──────────────────────────────────────────────────
   function selectChip(el, groupId) {
+    const wasActive = el.classList.contains('active');
     document.getElementById(groupId).querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
+    if (!wasActive) el.classList.add('active');
   }
 
   // ── Anonymous toggle ──────────────────────────────────────────────────────
