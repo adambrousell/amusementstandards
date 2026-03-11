@@ -4,436 +4,166 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AS 360 · Guest Service Audit</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy:        #0b1d35;
-    --navy-deep:   #071428;
-    --navy-card:   #0f2240;
-    --navy-raised: #132848;
-    --gold:        #c8a84b;
-    --gold-light:  #dfc070;
-    --gold-dim:    rgba(200,168,75,0.10);
-    --gold-border: rgba(200,168,75,0.22);
-    --green:       #27ae60;
-    --green-lt:    rgba(39,174,96,0.15);
-    --yellow:      #d4a017;
-    --yellow-lt:   rgba(212,160,23,0.15);
-    --orange:      #c0622a;
-    --orange-lt:   rgba(192,98,42,0.15);
-    --red:         #c0392b;
-    --red-lt:      rgba(192,57,43,0.15);
-    --teal:        #17a589;
-    --teal-lt:     rgba(23,165,137,0.14);
-    --purple:      #8e6fbf;
-    --text:        #dde4ef;
-    --text-mid:    #8fa3be;
-    --text-dim:    #4d6480;
-    --border:      rgba(255,255,255,0.065);
-    --border-gold: rgba(200,168,75,0.18);
-    --r:           10px;
-    --r-sm:        6px;
-  }
+:root{--amber:#F59E0B;--amber-dark:#D97706;--amber-light:#FEF3C7;--navy:#0F172A;--bg:#F8FAFC;--green:#10B981;--green-lt:#D1FAE5;--red:#EF4444;--red-lt:#FEE2E2;--text:#0F172A;--border:#E2E8F0;--shadow:0 1px 3px rgba(15,23,42,.08),0 4px 12px rgba(15,23,42,.04);--shadow-lg:0 4px 16px rgba(15,23,42,.1),0 12px 40px rgba(15,23,42,.06);--r:12px;--r-sm:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto;overflow-x:hidden}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+.topbar{position:sticky;top:0;z-index:200;background:var(--navy);border-bottom:1px solid rgba(255,255,255,.08);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(15,23,42,.15)}
+.logo-mark{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--amber);letter-spacing:.5px}
+.logo-sub{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.14em;text-transform:uppercase;border-left:1px solid rgba(255,255,255,.12);padding-left:8px;margin-left:8px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-time{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,.4)}
+.roster-chip{font-family:'Space Mono',monospace;font-size:10px;padding:3px 9px;border-radius:99px;background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3);display:none}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--navy-deep);
-    color: var(--text);
-    min-height: 100vh;
-    max-width: 480px;
-    margin: 0 auto;
-    overflow-x: hidden;
-  }
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--navy);border-top:1px solid rgba(255,255,255,.08);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:200}
+.nav-btn{flex:1;padding:11px 8px 9px;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.35);transition:color .2s}
+.nav-btn.active{color:var(--amber)}
+.nav-btn svg{width:20px;height:20px}
+.nav-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;font-family:'Space Mono',monospace}
 
-  /* ── TOPBAR ── */
-  .topbar {
-    position: sticky; top: 0; z-index: 200;
-    background: var(--navy-deep);
-    border-bottom: 1px solid var(--border);
-    padding: 0 20px;
-    height: 56px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .logo {
-    display: flex; align-items: baseline; gap: 6px;
-  }
-  .logo-mark {
-    font-family: 'Playfair Display', serif;
-    font-size: 16px; font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 0.01em;
-  }
-  .logo-sub {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; font-weight: 500;
-    color: var(--text-dim);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    border-left: 1px solid var(--border);
-    padding-left: 8px;
-    margin-left: 2px;
-  }
-  .topbar-right { display: flex; align-items: center; gap: 10px; }
-  .topbar-time {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px; color: var(--text-dim);
-  }
-  .roster-chip {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    padding: 3px 9px; border-radius: 99px;
-    background: var(--gold-dim); color: var(--gold);
-    border: 1px solid var(--gold-border);
-    display: none; letter-spacing: 0.06em;
-  }
+.screen{display:none;padding:20px 18px 100px}
+.screen.active{display:block}
+.phase{display:none}
+.phase.active{display:block}
 
-  /* ── BOTTOM NAV ── */
-  .bottom-nav {
-    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 100%; max-width: 480px;
-    background: var(--navy-deep);
-    border-top: 1px solid var(--border);
-    display: flex;
-    padding-bottom: env(safe-area-inset-bottom);
-    z-index: 200;
-  }
-  .nav-btn {
-    flex: 1; padding: 11px 8px 9px;
-    display: flex; flex-direction: column; align-items: center; gap: 4px;
-    background: none; border: none; cursor: pointer;
-    color: var(--text-dim); transition: color 0.2s;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .nav-btn.active { color: var(--gold); }
-  .nav-btn svg { width: 20px; height: 20px; }
-  .nav-lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+/* step indicator */
+.steps{display:flex;align-items:flex-start;margin-bottom:22px;overflow-x:auto;padding-bottom:2px;gap:0}
+.step{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;min-width:44px}
+.step-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;border:1.5px solid var(--border);color:#94A3B8;background:white;transition:all .25s;box-shadow:var(--shadow)}
+.step-dot.active{border-color:var(--amber);color:var(--amber);background:var(--amber-light)}
+.step-dot.done{border-color:var(--green);background:var(--green);color:white}
+.step-name{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.04em;text-transform:uppercase;color:#94A3B8;text-align:center;line-height:1.3}
+.step-name.active{color:var(--amber)}
+.step-name.done{color:var(--green)}
+.step-line{flex:1;height:2px;background:var(--border);margin-top:12px;min-width:4px;border-radius:2px;transition:background .25s}
+.step-line.done{background:var(--green)}
 
-  /* ── SCREENS ── */
-  .screen { display: none; padding: 20px 18px 100px; }
-  .screen.active { display: block; }
+/* hero header */
+.phase-hdr{background:linear-gradient(135deg,var(--navy) 0%,#1E293B 100%);margin:-20px -18px 24px;padding:40px 24px 24px;border-radius:0 0 20px 20px}
+.phase-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--amber);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px}
+.phase-hdr h1{font-size:21px;font-weight:700;color:white;margin-bottom:5px;line-height:1.25}
+.phase-hdr p{font-size:13px;color:rgba(148,163,184,.9);line-height:1.5}
 
-  /* ── PHASE ── */
-  .phase { display: none; }
-  .phase.active { display: block; }
+/* cards */
+.card{background:white;border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card-title{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#64748B;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card-title .cnt{font-family:'Space Mono',monospace;font-size:10px;margin-left:auto;background:var(--amber-light);color:var(--amber-dark);padding:2px 7px;border-radius:4px}
 
-  /* ── STEP INDICATOR ── */
-  .steps {
-    display: flex; align-items: flex-start;
-    margin-bottom: 26px;
-  }
-  .step { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
-  .step-dot {
-    width: 26px; height: 26px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600;
-    border: 1.5px solid var(--text-dim); color: var(--text-dim);
-    background: var(--navy-deep);
-    transition: all 0.25s;
-  }
-  .step-dot.active { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
-  .step-dot.done { border-color: var(--teal); background: var(--teal); color: var(--navy-deep); font-size: 11px; }
-  .step-name { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-dim); text-align: center; }
-  .step-name.active { color: var(--gold); }
-  .step-name.done { color: var(--teal); }
-  .step-line { flex: 1; height: 1px; background: var(--border); margin-top: 13px; transition: background 0.25s; }
-  .step-line.done { background: var(--teal); }
+.field{margin-bottom:14px}
+.field label{display:block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#334155;margin-bottom:6px;font-weight:700}
+.field input,.field textarea,.field select{width:100%;padding:12px 14px;background:white;border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--navy);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;resize:none;-webkit-appearance:none;transition:border-color .2s}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,158,11,.1)}
+.field textarea{min-height:80px;resize:vertical}
 
-  /* ── TYPOGRAPHY ── */
-  .serif { font-family: 'Playfair Display', serif; }
-  .mono  { font-family: 'DM Mono', monospace; }
+.btn{display:block;width:100%;padding:14px 20px;border-radius:var(--r-sm);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;text-align:center;transition:all .15s}
+.btn+.btn{margin-top:9px}
+.btn-primary{background:linear-gradient(135deg,var(--amber),var(--amber-dark));color:white;box-shadow:0 4px 12px rgba(245,158,11,.3)}
+.btn-primary:active{transform:scale(.99)}
+.btn-ghost{background:white;color:#64748B;border:1.5px solid var(--border);box-shadow:var(--shadow)}
+.btn-success{background:linear-gradient(135deg,#10B981,#059669);color:white;box-shadow:0 4px 12px rgba(16,185,129,.3)}
+.btn-danger{background:var(--red-lt);color:#DC2626;border:1.5px solid rgba(239,68,68,.25)}
+.btn-outline-amber{background:transparent;color:var(--amber-dark);border:1.5px solid rgba(245,158,11,.4);font-weight:700}
+.btn-sm{padding:9px 18px;font-size:13px;width:auto;display:inline-block}
 
-  .eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px; font-weight: 500;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 6px;
-  }
-  .page-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px; font-weight: 700;
-    color: var(--text); line-height: 1.2;
-    margin-bottom: 8px;
-  }
-  .page-sub {
-    font-size: 13px; color: var(--text-mid); line-height: 1.55;
-    margin-bottom: 20px;
-  }
+/* scan */
+.scan-vp{background:#0F172A;border-radius:var(--r);width:260px;height:260px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:var(--shadow-lg)}
+.corner{position:absolute;width:28px;height:28px}
+.c-tl{top:12px;left:12px;border-top:2px solid var(--amber);border-left:2px solid var(--amber);border-radius:3px 0 0 0}
+.c-tr{top:12px;right:12px;border-top:2px solid var(--amber);border-right:2px solid var(--amber);border-radius:0 3px 0 0}
+.c-bl{bottom:12px;left:12px;border-bottom:2px solid var(--amber);border-left:2px solid var(--amber);border-radius:0 0 0 3px}
+.c-br{bottom:12px;right:12px;border-bottom:2px solid var(--amber);border-right:2px solid var(--amber);border-radius:0 0 3px 0}
+.scan-beam{position:absolute;left:12px;right:12px;height:1.5px;background:linear-gradient(90deg,transparent,var(--amber),transparent);animation:beam 2.2s ease-in-out infinite}
+@keyframes beam{0%{top:12px;opacity:0}8%{opacity:1}92%{opacity:1}100%{top:calc(100% - 12px);opacity:0}}
+.scan-vid{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:none}
+.scan-ph{text-align:center;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;position:absolute;inset:0;padding:16px}
+.cam-icon{font-size:36px;cursor:pointer;margin-bottom:10px}
+.scan-ph p{font-size:12px;color:rgba(255,255,255,.45);line-height:1.5}
+.scan-ol{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-family:'Space Mono',monospace;font-size:10px;color:rgba(245,158,11,.8);letter-spacing:.06em;text-transform:uppercase;display:none;z-index:2}
+.scan-hint{font-size:12px;color:#94A3B8;text-align:center;display:block;margin:0 auto 14px;font-family:'Space Mono',monospace;letter-spacing:.04em;max-width:260px}
+.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.manual-row{display:flex;gap:8px}
+.manual-row input{flex:1;padding:12px 14px;background:white;border:1.5px solid var(--border);border-radius:var(--r-sm);color:var(--navy);font-family:'Space Mono',monospace;font-size:13px;outline:none;transition:border-color .2s}
+.manual-row input:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,158,11,.1)}
+.manual-row button{padding:12px 16px;background:var(--amber);color:white;border:none;border-radius:var(--r-sm);font-weight:700;font-size:13px;cursor:pointer}
 
-  /* ── CARDS ── */
-  .card {
-    background: var(--navy-card);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 18px;
-    margin-bottom: 14px;
-  }
-  .card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 15px; font-weight: 600;
-    color: var(--gold); margin-bottom: 14px;
-    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  }
+/* employee cards */
+.emp-card{border-radius:var(--r);padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow)}
+.emp-card.auditor-card{background:var(--amber-light);border:1px solid rgba(245,158,11,.25);border-left:4px solid var(--amber)}
+.emp-card.tm-card{background:var(--green-lt);border:1px solid rgba(16,185,129,.2);border-left:4px solid var(--green)}
+.emp-avatar{width:44px;height:44px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.emp-name{font-weight:700;font-size:15px;color:var(--navy);margin-bottom:2px}
+.emp-meta{font-size:12px;color:#334155;margin-bottom:2px}
+.emp-id{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.04em}
 
-  /* ── PHASE PILL ── */
-  .phase-pill {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 2px 8px; border-radius: 99px; margin-left: auto; border: 1px solid;
-  }
-  .pill-pre  { color: var(--gold); border-color: var(--gold-border); background: var(--gold-dim); }
-  .pill-post { color: var(--teal); border-color: rgba(23,165,137,0.3); background: var(--teal-lt); }
+/* audit items */
+.prog{margin-bottom:18px}
+.prog-row{display:flex;justify-content:space-between;margin-bottom:5px;font-family:'Space Mono',monospace;font-size:10px;color:#64748B}
+.prog-track{height:4px;background:var(--border);border-radius:99px}
+.prog-fill{height:4px;border-radius:99px;background:var(--amber);transition:width .3s}
+.audit-item{padding:12px 0;border-bottom:1px solid var(--border)}
+.audit-item:last-child{border-bottom:none;padding-bottom:0}
+.audit-label{font-size:13px;font-weight:500;color:var(--navy);margin-bottom:9px;line-height:1.45}
+.sco-row{display:flex;gap:5px}
+.sco{flex:1;padding:10px 2px;border-radius:var(--r-sm);border:1.5px solid var(--border);background:white;color:#94A3B8;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;cursor:pointer;transition:all .12s;text-align:center}
+.sco:active{transform:scale(.95)}
+.s1{background:#FEE2E2;border-color:rgba(239,68,68,.5);color:#EF4444}
+.s2{background:#FFEDD5;border-color:rgba(249,115,22,.5);color:#F97316}
+.s3{background:#FEF9C3;border-color:rgba(234,179,8,.5);color:#CA8A04}
+.s4{background:#DCFCE7;border-color:rgba(34,197,94,.5);color:#16A34A}
+.s5{background:#D1FAE5;border-color:rgba(16,185,129,.5);color:#059669}
+.sna{background:#F1F5F9;border-color:#CBD5E1;color:#94A3B8}
 
-  /* ── DATA TAG CHIPS ── */
-  .tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 2px 6px; border-radius: 4px; border: 1px solid;
-    flex-shrink: 0;
-  }
-  .tag-as   { color: var(--teal);   border-color: rgba(23,165,137,0.3); }
-  .tag-poc  { color: var(--purple); border-color: rgba(142,111,191,0.3); }
-  .tag-both { color: var(--gold);   border-color: var(--gold-border); }
+/* employee list (session) */
+.em-row{background:white;border:1px solid var(--border);border-radius:var(--r-sm);padding:13px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+.em-badge{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;flex-shrink:0}
+.em-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.em-meta{font-family:'Space Mono',monospace;font-size:10px;color:#94A3B8}
 
-  /* ── SECTION RULE ── */
-  .section-rule {
-    display: flex; align-items: center; gap: 10px;
-    margin: 20px 0 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 9px; letter-spacing: 0.13em; text-transform: uppercase;
-    color: var(--text-dim);
-  }
-  .section-rule::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+/* summary */
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.sum-row:last-child{border-bottom:none}
+.sum-label{font-size:13px;font-weight:500;color:var(--navy)}
+.sum-val{font-family:'Space Mono',monospace;font-size:13px;font-weight:700}
+.low-flag{background:var(--red-lt);border:1px solid rgba(239,68,68,.3);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:8px;font-size:12px;color:#DC2626;line-height:1.45}
+.low-flag strong{display:block;font-size:9px;font-family:'Space Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;opacity:.8}
+.section-rule{display:flex;align-items:center;gap:10px;margin:20px 0 12px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#94A3B8;font-weight:700}
+.section-rule::after{content:'';flex:1;height:1px;background:var(--border)}
 
-  /* ── FORM ── */
-  .field { margin-bottom: 14px; }
-  .field label {
-    display: block;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--text-mid); margin-bottom: 7px;
-  }
-  .field input,
-  .field textarea,
-  .field select {
-    width: 100%; padding: 11px 13px;
-    background: var(--navy-raised);
-    border: 1px solid var(--border);
-    border-radius: var(--r-sm);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif; font-size: 14px;
-    outline: none; resize: none;
-    transition: border-color 0.2s;
-    -webkit-appearance: none;
-  }
-  .field input:focus,
-  .field textarea:focus,
-  .field select:focus { border-color: var(--gold); }
-  .field textarea { min-height: 82px; }
-  .field select option { background: var(--navy-card); }
+/* dashboard */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.kpi{background:white;border:1px solid var(--border);border-radius:var(--r);padding:16px;overflow:hidden;position:relative;box-shadow:var(--shadow)}
+.kpi-accent{position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0}
+.kpi-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#94A3B8;margin-bottom:7px;font-weight:700}
+.kpi-val{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;line-height:1;color:var(--navy)}
+.kpi-sub{font-size:11px;color:#94A3B8;margin-top:4px}
+.log-item{background:white;border:1px solid var(--border);border-radius:var(--r-sm);padding:13px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+.log-badge{width:44px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;font-size:12px;flex-shrink:0}
+.b-g{background:#D1FAE5;color:#059669}.b-y{background:#FEF9C3;color:#CA8A04}.b-r{background:#FEE2E2;color:#EF4444}
+.log-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.log-meta{font-family:'Space Mono',monospace;font-size:10px;color:#94A3B8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-  /* ── BUTTONS ── */
-  .btn {
-    display: block; width: 100%;
-    padding: 13px 20px;
-    border-radius: var(--r-sm); border: none; cursor: pointer;
-    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
-    letter-spacing: 0.02em; text-align: center;
-    transition: all 0.18s;
-  }
-  .btn + .btn { margin-top: 9px; }
-  .btn-primary {
-    background: var(--gold); color: var(--navy-deep);
-  }
-  .btn-primary:active { background: var(--gold-light); }
-  .btn-outline {
-    background: transparent; color: var(--gold);
-    border: 1px solid var(--gold-border);
-  }
-  .btn-outline:active { background: var(--gold-dim); }
-  .btn-ghost {
-    background: var(--navy-raised); color: var(--text-mid);
-    border: 1px solid var(--border);
-  }
-  .btn-success {
-    background: var(--teal); color: var(--navy-deep); font-weight: 700;
-  }
-  .btn-danger {
-    background: var(--red-lt); color: var(--red);
-    border: 1px solid rgba(192,57,43,0.25);
-  }
-  .btn-sm { padding: 8px 14px; font-size: 12px; width: auto; display: inline-block; }
+.settings-card{background:white;border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.settings-card h3{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--navy);margin-bottom:14px;letter-spacing:.04em}
+.ref-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;color:#334155}
+.ref-row:last-child{border-bottom:none}
+.ref-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.roster-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+.roster-tbl th{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#94A3B8;padding:7px 8px;border-bottom:1px solid var(--border);background:#F8FAFC;text-align:left}
+.roster-tbl td{padding:8px;border-bottom:1px solid var(--border);color:#334155}
+.roster-tbl tr:last-child td{border-bottom:none}
 
-  /* ── SCORE GROUPS ── */
-  .score-group { margin-bottom: 20px; }
-  .score-group:last-child { margin-bottom: 0; }
-  .score-row {
-    display: flex; align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 4px; gap: 8px;
-  }
-  .score-name { font-size: 13px; font-weight: 600; flex: 1; }
-  .score-hint { font-size: 12px; color: var(--text-mid); margin-bottom: 9px; line-height: 1.45; }
-  .score-btns { display: flex; gap: 5px; }
-  .sco {
-    flex: 1; padding: 10px 2px;
-    border-radius: var(--r-sm); border: 1px solid var(--border);
-    background: var(--navy-raised); color: var(--text-dim);
-    font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600;
-    cursor: pointer; transition: all 0.12s;
-    text-align: center;
-  }
-  .sco:active { transform: scale(0.96); }
-  .s1  { background: var(--red-lt);    border-color: rgba(192,57,43,0.4);   color: #e74c3c; }
-  .s2  { background: var(--orange-lt); border-color: rgba(192,98,42,0.4);   color: #e67e22; }
-  .s3  { background: var(--yellow-lt); border-color: rgba(212,160,23,0.4);  color: #f1c40f; }
-  .s4  { background: var(--green-lt);  border-color: rgba(39,174,96,0.4);   color: #2ecc71; }
-  .s5  { background: var(--teal-lt);   border-color: rgba(23,165,137,0.4);  color: #1abc9c; }
-  .sna { background: rgba(77,100,128,0.2); border-color: rgba(77,100,128,0.4); color: var(--text-mid); }
-
-  /* ── PROGRESS ── */
-  .prog { margin-bottom: 20px; }
-  .prog-row { display: flex; justify-content: space-between; margin-bottom: 7px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-mid); letter-spacing: 0.06em; }
-  .prog-track { height: 3px; background: var(--border); border-radius: 99px; }
-  .prog-fill { height: 3px; border-radius: 99px; background: var(--gold); transition: width 0.3s; }
-
-  /* ── HERO BANNER ── */
-  .phase-hero {
-    background: var(--navy-card);
-    border: 1px solid var(--gold-border);
-    border-left: 3px solid var(--gold);
-    border-radius: var(--r);
-    padding: 18px 18px 18px 16px;
-    margin-bottom: 20px;
-  }
-  .phase-hero .eyebrow { margin-bottom: 4px; }
-  .phase-hero h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 19px; font-weight: 700; color: var(--text);
-    line-height: 1.2; margin-bottom: 6px;
-  }
-  .phase-hero p { font-size: 12px; color: var(--text-mid); line-height: 1.5; }
-
-  /* ── SCAN VIEWPORT ── */
-  .scan-vp {
-    background: var(--navy-card); border: 1px solid var(--border);
-    border-radius: var(--r);
-    aspect-ratio: 1 / 1; max-height: 300px;
-    position: relative; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 14px;
-  }
-  .corner { position: absolute; width: 32px; height: 32px; }
-  .c-tl { top:14px; left:14px;  border-top:2px solid var(--gold); border-left:2px solid var(--gold);  border-radius:3px 0 0 0; }
-  .c-tr { top:14px; right:14px; border-top:2px solid var(--gold); border-right:2px solid var(--gold); border-radius:0 3px 0 0; }
-  .c-bl { bottom:14px; left:14px;  border-bottom:2px solid var(--gold); border-left:2px solid var(--gold);  border-radius:0 0 0 3px; }
-  .c-br { bottom:14px; right:14px; border-bottom:2px solid var(--gold); border-right:2px solid var(--gold); border-radius:0 0 3px 0; }
-  .scan-beam {
-    position: absolute; left:14px; right:14px; height:1.5px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    animation: beam 2.2s ease-in-out infinite;
-  }
-  @keyframes beam { 0%{top:14px;opacity:0} 8%{opacity:1} 92%{opacity:1} 100%{top:calc(100% - 14px);opacity:0} }
-  #camVid { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; border-radius:var(--r); display:none; }
-  .scan-ph { text-align:center; padding:16px; z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%; position:absolute; inset:0; }
-  .cam-icon { font-size:38px; cursor:pointer; display:block; margin-bottom:10px; transition:opacity 0.15s; }
-  .cam-icon:active { opacity:0.7; }
-  .scan-ph p { font-size:12px; color:var(--text-mid); line-height:1.5; }
-  .scan-overlay { position:absolute; bottom:12px; left:0; right:0; text-align:center; font-family:'DM Mono',monospace; font-size:10px; color:rgba(200,168,75,0.7); letter-spacing:0.06em; text-transform:uppercase; display:none; z-index:2; }
-  .scan-hint { font-size:12px; color:var(--text-mid); text-align:center; margin-bottom:14px; font-family:'DM Mono',monospace; letter-spacing:0.04em; }
-  .divider { border:none; border-top:1px solid var(--border); margin:14px 0; }
-  .manual-row { display:flex; gap:8px; }
-  .manual-row input { flex:1; padding:11px 13px; background:var(--navy-raised); border:1px solid var(--border); border-radius:var(--r-sm); color:var(--text); font-family:'DM Mono',monospace; font-size:13px; outline:none; transition:border-color 0.2s; }
-  .manual-row input:focus { border-color:var(--gold); }
-  .manual-row button { padding:11px 16px; background:var(--gold); color:var(--navy-deep); border:none; border-radius:var(--r-sm); font-weight:700; font-size:13px; cursor:pointer; white-space:nowrap; font-family:'DM Sans',sans-serif; }
-
-  /* ── EMPLOYEE CARD ── */
-  .emp-card {
-    background: var(--navy-card);
-    border: 1px solid rgba(23,165,137,0.25);
-    border-left: 3px solid var(--teal);
-    border-radius: var(--r);
-    padding: 16px;
-    margin-bottom: 20px;
-    display: flex; align-items: center; gap: 14px;
-  }
-  .emp-avatar {
-    width: 46px; height: 46px; border-radius: 50%;
-    background: var(--teal-lt);
-    border: 1.5px solid rgba(23,165,137,0.35);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; flex-shrink: 0;
-  }
-  .emp-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
-  .emp-meta { font-size: 12px; color: var(--text-mid); margin-bottom: 3px; }
-  .emp-id { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--teal); letter-spacing: 0.06em; }
-
-  /* ── SUMMARY ROWS ── */
-  .sum-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border); }
-  .sum-row:last-child { border-bottom:none; }
-  .sum-label { font-size:12px; color:var(--text-mid); }
-  .sum-val { font-family:'DM Mono',monospace; font-weight:600; font-size:13px; }
-  .overall-row { display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); }
-  .overall-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-mid); }
-  .overall-val { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; color:var(--gold); }
-
-  /* ── DASHBOARD ── */
-  .kpi-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
-  .kpi {
-    background: var(--navy-card); border: 1px solid var(--border);
-    border-radius: var(--r); padding: 16px; position:relative; overflow:hidden;
-  }
-  .kpi-accent { position:absolute; top:0; left:0; right:0; height:2px; border-radius:var(--r) var(--r) 0 0; }
-  .kpi-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-mid); margin-bottom:7px; }
-  .kpi-val { font-family:'Playfair Display',serif; font-size:30px; font-weight:700; line-height:1; }
-  .kpi-sub { font-size:11px; color:var(--text-dim); margin-top:4px; }
-
-  .log-item { background:var(--navy-card); border:1px solid var(--border); border-radius:var(--r-sm); padding:13px; margin-bottom:8px; display:flex; align-items:center; gap:12px; }
-  .log-badge { width:42px; height:42px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-weight:700; font-size:13px; flex-shrink:0; }
-  .b-green { background:var(--green-lt); color:#2ecc71; }
-  .b-yellow { background:var(--yellow-lt); color:#f1c40f; }
-  .b-red { background:var(--red-lt); color:#e74c3c; }
-  .log-name { font-size:13px; font-weight:600; margin-bottom:3px; }
-  .log-meta { font-family:'DM Mono',monospace; font-size:10px; color:var(--text-mid); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-
-  /* ── SETTINGS ── */
-  .settings-card { background:var(--navy-card); border:1px solid var(--border); border-radius:var(--r); padding:18px; margin-bottom:14px; }
-  .settings-card h3 { font-family:'Playfair Display',serif; font-size:16px; color:var(--gold); margin-bottom:14px; }
-  .ref-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--border); font-size:13px; color:var(--text-mid); }
-  .ref-row:last-child { border-bottom:none; }
-  .ref-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-
-  .roster-tbl { width:100%; border-collapse:collapse; font-size:12px; margin-top:4px; }
-  .roster-tbl th { text-align:left; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); padding:6px 8px; border-bottom:1px solid var(--border); }
-  .roster-tbl td { padding:8px; border-bottom:1px solid var(--border); color:var(--text-mid); }
-  .roster-tbl tr:last-child td { border-bottom:none; }
-
-  .brand-footer { text-align:center; padding:22px 18px; }
-  .brand-footer .wordmark { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--gold); margin-bottom:4px; }
-  .brand-footer .sub { font-family:'DM Mono',monospace; font-size:10px; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; }
-
-  /* ── EMPTY ── */
-  .empty { text-align:center; padding:40px 20px; color:var(--text-mid); font-size:14px; line-height:1.6; }
-  .empty-icon { font-size:32px; margin-bottom:12px; opacity:0.5; }
-
-  /* ── TOAST ── */
-  #toast {
-    position:fixed; bottom:76px; left:50%; transform:translateX(-50%) translateY(16px);
-    background:var(--gold); color:var(--navy-deep);
-    padding:9px 20px; border-radius:99px;
-    font-size:12px; font-weight:600; letter-spacing:0.02em;
-    opacity:0; transition:all 0.25s; pointer-events:none; z-index:999;
-    white-space:nowrap;
-  }
-  #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-  #toast.err { background:var(--red); color:#fff; }
+.empty{text-align:center;padding:40px 20px;color:#94A3B8;font-size:14px;line-height:1.6}
+.empty-icon{font-size:32px;margin-bottom:12px;opacity:.5}
+#toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--navy);color:white;padding:9px 20px;border-radius:99px;font-size:12px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;z-index:999;white-space:nowrap;box-shadow:var(--shadow-lg)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.err{background:var(--red)}
 </style>
 </head>
 <body>
-
-<!-- TOPBAR -->
 <header class="topbar">
-  <div class="logo">
+  <div style="display:flex;align-items:baseline">
     <span class="logo-mark">amusement standards.</span>
     <span class="logo-sub">GSA</span>
   </div>
@@ -443,381 +173,365 @@
   </div>
 </header>
 
-<!-- ═══════════════════════════════════════
-     SCREEN: AUDIT
-═══════════════════════════════════════ -->
+<!-- ═══ AUDIT SCREEN ═══ -->
 <main class="screen active" id="screenAudit">
 
-  <!-- PHASE 0: SETUP — auditor scans own badge -->
-  <div class="phase active" id="p0">
-    <div class="eyebrow">AS 360 · Guest Service Audit</div>
-    <h1 class="page-title">Identify Yourself</h1>
-    <p class="page-sub">Scan the QR code on the back of your own badge to begin the session. Your identity will be recorded as the auditor of record.</p>
-
-    <!-- Auditor confirmed card (hidden until scan) -->
-    <div id="auditorConfirmed" style="display:none;margin-bottom:16px">
-      <div class="emp-card" style="border-color:rgba(200,168,75,0.3);border-left-color:var(--gold)">
-        <div class="emp-avatar" style="background:var(--gold-dim);border-color:var(--gold-border)">🪪</div>
-        <div>
-          <div class="emp-name" id="auditorName"></div>
-          <div class="emp-meta" id="auditorMeta"></div>
-          <div class="emp-id" id="auditorId" style="color:var(--gold)"></div>
-        </div>
-      </div>
-      <div class="field"><label>Facility</label><input id="facilityName" type="text" placeholder="Park / FEC name" /></div>
-      <div class="field"><label>Shift</label>
-        <select id="shiftSel">
-          <option value="Morning">Morning</option>
-          <option value="Afternoon">Afternoon</option>
-          <option value="Evening">Evening</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" onclick="beginAudit()">Begin Audit →</button>
-      <button class="btn btn-ghost" onclick="resetAuditorScan()" style="margin-top:9px">← Scan a Different Badge</button>
-    </div>
-
-    <!-- Scan viewport (shown until auditor confirmed) -->
-    <div id="auditorScanWrap">
-      <div class="scan-vp" id="scanVP0">
-        <div class="corner c-tl"></div><div class="corner c-tr"></div>
-        <div class="corner c-bl"></div><div class="corner c-br"></div>
-        <div class="scan-beam"></div>
-        <video id="camVid0" autoplay playsinline></video>
-        <div class="scan-ph" id="scanPH0">
-          <span class="cam-icon" onclick="startCam0()">📷</span>
-          <p>Tap to activate camera<br>and scan your badge QR code</p>
-        </div>
-        <div class="scan-overlay" id="scanOL0">Scanning for QR code…</div>
-      </div>
-      <p class="scan-hint">Scan the QR code on the back of your own employee badge</p>
-      <hr class="divider">
-      <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;">— Manual Entry —</p>
-      <div class="manual-row">
-        <input id="manAuditorId" type="text" placeholder="Your Employee ID" />
-        <button onclick="lookupAuditor(document.getElementById('manAuditorId').value)">Look Up</button>
-      </div>
-    </div>
+<!-- P0 · AUDITOR SETUP ─────────────────────────────────────────────────────-->
+<div class="phase active" id="p0">
+  <div class="phase-hdr">
+    <div class="phase-badge">🎯 Guest Service Audit</div>
+    <h1>Identify Yourself</h1>
+    <p>Scan your badge QR to begin. You'll be recorded as auditor of record.</p>
   </div>
 
-  <!-- PHASE 1: PRE-CONTACT -->
-  <div class="phase" id="p1">
-    <div class="steps">
-      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
-      <div class="step-line done"></div>
-      <div class="step"><div class="step-dot active">1</div><div class="step-name active">Observe</div></div>
-      <div class="step-line" id="ln12"></div>
-      <div class="step"><div class="step-dot">2</div><div class="step-name">Scan</div></div>
-      <div class="step-line" id="ln23"></div>
-      <div class="step"><div class="step-dot">3</div><div class="step-name">Contact</div></div>
-      <div class="step-line" id="ln34"></div>
-      <div class="step"><div class="step-dot">4</div><div class="step-name">Submit</div></div>
-    </div>
-
-    <div class="phase-hero">
-      <div class="eyebrow">Phase 1 · Pre-Contact</div>
-      <h2>Observe from a Distance</h2>
-      <p>Score what you can see and hear before approaching the employee. Do not make contact until all pre-contact items are recorded.</p>
-    </div>
-
-    <div class="prog">
-      <div class="prog-row"><span>Pre-Contact Items</span><span id="preTxt">0 / 4</span></div>
-      <div class="prog-track"><div class="prog-fill" id="preBar" style="width:0%"></div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Safety Spiel Delivery <span class="phase-pill pill-pre">Pre-Contact</span></div>
-      <div class="score-group">
-        <div class="score-row"><span class="score-name">Spiel Delivery</span><span class="tag tag-as">AS</span></div>
-        <div class="score-hint">Full safety spiel delivered clearly, audibly, and in correct sequence?</div>
-        <div class="score-btns" data-k="spiel">
-          <button class="sco" onclick="sc('spiel',1,this)">1</button><button class="sco" onclick="sc('spiel',2,this)">2</button><button class="sco" onclick="sc('spiel',3,this)">3</button><button class="sco" onclick="sc('spiel',4,this)">4</button><button class="sco" onclick="sc('spiel',5,this)">5</button><button class="sco" onclick="scNA('spiel',this)">N/A</button>
-        </div>
+  <div id="auditorConfirmed" style="display:none;margin-bottom:4px">
+    <div class="emp-card auditor-card">
+      <div class="emp-avatar">🪪</div>
+      <div>
+        <div class="emp-name" id="auditorName"></div>
+        <div class="emp-meta" id="auditorMeta"></div>
+        <div class="emp-id" style="color:var(--amber-dark)" id="auditorIdEl"></div>
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-title">Guest Interaction <span class="phase-pill pill-pre">Pre-Contact</span></div>
-      <div class="score-group">
-        <div class="score-row"><span class="score-name">Greeting Quality</span><span class="tag tag-as">AS</span></div>
-        <div class="score-hint">Employee initiated eye contact, smiled, and delivered a verbal welcome to guests?</div>
-        <div class="score-btns" data-k="greeting">
-          <button class="sco" onclick="sc('greeting',1,this)">1</button><button class="sco" onclick="sc('greeting',2,this)">2</button><button class="sco" onclick="sc('greeting',3,this)">3</button><button class="sco" onclick="sc('greeting',4,this)">4</button><button class="sco" onclick="sc('greeting',5,this)">5</button><button class="sco" onclick="scNA('greeting',this)">N/A</button>
-        </div>
-      </div>
-      <div class="score-group">
-        <div class="score-row"><span class="score-name">Guest Engagement</span><span class="tag tag-as">AS</span></div>
-        <div class="score-hint">Employee created a positive atmosphere beyond the minimum required interaction?</div>
-        <div class="score-btns" data-k="engagement">
-          <button class="sco" onclick="sc('engagement',1,this)">1</button><button class="sco" onclick="sc('engagement',2,this)">2</button><button class="sco" onclick="sc('engagement',3,this)">3</button><button class="sco" onclick="sc('engagement',4,this)">4</button><button class="sco" onclick="sc('engagement',5,this)">5</button><button class="sco" onclick="scNA('engagement',this)">N/A</button>
-        </div>
-      </div>
+    <div class="field"><label>Attraction</label><input id="attractionName" type="text" placeholder="Ride / attraction name"></div>
+    <div class="field"><label>Shift</label>
+      <select id="shiftSel">
+        <option>Morning</option><option>Afternoon</option><option>Evening</option>
+      </select>
     </div>
-
-    <div class="card">
-      <div class="card-title">Environment <span class="phase-pill pill-pre">Pre-Contact</span></div>
-      <div class="score-group">
-        <div class="score-row"><span class="score-name">Signage &amp; Wayfinding</span><span class="tag tag-both">BOTH</span></div>
-        <div class="score-hint">Safety signs, height boards, and directional signage present, legible, and current?</div>
-        <div class="score-btns" data-k="signage">
-          <button class="sco" onclick="sc('signage',1,this)">1</button><button class="sco" onclick="sc('signage',2,this)">2</button><button class="sco" onclick="sc('signage',3,this)">3</button><button class="sco" onclick="sc('signage',4,this)">4</button><button class="sco" onclick="sc('signage',5,this)">5</button><button class="sco" onclick="scNA('signage',this)">N/A</button>
-        </div>
-      </div>
-    </div>
-
-    <button class="btn btn-primary" onclick="gp(2)">Approach Employee — Scan Badge →</button>
-    <button class="btn btn-ghost" onclick="gp(0)">← Back</button>
+    <button class="btn btn-primary" onclick="beginAudit()">Start Audit Session →</button>
+    <button class="btn btn-ghost" onclick="resetAuditorScan()">← Scan a Different Badge</button>
   </div>
 
-  <!-- PHASE 2: SCAN -->
-  <div class="phase" id="p2">
-    <div class="steps">
-      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
-      <div class="step-line done"></div>
-      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Observe</div></div>
-      <div class="step-line done"></div>
-      <div class="step"><div class="step-dot active">2</div><div class="step-name active">Scan</div></div>
-      <div class="step-line"></div>
-      <div class="step"><div class="step-dot">3</div><div class="step-name">Contact</div></div>
-      <div class="step-line"></div>
-      <div class="step"><div class="step-dot">4</div><div class="step-name">Submit</div></div>
-    </div>
-
-    <div class="phase-hero">
-      <div class="eyebrow">Phase 2 · Badge Scan</div>
-      <h2>Scan Employee Badge</h2>
-      <p>Point camera at the QR code on the back of the employee's badge. Employee identity will be pulled from the roster automatically.</p>
-    </div>
-
-    <div class="scan-vp" id="scanVP">
+  <div id="auditorScanWrap">
+    <div class="scan-vp">
       <div class="corner c-tl"></div><div class="corner c-tr"></div>
       <div class="corner c-bl"></div><div class="corner c-br"></div>
       <div class="scan-beam"></div>
-      <video id="camVid" autoplay playsinline></video>
-      <div class="scan-ph" id="scanPH">
-        <span class="cam-icon" onclick="startCam()">📷</span>
-        <p>Tap to activate camera<br>and scan badge QR code</p>
+      <video id="camVid0" class="scan-vid" autoplay playsinline></video>
+      <div class="scan-ph" id="scanPH0">
+        <span class="cam-icon" onclick="startCam('camVid0','scanPH0','scanOL0',lookupAuditor)">📷</span>
+        <p>Tap to activate camera<br>and scan your badge QR</p>
       </div>
-      <div class="scan-overlay" id="scanOL">Scanning for QR code…</div>
+      <div class="scan-ol" id="scanOL0">Scanning…</div>
     </div>
-    <p class="scan-hint">Point camera at QR on back of employee badge</p>
-
+    <span class="scan-hint">Scan the QR on the back of your employee badge</span>
     <hr class="divider">
-    <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;">— Manual Entry —</p>
+    <p style="font-size:10px;color:#94A3B8;text-align:center;margin-bottom:10px;font-family:'Space Mono',monospace;letter-spacing:.06em;text-transform:uppercase">Manual Entry</p>
     <div class="manual-row">
-      <input id="manId" type="text" placeholder="Employee ID (e.g. EMP-0042)" />
-      <button onclick="lookupEmp(document.getElementById('manId').value)">Look Up</button>
+      <input id="manAuditorId" type="text" placeholder="Your Employee ID">
+      <button onclick="lookupAuditor(document.getElementById('manAuditorId').value)">Look Up</button>
     </div>
+  </div>
+</div>
 
-    <button class="btn btn-ghost" onclick="gp(1)" style="margin-top:14px">← Back</button>
+<!-- P1 · EMPLOYEE LIST (session overview) ───────────────────────────────────-->
+<div class="phase" id="p1">
+  <div class="steps">
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot active">·</div><div class="step-name active">Session</div></div>
   </div>
 
-  <!-- PHASE 3: POST-CONTACT -->
-  <div class="phase" id="p3">
-    <div class="steps">
-      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
-      <div class="step-line done"></div>
-      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Observe</div></div>
-      <div class="step-line done"></div>
-      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Scan</div></div>
-      <div class="step-line done"></div>
-      <div class="step"><div class="step-dot active">3</div><div class="step-name active">Contact</div></div>
-      <div class="step-line"></div>
-      <div class="step"><div class="step-dot">4</div><div class="step-name">Submit</div></div>
-    </div>
-
-    <div class="emp-card">
-      <div class="emp-avatar">👤</div>
-      <div>
-        <div class="emp-name" id="e3n">—</div>
-        <div class="emp-meta" id="e3m">—</div>
-        <div class="emp-id" id="e3i">—</div>
-      </div>
-    </div>
-
-    <div class="prog">
-      <div class="prog-row"><span>Post-Contact Items</span><span id="postTxt">0 / 6</span></div>
-      <div class="prog-track"><div class="prog-fill" id="postBar" style="width:0%"></div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Guest Interaction <span class="phase-pill pill-post">Post-Contact</span></div>
-      <div class="score-group">
-        <div class="score-row"><span class="score-name">Helpfulness &amp; Knowledge</span><span class="tag tag-as">AS</span></div>
-        <div class="score-hint">Employee answered questions accurately and offered proactive assistance?</div>
-        <div class="score-btns" data-k="helpfulness">
-          <button class="sco" onclick="sc('helpfulness',1,this)">1</button><button class="sco" onclick="sc('helpfulness',2,this)">2</button><button class="sco" onclick="sc('helpfulness',3,this)">3</button><button class="sco" onclick="sc('helpfulness',4,this)">4</button><button class="sco" onclick="sc('helpfulness',5,this)">5</button>
-        </div>
-      </div>
-      <div class="score-group">
-        <div class="score-row"><span class="score-name">Problem Resolution</span><span class="tag tag-poc">POC</span></div>
-        <div class="score-hint">Guest issues handled swiftly and professionally?</div>
-        <div class="score-btns" data-k="resolution">
-          <button class="sco" onclick="sc('resolution',1,this)">1</button><button class="sco" onclick="sc('resolution',2,this)">2</button><button class="sco" onclick="sc('resolution',3,this)">3</button><button class="sco" onclick="sc('resolution',4,this)">4</button><button class="sco" onclick="sc('resolution',5,this)">5</button><button class="sco" onclick="scNA('resolution',this)">N/A</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Safety &amp; Procedures <span class="phase-pill pill-post">Post-Contact</span></div>
-      <div class="score-group">
-        <div class="score-row"><span class="score-name">Restraint / Loading</span><span class="tag tag-as">AS</span></div>
-        <div class="score-hint">All restraint checks and loading procedures performed per SOP?</div>
-        <div class="score-btns" data-k="restraint">
-          <button class="sco" onclick="sc('restraint',1,this)">1</button><button class="sco" onclick="sc('restraint',2,this)">2</button><button class="sco" onclick="sc('restraint',3,this)">3</button><button class="sco" onclick="sc('restraint',4,this)">4</button><button class="sco" onclick="sc('restraint',5,this)">5</button><button class="sco" onclick="scNA('restraint',this)">N/A</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Leadership Indicators <span class="phase-pill pill-post">Post-Contact</span></div>
-      <div class="score-group">
-        <div class="score-row"><span class="score-name">Supervisor Presence</span><span class="tag tag-poc">POC</span></div>
-        <div class="score-hint">Supervisor visible, engaged, and actively monitoring the area?</div>
-        <div class="score-btns" data-k="supervisor">
-          <button class="sco" onclick="sc('supervisor',1,this)">1</button><button class="sco" onclick="sc('supervisor',2,this)">2</button><button class="sco" onclick="sc('supervisor',3,this)">3</button><button class="sco" onclick="sc('supervisor',4,this)">4</button><button class="sco" onclick="sc('supervisor',5,this)">5</button>
-        </div>
-      </div>
-      <div class="score-group">
-        <div class="score-row"><span class="score-name">Team Dynamics</span><span class="tag tag-poc">POC</span></div>
-        <div class="score-hint">Staff coordinated, cooperative, and maintaining professional demeanor?</div>
-        <div class="score-btns" data-k="teamwork">
-          <button class="sco" onclick="sc('teamwork',1,this)">1</button><button class="sco" onclick="sc('teamwork',2,this)">2</button><button class="sco" onclick="sc('teamwork',3,this)">3</button><button class="sco" onclick="sc('teamwork',4,this)">4</button><button class="sco" onclick="sc('teamwork',5,this)">5</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Environment <span class="phase-pill pill-post">Post-Contact</span></div>
-      <div class="score-group">
-        <div class="score-row"><span class="score-name">Cleanliness / Appearance</span><span class="tag tag-both">BOTH</span></div>
-        <div class="score-hint">Area, equipment, and employee uniform/appearance up close.</div>
-        <div class="score-btns" data-k="cleanliness">
-          <button class="sco" onclick="sc('cleanliness',1,this)">1</button><button class="sco" onclick="sc('cleanliness',2,this)">2</button><button class="sco" onclick="sc('cleanliness',3,this)">3</button><button class="sco" onclick="sc('cleanliness',4,this)">4</button><button class="sco" onclick="sc('cleanliness',5,this)">5</button>
-        </div>
-      </div>
-    </div>
-
-    <button class="btn btn-primary" onclick="goSubmit()">Continue to Notes &amp; Submit →</button>
-    <button class="btn btn-ghost" onclick="gp(2)">← Back</button>
+  <div class="phase-hdr">
+    <div class="phase-badge">📋 Audit Session</div>
+    <h1 id="sessionTitle">—</h1>
+    <p id="sessionMeta"></p>
   </div>
 
-  <!-- PHASE 4: SUBMIT -->
-  <div class="phase" id="p4">
-    <div class="steps">
-      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
-      <div class="step-line done"></div>
-      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Observe</div></div>
-      <div class="step-line done"></div>
-      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Scan</div></div>
-      <div class="step-line done"></div>
-      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Contact</div></div>
-      <div class="step-line done"></div>
-      <div class="step"><div class="step-dot active">4</div><div class="step-name active">Submit</div></div>
+  <!-- auditor recap -->
+  <div class="emp-card auditor-card" style="margin-bottom:20px">
+    <div class="emp-avatar">🪪</div>
+    <div>
+      <div class="emp-name" id="sessionAuditorName"></div>
+      <div class="emp-meta" id="sessionAuditorMeta"></div>
+      <div class="emp-id" style="color:var(--amber-dark)" id="sessionAuditorId"></div>
     </div>
-
-    <div class="emp-card">
-      <div class="emp-avatar">👤</div>
-      <div>
-        <div class="emp-name" id="e4n">—</div>
-        <div class="emp-meta" id="e4m">—</div>
-        <div class="emp-id" id="e4i">—</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Score Summary</div>
-      <div id="sumRows"></div>
-      <div class="overall-row">
-        <span class="overall-label">Overall Score</span>
-        <span class="overall-val" id="overallVal">—</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Notes &amp; Documentation</div>
-      <div class="field"><label>General Observations *</label><textarea id="notesGen" placeholder="Describe what you observed — specific about behavior, interactions, conditions…"></textarea></div>
-      <div class="field"><label>Leadership / POC Notes</label><textarea id="notesPOC" placeholder="Notes for Matt — supervisor behavior, staffing patterns, escalations…"></textarea></div>
-    </div>
-
-    <button class="btn btn-success" onclick="submitAudit()">Submit Audit ✓</button>
-    <button class="btn btn-ghost" onclick="gp(3)">← Back to Scoring</button>
-    <button class="btn btn-danger" onclick="cancelAudit()">✕ Cancel Audit</button>
   </div>
+
+  <div class="section-rule">Employees Audited This Session</div>
+  <div id="sessionEmpList"><div class="empty"><div class="empty-icon">👥</div>No employees audited yet.<br>Tap below to begin your first observation.</div></div>
+
+  <button class="btn btn-primary" onclick="startNewEmployee()">+ Observe Next Employee</button>
+  <button class="btn btn-success" id="btnFinishSession" style="display:none" onclick="goFinalSubmit()">Review & Submit Session →</button>
+  <button class="btn btn-danger" onclick="cancelSession()" style="margin-top:9px">✕ Cancel Session</button>
+</div>
+
+<!-- P2 · OBSERVE FROM AFAR ─────────────────────────────────────────────────-->
+<div class="phase" id="p2">
+  <div class="steps">
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Session</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot active">1</div><div class="step-name active">Observe</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">2</div><div class="step-name">Scan</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">3</div><div class="step-name">Uniform</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">4</div><div class="step-name">Engage</div></div>
+  </div>
+
+  <div class="phase-hdr">
+    <div class="phase-badge">👁 Step 1 · Observe from Afar</div>
+    <h1>Remote Observation</h1>
+    <p>Stay at a distance. Score behaviors visible before approaching. Do <em>not</em> interact with the employee yet.</p>
+  </div>
+
+  <div class="prog">
+    <div class="prog-row"><span>Remote Items</span><span id="obsTxt">0 / 7</span></div>
+    <div class="prog-track"><div class="prog-fill" id="obsBar" style="width:0%"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Observed from Distance <span class="cnt" id="obsCnt">0/7</span></div>
+    <div class="audit-item"><div class="audit-label">Standing in a guest-ready manner (not sitting, arms not folded)</div><div class="sco-row" id="sr_posture"></div></div>
+    <div class="audit-item"><div class="audit-label">Smiling at all times</div><div class="sco-row" id="sr_smiling"></div></div>
+    <div class="audit-item"><div class="audit-label">Actively scans the area for guests</div><div class="sco-row" id="sr_scans"></div></div>
+    <div class="audit-item"><div class="audit-label">Friendly when informing guests of the loose article policy</div><div class="sco-row" id="sr_loose_article"></div></div>
+    <div class="audit-item"><div class="audit-label">Friendly when explaining and enforcing code of conduct</div><div class="sco-row" id="sr_code_of_conduct"></div></div>
+    <div class="audit-item"><div class="audit-label">Engaging while height checking (eye to eye with children)</div><div class="sco-row" id="sr_height_check"></div></div>
+    <div class="audit-item"><div class="audit-label">Gentle while scanning guest wristbands</div><div class="sco-row" id="sr_wristbands"></div></div>
+  </div>
+
+  <button class="btn btn-primary" onclick="gp(3)">Approach — Scan Their Badge →</button>
+  <button class="btn btn-ghost" onclick="gp(1)">← Back to Session</button>
+</div>
+
+<!-- P3 · SCAN EMPLOYEE BADGE ───────────────────────────────────────────────-->
+<div class="phase" id="p3">
+  <div class="steps">
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Session</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Observe</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot active">2</div><div class="step-name active">Scan</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">3</div><div class="step-name">Uniform</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">4</div><div class="step-name">Engage</div></div>
+  </div>
+
+  <div class="phase-hdr">
+    <div class="phase-badge">🪪 Step 2 · Identify Employee</div>
+    <h1>Scan Employee Badge</h1>
+    <p>Scan the QR on the back of the employee's badge to identify them before checking uniform.</p>
+  </div>
+
+  <div class="scan-vp">
+    <div class="corner c-tl"></div><div class="corner c-tr"></div>
+    <div class="corner c-bl"></div><div class="corner c-br"></div>
+    <div class="scan-beam"></div>
+    <video id="camVid" class="scan-vid" autoplay playsinline></video>
+    <div class="scan-ph" id="scanPH">
+      <span class="cam-icon" onclick="startCam('camVid','scanPH','scanOL',lookupEmp)">📷</span>
+      <p>Tap to activate camera<br>and scan employee badge</p>
+    </div>
+    <div class="scan-ol" id="scanOL">Scanning…</div>
+  </div>
+  <span class="scan-hint">Scan the QR on the back of the team member's badge</span>
+  <hr class="divider">
+  <p style="font-size:10px;color:#94A3B8;text-align:center;margin-bottom:10px;font-family:'Space Mono',monospace;letter-spacing:.06em;text-transform:uppercase">Manual Entry</p>
+  <div class="manual-row">
+    <input id="manId" type="text" placeholder="Employee ID">
+    <button onclick="lookupEmp(document.getElementById('manId').value)">Look Up</button>
+  </div>
+  <button class="btn btn-ghost" onclick="gp(2)" style="margin-top:14px">← Back to Observation</button>
+</div>
+
+<!-- P4 · UNIFORM CHECK ─────────────────────────────────────────────────────-->
+<div class="phase" id="p4">
+  <div class="steps">
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Session</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Observe</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Scan</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot active">3</div><div class="step-name active">Uniform</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">4</div><div class="step-name">Engage</div></div>
+  </div>
+
+  <div id="tmCard4" class="emp-card tm-card"></div>
+
+  <div class="phase-hdr" style="margin-top:-4px">
+    <div class="phase-badge">👔 Step 3 · Uniform Check</div>
+    <h1>Check Uniform Up Close</h1>
+    <p>Now that you're with them, check grooming and credentials before engaging in conversation.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Uniform & Show <span class="cnt" id="uniformCnt">0/2</span></div>
+    <div class="audit-item"><div class="audit-label">Meets grooming guidelines</div><div class="sco-row" id="sr_grooming"></div></div>
+    <div class="audit-item"><div class="audit-label">Name Tag, Cert Card, and ID are worn</div><div class="sco-row" id="sr_name_tag"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Area & Show (visible up close) <span class="cnt" id="showCnt">0/3</span></div>
+    <div class="audit-item"><div class="audit-label">Area is clean and ready</div><div class="sco-row" id="sr_area_clean"></div></div>
+    <div class="audit-item"><div class="audit-label">Pointing out ride features to guests (levers, buttons)</div><div class="sco-row" id="sr_ride_features"></div></div>
+    <div class="audit-item"><div class="audit-label">Suggests alternative attractions for guests</div><div class="sco-row" id="sr_alt_attractions"></div></div>
+  </div>
+
+  <button class="btn btn-primary" onclick="gp(5)">Begin Engagement →</button>
+  <button class="btn btn-ghost" onclick="gp(3)">← Back to Scan</button>
+</div>
+
+<!-- P5 · DIRECT ENGAGEMENT ─────────────────────────────────────────────────-->
+<div class="phase" id="p5">
+  <div class="steps">
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Session</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Observe</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Scan</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Uniform</div></div>
+    <div class="step-line done"></div>
+    <div class="step"><div class="step-dot active">4</div><div class="step-name active">Engage</div></div>
+  </div>
+
+  <div id="tmCard5" class="emp-card tm-card"></div>
+
+  <div class="phase-hdr" style="margin-top:-4px">
+    <div class="phase-badge">💬 Step 4 · Direct Engagement</div>
+    <h1>Engage & Ask Questions</h1>
+    <p>Interact as a guest would. Score greeting behaviors, then ask the knowledge questions directly.</p>
+  </div>
+
+  <div class="prog">
+    <div class="prog-row"><span>Engagement</span><span id="engTxt">0 / 11</span></div>
+    <div class="prog-track"><div class="prog-fill" id="engBar" style="width:0%"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Courtesy — Greeting <span class="cnt" id="greetCnt">0/4</span></div>
+    <div class="audit-item"><div class="audit-label">Greets the guest</div><div class="sco-row" id="sr_greets"></div></div>
+    <div class="audit-item"><div class="audit-label">10/5 Greeting (acknowledges at 10 ft, speaks at 5 ft)</div><div class="sco-row" id="sr_ten_five"></div></div>
+    <div class="audit-item"><div class="audit-label">Uses "please" and "thank you" when interacting</div><div class="sco-row" id="sr_please_thank"></div></div>
+    <div class="audit-item"><div class="audit-label">Wishes guest to have a nice day</div><div class="sco-row" id="sr_nice_day"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Knowledge Questions <span class="cnt" id="knowCnt">0/7</span></div>
+    <p style="font-size:12px;color:#64748B;margin-bottom:14px;line-height:1.5">Ask the team member each question as a guest would.</p>
+    <div class="audit-item"><div class="audit-label">Answers questions confidently</div><div class="sco-row" id="sr_answers"></div></div>
+    <div class="audit-item"><div class="audit-label">Knows who to contact in an emergency (Dispatch)</div><div class="sco-row" id="sr_emergency"></div></div>
+    <div class="audit-item"><div class="audit-label">Knows location of nearest ATM</div><div class="sco-row" id="sr_atm"></div></div>
+    <div class="audit-item"><div class="audit-label">Knows location of Guest Services</div><div class="sco-row" id="sr_guest_services"></div></div>
+    <div class="audit-item"><div class="audit-label">Knows location of First Aid</div><div class="sco-row" id="sr_first_aid"></div></div>
+    <div class="audit-item"><div class="audit-label">Knows location of nearest bathroom</div><div class="sco-row" id="sr_bathroom"></div></div>
+    <div class="audit-item"><div class="audit-label">Works hard to ensure guests get the most out of their day</div><div class="sco-row" id="sr_guest_day"></div></div>
+  </div>
+
+  <button class="btn btn-primary" onclick="saveEmployee()">Save Employee & Continue →</button>
+  <button class="btn btn-ghost" onclick="gp(4)">← Back to Uniform</button>
+</div>
+
+<!-- P6 · FINAL SESSION SUBMIT ──────────────────────────────────────────────-->
+<div class="phase" id="p6">
+  <div class="phase-hdr">
+    <div class="phase-badge">✅ Submit Session</div>
+    <h1>Session Summary</h1>
+    <p id="sumMeta"></p>
+  </div>
+
+  <div class="section-rule">Employees Audited</div>
+  <div id="sumEmpList"></div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-title">Session Scores</div>
+    <div id="sumScores"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+      <span style="font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#64748B">Session Avg</span>
+      <span id="sumOverall" style="font-family:'Space Mono',monospace;font-size:26px;font-weight:700;color:var(--amber)">—</span>
+    </div>
+  </div>
+
+  <div id="sumFlagsWrap" style="display:none">
+    <div class="section-rule">Low Score Flags</div>
+    <p style="font-size:12px;color:#DC2626;margin-bottom:10px;font-family:'Space Mono',monospace">Items scored 1 or 2 require corrective action.</p>
+    <div id="sumFlagsList"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Notes</div>
+    <div class="field"><label>Observations & Corrective Steps *</label><textarea id="notesGen" placeholder="Briefly describe observations and corrective steps needed…"></textarea></div>
+    <div class="field"><label>Leadership Notes</label><textarea id="notesPOC" placeholder="Patterns, staffing concerns, escalations for management…"></textarea></div>
+  </div>
+
+  <button class="btn btn-success" onclick="submitSession()">Submit Session ✓</button>
+  <button class="btn btn-ghost" onclick="gp(1)">← Back to Session</button>
+  <button class="btn btn-danger" onclick="cancelSession()" style="margin-top:9px">✕ Cancel Session</button>
+</div>
 
 </main>
 
-<!-- ═══════════════════════════════════════
-     SCREEN: DASHBOARD
-═══════════════════════════════════════ -->
+<!-- ═══ DASHBOARD SCREEN ═══ -->
 <main class="screen" id="screenDash">
-  <div class="eyebrow">AS 360 · Data Stream</div>
-  <h1 class="page-title" id="dashTitle">Dashboard</h1>
-  <p class="page-sub" id="dashDate"></p>
-
-  <div class="kpi-grid">
-    <div class="kpi"><div class="kpi-accent" style="background:var(--gold)"></div><div class="kpi-label">Total Audits</div><div class="kpi-val" id="kpiN" style="color:var(--gold)">0</div><div class="kpi-sub">recorded</div></div>
-    <div class="kpi"><div class="kpi-accent" style="background:var(--teal)"></div><div class="kpi-label">Avg Score</div><div class="kpi-val" id="kpiAvg" style="color:var(--teal)">—</div><div class="kpi-sub">out of 5.0</div></div>
+  <div style="background:linear-gradient(135deg,var(--navy),#1E293B);margin:-20px -18px 24px;padding:40px 24px 24px;border-radius:0 0 20px 20px">
+    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--amber);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px">📊 AS 360 · Data Stream</div>
+    <h1 style="font-size:21px;font-weight:700;color:white;margin-bottom:4px">Dashboard</h1>
+    <p style="font-size:12px;color:rgba(148,163,184,.9)" id="dashDate"></p>
   </div>
   <div class="kpi-grid">
-    <div class="kpi"><div class="kpi-accent" style="background:var(--green)"></div><div class="kpi-label">Top Performer</div><div class="kpi-val" id="kpiHi" style="color:var(--green);font-size:18px;margin-top:4px">—</div><div class="kpi-sub" id="kpiHiS">—</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--amber)"></div><div class="kpi-label">Total Audits</div><div class="kpi-val" id="kpiN" style="color:var(--amber)">0</div><div class="kpi-sub">employees</div></div>
+    <div class="kpi"><div class="kpi-accent" style="background:var(--green)"></div><div class="kpi-label">Avg Score</div><div class="kpi-val" id="kpiAvg" style="color:var(--green)">—</div><div class="kpi-sub">out of 5.0</div></div>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-accent" style="background:#10B981"></div><div class="kpi-label">Top Performer</div><div class="kpi-val" id="kpiHi" style="color:#10B981;font-size:18px;margin-top:4px">—</div><div class="kpi-sub" id="kpiHiS">—</div></div>
     <div class="kpi"><div class="kpi-accent" style="background:var(--red)"></div><div class="kpi-label">Needs Attention</div><div class="kpi-val" id="kpiLo" style="color:var(--red);font-size:18px;margin-top:4px">—</div><div class="kpi-sub" id="kpiLoS">—</div></div>
   </div>
-
   <div class="section-rule">Audit Log</div>
-  <div id="auditLog"><div class="empty"><div class="empty-icon">📋</div>No audits recorded yet.<br>Complete an audit from the Audit tab.</div></div>
-
-  <button class="btn btn-outline" onclick="exportCSV()" style="margin-top:10px">↓ Export CSV for Power BI</button>
+  <div id="auditLog"><div class="empty"><div class="empty-icon">📋</div>No audits yet.</div></div>
+  <button class="btn btn-outline-amber" onclick="exportCSV()" style="margin-top:10px">↓ Export CSV</button>
   <button class="btn btn-danger" onclick="clearData()" style="margin-top:9px">Clear All Records</button>
 </main>
 
-<!-- ═══════════════════════════════════════
-     SCREEN: SETTINGS
-═══════════════════════════════════════ -->
+<!-- ═══ SETTINGS SCREEN ═══ -->
 <main class="screen" id="screenSettings">
-  <div class="eyebrow">Configuration</div>
-  <h1 class="page-title">Settings</h1>
-
+  <div style="background:linear-gradient(135deg,var(--navy),#1E293B);margin:-20px -18px 24px;padding:40px 24px 24px;border-radius:0 0 20px 20px">
+    <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--amber);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px">⚙️ Configuration</div>
+    <h1 style="font-size:21px;font-weight:700;color:white">Settings</h1>
+  </div>
   <div class="settings-card">
     <h3>Employee Roster</h3>
-    <p style="font-size:13px;color:var(--text-mid);margin-bottom:14px;line-height:1.55">Upload a CSV from the client. Required columns: <span style="font-family:'DM Mono',monospace;color:var(--text)">id, name</span> — optional: <span style="font-family:'DM Mono',monospace;color:var(--text)">role, department, facility</span></p>
+    <p style="font-size:13px;color:#64748B;margin-bottom:14px;line-height:1.55">Required: <code style="background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px">id, name</code> — Optional: <code style="background:#F1F5F9;padding:1px 5px;border-radius:3px;font-size:12px">role, department, facility</code></p>
     <input type="file" id="rosterFile" accept=".csv" style="display:none" onchange="loadRoster(this)">
     <button class="btn btn-primary btn-sm" onclick="document.getElementById('rosterFile').click()">Upload Roster CSV</button>
-    <div id="rosterStatus" style="margin-top:10px;font-size:11px;color:var(--text-mid);font-family:'DM Mono',monospace;letter-spacing:0.04em"></div>
+    <div id="rosterStatus" style="margin-top:10px;font-size:11px;color:#64748B;font-family:'Space Mono',monospace;letter-spacing:.04em"></div>
     <div id="rosterPreview" style="margin-top:12px;overflow-x:auto"></div>
   </div>
-
   <div class="settings-card">
     <h3>Airtable Integration</h3>
-    <div class="field"><label>Personal Access Token</label><input type="password" id="sToken" placeholder="patXXXXXXXX.XXXXXXXX…" /></div>
-    <div class="field"><label>Base ID</label><input type="text" id="sBase" placeholder="appXXXXXXXXXXXXXX" /></div>
-    <div class="field"><label>Table Name</label><input type="text" id="sTable" placeholder="GSA Submissions" /></div>
+    <div class="field"><label>Personal Access Token</label><input type="password" id="sToken" placeholder="patXXXXXX.XXXXXXXX"></div>
+    <div class="field"><label>Base ID</label><input type="text" id="sBase" placeholder="appXXXXXXXXXXXXXXXX"></div>
+    <div class="field"><label>Table Name</label><input type="text" id="sTable" placeholder="GSA Submissions"></div>
     <button class="btn btn-primary btn-sm" onclick="saveSettings()">Save Settings</button>
   </div>
-
   <div class="settings-card">
-    <h3>Score Reference</h3>
-    <div class="ref-row"><div class="ref-dot" style="background:#e74c3c"></div><strong style="color:#e74c3c;margin-right:4px">1</strong> — Critical failure / Non-compliant</div>
-    <div class="ref-row"><div class="ref-dot" style="background:#e67e22"></div><strong style="color:#e67e22;margin-right:4px">2</strong> — Below standard</div>
-    <div class="ref-row"><div class="ref-dot" style="background:#f1c40f"></div><strong style="color:#f1c40f;margin-right:4px">3</strong> — Meets minimum standard</div>
-    <div class="ref-row"><div class="ref-dot" style="background:#2ecc71"></div><strong style="color:#2ecc71;margin-right:4px">4</strong> — Above standard</div>
-    <div class="ref-row"><div class="ref-dot" style="background:#1abc9c"></div><strong style="color:#1abc9c;margin-right:4px">5</strong> — Exceeds standard</div>
-    <div class="ref-row"><div class="ref-dot" style="background:var(--text-dim)"></div><strong style="color:var(--text-mid);margin-right:4px">N/A</strong> — Not applicable / not observed</div>
+    <h3>Score Key</h3>
+    <div class="ref-row"><div class="ref-dot" style="background:#EF4444"></div><strong style="color:#EF4444;margin-right:4px">1</strong> — Critical failure / non-compliant</div>
+    <div class="ref-row"><div class="ref-dot" style="background:#F97316"></div><strong style="color:#F97316;margin-right:4px">2</strong> — Below standard</div>
+    <div class="ref-row"><div class="ref-dot" style="background:#CA8A04"></div><strong style="color:#CA8A04;margin-right:4px">3</strong> — Meets minimum standard</div>
+    <div class="ref-row"><div class="ref-dot" style="background:#16A34A"></div><strong style="color:#16A34A;margin-right:4px">4</strong> — Above standard</div>
+    <div class="ref-row"><div class="ref-dot" style="background:#059669"></div><strong style="color:#059669;margin-right:4px">5</strong> — Exceeds standard</div>
+    <div class="ref-row"><div class="ref-dot" style="background:#94A3B8"></div><strong style="color:#94A3B8;margin-right:4px">N/A</strong> — Not applicable / not observable</div>
   </div>
-
-  <div class="settings-card">
-    <h3>Data Stream Tags</h3>
-    <div class="ref-row"><span class="tag tag-as" style="margin-right:8px">AS</span> Amusement Standards analytics stream</div>
-    <div class="ref-row"><span class="tag tag-poc" style="margin-right:8px">POC</span> Point-of-contact client visibility</div>
-    <div class="ref-row"><span class="tag tag-both" style="margin-right:8px">BOTH</span> Shared data stream</div>
-  </div>
-
-  <div class="brand-footer">
-    <div class="wordmark">amusement standards.</div>
-    <div class="sub">AS 360 · Guest Service Audit · v3.0</div>
+  <div style="text-align:center;padding:22px 0">
+    <div style="font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--navy);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">amusement standards.</div>
+    <div style="font-family:'Space Mono',monospace;font-size:10px;color:#94A3B8;letter-spacing:.1em;text-transform:uppercase">Guest Service Audit · v6.0</div>
   </div>
 </main>
 
-<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <button class="nav-btn active" id="navAudit" onclick="tab('Audit')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
@@ -828,319 +542,145 @@
     <span class="nav-lbl">Dashboard</span>
   </button>
   <button class="nav-btn" id="navSettings" onclick="tab('Settings')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06-.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
     <span class="nav-lbl">Settings</span>
   </button>
 </nav>
-
 <div id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js"></script>
 <script>
-const PRE  = ['spiel','greeting','engagement','signage'];
-const POST = ['helpfulness','resolution','restraint','supervisor','teamwork','cleanliness'];
-const ALL  = [...PRE,...POST];
-const LBL  = {spiel:'Safety Spiel Delivery',greeting:'Greeting Quality',engagement:'Guest Engagement',signage:'Signage & Wayfinding',helpfulness:'Helpfulness & Knowledge',resolution:'Problem Resolution',restraint:'Restraint / Loading',supervisor:'Supervisor Presence',teamwork:'Team Dynamics',cleanliness:'Cleanliness / Appearance'};
-const VCOL = {1:'#e74c3c',2:'#e67e22',3:'#f1c40f',4:'#2ecc71',5:'#1abc9c',NA:'var(--text-mid)'};
+// ── ITEM DEFINITIONS ──────────────────────────────────────────────────────────
+const OBS_KEYS    = ['posture','smiling','scans','loose_article','code_of_conduct','height_check','wristbands'];
+const UNIFORM_KEYS = ['grooming','name_tag','area_clean','ride_features','alt_attractions'];
+const ENGAGE_KEYS  = ['greets','ten_five','please_thank','nice_day','answers','emergency','atm','guest_services','first_aid','bathroom','guest_day'];
+const ALL_KEYS    = [...OBS_KEYS,...UNIFORM_KEYS,...ENGAGE_KEYS];
 
-let audits = JSON.parse(localStorage.getItem('gsa_v3')||'[]');
-let roster = JSON.parse(localStorage.getItem('gsa_roster')||'[]');
-let cur=null, camStr=null, scanTick=null;
-let auditorEmp=null; // confirmed auditor identity for this session
+const LABELS = {
+  posture:'Standing in a guest-ready manner (not sitting, arms not folded)',
+  smiling:'Smiling at all times',
+  scans:'Actively scans the area for guests',
+  loose_article:'Friendly when informing guests of the loose article policy',
+  code_of_conduct:'Friendly when explaining and enforcing code of conduct',
+  height_check:'Engaging while height checking (eye to eye with children)',
+  wristbands:'Gentle while scanning guest wristbands',
+  grooming:'Meets grooming guidelines',
+  name_tag:'Name Tag, Cert Card, and ID are worn',
+  area_clean:'Area is clean and ready',
+  ride_features:'Pointing out ride features to guests (levers, buttons)',
+  alt_attractions:'Suggests alternative attractions for guests',
+  greets:'Greets the guest',
+  ten_five:'10/5 Greeting',
+  please_thank:'Uses "please" and "thank you" when interacting',
+  nice_day:'Wishes guest to have a nice day',
+  answers:'Answers questions confidently',
+  emergency:'Knows who to contact in an emergency (Dispatch)',
+  atm:'Knows location of nearest ATM',
+  guest_services:'Knows location of Guest Services',
+  first_aid:'Knows location of First Aid',
+  bathroom:'Knows location of nearest bathroom',
+  guest_day:'Works hard to ensure guests get the most out of their day'
+};
 
-// Clock
-setInterval(()=>{document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});},1000);
-document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let audits   = JSON.parse(localStorage.getItem('gsa_v6')||'[]');
+let roster   = JSON.parse(localStorage.getItem('gsa_roster')||'[]');
+let auditorEmp = null;
+let session  = null;   // { id, attraction, shift, auditor, employees:[] }
+let curEmp   = null;   // { employee, votes:{} } — in-progress employee
+let camStr   = null, scanTick = null, curCamCb = null;
 
-// Tabs
-function tab(t){
-  stopCam();
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
-  document.getElementById('screen'+t).classList.add('active');
-  document.getElementById('nav'+t).classList.add('active');
-  if(t==='Dash') renderDash();
+// ── CLOCK ─────────────────────────────────────────────────────────────────────
+function tickClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
+tickClock();setInterval(tickClock,1000);
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function tab(t){stopCam();document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));document.getElementById('screen'+t).classList.add('active');document.getElementById('nav'+t).classList.add('active');if(t==='Dash')renderDash();}
+function gp(n){document.querySelectorAll('.phase').forEach(p=>p.classList.remove('active'));document.getElementById('p'+n).classList.add('active');if(n!==3)stopCam();window.scrollTo(0,0);}
+
+// ── SCORE BUTTON BUILDER ──────────────────────────────────────────────────────
+function buildScoRow(key,votes){
+  const container=document.getElementById('sr_'+key);
+  if(!container)return;
+  const vals=[1,2,3,4,5,'NA'];
+  container.innerHTML=vals.map(v=>`<button class="sco" onclick="sc('${key}',${v==='NA'?'"NA"':v},this)">${v}</button>`).join('');
+  if(votes&&votes[key]!==undefined){const cur=votes[key];container.querySelectorAll('.sco').forEach((b,i)=>{if(String(vals[i])===String(cur))b.className='sco '+(cur==='NA'?'sna':'s'+cur);});}
+}
+function buildAllRows(){
+  [...OBS_KEYS,...UNIFORM_KEYS,...ENGAGE_KEYS].forEach(k=>buildScoRow(k,curEmp?curEmp.votes:{}));
 }
 
-// Phases
-function gp(n){
-  document.querySelectorAll('.phase').forEach(p=>p.classList.remove('active'));
-  document.getElementById('p'+n).classList.add('active');
-  if(n!==2) stopCam();
-  window.scrollTo(0,0);
-}
-
-// ── AUDITOR SCAN (Phase 0) ──────────────────────────────
-function normId(id){ return String(id).trim().toUpperCase().replace(/[^A-Z0-9]/g,''); }
-
-function rosterLookup(id){
-  const norm=normId(id);
-  let emp=roster.find(e=>normId(e.id)===norm);
-  if(!emp&&roster.length===0) emp={id:id.trim(),name:'ID: '+id.trim(),role:'Staff',department:'—'};
-  return emp||null;
-}
-
-async function startCam0(){
-  try{
-    const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
-    camStr=s;
-    const v=document.getElementById('camVid0');
-    v.srcObject=s; v.style.display='block';
-    document.getElementById('scanPH0').style.display='none';
-    document.getElementById('scanOL0').style.display='block';
-    scanTick=setInterval(()=>scanFrameAuditor(v),250);
-  }catch(e){toast('Camera unavailable — use manual entry',1);}
-}
-function scanFrameAuditor(v){
-  if(v.readyState!==v.HAVE_ENOUGH_DATA)return;
-  const c=document.createElement('canvas'); c.width=v.videoWidth; c.height=v.videoHeight;
-  c.getContext('2d').drawImage(v,0,0);
-  const id=c.getContext('2d').getImageData(0,0,c.width,c.height);
-  const qr=jsQR(id.data,id.width,id.height);
-  if(qr&&qr.data){stopCam();lookupAuditor(qr.data.trim());}
-}
-
-function lookupAuditor(id){
-  if(!id)return;
-  const emp=rosterLookup(id);
-  if(!emp){toast('Employee ID not found in roster',1);return;}
-  auditorEmp=emp;
-  document.getElementById('auditorName').textContent=emp.name;
-  document.getElementById('auditorMeta').textContent=(emp.role||'—')+' · '+(emp.department||'—');
-  document.getElementById('auditorId').textContent='ID: '+emp.id;
-  document.getElementById('auditorScanWrap').style.display='none';
-  document.getElementById('auditorConfirmed').style.display='block';
-  const facFromRoster = emp.facility && emp.facility.trim();
-  const facSaved = localStorage.getItem('gsa_fac');
-  document.getElementById('facilityName').value = facFromRoster || facSaved || '';
-  const h=new Date().getHours();
-  document.getElementById('shiftSel').value=h<12?'Morning':h<17?'Afternoon':'Evening';
-}
-
-function resetAuditorScan(){
-  auditorEmp=null;
-  document.getElementById('auditorConfirmed').style.display='none';
-  document.getElementById('auditorScanWrap').style.display='block';
-  document.getElementById('manAuditorId').value='';
-}
-
-function beginAudit(){
-  if(!auditorEmp){toast('Scan your badge first',1);return;}
-  const f=document.getElementById('facilityName').value.trim();
-  if(!f){toast('Enter facility name',1);return;}
-  localStorage.setItem('gsa_fac',f);
-  cur={
-    id:Date.now(), timestamp:new Date().toISOString(),
-    auditor:auditorEmp.name, auditorId:auditorEmp.id, auditorRole:auditorEmp.role||'',
-    facility:f, shift:document.getElementById('shiftSel').value,
-    employee:null, scores:{}, notes:'', leaderNotes:'', overall:null
-  };
-  gp(1);
-}
-
-function goSubmit(){renderSummary();gp(4);}
-function cancelAudit(){if(!confirm('Cancel this audit?'))return;cur=null;stopCam();gp(0);}
-
-// Scoring
-function sc(k,v,btn){
-  if(!cur)return;
-  cur.scores[k]=v;
-  btn.parentElement.querySelectorAll('.sco').forEach(b=>b.className='sco');
-  btn.classList.add('s'+v);
-  updProg();
-}
-function scNA(k,btn){
-  if(!cur)return;
-  cur.scores[k]='NA';
-  btn.parentElement.querySelectorAll('.sco').forEach(b=>b.className='sco');
-  btn.classList.add('sna');
+// ── SCORING ───────────────────────────────────────────────────────────────────
+function sc(key,val,btn){
+  if(!curEmp)return;
+  curEmp.votes[key]=val;
+  btn.closest('.sco-row').querySelectorAll('.sco').forEach(b=>b.className='sco');
+  btn.className='sco '+(val==='NA'?'sna':'s'+val);
   updProg();
 }
 function updProg(){
-  const pd=PRE.filter(k=>cur.scores[k]!==undefined).length;
-  document.getElementById('preTxt').textContent=pd+' / '+PRE.length;
-  document.getElementById('preBar').style.width=(pd/PRE.length*100)+'%';
-  const od=POST.filter(k=>cur.scores[k]!==undefined).length;
-  document.getElementById('postTxt').textContent=od+' / '+POST.length;
-  document.getElementById('postBar').style.width=(od/POST.length*100)+'%';
+  const v=curEmp.votes;
+  const obsN=OBS_KEYS.filter(k=>v[k]!==undefined).length;
+  document.getElementById('obsTxt').textContent=obsN+' / '+OBS_KEYS.length;
+  document.getElementById('obsBar').style.width=(obsN/OBS_KEYS.length*100)+'%';
+  document.getElementById('obsCnt').textContent=obsN+'/'+OBS_KEYS.length;
+  document.getElementById('uniformCnt').textContent=['grooming','name_tag'].filter(k=>v[k]!==undefined).length+'/2';
+  document.getElementById('showCnt').textContent=['area_clean','ride_features','alt_attractions'].filter(k=>v[k]!==undefined).length+'/3';
+  const engN=ENGAGE_KEYS.filter(k=>v[k]!==undefined).length;
+  document.getElementById('engTxt').textContent=engN+' / '+ENGAGE_KEYS.length;
+  document.getElementById('engBar').style.width=(engN/ENGAGE_KEYS.length*100)+'%';
+  document.getElementById('greetCnt').textContent=['greets','ten_five','please_thank','nice_day'].filter(k=>v[k]!==undefined).length+'/4';
+  document.getElementById('knowCnt').textContent=['answers','emergency','atm','guest_services','first_aid','bathroom','guest_day'].filter(k=>v[k]!==undefined).length+'/7';
 }
 
-// ── EMPLOYEE SCAN (Phase 2) ──────────────────────────────
-async function startCam(){
-  try{
-    const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
-    camStr=s;
-    const v=document.getElementById('camVid');
-    v.srcObject=s; v.style.display='block';
-    document.getElementById('scanPH').style.display='none';
-    document.getElementById('scanOL').style.display='block';
-    scanTick=setInterval(()=>scanFrame(v),250);
-  }catch(e){toast('Camera unavailable — use manual entry',1);}
-}
-function scanFrame(v){
-  if(v.readyState!==v.HAVE_ENOUGH_DATA)return;
-  const c=document.createElement('canvas'); c.width=v.videoWidth; c.height=v.videoHeight;
-  c.getContext('2d').drawImage(v,0,0);
-  const id=c.getContext('2d').getImageData(0,0,c.width,c.height);
-  const qr=jsQR(id.data,id.width,id.height);
-  if(qr&&qr.data){stopCam();lookupEmp(qr.data.trim());}
-}
-function stopCam(){
-  if(scanTick){clearInterval(scanTick);scanTick=null;}
-  if(camStr){camStr.getTracks().forEach(t=>t.stop());camStr=null;}
-  // Phase 2 camera
-  const v=document.getElementById('camVid'); if(v){v.style.display='none';v.srcObject=null;}
-  const ph=document.getElementById('scanPH'); if(ph)ph.style.display='block';
-  const ol=document.getElementById('scanOL'); if(ol)ol.style.display='none';
-  // Phase 0 camera
-  const v0=document.getElementById('camVid0'); if(v0){v0.style.display='none';v0.srcObject=null;}
-  const ph0=document.getElementById('scanPH0'); if(ph0)ph0.style.display='block';
-  const ol0=document.getElementById('scanOL0'); if(ol0)ol0.style.display='none';
-}
+// ── AUDITOR ───────────────────────────────────────────────────────────────────
+function lookupAuditor(id){if(!id)return;let emp=rosterLookup(id);if(!emp){if(roster.length>0){toast('ID not found in roster',1);return;}emp={id:id.trim(),name:id.trim(),role:'Auditor',department:'—',facility:''};}auditorEmp=emp;document.getElementById('auditorName').textContent=emp.name;document.getElementById('auditorMeta').textContent=(emp.role||'—')+' · '+(emp.department||'—');document.getElementById('auditorIdEl').textContent='ID: '+emp.id;document.getElementById('auditorScanWrap').style.display='none';document.getElementById('auditorConfirmed').style.display='block';document.getElementById('attractionName').value=(emp.facility||'')||localStorage.getItem('gsa_fac')||'';const h=new Date().getHours();document.getElementById('shiftSel').value=h<12?'Morning':h<17?'Afternoon':'Evening';}
+function resetAuditorScan(){auditorEmp=null;document.getElementById('auditorConfirmed').style.display='none';document.getElementById('auditorScanWrap').style.display='block';}
+function beginAudit(){if(!auditorEmp){toast('Scan your badge first',1);return;}const attr=document.getElementById('attractionName').value.trim();if(!attr){toast('Enter attraction name',1);return;}localStorage.setItem('gsa_fac',attr);session={id:Date.now(),timestamp:new Date().toISOString(),auditor:auditorEmp.name,auditorId:auditorEmp.id,auditorRole:auditorEmp.role||'',attraction:attr,shift:document.getElementById('shiftSel').value,employees:[]};document.getElementById('sessionTitle').textContent=attr;document.getElementById('sessionMeta').textContent=session.shift+' shift · '+new Date(session.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});document.getElementById('sessionAuditorName').textContent=auditorEmp.name;document.getElementById('sessionAuditorMeta').textContent=(auditorEmp.role||'—')+' · '+(auditorEmp.department||'—');document.getElementById('sessionAuditorId').textContent='Auditor ID: '+auditorEmp.id;renderSessionList();gp(1);}
 
-// Employee lookup — with self-audit block
-function lookupEmp(id){
-  if(!id)return;
-  const emp=rosterLookup(id);
-  if(!emp){toast('Employee ID not found in roster',1);return;}
-  // Block self-audit
-  if(auditorEmp && normId(emp.id)===normId(auditorEmp.id)){
-    toast('You cannot audit yourself — scan a different badge',1);
-    return;
-  }
-  cur.employee=emp;
-  const meta=(emp.role||'—')+' · '+(emp.department||'—');
-  const idTxt='ID: '+emp.id;
-  ['e3n','e4n'].forEach(x=>document.getElementById(x).textContent=emp.name);
-  ['e3m','e4m'].forEach(x=>document.getElementById(x).textContent=meta);
-  ['e3i','e4i'].forEach(x=>document.getElementById(x).textContent=idTxt);
-  gp(3);
-}
+// ── EMPLOYEE LOOP ─────────────────────────────────────────────────────────────
+function startNewEmployee(){curEmp={employee:null,votes:{}};buildAllRows();updProg();gp(2);}
+function lookupEmp(id){if(!id)return;let emp=rosterLookup(id);if(!emp){if(roster.length>0){toast('Team member not found',1);return;}emp={id:id.trim(),name:'Unknown TM',role:'Staff',department:'—'};}if(auditorEmp&&normId(emp.id)===normId(auditorEmp.id)){toast('You cannot audit yourself',1);return;}if(session.employees.some(e=>normId(e.employee.id)===normId(emp.id))){toast('Already audited this session',1);return;}curEmp.employee=emp;const html=`<div class="emp-avatar">👤</div><div><div class="emp-name">${emp.name}</div><div class="emp-meta">${emp.role||'—'} · ${emp.department||'—'}</div><div class="emp-id" style="color:#059669">ID: ${emp.id}</div></div>`;['tmCard4','tmCard5'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=html;});gp(4);}
+function saveEmployee(){if(!curEmp.employee){toast('Scan employee badge first',1);gp(3);return;}const avg=keys=>{const ns=keys.map(k=>curEmp.votes[k]).filter(v=>v!==undefined&&v!=='NA');return ns.length?(ns.reduce((a,b)=>a+b,0)/ns.length):null;};const allNums=ALL_KEYS.map(k=>curEmp.votes[k]).filter(v=>v!==undefined&&v!=='NA');const overall=allNums.length?(allNums.reduce((a,b)=>a+b,0)/allNums.length):null;session.employees.push({employee:curEmp.employee,votes:{...curEmp.votes},obsAvg:avg(OBS_KEYS),uniformAvg:avg(UNIFORM_KEYS),engageAvg:avg(ENGAGE_KEYS),overall:overall!==null?parseFloat(overall.toFixed(2)):null,timestamp:new Date().toISOString()});curEmp=null;renderSessionList();document.getElementById('btnFinishSession').style.display='block';toast(session.employees[session.employees.length-1].employee.name.split(' ')[0]+' saved ✓');gp(1);}
 
-// Summary
-function renderSummary(){
-  const nums=ALL.map(k=>cur.scores[k]).filter(v=>v!==undefined&&v!=='NA');
-  const overall=nums.length?(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(2):'—';
-  cur.overall=overall;
-  document.getElementById('overallVal').textContent=overall;
-  document.getElementById('sumRows').innerHTML=ALL.map(k=>{
-    const v=cur.scores[k]!==undefined?cur.scores[k]:'—';
-    const c=VCOL[v]||'var(--text-dim)';
-    return `<div class="sum-row"><span class="sum-label">${LBL[k]}</span><span class="sum-val" style="color:${c}">${v}</span></div>`;
-  }).join('');
-}
+// ── SESSION LIST RENDER ───────────────────────────────────────────────────────
+function renderSessionList(){const el=document.getElementById('sessionEmpList');if(!session||!session.employees.length){el.innerHTML='<div class="empty"><div class="empty-icon">👥</div>No employees audited yet.</div>';return;}el.innerHTML=session.employees.map((e,i)=>{const v=e.overall||0;const bc=v>=4?'b-g':v>=3?'b-y':'b-r';return`<div class="em-row"><div class="em-badge ${bc}">${e.overall!==null?e.overall.toFixed(2):'—'}</div><div style="flex:1;min-width:0"><div class="em-name">${e.employee.name}</div><div class="em-meta">${e.employee.role||'—'} · ${new Date(e.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div></div></div>`;}).join('');}
 
-// Submit
-function submitAudit(){
-  const notes=document.getElementById('notesGen').value.trim();
-  if(!notes){toast('General observations are required',1);return;}
-  cur.notes=notes; cur.leaderNotes=document.getElementById('notesPOC').value.trim();
-  audits.unshift(cur); localStorage.setItem('gsa_v3',JSON.stringify(audits));
-  const t=localStorage.getItem('gsa_tok'),b=localStorage.getItem('gsa_base'),n=localStorage.getItem('gsa_tbl');
-  if(t&&b&&n) pushAT(cur,t,b,n);
-  toast('Audit saved ✓'); cur=null; gp(0); tab('Dash');
-}
+// ── FINAL SUBMIT ──────────────────────────────────────────────────────────────
+function goFinalSubmit(){if(!session.employees.length){toast('No employees audited yet',1);return;}const allOveralls=session.employees.map(e=>e.overall).filter(v=>v!==null);const sessAvg=allOveralls.length?(allOveralls.reduce((a,b)=>a+b,0)/allOveralls.length).toFixed(2):null;document.getElementById('sumMeta').textContent=session.attraction+' · '+session.shift+' · '+session.employees.length+' employee'+(session.employees.length>1?'s':'');document.getElementById('sumEmpList').innerHTML=session.employees.map(e=>{const v=e.overall||0;const bc=v>=4?'b-g':v>=3?'b-y':'b-r';const lows=ALL_KEYS.filter(k=>typeof e.votes[k]==='number'&&e.votes[k]<=2).length;return`<div class="em-row"><div class="em-badge ${bc}">${e.overall!==null?e.overall.toFixed(2):'—'}</div><div style="flex:1;min-width:0"><div class="em-name">${e.employee.name}</div><div class="em-meta">${e.employee.role||'—'}${lows>0?' · <span style="color:#EF4444">'+lows+' low</span>':''}</div></div></div>`;}).join('');const col=v=>v===null?'#94A3B8':v>=4?'#059669':v>=3?'#CA8A04':'#EF4444';const avgO=s=>s.employees.map(e=>e.obsAvg).filter(v=>v!==null),avgU=s=>s.employees.map(e=>e.uniformAvg).filter(v=>v!==null),avgE=s=>s.employees.map(e=>e.engageAvg).filter(v=>v!==null);const mean=arr=>arr.length?(arr.reduce((a,b)=>a+b,0)/arr.length):null;const oA=mean(avgO(session)),uA=mean(avgU(session)),eA=mean(avgE(session));document.getElementById('sumScores').innerHTML=[{l:'Remote Observation',v:oA},{l:'Uniform / Show',v:uA},{l:'Engagement',v:eA}].map(({l,v})=>`<div class="sum-row"><span class="sum-label">${l}</span><span class="sum-val" style="color:${col(v)}">${v!==null?v.toFixed(2):'—'}</span></div>`).join('');const ov=document.getElementById('sumOverall');ov.textContent=sessAvg||'—';ov.style.color=col(sessAvg?parseFloat(sessAvg):null);const allLows=session.employees.flatMap(e=>ALL_KEYS.filter(k=>typeof e.votes[k]==='number'&&e.votes[k]<=2).map(k=>({emp:e.employee.name,key:k,score:e.votes[k]})));if(allLows.length){document.getElementById('sumFlagsWrap').style.display='block';document.getElementById('sumFlagsList').innerHTML=allLows.map(({emp,key,score})=>`<div class="low-flag"><strong>${emp} · Score: ${score}</strong>${LABELS[key]}</div>`).join('');}else{document.getElementById('sumFlagsWrap').style.display='none';}gp(6);}
 
-// Airtable
-async function pushAT(a,tok,base,tbl){
-  const f={'AuditID':String(a.id),'Timestamp':a.timestamp,'Auditor':a.auditor,'Auditor ID':a.auditorId||'','Auditor Role':a.auditorRole||'','Facility':a.facility,'Shift':a.shift,'Employee ID':a.employee?.id||'','Employee Name':a.employee?.name||'','Role':a.employee?.role||'','Department':a.employee?.department||'','Overall Score':a.overall!=='—'?parseFloat(a.overall):null,'Notes':a.notes,'Leadership Notes':a.leaderNotes};
-  ALL.forEach(k=>f[LBL[k]]=a.scores[k]!==undefined?String(a.scores[k]):'');
-  try{const r=await fetch(`https://api.airtable.com/v0/${base}/${encodeURIComponent(tbl)}`,{method:'POST',headers:{'Authorization':'Bearer '+tok,'Content-Type':'application/json'},body:JSON.stringify({fields:f})});toast(r.ok?'Synced to Airtable ✓':'Airtable sync failed',r.ok?0:1);}catch(e){console.warn(e);}
-}
+function cancelSession(){if(!confirm('Cancel this session? All unsaved data will be lost.'))return;session=null;curEmp=null;stopCam();gp(0);}
 
-// Dashboard
-function renderDash(){
-  document.getElementById('dashDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-  document.getElementById('kpiN').textContent=audits.length;
-  if(!audits.length){
-    ['kpiAvg','kpiHi','kpiHiS','kpiLo','kpiLoS'].forEach(i=>document.getElementById(i).textContent='—');
-    document.getElementById('auditLog').innerHTML='<div class="empty"><div class="empty-icon">📋</div>No audits recorded yet.<br>Complete an audit from the Audit tab.</div>';
-    return;
-  }
-  const ws=audits.filter(a=>a.overall&&a.overall!=='—');
-  if(ws.length){
-    const avg=ws.reduce((s,a)=>s+parseFloat(a.overall),0)/ws.length;
-    document.getElementById('kpiAvg').textContent=avg.toFixed(1);
-    const sorted=[...ws].sort((a,b)=>parseFloat(b.overall)-parseFloat(a.overall));
-    document.getElementById('kpiHi').textContent=sorted[0].employee?.name?.split(' ')[0]||'N/A';
-    document.getElementById('kpiHiS').textContent=sorted[0].overall+' avg score';
-    document.getElementById('kpiLo').textContent=sorted[sorted.length-1].employee?.name?.split(' ')[0]||'N/A';
-    document.getElementById('kpiLoS').textContent=sorted[sorted.length-1].overall+' avg score';
-  }
-  document.getElementById('auditLog').innerHTML=audits.map(a=>{
-    const s=parseFloat(a.overall), bc=s>=4?'b-green':s>=3?'b-yellow':'b-red';
-    const t=new Date(a.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-    return `<div class="log-item"><div class="log-badge ${bc}">${a.overall}</div><div style="flex:1;min-width:0"><div class="log-name">${a.employee?.name||'Unknown'}</div><div class="log-meta">${a.employee?.role||''} · ${a.shift} · ${t} · ${a.facility}</div></div></div>`;
-  }).join('');
-}
+function submitSession(){const notes=document.getElementById('notesGen').value.trim();if(!notes){toast('Observations / corrective steps required',1);return;}const leaderNotes=document.getElementById('notesPOC').value.trim();const allOveralls=session.employees.map(e=>e.overall).filter(v=>v!==null);const sessAvg=allOveralls.length?(allOveralls.reduce((a,b)=>a+b,0)/allOveralls.length).toFixed(2):null;const tok=localStorage.getItem('gsa_tok'),base=localStorage.getItem('gsa_base'),tbl=localStorage.getItem('gsa_tbl');session.employees.forEach(e=>{const rec={id:session.id+'_'+e.employee.id,sessionId:String(session.id),timestamp:e.timestamp,auditor:session.auditor,auditorId:session.auditorId,auditorRole:session.auditorRole,attraction:session.attraction,shift:session.shift,employeeId:e.employee.id,employeeName:e.employee.name,role:e.employee.role||'',department:e.employee.department||'',overall:e.overall!==null?String(e.overall):'',sessionAvg:sessAvg||'',notes,leaderNotes,...Object.fromEntries(ALL_KEYS.map(k=>[LABELS[k],e.votes[k]!==undefined?String(e.votes[k]):'']))};audits.unshift(rec);if(tok&&base&&tbl)pushAT(rec,tok,base,tbl);});localStorage.setItem('gsa_v6',JSON.stringify(audits));document.getElementById('notesGen').value='';document.getElementById('notesPOC').value='';document.getElementById('btnFinishSession').style.display='none';toast('Session submitted ✓');session=null;curEmp=null;gp(0);tab('Dash');}
 
-// Export
-function exportCSV(){
-  if(!audits.length){toast('No audits to export',1);return;}
-  const h=['AuditID','Timestamp','Auditor','AuditorID','AuditorRole','Facility','Shift','EmployeeID','EmployeeName','Role','Department','OverallScore',...ALL.map(k=>LBL[k].replace(/,/g,'')),'Notes','LeadershipNotes'];
-  const rows=audits.map(a=>[a.id,a.timestamp,a.auditor,a.auditorId||'',a.auditorRole||'',a.facility,a.shift,a.employee?.id||'',a.employee?.name||'',a.employee?.role||'',a.employee?.department||'',a.overall,...ALL.map(k=>a.scores[k]!==undefined?a.scores[k]:''),`"${(a.notes||'').replace(/"/g,'""')}"`,`"${(a.leaderNotes||'').replace(/"/g,'""')}"`]);
-  const csv=[h.join(','),...rows.map(r=>r.join(','))].join('\n');
-  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  const l=document.createElement('a');l.href=url;l.download='gsa-'+new Date().toISOString().slice(0,10)+'.csv';l.click();URL.revokeObjectURL(url);
-  toast('CSV exported');
-}
-function clearData(){if(!confirm('Clear all audit records?'))return;audits=[];localStorage.removeItem('gsa_v3');renderDash();toast('Records cleared');}
+// ── AIRTABLE ──────────────────────────────────────────────────────────────────
+async function pushAT(f,tok,base,tbl){try{const r=await fetch(`https://api.airtable.com/v0/${base}/${encodeURIComponent(tbl)}`,{method:'POST',headers:{'Authorization':'Bearer '+tok,'Content-Type':'application/json'},body:JSON.stringify({fields:f})});if(!r.ok)console.warn('AT sync failed',r.status);}catch(e){console.warn(e);}}
 
-// Roster
-function loadRoster(inp){
-  const file=inp.files[0];if(!file)return;
-  const r=new FileReader();
-  r.onload=e=>{
-    const rows=e.target.result.trim().split('\n');
-    const hdr=rows[0].split(',').map(h=>h.trim().toLowerCase());
-    const iId=hdr.findIndex(h=>['id','employee id','emp id','employeeid'].includes(h));
-    const iNm=hdr.findIndex(h=>['name','employee name','full name'].includes(h));
-    const iRl=hdr.findIndex(h=>['role','position','title'].includes(h));
-    const iDp=hdr.findIndex(h=>['department','dept','area'].includes(h));
-    const iFa=hdr.findIndex(h=>['facility','park','location','venue'].includes(h));
-    if(iId<0||iNm<0){toast('CSV needs id and name columns',1);return;}
-    roster=rows.slice(1).filter(r=>r.trim()).map(row=>{
-      const c=row.split(',').map(x=>x.trim().replace(/^"|"$/g,''));
-      return{id:c[iId]||'',name:c[iNm]||'',role:iRl>=0?c[iRl]:'',department:iDp>=0?c[iDp]:'',facility:iFa>=0?c[iFa]:''};
-    }).filter(e=>e.id&&e.name);
-    localStorage.setItem('gsa_roster',JSON.stringify(roster));
-    document.getElementById('rosterStatus').textContent='✓ '+roster.length+' employees loaded';
-    const chip=document.getElementById('rosterChip'); chip.textContent=roster.length+' emp'; chip.style.display='inline';
-    const prev=roster.slice(0,5);
-    document.getElementById('rosterPreview').innerHTML=`<table class="roster-tbl"><thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Dept</th></tr></thead><tbody>${prev.map(e=>`<tr><td>${e.id}</td><td>${e.name}</td><td>${e.role||'—'}</td><td>${e.department||'—'}</td></tr>`).join('')}</tbody></table>${roster.length>5?`<p style="font-size:11px;color:var(--text-dim);margin-top:8px;font-family:'DM Mono',monospace">+${roster.length-5} more employees</p>`:''}`;
-    toast(roster.length+' employees loaded ✓');
-  };
-  r.readAsText(file);
-}
+// ── CAMERA ────────────────────────────────────────────────────────────────────
+async function startCam(vidId,phId,olId,cb){curCamCb=cb;try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});camStr=s;const v=document.getElementById(vidId);v.srcObject=s;v.style.display='block';document.getElementById(phId).style.display='none';document.getElementById(olId).style.display='block';scanTick=setInterval(()=>scanFrame(v),250);}catch(e){toast('Camera unavailable — use manual entry',1);}}
+function scanFrame(v){if(v.readyState!==v.HAVE_ENOUGH_DATA)return;const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);const d=c.getContext('2d').getImageData(0,0,c.width,c.height);const qr=jsQR(d.data,d.width,d.height);if(qr&&qr.data){stopCam();curCamCb&&curCamCb(qr.data.trim());}}
+function stopCam(){if(scanTick){clearInterval(scanTick);scanTick=null;}if(camStr){camStr.getTracks().forEach(t=>t.stop());camStr=null;}['camVid','camVid0'].forEach(id=>{const v=document.getElementById(id);if(v){v.style.display='none';v.srcObject=null;}});['scanPH','scanPH0'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='flex';});['scanOL','scanOL0'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});}
 
-function saveSettings(){
-  localStorage.setItem('gsa_tok',document.getElementById('sToken').value.trim());
-  localStorage.setItem('gsa_base',document.getElementById('sBase').value.trim());
-  localStorage.setItem('gsa_tbl',document.getElementById('sTable').value.trim());
-  toast('Settings saved');
-}
+// ── ROSTER ────────────────────────────────────────────────────────────────────
+function normId(id){return String(id).toUpperCase().replace(/[^A-Z0-9]/g,'');}
+function rosterLookup(id){const n=normId(id);return roster.find(e=>normId(e.id)===n)||null;}
+function loadRoster(inp){const file=inp.files[0];if(!file)return;const r=new FileReader();r.onload=e=>{const rows=e.target.result.trim().split('\n');const hdr=rows[0].split(',').map(h=>h.trim().toLowerCase());const iId=hdr.findIndex(h=>['id','employee id','emp id','employeeid'].includes(h));const iNm=hdr.findIndex(h=>['name','employee name','full name'].includes(h));const iRl=hdr.findIndex(h=>['role','position','title'].includes(h));const iDp=hdr.findIndex(h=>['department','dept','area'].includes(h));const iFa=hdr.findIndex(h=>['facility','park','location','attraction','venue'].includes(h));if(iId<0||iNm<0){toast('CSV needs id and name columns',1);return;}roster=rows.slice(1).filter(r=>r.trim()).map(row=>{const c=row.split(',').map(x=>x.trim().replace(/^"|"$/g,''));return{id:c[iId]||'',name:c[iNm]||'',role:iRl>=0?c[iRl]:'',department:iDp>=0?c[iDp]:'',facility:iFa>=0?c[iFa]:''};}).filter(e=>e.id&&e.name);localStorage.setItem('gsa_roster',JSON.stringify(roster));const chip=document.getElementById('rosterChip');chip.textContent=roster.length+' emp';chip.style.display='inline';document.getElementById('rosterStatus').textContent='✓ '+roster.length+' employees loaded';const prev=roster.slice(0,5);document.getElementById('rosterPreview').innerHTML=`<table class="roster-tbl"><thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Dept</th></tr></thead><tbody>${prev.map(e=>`<tr><td>${e.id}</td><td>${e.name}</td><td>${e.role||'—'}</td><td>${e.department||'—'}</td></tr>`).join('')}</tbody></table>${roster.length>5?`<p style="font-size:11px;color:#94A3B8;margin-top:6px;font-family:'Space Mono',monospace">+${roster.length-5} more</p>`:''}`;toast(roster.length+' employees loaded ✓');};r.readAsText(file);}
 
-// Toast
-function toast(msg,err){
-  const t=document.getElementById('toast'); t.textContent=msg; t.className=err?'err':'';
-  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800);
-}
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
+function saveSettings(){localStorage.setItem('gsa_tok',document.getElementById('sToken').value.trim());localStorage.setItem('gsa_base',document.getElementById('sBase').value.trim());localStorage.setItem('gsa_tbl',document.getElementById('sTable').value.trim());toast('Settings saved');}
 
-// Init
-(function(){
-  const f=localStorage.getItem('gsa_fac');
-  if(f) { const el=document.getElementById('facilityName'); if(el) el.value=f; }
-  const h=new Date().getHours();
-  document.getElementById('shiftSel').value=h<12?'Morning':h<17?'Afternoon':'Evening';
-  const t=localStorage.getItem('gsa_tok'),b=localStorage.getItem('gsa_base'),n=localStorage.getItem('gsa_tbl');
-  if(t) document.getElementById('sToken').value=t;
-  if(b) document.getElementById('sBase').value=b;
-  if(n) document.getElementById('sTable').value=n;
-  if(roster.length){
-    const chip=document.getElementById('rosterChip'); chip.textContent=roster.length+' emp'; chip.style.display='inline';
-    document.getElementById('rosterStatus').textContent='✓ '+roster.length+' employees loaded';
-  }
-})();
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function renderDash(){document.getElementById('dashDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});document.getElementById('kpiN').textContent=audits.length;if(!audits.length){['kpiAvg','kpiHi','kpiHiS','kpiLo','kpiLoS'].forEach(i=>document.getElementById(i).textContent='—');document.getElementById('auditLog').innerHTML='<div class="empty"><div class="empty-icon">📋</div>No audits yet.</div>';return;}const ws=audits.filter(a=>a.overall);if(ws.length){const nums=ws.map(a=>parseFloat(a.overall));const avg=(nums.reduce((s,n)=>s+n,0)/nums.length).toFixed(2);document.getElementById('kpiAvg').textContent=avg;const sorted=[...ws].sort((a,b)=>parseFloat(b.overall)-parseFloat(a.overall));document.getElementById('kpiHi').textContent=sorted[0].employeeName.split(' ')[0];document.getElementById('kpiHiS').textContent=sorted[0].overall+' avg';document.getElementById('kpiLo').textContent=sorted[sorted.length-1].employeeName.split(' ')[0];document.getElementById('kpiLoS').textContent=sorted[sorted.length-1].overall+' avg';}document.getElementById('auditLog').innerHTML=audits.map(a=>{const v=parseFloat(a.overall)||0;const bc=v>=4?'b-g':v>=3?'b-y':'b-r';const t=new Date(a.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});return`<div class="log-item"><div class="log-badge ${bc}">${a.overall||'—'}</div><div style="flex:1;min-width:0"><div class="log-name">${a.employeeName||'Unknown'}</div><div class="log-meta">${a.role||''} · ${a.shift} · ${t} · ${a.attraction}</div></div></div>`;}).join('');}
+
+// ── CSV ────────────────────────────────────────────────────────────────────────
+function exportCSV(){if(!audits.length){toast('No audits to export',1);return;}const headers=['SessionID','RecordID','Timestamp','Auditor','Auditor ID','Auditor Role','Attraction','Shift','Employee ID','Employee Name','Role','Department','Overall','Session Avg',...ALL_KEYS.map(k=>LABELS[k]),'Notes','Leadership Notes'];const rows=audits.map(a=>[a.sessionId||'',a.id,a.timestamp,a.auditor,a.auditorId||'',a.auditorRole||'',a.attraction,a.shift,a.employeeId||'',a.employeeName||'',a.role||'',a.department||'',a.overall||'',a.sessionAvg||'',...ALL_KEYS.map(k=>a[LABELS[k]]||''),`"${(a.notes||'').replace(/"/g,'""')}"`,`"${(a.leaderNotes||'').replace(/"/g,'""')}"`]);const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const l=document.createElement('a');l.href=url;l.download='gsa-'+new Date().toISOString().slice(0,10)+'.csv';l.click();URL.revokeObjectURL(url);toast('CSV exported');}
+function clearData(){if(!confirm('Clear all audit records?'))return;audits=[];localStorage.removeItem('gsa_v6');renderDash();toast('Records cleared');}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function toast(msg,err){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(err?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+(function(){['gsa_tok','gsa_base','gsa_tbl'].forEach((k,i)=>{const v=localStorage.getItem(k);if(v)document.getElementById(['sToken','sBase','sTable'][i]).value=v;});if(roster.length){const chip=document.getElementById('rosterChip');chip.textContent=roster.length+' emp';chip.style.display='inline';document.getElementById('rosterStatus').textContent='✓ '+roster.length+' employees loaded';}})();
 </script>
 </body>
 </html>
