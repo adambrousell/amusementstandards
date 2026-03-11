@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IHS — In-House Safety Audit · AS 360</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js"></script>
+<style>
+:root{
+  --amber:#F59E0B;--amber-dark:#D97706;--amber-light:#FEF3C7;
+  --red:#EF4444;--red-light:#FEE2E2;
+  --green:#10B981;--green-light:#D1FAE5;
+  --navy:#0F172A;--slate:#334155;--slate-light:#94A3B8;
+  --bg:#F8FAFC;--card:#FFFFFF;--border:#E2E8F0;
+  --shadow:0 1px 3px rgba(15,23,42,.08),0 4px 12px rgba(15,23,42,.04);
+  --shadow-lg:0 4px 16px rgba(15,23,42,.1),0 12px 40px rgba(15,23,42,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--navy);min-height:100vh;padding-bottom:60px;}
+
+/* ── TOP BAR ── */
+.topbar{background:var(--navy);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar .brand{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);font-weight:700;}
+.topbar .clock{font-family:'Space Mono',monospace;font-size:11px;color:var(--slate-light);}
+
+/* ── PHASES ── */
+.phase{display:none;padding:20px 18px;}
+.phase.active{display:block;}
+
+/* ── PHASE HEADER ── */
+.phase-hdr{background:linear-gradient(135deg,var(--navy) 0%,#1C2B1A 100%);margin:-20px -18px 24px;padding:36px 20px 24px;border-radius:0 0 20px 20px;}
+.phase-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#6EE7B7;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;margin-bottom:10px;}
+.phase-hdr h1{font-size:20px;font-weight:700;color:white;margin-bottom:5px;line-height:1.25;}
+.phase-hdr p{font-size:13px;color:rgba(148,163,184,.9);line-height:1.5;}
+
+/* ── STEP TRAIL ── */
+.step-trail{display:flex;align-items:center;gap:6px;margin-bottom:16px;}
+.step{display:flex;align-items:center;gap:4px;}
+.step-dot{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.1);color:rgba(255,255,255,.3);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;}
+.step-dot.active{background:var(--green);color:white;}
+.step-dot.done{background:rgba(16,185,129,.3);color:#6EE7B7;}
+.step-name{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.step-name.active{color:var(--green);}
+.step-name.done{color:rgba(16,185,129,.6);}
+.step-sep{width:16px;height:1px;background:rgba(255,255,255,.1);}
+
+/* ── FIELDS ── */
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);margin-bottom:5px;}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);background:var(--card);transition:border-color .15s;-webkit-appearance:none;}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(16,185,129,.1);}
+.field textarea{resize:vertical;min-height:80px;line-height:1.5;}
+.field select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394A3B8' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:460px){.two-col{grid-template-columns:1fr;}}
+.auto-filled{background:var(--green-light)!important;border-color:var(--green)!important;color:#065F46!important;font-weight:500;}
+
+/* ── DATETIME ── */
+.datetime-display{padding:11px 13px;background:var(--green-light);border:1.5px solid var(--green);border-radius:10px;font-family:'Space Mono',monospace;font-size:12px;color:#065F46;font-weight:700;letter-spacing:.3px;}
+
+/* ── SECTION RULE ── */
+.section-rule{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--slate-light);border-bottom:1px solid var(--border);padding-bottom:8px;margin:24px 0 14px;}
+
+/* ── AUDIT ITEM (YES/NO/NA) ── */
+.audit-item{display:flex;align-items:flex-start;gap:10px;padding:12px 13px;background:var(--card);border:1.5px solid var(--border);border-radius:10px;margin-bottom:8px;transition:all .15s;}
+.item-text{flex:1;font-size:13.5px;color:var(--navy);line-height:1.45;padding-top:1px;}
+.audit-btns{display:flex;gap:5px;flex-shrink:0;margin-top:1px;}
+.audit-btn{padding:5px 11px;border:1.5px solid var(--border);border-radius:7px;background:var(--card);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--slate);cursor:pointer;transition:all .12s;letter-spacing:.3px;}
+.audit-btn:hover{border-color:var(--slate-light);}
+.audit-btn.yes{border-color:var(--green);background:var(--green-light);color:#065F46;}
+.audit-btn.no{border-color:var(--red);background:var(--red-light);color:var(--red);}
+.audit-btn.na{border-color:#CBD5E1;background:#F1F5F9;color:var(--slate-light);}
+.audit-item.item-yes{border-color:var(--green);background:#F0FDF4;}
+.audit-item.item-no{border-color:var(--red);background:#FFF5F5;}
+.audit-item.item-na{border-color:#CBD5E1;background:#F8FAFC;}
+.no-note{display:none;margin:-4px 0 8px 0;padding:0 13px;}
+.no-note.show{display:block;}
+.no-note textarea{min-height:56px;font-size:12px;border-color:var(--red)!important;}
+
+/* ── PROGRESS BAR ── */
+.prog-wrap{background:rgba(255,255,255,.06);border-radius:8px;padding:12px 14px;margin-bottom:16px;}
+.prog-label{font-family:'Space Mono',monospace;font-size:10px;color:rgba(255,255,255,.5);margin-bottom:6px;}
+.prog-track{height:5px;background:rgba(255,255,255,.1);border-radius:3px;}
+.prog-fill{height:100%;background:var(--green);border-radius:3px;transition:width .3s;width:0%;}
+
+/* ── EMPLOYEE CARD ── */
+.emp-card{display:flex;align-items:center;gap:12px;padding:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;margin-bottom:16px;}
+.emp-avatar{width:40px;height:40px;background:linear-gradient(135deg,#0F172A,#1E293B);color:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;flex-shrink:0;}
+.emp-name{font-size:14px;font-weight:700;color:white;}
+.emp-meta{font-size:11px;color:var(--slate-light);margin-top:2px;}
+.emp-id{font-family:'Space Mono',monospace;font-size:10px;color:#6EE7B7;margin-top:3px;}
+
+/* ── SESSION LIST ── */
+.op-row{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--card);border:1.5px solid var(--border);border-radius:10px;margin-bottom:8px;}
+.op-badge{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;flex-shrink:0;}
+.op-badge.pass{background:var(--green-light);color:#065F46;border:1px solid rgba(16,185,129,.3);}
+.op-badge.fail{background:var(--red-light);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+.op-badge.part{background:var(--amber-light);color:var(--amber-dark);border:1px solid rgba(245,158,11,.3);}
+.op-name{font-size:13px;font-weight:600;color:var(--navy);}
+.op-meta{font-size:11px;color:var(--slate-light);}
+
+/* ── SUMMARY ROWS ── */
+.sum-section{background:var(--card);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;}
+.sum-section-hdr{padding:11px 14px;background:var(--bg);border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--slate);font-weight:700;}
+.sum-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+.sum-row:last-child{border-bottom:none;}
+.sum-label{color:var(--slate);flex:1;}
+.sum-val{font-weight:700;font-family:'Space Mono',monospace;font-size:12px;}
+.sum-val.pass{color:var(--green);}
+.sum-val.fail{color:var(--red);}
+.sum-val.na{color:var(--slate-light);}
+
+/* ── FLAG LIST ── */
+.flag-item{display:flex;align-items:flex-start;gap:8px;padding:10px 13px;background:var(--red-light);border:1px solid rgba(239,68,68,.2);border-radius:8px;margin-bottom:6px;font-size:12px;}
+.flag-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+.flag-text{color:#7F1D1D;line-height:1.4;}
+.flag-who{font-weight:700;color:var(--red);}
+
+/* ── QR SCANNER ── */
+.scan-wrap{position:relative;width:100%;height:160px;border-radius:14px;overflow:hidden;background:#000;margin-bottom:12px;}
+.scan-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--slate-light);font-size:13px;cursor:pointer;}
+.scan-ph .scan-icon{font-size:40px;}
+video{width:100%;height:100%;object-fit:cover;display:none;}
+.scan-ol{display:none;position:absolute;inset:0;pointer-events:none;}
+.scan-ol::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:55%;aspect-ratio:1;border:2.5px solid var(--green);border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,.4);}
+.scan-line{position:absolute;top:calc(22.5% + 8px);left:22.5%;width:55%;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);animation:scanMove 1.8s ease-in-out infinite;}
+@keyframes scanMove{0%,100%{transform:translateY(0)}50%{transform:translateY(calc(55vw - 20px))}}
+.scan-hint{font-size:11px;color:var(--slate-light);text-align:center;font-family:'Space Mono',monospace;letter-spacing:.5px;margin-bottom:12px;}
+.manual-input{display:flex;gap:8px;margin-top:4px;}
+.manual-input input{flex:1;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;}
+.manual-input input:focus{outline:none;border-color:var(--green);}
+.manual-input button{padding:10px 14px;border:none;border-radius:9px;background:var(--green);color:white;font-weight:700;font-size:13px;cursor:pointer;}
+
+/* ── CONFIRMED CARD ── */
+.confirmed-card{background:var(--green-light);border:1.5px solid var(--green);border-radius:12px;padding:13px 14px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.confirmed-card .cc-icon{font-size:22px;}
+.confirmed-card .cc-name{font-size:14px;font-weight:700;color:#065F46;}
+.confirmed-card .cc-meta{font-size:11px;color:#059669;margin-top:2px;}
+.confirmed-card .cc-change{margin-left:auto;font-size:11px;font-weight:600;color:#059669;cursor:pointer;text-decoration:underline;flex-shrink:0;}
+
+/* ── BUTTONS ── */
+.btn{width:100%;padding:14px;border:none;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.2px;transition:transform .1s,box-shadow .15s;margin-top:6px;}
+.btn:hover{transform:translateY(-1px);}
+.btn:active{transform:translateY(0);}
+.btn-primary{background:linear-gradient(135deg,var(--green),#059669);color:white;box-shadow:0 4px 12px rgba(16,185,129,.3);}
+.btn-primary:hover{box-shadow:0 6px 20px rgba(16,185,129,.4);}
+.btn-amber{background:linear-gradient(135deg,var(--amber),var(--amber-dark));color:white;box-shadow:0 4px 12px rgba(245,158,11,.3);}
+.btn-danger{background:transparent;color:var(--slate-light);border:1.5px solid var(--border);font-size:13px;padding:10px;}
+.btn-danger:hover{border-color:var(--red);color:var(--red);}
+
+/* ── CORRECTIVE BANNER ── */
+.corr-banner{background:var(--red-light);border:1.5px solid var(--red);border-radius:10px;padding:12px 14px;margin-bottom:14px;}
+.corr-banner .cb-title{font-size:13px;font-weight:700;color:var(--red);margin-bottom:3px;}
+.corr-banner .cb-sub{font-size:11px;color:#7F1D1D;}
+.pass-banner{background:var(--green-light);border:1.5px solid var(--green);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px;font-weight:600;color:#065F46;}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:white;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.err{background:var(--red);}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:28px 16px;color:var(--slate-light);font-size:13px;}
+.empty-icon{font-size:36px;margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand">🛡️ In-House Safety Audit</div>
+  <div class="clock" id="clock">--:--</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- P0 · AUDITOR SETUP -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="phase active" id="p0">
+  <div class="phase-hdr">
+    <h1>Auditor Setup</h1>
+    <p>Scan your badge and enter the attraction before beginning the inspection.</p>
+  </div>
+
+  <div class="field">
+    <label>Auditor Badge <span style="font-size:11px;color:var(--slate-light);font-weight:400;text-transform:none;letter-spacing:0;">— scan QR on badge back</span></label>
+    <div class="scan-wrap" id="auditorScanWrap" onclick="startCam('camVidAuditor','scanPHAuditor','scanOLAuditor',resolveAuditor)">
+      <video id="camVidAuditor" autoplay playsinline style="width:100%;height:100%;object-fit:cover;display:none;"></video>
+      <div class="scan-ph" id="scanPHAuditor"><div class="scan-icon">📷</div><p>Tap to scan auditor badge</p></div>
+      <div class="scan-ol" id="scanOLAuditor"><div class="scan-line"></div></div>
+    </div>
+    <div id="auditor-confirmed" style="display:none;align-items:center;gap:10px;padding:12px 14px;background:var(--green-light);border:1.5px solid var(--green);border-radius:10px;margin-bottom:8px;">
+      <div style="width:36px;height:36px;background:var(--navy);color:var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;flex-shrink:0;" id="auditor-avatar">—</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--navy);" id="auditor-name-display">—</div>
+        <div style="font-size:11px;color:var(--slate-light);" id="auditor-id-display">—</div>
+      </div>
+      <div style="margin-left:auto;font-size:18px;">✅</div>
+      <button onclick="clearAuditor()" style="background:none;border:none;color:var(--slate-light);font-size:11px;cursor:pointer;text-decoration:underline;flex-shrink:0;">Re-scan</button>
+    </div>
+    <input type="text" id="auditorName" placeholder="Or type name / ID manually" style="font-size:14px;" oninput="onAuditorManual()">
+  </div>
+  <div class="field">
+    <label>Attraction</label>
+    <select id="attractionName">
+      <option value="">Select ride…</option>
+      <optgroup label="🎢 Coasters">
+        <option>Wooden Rollercoaster 1</option>
+        <option>Wooden Rollercoaster 2</option>
+        <option>Steel Coaster</option>
+        <option>Family Coaster</option>
+      </optgroup>
+      <optgroup label="🎡 Flat Rides">
+        <option>Ferris Wheel</option>
+        <option>Carousel</option>
+        <option>Scrambler</option>
+        <option>Tilt-A-Whirl</option>
+        <option>Swing Ride</option>
+        <option>Drop Tower</option>
+        <option>Gravitron</option>
+      </optgroup>
+      <optgroup label="🚗 Driving">
+        <option>Go-Kart Track — Inner Lane</option>
+        <option>Go-Kart Track — Outer Lane</option>
+        <option>Bumper Cars</option>
+      </optgroup>
+      <optgroup label="💧 Water">
+        <option>Waterslide A</option>
+        <option>Waterslide B</option>
+        <option>Wave Pool</option>
+        <option>Lazy River</option>
+        <option>Splash Pad</option>
+      </optgroup>
+      <optgroup label="👶 Kiddie">
+        <option>Kiddie Coaster</option>
+        <option>Kiddie Cars</option>
+        <option>Kiddie Ferris Wheel</option>
+      </optgroup>
+    </select>
+  </div>
+
+  <button class="btn btn-primary" onclick="beginSession()">Begin Inspection →</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- P1 · OBSERVE FROM AFAR (operator behavior only) -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="phase" id="p1">
+  <div class="phase-hdr">
+    <div class="step-trail">
+      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot active">1</div><div class="step-name active">Afar</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot">2</div><div class="step-name">Area</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot">3</div><div class="step-name">Operators</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot">4</div><div class="step-name">Submit</div></div>
+    </div>
+    <div class="phase-badge">👁️ Remote Observation</div>
+    <h1>Observe from Afar</h1>
+    <p>Score these items before approaching the ride. Operator behavior changes when they know they're being watched.</p>
+    <div class="prog-wrap" style="margin-top:16px;margin-bottom:0;">
+      <div class="prog-label" id="afar-prog-label">0 of 4 items scored</div>
+      <div class="prog-track"><div class="prog-fill" id="afar-prog-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="section-rule">Observable Operator Behavior</div>
+
+  <div class="audit-item" id="afar-b1">
+    <div class="item-text">Operator remains in safety zone at all times</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreAfar('b1','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreAfar('b1','no')">NO</button>
+      <button class="audit-btn" onclick="scoreAfar('b1','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="afar-note-b1"><textarea placeholder="Describe finding…" id="afar-note-text-b1"></textarea></div>
+
+  <div class="audit-item" id="afar-b2">
+    <div class="item-text">Visually scans attraction at all times while ride is in motion</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreAfar('b2','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreAfar('b2','no')">NO</button>
+      <button class="audit-btn" onclick="scoreAfar('b2','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="afar-note-b2"><textarea placeholder="Describe finding…" id="afar-note-text-b2"></textarea></div>
+
+  <div class="audit-item" id="afar-b3">
+    <div class="item-text">Closes and secures all entrance and exit gates</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreAfar('b3','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreAfar('b3','no')">NO</button>
+      <button class="audit-btn" onclick="scoreAfar('b3','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="afar-note-b3"><textarea placeholder="Describe finding…" id="afar-note-text-b3"></textarea></div>
+
+  <div class="audit-item" id="afar-b4">
+    <div class="item-text">Displays and reacts to all hand signals</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreAfar('b4','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreAfar('b4','no')">NO</button>
+      <button class="audit-btn" onclick="scoreAfar('b4','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="afar-note-b4"><textarea placeholder="Describe finding…" id="afar-note-text-b4"></textarea></div>
+
+  <button class="btn btn-primary" onclick="gp(1.5)" style="margin-top:8px;">Approach the Ride →</button>
+  <button class="btn btn-danger" onclick="cancelSession()">✕ Cancel Session</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- P1b · AREA INSPECTION (shared facility items, scored once) -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="phase" id="p1b">
+  <div class="phase-hdr">
+    <div class="step-trail">
+      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Afar</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot active">2</div><div class="step-name active">Area</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot">3</div><div class="step-name">Operators</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot">4</div><div class="step-name">Submit</div></div>
+    </div>
+    <div class="phase-badge">🏗️ Area Inspection</div>
+    <h1>Area &amp; Equipment Check</h1>
+    <p>These items are scored once for the area — not per operator. Check facility condition, documentation, and signage.</p>
+    <div class="prog-wrap" style="margin-top:16px;margin-bottom:0;">
+      <div class="prog-label" id="area-prog-label">0 of 8 items scored</div>
+      <div class="prog-track"><div class="prog-fill" id="area-prog-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="section-rule">Facility &amp; Equipment</div>
+
+  <div class="audit-item" id="area-f1">
+    <div class="item-text">Perimeter fencing and entrance/exit gates are functioning</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('f1','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('f1','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('f1','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-f1"><textarea placeholder="Describe finding…" id="area-note-text-f1"></textarea></div>
+
+  <div class="audit-item" id="area-f2">
+    <div class="item-text">Fire extinguisher is present and charged</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('f2','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('f2','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('f2','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-f2"><textarea placeholder="Describe finding…" id="area-note-text-f2"></textarea></div>
+
+  <div class="audit-item" id="area-f3">
+    <div class="item-text">Panel is labeled</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('f3','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('f3','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('f3','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-f3"><textarea placeholder="Describe finding…" id="area-note-text-f3"></textarea></div>
+
+  <div class="section-rule">Documentation</div>
+
+  <div class="audit-item" id="area-f4">
+    <div class="item-text">Opening checklist signed by maintenance</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('f4','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('f4','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('f4','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-f4"><textarea placeholder="Describe finding…" id="area-note-text-f4"></textarea></div>
+
+  <div class="audit-item" id="area-f5">
+    <div class="item-text">SOP is present at the ride</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('f5','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('f5','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('f5','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-f5"><textarea placeholder="Describe finding…" id="area-note-text-f5"></textarea></div>
+
+  <div class="section-rule">Signage &amp; Safety Markings</div>
+
+  <div class="audit-item" id="area-f6">
+    <div class="item-text">Safety area is clearly marked</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('f6','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('f6','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('f6','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-f6"><textarea placeholder="Describe finding…" id="area-note-text-f6"></textarea></div>
+
+  <div class="audit-item" id="area-f7">
+    <div class="item-text">Height sticks and measuring devices are in place and accurate</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('f7','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('f7','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('f7','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-f7"><textarea placeholder="Describe finding…" id="area-note-text-f7"></textarea></div>
+
+  <div class="audit-item" id="area-f8">
+    <div class="item-text">All rider policy signs are in good condition</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreArea('f8','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreArea('f8','no')">NO</button>
+      <button class="audit-btn" onclick="scoreArea('f8','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="area-note-f8"><textarea placeholder="Describe finding…" id="area-note-text-f8"></textarea></div>
+
+  <button class="btn btn-primary" onclick="goOperators()" style="margin-top:8px;">Audit Operators →</button>
+  <button class="btn btn-danger" onclick="cancelSession()">✕ Cancel Session</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- P2 · OPERATOR SESSION LIST -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="phase" id="p2">
+  <div class="phase-hdr">
+    <div class="step-trail">
+      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Afar</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot active">2</div><div class="step-name active">Operators</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot">3</div><div class="step-name">Submit</div></div>
+    </div>
+    <div class="phase-badge">👥 Per-Operator Checks</div>
+    <h1 id="p2Title">—</h1>
+    <p id="p2Meta"></p>
+  </div>
+
+  <div class="section-rule">Operators Audited This Session</div>
+  <div id="operatorList"><div class="empty"><div class="empty-icon">🪪</div>No operators audited yet.<br>Scan a badge to begin.</div></div>
+
+  <button class="btn btn-primary" onclick="gp(3)">+ Audit Next Operator</button>
+  <button class="btn btn-amber" id="btnFinishSession" style="display:none;margin-top:8px;" onclick="gp(5)">Review &amp; Submit →</button>
+  <button class="btn btn-danger" onclick="cancelSession()">✕ Cancel Session</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- P3 · SCAN OPERATOR BADGE -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="phase" id="p3">
+  <div class="phase-hdr">
+    <div class="phase-badge">🪪 Operator ID</div>
+    <h1>Scan Operator Badge</h1>
+    <p>Scan the QR code on the back of the operator's badge or enter their ID manually.</p>
+  </div>
+
+  <div id="opScanWrap">
+    <div class="scan-wrap" onclick="startCam('camVidOp','scanPHOp','scanOLOp',lookupOp)">
+      <video id="camVidOp" autoplay playsinline></video>
+      <div class="scan-ph" id="scanPHOp"><div class="scan-icon">📷</div><p>Tap to scan badge QR</p></div>
+      <div class="scan-ol" id="scanOLOp"><div class="scan-line"></div></div>
+    </div>
+    <div class="scan-hint">QR code on back of employee badge</div>
+    <div class="manual-input">
+      <input type="text" id="manualOpId" placeholder="Or enter employee ID…">
+      <button onclick="lookupOp(document.getElementById('manualOpId').value)">Go</button>
+    </div>
+  </div>
+
+  <div id="opConfirmed" style="display:none;">
+    <div class="confirmed-card">
+      <div class="cc-icon">✅</div>
+      <div>
+        <div class="cc-name" id="opConfName">—</div>
+        <div class="cc-meta" id="opConfMeta">—</div>
+      </div>
+      <div class="cc-change" onclick="resetOpScan()">Change</div>
+    </div>
+    <button class="btn btn-primary" onclick="gp(4)">Begin Operator Check →</button>
+  </div>
+
+  <button class="btn btn-danger" style="margin-top:8px;" onclick="gp(2)">← Back to Session</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- P4 · PER-OPERATOR ITEMS -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="phase" id="p4">
+  <div class="phase-hdr">
+    <div class="phase-badge">🔍 Operator Check</div>
+    <h1>Per-Operator Inspection</h1>
+    <p id="p4OpMeta">—</p>
+    <div class="prog-wrap" style="margin-top:16px;margin-bottom:0;">
+      <div class="prog-label" id="op-prog-label">0 of 13 items scored</div>
+      <div class="prog-track"><div class="prog-fill" id="op-prog-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="section-rule">Uniform &amp; Documentation</div>
+
+  <div class="audit-item" id="op-u1">
+    <div class="item-text">Uniform worn properly and neat in appearance (Name Tag + Cert Tag)</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('u1','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('u1','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('u1','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-u1"><textarea placeholder="Describe finding…" id="op-note-text-u1"></textarea></div>
+
+  <div class="audit-item" id="op-u2">
+    <div class="item-text">Certification card is accurate and updated for this attraction</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('u2','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('u2','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('u2','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-u2"><textarea placeholder="Describe finding…" id="op-note-text-u2"></textarea></div>
+
+  <div class="audit-item" id="op-u3">
+    <div class="item-text">2-way radio is working</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('u3','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('u3','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('u3','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-u3"><textarea placeholder="Describe finding…" id="op-note-text-u3"></textarea></div>
+
+  <div class="section-rule">Safety Procedures</div>
+
+  <div class="audit-item" id="op-s1">
+    <div class="item-text">Physically checks and strictly enforces height requirement</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('s1','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('s1','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('s1','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-s1"><textarea placeholder="Describe finding…" id="op-note-text-s1"></textarea></div>
+
+  <div class="audit-item" id="op-s2">
+    <div class="item-text">Enforces all rider policies</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('s2','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('s2','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('s2','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-s2"><textarea placeholder="Describe finding…" id="op-note-text-s2"></textarea></div>
+
+  <div class="audit-item" id="op-s3">
+    <div class="item-text">Assists riders with loading and unloading as necessary</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('s3','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('s3','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('s3','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-s3"><textarea placeholder="Describe finding…" id="op-note-text-s3"></textarea></div>
+
+  <div class="audit-item" id="op-s4">
+    <div class="item-text">Checks for rider posture and proper seating</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('s4','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('s4','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('s4','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-s4"><textarea placeholder="Describe finding…" id="op-note-text-s4"></textarea></div>
+
+  <div class="audit-item" id="op-s5">
+    <div class="item-text">Physically tests all ride restraints (pushing down and pulling up)</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('s5','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('s5','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('s5','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-s5"><textarea placeholder="Describe finding…" id="op-note-text-s5"></textarea></div>
+
+  <div class="audit-item" id="op-s6">
+    <div class="item-text">Performs 5-second scan to ensure ride area is clear prior to dispatch</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('s6','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('s6','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('s6','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-s6"><textarea placeholder="Describe finding…" id="op-note-text-s6"></textarea></div>
+
+  <div class="section-rule">Courtesy &amp; Efficiency</div>
+
+  <div class="audit-item" id="op-c1">
+    <div class="item-text">Maintains mature and professional image (no horseplay)</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('c1','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('c1','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('c1','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-c1"><textarea placeholder="Describe finding…" id="op-note-text-c1"></textarea></div>
+
+  <div class="audit-item" id="op-c2">
+    <div class="item-text">Communicates proper safety spiels and rider information</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('c2','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('c2','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('c2','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-c2"><textarea placeholder="Describe finding…" id="op-note-text-c2"></textarea></div>
+
+  <div class="audit-item" id="op-e1">
+    <div class="item-text">Minimizes conversation and remains focused on task</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('e1','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('e1','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('e1','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-e1"><textarea placeholder="Describe finding…" id="op-note-text-e1"></textarea></div>
+
+  <div class="audit-item" id="op-e2">
+    <div class="item-text">Works with a purpose</div>
+    <div class="audit-btns">
+      <button class="audit-btn" onclick="scoreOp('e2','yes')">YES</button>
+      <button class="audit-btn" onclick="scoreOp('e2','no')">NO</button>
+      <button class="audit-btn" onclick="scoreOp('e2','na')">N/A</button>
+    </div>
+  </div>
+  <div class="no-note" id="op-note-e2"><textarea placeholder="Describe finding…" id="op-note-text-e2"></textarea></div>
+
+  <button class="btn btn-primary" onclick="saveOperator()" style="margin-top:8px;">Save Operator &amp; Continue →</button>
+  <button class="btn btn-danger" onclick="gp(2)">← Back</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- P5 · REVIEW & SUBMIT -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="phase" id="p5">
+  <div class="phase-hdr">
+    <div class="step-trail">
+      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Setup</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Afar</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot done">✓</div><div class="step-name done">Operators</div></div>
+      <div class="step-sep"></div>
+      <div class="step"><div class="step-dot active">3</div><div class="step-name active">Submit</div></div>
+    </div>
+    <div class="phase-badge">📋 Review &amp; Submit</div>
+    <h1>Session Summary</h1>
+    <p id="p5Meta">—</p>
+  </div>
+
+  <!-- Facility score summary -->
+  <div class="sum-section" id="facilitySummary">
+    <div class="sum-section-hdr">👁️ Remote Observation — Facility &amp; Behavior</div>
+    <div id="facilitySumRows"></div>
+  </div>
+
+  <!-- Per-operator summaries -->
+  <div id="operatorSummaries"></div>
+
+  <!-- Flags -->
+  <div id="flagsWrap" style="display:none;">
+    <div class="section-rule" style="color:var(--red);border-color:rgba(239,68,68,.2);">⚠️ Corrective Actions Required</div>
+    <div id="flagsList"></div>
+  </div>
+
+  <!-- Notes -->
+  <div class="field" style="margin-top:20px;">
+    <label>Auditor Observations &amp; Corrective Steps <span style="font-size:10px;color:var(--slate-light);font-weight:400;text-transform:none;letter-spacing:0;">— required</span></label>
+    <textarea id="auditNotes" placeholder="Summarize observations, corrective actions discussed, and any follow-up required…"></textarea>
+  </div>
+
+  <button class="btn btn-primary" onclick="submitSession()">Submit Audit ✓</button>
+  <button class="btn btn-danger" onclick="gp(2)">← Back to Operators</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- P6 · SUCCESS -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="phase" id="p6" style="text-align:center;padding-top:40px;">
+  <div style="font-size:72px;margin-bottom:20px;">🛡️</div>
+  <h2 style="font-size:26px;font-weight:700;margin-bottom:8px;">Audit Submitted</h2>
+  <div style="font-family:'Space Mono',monospace;font-size:16px;color:var(--green);background:var(--green-light);border:1px solid rgba(16,185,129,.3);display:inline-block;padding:8px 20px;border-radius:8px;margin-bottom:16px;letter-spacing:1px;" id="refNumber">IHS-2026-0001</div>
+  <p style="font-size:14px;color:var(--slate);line-height:1.6;max-width:380px;margin:0 auto 24px;" id="successMsg">—</p>
+  <button class="btn btn-primary" style="max-width:280px;margin:0 auto;" onclick="resetAll()">Start New Audit</button>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── State ───────────────────────────────────────────────────────────────────
+let session = null;
+let curOp   = null;  // { operator:{id,name,role}, scores:{} }
+let camStr  = null, scanTick = null, curCamCb = null;
+
+const AFAR_KEYS = ['b1','b2','b3','b4'];
+const AREA_KEYS = ['f1','f2','f3','f4','f5','f6','f7','f8'];
+const OP_KEYS   = ['u1','u2','u3','s1','s2','s3','s4','s5','s6','c1','c2','e1','e2'];
+
+const AFAR_LABELS = {
+  b1:'Operator remains in safety zone',
+  b2:'Visually scans attraction while in motion',
+  b3:'Closes and secures all gates',
+  b4:'Displays and reacts to hand signals',
+};
+const AREA_LABELS = {
+  f1:'Perimeter fencing and gates functioning',
+  f2:'Fire extinguisher present and charged',
+  f3:'Panel labeled',
+  f4:'Opening checklist signed by maintenance',
+  f5:'SOP present at ride',
+  f6:'Safety area clearly marked',
+  f7:'Height sticks in place and accurate',
+  f8:'All rider policy signs in good condition',
+};
+const OP_LABELS = {
+  u1:'Uniform/Name Tag/Cert Tag',
+  u2:'Certification card accurate for attraction',
+  u3:'2-way radio working',
+  s1:'Height requirement enforced',
+  s2:'Rider policies enforced',
+  s3:'Loading/unloading assistance',
+  s4:'Rider posture/seating check',
+  s5:'Restraints physically tested',
+  s6:'5-second dispatch scan',
+  c1:'Professional image — no horseplay',
+  c2:'Safety spiels communicated',
+  e1:'Minimizes conversation/stays focused',
+  e2:'Works with a purpose',
+};
+
+// ── Clock ───────────────────────────────────────────────────────────────────
+function tickClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
+tickClock(); setInterval(tickClock,1000);
+
+// ── Phase navigation ────────────────────────────────────────────────────────
+function gp(n){
+  document.querySelectorAll('.phase').forEach(p=>p.classList.remove('active'));
+  const id = n === 1.5 ? 'p1b' : 'p'+n;
+  document.getElementById(id).classList.add('active');
+  stopCam();
+  window.scrollTo(0,0);
+}
+
+// ── P0 — Begin session ──────────────────────────────────────────────────────
+// ── Auditor badge scan ───────────────────────────────────────────────────────
+let auditorScanned = null;
+
+function resolveAuditor(raw) {
+  const id = String(raw || '').trim();
+  if (!id) return;
+  auditorScanned = { id, name: 'Auditor ' + id };
+  // Try to derive initials for avatar
+  const initials = id.length <= 4 ? id.toUpperCase() : id.slice(0,2).toUpperCase();
+  document.getElementById('auditor-avatar').textContent = initials;
+  document.getElementById('auditor-name-display').textContent = auditorScanned.name;
+  document.getElementById('auditor-id-display').textContent = 'ID: ' + id;
+  document.getElementById('auditor-confirmed').style.display = 'flex';
+  document.getElementById('auditorScanWrap').style.display = 'none';
+  document.getElementById('auditorName').value = id;
+  document.getElementById('auditorName').style.display = 'none';
+}
+
+function clearAuditor() {
+  auditorScanned = null;
+  document.getElementById('auditor-confirmed').style.display = 'none';
+  document.getElementById('auditorScanWrap').style.display = '';
+  document.getElementById('auditorName').value = '';
+  document.getElementById('auditorName').style.display = '';
+}
+
+function onAuditorManual() {
+  auditorScanned = null;
+  document.getElementById('auditor-confirmed').style.display = 'none';
+  document.getElementById('auditorScanWrap').style.display = 'none';
+}
+
+function beginSession(){
+  const name = auditorScanned ? auditorScanned.id : document.getElementById('auditorName').value.trim();
+  const attr = document.getElementById('attractionName').value;
+  if(!name){toast('Scan or enter auditor name',1);return;}
+  if(!attr){toast('Select an attraction',1);return;}
+  session = {
+    id: Date.now(),
+    timestamp: new Date().toISOString(),
+    auditor: name,
+    attraction: attr,
+    shift: document.getElementById('shiftSel') ? document.getElementById('shiftSel').value : '',
+    afarScores: {},
+    areaScores: {},
+    operators: [],
+  };
+  gp(1);
+}
+
+// ── P1 — Score afar items ───────────────────────────────────────────────────
+function scoreAfar(id, val){
+  session.afarScores[id] = val;
+  const row = document.getElementById('afar-'+id);
+  row.classList.remove('item-yes','item-no','item-na');
+  row.classList.add('item-'+val);
+  row.querySelectorAll('.audit-btn').forEach(b=>{
+    b.classList.remove('yes','no','na');
+    if(b.textContent.toLowerCase()===val) b.classList.add(val);
+  });
+  const noteEl = document.getElementById('afar-note-'+id);
+  if(noteEl) noteEl.classList.toggle('show', val==='no');
+  // Progress
+  const scored = Object.keys(session.afarScores).length;
+  document.getElementById('afar-prog-fill').style.width = (scored/AFAR_KEYS.length*100)+'%';
+  document.getElementById('afar-prog-label').textContent = scored+' of '+AFAR_KEYS.length+' items scored';
+}
+
+function goOperators(){
+  const scored = Object.keys(session.areaScores).length;
+  if(scored < AREA_KEYS.length){
+    if(!confirm(AREA_KEYS.length - scored+' area item(s) not scored. Continue anyway?')) return;
+  }
+  document.getElementById('p2Title').textContent = session.attraction;
+  document.getElementById('p2Meta').textContent = new Date(session.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  gp(2);
+}
+
+// ── P1b — Score area items ──────────────────────────────────────────────────
+function scoreArea(id, val){
+  session.areaScores[id] = val;
+  const row = document.getElementById('area-'+id);
+  row.classList.remove('item-yes','item-no','item-na');
+  row.classList.add('item-'+val);
+  row.querySelectorAll('.audit-btn').forEach(b=>{
+    b.classList.remove('yes','no','na');
+    if(b.textContent.toLowerCase()===val) b.classList.add(val);
+  });
+  const noteEl = document.getElementById('area-note-'+id);
+  if(noteEl) noteEl.classList.toggle('show', val==='no');
+  const scored = Object.keys(session.areaScores).length;
+  document.getElementById('area-prog-fill').style.width = (scored/AREA_KEYS.length*100)+'%';
+  document.getElementById('area-prog-label').textContent = scored+' of '+AREA_KEYS.length+' items scored';
+}
+
+// ── P3 — Scan operator ──────────────────────────────────────────────────────
+function lookupOp(raw){
+  const id = String(raw||'').trim();
+  if(!id){toast('Enter an ID',1);return;}
+  if(session.operators.some(o=>o.operator.id===id)){toast('Already audited this operator',1);return;}
+  // Accept any ID — no roster required
+  curOp = { operator:{id, name:'Operator '+id, role:'Team Member'}, scores:{} };
+  showOpConfirmed();
+}
+
+function showOpConfirmed(){
+  document.getElementById('opScanWrap').style.display='none';
+  document.getElementById('opConfirmed').style.display='block';
+  document.getElementById('opConfName').textContent = curOp.operator.name;
+  document.getElementById('opConfMeta').textContent = 'ID: '+curOp.operator.id;
+}
+
+function resetOpScan(){
+  curOp = null;
+  document.getElementById('opScanWrap').style.display='block';
+  document.getElementById('opConfirmed').style.display='none';
+  document.getElementById('manualOpId').value='';
+}
+
+// ── P4 — Score per-operator ─────────────────────────────────────────────────
+function scoreOp(id, val){
+  curOp.scores[id] = val;
+  const row = document.getElementById('op-'+id);
+  row.classList.remove('item-yes','item-no','item-na');
+  row.classList.add('item-'+val);
+  row.querySelectorAll('.audit-btn').forEach(b=>{
+    b.classList.remove('yes','no','na');
+    if(b.textContent.toLowerCase()===val) b.classList.add(val);
+  });
+  const noteEl = document.getElementById('op-note-'+id);
+  if(noteEl) noteEl.classList.toggle('show', val==='no');
+  // Progress
+  const scored = Object.keys(curOp.scores).length;
+  document.getElementById('op-prog-fill').style.width = (scored/OP_KEYS.length*100)+'%';
+  document.getElementById('op-prog-label').textContent = scored+' of '+OP_KEYS.length+' items scored';
+}
+
+// ── Header for P4 ───────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{});
+
+// Set P4 meta when entering phase 4 — intercept gp(4)
+const _gp = gp;
+window.gp = function(n){
+  if(n===4 && curOp){
+    document.getElementById('p4OpMeta').textContent = curOp.operator.name+' · ID: '+curOp.operator.id;
+    // Clear previous scores visually
+    OP_KEYS.forEach(k=>{
+      const row=document.getElementById('op-'+k);
+      if(row){row.classList.remove('item-yes','item-no','item-na');row.querySelectorAll('.audit-btn').forEach(b=>b.classList.remove('yes','no','na'));}
+      const note=document.getElementById('op-note-'+k);
+      if(note){note.classList.remove('show');const ta=document.getElementById('op-note-text-'+k);if(ta)ta.value='';}
+    });
+    curOp.scores = {};
+    document.getElementById('op-prog-fill').style.width='0%';
+    document.getElementById('op-prog-label').textContent='0 of '+OP_KEYS.length+' items scored';
+  }
+  _gp(n);
+};
+
+function saveOperator(){
+  if(!curOp){toast('No operator loaded',1);return;}
+  const scored = Object.keys(curOp.scores).length;
+  if(scored < OP_KEYS.length){
+    if(!confirm(OP_KEYS.length-scored+' item(s) not scored. Save anyway?')) return;
+  }
+  // Collect inline notes
+  const notes = {};
+  OP_KEYS.forEach(k=>{
+    const ta = document.getElementById('op-note-text-'+k);
+    if(ta && ta.value.trim()) notes[k] = ta.value.trim();
+  });
+  session.operators.push({
+    operator: curOp.operator,
+    scores: {...curOp.scores},
+    notes,
+    timestamp: new Date().toISOString(),
+  });
+  renderOperatorList();
+  document.getElementById('btnFinishSession').style.display='block';
+  toast(curOp.operator.name.split(' ')[0]+' saved ✓');
+  curOp = null;
+  resetOpScan();
+  gp(2);
+}
+
+function renderOperatorList(){
+  const el = document.getElementById('operatorList');
+  if(!session.operators.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">🪪</div>No operators audited yet.<br>Scan a badge to begin.</div>';
+    return;
+  }
+  el.innerHTML = session.operators.map(o=>{
+    const hasNo = Object.values(o.scores).includes('no');
+    const scored = Object.keys(o.scores).length;
+    const badgeClass = hasNo ? 'fail' : scored===OP_KEYS.length ? 'pass' : 'part';
+    const badgeTxt = hasNo ? 'FLAG' : scored===OP_KEYS.length ? 'PASS' : 'PART';
+    const t = new Date(o.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    return `<div class="op-row">
+      <div class="op-badge ${badgeClass}">${badgeTxt}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="op-name">${o.operator.name}</div>
+        <div class="op-meta">${o.operator.role} · ID: ${o.operator.id} · ${t}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── P5 — Review & Submit ────────────────────────────────────────────────────
+window._origGp = window.gp;
+const __gp = window.gp;
+window.gp = function(n){
+  if(n===5) buildSummary();
+  __gp(n);
+};
+
+function buildSummary(){
+  document.getElementById('p5Meta').textContent = session.attraction+' · '+session.operators.length+' operator(s)';
+
+  // Area (facility) summary
+  const facRows = AREA_KEYS.map(k=>{
+    const v = session.areaScores[k];
+    const cls = v==='yes'?'pass':v==='no'?'fail':'na';
+    return `<div class="sum-row"><span class="sum-label">${AREA_LABELS[k]}</span><span class="sum-val ${cls}">${(v||'—').toUpperCase()}</span></div>`;
+  }).join('');
+  document.getElementById('facilitySumRows').innerHTML = facRows;
+
+  // Per-operator summaries
+  let opHtml = '';
+  session.operators.forEach(o=>{
+    const hasNo = Object.values(o.scores).includes('no');
+    opHtml += `<div class="sum-section" style="margin-bottom:12px;">
+      <div class="sum-section-hdr" style="${hasNo?'color:var(--red)':''}">
+        🪪 ${o.operator.name} — ID: ${o.operator.id}${hasNo?' · ⚠️ Flags':''}
+      </div>
+      ${OP_KEYS.map(k=>{
+        const v=o.scores[k];
+        const cls=v==='yes'?'pass':v==='no'?'fail':'na';
+        return `<div class="sum-row"><span class="sum-label">${OP_LABELS[k]}</span><span class="sum-val ${cls}">${(v||'—').toUpperCase()}</span></div>`;
+      }).join('')}
+    </div>`;
+  });
+  document.getElementById('operatorSummaries').innerHTML = opHtml;
+
+  // Flags
+  const flags = [];
+  // Afar behavior flags
+  AFAR_KEYS.filter(k=>session.afarScores[k]==='no').forEach(k=>{
+    const note = (document.getElementById('afar-note-text-'+k)||{}).value||'';
+    flags.push({who:'Observed Behavior',label:AFAR_LABELS[k],note});
+  });
+  // Area facility flags
+  AREA_KEYS.filter(k=>session.areaScores[k]==='no').forEach(k=>{
+    const note = (document.getElementById('area-note-text-'+k)||{}).value||'';
+    flags.push({who:'Area / Facility',label:AREA_LABELS[k],note});
+  });
+  // Operator flags
+  session.operators.forEach(o=>{
+    OP_KEYS.filter(k=>o.scores[k]==='no').forEach(k=>{
+      flags.push({who:o.operator.name,label:OP_LABELS[k],note:o.notes[k]||''});
+    });
+  });
+
+  if(flags.length){
+    document.getElementById('flagsWrap').style.display='block';
+    document.getElementById('flagsList').innerHTML = flags.map(f=>`
+      <div class="flag-item">
+        <div class="flag-icon">🚩</div>
+        <div class="flag-text"><span class="flag-who">${f.who}</span> — ${f.label}${f.note?'<br><em>'+f.note+'</em>':''}</div>
+      </div>`).join('');
+  } else {
+    document.getElementById('flagsWrap').style.display='none';
+  }
+}
+
+function submitSession(){
+  const notes = document.getElementById('auditNotes').value.trim();
+  if(!notes){toast('Observations/corrective steps required',1);return;}
+
+  const hasFlags = session.operators.some(o=>Object.values(o.scores).includes('no')) ||
+                   Object.values(session.afarScores).includes('no') ||
+                   Object.values(session.areaScores).includes('no');
+
+  const year = new Date().getFullYear();
+  const ref = 'IHS-'+year+'-'+String(Math.floor(Math.random()*9000)+1000);
+  document.getElementById('refNumber').textContent = ref;
+  document.getElementById('successMsg').textContent = hasFlags
+    ? 'Audit recorded with corrective action flags. Ensure all flagged items are addressed before operators return to independent operation.'
+    : 'Audit complete — all items passed or marked N/A. No corrective actions required.';
+
+  gp(6);
+}
+
+function resetAll(){
+  session = null; curOp = null;
+  // Reset P1 afar (behavior) items
+  AFAR_KEYS.forEach(k=>{
+    const row=document.getElementById('afar-'+k);
+    if(row){row.classList.remove('item-yes','item-no','item-na');row.querySelectorAll('.audit-btn').forEach(b=>b.classList.remove('yes','no','na'));}
+    const note=document.getElementById('afar-note-'+k);
+    if(note){note.classList.remove('show');const ta=document.getElementById('afar-note-text-'+k);if(ta)ta.value='';}
+  });
+  document.getElementById('afar-prog-fill').style.width='0%';
+  document.getElementById('afar-prog-label').textContent='0 of 4 items scored';
+  // Reset P1b area items
+  AREA_KEYS.forEach(k=>{
+    const row=document.getElementById('area-'+k);
+    if(row){row.classList.remove('item-yes','item-no','item-na');row.querySelectorAll('.audit-btn').forEach(b=>b.classList.remove('yes','no','na'));}
+    const note=document.getElementById('area-note-'+k);
+    if(note){note.classList.remove('show');const ta=document.getElementById('area-note-text-'+k);if(ta)ta.value='';}
+  });
+  document.getElementById('area-prog-fill').style.width='0%';
+  document.getElementById('area-prog-label').textContent='0 of 8 items scored';
+  // Reset fields
+  ['auditorName','auditNotes'].forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.style.display='';}});
+  clearAuditor();
+  document.getElementById('attractionName').selectedIndex=0;
+  if(document.getElementById('shiftSel')) document.getElementById('shiftSel').selectedIndex=0;
+  document.getElementById('operatorList').innerHTML='<div class="empty"><div class="empty-icon">🪪</div>No operators audited yet.<br>Scan a badge to begin.</div>';
+  document.getElementById('btnFinishSession').style.display='none';
+  resetOpScan();
+  gp(0);
+}
+
+function cancelSession(){
+  if(!confirm('Cancel this session? All unsaved data will be lost.')) return;
+  resetAll();
+}
+
+// ── Camera / QR ─────────────────────────────────────────────────────────────
+async function startCam(vidId,phId,olId,cb){
+  curCamCb=cb;
+  try{
+    const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    camStr=s;
+    const v=document.getElementById(vidId);
+    v.srcObject=s; v.style.display='block';
+    document.getElementById(phId).style.display='none';
+    document.getElementById(olId).style.display='block';
+    scanTick=setInterval(()=>scanFrame(v),250);
+  }catch(e){toast('Camera unavailable — use manual entry',1);}
+}
+
+function scanFrame(v){
+  if(v.readyState!==v.HAVE_ENOUGH_DATA)return;
+  const c=document.createElement('canvas');
+  c.width=v.videoWidth;c.height=v.videoHeight;
+  c.getContext('2d').drawImage(v,0,0);
+  const d=c.getContext('2d').getImageData(0,0,c.width,c.height);
+  const qr=typeof jsQR!=='undefined'?jsQR(d.data,d.width,d.height):null;
+  if(qr&&qr.data){stopCam();curCamCb&&curCamCb(qr.data.trim());}
+}
+
+function stopCam(){
+  if(scanTick){clearInterval(scanTick);scanTick=null;}
+  if(camStr){camStr.getTracks().forEach(t=>t.stop());camStr=null;}
+  ['camVidOp'].forEach(id=>{const v=document.getElementById(id);if(v){v.style.display='none';v.srcObject=null;}});
+  ['scanPHOp'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='flex';});
+  ['scanOLOp'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+}
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+function toast(msg,err){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='show'+(err?' err':'');
+  clearTimeout(t._t);
+  t._t=setTimeout(()=>t.className='',2800);
+}
+</script>
+</body>
+</html>
