@@ -164,7 +164,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <body>
 <header class="topbar">
   <div style="display:flex;align-items:baseline">
-    <span class="logo-mark">amusement standards.</span>
+    <span class="logo-mark">🎯 Guest Service Audit</span>
     <span class="logo-sub">GSA</span>
   </div>
   <div class="topbar-right">
@@ -179,7 +179,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <!-- P0 · AUDITOR SETUP ─────────────────────────────────────────────────────-->
 <div class="phase active" id="p0">
   <div class="phase-hdr">
-    <div class="phase-badge">🎯 Guest Service Audit</div>
     <h1>Identify Yourself</h1>
     <p>Scan your badge QR to begin. You'll be recorded as auditor of record.</p>
   </div>
@@ -193,10 +192,58 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="emp-id" style="color:var(--amber-dark)" id="auditorIdEl"></div>
       </div>
     </div>
-    <div class="field"><label>Attraction</label><input id="attractionName" type="text" placeholder="Ride / attraction name"></div>
-    <div class="field"><label>Shift</label>
-      <select id="shiftSel">
-        <option>Morning</option><option>Afternoon</option><option>Evening</option>
+    <div class="field"><label>Attraction</label>
+      <select id="attractionName">
+        <option value="">— Select Attraction —</option>
+        <optgroup label="Coasters &amp; Thrill Rides">
+          <option>Roller Coaster</option>
+          <option>Launch Coaster</option>
+          <option>Suspended Coaster</option>
+          <option>Drop Tower</option>
+          <option>Freefall</option>
+          <option>Spinning Ride</option>
+          <option>Tilt-A-Whirl</option>
+          <option>Scrambler</option>
+        </optgroup>
+        <optgroup label="Family Rides">
+          <option>Carousel / Merry-Go-Round</option>
+          <option>Ferris Wheel</option>
+          <option>Swing Ride</option>
+          <option>Kiddie Coaster</option>
+          <option>Tea Cups / Spinning</option>
+          <option>Train Ride</option>
+          <option>Balloon Ride</option>
+        </optgroup>
+        <optgroup label="Water Attractions">
+          <option>Water Slide</option>
+          <option>Lazy River</option>
+          <option>Wave Pool</option>
+          <option>Splash Pad</option>
+          <option>Log Flume</option>
+          <option>River Rapids</option>
+        </optgroup>
+        <optgroup label="Go-Karts &amp; Motorsports">
+          <option>Go-Karts — Road Course</option>
+          <option>Go-Karts — Slick Track</option>
+          <option>Go-Karts — Kiddie</option>
+          <option>Bumper Cars</option>
+          <option>Bumper Boats</option>
+        </optgroup>
+        <optgroup label="Adventure &amp; Specialty">
+          <option>Zipline</option>
+          <option>Climbing Wall</option>
+          <option>Ropes Course</option>
+          <option>Mini Golf</option>
+          <option>Laser Tag</option>
+          <option>Batting Cages</option>
+          <option>Trampoline / Ninja Park</option>
+          <option>Escape Room</option>
+          <option>Virtual Reality</option>
+          <option>Arcade</option>
+        </optgroup>
+        <optgroup label="Other">
+          <option>Other / Custom</option>
+        </optgroup>
       </select>
     </div>
     <button class="btn btn-primary" onclick="beginAudit()">Start Audit Session →</button>
@@ -252,7 +299,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="section-rule">Employees Audited This Session</div>
   <div id="sessionEmpList"><div class="empty"><div class="empty-icon">👥</div>No employees audited yet.<br>Tap below to begin your first observation.</div></div>
 
-  <button class="btn btn-primary" onclick="startNewEmployee()">+ Observe Next Employee</button>
+  <button class="btn btn-primary" id="btnStartEmployee" onclick="startNewEmployee()">Click Here to Start Audit</button>
   <button class="btn btn-success" id="btnFinishSession" style="display:none" onclick="goFinalSubmit()">Review & Submit Session →</button>
   <button class="btn btn-danger" onclick="cancelSession()" style="margin-top:9px">✕ Cancel Session</button>
 </div>
@@ -273,10 +320,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="step"><div class="step-dot">4</div><div class="step-name">Engage</div></div>
   </div>
 
+  <div id="obsLockedBanner" style="display:none;background:#D1FAE5;border:1px solid #6EE7B7;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#065F46;line-height:1.5">
+    <strong>📍 Ride-level observation locked.</strong> These scores were recorded for this ride and apply to all employees in this session.
+  </div>
+
   <div class="phase-hdr">
     <div class="phase-badge">👁 Step 1 · Observe from Afar</div>
     <h1>Remote Observation</h1>
-    <p>Stay at a distance. Score behaviors visible before approaching. Do <em>not</em> interact with the employee yet.</p>
+    <p>Stay at a distance. Score ride-level behaviors before approaching. These scores apply to <strong>all employees</strong> at this attraction.</p>
   </div>
 
   <div class="prog">
@@ -293,6 +344,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="audit-item"><div class="audit-label">Friendly when explaining and enforcing code of conduct</div><div class="sco-row" id="sr_code_of_conduct"></div></div>
     <div class="audit-item"><div class="audit-label">Engaging while height checking (eye to eye with children)</div><div class="sco-row" id="sr_height_check"></div></div>
     <div class="audit-item"><div class="audit-label">Gentle while scanning guest wristbands</div><div class="sco-row" id="sr_wristbands"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">OLI — Operational Pressure &amp; Queue Flow <span class="cnt" id="oliQCnt">0/5</span></div>
+    <p style="font-size:12px;color:#64748B;margin-bottom:14px;line-height:1.5">Score queue-side pressure and flow behaviors before approaching.</p>
+    <div class="audit-item"><div class="audit-label">Queue flow managed actively — guests directed by operator, not self-directing</div><div class="sco-row" id="sr_oli_queue_flow"></div></div>
+    <div class="audit-item"><div class="audit-label">Single rider / re-queue lane is visible, marked, and managed</div><div class="sco-row" id="sr_oli_single_rider"></div></div>
+    <div class="audit-item"><div class="audit-label">Operator appeared calm and composed under queue pressure (not rushed or reactive)</div><div class="sco-row" id="sr_oli_composure"></div></div>
+    <div class="audit-item"><div class="audit-label">No visible guest pressure on operator to dispatch sooner</div><div class="sco-row" id="sr_oli_guest_pressure_q"></div></div>
+    <div class="audit-item"><div class="audit-label">Operator maintained safety protocol pacing despite queue depth</div><div class="sco-row" id="sr_oli_pacing"></div></div>
   </div>
 
   <button class="btn btn-primary" onclick="gp(3)">Approach — Scan Their Badge →</button>
@@ -379,6 +440,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="audit-item"><div class="audit-label">Suggests alternative attractions for guests</div><div class="sco-row" id="sr_alt_attractions"></div></div>
   </div>
 
+  <div class="card">
+    <div class="card-title">OLI — Staffing Adequacy &amp; Pressure Indicators <span class="cnt" id="oliSCnt">0/5</span></div>
+    <p style="font-size:12px;color:#64748B;margin-bottom:14px;line-height:1.5">Score staffing adequacy and observable pressure signals at the attraction.</p>
+    <div class="audit-item"><div class="audit-label">Second operator present when required by ride type or staffing standard</div><div class="sco-row" id="sr_oli_second_op"></div></div>
+    <div class="audit-item"><div class="audit-label">No position appeared visibly understaffed or doubled-up beyond safe capacity</div><div class="sco-row" id="sr_oli_understaffed"></div></div>
+    <div class="audit-item"><div class="audit-label">Throughput not prioritized over safety protocol — no rushing of cycles observed</div><div class="sco-row" id="sr_oli_throughput"></div></div>
+    <div class="audit-item"><div class="audit-label">No shortcuts observed under crowd pressure (abbreviated spiel, abbreviated restraint check)</div><div class="sco-row" id="sr_oli_shortcuts"></div></div>
+    <div class="audit-item"><div class="audit-label">Operator staffing level is appropriate for this attraction type at this crowd level</div><div class="sco-row" id="sr_oli_staffing_level"></div></div>
+  </div>
+
   <button class="btn btn-primary" onclick="gp(5)">Begin Engagement →</button>
   <button class="btn btn-ghost" onclick="gp(3)">← Back to Scan</button>
 </div>
@@ -430,6 +501,76 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="audit-item"><div class="audit-label">Knows location of First Aid</div><div class="sco-row" id="sr_first_aid"></div></div>
     <div class="audit-item"><div class="audit-label">Knows location of nearest bathroom</div><div class="sco-row" id="sr_bathroom"></div></div>
     <div class="audit-item"><div class="audit-label">Works hard to ensure guests get the most out of their day</div><div class="sco-row" id="sr_guest_day"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔄 Rotation Status</div>
+    <p style="font-size:12px;color:#64748B;margin-bottom:14px;line-height:1.5">Ask the employee directly: <em>"How long have you been at this position?"</em></p>
+    <div class="field">
+      <label>Time Since Last Rotation</label>
+      <select id="empLastRotation" onchange="updateEmpRotationDisplay()">
+        <option value="">— Ask Employee —</option>
+        <option value="unknown">Does Not Know</option>
+        <option value="0">Just Rotated (0–14 min)</option>
+        <option value="15">15 min</option>
+        <option value="30">30 min</option>
+        <option value="45">45 min</option>
+        <option value="60">1 hour</option>
+        <option value="75">1 hr 15 min</option>
+        <option value="90">1 hr 30 min</option>
+        <option value="105">1 hr 45 min</option>
+        <option value="120">2 hours</option>
+        <option value="135">2 hr 15 min</option>
+        <option value="150">2 hr 30 min</option>
+        <option value="165">2 hr 45 min</option>
+        <option value="180">3 hours</option>
+        <option value="195">3 hr 15 min</option>
+        <option value="210">3 hr 30 min</option>
+        <option value="225">3 hr 45 min</option>
+        <option value="240">4 hours</option>
+        <option value="255">4 hr 15 min</option>
+        <option value="270">4 hr 30 min</option>
+        <option value="285">4 hr 45 min</option>
+        <option value="300">5 hours</option>
+        <option value="315">5 hr 15 min</option>
+        <option value="330">5 hr 30 min</option>
+        <option value="345">5 hr 45 min</option>
+        <option value="360">6 hours</option>
+        <option value="375">6 hr 15 min</option>
+        <option value="390">6 hr 30 min</option>
+        <option value="405">6 hr 45 min</option>
+        <option value="420">7 hours</option>
+        <option value="435">7 hr 15 min</option>
+        <option value="450">7 hr 30 min</option>
+        <option value="465">7 hr 45 min</option>
+        <option value="480">8 hours</option>
+        <option value="481">8+ hours</option>
+      </select>
+    </div>
+    <div id="empRotationAlert" style="display:none;border-radius:8px;padding:10px 14px;font-family:'Space Mono',monospace;font-size:12px;line-height:1.5;margin-top:4px"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">OLI — Human Context <span class="cnt" id="oliHCnt">0/4</span></div>
+    <p style="font-size:12px;color:#64748B;margin-bottom:14px;line-height:1.5">Score overall human factors and fatigue signals after full engagement.</p>
+    <div class="audit-item"><div class="audit-label">Staffing schedule / post chart is visible at or near the ride control station</div><div class="sco-row" id="sr_oli_post_chart"></div></div>
+    <div class="audit-item"><div class="audit-label">Operator shows no visible signs of fatigue (yawning, inattentiveness, slow responses)</div><div class="sco-row" id="sr_oli_fatigue"></div></div>
+    <div class="audit-item"><div class="audit-label">Operator's demeanor remained consistent throughout observation (no mood shift under scrutiny)</div><div class="sco-row" id="sr_oli_consistency"></div></div>
+    <div class="audit-item"><div class="audit-label">No off-task behavior observed (phone use, socializing mid-cycle, leaving post unattended)</div><div class="sco-row" id="sr_oli_off_task"></div></div>
+    <div class="field" style="margin-top:4px">
+      <label>Overall Operator Demeanor</label>
+      <select id="operatorDemeanor">
+        <option value="">— Select —</option>
+        <option>Calm &amp; Attentive</option>
+        <option>Mildly Stressed</option>
+        <option>Visibly Stressed</option>
+        <option>Disengaged</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>OLI Field Notes (Optional)</label>
+      <textarea id="oliNotes" placeholder="Any additional human context, anomalies, or operational observations not captured above…"></textarea>
+    </div>
   </div>
 
   <button class="btn btn-primary" onclick="saveEmployee()">Save Employee & Continue →</button>
@@ -552,9 +693,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <script>
 // ── ITEM DEFINITIONS ──────────────────────────────────────────────────────────
 const OBS_KEYS    = ['posture','smiling','scans','loose_article','code_of_conduct','height_check','wristbands'];
+const OLI_Q_KEYS  = ['oli_queue_flow','oli_single_rider','oli_composure','oli_guest_pressure_q','oli_pacing'];
 const UNIFORM_KEYS = ['grooming','name_tag','area_clean','ride_features','alt_attractions'];
+const OLI_S_KEYS  = ['oli_second_op','oli_understaffed','oli_throughput','oli_shortcuts','oli_staffing_level'];
 const ENGAGE_KEYS  = ['greets','ten_five','please_thank','nice_day','answers','emergency','atm','guest_services','first_aid','bathroom','guest_day'];
-const ALL_KEYS    = [...OBS_KEYS,...UNIFORM_KEYS,...ENGAGE_KEYS];
+const OLI_H_KEYS  = ['oli_post_chart','oli_fatigue','oli_consistency','oli_off_task'];
+const ALL_KEYS    = [...OBS_KEYS,...OLI_Q_KEYS,...UNIFORM_KEYS,...OLI_S_KEYS,...ENGAGE_KEYS,...OLI_H_KEYS];
 
 const LABELS = {
   posture:'Standing in a guest-ready manner (not sitting, arms not folded)',
@@ -564,11 +708,21 @@ const LABELS = {
   code_of_conduct:'Friendly when explaining and enforcing code of conduct',
   height_check:'Engaging while height checking (eye to eye with children)',
   wristbands:'Gentle while scanning guest wristbands',
+  oli_queue_flow:'Queue flow managed actively — guests directed, not self-directing',
+  oli_single_rider:'Single rider / re-queue lane visible, marked, and managed',
+  oli_composure:'Operator calm and composed under queue pressure (not rushed or reactive)',
+  oli_guest_pressure_q:'No visible guest pressure on operator to dispatch sooner',
+  oli_pacing:'Operator maintained safety protocol pacing despite queue depth',
   grooming:'Meets grooming guidelines',
   name_tag:'Name Tag, Cert Card, and ID are worn',
   area_clean:'Area is clean and ready',
   ride_features:'Pointing out ride features to guests (levers, buttons)',
   alt_attractions:'Suggests alternative attractions for guests',
+  oli_second_op:'Second operator present when required by ride type or staffing standard',
+  oli_understaffed:'No position visibly understaffed or doubled-up beyond safe capacity',
+  oli_throughput:'Throughput not prioritized over safety protocol — no rushing of cycles',
+  oli_shortcuts:'No shortcuts observed under crowd pressure (spiel, restraint check)',
+  oli_staffing_level:'Operator staffing level appropriate for attraction type at this crowd level',
   greets:'Greets the guest',
   ten_five:'10/5 Greeting',
   please_thank:'Uses "please" and "thank you" when interacting',
@@ -579,7 +733,11 @@ const LABELS = {
   guest_services:'Knows location of Guest Services',
   first_aid:'Knows location of First Aid',
   bathroom:'Knows location of nearest bathroom',
-  guest_day:'Works hard to ensure guests get the most out of their day'
+  guest_day:'Works hard to ensure guests get the most out of their day',
+  oli_post_chart:'Staffing schedule / post chart visible at or near ride control station',
+  oli_fatigue:'Operator shows no visible signs of fatigue (yawning, inattentiveness)',
+  oli_consistency:'Operator demeanor consistent throughout observation (no mood shift)',
+  oli_off_task:'No off-task behavior observed (phone, socializing mid-cycle, leaving post)'
 };
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
@@ -596,7 +754,7 @@ tickClock();setInterval(tickClock,1000);
 
 // ── TABS ──────────────────────────────────────────────────────────────────────
 function tab(t){stopCam();document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));document.getElementById('screen'+t).classList.add('active');document.getElementById('nav'+t).classList.add('active');if(t==='Dash')renderDash();}
-function gp(n){document.querySelectorAll('.phase').forEach(p=>p.classList.remove('active'));document.getElementById('p'+n).classList.add('active');if(n!==3)stopCam();window.scrollTo(0,0);}
+function gp(n){document.querySelectorAll('.phase').forEach(p=>p.classList.remove('active'));document.getElementById('p'+n).classList.add('active');if(n===2){const b=document.getElementById('obsLockedBanner');if(b)b.style.display=session&&session.obsVotes?'block':'none';}if(n!==3)stopCam();window.scrollTo(0,0);}
 
 // ── SCORE BUTTON BUILDER ──────────────────────────────────────────────────────
 function buildScoRow(key,votes){
@@ -607,7 +765,7 @@ function buildScoRow(key,votes){
   if(votes&&votes[key]!==undefined){const cur=votes[key];container.querySelectorAll('.sco').forEach((b,i)=>{if(String(vals[i])===String(cur))b.className='sco '+(cur==='NA'?'sna':'s'+cur);});}
 }
 function buildAllRows(){
-  [...OBS_KEYS,...UNIFORM_KEYS,...ENGAGE_KEYS].forEach(k=>buildScoRow(k,curEmp?curEmp.votes:{}));
+  [...OBS_KEYS,...OLI_Q_KEYS,...UNIFORM_KEYS,...OLI_S_KEYS,...ENGAGE_KEYS,...OLI_H_KEYS].forEach(k=>buildScoRow(k,curEmp?curEmp.votes:{}));
 }
 
 // ── SCORING ───────────────────────────────────────────────────────────────────
@@ -624,34 +782,76 @@ function updProg(){
   document.getElementById('obsTxt').textContent=obsN+' / '+OBS_KEYS.length;
   document.getElementById('obsBar').style.width=(obsN/OBS_KEYS.length*100)+'%';
   document.getElementById('obsCnt').textContent=obsN+'/'+OBS_KEYS.length;
+  const oliQN=OLI_Q_KEYS.filter(k=>v[k]!==undefined).length;
+  document.getElementById('oliQCnt').textContent=oliQN+'/'+OLI_Q_KEYS.length;
   document.getElementById('uniformCnt').textContent=['grooming','name_tag'].filter(k=>v[k]!==undefined).length+'/2';
   document.getElementById('showCnt').textContent=['area_clean','ride_features','alt_attractions'].filter(k=>v[k]!==undefined).length+'/3';
+  const oliSN=OLI_S_KEYS.filter(k=>v[k]!==undefined).length;
+  document.getElementById('oliSCnt').textContent=oliSN+'/'+OLI_S_KEYS.length;
   const engN=ENGAGE_KEYS.filter(k=>v[k]!==undefined).length;
   document.getElementById('engTxt').textContent=engN+' / '+ENGAGE_KEYS.length;
   document.getElementById('engBar').style.width=(engN/ENGAGE_KEYS.length*100)+'%';
   document.getElementById('greetCnt').textContent=['greets','ten_five','please_thank','nice_day'].filter(k=>v[k]!==undefined).length+'/4';
   document.getElementById('knowCnt').textContent=['answers','emergency','atm','guest_services','first_aid','bathroom','guest_day'].filter(k=>v[k]!==undefined).length+'/7';
+  const oliHN=OLI_H_KEYS.filter(k=>v[k]!==undefined).length;
+  document.getElementById('oliHCnt').textContent=oliHN+'/'+OLI_H_KEYS.length;
 }
 
 // ── AUDITOR ───────────────────────────────────────────────────────────────────
-function lookupAuditor(id){if(!id)return;let emp=rosterLookup(id);if(!emp){if(roster.length>0){toast('ID not found in roster',1);return;}emp={id:id.trim(),name:id.trim(),role:'Auditor',department:'—',facility:''};}auditorEmp=emp;document.getElementById('auditorName').textContent=emp.name;document.getElementById('auditorMeta').textContent=(emp.role||'—')+' · '+(emp.department||'—');document.getElementById('auditorIdEl').textContent='ID: '+emp.id;document.getElementById('auditorScanWrap').style.display='none';document.getElementById('auditorConfirmed').style.display='block';document.getElementById('attractionName').value=(emp.facility||'')||localStorage.getItem('gsa_fac')||'';const h=new Date().getHours();document.getElementById('shiftSel').value=h<12?'Morning':h<17?'Afternoon':'Evening';}
+function lookupAuditor(id){if(!id)return;let emp=rosterLookup(id);if(!emp){if(roster.length>0){toast('ID not found in roster',1);return;}emp={id:id.trim(),name:id.trim(),role:'Auditor',department:'—',facility:''};}auditorEmp=emp;document.getElementById('auditorName').textContent=emp.name;document.getElementById('auditorMeta').textContent=(emp.role||'—')+' · '+(emp.department||'—');document.getElementById('auditorIdEl').textContent='ID: '+emp.id;document.getElementById('auditorScanWrap').style.display='none';document.getElementById('auditorConfirmed').style.display='block';const saved=localStorage.getItem('gsa_fac');if(saved)document.getElementById('attractionName').value=saved;}
 function resetAuditorScan(){auditorEmp=null;document.getElementById('auditorConfirmed').style.display='none';document.getElementById('auditorScanWrap').style.display='block';}
-function beginAudit(){if(!auditorEmp){toast('Scan your badge first',1);return;}const attr=document.getElementById('attractionName').value.trim();if(!attr){toast('Enter attraction name',1);return;}localStorage.setItem('gsa_fac',attr);session={id:Date.now(),timestamp:new Date().toISOString(),auditor:auditorEmp.name,auditorId:auditorEmp.id,auditorRole:auditorEmp.role||'',attraction:attr,shift:document.getElementById('shiftSel').value,employees:[]};document.getElementById('sessionTitle').textContent=attr;document.getElementById('sessionMeta').textContent=session.shift+' shift · '+new Date(session.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});document.getElementById('sessionAuditorName').textContent=auditorEmp.name;document.getElementById('sessionAuditorMeta').textContent=(auditorEmp.role||'—')+' · '+(auditorEmp.department||'—');document.getElementById('sessionAuditorId').textContent='Auditor ID: '+auditorEmp.id;renderSessionList();gp(1);}
+function beginAudit(){if(!auditorEmp){toast('Scan your badge first',1);return;}const attr=document.getElementById('attractionName').value;if(!attr){toast('Select an attraction',1);return;}localStorage.setItem('gsa_fac',attr);session={id:Date.now(),timestamp:new Date().toISOString(),auditor:auditorEmp.name,auditorId:auditorEmp.id,auditorRole:auditorEmp.role||'',attraction:attr,employees:[]};document.getElementById('sessionTitle').textContent=attr;document.getElementById('sessionMeta').textContent=new Date(session.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});document.getElementById('sessionAuditorName').textContent=auditorEmp.name;document.getElementById('sessionAuditorMeta').textContent=(auditorEmp.role||'—')+' · '+(auditorEmp.department||'—');document.getElementById('sessionAuditorId').textContent='Auditor ID: '+auditorEmp.id;renderSessionList();gp(1);}
+
+function calcMinutesOnPosition(timeVal){if(!timeVal)return null;const now=new Date();const[h,m]=timeVal.split(':').map(Number);const rot=new Date();rot.setHours(h,m,0,0);let diff=Math.round((now-rot)/60000);if(diff<0)diff+=1440;// crossed midnight
+return diff;}
+
+function updateTimeOnPosition(){const wrap=document.getElementById('timeOnPositionWrap');const txt=document.getElementById('timeOnPositionTxt');const mins=calcMinutesOnPosition(document.getElementById('lastRotationTime').value);if(mins===null||mins<0){wrap.style.display='none';return;}const h=Math.floor(mins/60);const m=mins%60;txt.textContent=(h>0?h+'h ':'')+m+'m';wrap.style.display='block';wrap.style.background=mins>=90?'#FEE2E2':mins>=45?'#FEF3C7':'#D1FAE5';wrap.style.borderColor=mins>=90?'#FCA5A5':mins>=45?'#FCD34D':'#6EE7B7';wrap.style.color=mins>=90?'#991B1B':mins>=45?'#92400E':'#065F46';}
+
+function updateEmpRotationDisplay(){
+  const sel=document.getElementById('empLastRotation');
+  const alert=document.getElementById('empRotationAlert');
+  const val=sel.value;
+  if(!val){alert.style.display='none';return;}
+  if(val==='unknown'){
+    alert.style.display='block';
+    alert.style.background='#FEE2E2';alert.style.border='1px solid #FCA5A5';alert.style.color='#991B1B';
+    alert.innerHTML='⚠️ Employee does not know their last rotation. Flag for supervisor.';
+    return;
+  }
+  const mins=parseInt(val);
+  if(mins<=30){
+    alert.style.display='block';
+    alert.style.background='#D1FAE5';alert.style.border='1px solid #6EE7B7';alert.style.color='#065F46';
+    alert.innerHTML='✅ Recently rotated — within normal range.';
+  } else if(mins<=90){
+    alert.style.display='block';
+    alert.style.background='#FEF3C7';alert.style.border='1px solid #FCD34D';alert.style.color='#92400E';
+    alert.innerHTML='⏱ Approaching rotation threshold — monitor fatigue indicators.';
+  } else if(mins<=480){
+    alert.style.display='block';
+    alert.style.background='#FEE2E2';alert.style.border='1px solid #FCA5A5';alert.style.color='#991B1B';
+    alert.innerHTML='🚨 Overdue for rotation — cross-reference fatigue scores.';
+  } else {
+    alert.style.display='block';
+    alert.style.background='#FEE2E2';alert.style.border='1px solid #FCA5A5';alert.style.color='#991B1B';
+    alert.innerHTML='🚨 8+ hours on position — critical flag. Escalate to supervisor immediately.';
+  }
+}
 
 // ── EMPLOYEE LOOP ─────────────────────────────────────────────────────────────
-function startNewEmployee(){curEmp={employee:null,votes:{}};buildAllRows();updProg();gp(2);}
+function startNewEmployee(){const preVotes=session.obsVotes?{...session.obsVotes}:{};curEmp={employee:null,votes:preVotes};buildAllRows();updProg();if(session.obsVotes){gp(3);}else{gp(2);}}
 function lookupEmp(id){if(!id)return;let emp=rosterLookup(id);if(!emp){if(roster.length>0){toast('Team member not found',1);return;}emp={id:id.trim(),name:'Unknown TM',role:'Staff',department:'—'};}if(auditorEmp&&normId(emp.id)===normId(auditorEmp.id)){toast('You cannot audit yourself',1);return;}if(session.employees.some(e=>normId(e.employee.id)===normId(emp.id))){toast('Already audited this session',1);return;}curEmp.employee=emp;const html=`<div class="emp-avatar">👤</div><div><div class="emp-name">${emp.name}</div><div class="emp-meta">${emp.role||'—'} · ${emp.department||'—'}</div><div class="emp-id" style="color:#059669">ID: ${emp.id}</div></div>`;['tmCard4','tmCard5'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=html;});gp(4);}
-function saveEmployee(){if(!curEmp.employee){toast('Scan employee badge first',1);gp(3);return;}const avg=keys=>{const ns=keys.map(k=>curEmp.votes[k]).filter(v=>v!==undefined&&v!=='NA');return ns.length?(ns.reduce((a,b)=>a+b,0)/ns.length):null;};const allNums=ALL_KEYS.map(k=>curEmp.votes[k]).filter(v=>v!==undefined&&v!=='NA');const overall=allNums.length?(allNums.reduce((a,b)=>a+b,0)/allNums.length):null;session.employees.push({employee:curEmp.employee,votes:{...curEmp.votes},obsAvg:avg(OBS_KEYS),uniformAvg:avg(UNIFORM_KEYS),engageAvg:avg(ENGAGE_KEYS),overall:overall!==null?parseFloat(overall.toFixed(2)):null,timestamp:new Date().toISOString()});curEmp=null;renderSessionList();document.getElementById('btnFinishSession').style.display='block';toast(session.employees[session.employees.length-1].employee.name.split(' ')[0]+' saved ✓');gp(1);}
+function saveEmployee(){if(!curEmp.employee){toast('Scan employee badge first',1);gp(3);return;}const avg=keys=>{const ns=keys.map(k=>curEmp.votes[k]).filter(v=>v!==undefined&&v!=='NA');return ns.length?(ns.reduce((a,b)=>a+b,0)/ns.length):null;};const allNums=ALL_KEYS.map(k=>curEmp.votes[k]).filter(v=>v!==undefined&&v!=='NA');const overall=allNums.length?(allNums.reduce((a,b)=>a+b,0)/allNums.length):null;if(!session.obsVotes){session.obsVotes=Object.fromEntries(OBS_KEYS.concat(OLI_Q_KEYS).map(k=>[k,curEmp.votes[k]]));}const demeanor=document.getElementById('operatorDemeanor').value;const oliNotes=document.getElementById('oliNotes').value.trim();const empRotation=document.getElementById('empLastRotation').value;session.employees.push({employee:curEmp.employee,votes:{...curEmp.votes},obsAvg:avg(OBS_KEYS),oliQAvg:avg(OLI_Q_KEYS),uniformAvg:avg(UNIFORM_KEYS),oliSAvg:avg(OLI_S_KEYS),engageAvg:avg(ENGAGE_KEYS),oliHAvg:avg(OLI_H_KEYS),operatorDemeanor:demeanor,oliNotes,empLastRotation:empRotation||'',overall:overall!==null?parseFloat(overall.toFixed(2)):null,timestamp:new Date().toISOString()});document.getElementById('operatorDemeanor').value='';document.getElementById('oliNotes').value='';document.getElementById('empLastRotation').value='';document.getElementById('empRotationAlert').style.display='none';curEmp=null;renderSessionList();document.getElementById('btnFinishSession').style.display='block';toast(session.employees[session.employees.length-1].employee.name.split(' ')[0]+' saved ✓');gp(1);}
 
 // ── SESSION LIST RENDER ───────────────────────────────────────────────────────
-function renderSessionList(){const el=document.getElementById('sessionEmpList');if(!session||!session.employees.length){el.innerHTML='<div class="empty"><div class="empty-icon">👥</div>No employees audited yet.</div>';return;}el.innerHTML=session.employees.map((e,i)=>{const v=e.overall||0;const bc=v>=4?'b-g':v>=3?'b-y':'b-r';return`<div class="em-row"><div class="em-badge ${bc}">${e.overall!==null?e.overall.toFixed(2):'—'}</div><div style="flex:1;min-width:0"><div class="em-name">${e.employee.name}</div><div class="em-meta">${e.employee.role||'—'} · ${new Date(e.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div></div></div>`;}).join('');}
+function renderSessionList(){const el=document.getElementById('sessionEmpList');const btn=document.getElementById('btnStartEmployee');if(btn)btn.textContent=session&&session.employees.length?'+ Observe Next Employee':'Click Here to Start Audit';if(!session||!session.employees.length){el.innerHTML='<div class="empty"><div class="empty-icon">👥</div>No employees audited yet.</div>';return;}el.innerHTML=session.employees.map((e,i)=>{const v=e.overall||0;const bc=v>=4?'b-g':v>=3?'b-y':'b-r';return`<div class="em-row"><div class="em-badge ${bc}">${e.overall!==null?e.overall.toFixed(2):'—'}</div><div style="flex:1;min-width:0"><div class="em-name">${e.employee.name}</div><div class="em-meta">${e.employee.role||'—'} · ${new Date(e.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div></div></div>`;}).join('');}
 
 // ── FINAL SUBMIT ──────────────────────────────────────────────────────────────
-function goFinalSubmit(){if(!session.employees.length){toast('No employees audited yet',1);return;}const allOveralls=session.employees.map(e=>e.overall).filter(v=>v!==null);const sessAvg=allOveralls.length?(allOveralls.reduce((a,b)=>a+b,0)/allOveralls.length).toFixed(2):null;document.getElementById('sumMeta').textContent=session.attraction+' · '+session.shift+' · '+session.employees.length+' employee'+(session.employees.length>1?'s':'');document.getElementById('sumEmpList').innerHTML=session.employees.map(e=>{const v=e.overall||0;const bc=v>=4?'b-g':v>=3?'b-y':'b-r';const lows=ALL_KEYS.filter(k=>typeof e.votes[k]==='number'&&e.votes[k]<=2).length;return`<div class="em-row"><div class="em-badge ${bc}">${e.overall!==null?e.overall.toFixed(2):'—'}</div><div style="flex:1;min-width:0"><div class="em-name">${e.employee.name}</div><div class="em-meta">${e.employee.role||'—'}${lows>0?' · <span style="color:#EF4444">'+lows+' low</span>':''}</div></div></div>`;}).join('');const col=v=>v===null?'#94A3B8':v>=4?'#059669':v>=3?'#CA8A04':'#EF4444';const avgO=s=>s.employees.map(e=>e.obsAvg).filter(v=>v!==null),avgU=s=>s.employees.map(e=>e.uniformAvg).filter(v=>v!==null),avgE=s=>s.employees.map(e=>e.engageAvg).filter(v=>v!==null);const mean=arr=>arr.length?(arr.reduce((a,b)=>a+b,0)/arr.length):null;const oA=mean(avgO(session)),uA=mean(avgU(session)),eA=mean(avgE(session));document.getElementById('sumScores').innerHTML=[{l:'Remote Observation',v:oA},{l:'Uniform / Show',v:uA},{l:'Engagement',v:eA}].map(({l,v})=>`<div class="sum-row"><span class="sum-label">${l}</span><span class="sum-val" style="color:${col(v)}">${v!==null?v.toFixed(2):'—'}</span></div>`).join('');const ov=document.getElementById('sumOverall');ov.textContent=sessAvg||'—';ov.style.color=col(sessAvg?parseFloat(sessAvg):null);const allLows=session.employees.flatMap(e=>ALL_KEYS.filter(k=>typeof e.votes[k]==='number'&&e.votes[k]<=2).map(k=>({emp:e.employee.name,key:k,score:e.votes[k]})));if(allLows.length){document.getElementById('sumFlagsWrap').style.display='block';document.getElementById('sumFlagsList').innerHTML=allLows.map(({emp,key,score})=>`<div class="low-flag"><strong>${emp} · Score: ${score}</strong>${LABELS[key]}</div>`).join('');}else{document.getElementById('sumFlagsWrap').style.display='none';}gp(6);}
+function goFinalSubmit(){if(!session.employees.length){toast('No employees audited yet',1);return;}const allOveralls=session.employees.map(e=>e.overall).filter(v=>v!==null);const sessAvg=allOveralls.length?(allOveralls.reduce((a,b)=>a+b,0)/allOveralls.length).toFixed(2):null;document.getElementById('sumMeta').textContent=session.attraction+' · '+session.shift+' · '+session.employees.length+' employee'+(session.employees.length>1?'s':'');document.getElementById('sumEmpList').innerHTML=session.employees.map(e=>{const v=e.overall||0;const bc=v>=4?'b-g':v>=3?'b-y':'b-r';const lows=ALL_KEYS.filter(k=>typeof e.votes[k]==='number'&&e.votes[k]<=2).length;return`<div class="em-row"><div class="em-badge ${bc}">${e.overall!==null?e.overall.toFixed(2):'—'}</div><div style="flex:1;min-width:0"><div class="em-name">${e.employee.name}</div><div class="em-meta">${e.employee.role||'—'}${lows>0?' · <span style="color:#EF4444">'+lows+' low</span>':''}</div></div></div>`;}).join('');const col=v=>v===null?'#94A3B8':v>=4?'#059669':v>=3?'#CA8A04':'#EF4444';const mean=arr=>arr.length?(arr.reduce((a,b)=>a+b,0)/arr.length):null;const oA=mean(session.employees.map(e=>e.obsAvg).filter(v=>v!==null));const oliQA=mean(session.employees.map(e=>e.oliQAvg).filter(v=>v!==null));const uA=mean(session.employees.map(e=>e.uniformAvg).filter(v=>v!==null));const oliSA=mean(session.employees.map(e=>e.oliSAvg).filter(v=>v!==null));const eA=mean(session.employees.map(e=>e.engageAvg).filter(v=>v!==null));const oliHA=mean(session.employees.map(e=>e.oliHAvg).filter(v=>v!==null));document.getElementById('sumScores').innerHTML=[{l:'Remote Observation',v:oA},{l:'OLI \u2014 Queue Flow',v:oliQA},{l:'Uniform / Show',v:uA},{l:'OLI \u2014 Staffing Adequacy',v:oliSA},{l:'Engagement',v:eA},{l:'OLI \u2014 Human Context',v:oliHA}].map(({l,v})=>`<div class="sum-row"><span class="sum-label">${l}</span><span class="sum-val" style="color:${col(v)}">${v!==null?v.toFixed(2):'—'}</span></div>`).join('');const ov=document.getElementById('sumOverall');ov.textContent=sessAvg||'—';ov.style.color=col(sessAvg?parseFloat(sessAvg):null);const allLows=session.employees.flatMap(e=>ALL_KEYS.filter(k=>typeof e.votes[k]==='number'&&e.votes[k]<=2).map(k=>({emp:e.employee.name,key:k,score:e.votes[k]})));if(allLows.length){document.getElementById('sumFlagsWrap').style.display='block';document.getElementById('sumFlagsList').innerHTML=allLows.map(({emp,key,score})=>`<div class="low-flag"><strong>${emp} · Score: ${score}</strong>${LABELS[key]}</div>`).join('');}else{document.getElementById('sumFlagsWrap').style.display='none';}gp(6);}
 
 function cancelSession(){if(!confirm('Cancel this session? All unsaved data will be lost.'))return;session=null;curEmp=null;stopCam();gp(0);}
 
-function submitSession(){const notes=document.getElementById('notesGen').value.trim();if(!notes){toast('Observations / corrective steps required',1);return;}const leaderNotes=document.getElementById('notesPOC').value.trim();const allOveralls=session.employees.map(e=>e.overall).filter(v=>v!==null);const sessAvg=allOveralls.length?(allOveralls.reduce((a,b)=>a+b,0)/allOveralls.length).toFixed(2):null;const tok=localStorage.getItem('gsa_tok'),base=localStorage.getItem('gsa_base'),tbl=localStorage.getItem('gsa_tbl');session.employees.forEach(e=>{const rec={id:session.id+'_'+e.employee.id,sessionId:String(session.id),timestamp:e.timestamp,auditor:session.auditor,auditorId:session.auditorId,auditorRole:session.auditorRole,attraction:session.attraction,shift:session.shift,employeeId:e.employee.id,employeeName:e.employee.name,role:e.employee.role||'',department:e.employee.department||'',overall:e.overall!==null?String(e.overall):'',sessionAvg:sessAvg||'',notes,leaderNotes,...Object.fromEntries(ALL_KEYS.map(k=>[LABELS[k],e.votes[k]!==undefined?String(e.votes[k]):'']))};audits.unshift(rec);if(tok&&base&&tbl)pushAT(rec,tok,base,tbl);});localStorage.setItem('gsa_v6',JSON.stringify(audits));document.getElementById('notesGen').value='';document.getElementById('notesPOC').value='';document.getElementById('btnFinishSession').style.display='none';toast('Session submitted ✓');session=null;curEmp=null;gp(0);tab('Dash');}
+function submitSession(){const notes=document.getElementById('notesGen').value.trim();if(!notes){toast('Observations / corrective steps required',1);return;}const leaderNotes=document.getElementById('notesPOC').value.trim();const allOveralls=session.employees.map(e=>e.overall).filter(v=>v!==null);const sessAvg=allOveralls.length?(allOveralls.reduce((a,b)=>a+b,0)/allOveralls.length).toFixed(2):null;const tok=localStorage.getItem('gsa_tok'),base=localStorage.getItem('gsa_base'),tbl=localStorage.getItem('gsa_tbl');session.employees.forEach(e=>{const rec={id:session.id+'_'+e.employee.id,sessionId:String(session.id),timestamp:e.timestamp,auditor:session.auditor,auditorId:session.auditorId,auditorRole:session.auditorRole,attraction:session.attraction,employeeId:e.employee.id,employeeName:e.employee.name,role:e.employee.role||'',department:e.employee.department||'',overall:e.overall!==null?String(e.overall):'',sessionAvg:sessAvg||'',operatorDemeanor:e.operatorDemeanor||'',oliNotes:e.oliNotes||'',empLastRotation:e.empLastRotation||'',notes,leaderNotes,...Object.fromEntries(ALL_KEYS.map(k=>[LABELS[k],e.votes[k]!==undefined?String(e.votes[k]):'']))};audits.unshift(rec);if(tok&&base&&tbl)pushAT(rec,tok,base,tbl);});localStorage.setItem('gsa_v6',JSON.stringify(audits));document.getElementById('notesGen').value='';document.getElementById('notesPOC').value='';document.getElementById('btnFinishSession').style.display='none';toast('Session submitted ✓');session=null;curEmp=null;gp(0);tab('Dash');}
 
 // ── AIRTABLE ──────────────────────────────────────────────────────────────────
 async function pushAT(f,tok,base,tbl){try{const r=await fetch(`https://api.airtable.com/v0/${base}/${encodeURIComponent(tbl)}`,{method:'POST',headers:{'Authorization':'Bearer '+tok,'Content-Type':'application/json'},body:JSON.stringify({fields:f})});if(!r.ok)console.warn('AT sync failed',r.status);}catch(e){console.warn(e);}}
@@ -670,10 +870,10 @@ function loadRoster(inp){const file=inp.files[0];if(!file)return;const r=new Fil
 function saveSettings(){localStorage.setItem('gsa_tok',document.getElementById('sToken').value.trim());localStorage.setItem('gsa_base',document.getElementById('sBase').value.trim());localStorage.setItem('gsa_tbl',document.getElementById('sTable').value.trim());toast('Settings saved');}
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
-function renderDash(){document.getElementById('dashDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});document.getElementById('kpiN').textContent=audits.length;if(!audits.length){['kpiAvg','kpiHi','kpiHiS','kpiLo','kpiLoS'].forEach(i=>document.getElementById(i).textContent='—');document.getElementById('auditLog').innerHTML='<div class="empty"><div class="empty-icon">📋</div>No audits yet.</div>';return;}const ws=audits.filter(a=>a.overall);if(ws.length){const nums=ws.map(a=>parseFloat(a.overall));const avg=(nums.reduce((s,n)=>s+n,0)/nums.length).toFixed(2);document.getElementById('kpiAvg').textContent=avg;const sorted=[...ws].sort((a,b)=>parseFloat(b.overall)-parseFloat(a.overall));document.getElementById('kpiHi').textContent=sorted[0].employeeName.split(' ')[0];document.getElementById('kpiHiS').textContent=sorted[0].overall+' avg';document.getElementById('kpiLo').textContent=sorted[sorted.length-1].employeeName.split(' ')[0];document.getElementById('kpiLoS').textContent=sorted[sorted.length-1].overall+' avg';}document.getElementById('auditLog').innerHTML=audits.map(a=>{const v=parseFloat(a.overall)||0;const bc=v>=4?'b-g':v>=3?'b-y':'b-r';const t=new Date(a.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});return`<div class="log-item"><div class="log-badge ${bc}">${a.overall||'—'}</div><div style="flex:1;min-width:0"><div class="log-name">${a.employeeName||'Unknown'}</div><div class="log-meta">${a.role||''} · ${a.shift} · ${t} · ${a.attraction}</div></div></div>`;}).join('');}
+function renderDash(){document.getElementById('dashDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});document.getElementById('kpiN').textContent=audits.length;if(!audits.length){['kpiAvg','kpiHi','kpiHiS','kpiLo','kpiLoS'].forEach(i=>document.getElementById(i).textContent='—');document.getElementById('auditLog').innerHTML='<div class="empty"><div class="empty-icon">📋</div>No audits yet.</div>';return;}const ws=audits.filter(a=>a.overall);if(ws.length){const nums=ws.map(a=>parseFloat(a.overall));const avg=(nums.reduce((s,n)=>s+n,0)/nums.length).toFixed(2);document.getElementById('kpiAvg').textContent=avg;const sorted=[...ws].sort((a,b)=>parseFloat(b.overall)-parseFloat(a.overall));document.getElementById('kpiHi').textContent=sorted[0].employeeName.split(' ')[0];document.getElementById('kpiHiS').textContent=sorted[0].overall+' avg';document.getElementById('kpiLo').textContent=sorted[sorted.length-1].employeeName.split(' ')[0];document.getElementById('kpiLoS').textContent=sorted[sorted.length-1].overall+' avg';}document.getElementById('auditLog').innerHTML=audits.map(a=>{const v=parseFloat(a.overall)||0;const bc=v>=4?'b-g':v>=3?'b-y':'b-r';const t=new Date(a.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});return`<div class="log-item"><div class="log-badge ${bc}">${a.overall||'—'}</div><div style="flex:1;min-width:0"><div class="log-name">${a.employeeName||'Unknown'}</div><div class="log-meta">${a.role||''} · ${t} · ${a.attraction}</div></div></div>`;}).join('');}
 
 // ── CSV ────────────────────────────────────────────────────────────────────────
-function exportCSV(){if(!audits.length){toast('No audits to export',1);return;}const headers=['SessionID','RecordID','Timestamp','Auditor','Auditor ID','Auditor Role','Attraction','Shift','Employee ID','Employee Name','Role','Department','Overall','Session Avg',...ALL_KEYS.map(k=>LABELS[k]),'Notes','Leadership Notes'];const rows=audits.map(a=>[a.sessionId||'',a.id,a.timestamp,a.auditor,a.auditorId||'',a.auditorRole||'',a.attraction,a.shift,a.employeeId||'',a.employeeName||'',a.role||'',a.department||'',a.overall||'',a.sessionAvg||'',...ALL_KEYS.map(k=>a[LABELS[k]]||''),`"${(a.notes||'').replace(/"/g,'""')}"`,`"${(a.leaderNotes||'').replace(/"/g,'""')}"`]);const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const l=document.createElement('a');l.href=url;l.download='gsa-'+new Date().toISOString().slice(0,10)+'.csv';l.click();URL.revokeObjectURL(url);toast('CSV exported');}
+function exportCSV(){if(!audits.length){toast('No audits to export',1);return;}const headers=['SessionID','RecordID','Timestamp','Auditor','Auditor ID','Auditor Role','Attraction','Employee ID','Employee Name','Role','Department','Overall','Session Avg',...ALL_KEYS.map(k=>LABELS[k]),'Operator Demeanor','Emp Last Rotation (mins)','OLI Field Notes','Notes','Leadership Notes'];const rows=audits.map(a=>[a.sessionId||'',a.id,a.timestamp,a.auditor,a.auditorId||'',a.auditorRole||'',a.attraction,a.employeeId||'',a.employeeName||'',a.role||'',a.department||'',a.overall||'',a.sessionAvg||'',...ALL_KEYS.map(k=>a[LABELS[k]]||''),`"${(a.operatorDemeanor||'').replace(/"/g,'""')}"`,a.empLastRotation||'',`"${(a.oliNotes||'').replace(/"/g,'""')}"`,`"${(a.notes||'').replace(/"/g,'""')}"`,`"${(a.leaderNotes||'').replace(/"/g,'""')}"`]);const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));const l=document.createElement('a');l.href=url;l.download='gsa-'+new Date().toISOString().slice(0,10)+'.csv';l.click();URL.revokeObjectURL(url);toast('CSV exported');}
 function clearData(){if(!confirm('Clear all audit records?'))return;audits=[];localStorage.removeItem('gsa_v6');renderDash();toast('Records cleared');}
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
