@@ -26,8 +26,6 @@ html{height:100%;background:var(--bg);}
 body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--bg);
   background-image:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(255,107,26,.04) 0%,transparent 60%);
   display:flex;flex-direction:column;max-width:600px;margin:0 auto;}
-
-/* TOPBAR */
 .topbar{background:var(--surface);border-bottom:2px solid var(--orange);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .tb-left{display:flex;flex-direction:column;}
 .ride-name{font-family:var(--display);font-size:22px;font-weight:700;color:var(--text);letter-spacing:.5px;line-height:1;}
@@ -40,24 +38,19 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .status-dot.closed{background:var(--red);box-shadow:0 0 6px var(--red);}
 .status-dot.open{background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-
-/* MODE TABS — 4 tabs now */
+#sync-dot{width:7px;height:7px;border-radius:50%;background:#4A5568;flex-shrink:0;cursor:default;transition:background .3s;}
 .mode-tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
 .mode-tab{height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:var(--mono);font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;position:relative;}
 .mode-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
 .tab-icon{font-size:15px;line-height:1;}
 .tab-badge{position:absolute;top:6px;right:6px;background:var(--red);color:#fff;font-size:8px;font-weight:700;font-family:var(--mono);padding:1px 5px;border-radius:3px;display:none;}
 .tab-badge.show{display:block;}
-
-/* MAIN */
 .main{flex:1;overflow-y:auto;padding:14px 14px 80px;}
 .view{display:none;}
 .view.active{display:block;animation:fadeIn .2s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .sec-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border);padding-bottom:6px;margin:18px 0 10px;}
 .sec-label:first-child{margin-top:0;}
-
-/* CHECKLIST */
 .check-item{display:flex;align-items:center;gap:0;margin-bottom:8px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--panel);transition:border-color .15s;}
 .check-item.pass{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.04);}
 .check-item.fail{border-color:rgba(244,63,94,.4);background:rgba(244,63,94,.04);}
@@ -75,8 +68,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .fail-note textarea:focus{outline:none;border-color:var(--red);}
 .check-progress{height:4px;background:var(--panel3);border-radius:2px;margin-bottom:14px;overflow:hidden;}
 .check-progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--orange),var(--green));transition:width .3s;}
-
-/* SIGNOFF */
 .signoff-block{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;}
 .signoff-row{display:flex;align-items:center;gap:10px;padding:13px 14px;border-bottom:1px solid var(--border);transition:background .15s;}
 .signoff-row.signed{background:rgba(34,197,94,.04);border-bottom-color:rgba(34,197,94,.15);}
@@ -98,8 +89,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .submit-btn{width:100%;height:60px;border:none;border-radius:12px;font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;margin-top:12px;}
 .submit-btn.primary{background:linear-gradient(135deg,var(--orange),var(--orange2));color:#fff;box-shadow:0 4px 20px rgba(255,107,26,.3);}
 .submit-btn.primary:disabled{opacity:.35;cursor:not-allowed;}
-
-/* LIVE */
 .cycle-counter{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
 .cycle-val{font-family:var(--display);font-size:52px;font-weight:700;color:var(--orange);line-height:1;}
 .cycle-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-top:2px;}
@@ -132,8 +121,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .rot-entry{display:grid;grid-template-columns:60px 1fr 1fr 60px;gap:6px;padding:8px 12px;border-bottom:1px solid rgba(46,50,60,.5);font-family:var(--mono);font-size:10px;align-items:center;}
 .rot-entry:last-child{border-bottom:none;}
 .rot-time{color:var(--orange);}
-
-/* UNITS */
 .unit-summary-bar{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;}
 .unit-summary-div{width:1px;height:36px;background:var(--border2);}
 .unit-sum-val{font-family:var(--display);font-size:40px;font-weight:700;line-height:1;color:var(--green);}
@@ -168,8 +155,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .unit-log-title.out{color:var(--red);}
 .unit-log-note{font-size:11px;color:var(--text-dim);margin-top:2px;line-height:1.4;}
 .unit-log-time{font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-top:2px;}
-
-/* ══ TURNSTILE ══ */
 .ts-hero{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;}
 .ts-hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:10px;}
 .ts-val{font-family:var(--display);font-size:56px;font-weight:700;color:var(--teal);line-height:1;}
@@ -210,8 +195,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .ts-log-delta.up{color:var(--green);}
 .ts-log-delta.dn{color:var(--red);}
 .ts-log-delta.eq{color:var(--text-muted);}
-
-/* ROT MODAL */
 #rotModal{display:none;position:fixed;inset:0;background:rgba(10,10,12,.85);backdrop-filter:blur(6px);z-index:200;padding:20px 14px;align-items:flex-end;}
 #rotModal.show{display:flex;}
 .rot-panel{background:var(--panel);border:1px solid var(--border2);border-radius:16px 16px 0 0;width:100%;padding:20px;max-height:80vh;overflow-y:auto;}
@@ -224,8 +207,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .rot-btns{display:flex;gap:8px;}
 .rot-btn-confirm{flex:1;height:52px;background:linear-gradient(135deg,var(--orange),var(--orange2));border:none;border-radius:10px;font-family:var(--display);font-size:17px;font-weight:700;color:#fff;cursor:pointer;}
 .rot-btn-cancel{padding:0 20px;height:52px;background:var(--panel2);border:1px solid var(--border2);border-radius:10px;font-family:var(--display);font-size:15px;color:var(--text-dim);cursor:pointer;}
-
-/* TOAST */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--panel2);color:var(--text);border:1px solid var(--border2);padding:11px 20px;border-radius:10px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.3px;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;max-width:90vw;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 #toast.ok{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.4);color:var(--green);}
@@ -236,7 +217,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="tb-left">
     <div class="ride-name" id="rideName">Steel Coaster</div>
@@ -246,13 +226,13 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
     <div class="tb-clock" id="clock">--:--</div>
     <div class="tb-date" id="dateDisp">---</div>
     <div class="tb-status">
+      <div id="sync-dot" title="Airtable sync"></div>
       <div class="status-dot closed" id="statusDot"></div>
       <span id="statusText" style="font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--text-dim);">CLOSED</span>
     </div>
   </div>
 </div>
 
-<!-- MODE TABS — 4 -->
 <div class="mode-tabs">
   <div class="mode-tab active" onclick="showMode('opening')" id="tab-opening">
     <span class="tab-icon">📋</span><span>Opening</span>
@@ -266,7 +246,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
   </div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
 <!-- ══ OPENING ══ -->
@@ -323,7 +302,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
     </div>
   </div>
 
-  <!-- Turnstile quick-entry -->
   <div class="ts-hero">
     <div class="ts-hero-top">
       <div>
@@ -363,7 +341,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
   </div>
 </div>
 
-
 <!-- ══ UNITS ══ -->
 <div class="view" id="view-units">
   <div class="sec-label">// Vehicles / Trains in Service</div>
@@ -385,7 +362,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 
 </div><!-- /main -->
 
-<!-- ROT MODAL -->
 <div id="rotModal">
   <div class="rot-panel">
     <div class="rot-title" id="rotModalTitle">Rotate / Assign Position</div>
@@ -402,7 +378,113 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 <div id="toast"></div>
 
 <script>
-// ── CONFIG ─────────────────────────────────────────────────────────────────
+// ── PROXY CONFIG ──────────────────────────────────────────────────────────
+const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+
+async function atPost(table, fields) {
+  const si = document.getElementById('sync-dot');
+  if (si) { si.style.background = '#F59E0B'; si.title = 'Syncing…'; }
+  try {
+    const res = await fetch(AT_PROXY + '/' + encodeURIComponent(table), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields }),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (si) {
+      si.style.background = '#22C55E'; si.title = 'Synced';
+      setTimeout(() => { si.style.background = '#4A5568'; }, 2000);
+    }
+  } catch(e) {
+    if (si) {
+      si.style.background = '#F43F5E'; si.title = 'Sync error';
+      setTimeout(() => { si.style.background = '#4A5568'; }, 4000);
+    }
+    console.warn('[ATR] Sync failed:', e.message);
+  }
+}
+
+// Push: session open → ATR_Sessions
+function pushSession(status) {
+  const now = new Date();
+  atPost('ATR_Sessions', {
+    'Session ID':        RIDE_ID + '-' + now.toISOString().slice(0,10) + '-' + Date.now().toString(36).toUpperCase().slice(-4),
+    'Ride Name':         RIDE_NAME,
+    'Ride ID':           RIDE_ID,
+    'Date':              now.toISOString().split('T')[0],
+    'Status':            status,
+    'Timestamp':         now.toISOString(),
+    'Supervisor Badge':  state.signoffs.supervisor  ? state.signoffs.supervisor.badge  : '',
+    'Supervisor Name':   state.signoffs.supervisor  ? state.signoffs.supervisor.name   : '',
+    'Maintenance Badge': state.signoffs.maintenance ? state.signoffs.maintenance.badge : '',
+    'Maintenance Name':  state.signoffs.maintenance ? state.signoffs.maintenance.name  : '',
+    'Checklist Pass':    Object.values(state.openChecks).filter(c=>c.val==='pass').length,
+    'Checklist Fail':    Object.values(state.openChecks).filter(c=>c.val==='fail').length,
+    'Checklist NA':      Object.values(state.openChecks).filter(c=>c.val==='na').length,
+    'Fail Notes':        Object.entries(state.openChecks).filter(([,c])=>c.val==='fail'&&c.note).map(([k,c])=>k+': '+c.note).join(' | '),
+    'Units in Service':  parseInt(document.getElementById('unitInService').textContent)||0,
+    'Cycle Count':       state.cycleCount,
+  });
+}
+
+// Push: unit status change → OOS_Log
+function pushOOSUnit(name, inService, reason) {
+  atPost('OOS_Log', {
+    'Record ID':       RIDE_ID + '-' + Date.now().toString(36).toUpperCase().slice(-6),
+    'Attraction':      RIDE_NAME + ' · ' + name,
+    'Reason':          inService ? '' : (reason || 'Unspecified'),
+    'Down Since':      inService ? '' : new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
+    'Expected Return': '',
+    'Detail':          inService ? name + ' returned to service' : name + ' taken out of service' + (reason ? ' — ' + reason : ''),
+    'Notified':        '',
+    'Status':          inService ? 'Restored' : 'Active',
+    'Source':          'ATR — Operator Log',
+    'Date':            new Date().toISOString().split('T')[0],
+    'Submitted At':    new Date().toISOString(),
+  });
+}
+
+// Push: turnstile reading → TPH_Log
+function pushTPH(entry) {
+  const shiftHour = state.shiftStart ? new Date(state.shiftStart).getHours() : 8;
+  const shiftLabel = shiftHour < 12 ? 'open' : shiftHour < 17 ? 'mid' : 'close';
+  atPost('TPH_Log', {
+    'Record ID':       RIDE_ID + '-TS-' + Date.now().toString(36).toUpperCase().slice(-6),
+    'Date':            new Date().toISOString().split('T')[0],
+    'Shift':           shiftLabel,
+    'Time Start':      entry.time,
+    'Attraction':      RIDE_NAME,
+    'Guests Loaded':   entry.delta !== null ? Math.max(0, entry.delta) : 0,
+    'Duration Min':    60,
+    'TPH':             entry.delta !== null ? Math.max(0, entry.delta) : 0,
+    'Design Capacity': 0,
+    'Utilization Pct': 0,
+    'Units in Service':parseInt(document.getElementById('unitInService').textContent)||0,
+    'Operator':        '',
+    'Notes':           'Turnstile reading: ' + entry.count.toLocaleString() + (entry.delta !== null ? ' | Δ ' + (entry.delta >= 0 ? '+' : '') + entry.delta : ''),
+    'Source':          'ATR — Turnstile',
+    'Submitted At':    new Date().toISOString(),
+  });
+}
+
+// Push: rotation confirmed → ATR_Rotations
+function pushRotation(pos, badgeIn, nameIn, prev, dur) {
+  atPost('ATR_Rotations', {
+    'Rotation ID':      RIDE_ID + '-ROT-' + Date.now().toString(36).toUpperCase().slice(-6),
+    'Ride Name':        RIDE_NAME,
+    'Ride ID':          RIDE_ID,
+    'Date':             new Date().toISOString().split('T')[0],
+    'Timestamp':        new Date().toISOString(),
+    'Position':         pos,
+    'Incoming Badge':   badgeIn,
+    'Incoming Name':    nameIn,
+    'Outgoing Badge':   prev ? prev.badge : '',
+    'Outgoing Name':    prev ? prev.name  : '',
+    'Duration at Post': dur || '',
+  });
+}
+
+// ── CONFIG ────────────────────────────────────────────────────────────────
 const RIDE_NAME  = new URLSearchParams(window.location.search).get('ride') || 'Steel Coaster';
 const RIDE_ID    = new URLSearchParams(window.location.search).get('id')   || 'UNIT-SC01';
 const UNIT_COUNT = parseInt(new URLSearchParams(window.location.search).get('units') || '3');
@@ -442,14 +524,14 @@ const OPEN_CHECKS = [
   {cat:'V · Quality Checks', item:'E. State of New Jersey Permit to Operate is present'},
 ];
 
-// ── STATE ──────────────────────────────────────────────────────────────────
+// ── STATE ─────────────────────────────────────────────────────────────────
 let state = {
   rideStatus:'closed', signoffs:{supervisor:null,maintenance:null},
   openChecks:{}, cycleCount:0, shiftStart:null,
   positions:{}, rotLog:[], units:{}, unitLog:[],
 };
 
-// ── INIT ───────────────────────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────────────
 function init(){
   tickClock(); setInterval(tickClock,1000);
   buildChecklist();
@@ -464,7 +546,7 @@ function tickClock(){
   document.getElementById('dateDisp').textContent = now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
 }
 
-// ── CHECKLIST ──────────────────────────────────────────────────────────────
+// ── CHECKLIST ─────────────────────────────────────────────────────────────
 function buildChecklist(){
   const el = document.getElementById('checklistBody');
   el.innerHTML = OPEN_CHECKS.map((c,i)=>{
@@ -492,8 +574,7 @@ function setCheck(id,val){
   if(val==='fail') ci.classList.add('fail');
   ci.querySelectorAll('.check-btn').forEach(b=>b.classList.remove('sel'));
   ci.querySelector(val==='pass'?'.pass-btn':val==='fail'?'.fail-btn':'.na-btn').classList.add('sel');
-  const fn=document.getElementById('fn_'+id);
-  fn.classList.toggle('show',val==='fail');
+  document.getElementById('fn_'+id).classList.toggle('show',val==='fail');
   updateOpenProgress();
 }
 
@@ -517,7 +598,7 @@ function updateOpenProgress(){
   else hint.textContent=done+'/'+total+' items checked · Ready to open';
 }
 
-// ── SIGNOFF ────────────────────────────────────────────────────────────────
+// ── SIGNOFF ───────────────────────────────────────────────────────────────
 function setSignoff(role){
   const fields={supervisor:{badge:'supBadge',name:'supName'},maintenance:{badge:'maintBadge',name:'maintName'}};
   const f=fields[role];
@@ -547,11 +628,13 @@ function openRide(){
   state.positions['Load/Dispatch']={badge:'',name:'Unassigned',since:Date.now()};
   renderPositions();
   document.getElementById('cycleSub').textContent='Shift started: '+state.shiftStart.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-  toast('Ride opened · Shift started','ok');
+  // ── PROXY: push session open ──
+  pushSession('Open');
+  toast('Ride opened · Shift started · Syncing to Airtable','ok');
   showMode('live');
 }
 
-// ── POSITIONS ──────────────────────────────────────────────────────────────
+// ── POSITIONS ─────────────────────────────────────────────────────────────
 function initPositions(){ POSITIONS.forEach(p=>{state.positions[p]=null;}); renderPositions(); }
 
 function renderPositions(){
@@ -593,19 +676,25 @@ function openRotModal(pos,isRotate){
   document.getElementById('rotModal').classList.add('show');
 }
 function closeRotModal(){ document.getElementById('rotModal').classList.remove('show'); }
+
 function confirmRotation(){
   const badge=document.getElementById('rotBadgeIn').value.trim().toUpperCase();
   const name=document.getElementById('rotNameIn').value.trim()||badge;
   if(!badge){toast('Enter badge ID','err');return;}
   const prev=state.positions[rotModalPos];
+  let dur='';
   if(prev&&rotModalIsRotate){
-    const dur=Math.floor((Date.now()-prev.since)/60000);
-    state.rotLog.unshift({time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),badge:prev.badge,name:prev.name,pos:rotModalPos,dur:fmtMins(dur)});
+    const mins=Math.floor((Date.now()-prev.since)/60000);
+    dur=fmtMins(mins);
+    state.rotLog.unshift({time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),badge:prev.badge,name:prev.name,pos:rotModalPos,dur});
   }
+  // ── PROXY: push rotation ──
+  pushRotation(rotModalPos, badge, name, prev, dur);
   state.positions[rotModalPos]={badge,name,since:Date.now()};
   closeRotModal(); renderPositions(); renderRotLog();
   toast((rotModalIsRotate?'Rotated':'Assigned')+': '+name+' → '+rotModalPos,'ok');
 }
+
 function renderRotLog(){
   const el=document.getElementById('rotLogBody');
   if(!state.rotLog.length){el.innerHTML='<div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No rotations logged yet</div>';return;}
@@ -615,8 +704,7 @@ function renderRotLog(){
 function incrementCycle(){ state.cycleCount++; document.getElementById('cycleCount').textContent=state.cycleCount; }
 function decrementCycle(){ if(state.cycleCount>0){state.cycleCount--;document.getElementById('cycleCount').textContent=state.cycleCount;} }
 
-
-// ── UNITS ──────────────────────────────────────────────────────────────────
+// ── UNITS ─────────────────────────────────────────────────────────────────
 function initUnits(){ UNIT_NAMES.forEach(u=>{state.units[u]={inService:true,since:null,reason:''};}); renderUnits(); }
 
 function renderUnits(){
@@ -660,6 +748,8 @@ function setUnit(name,inService,sid){
   if(!inService&&sid){ const ta=document.getElementById('urtext_'+sid); reason=ta?ta.value.trim():''; }
   u.inService=inService; u.since=Date.now(); u.reason=reason;
   state.unitLog.unshift({unit:name,inService,reason,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),ts:Date.now()});
+  // ── PROXY: push OOS unit status ──
+  pushOOSUnit(name, inService, reason);
   renderUnits(); renderUnitLog();
   toast(name+' → '+(inService?'IN SERVICE':'OUT OF SERVICE'),inService?'ok':'warn');
 }
@@ -677,14 +767,13 @@ function renderUnitLog(){
   </div>`).join('');
 }
 
-
 // ── TURNSTILE ─────────────────────────────────────────────────────────────
-let tsReadings = []; // [{ts, time, hour, count, delta}]
+let tsReadings = [];
 let tsDueTimer = null;
 
 function logTurnstile(){
   const inp = document.getElementById('ts-count-input');
-  if(!inp){ return; }
+  if(!inp) return;
   const count = parseInt(inp.value);
   if(isNaN(count)||count<0){ toast('Enter a valid count','err'); return; }
   const now   = new Date();
@@ -695,15 +784,16 @@ function logTurnstile(){
   const entry = { ts: Date.now(), time: timeStr, hour, count, delta };
   tsReadings.push(entry);
   inp.value = '';
+  // ── PROXY: push TPH reading ──
+  pushTPH(entry);
   renderTurnstile();
   scheduleTsDue();
-  toast('Turnstile: '+count.toLocaleString()+(delta!==null?' (Δ '+(delta>=0?'+':'')+delta.toLocaleString()+')':''),'ok');
+  toast('Turnstile: '+count.toLocaleString()+(delta!==null?' (Δ '+(delta>=0?'+':'')+delta.toLocaleString()+')':''),'teal');
 }
 
 function scheduleTsDue(){
   clearTimeout(tsDueTimer);
   renderTsDueStatus();
-  // Re-check every 30s
   tsDueTimer = setInterval(renderTsDueStatus, 30000);
 }
 
@@ -711,36 +801,21 @@ function renderTsDueStatus(){
   const dueEl = document.getElementById('ts-next-due');
   if(!dueEl) return;
   const lastReading = tsReadings.length ? tsReadings[tsReadings.length-1] : null;
-  if(!lastReading){
-    dueEl.className='ts-next-due ok';
-    dueEl.textContent='Log first reading';
-    return;
-  }
+  if(!lastReading){ dueEl.className='ts-next-due ok'; dueEl.textContent='Log first reading'; return; }
   const minsAgo = Math.floor((Date.now()-lastReading.ts)/60000);
   const minsUntilDue = 60 - minsAgo;
-  if(minsAgo>=75){
-    dueEl.className='ts-next-due overdue';
-    dueEl.textContent='⚠ OVERDUE — '+minsAgo+'m since last';
-  } else if(minsAgo>=50){
-    dueEl.className='ts-next-due soon';
-    dueEl.textContent='Due in ~'+minsUntilDue+'m';
-  } else {
-    dueEl.className='ts-next-due ok';
-    dueEl.textContent='Next in ~'+minsUntilDue+'m';
-  }
+  if(minsAgo>=75){ dueEl.className='ts-next-due overdue'; dueEl.textContent='⚠ OVERDUE — '+minsAgo+'m since last'; }
+  else if(minsAgo>=50){ dueEl.className='ts-next-due soon'; dueEl.textContent='Due in ~'+minsUntilDue+'m'; }
+  else { dueEl.className='ts-next-due ok'; dueEl.textContent='Next in ~'+minsUntilDue+'m'; }
 }
 
 function renderTurnstile(){
   if(!tsReadings.length) return;
   const last = tsReadings[tsReadings.length-1];
-
-  // Hero
   document.getElementById('ts-last-val').textContent = last.count.toLocaleString();
   document.getElementById('ts-last-time').textContent = 'Read at '+last.time;
   document.getElementById('ts-readings-today').textContent = tsReadings.length+' reading'+(tsReadings.length!==1?'s':'')+' this shift';
   renderTsDueStatus();
-
-  // Hour grid — show hours from shift start to now
   const shiftHour = state.shiftStart ? state.shiftStart.getHours() : (new Date().getHours() - tsReadings.length);
   const nowHour   = new Date().getHours();
   const gridEl    = document.getElementById('ts-hour-grid');
@@ -759,39 +834,24 @@ function renderTurnstile(){
       delta = `<div class="ts-hc-delta ${dcls}">${sign}${reading.delta.toLocaleString()}</div>`;
     }
     const label = h===0?'12 AM':h<12?h+' AM':h===12?'12 PM':(h-12)+' PM';
-    cells += `<div class="ts-hour-cell ${cls}">
-      <div class="ts-hc-hour">${label}</div>
-      <div class="ts-hc-count ${countCls}">${countStr}</div>
-      ${delta}
-    </div>`;
+    cells += `<div class="ts-hour-cell ${cls}"><div class="ts-hc-hour">${label}</div><div class="ts-hc-count ${countCls}">${countStr}</div>${delta}</div>`;
   }
   gridEl.innerHTML = cells;
-
-  // Log table
   const logEl = document.getElementById('ts-log-body');
-  const rows = [...tsReadings].reverse().map((r,i,arr)=>{
-    const next = arr[i+1]; // previous chronologically
-    const deltaStr = r.delta!==null
-      ? (r.delta>=0?'+':'')+r.delta.toLocaleString()
-      : '—';
+  const rows = [...tsReadings].reverse().map(r=>{
+    const deltaStr = r.delta!==null?(r.delta>=0?'+':'')+r.delta.toLocaleString():'—';
     const deltaCls = r.delta===null?'eq':r.delta>0?'up':'dn';
     const hourLabel = r.hour===0?'12 AM':r.hour<12?r.hour+' AM':r.hour===12?'12 PM':(r.hour-12)+' PM';
-    return `<div class="ts-log-row">
-      <div class="ts-log-time">${r.time}</div>
-      <div class="ts-log-hour">${hourLabel}</div>
-      <div class="ts-log-count">${r.count.toLocaleString()}</div>
-      <div class="ts-log-delta ${deltaCls}">${deltaStr}</div>
-    </div>`;
+    return `<div class="ts-log-row"><div class="ts-log-time">${r.time}</div><div class="ts-log-hour">${hourLabel}</div><div class="ts-log-count">${r.count.toLocaleString()}</div><div class="ts-log-delta ${deltaCls}">${deltaStr}</div></div>`;
   }).join('');
   logEl.innerHTML = rows || '<div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No readings logged yet</div>';
 }
 
-// Allow Enter key to submit turnstile reading
 document.addEventListener('keydown', function(e){
   if(e.key==='Enter' && document.activeElement.id==='ts-count-input') logTurnstile();
 });
 
-// ── VIEWS ──────────────────────────────────────────────────────────────────
+// ── VIEWS ─────────────────────────────────────────────────────────────────
 function showMode(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
@@ -800,7 +860,7 @@ function showMode(name){
   if(name==='units') renderUnits();
 }
 
-// ── TOAST ──────────────────────────────────────────────────────────────────
+// ── TOAST ─────────────────────────────────────────────────────────────────
 function toast(msg,type){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='show'+(type?' '+type:'');
