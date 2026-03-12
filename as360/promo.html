@@ -214,6 +214,64 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .sf-links a:hover{color:var(--teal);}
 .sf-copy{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.15);}
 
+/* AUTO-FEED BADGE */
+.m-auto-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:2px 8px;border-radius:3px;background:rgba(0,212,208,.08);border:1px solid rgba(0,212,208,.2);color:var(--teal);margin-bottom:4px;}
+.m-auto-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:autoPulse 1.8s ease-in-out infinite;}
+@keyframes autoPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+.mc-auto::after{background:var(--teal);}
+.mc-auto .m-code{color:var(--teal);}
+
+/* OLI CONVERGENCE SECTION */
+.oli-section{padding:80px 24px;background:rgba(0,0,0,.3);border-top:1px solid var(--dim);}
+.oli-inner{max-width:1200px;margin:0 auto;}
+.oli-intro{display:grid;grid-template-columns:1fr;gap:40px;margin-bottom:56px;}
+@media(min-width:900px){.oli-intro{grid-template-columns:1fr 1fr;align-items:start;}}
+.oli-score-display{display:flex;align-items:center;gap:20px;padding:24px 28px;background:rgba(0,212,208,.05);border:1px solid rgba(0,212,208,.15);border-radius:14px;}
+.oli-ring{position:relative;width:90px;height:90px;flex-shrink:0;}
+.oli-ring svg{width:100%;height:100%;}
+.oli-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.oli-ring-num{font-family:var(--display);font-size:30px;color:var(--text-bright);line-height:1;}
+.oli-ring-lbl{font-family:var(--mono);font-size:7px;color:var(--teal);letter-spacing:1.5px;}
+.oli-score-right{}
+.oli-score-title{font-family:var(--display);font-size:22px;color:var(--text-bright);letter-spacing:.5px;margin-bottom:4px;}
+.oli-score-sub{font-family:var(--mono);font-size:9px;color:var(--teal);letter-spacing:1.5px;margin-bottom:8px;}
+.oli-score-desc{font-size:13px;color:var(--text);line-height:1.6;}
+.oli-pillar-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.oli-ptag{font-family:var(--mono);font-size:9px;padding:3px 9px;border-radius:4px;font-weight:700;}
+
+/* OLI INPUT STREAM GRID */
+.oli-streams-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:16px;}
+.oli-stream-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+@media(min-width:600px){.oli-stream-grid{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:1000px){.oli-stream-grid{grid-template-columns:repeat(3,1fr);}}
+.oli-stream-card{background:rgba(255,255,255,.025);border:1px solid var(--dim);border-radius:10px;padding:16px;display:flex;gap:14px;align-items:flex-start;transition:all .18s;position:relative;overflow:hidden;}
+.oli-stream-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.oli-stream-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4);}
+.osc-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+.osc-body{flex:1;}
+.osc-top{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;}
+.osc-code{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;font-weight:700;}
+.osc-name{font-size:12px;color:var(--text-bright);font-weight:600;}
+.osc-contribution{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid;}
+.osc-desc{font-size:11px;color:var(--text);line-height:1.55;margin-bottom:8px;}
+.osc-weight-row{display:flex;align-items:center;gap:8px;}
+.osc-weight-label{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.25);letter-spacing:1px;white-space:nowrap;}
+.osc-weight-bar{flex:1;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
+.osc-weight-fill{height:100%;border-radius:2px;transition:width .4s ease;}
+.osc-weight-pct{font-family:var(--mono);font-size:9px;font-weight:700;white-space:nowrap;}
+
+/* OLI CONFIDENCE METER */
+.oli-confidence{margin-top:48px;padding:28px 32px;background:rgba(0,212,208,.04);border:1px solid rgba(0,212,208,.12);border-radius:14px;}
+.oli-conf-title{font-family:var(--display);font-size:22px;color:var(--text-bright);margin-bottom:4px;}
+.oli-conf-sub{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:24px;max-width:620px;}
+.oli-conf-bars{display:grid;grid-template-columns:1fr;gap:12px;}
+@media(min-width:700px){.oli-conf-bars{grid-template-columns:repeat(2,1fr);}}
+.conf-bar-item{display:flex;align-items:center;gap:12px;}
+.conf-bar-label{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text);min-width:130px;}
+.conf-bar-track{flex:1;height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;}
+.conf-bar-fill{height:100%;border-radius:3px;}
+.conf-bar-val{font-family:var(--mono);font-size:9px;font-weight:700;min-width:32px;text-align:right;}
+
 /* INLINE PILLARS STRIP */
 .inline-pillars{
   display:flex;align-items:stretch;justify-content:center;
@@ -260,7 +318,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
     <div class="hero-eyebrow">AMUSEMENT STANDARDS · AS 360 PLATFORM</div>
     <div class="hero-title">RIDE<br><span>SCORE™</span></div>
     <div class="hero-sub-title">The Operational Risk Index</div>
-    <div class="hero-desc">16 independent data streams. Four scored pillars. One composite index that quantifies your operational risk the way FICO scores creditworthiness — built for amusement parks, water parks, FECs, and ride manufacturers.</div>
+    <div class="hero-desc">15 independent data streams. Four scored pillars. One composite index that quantifies your operational risk the way FICO scores creditworthiness — built for amusement parks, water parks, FECs, and ride manufacturers.</div>
     <div class="hero-cta">
       <a href="#diagram" class="btn-primary">Explore the System</a>
       <a href="https://amusementstandards.com/as360-ride-score.html" class="btn-secondary">See How It Works</a>
@@ -285,7 +343,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 <!-- STATS BAR -->
 <div class="stats-bar reveal">
   <div class="stats-inner">
-    <div class="stat-item"><div class="stat-num">16</div><div class="stat-label">Data Streams</div></div>
+    <div class="stat-item"><div class="stat-num">15</div><div class="stat-label">Data Streams</div></div>
     <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Scored Pillars</div></div>
     <div class="stat-item"><div class="stat-num">360°</div><div class="stat-label">Coverage</div></div>
     <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Composite Index</div></div>
@@ -311,7 +369,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
   <div class="modules-inner">
     <div class="sec-eyebrow reveal">ALL MODULES & FORMS</div>
     <div class="sec-title reveal">Every stream. <span>One click.</span></div>
-    <div class="sec-body reveal">16 data streams organized by how the data enters the system — from your operators on the floor, your management team, independent auditors deployed by AS, and your guests in real time.</div>
+    <div class="sec-body reveal">15 data streams organized by how the data enters the system — from your operators on the floor, your management team, independent auditors deployed by AS, your guests in real time, and automated live feeds that require no staff input at all.</div>
 
     <!-- GROUP 1: Operator Documentation -->
     <div class="module-group-label reveal">
@@ -419,8 +477,354 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
         <div class="m-desc">Guests can submit a near-miss flag directly — same triage pipeline as staff submissions. Adjusts scores immediately on submission.</div>
         <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
       </a>
+      <div class="module-card mc-gold" style="cursor:default;">
+        <div class="m-icon">⭐</div><div class="m-code">OLR</div>
+        <div class="m-name">Online Review Intelligence</div>
+        <div class="m-desc">Aggregated sentiment from Google, TripAdvisor, and Yelp — auto-ingested via review monitoring API. Feeds Delivery and Environment with external guest perception data.</div>
+        <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow" style="color:rgba(212,175,55,.3)">⚡</span></div>
+      </div>
     </div>
 
+    <!-- GROUP 5: Auto-Feed Modules -->
+    <div class="module-group-label reveal">
+      <span class="mgl-text">Auto-Feed Modules</span>
+      <span class="mgl-line"></span>
+      <span class="mgl-sub">No staff input required — live data ingested automatically</span>
+    </div>
+    <div class="module-grid reveal">
+      <div class="module-card mc-auto" style="cursor:default;">
+        <div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div>
+        <div class="m-icon">🌤</div><div class="m-code">WX</div>
+        <div class="m-name">Weather Data</div>
+        <div class="m-desc">Open-Meteo API feed. Pulls temperature, precipitation, wind speed, and lightning alerts in real time. Automatically adjusts the Environment pillar score and can trigger ride-hold flags in OPD.</div>
+        <div class="m-footer"><span class="m-tag">E</span><span class="m-arrow" style="color:rgba(0,212,208,.3)">⚡</span></div>
+      </div>
+      <div class="module-card mc-auto" style="cursor:default;">
+        <div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div>
+        <div class="m-icon">⏱</div><div class="m-code">QTX</div>
+        <div class="m-name">Queue & Wait Time</div>
+        <div class="m-desc">Live queue length and estimated wait time per ride. Ingested via sensor, clicker, or POS integration. Feeds Readiness (throughput vs. capacity) and Delivery (guest flow efficiency).</div>
+        <div class="m-footer"><span class="m-tag">R · D</span><span class="m-arrow" style="color:rgba(0,212,208,.3)">⚡</span></div>
+      </div>
+      <div class="module-card mc-auto" style="cursor:default;">
+        <div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div>
+        <div class="m-icon">⭐</div><div class="m-code">OLR</div>
+        <div class="m-name">Online Review Intelligence</div>
+        <div class="m-desc">Automated ingestion of Google, TripAdvisor, and Yelp reviews via review monitoring API. Runs sentiment analysis and keyword extraction. Cross-validates in-park guest intelligence streams (QR, EXS).</div>
+        <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow" style="color:rgba(0,212,208,.3)">⚡</span></div>
+      </div>
+      <div class="module-card mc-auto" style="cursor:default;">
+        <div class="m-auto-badge"><span class="m-auto-dot"></span>COMPUTED</div>
+        <div class="m-icon">📊</div><div class="m-code">OLI</div>
+        <div class="m-name">Operational Load Index</div>
+        <div class="m-desc">A synthesized cross-stream index — not a form, but a calculated output. OLI aggregates signals from every human-submitted audit, live dispatch data, and auto-feeds to produce a single operational stress indicator.</div>
+        <div class="m-footer"><span class="m-tag">R · D</span><span class="m-arrow" style="color:rgba(0,212,208,.3)">⚡</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- OLI CONVERGENCE SECTION -->
+<section class="oli-section">
+  <div class="oli-inner">
+    <div class="sec-eyebrow reveal">OPERATIONAL LOAD INDEX</div>
+    <div class="sec-title reveal">How every stream<br>feeds <span>OLI</span></div>
+    <div class="sec-body reveal" style="margin-bottom:48px;">OLI is not a form you fill out. It's a calculated output — a synthesized read of operational stress drawn from every human audit, live dispatch signal, and automated data feed in the AS 360 system. When OLI is high, the operation is under load. When sources diverge from it, that gap is the finding.</div>
+
+    <div class="oli-intro">
+      <!-- OLI score ring -->
+      <div class="oli-score-display reveal">
+        <div class="oli-ring">
+          <svg viewBox="0 0 90 90">
+            <circle cx="45" cy="45" r="38" fill="none" stroke="rgba(0,212,208,.08)" stroke-width="7"/>
+            <circle cx="45" cy="45" r="38" fill="none" stroke="url(#oliGrad)" stroke-width="7"
+              stroke-linecap="round" stroke-dasharray="239" stroke-dashoffset="57"
+              transform="rotate(-90 45 45)"/>
+            <defs>
+              <linearGradient id="oliGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#005F5E"/><stop offset="100%" stop-color="#00D4D0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="oli-ring-inner">
+            <div class="oli-ring-num">76</div>
+            <div class="oli-ring-lbl">OLI</div>
+          </div>
+        </div>
+        <div class="oli-score-right">
+          <div class="oli-score-title">Operational Load Index</div>
+          <div class="oli-score-sub">OLI · COMPUTED STREAM · AS 360</div>
+          <div class="oli-score-desc">A single index representing total operational stress. High OLI with strong audits = well-managed load. High OLI with weak audits = hidden risk. Divergence between OLI and pillar scores triggers a Convergence Alert.</div>
+          <div class="oli-pillar-tags">
+            <span class="oli-ptag" style="background:rgba(46,111,255,.12);border:1px solid rgba(46,111,255,.3);color:#2E6FFF;">R — Readiness</span>
+            <span class="oli-ptag" style="background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.3);color:#FF6B35;">D — Delivery</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confidence commentary -->
+      <div class="reveal">
+        <div class="oli-confidence" style="margin-top:0;">
+          <div class="oli-conf-title">Convergence Confidence</div>
+          <div class="oli-conf-sub">OLI's confidence score rises as more independent streams corroborate the same load reading. Single-source agreement yields low confidence. When 6+ streams converge on the same signal, OLI achieves high confidence and feeds the composite RIDE Score at full weight.</div>
+          <div class="oli-conf-bars">
+            <div class="conf-bar-item">
+              <div class="conf-bar-label">Operator Data (OPD+ATR)</div>
+              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:88%;background:#2E6FFF;"></div></div>
+              <div class="conf-bar-val" style="color:#2E6FFF;">88%</div>
+            </div>
+            <div class="conf-bar-item">
+              <div class="conf-bar-label">Audit Agreement</div>
+              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:74%;background:#00D68F;"></div></div>
+              <div class="conf-bar-val" style="color:#00D68F;">74%</div>
+            </div>
+            <div class="conf-bar-item">
+              <div class="conf-bar-label">Guest Signal</div>
+              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:61%;background:#FF6B35;"></div></div>
+              <div class="conf-bar-val" style="color:#FF6B35;">61%</div>
+            </div>
+            <div class="conf-bar-item">
+              <div class="conf-bar-label">Auto-Feed Alignment</div>
+              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:95%;background:#00D4D0;"></div></div>
+              <div class="conf-bar-val" style="color:#00D4D0;">95%</div>
+            </div>
+            <div class="conf-bar-item">
+              <div class="conf-bar-label">Mgr / CA Correlation</div>
+              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:82%;background:#D4AF37;"></div></div>
+              <div class="conf-bar-val" style="color:#D4AF37;">82%</div>
+            </div>
+            <div class="conf-bar-item">
+              <div class="conf-bar-label">Overall OLI Confidence</div>
+              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:80%;background:var(--teal);"></div></div>
+              <div class="conf-bar-val" style="color:var(--teal);">80%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Per-stream contribution cards -->
+    <div class="oli-streams-label reveal">// Input Stream Contributions to OLI</div>
+    <div class="oli-stream-grid">
+
+      <div class="oli-stream-card reveal" style="--c:#FFB800;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#FFB800;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">📝</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#FFB800;">iGSA</span>
+            <span class="osc-name">In-House GSA</span>
+            <span class="osc-contribution" style="color:#FFB800;border-color:rgba(255,184,0,.25);background:rgba(255,184,0,.06);">DIRECT · HIGH WEIGHT</span>
+          </div>
+          <div class="osc-desc">In-house guest service scores reflect internal operational load — line speeds, staffing density, and service capacity directly correlate to OLI. Repeated low scores without a matching NMR or CA entry flags a documentation gap.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:72%;background:#FFB800;"></div></div>
+            <span class="osc-weight-pct" style="color:#FFB800;">72%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#8B5CF6;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#8B5CF6;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">🕵️</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#8B5CF6;">mGSA</span>
+            <span class="osc-name">Mystery Shopper GSA</span>
+            <span class="osc-contribution" style="color:#8B5CF6;border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.06);">DIRECT · HIGH WEIGHT</span>
+          </div>
+          <div class="osc-desc">The divergence between mGSA and iGSA scores is itself an OLI signal. A wide gap suggests operators behave differently when unobserved — a direct indicator of operational stress or normalized non-compliance.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:78%;background:#8B5CF6;"></div></div>
+            <span class="osc-weight-pct" style="color:#8B5CF6;">78%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#00D68F;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#00D68F;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">🏢</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#00D68F;">IHS</span>
+            <span class="osc-name">In-House Safety Audit</span>
+            <span class="osc-contribution" style="color:#00D68F;border-color:rgba(0,214,143,.25);background:rgba(0,214,143,.06);">DIRECT · MEDIUM WEIGHT</span>
+          </div>
+          <div class="osc-desc">Pre-opening deficiencies and deferred maintenance items captured in IHS contribute to OLI as unresolved operational burden. Each open item without a CA reference is a load signal.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:58%;background:#00D68F;"></div></div>
+            <span class="osc-weight-pct" style="color:#00D68F;">58%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#00D4D0;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#00D4D0;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">🔍</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#00D4D0;">TPS</span>
+            <span class="osc-name">Third-Party Safety</span>
+            <span class="osc-contribution" style="color:#00D4D0;border-color:rgba(0,212,208,.25);background:rgba(0,212,208,.06);">DIRECT · MEDIUM WEIGHT</span>
+          </div>
+          <div class="osc-desc">Independent ASTM-aligned findings that contradict IHS self-assessment significantly elevate OLI. Persistent TPS findings with no corresponding CA closure are a top-tier OLI driver.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:62%;background:#00D4D0;"></div></div>
+            <span class="osc-weight-pct" style="color:#00D4D0;">62%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#FF3B5C;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#FF3B5C;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">⚠️</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#FF3B5C;">NMR</span>
+            <span class="osc-name">Near-Miss Report</span>
+            <span class="osc-contribution" style="color:#FF3B5C;border-color:rgba(255,59,92,.25);background:rgba(255,59,92,.06);">SPIKE · IMMEDIATE IMPACT</span>
+          </div>
+          <div class="osc-desc">Each NMR submission creates an immediate OLI spike proportional to severity and proximity to prior events. Cluster analysis — multiple NMRs in a short window — triggers a Convergence Alert independently of pillar scores.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:90%;background:#FF3B5C;"></div></div>
+            <span class="osc-weight-pct" style="color:#FF3B5C;">90%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#FF3B5C;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#FF3B5C;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">🚨</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#FF3B5C;">IRL</span>
+            <span class="osc-name">Ride Incident Report</span>
+            <span class="osc-contribution" style="color:#FF3B5C;border-color:rgba(255,59,92,.25);background:rgba(255,59,92,.06);">SPIKE · IMMEDIATE IMPACT</span>
+          </div>
+          <div class="osc-desc">A completed incident report is the strongest single-event OLI signal in the system. IRL submissions anchor a temporal reference point — all surrounding stream data within a defined window is weighted against the incident.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:95%;background:#FF3B5C;"></div></div>
+            <span class="osc-weight-pct" style="color:#FF3B5C;">95%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#00D4D0;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#00D4D0;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">👔</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#00D4D0;">MGR</span>
+            <span class="osc-name">Manager Module</span>
+            <span class="osc-contribution" style="color:#00D4D0;border-color:rgba(0,212,208,.25);background:rgba(0,212,208,.06);">DIRECT · HIGH WEIGHT</span>
+          </div>
+          <div class="osc-desc">Staffing overrides, open CA buckets, and unscheduled escalation events all register as active operational load. The CA closure rate (CACR) is the most persistent MGR-sourced OLI signal — aging open items compound weight over time.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:82%;background:#00D4D0;"></div></div>
+            <span class="osc-weight-pct" style="color:#00D4D0;">82%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#2E6FFF;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#2E6FFF;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">📡</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#2E6FFF;">OPD</span>
+            <span class="osc-name">Ops Dispatcher</span>
+            <span class="osc-contribution" style="color:#2E6FFF;border-color:rgba(46,111,255,.25);background:rgba(46,111,255,.06);">DIRECT · MEDIUM WEIGHT</span>
+          </div>
+          <div class="osc-desc">Ride hold frequency, unscheduled downtime, rotation overdue counts, and coverage gaps all feed OLI as real-time load signals. A shift with high hold activity against normal NMR volume is a nuanced OLI flag.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:65%;background:#2E6FFF;"></div></div>
+            <span class="osc-weight-pct" style="color:#2E6FFF;">65%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#FF6B35;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#FF6B35;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">🎡</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#FF6B35;">ATR</span>
+            <span class="osc-name">At-Ride / Operator Log</span>
+            <span class="osc-contribution" style="color:#FF6B35;border-color:rgba(255,107,53,.25);background:rgba(255,107,53,.06);">DIRECT · MEDIUM WEIGHT</span>
+          </div>
+          <div class="osc-desc">Opening checklist failures, anomaly flags, and cycle throughput shortfalls all contribute. OLI cross-references ATR throughput against QTX wait time data — when the two diverge significantly, it identifies a staffing-vs-demand mismatch.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:68%;background:#FF6B35;"></div></div>
+            <span class="osc-weight-pct" style="color:#FF6B35;">68%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#00D4D0;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#00D4D0;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">⏱</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#00D4D0;">QTX</span>
+            <span class="osc-name">Queue & Wait Time</span>
+            <span class="osc-contribution" style="color:#00D4D0;border-color:rgba(0,212,208,.25);background:rgba(0,212,208,.06);">AUTO · CONTINUOUS</span>
+          </div>
+          <div class="osc-desc">Wait times above threshold directly signal demand-side load — the operation is not meeting throughput requirements. QTX is the primary auto-feed contributor to OLI, updating continuously and acting as the real-time operational pulse.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:85%;background:#00D4D0;"></div></div>
+            <span class="osc-weight-pct" style="color:#00D4D0;">85%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#D4AF37;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#D4AF37;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">📱</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#D4AF37;">QR / EXS</span>
+            <span class="osc-name">Guest Feedback Streams</span>
+            <span class="osc-contribution" style="color:#D4AF37;border-color:rgba(212,175,55,.25);background:rgba(212,175,55,.06);">INDIRECT · LAGGING SIGNAL</span>
+          </div>
+          <div class="osc-desc">Guest feedback is an indirect, lagging OLI signal — it captures the felt experience of operational load after the fact. QR provides same-day data; EXS provides post-visit reflection. Together they validate or contradict the real-time OLI reading.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:44%;background:#D4AF37;"></div></div>
+            <span class="osc-weight-pct" style="color:#D4AF37;">44%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="oli-stream-card reveal" style="--c:#D4AF37;">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#D4AF37;border-radius:2px 0 0 2px;"></div>
+        <div class="osc-icon">⭐</div>
+        <div class="osc-body">
+          <div class="osc-top">
+            <span class="osc-code" style="color:#D4AF37;">OLR</span>
+            <span class="osc-name">Online Review Intelligence</span>
+            <span class="osc-contribution" style="color:#D4AF37;border-color:rgba(212,175,55,.25);background:rgba(212,175,55,.06);">INDIRECT · LAGGING SIGNAL</span>
+          </div>
+          <div class="osc-desc">Online reviews represent the longest-lag signal in OLI — they capture cumulative public perception of operational quality. A deteriorating OLR trend that predates NMR or IRL activity is an early warning indicator that internal reporting culture may be lagging reality.</div>
+          <div class="osc-weight-row">
+            <span class="osc-weight-label">OLI WEIGHT</span>
+            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:38%;background:#D4AF37;"></div></div>
+            <span class="osc-weight-pct" style="color:#D4AF37;">38%</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
