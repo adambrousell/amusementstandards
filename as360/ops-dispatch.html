@@ -7,77 +7,66 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#090B0F;
-  --surface:#0F1218;
-  --panel:#141820;
-  --panel2:#1A2030;
-  --panel3:#202840;
-  --border:#1E2535;
-  --border2:#263040;
-  --cyan:#00D4FF;
-  --cyan-dim:rgba(0,212,255,.1);
-  --cyan-glow:rgba(0,212,255,.06);
-  --orange:#FF6B1A;
-  --orange-dim:rgba(255,107,26,.12);
-  --red:#F43F5E;
-  --red-dim:rgba(244,63,94,.12);
-  --red-bright:#FF1744;
-  --amber:#F59E0B;
-  --amber-dim:rgba(245,158,11,.12);
-  --green:#00E676;
-  --green-dim:rgba(0,230,118,.1);
-  --blue:#448AFF;
-  --blue-dim:rgba(68,138,255,.1);
-  --purple:#E040FB;
-  --purple-dim:rgba(224,64,251,.1);
-  --text:#C8D0E0;
-  --text-bright:#E8EDF8;
-  --text-dim:#5A6880;
-  --text-muted:#2E3A50;
-  --mono:'JetBrains Mono',monospace;
-  --ui:'Inter',sans-serif;
-  --display:'Rajdhani',sans-serif;
+  --bg:#090B0F;--surface:#0F1218;--panel:#141820;--panel2:#1A2030;--panel3:#202840;
+  --border:#1E2535;--border2:#263040;
+  --cyan:#00D4FF;--cyan-dim:rgba(0,212,255,.1);--cyan-glow:rgba(0,212,255,.06);
+  --orange:#FF6B1A;--orange-dim:rgba(255,107,26,.12);
+  --red:#F43F5E;--red-dim:rgba(244,63,94,.12);--red-bright:#FF1744;
+  --amber:#F59E0B;--amber-dim:rgba(245,158,11,.12);
+  --green:#00E676;--green-dim:rgba(0,230,118,.1);
+  --blue:#448AFF;--blue-dim:rgba(68,138,255,.1);
+  --purple:#E040FB;--purple-dim:rgba(224,64,251,.1);
+  --gold:#D4AF37;--gold-dim:rgba(212,175,55,.12);
+  --text:#C8D0E0;--text-bright:#E8EDF8;--text-dim:#5A6880;--text-muted:#2E3A50;
+  --mono:'JetBrains Mono',monospace;--ui:'Inter',sans-serif;--display:'Rajdhani',sans-serif;
   --scanline:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,212,255,.012) 2px,rgba(0,212,255,.012) 4px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;background:var(--bg);overflow:hidden;}
 body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
   background-image:var(--scanline),radial-gradient(ellipse 80% 50% at 50% -10%,rgba(0,212,255,.04) 0%,transparent 60%);}
-
-/* ── TOPBAR ── */
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;height:50px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.tb-left{display:flex;align-items:center;gap:14px;}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;height:50px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.tb-left{display:flex;align-items:center;gap:12px;}
 .tb-logo{display:flex;align-items:center;gap:8px;}
 .tb-mark{width:32px;height:32px;border:2px solid var(--cyan);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:13px;font-weight:800;color:var(--cyan);letter-spacing:-1px;}
 .tb-title{font-family:var(--display);font-size:18px;font-weight:700;letter-spacing:.5px;color:var(--text-bright);}
-.tb-sub{font-family:var(--mono);font-size:9px;color:var(--cyan);letter-spacing:1.5px;border-left:1px solid var(--border2);padding-left:14px;}
-.tb-right{display:flex;align-items:center;gap:16px;}
-.tb-clock{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--cyan);letter-spacing:2px;}
+.tb-sub{font-family:var(--mono);font-size:9px;color:var(--cyan);letter-spacing:1.5px;border-left:1px solid var(--border2);padding-left:12px;}
+.tb-right{display:flex;align-items:center;gap:10px;}
+.tb-clock{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--cyan);letter-spacing:2px;}
 .tb-date{font-family:var(--mono);font-size:9px;color:var(--text-dim);}
-.alert-pill{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;cursor:pointer;}
+.alert-pill{display:flex;align-items:center;gap:5px;padding:4px 9px;border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;}
 .alert-pill.red{background:var(--red-dim);border:1px solid rgba(244,63,94,.3);color:var(--red);}
 .alert-pill.amber{background:var(--amber-dim);border:1px solid rgba(245,158,11,.3);color:var(--amber);}
 .alert-dot{width:6px;height:6px;border-radius:50%;animation:blink .8s infinite;}
 .alert-dot.red{background:var(--red);}
 .alert-dot.amber{background:var(--amber);}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.dispatcher-badge{font-family:var(--mono);font-size:9px;color:var(--text-dim);border:1px solid var(--border2);padding:3px 10px;border-radius:4px;}
-
-/* ── LAYOUT ── */
-.layout{flex:1;display:grid;grid-template-columns:1fr 340px;grid-template-rows:1fr;overflow:hidden;}
-
-/* ── LEFT PANEL ── */
+.dispatcher-badge{font-family:var(--mono);font-size:9px;color:var(--text-dim);border:1px solid var(--border2);padding:3px 9px;border-radius:4px;}
+/* RIDE SCORE WIDGET */
+.rsw{display:flex;align-items:stretch;border:1px solid rgba(212,175,55,.3);border-radius:7px;overflow:hidden;cursor:pointer;transition:border-color .15s;height:38px;}
+.rsw:hover{border-color:rgba(212,175,55,.6);}
+.rsw-main{background:var(--gold-dim);padding:0 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-right:1px solid rgba(212,175,55,.2);min-width:70px;}
+.rsw-num{font-family:var(--display);font-size:20px;font-weight:800;color:var(--gold);line-height:1;}
+.rsw-lbl{font-family:var(--mono);font-size:7px;letter-spacing:1px;color:rgba(212,175,55,.5);}
+.rsw-pillars{display:flex;}
+.rsw-p{padding:0 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-right:1px solid var(--border);}
+.rsw-p:last-child{border-right:none;}
+.rsw-pv{font-family:var(--mono);font-size:13px;font-weight:700;line-height:1;}
+.rsw-pl{font-family:var(--mono);font-size:7px;letter-spacing:.5px;color:var(--text-dim);}
+.rsw-p.r .rsw-pv{color:#2E6FFF;}
+.rsw-p.d .rsw-pv{color:#FF6B35;}
+/* LAYOUT */
+.layout{flex:1;display:grid;grid-template-columns:1fr 330px;overflow:hidden;}
 .left-panel{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border);}
-.panel-tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
-.ptab{padding:0 18px;height:38px;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+.panel-tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
+.ptab{padding:0 14px;height:38px;display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;flex-shrink:0;}
 .ptab:hover{color:var(--text);background:var(--cyan-glow);}
 .ptab.active{color:var(--cyan);border-bottom-color:var(--cyan);}
-.ptab-badge{background:var(--panel3);padding:1px 6px;border-radius:3px;font-size:8px;}
+.ptab-badge{background:var(--panel3);padding:1px 5px;border-radius:3px;font-size:8px;}
 .ptab.active .ptab-badge{background:var(--cyan-dim);color:var(--cyan);}
-.panel-body{flex:1;overflow-y:auto;padding:14px;}
-
-/* ── RIDE BOARD ── */
-.ride-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
+.panel-body{flex:1;overflow-y:auto;padding:12px;}
+/* RIDE BOARD */
+.ride-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;}
 .ride-tile{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color .15s,box-shadow .15s;}
 .ride-tile:hover{border-color:var(--border2);box-shadow:0 4px 20px rgba(0,0,0,.3);}
 .ride-tile.status-open{border-color:rgba(0,230,118,.25);}
@@ -85,42 +74,38 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
 .ride-tile.status-down{border-color:rgba(244,63,94,.4);}
 .ride-tile.status-closed{border-color:var(--border);opacity:.6;}
 @keyframes tileAmber{0%,100%{border-color:rgba(245,158,11,.4)}50%{border-color:rgba(245,158,11,.15)}}
-.tile-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border);}
-.tile-name{font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.3px;color:var(--text-bright);}
+.tile-header{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-bottom:1px solid var(--border);}
+.tile-name{font-family:var(--display);font-size:14px;font-weight:700;color:var(--text-bright);}
 .tile-id{font-family:var(--mono);font-size:8px;color:var(--text-dim);}
-.status-badge{padding:3px 8px;border-radius:3px;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.5px;}
+.status-badge{padding:3px 7px;border-radius:3px;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.5px;}
 .sb-open{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,230,118,.25);}
 .sb-hold{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
 .sb-down{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.3);}
 .sb-closed{background:var(--panel3);color:var(--text-dim);border:1px solid var(--border);}
-.tile-body{padding:10px 12px;}
-.tile-stat-row{display:flex;gap:10px;margin-bottom:8px;}
-.tile-stat{flex:1;background:var(--panel2);border-radius:6px;padding:6px 8px;}
-.tile-stat-val{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--cyan);line-height:1;}
+.tile-body{padding:9px 11px;}
+.tile-stat-row{display:flex;gap:8px;margin-bottom:8px;}
+.tile-stat{flex:1;background:var(--panel2);border-radius:5px;padding:5px 7px;}
+.tile-stat-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--cyan);line-height:1;}
 .tile-stat-label{font-family:var(--mono);font-size:7px;letter-spacing:.5px;text-transform:uppercase;color:var(--text-dim);margin-top:2px;}
-.tile-positions{display:flex;flex-direction:column;gap:3px;}
-.tile-pos{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:9px;padding:3px 0;}
+.tile-positions{display:flex;flex-direction:column;gap:2px;}
+.tile-pos{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:9px;padding:2px 0;}
 .tile-pos-name{color:var(--text-dim);}
 .tile-pos-op{color:var(--text);}
 .tile-pos-time{font-weight:700;}
 .tile-pos-time.ok{color:var(--green);}
 .tile-pos-time.warn{color:var(--amber);}
 .tile-pos-time.crit{color:var(--red);}
-.tile-actions{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--border);background:var(--surface);}
-.tile-btn{flex:1;padding:6px 0;border:1px solid var(--border2);border-radius:5px;background:transparent;font-family:var(--mono);font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:var(--text-dim);cursor:pointer;transition:all .12s;}
+.tile-actions{display:flex;gap:5px;padding:7px 11px;border-top:1px solid var(--border);background:var(--surface);}
+.tile-btn{flex:1;padding:5px 0;border:1px solid var(--border2);border-radius:4px;background:transparent;font-family:var(--mono);font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:var(--text-dim);cursor:pointer;transition:all .12s;}
 .tile-btn:hover{border-color:var(--cyan);color:var(--cyan);}
-.tile-btn.hold:hover{border-color:var(--amber);color:var(--amber);}
-.tile-btn.down:hover{border-color:var(--red);color:var(--red);}
-.tile-btn.clear:hover{border-color:var(--green);color:var(--green);}
 .tile-btn.active-hold{border-color:var(--amber);color:var(--amber);background:var(--amber-dim);}
 .tile-btn.active-down{border-color:var(--red);color:var(--red);background:var(--red-dim);}
-
-/* ── ROTATION ALERTS TAB ── */
-.rot-alert{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:var(--panel);cursor:pointer;transition:all .12s;}
+/* ROTATION ALERTS */
+.rot-alert{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;background:var(--panel);}
 .rot-alert.warn{border-color:rgba(245,158,11,.35);background:var(--amber-dim);}
 .rot-alert.crit{border-color:rgba(244,63,94,.4);background:var(--red-dim);animation:alertPulse 1.5s infinite;}
 @keyframes alertPulse{0%,100%{background:var(--red-dim)}50%{background:rgba(244,63,94,.05)}}
-.rot-alert-icon{font-size:20px;flex-shrink:0;}
+.rot-alert-icon{font-size:18px;flex-shrink:0;}
 .rot-alert-body{flex:1;}
 .rot-alert-title{font-family:var(--mono);font-size:10px;font-weight:700;}
 .rot-alert-title.warn{color:var(--amber);}
@@ -129,202 +114,209 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
 .rot-alert-time{font-family:var(--mono);font-size:11px;font-weight:700;}
 .rot-alert-time.warn{color:var(--amber);}
 .rot-alert-time.crit{color:var(--red);}
-.rot-ack-btn{padding:5px 10px;border:1px solid var(--border2);border-radius:4px;background:transparent;font-family:var(--mono);font-size:8px;color:var(--text-dim);cursor:pointer;transition:all .12s;flex-shrink:0;}
+.rot-ack-btn{padding:4px 9px;border:1px solid var(--border2);border-radius:4px;background:transparent;font-family:var(--mono);font-size:8px;color:var(--text-dim);cursor:pointer;transition:all .12s;flex-shrink:0;}
 .rot-ack-btn:hover{border-color:var(--cyan);color:var(--cyan);}
-
-/* ── RIGHT PANEL — RADIO LOG ── */
+/* RIDE SCORE TAB */
+.score-wrap{display:flex;flex-direction:column;gap:12px;}
+.score-banner{background:linear-gradient(135deg,rgba(212,175,55,.08),rgba(212,175,55,.03));border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:20px;}
+.score-banner-num{font-family:var(--display);font-size:60px;font-weight:800;color:var(--gold);line-height:1;min-width:90px;text-align:center;}
+.score-banner-right{flex:1;}
+.score-banner-title{font-family:var(--display);font-size:20px;font-weight:700;color:var(--text-bright);margin-bottom:2px;}
+.score-banner-sub{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:1px;margin-bottom:10px;}
+.grade-pill{display:inline-block;padding:3px 12px;border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1px;}
+.grade-excellent{background:rgba(0,230,118,.15);border:1px solid rgba(0,230,118,.3);color:var(--green);}
+.grade-strong{background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.3);color:var(--cyan);}
+.grade-moderate{background:var(--amber-dim);border:1px solid rgba(245,158,11,.3);color:var(--amber);}
+.grade-risk{background:var(--red-dim);border:1px solid rgba(244,63,94,.3);color:var(--red);}
+.pillar-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.pillar-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;overflow:hidden;}
+.pillar-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;}
+.pc-r::before{background:#2E6FFF;}
+.pc-d::before{background:#FF6B35;}
+.pc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+.pc-letter{font-family:var(--display);font-size:30px;font-weight:800;line-height:1;}
+.pc-r .pc-letter{color:#2E6FFF;}
+.pc-d .pc-letter{color:#FF6B35;}
+.pc-name{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-dim);margin-top:2px;}
+.pc-score{font-family:var(--display);font-size:26px;font-weight:800;color:var(--text-bright);}
+.pc-bar-wrap{height:3px;background:var(--panel3);border-radius:2px;margin-bottom:8px;overflow:hidden;}
+.pc-bar{height:100%;border-radius:2px;transition:width .6s;}
+.pc-r .pc-bar{background:linear-gradient(90deg,#1A4FCC,#2E6FFF);}
+.pc-d .pc-bar{background:linear-gradient(90deg,#CC4A10,#FF6B35);}
+.pc-streams{display:flex;flex-direction:column;gap:4px;}
+.pc-stream{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;}
+.pc-stream-name{color:var(--text-dim);}
+.pc-sv.good{color:var(--green);}
+.pc-sv.warn{color:var(--amber);}
+.pc-sv.bad{color:var(--red);}
+.factor-table{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.ft-hdr{padding:9px 14px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);display:flex;justify-content:space-between;}
+.ft-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid rgba(30,37,53,.6);}
+.ft-row:last-child{border-bottom:none;}
+.ft-row:hover{background:var(--cyan-glow);}
+.ft-factor{flex:1;}
+.ft-factor strong{font-size:12px;color:var(--text);}
+.ft-factor small{display:block;font-size:10px;color:var(--text-dim);margin-top:1px;}
+.ft-wt{font-family:var(--mono);font-size:8px;color:var(--text-muted);min-width:44px;}
+.ft-val{font-family:var(--mono);font-size:11px;font-weight:700;min-width:52px;text-align:right;}
+.ft-val.good{color:var(--green);}
+.ft-val.warn{color:var(--amber);}
+.ft-val.bad{color:var(--red);}
+.ft-bar{width:70px;}
+.ft-mini{height:4px;background:var(--panel3);border-radius:2px;overflow:hidden;}
+.ft-fill{height:100%;border-radius:2px;}
+.ft-fill.good{background:var(--green);}
+.ft-fill.warn{background:var(--amber);}
+.ft-fill.bad{background:var(--red);}
+.ft-fill.neutral{background:var(--cyan);}
+.score-note{font-family:var(--mono);font-size:9px;color:var(--text-dim);line-height:1.6;padding:12px 14px;background:var(--panel);border:1px solid var(--border);border-radius:8px;}
+.score-note span{color:var(--gold);}
+/* RIGHT PANEL */
 .right-panel{display:flex;flex-direction:column;overflow:hidden;background:var(--surface);}
-.rp-header{padding:12px 14px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.rp-header{padding:11px 13px;border-bottom:1px solid var(--border);flex-shrink:0;}
 .rp-title{font-family:var(--display);font-size:14px;font-weight:700;color:var(--text-bright);margin-bottom:2px;}
 .rp-sub{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-dim);}
-.radio-log{flex:1;overflow-y:auto;padding:10px;}
-.radio-entry{margin-bottom:8px;padding:8px 10px;background:var(--panel);border:1px solid var(--border);border-radius:8px;border-left:3px solid var(--border2);transition:border-color .15s;}
+.radio-log{flex:1;overflow-y:auto;padding:9px;}
+.radio-entry{margin-bottom:7px;padding:8px 10px;background:var(--panel);border:1px solid var(--border);border-radius:7px;border-left:3px solid var(--border2);}
 .radio-entry.priority-high{border-left-color:var(--red);}
 .radio-entry.priority-med{border-left-color:var(--amber);}
 .radio-entry.priority-normal{border-left-color:var(--cyan);}
 .radio-entry.priority-info{border-left-color:var(--text-muted);}
-.re-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
-.re-ride{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;}
+.re-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;}
+.re-ride{font-family:var(--mono);font-size:9px;font-weight:700;}
 .re-time{font-family:var(--mono);font-size:9px;color:var(--text-dim);}
 .re-msg{font-size:12px;color:var(--text);line-height:1.4;}
-.re-dispatcher{font-family:var(--mono);font-size:8px;color:var(--text-muted);margin-top:3px;}
-
-/* ── RADIO INPUT ── */
-.radio-input-area{padding:10px;border-top:1px solid var(--border);flex-shrink:0;}
-.radio-compose{background:var(--panel);border:1px solid var(--border2);border-radius:8px;padding:10px;}
-.radio-compose-row{display:flex;gap:6px;margin-bottom:8px;}
-.radio-select{flex:1;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--text);-webkit-appearance:none;cursor:pointer;}
+.re-dispatcher{font-family:var(--mono);font-size:8px;color:var(--text-muted);margin-top:2px;}
+.radio-input-area{padding:9px;border-top:1px solid var(--border);flex-shrink:0;}
+.radio-compose{background:var(--panel);border:1px solid var(--border2);border-radius:7px;padding:9px;}
+.radio-compose-row{display:flex;gap:5px;margin-bottom:7px;}
+.radio-select{flex:1;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;padding:6px 9px;font-family:var(--mono);font-size:10px;color:var(--text);-webkit-appearance:none;cursor:pointer;}
 .radio-select:focus{outline:none;border-color:var(--cyan);}
-.radio-select option{background:var(--panel);}
-.priority-select{width:90px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;padding:7px 8px;font-family:var(--mono);font-size:10px;color:var(--text);-webkit-appearance:none;cursor:pointer;}
-.priority-select option{background:var(--panel);}
-.radio-text{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;padding:8px 10px;font-family:var(--ui);font-size:12px;color:var(--text);resize:none;min-height:56px;line-height:1.4;margin-bottom:7px;}
+.priority-select{width:85px;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;padding:6px 8px;font-family:var(--mono);font-size:10px;color:var(--text);-webkit-appearance:none;cursor:pointer;}
+.radio-text{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;padding:8px 9px;font-family:var(--ui);font-size:12px;color:var(--text);resize:none;min-height:52px;line-height:1.4;margin-bottom:6px;}
 .radio-text:focus,.radio-select:focus,.priority-select:focus{outline:none;border-color:var(--cyan);}
 .radio-text::placeholder{color:var(--text-muted);}
-.radio-send-row{display:flex;gap:6px;}
-.radio-send-btn{flex:1;height:34px;background:linear-gradient(135deg,var(--cyan),#0090CC);border:none;border-radius:6px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.5px;color:#000;cursor:pointer;transition:all .12s;}
-.radio-send-btn:hover{filter:brightness(1.1);}
-.radio-clear-btn{padding:0 12px;height:34px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;font-family:var(--mono);font-size:10px;color:var(--text-dim);cursor:pointer;}
-
-/* ── DISPATCHER SETUP MODAL ── */
+.radio-send-row{display:flex;gap:5px;}
+.radio-send-btn{flex:1;height:32px;background:linear-gradient(135deg,var(--cyan),#0090CC);border:none;border-radius:5px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.5px;color:#000;cursor:pointer;}
+.radio-clear-btn{padding:0 11px;height:32px;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;font-family:var(--mono);font-size:10px;color:var(--text-dim);cursor:pointer;}
+/* SETUP MODAL */
 .setup-overlay{position:fixed;inset:0;background:rgba(6,8,12,.95);display:flex;align-items:center;justify-content:center;z-index:500;padding:20px;}
-.setup-panel{background:var(--panel);border:1px solid var(--border2);border-radius:14px;padding:28px;max-width:420px;width:100%;}
+.setup-panel{background:var(--panel);border:1px solid var(--border2);border-radius:14px;padding:28px;max-width:400px;width:100%;}
 .setup-title{font-family:var(--display);font-size:24px;font-weight:800;color:var(--text-bright);margin-bottom:4px;}
-.setup-sub{font-size:13px;color:var(--text-dim);margin-bottom:22px;line-height:1.5;}
-.setup-field{margin-bottom:14px;}
-.setup-field label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:6px;}
-.setup-field input,.setup-field select{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:14px;color:var(--text);-webkit-appearance:none;}
+.setup-sub{font-size:13px;color:var(--text-dim);margin-bottom:20px;line-height:1.5;}
+.setup-field{margin-bottom:13px;}
+.setup-field label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;}
+.setup-field input,.setup-field select{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;padding:11px 13px;font-family:var(--mono);font-size:14px;color:var(--text);-webkit-appearance:none;}
 .setup-field input:focus,.setup-field select:focus{outline:none;border-color:var(--cyan);}
-.setup-field select option{background:var(--panel);}
-.setup-btn{width:100%;height:52px;background:linear-gradient(135deg,var(--cyan),#0090CC);border:none;border-radius:10px;font-family:var(--display);font-size:18px;font-weight:700;color:#000;cursor:pointer;margin-top:4px;letter-spacing:.3px;}
-
-/* ── RIDE DETAIL MODAL ── */
+.setup-btn{width:100%;height:50px;background:linear-gradient(135deg,var(--cyan),#0090CC);border:none;border-radius:9px;font-family:var(--display);font-size:18px;font-weight:700;color:#000;cursor:pointer;margin-top:4px;}
+/* DETAIL MODAL */
 .detail-overlay{display:none;position:fixed;inset:0;background:rgba(6,8,12,.85);backdrop-filter:blur(6px);z-index:300;padding:20px;align-items:center;justify-content:center;}
 .detail-overlay.show{display:flex;}
-.detail-panel{background:var(--panel);border:1px solid var(--border2);border-radius:14px;width:100%;max-width:480px;max-height:80vh;overflow-y:auto;}
-.detail-hdr{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;background:var(--panel2);border-radius:14px 14px 0 0;}
+.detail-panel{background:var(--panel);border:1px solid var(--border2);border-radius:13px;width:100%;max-width:460px;max-height:80vh;overflow-y:auto;}
+.detail-hdr{padding:15px 17px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;background:var(--panel2);border-radius:13px 13px 0 0;}
 .detail-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:0 0 0 12px;}
-.detail-body{padding:16px 18px;}
-.detail-sec{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:5px;margin:14px 0 10px;}
+.detail-body{padding:15px 17px;}
+.detail-sec{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:4px;margin:13px 0 9px;}
 .detail-sec:first-child{margin-top:0;}
-.status-btn-row{display:flex;gap:8px;}
-.status-change-btn{flex:1;padding:10px 0;border-radius:8px;border:1px solid var(--border2);background:var(--panel2);font-family:var(--display);font-size:14px;font-weight:700;color:var(--text-dim);cursor:pointer;transition:all .15s;}
+.status-btn-row{display:flex;gap:7px;}
+.status-change-btn{flex:1;padding:9px 0;border-radius:7px;border:1px solid var(--border2);background:var(--panel2);font-family:var(--display);font-size:14px;font-weight:700;color:var(--text-dim);cursor:pointer;transition:all .15s;}
 .status-change-btn.open:hover,.status-change-btn.open.active{border-color:var(--green);color:var(--green);background:var(--green-dim);}
 .status-change-btn.hold:hover,.status-change-btn.hold.active{border-color:var(--amber);color:var(--amber);background:var(--amber-dim);}
 .status-change-btn.down:hover,.status-change-btn.down.active{border-color:var(--red);color:var(--red);background:var(--red-dim);}
 .status-change-btn.closed:hover,.status-change-btn.closed.active{border-color:var(--text-dim);color:var(--text-dim);background:var(--panel3);}
-.detail-note-input{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;padding:9px 11px;font-family:var(--ui);font-size:12px;color:var(--text);resize:none;min-height:60px;line-height:1.4;margin-top:6px;}
+.detail-note-input{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;padding:8px 10px;font-family:var(--ui);font-size:12px;color:var(--text);resize:none;min-height:56px;line-height:1.4;margin-top:5px;}
 .detail-note-input:focus{outline:none;border-color:var(--cyan);}
-.detail-submit-btn{width:100%;height:44px;background:linear-gradient(135deg,var(--cyan),#0090CC);border:none;border-radius:8px;font-family:var(--display);font-size:16px;font-weight:700;color:#000;cursor:pointer;margin-top:10px;}
-
-/* ── EMPTY / UTIL ── */
-.empty{text-align:center;padding:30px 20px;font-family:var(--mono);font-size:10px;color:var(--text-muted);}
-.empty-icon{font-size:28px;margin-bottom:8px;}
-
-/* ── TOAST ── */
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--panel2);color:var(--text-bright);border:1px solid var(--border2);padding:9px 18px;border-radius:8px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.3px;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;}
+.detail-submit-btn{width:100%;height:42px;background:linear-gradient(135deg,var(--cyan),#0090CC);border:none;border-radius:7px;font-family:var(--display);font-size:16px;font-weight:700;color:#000;cursor:pointer;margin-top:10px;}
+/* CODES */
+.codes-search-wrap{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--border);padding:9px;z-index:10;}
+.codes-search{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;padding:8px 11px;font-family:var(--mono);font-size:12px;color:var(--text);}
+.codes-search:focus{outline:none;border-color:var(--cyan);}
+.codes-search::placeholder{color:var(--text-muted);}
+.codes-filter-row{display:flex;gap:5px;margin-top:6px;}
+.codes-filter{padding:3px 9px;border:1px solid var(--border2);border-radius:3px;background:var(--panel3);font-family:var(--mono);font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:var(--text-dim);cursor:pointer;transition:all .12s;}
+.codes-filter:hover,.codes-filter.active{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim);}
+.code-group{background:var(--panel);border:1px solid var(--border);border-radius:7px;overflow:hidden;margin-bottom:9px;}
+.code-group-hdr{padding:7px 11px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);display:flex;justify-content:space-between;}
+.code-row{display:flex;align-items:center;gap:9px;padding:7px 11px;border-bottom:1px solid rgba(30,37,53,.6);}
+.code-row:hover{background:var(--cyan-glow);}
+.code-key{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--cyan);min-width:50px;flex-shrink:0;}
+.code-val{font-size:12px;color:var(--text);flex:1;}
+.code-sev{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;flex-shrink:0;}
+.sev-high{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.25);}
+.sev-med{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
+.sev-low{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,230,118,.2);}
+.response-card{background:var(--panel);border:1px solid var(--border);border-radius:7px;padding:11px;margin-bottom:7px;}
+.response-card.r-high{border-color:rgba(244,63,94,.35);background:rgba(244,63,94,.04);}
+.response-card.r-med{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03);}
+.response-card.r-low{border-color:rgba(0,230,118,.2);background:rgba(0,230,118,.03);}
+.resp-level{font-family:var(--mono);font-size:10px;font-weight:700;margin-bottom:3px;}
+.r-high .resp-level{color:var(--red);}
+.r-med .resp-level{color:var(--amber);}
+.r-low .resp-level{color:var(--green);}
+.resp-title{font-family:var(--display);font-size:14px;font-weight:700;color:var(--text-bright);margin-bottom:3px;}
+.resp-desc{font-size:11px;color:var(--text-dim);line-height:1.5;}
+.empty{text-align:center;padding:28px 18px;font-family:var(--mono);font-size:10px;color:var(--text-muted);}
+.empty-icon{font-size:26px;margin-bottom:7px;}
+#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--panel2);color:var(--text-bright);border:1px solid var(--border2);padding:8px 16px;border-radius:7px;font-family:var(--mono);font-size:10px;font-weight:700;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 #toast.ok{background:rgba(0,230,118,.1);border-color:rgba(0,230,118,.3);color:var(--green);}
 #toast.warn{background:var(--amber-dim);border-color:rgba(245,158,11,.3);color:var(--amber);}
 #toast.err{background:var(--red-dim);border-color:rgba(244,63,94,.3);color:var(--red);}
-
-/* ── CODES & SIGNALS PANEL ── */
-.codes-search-wrap{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--border);padding:10px;z-index:10;}
-.codes-search{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;padding:9px 12px;font-family:var(--mono);font-size:12px;color:var(--text);transition:border-color .15s;}
-.codes-search:focus{outline:none;border-color:var(--cyan);}
-.codes-search::placeholder{color:var(--text-muted);}
-.codes-filter-row{display:flex;gap:6px;margin-top:7px;}
-.codes-filter{padding:4px 10px;border:1px solid var(--border2);border-radius:4px;background:var(--panel3);font-family:var(--mono);font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:var(--text-dim);cursor:pointer;transition:all .12s;}
-.codes-filter:hover{border-color:var(--cyan);color:var(--cyan);}
-.codes-filter.active{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim);}
-.codes-section-hdr{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);padding:10px 12px 6px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:0;}
-.code-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid rgba(30,37,53,.6);transition:background .1s;cursor:default;}
-.code-row:hover{background:var(--cyan-glow);}
-.code-key{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--cyan);min-width:52px;flex-shrink:0;}
-.code-val{font-size:12px;color:var(--text);flex:1;line-height:1.3;}
-.code-sev{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;flex-shrink:0;}
-.sev-high{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.25);}
-.sev-med{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
-.sev-low{background:var(--green-dim);color:var(--green);border:1px solid rgba(0,230,118,.2);}
-.code-group{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px;}
-.code-group-hdr{padding:8px 12px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);display:flex;justify-content:space-between;align-items:center;}
-.response-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;}
-.response-card.r-high{border-color:rgba(244,63,94,.35);background:rgba(244,63,94,.04);}
-.response-card.r-med{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03);}
-.response-card.r-low{border-color:rgba(0,230,118,.2);background:rgba(0,230,118,.03);}
-.resp-level{font-family:var(--mono);font-size:10px;font-weight:700;margin-bottom:4px;}
-.r-high .resp-level{color:var(--red);}
-.r-med .resp-level{color:var(--amber);}
-.r-low .resp-level{color:var(--green);}
-.resp-title{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:4px;}
-.resp-desc{font-size:11px;color:var(--text-dim);line-height:1.5;}
-.no-results{text-align:center;padding:30px;font-family:var(--mono);font-size:10px;color:var(--text-muted);}
-
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 </style>
 </head>
 <body>
-
 <!-- SETUP MODAL -->
 <div class="setup-overlay" id="setupOverlay">
   <div class="setup-panel">
     <div class="setup-title">Operations Dispatcher</div>
-    <div class="setup-sub">Sign in to begin your dispatch shift. Your name will appear on all radio log entries.</div>
-    <div class="setup-field">
-      <label>Dispatcher Name</label>
-      <input type="text" id="setupName" placeholder="Full name">
-    </div>
-    <div class="setup-field">
-      <label>Badge / Employee ID</label>
-      <input type="text" id="setupBadge" placeholder="Badge ID">
-    </div>
-    <div class="setup-field">
-      <label>Shift</label>
-      <select id="setupShift">
-        <option value="Opening">Opening</option>
-        <option value="Mid">Mid</option>
-        <option value="Closing">Closing</option>
-        <option value="Split">Split</option>
-      </select>
-    </div>
+    <div class="setup-sub">Sign in to begin your dispatch shift. Your name will appear on all radio log entries and RIDE Score data.</div>
+    <div class="setup-field"><label>Dispatcher Name</label><input type="text" id="setupName" placeholder="Full name"></div>
+    <div class="setup-field"><label>Badge / Employee ID</label><input type="text" id="setupBadge" placeholder="Badge ID"></div>
+    <div class="setup-field"><label>Shift</label><select id="setupShift"><option value="Opening">Opening</option><option value="Mid">Mid</option><option value="Closing">Closing</option><option value="Split">Split</option></select></div>
     <button class="setup-btn" onclick="startDispatch()">Begin Dispatch Shift →</button>
   </div>
 </div>
-
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="tb-left">
-    <div class="tb-logo">
-      <div class="tb-mark">OD</div>
-      <div class="tb-title">Operations Dispatcher</div>
-    </div>
-    <div class="tb-sub">AS 360 · RIDE SCORE · DISPATCH COMMAND</div>
+    <div class="tb-logo"><div class="tb-mark">OD</div><div class="tb-title">Operations Dispatcher</div></div>
+    <div class="tb-sub">AS 360 · RIDE SCORE™ · DISPATCH COMMAND</div>
   </div>
   <div class="tb-right">
     <div id="critAlerts" class="alert-pill red" style="display:none;"><div class="alert-dot red"></div><span id="critCount">0</span> CRITICAL</div>
     <div id="warnAlerts" class="alert-pill amber" style="display:none;"><div class="alert-dot amber"></div><span id="warnCount">0</span> OVERDUE ROT</div>
+    <div class="rsw" onclick="showTab('score',document.getElementById('scoreTab'))" title="OPD RIDE Score contribution — click to expand">
+      <div class="rsw-main"><div class="rsw-num" id="rsw-num">—</div><div class="rsw-lbl">OPD SCORE</div></div>
+      <div class="rsw-pillars">
+        <div class="rsw-p r"><div class="rsw-pv" id="rsw-r">—</div><div class="rsw-pl">READY</div></div>
+        <div class="rsw-p d"><div class="rsw-pv" id="rsw-d">—</div><div class="rsw-pl">DELIV</div></div>
+      </div>
+    </div>
     <div class="tb-clock" id="clock">--:--:--</div>
     <div class="tb-date" id="dateDisp">---</div>
     <div class="dispatcher-badge" id="dispBadge">—</div>
   </div>
 </div>
-
 <!-- LAYOUT -->
 <div class="layout">
-
-  <!-- LEFT PANEL -->
   <div class="left-panel">
     <div class="panel-tabs">
       <div class="ptab active" onclick="showTab('board',this)">🎡 Ride Board <span class="ptab-badge" id="openRideCount">0</span></div>
       <div class="ptab" onclick="showTab('alerts',this)">⚠️ Rotation Alerts <span class="ptab-badge" id="alertCount">0</span></div>
+      <div class="ptab" id="scoreTab" onclick="showTab('score',this)">📊 RIDE Score</div>
       <div class="ptab" onclick="showTab('codes',this)">📻 Codes &amp; Signals</div>
     </div>
-    <div class="panel-body" id="panelBody">
-      <!-- Board rendered here -->
-    </div>
+    <div class="panel-body" id="panelBody"></div>
   </div>
-
-  <!-- RIGHT PANEL — RADIO LOG -->
   <div class="right-panel">
-    <div class="rp-header">
-      <div class="rp-title">Radio Log</div>
-      <div class="rp-sub">DISPATCHER COMMUNICATIONS · THIS SHIFT</div>
-    </div>
-    <div class="radio-log" id="radioLog">
-      <div class="empty"><div class="empty-icon">📻</div>No entries yet</div>
-    </div>
+    <div class="rp-header"><div class="rp-title">Radio Log</div><div class="rp-sub">DISPATCHER COMMUNICATIONS · THIS SHIFT</div></div>
+    <div class="radio-log" id="radioLog"><div class="empty"><div class="empty-icon">📻</div>No entries yet</div></div>
     <div class="radio-input-area">
       <div class="radio-compose">
         <div class="radio-compose-row">
-          <select class="radio-select" id="radioRide">
-            <option value="ALL">📢 ALL RIDES</option>
-          </select>
-          <select class="priority-select" id="radioPriority">
-            <option value="normal">Normal</option>
-            <option value="med">Med</option>
-            <option value="high">High</option>
-            <option value="info">Info</option>
-          </select>
+          <select class="radio-select" id="radioRide"><option value="ALL">📢 ALL RIDES</option></select>
+          <select class="priority-select" id="radioPriority"><option value="normal">Normal</option><option value="med">Med</option><option value="high">High</option><option value="info">Info</option></select>
         </div>
         <textarea class="radio-text" id="radioText" placeholder="Log a communication, directive, or note…" maxlength="300"></textarea>
         <div class="radio-send-row">
@@ -334,17 +326,12 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
       </div>
     </div>
   </div>
-
 </div>
-
-<!-- RIDE DETAIL MODAL -->
+<!-- DETAIL MODAL -->
 <div class="detail-overlay" id="detailOverlay">
   <div class="detail-panel">
     <div class="detail-hdr">
-      <div>
-        <div style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--text-bright);" id="detailName">—</div>
-        <div style="font-family:var(--mono);font-size:9px;color:var(--cyan);" id="detailId">—</div>
-      </div>
+      <div><div style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--text-bright);" id="detailName">—</div><div style="font-family:var(--mono);font-size:9px;color:var(--cyan);" id="detailId">—</div></div>
       <button class="detail-close" onclick="closeDetail()">✕</button>
     </div>
     <div class="detail-body">
@@ -355,7 +342,7 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
         <button class="status-change-btn down" onclick="setRideStatus('down')">DOWN</button>
         <button class="status-change-btn closed" onclick="setRideStatus('closed')">CLOSED</button>
       </div>
-      <div class="detail-sec" style="margin-top:14px;">// Status Note / Reason</div>
+      <div class="detail-sec" style="margin-top:13px;">// Status Note / Reason</div>
       <textarea class="detail-note-input" id="detailNote" placeholder="Reason for status change, maintenance note, or observation…"></textarea>
       <div class="detail-sec">// Position Staffing</div>
       <div id="detailPositions"></div>
@@ -363,121 +350,222 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
     </div>
   </div>
 </div>
-
 <div id="toast"></div>
-
 <script>
-// ── RIDE DATA ──────────────────────────────────────────────────────────────
-const RIDE_DEFS = [
-  {id:'SC01', name:'Steel Coaster',         positions:['Load/Dispatch','Unload','Queue']},
-  {id:'WC01', name:'Wooden Coaster',        positions:['Load/Dispatch','Unload','Queue','Rover']},
-  {id:'FC01', name:'Family Coaster',        positions:['Load/Dispatch','Unload']},
-  {id:'FW01', name:'Ferris Wheel',          positions:['Load/Unload','Queue']},
-  {id:'CR01', name:'Carousel',              positions:['Load/Unload']},
-  {id:'SC02', name:'Scrambler',             positions:['Load/Dispatch','Queue']},
-  {id:'GK01', name:'Go-Kart Inner',         positions:['Dispatch','Exit','Queue']},
-  {id:'GK02', name:'Go-Kart Outer',         positions:['Dispatch','Exit','Queue']},
-  {id:'DT01', name:'Drop Tower',            positions:['Load/Dispatch','Unload']},
-  {id:'SW01', name:'Swing Ride',            positions:['Load/Dispatch','Unload']},
-  {id:'WS01', name:'Waterslide A',          positions:['Top','Bottom/Catch']},
-  {id:'WS02', name:'Waterslide B',          positions:['Top','Bottom/Catch']},
-  {id:'WP01', name:'Wave Pool',             positions:['Lifeguard N','Lifeguard S','Lifeguard E']},
-  {id:'LR01', name:'Lazy River',            positions:['Entry','Exit','Mid-River']},
+const RIDE_DEFS=[
+  {id:'SC01',name:'Steel Coaster',positions:['Load/Dispatch','Unload','Queue']},
+  {id:'WC01',name:'Wooden Coaster',positions:['Load/Dispatch','Unload','Queue','Rover']},
+  {id:'FC01',name:'Family Coaster',positions:['Load/Dispatch','Unload']},
+  {id:'FW01',name:'Ferris Wheel',positions:['Load/Unload','Queue']},
+  {id:'CR01',name:'Carousel',positions:['Load/Unload']},
+  {id:'SC02',name:'Scrambler',positions:['Load/Dispatch','Queue']},
+  {id:'GK01',name:'Go-Kart Inner',positions:['Dispatch','Exit','Queue']},
+  {id:'GK02',name:'Go-Kart Outer',positions:['Dispatch','Exit','Queue']},
+  {id:'DT01',name:'Drop Tower',positions:['Load/Dispatch','Unload']},
+  {id:'SW01',name:'Swing Ride',positions:['Load/Dispatch','Unload']},
+  {id:'WS01',name:'Waterslide A',positions:['Top','Bottom/Catch']},
+  {id:'WS02',name:'Waterslide B',positions:['Top','Bottom/Catch']},
+  {id:'WP01',name:'Wave Pool',positions:['Lifeguard N','Lifeguard S','Lifeguard E']},
+  {id:'LR01',name:'Lazy River',positions:['Entry','Exit','Mid-River']},
 ];
-
-const ROTATION_WARN_MIN = 45;
-const ROTATION_CRIT_MIN = 60;
-
-// ── STATE ─────────────────────────────────────────────────────────────────
-let dispatcher = {name:'', badge:'', shift:''};
-let rides = {};
-let radioLog = [];
-let rotAlerts = [];
-let activeDetailRide = null;
-let currentTab = 'board';
+const ROT_WARN=45,ROT_CRIT=60;
+let dispatcher={name:'',badge:'',shift:''};
+let rides={},radioLog=[],rotAlerts=[],activeDetail=null,currentTab='board';
 
 function initRides(){
   RIDE_DEFS.forEach(def=>{
-    rides[def.id]={
-      ...def,
-      status:'closed',
-      note:'',
-      cycleCount:0,
-      openedAt:null,
-      positions:{},
-      lastUpdated: Date.now(),
-    };
-    def.positions.forEach(p=>{ rides[def.id].positions[p]={op:null,badge:null,since:null}; });
+    rides[def.id]={...def,status:'closed',note:'',cycleCount:0,openedAt:null,positions:{},lastUpdated:Date.now()};
+    def.positions.forEach(p=>{rides[def.id].positions[p]={op:null,badge:null,since:null};});
   });
-  // Populate radio ride select
-  const sel = document.getElementById('radioRide');
-  RIDE_DEFS.forEach(r=>{
-    const opt=document.createElement('option');
-    opt.value=r.id; opt.textContent=r.name;
-    sel.appendChild(opt);
-  });
+  const sel=document.getElementById('radioRide');
+  RIDE_DEFS.forEach(r=>{const o=document.createElement('option');o.value=r.id;o.textContent=r.name;sel.appendChild(o);});
 }
 
-// ── SETUP ─────────────────────────────────────────────────────────────────
 function startDispatch(){
-  const name = document.getElementById('setupName').value.trim();
-  const badge = document.getElementById('setupBadge').value.trim();
-  if(!name||!badge){ toast('Name and badge ID required','err'); return; }
-  dispatcher = {name, badge, shift:document.getElementById('setupShift').value};
-  document.getElementById('dispBadge').textContent = name+' · '+badge;
+  const name=document.getElementById('setupName').value.trim();
+  const badge=document.getElementById('setupBadge').value.trim();
+  if(!name||!badge){toast('Name and badge required','err');return;}
+  dispatcher={name,badge,shift:document.getElementById('setupShift').value};
+  document.getElementById('dispBadge').textContent=name+' · '+badge;
   document.getElementById('setupOverlay').style.display='none';
-  seedDemoState();
-  renderBoard();
-  logRadio('ALL','Dispatch shift started · Dispatcher: '+name+' ('+badge+') · '+dispatcher.shift+' shift','info');
+  seedDemo();renderBoard();updateWidget();
+  logRadio('ALL','Dispatch shift started · '+name+' ('+badge+') · '+dispatcher.shift+' shift','info');
   toast('Shift started · '+dispatcher.shift,'ok');
 }
 
-// ── CLOCK ─────────────────────────────────────────────────────────────────
 function tickClock(){
-  const now=new Date();
-  document.getElementById('clock').textContent=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
-  document.getElementById('dateDisp').textContent=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+  const n=new Date();
+  document.getElementById('clock').textContent=n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
+  document.getElementById('dateDisp').textContent=n.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
 }
-setInterval(tickClock,1000); tickClock();
+setInterval(tickClock,1000);tickClock();
 setInterval(checkRotations,15000);
-setInterval(()=>{ if(currentTab==='board') renderBoard(); },30000);
+setInterval(()=>{
+  if(currentTab==='board')renderBoard();
+  if(currentTab==='score')renderScoreTab();
+  updateWidget();
+},30000);
 
-// ── BOARD RENDER ──────────────────────────────────────────────────────────
-function renderBoard(){
-  const el=document.getElementById('panelBody');
-  const sortedRides=Object.values(rides).sort((a,b)=>{
-    const order={open:0,hold:1,down:2,closed:3};
-    return (order[a.status]||3)-(order[b.status]||3);
-  });
-  const openCount=sortedRides.filter(r=>r.status==='open').length;
-  document.getElementById('openRideCount').textContent=openCount;
+// ── RIDE SCORE ENGINE ─────────────────────────────────────────────────────
+// OPD feeds Readiness (R) and Delivery (D) pillars
+// R: staffing compliance, rotation compliance, radio engagement
+// D: ride availability, throughput index
 
-  el.innerHTML=`<div class="ride-board">${sortedRides.map(r=>renderTile(r)).join('')}</div>`;
+function computeScore(){
+  const all=Object.values(rides);
+  const open=all.filter(r=>r.status==='open');
+
+  // Staffing: % of open positions filled
+  let totPos=0,filPos=0;
+  open.forEach(r=>{Object.values(r.positions).forEach(p=>{totPos++;if(p.op)filPos++;});});
+  const staffPct=totPos>0?(filPos/totPos)*100:100;
+
+  // Rotation compliance: % of staffed positions NOT overdue
+  let staffed=0,overdue=0;
+  open.forEach(r=>{Object.values(r.positions).forEach(p=>{
+    if(!p.op||!p.since)return;
+    staffed++;
+    if(Math.floor((Date.now()-p.since)/60000)>=ROT_WARN)overdue++;
+  });});
+  const rotPct=staffed>0?((staffed-overdue)/staffed)*100:100;
+  const critOD=rotAlerts.filter(a=>a.level==='crit').length;
+
+  // Radio log engagement (cap 20 entries = 100)
+  const logScore=Math.min(100,radioLog.length*5);
+
+  // Ride availability: deduct for DOWN and HOLD
+  const downCount=all.filter(r=>r.status==='down').length;
+  const holdCount=all.filter(r=>r.status==='hold').length;
+  const availScore=Math.max(0,100-(downCount*12)-(holdCount*5));
+
+  // Throughput: cycles vs benchmark (80 cycles/open ride)
+  const totalCycles=open.reduce((s,r)=>s+r.cycleCount,0);
+  const benchmark=open.length*80;
+  const throughput=benchmark>0?Math.min(100,(totalCycles/benchmark)*100):0;
+
+  // R = Staffing 40% + Rotation 35% + Log 25%
+  const rScore=Math.round(staffPct*0.40+rotPct*0.35+logScore*0.25);
+  // D = Availability 55% + Throughput 45%
+  const dScore=Math.round(availScore*0.55+throughput*0.45);
+  // Composite = R 50% + D 50%
+  const composite=Math.round(rScore*0.5+dScore*0.5);
+
+  return{composite,rScore,dScore,staffPct:Math.round(staffPct),rotPct:Math.round(rotPct),
+    critOD,overdue,staffed,logScore:Math.round(logScore),
+    availScore:Math.round(availScore),throughput:Math.round(throughput),
+    downCount,holdCount,openCount:open.length,
+    totalCycles,benchmark,filPos,totPos};
 }
 
-function renderTile(r){
-  const sbClass={open:'sb-open',hold:'sb-hold',down:'sb-down',closed:'sb-closed'}[r.status]||'sb-closed';
-  const sbText={open:'OPEN',hold:'HOLD',down:'DOWN',closed:'CLOSED'}[r.status]||'CLOSED';
-  const tileClass='ride-tile status-'+r.status;
-  const runtime = r.openedAt ? Math.floor((Date.now()-r.openedAt)/3600000*10)/10 : 0;
-  const staffed = Object.values(r.positions).filter(p=>p.op).length;
-  const total = r.positions ? Object.keys(r.positions).length : 0;
+function grade(s){
+  if(s>=90)return{label:'EXCELLENT',cls:'grade-excellent'};
+  if(s>=75)return{label:'STRONG',cls:'grade-strong'};
+  if(s>=60)return{label:'MODERATE',cls:'grade-moderate'};
+  return{label:'AT RISK',cls:'grade-risk'};
+}
+function sc(v){return v>=80?'good':v>=60?'warn':'bad';}
 
-  const posRows = Object.entries(r.positions).map(([pos,data])=>{
-    if(!data.op) return `<div class="tile-pos"><span class="tile-pos-name">${pos}</span><span style="color:var(--text-muted);font-style:italic;font-size:8px;">Unassigned</span><span>—</span></div>`;
-    const mins = data.since ? Math.floor((Date.now()-data.since)/60000) : 0;
-    const tc = mins<ROTATION_WARN_MIN?'ok':mins<ROTATION_CRIT_MIN?'warn':'crit';
-    return `<div class="tile-pos"><span class="tile-pos-name">${pos}</span><span class="tile-pos-op">${data.op}</span><span class="tile-pos-time ${tc}">${mins}m</span></div>`;
-  }).join('');
+function updateWidget(){
+  const s=computeScore();
+  document.getElementById('rsw-num').textContent=s.composite||'—';
+  document.getElementById('rsw-r').textContent=s.rScore||'—';
+  document.getElementById('rsw-d').textContent=s.dScore||'—';
+}
 
-  const holdActive = r.status==='hold' ? 'active-hold':'';
-  const downActive = r.status==='down' ? 'active-down':'';
-
-  return `<div class="${tileClass}" onclick="openDetail('${r.id}')">
-    <div class="tile-header">
-      <div><div class="tile-name">${r.name}</div><div class="tile-id">${r.id}</div></div>
-      <div class="${sbClass} status-badge">${sbText}</div>
+function renderScoreTab(){
+  const s=computeScore();
+  const g=grade(s.composite);
+  document.getElementById('panelBody').innerHTML=`
+  <div class="score-wrap">
+    <div class="score-banner">
+      <div class="score-banner-num">${s.composite}</div>
+      <div class="score-banner-right">
+        <div class="score-banner-title">OPD Stream Score</div>
+        <div class="score-banner-sub">OPERATIONS DISPATCHER · LIVE RIDE SCORE™ CONTRIBUTION</div>
+        <span class="grade-pill ${g.cls}">${g.label}</span>
+      </div>
     </div>
+    <div class="pillar-row">
+      <div class="pillar-card pc-r">
+        <div class="pc-top"><div><div class="pc-letter">R</div><div class="pc-name">Readiness</div></div><div class="pc-score">${s.rScore}</div></div>
+        <div class="pc-bar-wrap"><div class="pc-bar" style="width:${s.rScore}%"></div></div>
+        <div class="pc-streams">
+          <div class="pc-stream"><span class="pc-stream-name">Staffing compliance</span><span class="pc-sv ${sc(s.staffPct)}">${s.staffPct}%</span></div>
+          <div class="pc-stream"><span class="pc-stream-name">Rotation compliance</span><span class="pc-sv ${sc(s.rotPct)}">${s.rotPct}%</span></div>
+          <div class="pc-stream"><span class="pc-stream-name">Radio log engagement</span><span class="pc-sv ${sc(s.logScore)}">${s.logScore}/100</span></div>
+          <div class="pc-stream"><span class="pc-stream-name">Critical overdue</span><span class="pc-sv ${s.critOD===0?'good':s.critOD<=2?'warn':'bad'}">${s.critOD} positions</span></div>
+        </div>
+      </div>
+      <div class="pillar-card pc-d">
+        <div class="pc-top"><div><div class="pc-letter">D</div><div class="pc-name">Delivery</div></div><div class="pc-score">${s.dScore}</div></div>
+        <div class="pc-bar-wrap"><div class="pc-bar" style="width:${s.dScore}%"></div></div>
+        <div class="pc-streams">
+          <div class="pc-stream"><span class="pc-stream-name">Ride availability</span><span class="pc-sv ${sc(s.availScore)}">${s.availScore}/100</span></div>
+          <div class="pc-stream"><span class="pc-stream-name">Throughput index</span><span class="pc-sv ${sc(s.throughput)}">${s.throughput}/100</span></div>
+          <div class="pc-stream"><span class="pc-stream-name">Rides open</span><span class="pc-sv ${s.openCount>=(RIDE_DEFS.length*.7)?'good':s.openCount>=(RIDE_DEFS.length*.5)?'warn':'bad'}">${s.openCount} / ${RIDE_DEFS.length}</span></div>
+          <div class="pc-stream"><span class="pc-stream-name">Down / Hold</span><span class="pc-sv ${s.downCount===0&&s.holdCount===0?'good':s.downCount<=1?'warn':'bad'}">${s.downCount} down · ${s.holdCount} hold</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="factor-table">
+      <div class="ft-hdr"><span>// SCORING FACTOR BREAKDOWN</span><span style="color:var(--gold)">OPD STREAM · R &amp; D PILLARS</span></div>
+      <div class="ft-row">
+        <div class="ft-factor"><strong>Position Staffing</strong><small>${s.filPos} of ${s.totPos} open-ride positions filled</small></div>
+        <div class="ft-wt">40% R</div>
+        <div class="ft-val ${sc(s.staffPct)}">${s.staffPct}%</div>
+        <div class="ft-bar"><div class="ft-mini"><div class="ft-fill ${sc(s.staffPct)}" style="width:${s.staffPct}%"></div></div></div>
+      </div>
+      <div class="ft-row">
+        <div class="ft-factor"><strong>Rotation Compliance</strong><small>${s.overdue} of ${s.staffed} staffed positions overdue for rotation</small></div>
+        <div class="ft-wt">35% R</div>
+        <div class="ft-val ${sc(s.rotPct)}">${s.rotPct}%</div>
+        <div class="ft-bar"><div class="ft-mini"><div class="ft-fill ${sc(s.rotPct)}" style="width:${s.rotPct}%"></div></div></div>
+      </div>
+      <div class="ft-row">
+        <div class="ft-factor"><strong>Radio Log Engagement</strong><small>${radioLog.length} entries logged this shift · cap 20 for full score</small></div>
+        <div class="ft-wt">25% R</div>
+        <div class="ft-val ${sc(s.logScore)}">${s.logScore}/100</div>
+        <div class="ft-bar"><div class="ft-mini"><div class="ft-fill ${sc(s.logScore)}" style="width:${s.logScore}%"></div></div></div>
+      </div>
+      <div class="ft-row">
+        <div class="ft-factor"><strong>Ride Availability</strong><small>${s.downCount} DOWN (−12 pts ea) · ${s.holdCount} HOLD (−5 pts ea)</small></div>
+        <div class="ft-wt">55% D</div>
+        <div class="ft-val ${sc(s.availScore)}">${s.availScore}/100</div>
+        <div class="ft-bar"><div class="ft-mini"><div class="ft-fill ${sc(s.availScore)}" style="width:${s.availScore}%"></div></div></div>
+      </div>
+      <div class="ft-row">
+        <div class="ft-factor"><strong>Throughput Index</strong><small>${s.totalCycles} total cycles · benchmark ${s.benchmark} (${RIDE_DEFS.length} rides × 80)</small></div>
+        <div class="ft-wt">45% D</div>
+        <div class="ft-val ${sc(s.throughput)}">${s.throughput}/100</div>
+        <div class="ft-bar"><div class="ft-mini"><div class="ft-fill ${sc(s.throughput)}" style="width:${s.throughput}%"></div></div></div>
+      </div>
+    </div>
+    <div class="score-note">
+      <span>// OPD stream note</span> — This score is computed live from active dispatch data and contributes directly to the <span>Readiness</span> and <span>Delivery</span> pillars of the AS 360 RIDE Score™. Score updates every 30 seconds or on any status/staffing change. Factor weights and convergence formulas are proprietary to Amusement Standards and withheld under NDA.
+    </div>
+  </div>`;
+}
+
+// ── BOARD ─────────────────────────────────────────────────────────────────
+function renderBoard(){
+  const sorted=Object.values(rides).sort((a,b)=>{const o={open:0,hold:1,down:2,closed:3};return(o[a.status]||3)-(o[b.status]||3);});
+  document.getElementById('openRideCount').textContent=sorted.filter(r=>r.status==='open').length;
+  document.getElementById('panelBody').innerHTML=`<div class="ride-board">${sorted.map(r=>renderTile(r)).join('')}</div>`;
+}
+function renderTile(r){
+  const sbC={open:'sb-open',hold:'sb-hold',down:'sb-down',closed:'sb-closed'}[r.status]||'sb-closed';
+  const sbT={open:'OPEN',hold:'HOLD',down:'DOWN',closed:'CLOSED'}[r.status]||'CLOSED';
+  const runtime=r.openedAt?Math.floor((Date.now()-r.openedAt)/3600000*10)/10:0;
+  const staffed=Object.values(r.positions).filter(p=>p.op).length;
+  const total=Object.keys(r.positions).length;
+  const posRows=Object.entries(r.positions).map(([pos,data])=>{
+    if(!data.op)return`<div class="tile-pos"><span class="tile-pos-name">${pos}</span><span style="color:var(--text-muted);font-style:italic;font-size:8px;">Unassigned</span><span>—</span></div>`;
+    const mins=data.since?Math.floor((Date.now()-data.since)/60000):0;
+    const tc=mins<ROT_WARN?'ok':mins<ROT_CRIT?'warn':'crit';
+    return`<div class="tile-pos"><span class="tile-pos-name">${pos}</span><span class="tile-pos-op">${data.op}</span><span class="tile-pos-time ${tc}">${mins}m</span></div>`;
+  }).join('');
+  return`<div class="ride-tile status-${r.status}" onclick="openDetail('${r.id}')">
+    <div class="tile-header"><div><div class="tile-name">${r.name}</div><div class="tile-id">${r.id}</div></div><div class="${sbC} status-badge">${sbT}</div></div>
     <div class="tile-body">
       <div class="tile-stat-row">
         <div class="tile-stat"><div class="tile-stat-val">${r.cycleCount}</div><div class="tile-stat-label">Cycles</div></div>
@@ -487,391 +575,197 @@ function renderTile(r){
       <div class="tile-positions">${posRows}</div>
     </div>
     <div class="tile-actions" onclick="event.stopPropagation()">
-      <button class="tile-btn ${holdActive}" onclick="quickStatus('${r.id}','hold')" title="Hold">Hold</button>
-      <button class="tile-btn ${downActive}" onclick="quickStatus('${r.id}','down')" title="Down">Down</button>
-      <button class="tile-btn clear" onclick="quickStatus('${r.id}','open')" title="Clear">Clear</button>
+      <button class="tile-btn ${r.status==='hold'?'active-hold':''}" onclick="quickStatus('${r.id}','hold')">Hold</button>
+      <button class="tile-btn ${r.status==='down'?'active-down':''}" onclick="quickStatus('${r.id}','down')">Down</button>
+      <button class="tile-btn" onclick="quickStatus('${r.id}','open')" style="color:var(--green)">Clear</button>
       <button class="tile-btn" onclick="openDetail('${r.id}')">Detail ›</button>
     </div>
   </div>`;
 }
-
-function quickStatus(rideId, newStatus){
-  const r=rides[rideId];
-  const old=r.status;
-  r.status=newStatus;
-  if(newStatus==='open'&&!r.openedAt) r.openedAt=Date.now();
+function quickStatus(id,s){
+  const r=rides[id];const old=r.status;r.status=s;
+  if(s==='open'&&!r.openedAt)r.openedAt=Date.now();
   r.lastUpdated=Date.now();
-  logRadio(rideId, `Status: ${old.toUpperCase()} → ${newStatus.toUpperCase()}`, newStatus==='down'?'high':newStatus==='hold'?'med':'normal');
-  renderBoard();
-  toast(r.name+' → '+newStatus.toUpperCase(), newStatus==='down'?'err':newStatus==='hold'?'warn':'ok');
+  logRadio(id,`Status: ${old.toUpperCase()} → ${s.toUpperCase()}`,s==='down'?'high':s==='hold'?'med':'normal');
+  renderBoard();updateWidget();if(currentTab==='score')renderScoreTab();
+  toast(r.name+' → '+s.toUpperCase(),s==='down'?'err':s==='hold'?'warn':'ok');
 }
 
 // ── DETAIL MODAL ──────────────────────────────────────────────────────────
-function openDetail(rideId){
-  const r=rides[rideId];
-  activeDetailRide=rideId;
+function openDetail(id){
+  const r=rides[id];activeDetail=id;
   document.getElementById('detailName').textContent=r.name;
-  document.getElementById('detailId').textContent=r.id+' · Last updated: '+new Date(r.lastUpdated).toLocaleTimeString();
+  document.getElementById('detailId').textContent=r.id+' · '+new Date(r.lastUpdated).toLocaleTimeString();
   document.getElementById('detailNote').value=r.note||'';
-
-  // Status buttons
-  document.querySelectorAll('.status-change-btn').forEach(b=>{
-    b.classList.toggle('active', b.classList.contains(r.status));
-  });
-
-  // Positions
-  const posEl=document.getElementById('detailPositions');
-  posEl.innerHTML=Object.entries(r.positions).map(([pos,data])=>`
-    <div style="margin-bottom:10px;">
-      <div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px;">${pos}</div>
-      <div style="display:flex;gap:6px;">
-        <input type="text" class="detail-note-input" style="flex:1;min-height:0;padding:8px 10px;font-size:12px;" placeholder="Operator name" id="pos-name-${pos.replace(/[^a-z]/gi,'_')}" value="${data.op||''}">
-        <input type="text" class="detail-note-input" style="width:100px;min-height:0;padding:8px 10px;font-size:12px;" placeholder="Badge ID" id="pos-badge-${pos.replace(/[^a-z]/gi,'_')}" value="${data.badge||''}">
+  document.querySelectorAll('.status-change-btn').forEach(b=>b.classList.toggle('active',b.classList.contains(r.status)));
+  document.getElementById('detailPositions').innerHTML=Object.entries(r.positions).map(([pos,data])=>`
+    <div style="margin-bottom:9px;">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;">${pos}</div>
+      <div style="display:flex;gap:5px;">
+        <input type="text" class="detail-note-input" style="flex:1;min-height:0;padding:7px 9px;font-size:12px;" placeholder="Operator name" id="pn-${pos.replace(/[^a-z]/gi,'_')}" value="${data.op||''}">
+        <input type="text" class="detail-note-input" style="width:95px;min-height:0;padding:7px 9px;font-size:12px;" placeholder="Badge" id="pb-${pos.replace(/[^a-z]/gi,'_')}" value="${data.badge||''}">
       </div>
     </div>`).join('');
-
   document.getElementById('detailOverlay').classList.add('show');
 }
-
-function setRideStatus(s){
-  document.querySelectorAll('.status-change-btn').forEach(b=>{
-    b.classList.toggle('active',b.classList.contains(s));
-  });
-}
-
-function closeDetail(){
-  document.getElementById('detailOverlay').classList.remove('show');
-  activeDetailRide=null;
-}
-
+function setRideStatus(s){document.querySelectorAll('.status-change-btn').forEach(b=>b.classList.toggle('active',b.classList.contains(s)));}
+function closeDetail(){document.getElementById('detailOverlay').classList.remove('show');activeDetail=null;}
 function saveDetail(){
-  if(!activeDetailRide) return;
-  const r=rides[activeDetailRide];
-  const activeBtn=document.querySelector('.status-change-btn.active');
-  const newStatus=activeBtn?activeBtn.classList[1]:r.status;
-  const oldStatus=r.status;
+  if(!activeDetail)return;
+  const r=rides[activeDetail];
+  const ab=document.querySelector('.status-change-btn.active');
+  const ns=ab?ab.classList[1]:r.status;const os=r.status;
   r.note=document.getElementById('detailNote').value.trim();
-
-  // Save positions
   Object.keys(r.positions).forEach(pos=>{
-    const key=pos.replace(/[^a-z]/gi,'_');
-    const nameEl=document.getElementById('pos-name-'+key);
-    const badgeEl=document.getElementById('pos-badge-'+key);
-    if(nameEl&&badgeEl){
-      const opName=nameEl.value.trim();
-      const opBadge=badgeEl.value.trim();
-      if(opName&&!r.positions[pos].op){
-        r.positions[pos]={op:opName,badge:opBadge,since:Date.now()};
-      } else if(opName){
-        r.positions[pos].op=opName;
-        r.positions[pos].badge=opBadge;
-      } else {
-        r.positions[pos]={op:null,badge:null,since:null};
-      }
+    const k=pos.replace(/[^a-z]/gi,'_');
+    const ne=document.getElementById('pn-'+k),be=document.getElementById('pb-'+k);
+    if(ne&&be){
+      const n=ne.value.trim(),b=be.value.trim();
+      if(n&&!r.positions[pos].op)r.positions[pos]={op:n,badge:b,since:Date.now()};
+      else if(n){r.positions[pos].op=n;r.positions[pos].badge=b;}
+      else r.positions[pos]={op:null,badge:null,since:null};
     }
   });
-
-  if(newStatus!==oldStatus){
-    r.status=newStatus;
-    if(newStatus==='open'&&!r.openedAt) r.openedAt=Date.now();
-    logRadio(r.id,`Status: ${oldStatus.toUpperCase()} → ${newStatus.toUpperCase()}${r.note?' · '+r.note:''}`,newStatus==='down'?'high':newStatus==='hold'?'med':'normal');
+  if(ns!==os){
+    r.status=ns;if(ns==='open'&&!r.openedAt)r.openedAt=Date.now();
+    logRadio(r.id,`Status: ${os.toUpperCase()} → ${ns.toUpperCase()}${r.note?' · '+r.note:''}`,ns==='down'?'high':ns==='hold'?'med':'normal');
   }
-  r.lastUpdated=Date.now();
-  closeDetail();
-  renderBoard();
-  toast('Ride updated','ok');
+  r.lastUpdated=Date.now();closeDetail();renderBoard();updateWidget();
+  if(currentTab==='score')renderScoreTab();toast('Ride updated','ok');
 }
 
 // ── ROTATION ALERTS ────────────────────────────────────────────────────────
 function checkRotations(){
-  const newAlerts=[];
+  rotAlerts=[];
   Object.values(rides).forEach(r=>{
-    if(r.status!=='open') return;
+    if(r.status!=='open')return;
     Object.entries(r.positions).forEach(([pos,data])=>{
-      if(!data.op||!data.since) return;
+      if(!data.op||!data.since)return;
       const mins=Math.floor((Date.now()-data.since)/60000);
-      if(mins>=ROTATION_WARN_MIN){
-        newAlerts.push({
-          rideId:r.id, rideName:r.name, pos,
-          op:data.op, mins,
-          level:mins>=ROTATION_CRIT_MIN?'crit':'warn',
-          id:r.id+'_'+pos,
-        });
-      }
+      if(mins>=ROT_WARN)rotAlerts.push({rideId:r.id,rideName:r.name,pos,op:data.op,mins,level:mins>=ROT_CRIT?'crit':'warn',id:r.id+'_'+pos});
     });
   });
-  rotAlerts=newAlerts;
   updateAlertCounts();
-  if(currentTab==='alerts') renderAlerts();
+  if(currentTab==='alerts')renderAlerts();
+  updateWidget();if(currentTab==='score')renderScoreTab();
 }
-
 function updateAlertCounts(){
   const crits=rotAlerts.filter(a=>a.level==='crit').length;
   const warns=rotAlerts.filter(a=>a.level==='warn').length;
   document.getElementById('alertCount').textContent=rotAlerts.length;
-  const crit=document.getElementById('critAlerts');
-  const warn=document.getElementById('warnAlerts');
-  crit.style.display=crits>0?'flex':'none';
-  document.getElementById('critCount').textContent=crits;
-  warn.style.display=warns>0?'flex':'none';
-  document.getElementById('warnCount').textContent=warns;
+  const ce=document.getElementById('critAlerts');const we=document.getElementById('warnAlerts');
+  ce.style.display=crits>0?'flex':'none';document.getElementById('critCount').textContent=crits;
+  we.style.display=warns>0?'flex':'none';document.getElementById('warnCount').textContent=warns;
 }
-
 function renderAlerts(){
   const el=document.getElementById('panelBody');
-  if(!rotAlerts.length){
-    el.innerHTML='<div class="empty"><div class="empty-icon">✅</div>No rotation alerts · All positions within limits</div>';
-    return;
-  }
-  const sorted=[...rotAlerts].sort((a,b)=>b.mins-a.mins);
-  el.innerHTML=sorted.map(a=>`
+  if(!rotAlerts.length){el.innerHTML='<div class="empty"><div class="empty-icon">✅</div>No rotation alerts · All positions within limits</div>';return;}
+  el.innerHTML=[...rotAlerts].sort((a,b)=>b.mins-a.mins).map(a=>`
     <div class="rot-alert ${a.level}">
       <div class="rot-alert-icon">${a.level==='crit'?'🔴':'🟡'}</div>
-      <div class="rot-alert-body">
-        <div class="rot-alert-title ${a.level}">${a.rideName} · ${a.pos}</div>
-        <div class="rot-alert-sub">${a.op} — overdue for rotation</div>
-      </div>
+      <div class="rot-alert-body"><div class="rot-alert-title ${a.level}">${a.rideName} · ${a.pos}</div><div class="rot-alert-sub">${a.op} — overdue for rotation</div></div>
       <div class="rot-alert-time ${a.level}">${a.mins}m</div>
       <button class="rot-ack-btn" onclick="ackRotation('${a.id}',event)">ACK</button>
     </div>`).join('');
 }
-
-function ackRotation(id, e){
+function ackRotation(id,e){
   e.stopPropagation();
-  const alert=rotAlerts.find(a=>a.id===id);
-  if(!alert) return;
-  logRadio(alert.rideId,`Rotation acknowledged · ${alert.pos} · ${alert.op} at ${alert.mins}m`,'med');
-  rotAlerts=rotAlerts.filter(a=>a.id!==id);
-  updateAlertCounts();
-  renderAlerts();
-  toast('Rotation ACK logged','ok');
+  const a=rotAlerts.find(x=>x.id===id);if(!a)return;
+  logRadio(a.rideId,`Rotation ACK · ${a.pos} · ${a.op} at ${a.mins}m`,'med');
+  rotAlerts=rotAlerts.filter(x=>x.id!==id);updateAlertCounts();renderAlerts();updateWidget();toast('Rotation ACK logged','ok');
 }
 
 // ── RADIO LOG ─────────────────────────────────────────────────────────────
-function logRadio(rideId, msg, priority='normal'){
+function logRadio(rideId,msg,priority='normal'){
   const rideName=rideId==='ALL'?'ALL RIDES':(rides[rideId]?.name||rideId);
-  const entry={
-    rideId, rideName, msg, priority,
-    dispatcher:dispatcher.name||'—',
-    time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),
-    ts:Date.now(),
-  };
-  radioLog.unshift(entry);
-  renderRadioLog();
+  radioLog.unshift({rideId,rideName,msg,priority,dispatcher:dispatcher.name||'—',
+    time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),ts:Date.now()});
+  renderRadioLog();updateWidget();
 }
-
 function renderRadioLog(){
   const el=document.getElementById('radioLog');
-  if(!radioLog.length){
-    el.innerHTML='<div class="empty"><div class="empty-icon">📻</div>No entries yet</div>';
-    return;
-  }
-  const rideColors={SC01:'#00D4FF',WC01:'#FF6B1A',FC01:'#22C55E',FW01:'#E040FB',CR01:'#F59E0B',SC02:'#F43F5E',GK01:'#448AFF',GK02:'#4EC9B0',DT01:'#FF1744',SW01:'#64B5F6',WS01:'#26C6DA',WS02:'#80CBC4',WP01:'#29B6F6',LR01:'#66BB6A'};
+  if(!radioLog.length){el.innerHTML='<div class="empty"><div class="empty-icon">📻</div>No entries yet</div>';return;}
+  const cols={SC01:'#00D4FF',WC01:'#FF6B1A',FC01:'#22C55E',FW01:'#E040FB',CR01:'#F59E0B',SC02:'#F43F5E',GK01:'#448AFF',GK02:'#4EC9B0',DT01:'#FF1744',SW01:'#64B5F6',WS01:'#26C6DA',WS02:'#80CBC4',WP01:'#29B6F6',LR01:'#66BB6A'};
   el.innerHTML=radioLog.slice(0,80).map(e=>`
     <div class="radio-entry priority-${e.priority}">
-      <div class="re-top">
-        <span class="re-ride" style="color:${e.rideId==='ALL'?'var(--cyan)':rideColors[e.rideId]||'var(--text-dim)'}">${e.rideName}</span>
-        <span class="re-time">${e.time}</span>
-      </div>
+      <div class="re-top"><span class="re-ride" style="color:${e.rideId==='ALL'?'var(--cyan)':cols[e.rideId]||'var(--text-dim)'}">${e.rideName}</span><span class="re-time">${e.time}</span></div>
       <div class="re-msg">${e.msg}</div>
       <div class="re-dispatcher">↗ ${e.dispatcher}</div>
     </div>`).join('');
 }
-
 function sendRadio(){
   const msg=document.getElementById('radioText').value.trim();
-  if(!msg){ toast('Enter a message','err'); return; }
-  const rideId=document.getElementById('radioRide').value;
-  const priority=document.getElementById('radioPriority').value;
-  logRadio(rideId,msg,priority);
-  clearRadio();
-  toast('Entry logged','ok');
+  if(!msg){toast('Enter a message','err');return;}
+  logRadio(document.getElementById('radioRide').value,msg,document.getElementById('radioPriority').value);
+  clearRadio();toast('Entry logged','ok');
 }
-function clearRadio(){
-  document.getElementById('radioText').value='';
-}
+function clearRadio(){document.getElementById('radioText').value='';}
 
-// ── CODES & SIGNALS DATA ──────────────────────────────────────────────────
-const TEN_CODES = [
-  ['10-1','RECEIVING POORLY'],['10-2','RECEIVING WELL'],['10-4','AFFIRMATIVE'],
-  ['10-5','ACTUAL ASSISTANCE REQUIRED'],['10-6','BUSY'],['10-7','OUT OF SERVICE'],
-  ['10-8','IN SERVICE'],['10-9','REPEAT'],['10-10','MEET AT'],
-  ['10-12','BOARD OF HEALTH'],['10-13','TRAFFIC REPORT'],['10-14','ESCORT / TRANSPORT'],
-  ['10-15','SUBJECT IN CUSTODY'],['10-16','TRASH PICK-UP'],['10-17','GUEST CONCERN'],
-  ['10-19','RETURN TO SECURITY'],['10-20','LOCATION'],['10-21','PHONE EXTENSION'],
-  ['10-22','DISREGARD'],['10-23','STANDBY'],['10-35','CONFIDENTIAL INFO'],
-  ['10-36','CORRECT TIME'],['10-39','MESSAGE DELIVERED'],['10-47','ALCOHOL STOP'],
-  ['10-50','STOPPING VEHICLE'],['10-51','EN ROUTE'],['10-52','ETA'],
-  ['10-54','NEGATIVE'],['10-56','GO TO / REPORT TO'],['10-81','BREAK'],
-  ['10-91','UNAUTHORIZED RADIO TRAFFIC'],['10-97','ARRIVED'],
-  ['10-98','ASSIGNMENT COMPLETE'],['10-100','EMERGENCY TRAFFIC ONLY'],
-];
-
-const SIGNALS = [
-  ['0','ARMED — USE CAUTION','high'],['0-K','ARMED WITH KNIFE','high'],
-  ['0-F','ARMED WITH FIREARM','high'],['2','RIDE DOWN WITH GUESTS','high'],
-  ['2E','RIDE DOWN (UNUSUAL LOCATION)','high'],['4','ACCIDENT','high'],
-  ['5','MURDER','high'],['7','DEAD ON ARRIVAL','high'],
-  ['8','MISSING PERSON (ADULT)','high'],['9','VEHICLE ASSIST','med'],
-  ['10','STOLEN VEHICLE','med'],['11','ABANDONED VEHICLE','low'],
-  ['12','RECKLESS DRIVER','med'],['13','SUSPICIOUS VEHICLE','med'],
-  ['13-P','SUSPICIOUS PERSON','med'],['13-N','UNDESIRABLE PERSON','med'],
-  ['15','SPECIAL DETAIL','low'],['16','OBSTRUCTION ON ROADWAY','med'],
-  ['17','TRAINER IN DISTRESS','high'],['18 RED','DANGEROUS ANIMAL ESCAPE','high'],
-  ['18 GREEN','ANIMAL CAPTURED','low'],['20','MENTALLY ILL PERSON','med'],
-  ['21','BREAKING AND ENTERING','high'],['22','DISTURBANCE','med'],
-  ['22-A','FIGHT IN PROGRESS','high'],['23','ROBBERY','high'],
-  ['24','THEFT','med'],['25','FIRE','high'],['26','DROWNING','high'],
-  ['28','SUICIDE','high'],['29','ALARM','med'],['36','KEY ASSIST','low'],
-  ['37','FIRST AID ASSIST','med'],['38','GUEST ASSIST','low'],
-  ['39','MONEY TRANSFER','low'],['41','SHOPLIFTING','med'],
-  ['43','SOLICITING','low'],['47','INDECENT EXPOSURE','med'],
-  ['49','COUNTERFEIT CURRENCY','med'],['50','MOTOR ASSIST','low'],
-  ['51','INTOXICATED DRIVER','high'],['52','INTOXICATED PERSON','med'],
-  ['55','EXPLOSION','high'],['55-A','BOMB THREAT','high'],
-  ['57','HUNTERS','med'],['58','FIREWORKS','med'],['61','BUILDING CHECK','low'],
-  ['66','SEXUAL OFFENSE','high'],['70','LOST CHILD','high'],
-  ['95','DRUG VIOLATION','high'],['95-A','DRUG TRANSACTION','high'],
-  ['96','VICIOUS ANIMAL','high'],['97','ILLEGAL ENTRY','high'],
-  ['999','UNIT IN DISTRESS','high'],['1000','CASH CONT. HOLD UP','high'],
-  ['2000','ATM ALARM','high'],['3000','HH CASH CONT. ALARM','high'],
-  ['9000','EVACUATION LEVEL 1–3','high'],['10000','HOUSING EVACUATION','high'],
-];
-
-const RESPONSES = [
-  {num:'1',level:'low',title:'ROUTINE',desc:'Bloody nose, hurt limb (minor), cut / scrape'},
-  {num:'2',level:'med',title:'URGENT',desc:'Trouble breathing, short of breath, asthma attack, allergies, major limb injury, unconsciousness, chest pains, impending childbirth'},
-  {num:'3',level:'high',title:'EMERGENCY — MEDICAL SERVICES ONLY',desc:'Cardiac arrest, CPR in progress, major multiple injury'},
-];
-
-let codesFilter = 'all';
-let codesSearch = '';
-
+// ── CODES & SIGNALS ───────────────────────────────────────────────────────
+const TEN=[['10-1','RECEIVING POORLY'],['10-2','RECEIVING WELL'],['10-4','AFFIRMATIVE'],['10-5','ACTUAL ASSISTANCE REQUIRED'],['10-6','BUSY'],['10-7','OUT OF SERVICE'],['10-8','IN SERVICE'],['10-9','REPEAT'],['10-10','MEET AT'],['10-12','BOARD OF HEALTH'],['10-13','TRAFFIC REPORT'],['10-14','ESCORT / TRANSPORT'],['10-15','SUBJECT IN CUSTODY'],['10-16','TRASH PICK-UP'],['10-17','GUEST CONCERN'],['10-19','RETURN TO SECURITY'],['10-20','LOCATION'],['10-21','PHONE EXTENSION'],['10-22','DISREGARD'],['10-23','STANDBY'],['10-35','CONFIDENTIAL INFO'],['10-36','CORRECT TIME'],['10-39','MESSAGE DELIVERED'],['10-47','ALCOHOL STOP'],['10-50','STOPPING VEHICLE'],['10-51','EN ROUTE'],['10-52','ETA'],['10-54','NEGATIVE'],['10-56','GO TO / REPORT TO'],['10-81','BREAK'],['10-91','UNAUTHORIZED RADIO TRAFFIC'],['10-97','ARRIVED'],['10-98','ASSIGNMENT COMPLETE'],['10-100','EMERGENCY TRAFFIC ONLY']];
+const SIG=[['0','ARMED — USE CAUTION','high'],['0-K','ARMED WITH KNIFE','high'],['0-F','ARMED WITH FIREARM','high'],['2','RIDE DOWN WITH GUESTS','high'],['2E','RIDE DOWN (UNUSUAL LOCATION)','high'],['4','ACCIDENT','high'],['5','MURDER','high'],['7','DEAD ON ARRIVAL','high'],['8','MISSING PERSON (ADULT)','high'],['9','VEHICLE ASSIST','med'],['10','STOLEN VEHICLE','med'],['11','ABANDONED VEHICLE','low'],['12','RECKLESS DRIVER','med'],['13','SUSPICIOUS VEHICLE','med'],['13-P','SUSPICIOUS PERSON','med'],['13-N','UNDESIRABLE PERSON','med'],['15','SPECIAL DETAIL','low'],['16','OBSTRUCTION ON ROADWAY','med'],['17','TRAINER IN DISTRESS','high'],['18 RED','DANGEROUS ANIMAL ESCAPE','high'],['18 GREEN','ANIMAL CAPTURED','low'],['20','MENTALLY ILL PERSON','med'],['21','BREAKING AND ENTERING','high'],['22','DISTURBANCE','med'],['22-A','FIGHT IN PROGRESS','high'],['23','ROBBERY','high'],['24','THEFT','med'],['25','FIRE','high'],['26','DROWNING','high'],['28','SUICIDE','high'],['29','ALARM','med'],['36','KEY ASSIST','low'],['37','FIRST AID ASSIST','med'],['38','GUEST ASSIST','low'],['39','MONEY TRANSFER','low'],['41','SHOPLIFTING','med'],['43','SOLICITING','low'],['47','INDECENT EXPOSURE','med'],['49','COUNTERFEIT CURRENCY','med'],['50','MOTOR ASSIST','low'],['51','INTOXICATED DRIVER','high'],['52','INTOXICATED PERSON','med'],['55','EXPLOSION','high'],['55-A','BOMB THREAT','high'],['57','HUNTERS','med'],['58','FIREWORKS','med'],['61','BUILDING CHECK','low'],['66','SEXUAL OFFENSE','high'],['70','LOST CHILD','high'],['95','DRUG VIOLATION','high'],['95-A','DRUG TRANSACTION','high'],['96','VICIOUS ANIMAL','high'],['97','ILLEGAL ENTRY','high'],['999','UNIT IN DISTRESS','high'],['1000','CASH CONT. HOLD UP','high'],['2000','ATM ALARM','high'],['3000','HH CASH CONT. ALARM','high'],['9000','EVACUATION LEVEL 1–3','high'],['10000','HOUSING EVACUATION','high']];
+const RESP=[{num:'1',level:'low',title:'ROUTINE',desc:'Bloody nose, hurt limb (minor), cut / scrape'},{num:'2',level:'med',title:'URGENT',desc:'Trouble breathing, short of breath, asthma attack, allergies, major limb injury, unconsciousness, chest pains, impending childbirth'},{num:'3',level:'high',title:'EMERGENCY — MEDICAL SERVICES ONLY',desc:'Cardiac arrest, CPR in progress, major multiple injury'}];
+let cFilter='all',cSearch='';
 function renderCodes(){
-  const el = document.getElementById('panelBody');
-  const q = codesSearch.toLowerCase().trim();
-
-  const matchCode = (key, val) => !q || key.toLowerCase().includes(q) || val.toLowerCase().includes(q);
-  const matchSig  = (key, val) => !q || key.toLowerCase().includes(q) || val.toLowerCase().includes(q);
-
-  const filteredTen   = TEN_CODES.filter(([k,v])=>matchCode(k,v));
-  const filteredSig   = SIGNALS.filter(([k,v])=>matchSig(k,v));
-  const filteredResp  = RESPONSES.filter(r=>!q||r.title.toLowerCase().includes(q)||r.desc.toLowerCase().includes(q));
-
-  const showTen  = codesFilter==='all'||codesFilter==='10';
-  const showSig  = codesFilter==='all'||codesFilter==='signals';
-  const showResp = codesFilter==='all'||codesFilter==='response';
-
-  const tenHTML = showTen && filteredTen.length ? `
-    <div class="code-group">
-      <div class="code-group-hdr"><span>10-CODES</span><span style="color:var(--cyan)">${filteredTen.length}</span></div>
-      ${filteredTen.map(([k,v])=>`
-        <div class="code-row">
-          <span class="code-key">${k}</span>
-          <span class="code-val">${v}</span>
-        </div>`).join('')}
-    </div>` : '';
-
-  const sigHTML = showSig && filteredSig.length ? `
-    <div class="code-group">
-      <div class="code-group-hdr"><span>SIGNALS</span><span style="color:var(--cyan)">${filteredSig.length}</span></div>
-      ${filteredSig.map(([k,v,sev])=>`
-        <div class="code-row">
-          <span class="code-key">${k}</span>
-          <span class="code-val">${v}</span>
-          <span class="code-sev sev-${sev}">${sev.toUpperCase()}</span>
-        </div>`).join('')}
-    </div>` : '';
-
-  const respHTML = showResp && filteredResp.length ? `
-    <div class="code-group">
-      <div class="code-group-hdr"><span>RESPONSE LEVELS</span></div>
-      ${filteredResp.map(r=>`
-        <div class="response-card r-${r.level}">
-          <div class="resp-level">RESPONSE ${r.num}</div>
-          <div class="resp-title">${r.title}</div>
-          <div class="resp-desc">${r.desc}</div>
-        </div>`).join('')}
-    </div>` : '';
-
-  const hasResults = tenHTML||sigHTML||respHTML;
-
-  el.innerHTML = `
-    <div class="codes-search-wrap">
-      <input class="codes-search" type="text" placeholder="Search codes, signals, keywords…"
-        value="${codesSearch}"
-        oninput="codesSearch=this.value;renderCodes()">
-      <div class="codes-filter-row">
-        <button class="codes-filter ${codesFilter==='all'?'active':''}" onclick="setCodesFilter('all')">All</button>
-        <button class="codes-filter ${codesFilter==='10'?'active':''}" onclick="setCodesFilter('10')">10-Codes</button>
-        <button class="codes-filter ${codesFilter==='signals'?'active':''}" onclick="setCodesFilter('signals')">Signals</button>
-        <button class="codes-filter ${codesFilter==='response'?'active':''}" onclick="setCodesFilter('response')">Response</button>
-      </div>
-    </div>
-    <div style="padding:10px;">
-      ${hasResults ? tenHTML+sigHTML+respHTML : '<div class="no-results">No matches for "'+codesSearch+'"</div>'}
-    </div>`;
+  const el=document.getElementById('panelBody');
+  const q=cSearch.toLowerCase();
+  const m=(k,v)=>!q||k.toLowerCase().includes(q)||v.toLowerCase().includes(q);
+  const fTen=TEN.filter(([k,v])=>m(k,v));const fSig=SIG.filter(([k,v])=>m(k,v));
+  const fRes=RESP.filter(r=>!q||r.title.toLowerCase().includes(q)||r.desc.toLowerCase().includes(q));
+  const sT=cFilter==='all'||cFilter==='10';const sS=cFilter==='all'||cFilter==='signals';const sR=cFilter==='all'||cFilter==='response';
+  const tH=sT&&fTen.length?`<div class="code-group"><div class="code-group-hdr"><span>10-CODES</span><span style="color:var(--cyan)">${fTen.length}</span></div>${fTen.map(([k,v])=>`<div class="code-row"><span class="code-key">${k}</span><span class="code-val">${v}</span></div>`).join('')}</div>`:'';
+  const sH=sS&&fSig.length?`<div class="code-group"><div class="code-group-hdr"><span>SIGNALS</span><span style="color:var(--cyan)">${fSig.length}</span></div>${fSig.map(([k,v,sv])=>`<div class="code-row"><span class="code-key">${k}</span><span class="code-val">${v}</span><span class="code-sev sev-${sv}">${sv.toUpperCase()}</span></div>`).join('')}</div>`:'';
+  const rH=sR&&fRes.length?`<div class="code-group"><div class="code-group-hdr"><span>RESPONSE LEVELS</span></div>${fRes.map(r=>`<div class="response-card r-${r.level}"><div class="resp-level">RESPONSE ${r.num}</div><div class="resp-title">${r.title}</div><div class="resp-desc">${r.desc}</div></div>`).join('')}</div>`:'';
+  el.innerHTML=`<div class="codes-search-wrap"><input class="codes-search" type="text" placeholder="Search codes, signals, keywords…" value="${cSearch}" oninput="cSearch=this.value;renderCodes()"><div class="codes-filter-row"><button class="codes-filter ${cFilter==='all'?'active':''}" onclick="setCF('all')">All</button><button class="codes-filter ${cFilter==='10'?'active':''}" onclick="setCF('10')">10-Codes</button><button class="codes-filter ${cFilter==='signals'?'active':''}" onclick="setCF('signals')">Signals</button><button class="codes-filter ${cFilter==='response'?'active':''}" onclick="setCF('response')">Response</button></div></div><div style="padding:9px;">${tH||sH||rH?tH+sH+rH:'<div style="text-align:center;padding:28px;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No matches</div>'}</div>`;
 }
-
-function setCodesFilter(f){
-  codesFilter=f;
-  renderCodes();
-}
+function setCF(f){cFilter=f;renderCodes();}
 
 // ── TABS ──────────────────────────────────────────────────────────────────
-function showTab(tab, el){
+function showTab(tab,el){
   currentTab=tab;
   document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  if(tab==='board') renderBoard();
-  if(tab==='alerts') renderAlerts();
-  if(tab==='codes') renderCodes();
+  if(tab==='board')renderBoard();
+  if(tab==='alerts')renderAlerts();
+  if(tab==='score')renderScoreTab();
+  if(tab==='codes')renderCodes();
 }
 
 // ── DEMO SEED ─────────────────────────────────────────────────────────────
-function seedDemoState(){
-  const now=Date.now();
-  const min=60000;
-  rides['SC01'].status='open'; rides['SC01'].openedAt=now-3.2*3600000; rides['SC01'].cycleCount=187;
-  rides['SC01'].positions['Load/Dispatch']={op:'T. Reynolds',badge:'B-4421',since:now-52*min};
-  rides['SC01'].positions['Unload']={op:'K. Morris',badge:'B-3318',since:now-28*min};
-  rides['SC01'].positions['Queue']={op:'L. Vance',badge:'B-5509',since:now-12*min};
-
-  rides['WC01'].status='open'; rides['WC01'].openedAt=now-3.2*3600000; rides['WC01'].cycleCount=143;
-  rides['WC01'].positions['Load/Dispatch']={op:'P. Zhang',badge:'B-2201',since:now-67*min};
-  rides['WC01'].positions['Unload']={op:'R. Okafor',badge:'B-3847',since:now-31*min};
-  rides['WC01'].positions['Queue']={op:'M. Torres',badge:'B-6612',since:now-18*min};
-  rides['WC01'].positions['Rover']={op:'A. Brooks',badge:'B-7723',since:now-42*min};
-
-  rides['FC01'].status='open'; rides['FC01'].openedAt=now-2.5*3600000; rides['FC01'].cycleCount=98;
-  rides['FC01'].positions['Load/Dispatch']={op:'S. Kim',badge:'B-1104',since:now-22*min};
-  rides['FC01'].positions['Unload']={op:'D. Patel',badge:'B-9901',since:now-22*min};
-
-  rides['GK01'].status='open'; rides['GK01'].openedAt=now-2*3600000; rides['GK01'].cycleCount=64;
-  rides['GK01'].positions['Dispatch']={op:'C. Walsh',badge:'B-5530',since:now-38*min};
-  rides['GK01'].positions['Exit']={op:'J. Ellis',badge:'B-4422',since:now-15*min};
-
-  rides['FW01'].status='hold'; rides['FW01'].cycleCount=22; rides['FW01'].note='Wind speed advisory — monitoring';
-
-  rides['DT01'].status='down'; rides['DT01'].note='Maintenance on anti-rollback sensor — ETA 45 min';
-
-  rides['SC02'].status='open'; rides['SC02'].openedAt=now-1.5*3600000; rides['SC02'].cycleCount=76;
-  rides['SC02'].positions['Load/Dispatch']={op:'N. Russo',badge:'B-8812',since:now-8*min};
-
-  rides['WP01'].status='open'; rides['WP01'].openedAt=now-3*3600000; rides['WP01'].cycleCount=0;
-  rides['WP01'].positions['Lifeguard N']={op:'F. Hernandez',badge:'B-3301',since:now-25*min};
-  rides['WP01'].positions['Lifeguard S']={op:'B. Cooper',badge:'B-2289',since:now-25*min};
-  rides['WP01'].positions['Lifeguard E']={op:'Y. Nakamura',badge:'B-4410',since:now-25*min};
-
+function seedDemo(){
+  const n=Date.now(),m=60000;
+  rides['SC01'].status='open';rides['SC01'].openedAt=n-3.2*3600000;rides['SC01'].cycleCount=187;
+  rides['SC01'].positions['Load/Dispatch']={op:'T. Reynolds',badge:'B-4421',since:n-52*m};
+  rides['SC01'].positions['Unload']={op:'K. Morris',badge:'B-3318',since:n-28*m};
+  rides['SC01'].positions['Queue']={op:'L. Vance',badge:'B-5509',since:n-12*m};
+  rides['WC01'].status='open';rides['WC01'].openedAt=n-3.2*3600000;rides['WC01'].cycleCount=143;
+  rides['WC01'].positions['Load/Dispatch']={op:'P. Zhang',badge:'B-2201',since:n-67*m};
+  rides['WC01'].positions['Unload']={op:'R. Okafor',badge:'B-3847',since:n-31*m};
+  rides['WC01'].positions['Queue']={op:'M. Torres',badge:'B-6612',since:n-18*m};
+  rides['WC01'].positions['Rover']={op:'A. Brooks',badge:'B-7723',since:n-42*m};
+  rides['FC01'].status='open';rides['FC01'].openedAt=n-2.5*3600000;rides['FC01'].cycleCount=98;
+  rides['FC01'].positions['Load/Dispatch']={op:'S. Kim',badge:'B-1104',since:n-22*m};
+  rides['FC01'].positions['Unload']={op:'D. Patel',badge:'B-9901',since:n-22*m};
+  rides['GK01'].status='open';rides['GK01'].openedAt=n-2*3600000;rides['GK01'].cycleCount=64;
+  rides['GK01'].positions['Dispatch']={op:'C. Walsh',badge:'B-5530',since:n-38*m};
+  rides['GK01'].positions['Exit']={op:'J. Ellis',badge:'B-4422',since:n-15*m};
+  rides['FW01'].status='hold';rides['FW01'].cycleCount=22;rides['FW01'].note='Wind speed advisory — monitoring';
+  rides['DT01'].status='down';rides['DT01'].note='Maintenance on anti-rollback sensor — ETA 45 min';
+  rides['SC02'].status='open';rides['SC02'].openedAt=n-1.5*3600000;rides['SC02'].cycleCount=76;
+  rides['SC02'].positions['Load/Dispatch']={op:'N. Russo',badge:'B-8812',since:n-8*m};
+  rides['WP01'].status='open';rides['WP01'].openedAt=n-3*3600000;rides['WP01'].cycleCount=0;
+  rides['WP01'].positions['Lifeguard N']={op:'F. Hernandez',badge:'B-3301',since:n-25*m};
+  rides['WP01'].positions['Lifeguard S']={op:'B. Cooper',badge:'B-2289',since:n-25*m};
+  rides['WP01'].positions['Lifeguard E']={op:'Y. Nakamura',badge:'B-4410',since:n-25*m};
   checkRotations();
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────
 function toast(msg,type){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.className='show'+(type?(' '+type):'');
+  t.textContent=msg;t.className='show'+(type?' '+type:'');
   clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);
 }
+
 initRides();
 </script>
 </body>
