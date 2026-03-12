@@ -40,15 +40,17 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .tb-badge.red{background:var(--red-dim);border:1px solid rgba(244,63,94,.3);color:var(--red);}
 .tb-badge.amber{background:var(--amber-dim);border:1px solid rgba(245,158,11,.3);color:var(--amber);}
 
-/* NAV TABS */
+/* NAV TABS — two rows */
 .nav-tabs{background:var(--surface);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;flex-shrink:0;}
-.nav-tab{padding:0 14px;height:38px;display:flex;align-items:center;gap:6px;font-family:var(--cond);font-size:12px;font-weight:600;letter-spacing:.2px;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
+.nav-tab{padding:0 12px;height:38px;display:flex;align-items:center;gap:5px;font-family:var(--cond);font-size:11px;font-weight:600;letter-spacing:.2px;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;}
 .nav-tab:hover{color:var(--text);background:var(--teal-glow);}
 .nav-tab.active{color:var(--teal);border-bottom-color:var(--teal);}
 .tab-badge{font-family:var(--mono);font-size:8px;padding:1px 5px;border-radius:3px;}
 .tab-badge.red{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.25);}
 .tab-badge.amber{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
 .tab-badge.neutral{background:var(--panel3);color:var(--text-dim);}
+.tab-badge.green{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25);}
+.nav-divider{width:1px;height:22px;background:var(--border2);align-self:center;margin:0 4px;}
 
 /* MAIN */
 .main{flex:1;overflow-y:auto;padding:20px;}
@@ -75,8 +77,9 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .metric-card.green::before{background:var(--green);}
 .metric-card.blue::before{background:var(--blue);}
 .metric-card.orange::before{background:var(--orange);}
+.metric-card.purple::before{background:var(--purple);}
 .mv{font-family:var(--cond);font-size:30px;font-weight:800;line-height:1;margin-bottom:3px;}
-.mv.teal{color:var(--teal);}.mv.red{color:var(--red);}.mv.amber{color:var(--amber);}.mv.green{color:var(--green);}.mv.blue{color:var(--blue);}.mv.orange{color:var(--orange);}
+.mv.teal{color:var(--teal);}.mv.red{color:var(--red);}.mv.amber{color:var(--amber);}.mv.green{color:var(--green);}.mv.blue{color:var(--blue);}.mv.orange{color:var(--orange);}.mv.purple{color:var(--purple);}
 .ml{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);}
 .ms{font-size:11px;color:var(--text-dim);margin-top:4px;}
 
@@ -102,6 +105,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .btn-green:hover{filter:brightness(1.1);}
 .btn-amber{background:linear-gradient(135deg,var(--amber),#D97706);color:#fff;}
 .btn-amber:hover{filter:brightness(1.1);}
+.btn-red{background:linear-gradient(135deg,var(--red),#DC2626);color:#fff;}
+.btn-red:hover{filter:brightness(1.1);}
 .btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-dim);}
 .btn-ghost:hover{border-color:var(--text-dim);color:var(--text);}
 .btn-sm{padding:5px 12px;font-size:12px;border-radius:6px;}
@@ -117,21 +122,11 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .pill-warn{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
 .pill-ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25);}
 
-/* ── DASHBOARD ── */
-.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
-@media(min-width:800px){.dash-grid{grid-template-columns:2fr 1fr 1fr;}}
-
-.shift-status-bar{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px;}
-.ssb-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--text-dim);}
-.ssb-val{font-family:var(--cond);font-size:20px;font-weight:800;color:var(--text-bright);}
-.ssb-item{display:flex;flex-direction:column;gap:2px;}
-
-/* ── THROUGHPUT LOG ── */
+/* THROUGHPUT TABLE */
 .tp-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;background:var(--panel2);border-bottom:1px solid var(--border);}
 .tp-search{flex:1;min-width:130px;padding:7px 11px;background:var(--panel3);border:1px solid var(--border2);border-radius:7px;font-family:var(--sans);font-size:13px;color:var(--text);}
 .tp-search:focus{outline:none;border-color:var(--teal);}
 .tp-search::placeholder{color:var(--text-muted);}
-
 .tp-table-hdr{display:grid;grid-template-columns:90px 1fr 80px 80px 80px 80px 70px;gap:8px;padding:8px 16px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);}
 .tp-row{display:grid;grid-template-columns:90px 1fr 80px 80px 80px 80px 70px;gap:8px;padding:11px 16px;border-bottom:1px solid rgba(36,45,62,.5);align-items:center;transition:background .12s;cursor:pointer;}
 .tp-row:last-child{border-bottom:none;}
@@ -144,14 +139,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .tp-num.warn{color:var(--amber);}
 .tp-num.ok{color:var(--text);}
 
-.tp-summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-@media(min-width:600px){.tp-summary-grid{grid-template-columns:repeat(6,1fr);}}
-
-/* TPH bar */
-.tph-bar-wrap{width:100%;height:5px;background:var(--panel3);border-radius:3px;overflow:hidden;margin-top:4px;}
-.tph-bar-fill{height:100%;border-radius:3px;transition:width .5s;}
-
-/* ── SHIFT HANDOFF ── */
+/* SHIFT HANDOFF */
 .handoff-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
 .handoff-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .15s;}
 .handoff-card:hover{border-color:var(--border2);}
@@ -170,31 +158,153 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .hc-flag.green{background:var(--green-dim);color:var(--green);}
 .hc-body{padding:16px;display:none;}
 .hc-body.open{display:block;}
-
 .handoff-section{margin-bottom:16px;}
 .handoff-section-title{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:10px;}
-
 .ho-item-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(36,45,62,.4);}
 .ho-item-row:last-child{border-bottom:none;}
 .ho-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;}
 .ho-item-label{font-size:13px;color:var(--text);font-weight:600;flex:1;}
-.ho-item-detail{font-size:11px;color:var(--text-dim);margin-top:2px;line-height:1.5;}
-.ho-item-badge{font-family:var(--mono);font-size:9px;font-weight:700;flex-shrink:0;}
 
-/* CHECKLIST ITEMS */
+/* CHECKLIST */
 .chk-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);}
 .chk-row:last-child{border-bottom:none;}
 .chk-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;margin-top:1px;}
 .chk-box.checked{background:var(--green);border-color:var(--green);}
 .chk-box.checked::after{content:'✓';font-size:10px;color:#fff;font-weight:700;}
 .chk-label{font-size:13px;color:var(--text);font-weight:600;}
-.chk-detail{font-size:11px;color:var(--text-dim);margin-top:2px;line-height:1.5;}
 
-/* ESCALATION LOG */
-.esc-row{display:grid;grid-template-columns:70px 1fr auto;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);}
-.esc-row:last-child{border-bottom:none;}
-.esc-time{font-family:var(--mono);font-size:10px;color:var(--text-dim);}
-.esc-note{font-size:12px;color:var(--text);}
+/* ── PILLAR STATUS ── */
+.pillar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:16px;}
+@media(min-width:700px){.pillar-grid{grid-template-columns:repeat(4,1fr);}}
+.pillar-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 16px;position:relative;overflow:hidden;cursor:pointer;transition:border-color .2s;}
+.pillar-card:hover{border-color:var(--border2);}
+.pillar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.pillar-R::before{background:linear-gradient(90deg,var(--teal),#0891B2);}
+.pillar-I::before{background:linear-gradient(90deg,var(--red),#DC2626);}
+.pillar-D::before{background:linear-gradient(90deg,var(--green),#059669);}
+.pillar-E::before{background:linear-gradient(90deg,var(--purple),#7C3AED);}
+.pillar-letter{font-family:var(--cond);font-size:11px;font-weight:800;letter-spacing:2px;margin-bottom:8px;}
+.pillar-R .pillar-letter{color:var(--teal);}
+.pillar-I .pillar-letter{color:var(--red);}
+.pillar-D .pillar-letter{color:var(--green);}
+.pillar-E .pillar-letter{color:var(--purple);}
+.pillar-score{font-family:var(--cond);font-size:52px;font-weight:800;line-height:1;}
+.pillar-R .pillar-score{color:var(--teal);}
+.pillar-I .pillar-score{color:var(--red);}
+.pillar-D .pillar-score{color:var(--green);}
+.pillar-E .pillar-score{color:var(--purple);}
+.pillar-name{font-size:11px;color:var(--text-dim);margin-top:4px;margin-bottom:10px;}
+.pillar-bar-wrap{width:100%;height:4px;background:var(--panel3);border-radius:2px;overflow:hidden;}
+.pillar-bar-fill{height:100%;border-radius:2px;transition:width .8s ease;}
+.pillar-R .pillar-bar-fill{background:var(--teal);}
+.pillar-I .pillar-bar-fill{background:var(--red);}
+.pillar-D .pillar-bar-fill{background:var(--green);}
+.pillar-E .pillar-bar-fill{background:var(--purple);}
+.pillar-streams{margin-top:10px;}
+.stream-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(36,45,62,.3);}
+.stream-row:last-child{border-bottom:none;}
+.stream-name{font-family:var(--mono);font-size:9px;color:var(--text-dim);}
+.stream-val{font-family:var(--mono);font-size:9px;font-weight:700;}
+.composite-ring{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;}
+.composite-score{font-family:var(--cond);font-size:80px;font-weight:800;color:var(--teal);line-height:1;}
+.composite-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--text-dim);margin-top:4px;}
+.composite-band{font-family:var(--cond);font-size:16px;font-weight:700;margin-top:6px;}
+.score-trend{display:flex;align-items:center;gap:6px;margin-top:8px;font-family:var(--mono);font-size:11px;}
+
+/* ── CAR AGING ── */
+.car-aging-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+@media(max-width:600px){.car-aging-grid{grid-template-columns:repeat(2,1fr);}}
+.aging-bucket{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:border-color .15s;}
+.aging-bucket:hover{border-color:var(--border2);}
+.aging-count{font-family:var(--cond);font-size:36px;font-weight:800;line-height:1;}
+.aging-label{font-family:var(--mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;margin-top:4px;}
+.aging-bucket.fresh .aging-count{color:var(--green);}
+.aging-bucket.watch .aging-count{color:var(--amber);}
+.aging-bucket.stale .aging-count{color:var(--orange);}
+.aging-bucket.critical .aging-count{color:var(--red);}
+.aging-bucket.fresh .aging-label{color:var(--green);}
+.aging-bucket.watch .aging-label{color:var(--amber);}
+.aging-bucket.stale .aging-label{color:var(--orange);}
+.aging-bucket.critical .aging-label{color:var(--red);}
+
+.car-table-hdr{display:grid;grid-template-columns:100px 1fr 110px 90px 90px 80px;gap:8px;padding:8px 16px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);}
+.car-row{display:grid;grid-template-columns:100px 1fr 110px 90px 90px 80px;gap:8px;padding:11px 16px;border-bottom:1px solid rgba(36,45,62,.5);align-items:center;transition:background .12s;}
+.car-row:hover{background:var(--teal-glow);}
+.car-row:last-child{border-bottom:none;}
+.car-id{font-family:var(--mono);font-size:10px;color:var(--teal);font-weight:700;}
+.car-age-days{font-family:var(--mono);font-size:12px;font-weight:700;}
+.age-fresh{color:var(--green);}
+.age-watch{color:var(--amber);}
+.age-stale{color:var(--orange);}
+.age-critical{color:var(--red);}
+
+/* ── AUDIT SCHEDULE ── */
+.audit-cal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+@media(max-width:700px){.audit-cal-grid{grid-template-columns:1fr 1fr;}}
+.audit-stat-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;}
+.audit-stat-num{font-family:var(--cond);font-size:32px;font-weight:800;line-height:1;}
+.audit-stat-lbl{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-top:4px;}
+
+.audit-table-hdr{display:grid;grid-template-columns:100px 1fr 90px 100px 90px 80px;gap:8px;padding:8px 16px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);}
+.audit-row{display:grid;grid-template-columns:100px 1fr 90px 100px 90px 80px;gap:8px;padding:11px 16px;border-bottom:1px solid rgba(36,45,62,.5);align-items:center;transition:background .12s;cursor:pointer;}
+.audit-row:hover{background:var(--teal-glow);}
+.audit-row:last-child{border-bottom:none;}
+
+/* ── OUT OF SERVICE ── */
+.oos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+@media(max-width:650px){.oos-grid{grid-template-columns:1fr 1fr;}}
+.oos-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:border-color .2s;}
+.oos-card.mechanical{border-left:3px solid var(--red);}
+.oos-card.staffing{border-left:3px solid var(--amber);}
+.oos-card.weather{border-left:3px solid var(--blue);}
+.oos-card.inspection{border-left:3px solid var(--purple);}
+.oos-card.scheduled{border-left:3px solid var(--teal);}
+.oos-attraction{font-family:var(--cond);font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:4px;}
+.oos-reason{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;}
+.oos-card.mechanical .oos-reason{color:var(--red);}
+.oos-card.staffing .oos-reason{color:var(--amber);}
+.oos-card.weather .oos-reason{color:var(--blue);}
+.oos-card.inspection .oos-reason{color:var(--purple);}
+.oos-card.scheduled .oos-reason{color:var(--teal);}
+.oos-detail{font-size:11px;color:var(--text-dim);line-height:1.5;margin-bottom:8px;}
+.oos-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.oos-duration{font-family:var(--mono);font-size:10px;color:var(--text-dim);}
+.oos-duration span{color:var(--text);}
+.oos-return{font-family:var(--mono);font-size:9px;}
+.oos-source{font-family:var(--mono);font-size:8px;color:var(--text-muted);margin-top:6px;}
+.oos-atr-badge{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:8px;padding:2px 6px;border-radius:3px;background:var(--teal-dim);color:var(--teal);border:1px solid rgba(10,191,188,.25);}
+
+.oos-add-form{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px;}
+
+/* ESCALATION MATRIX */
+.esc-matrix{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px;}
+.esc-matrix-hdr{padding:12px 16px;background:var(--panel2);border-bottom:1px solid var(--border);}
+.esc-tier{border-bottom:1px solid var(--border);}
+.esc-tier:last-child{border-bottom:none;}
+.esc-tier-hdr{display:grid;grid-template-columns:120px 1fr;align-items:center;padding:12px 16px;cursor:pointer;transition:background .12s;}
+.esc-tier-hdr:hover{background:var(--teal-glow);}
+.esc-tier-badge{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:4px;}
+.tier-1 .esc-tier-badge{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+.tier-2 .esc-tier-badge{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(249,115,22,.3);}
+.tier-3 .esc-tier-badge{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.3);}
+.esc-tier-label{font-size:12px;color:var(--text);font-weight:600;}
+.esc-tier-body{padding:16px;display:none;background:var(--bg);border-top:1px solid var(--border);}
+.esc-tier-body.open{display:block;}
+.esc-contact-row{display:grid;grid-template-columns:160px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);}
+.esc-contact-row:last-child{border-bottom:none;}
+.esc-contact-name{font-size:13px;color:var(--text);font-weight:600;}
+.esc-contact-role{font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;}
+.esc-contact-detail{font-size:11px;color:var(--text-dim);}
+.esc-trigger-list{margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
+.esc-trigger-title{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;}
+.esc-trigger-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-dim);padding:4px 0;}
+.esc-trigger-item::before{content:'→';color:var(--text-muted);flex-shrink:0;}
+
+/* DASHBOARD SHIFT STATUS */
+.shift-status-bar{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:16px;}
+.ssb-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--text-dim);}
+.ssb-val{font-family:var(--cond);font-size:20px;font-weight:800;color:var(--text-bright);}
+.ssb-item{display:flex;flex-direction:column;gap:2px;}
 
 /* TOAST */
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--panel2);color:var(--text-bright);border:1px solid var(--border2);padding:10px 18px;border-radius:8px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.3px;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;}
@@ -220,7 +330,6 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="tb-sub">AS 360 · RIDE SCORE · MGR STREAM</div>
   </div>
   <div class="topbar-right">
-    <div class="tb-badge red show" id="escalBadge" style="display:none"></div>
     <div class="tb-clock" id="clock">--:--</div>
   </div>
 </div>
@@ -228,15 +337,20 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 <!-- NAV TABS -->
 <div class="nav-tabs">
   <div class="nav-tab active" onclick="showView('dashboard',this)">📊 Dashboard</div>
+  <div class="nav-tab" onclick="showView('pillar',this)">🎯 Live RIDE Score <span class="tab-badge teal" id="pillBadge" style="display:none"></span></div>
+  <div class="nav-tab" onclick="showView('oos',this)">⛔ Out of Service <span class="tab-badge red" id="oosBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('car',this)">📂 CAR Aging <span class="tab-badge neutral" id="carBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('audit',this)">📅 Audit Schedule <span class="tab-badge neutral" id="auditBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('matrix',this)">📞 Escalation Matrix</div>
+  <div class="nav-divider"></div>
   <div class="nav-tab" onclick="showView('shift',this)">📋 Shift Log</div>
-  <div class="nav-tab" onclick="showView('throughput',this)">📈 Throughput Log</div>
-  <div class="nav-tab" onclick="showView('handoff',this)">🔄 Shift Handoff <span class="tab-badge neutral" id="handoffCount">0</span></div>
+  <div class="nav-tab" onclick="showView('throughput',this)">📈 Throughput</div>
+  <div class="nav-tab" onclick="showView('handoff',this)">🔄 Handoff <span class="tab-badge neutral" id="handoffCount">0</span></div>
   <div class="nav-tab" onclick="showView('escalation',this)">🚩 Escalations <span class="tab-badge neutral" id="escalCount">0</span></div>
-  <div class="nav-tab" onclick="showView('newthroughput',this)">＋ Log Throughput</div>
+  <div class="nav-tab" onclick="showView('newthroughput',this)">＋ Log TPH</div>
   <div class="nav-tab" onclick="showView('newhandoff',this)">＋ New Handoff</div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
 
 <!-- ══ DASHBOARD ══ -->
@@ -245,41 +359,362 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="ssb-item"><div class="ssb-label">Current Shift</div><div class="ssb-val" id="db-shift">—</div></div>
     <div class="ssb-item"><div class="ssb-label">Manager on Duty</div><div class="ssb-val" id="db-manager">—</div></div>
     <div class="ssb-item"><div class="ssb-label">Shift Start</div><div class="ssb-val" id="db-start">—</div></div>
-    <div class="ssb-item"><div class="ssb-label">Date</div><div class="ssb-val" id="db-date">—</div></div>
+    <div class="ssb-item"><div class="ssb-label">RIDE Score</div><div class="ssb-val" id="db-ride-score" style="color:var(--teal)">—</div></div>
     <div>
-      <button class="btn btn-teal btn-sm" onclick="showView('newhandoff',document.querySelectorAll('.nav-tab')[6])">New Handoff →</button>
+      <button class="btn btn-teal btn-sm" onclick="showView('newhandoff',document.querySelectorAll('.nav-tab')[11])">New Handoff →</button>
     </div>
   </div>
 
   <div class="metric-grid">
-    <div class="metric-card teal"><div class="mv teal" id="db-attractions">—</div><div class="ml">Attractions Open</div><div class="ms" id="db-attractions-sub">today</div></div>
-    <div class="metric-card green"><div class="mv green" id="db-tph">—</div><div class="ml">Avg TPH Today</div><div class="ms">guests per hour</div></div>
-    <div class="metric-card amber"><div class="mv amber" id="db-escalations">0</div><div class="ml">Open Escalations</div><div class="ms">requiring follow-up</div></div>
-    <div class="metric-card blue"><div class="mv blue" id="db-handoffs">0</div><div class="ml">Handoffs This Week</div><div class="ms">shift transitions</div></div>
+    <div class="metric-card teal"><div class="mv teal" id="db-attractions">—</div><div class="ml">Attractions Open</div><div class="ms" id="db-oos-count-sm">0 out of service</div></div>
+    <div class="metric-card red"><div class="mv red" id="db-oos">0</div><div class="ml">Out of Service</div><div class="ms">from ATR + manual</div></div>
+    <div class="metric-card amber"><div class="mv amber" id="db-car-open">0</div><div class="ml">Open CARs</div><div class="ms" id="db-car-critical-sm">0 critical aging</div></div>
+    <div class="metric-card blue"><div class="mv blue" id="db-audits-due">0</div><div class="ml">Audits Due</div><div class="ms">next 7 days</div></div>
   </div>
 
-  <div class="sec-label">// Today's Throughput Summary</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+    <div class="panel" style="margin-bottom:0">
+      <div class="panel-hdr">
+        <div class="panel-title">RIDE Score — Live Pillars</div>
+        <button class="btn btn-ghost btn-sm" onclick="showView('pillar',document.querySelectorAll('.nav-tab')[1])">Detail →</button>
+      </div>
+      <div style="padding:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;" id="db-pillar-mini">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+    <div class="panel" style="margin-bottom:0">
+      <div class="panel-hdr">
+        <div class="panel-title">Active OOS Units</div>
+        <button class="btn btn-ghost btn-sm" onclick="showView('oos',document.querySelectorAll('.nav-tab')[2])">All →</button>
+      </div>
+      <div id="db-oos-mini">
+        <div class="empty" style="padding:20px"><div class="empty-icon" style="font-size:20px">✅</div>All units in service</div>
+      </div>
+    </div>
+  </div>
+
   <div class="panel">
     <div class="panel-hdr">
-      <div>
-        <div class="panel-title">Throughput by Attraction — Today</div>
-        <div class="panel-sub" id="tp-today-date">—</div>
-      </div>
-      <button class="btn btn-ghost btn-sm" onclick="showView('throughput',document.querySelectorAll('.nav-tab')[2])">View all →</button>
+      <div class="panel-title">Today's Throughput Summary</div>
+      <button class="btn btn-ghost btn-sm" onclick="showView('throughput',document.querySelectorAll('.nav-tab')[7])">View all →</button>
     </div>
     <div id="db-tp-rows">
-      <div class="empty"><div class="empty-icon">📈</div>No throughput logged today.<br><span style="font-family:var(--mono);font-size:10px;">Use Log Throughput to add records.</span></div>
+      <div class="empty"><div class="empty-icon">📈</div>No throughput logged today.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LIVE PILLAR STATUS ══ -->
+<div class="view" id="view-pillar">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+    <div>
+      <div class="sec-label" style="margin:0">// AS 360 RIDE Score™ — Live Composite</div>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">Scores update as audit data, incidents, and CA closures are logged. Last calculated: <span id="pillar-last-calc" style="font-family:var(--mono);">—</span></div>
+    </div>
+    <button class="btn btn-teal btn-sm" onclick="recalcPillars()">Recalculate →</button>
+  </div>
+
+  <!-- Composite Score -->
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:14px;margin-bottom:16px;align-items:start;">
+    <div class="composite-ring">
+      <div class="composite-score" id="comp-score">—</div>
+      <div class="composite-label">RIDE SCORE™</div>
+      <div class="composite-band" id="comp-band" style="color:var(--teal)">—</div>
+      <div class="score-trend" id="comp-trend"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="panel" style="margin-bottom:0;padding:14px 16px;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text-dim);margin-bottom:10px;">SCORE BANDS</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:5px;border-radius:2px;background:var(--green)"></div><span style="font-family:var(--mono);font-size:10px;color:var(--green);">90–100</span><span style="font-size:11px;color:var(--text-dim);">EXCELLENT — Insurer Tier A</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:5px;border-radius:2px;background:var(--teal)"></div><span style="font-family:var(--mono);font-size:10px;color:var(--teal);">75–89</span><span style="font-size:11px;color:var(--text-dim);">STRONG — Standard Risk Profile</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:5px;border-radius:2px;background:var(--amber)"></div><span style="font-family:var(--mono);font-size:10px;color:var(--amber);">60–74</span><span style="font-size:11px;color:var(--text-dim);">MODERATE — Monitor Required</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:5px;border-radius:2px;background:var(--orange)"></div><span style="font-family:var(--mono);font-size:10px;color:var(--orange);">45–59</span><span style="font-size:11px;color:var(--text-dim);">ELEVATED — Insurer Notification</span></div>
+          <div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:5px;border-radius:2px;background:var(--red)"></div><span style="font-family:var(--mono);font-size:10px;color:var(--red);">0–44</span><span style="font-size:11px;color:var(--text-dim);">CRITICAL — Immediate Action</span></div>
+        </div>
+      </div>
+      <div id="pillar-alerts-panel" style="display:none;" class="panel" style="margin-bottom:0;padding:12px 16px;">
+        <!-- alerts rendered here -->
+      </div>
     </div>
   </div>
 
-  <div class="sec-label">// Latest Handoff Summary</div>
+  <div class="sec-label">// Four Scored Pillars</div>
+  <div class="pillar-grid" id="pillar-cards">
+    <!-- rendered by JS -->
+  </div>
+
+  <div class="sec-label">// Manual Score Override (Pending Integration)</div>
   <div class="panel">
-    <div class="panel-hdr">
-      <div class="panel-title">Most Recent Shift Handoff</div>
-      <button class="btn btn-ghost btn-sm" onclick="showView('handoff',document.querySelectorAll('.nav-tab')[3])">View all →</button>
+    <div class="panel-hdr"><div class="panel-title">Set Pillar Scores Manually</div><div class="panel-sub">Until live data integration, enter scores from your Power BI dashboard</div></div>
+    <div class="panel-body">
+      <div class="form-grid">
+        <div class="ff"><label>Readiness (R)</label><input type="number" id="ps-R" placeholder="0–100" min="0" max="100" oninput="previewScore()"></div>
+        <div class="ff"><label>Integrity (I)</label><input type="number" id="ps-I" placeholder="0–100" min="0" max="100" oninput="previewScore()"></div>
+        <div class="ff"><label>Delivery (D)</label><input type="number" id="ps-D" placeholder="0–100" min="0" max="100" oninput="previewScore()"></div>
+        <div class="ff"><label>Environment (E)</label><input type="number" id="ps-E" placeholder="0–100" min="0" max="100" oninput="previewScore()"></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <button class="btn btn-teal" onclick="savePillarScores()">Update Scores →</button>
+        <div id="ps-preview" style="font-family:var(--mono);font-size:13px;color:var(--teal);"></div>
+      </div>
     </div>
-    <div id="db-latest-handoff">
-      <div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.</div>
+  </div>
+</div>
+
+<!-- ══ OUT OF SERVICE ══ -->
+<div class="view" id="view-oos">
+  <div class="metric-grid" style="grid-template-columns:repeat(5,1fr);" id="oos-metrics">
+    <div class="metric-card red"><div class="mv red" id="oos-total">0</div><div class="ml">Total OOS</div></div>
+    <div class="metric-card red"><div class="mv red" id="oos-mechanical">0</div><div class="ml">Mechanical</div></div>
+    <div class="metric-card amber"><div class="mv amber" id="oos-staffing">0</div><div class="ml">Staffing</div></div>
+    <div class="metric-card blue"><div class="mv blue" id="oos-weather">0</div><div class="ml">Weather</div></div>
+    <div class="metric-card purple"><div class="mv purple" id="oos-other">0</div><div class="ml">Inspection / Other</div></div>
+  </div>
+
+  <div class="oos-add-form">
+    <div class="panel-hdr">
+      <div class="panel-title">Log Out-of-Service Unit</div>
+      <div class="panel-sub">Manual entry — ATR submissions auto-populate below</div>
+    </div>
+    <div class="panel-body">
+      <div class="form-grid">
+        <div class="ff"><label>Attraction</label>
+          <select id="oos-attraction">
+            <option value="">— Select —</option>
+            <optgroup label="🎢 Coasters"><option>Wooden Rollercoaster 1</option><option>Wooden Rollercoaster 2</option><option>Steel Coaster</option><option>Family Coaster</option></optgroup>
+            <optgroup label="🎡 Flat Rides"><option>Ferris Wheel</option><option>Carousel</option><option>Scrambler</option><option>Tilt-A-Whirl</option><option>Swing Ride</option><option>Drop Tower</option><option>Gravitron</option></optgroup>
+            <optgroup label="🚗 Driving"><option>Go-Kart Track — Inner Lane</option><option>Go-Kart Track — Outer Lane</option><option>Bumper Cars</option></optgroup>
+            <optgroup label="💧 Water"><option>Waterslide A</option><option>Waterslide B</option><option>Wave Pool</option><option>Lazy River</option></optgroup>
+            <optgroup label="👶 Kiddie"><option>Kiddie Coaster</option><option>Kiddie Cars</option><option>Kiddie Ferris Wheel</option></optgroup>
+          </select>
+        </div>
+        <div class="ff"><label>Reason Category</label>
+          <select id="oos-reason">
+            <option value="mechanical">🔴 Mechanical</option>
+            <option value="staffing">🟡 Staffing</option>
+            <option value="weather">🔵 Weather</option>
+            <option value="inspection">🟣 Inspection / Regulatory</option>
+            <option value="scheduled">🔷 Scheduled Maintenance</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Down Since (Time)</label><input type="time" id="oos-time"></div>
+        <div class="ff"><label>Expected Return</label><input type="text" id="oos-return" placeholder="e.g. 14:00 or Unknown"></div>
+      </div>
+      <div class="ff"><label>Detail / Notes</label><input type="text" id="oos-detail" placeholder="Brief description of the issue and action being taken…"></div>
+      <div class="form-grid">
+        <div class="ff"><label>Notified (Maintenance / Supervisor)</label><input type="text" id="oos-notified" placeholder="Name or department"></div>
+        <div class="ff"><label>Source</label>
+          <select id="oos-source">
+            <option value="manual">Manual — Manager Entry</option>
+            <option value="atr">ATR — Operator Log Flag</option>
+            <option value="nmr">NMR — Near-Miss Trigger</option>
+            <option value="maintenance">Maintenance Work Order</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-red" onclick="saveOOS()">Log OOS Unit →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-label">// Active Out-of-Service Units</div>
+  <div id="oos-active-grid" class="oos-grid">
+    <div class="empty" style="grid-column:1/-1;padding:30px"><div class="empty-icon">✅</div>No units currently out of service.</div>
+  </div>
+
+  <div class="sec-label">// Restored Units — Today</div>
+  <div class="panel">
+    <div id="oos-restored-list">
+      <div class="empty"><div class="empty-icon">📋</div>No units restored today.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CAR AGING ══ -->
+<div class="view" id="view-car">
+  <div class="car-aging-grid">
+    <div class="aging-bucket fresh" onclick="filterCAR('fresh')">
+      <div class="aging-count" id="car-fresh">0</div>
+      <div class="aging-label">0–7 Days</div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:4px;">Fresh</div>
+    </div>
+    <div class="aging-bucket watch" onclick="filterCAR('watch')">
+      <div class="aging-count" id="car-watch">0</div>
+      <div class="aging-label">8–14 Days</div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:4px;">Watch</div>
+    </div>
+    <div class="aging-bucket stale" onclick="filterCAR('stale')">
+      <div class="aging-count" id="car-stale">0</div>
+      <div class="aging-label">15–30 Days</div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:4px;">Stale</div>
+    </div>
+    <div class="aging-bucket critical" onclick="filterCAR('critical')">
+      <div class="aging-count" id="car-critical">0</div>
+      <div class="aging-label">30+ Days</div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:4px;">Critical</div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:16px;">
+    <div class="panel-hdr">
+      <div class="panel-title">Add Corrective Action Record</div>
+    </div>
+    <div class="panel-body">
+      <div class="form-grid">
+        <div class="ff"><label>CAR ID</label><input type="text" id="car-id-in" placeholder="e.g. IHS-CA-A1B2C3"></div>
+        <div class="ff"><label>Source Audit</label>
+          <select id="car-source">
+            <option value="IHS">IHS — In-House Safety</option>
+            <option value="TPS">TPS — Third-Party Safety</option>
+            <option value="iGSA">iGSA — In-House GSA</option>
+            <option value="mGSA">mGSA — Mystery Shopper</option>
+            <option value="NMR">NMR — Near-Miss</option>
+            <option value="ATR">ATR — Operator Log</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Attraction / Area</label><input type="text" id="car-location" placeholder="Specific attraction or zone"></div>
+        <div class="ff"><label>Assigned To</label><input type="text" id="car-assigned" placeholder="Name or department"></div>
+      </div>
+      <div class="ff"><label>Finding / Deficiency Description</label><textarea id="car-finding" rows="2" placeholder="What was found, what standard was violated, and the required corrective action…"></textarea></div>
+      <div class="form-grid">
+        <div class="ff"><label>Priority</label>
+          <select id="car-priority">
+            <option value="critical">🔴 Critical — Immediate</option>
+            <option value="high">🟠 High — 48 Hours</option>
+            <option value="medium">🟡 Medium — 7 Days</option>
+            <option value="low">🟢 Low — 30 Days</option>
+          </select>
+        </div>
+        <div class="ff"><label>Target Closure Date</label><input type="date" id="car-due"></div>
+      </div>
+      <button class="btn btn-teal" onclick="saveCAR()">Open CAR →</button>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:0;">
+    <div class="tp-toolbar">
+      <input class="tp-search" type="text" placeholder="Search CARs…" oninput="renderCARs(this.value)">
+      <select style="padding:7px 10px;background:var(--panel3);border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);font-size:11px;color:var(--text);" id="car-status-filter" onchange="renderCARs()">
+        <option value="open">Open CARs</option>
+        <option value="closed">Closed CARs</option>
+        <option value="all">All CARs</option>
+      </select>
+    </div>
+    <div class="car-table-hdr"><span>ID</span><span>Finding</span><span>Source</span><span>Assigned</span><span>Due Date</span><span>Age / Status</span></div>
+    <div id="carTableBody">
+      <div class="empty"><div class="empty-icon">📂</div>No CARs on record.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ AUDIT SCHEDULE ══ -->
+<div class="view" id="view-audit">
+  <div class="audit-cal-grid">
+    <div class="audit-stat-card"><div class="audit-stat-num" style="color:var(--red)" id="audit-overdue">0</div><div class="audit-stat-lbl">Overdue</div></div>
+    <div class="audit-stat-card"><div class="audit-stat-num" style="color:var(--amber)" id="audit-due-7">0</div><div class="audit-stat-lbl">Due in 7 Days</div></div>
+    <div class="audit-stat-card"><div class="audit-stat-num" style="color:var(--blue)" id="audit-due-30">0</div><div class="audit-stat-lbl">Due in 30 Days</div></div>
+    <div class="audit-stat-card"><div class="audit-stat-num" style="color:var(--green)" id="audit-completed">0</div><div class="audit-stat-lbl">Completed (30 days)</div></div>
+    <div class="audit-stat-card"><div class="audit-stat-num" style="color:var(--text)" id="audit-total">0</div><div class="audit-stat-lbl">Total Scheduled</div></div>
+    <div class="audit-stat-card"><div class="audit-stat-num" style="color:var(--teal)" id="audit-score">—%</div><div class="audit-stat-lbl">Compliance Rate</div></div>
+  </div>
+
+  <div class="panel" style="margin-bottom:16px;">
+    <div class="panel-hdr"><div class="panel-title">Schedule Audit</div></div>
+    <div class="panel-body">
+      <div class="form-grid">
+        <div class="ff"><label>Audit Type</label>
+          <select id="aud-type">
+            <option value="iGSA">iGSA — In-House GSA</option>
+            <option value="mGSA">mGSA — Mystery Shopper</option>
+            <option value="IHS">IHS — In-House Safety</option>
+            <option value="TPS">TPS — Third-Party Safety</option>
+            <option value="SB">SB — Service Bulletin Review</option>
+            <option value="State">State Regulatory Inspection</option>
+            <option value="Insurance">Insurance Inspection</option>
+            <option value="NAARSO">NAARSO Visit</option>
+          </select>
+        </div>
+        <div class="ff"><label>Scheduled Date</label><input type="date" id="aud-date"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Assigned Auditor / Inspector</label><input type="text" id="aud-auditor" placeholder="Name or AS team"></div>
+        <div class="ff"><label>Scope / Attraction (if applicable)</label><input type="text" id="aud-scope" placeholder="Facility-wide, or specific attraction"></div>
+      </div>
+      <div class="ff"><label>Notes</label><input type="text" id="aud-notes" placeholder="Special instructions, contacts, access requirements…"></div>
+      <button class="btn btn-teal" onclick="saveAudit()">Schedule Audit →</button>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:0;">
+    <div class="tp-toolbar">
+      <input class="tp-search" type="text" placeholder="Search audits…" oninput="renderAudits(this.value)">
+      <select style="padding:7px 10px;background:var(--panel3);border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);font-size:11px;color:var(--text);" id="aud-filter" onchange="renderAudits()">
+        <option value="upcoming">Upcoming</option>
+        <option value="overdue">Overdue</option>
+        <option value="completed">Completed</option>
+        <option value="all">All</option>
+      </select>
+    </div>
+    <div class="audit-table-hdr"><span>ID</span><span>Audit Type</span><span>Auditor</span><span>Scheduled</span><span>Status</span><span>Action</span></div>
+    <div id="auditTableBody">
+      <div class="empty"><div class="empty-icon">📅</div>No audits scheduled.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ESCALATION MATRIX ══ -->
+<div class="view" id="view-matrix">
+  <div class="sec-label">// Escalation Matrix — Who Gets Called for What</div>
+  <div style="font-size:12px;color:var(--text-dim);margin-bottom:14px;line-height:1.6;">
+    Three-tier escalation structure. Manager resolves Tier 1 issues. Tier 2 requires supervisor or department head. Tier 3 triggers GM, ownership, and regulatory notification. All escalations auto-log to the Escalations tab.
+  </div>
+
+  <div class="esc-matrix" id="matrixPanel">
+    <div class="panel-hdr">
+      <div>
+        <div class="panel-title">Escalation Contact Matrix</div>
+        <div class="panel-sub">Tap a tier to expand contacts and triggers</div>
+      </div>
+      <button class="btn btn-teal btn-sm" onclick="showView('newmatrix',null);document.getElementById('matrix-edit-panel').style.display='block'">Edit Contacts →</button>
+    </div>
+    <div id="matrix-tiers">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+  <div id="matrix-edit-panel" style="display:none;">
+    <div class="sec-label">// Add / Edit Contact</div>
+    <div class="panel">
+      <div class="panel-hdr"><div class="panel-title">Add Matrix Contact</div></div>
+      <div class="panel-body">
+        <div class="form-grid">
+          <div class="ff"><label>Tier</label>
+            <select id="mc-tier">
+              <option value="1">Tier 1 — Manager Resolves</option>
+              <option value="2">Tier 2 — Supervisor / Dept Head</option>
+              <option value="3">Tier 3 — GM / Ownership / Regulatory</option>
+            </select>
+          </div>
+          <div class="ff"><label>Role / Title</label><input type="text" id="mc-role" placeholder="e.g. Maintenance Supervisor"></div>
+        </div>
+        <div class="form-grid">
+          <div class="ff"><label>Name</label><input type="text" id="mc-name" placeholder="Full name"></div>
+          <div class="ff"><label>Contact (Phone / Radio / Email)</label><input type="text" id="mc-contact" placeholder="e.g. Radio Ch. 3 · 555-0123"></div>
+        </div>
+        <div class="ff"><label>Escalation Triggers (one per line)</label>
+          <textarea id="mc-triggers" rows="3" placeholder="Mechanical ride stoppage&#10;Guest injury requiring EMS&#10;Near-miss at unload ramp"></textarea>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-teal" onclick="saveMatrixContact()">Add Contact →</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('matrix-edit-panel').style.display='none'">Cancel</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -287,12 +722,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 <!-- ══ SHIFT LOG ══ -->
 <div class="view" id="view-shift">
   <div class="panel">
-    <div class="panel-hdr">
-      <div>
-        <div class="panel-title">Shift Open / Close Log</div>
-        <div class="panel-sub">Record shift start and end — feeds MGR stream</div>
-      </div>
-    </div>
+    <div class="panel-hdr"><div class="panel-title">Shift Open / Close Log</div></div>
     <div class="panel-body">
       <div class="form-grid">
         <div class="ff"><label>Date</label><input type="date" id="sl-date"></div>
@@ -308,33 +738,24 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <div class="ff"><label>Manager Name</label><input type="text" id="sl-manager" placeholder="Full name"></div>
         <div class="ff"><label>Shift Start Time</label><input type="time" id="sl-start"></div>
       </div>
-      <div class="ff"><label>Attractions Open at Start of Shift</label>
-        <div id="sl-attractions-list" style="display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;margin-bottom:4px;">
-          <!-- dynamically built -->
-        </div>
-      </div>
       <div class="ff"><label>Staffing Notes</label><textarea id="sl-staffing" rows="2" placeholder="Any coverage gaps, callouts, or unusual staffing conditions…"></textarea></div>
       <div class="ff"><label>Opening Conditions</label><textarea id="sl-conditions" rows="2" placeholder="Weather, crowd level, equipment issues flagged at opening…"></textarea></div>
       <button class="btn btn-teal" onclick="saveShiftLog()">Save Shift Log →</button>
     </div>
   </div>
-
   <div class="panel">
     <div class="panel-hdr"><div class="panel-title">Recent Shift Logs</div></div>
-    <div id="shiftLogList">
-      <div class="empty"><div class="empty-icon">📋</div>No shift logs yet.</div>
-    </div>
+    <div id="shiftLogList"><div class="empty"><div class="empty-icon">📋</div>No shift logs yet.</div></div>
   </div>
 </div>
 
-<!-- ══ THROUGHPUT LOG ══ -->
+<!-- ══ THROUGHPUT LIST ══ -->
 <div class="view" id="view-throughput">
-  <div class="metric-grid" style="grid-template-columns:repeat(3,1fr);" id="tp-metrics">
+  <div class="metric-grid" style="grid-template-columns:repeat(3,1fr);">
     <div class="metric-card green"><div class="mv green" id="tpm-total">0</div><div class="ml">Total Guests Logged</div></div>
     <div class="metric-card teal"><div class="mv teal" id="tpm-avg-tph">—</div><div class="ml">Avg TPH All Attractions</div></div>
     <div class="metric-card amber"><div class="mv amber" id="tpm-top">—</div><div class="ml">Highest TPH Today</div></div>
   </div>
-
   <div class="panel" style="margin-bottom:0;">
     <div class="tp-toolbar">
       <input class="tp-search" type="text" placeholder="Search attraction…" oninput="renderThroughput(this.value)">
@@ -345,52 +766,40 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
       </select>
     </div>
     <div class="tp-table-hdr"><span>ID</span><span>Attraction</span><span>Guests</span><span>Duration</span><span>TPH</span><span>vs Design</span><span>Shift</span></div>
-    <div id="tpTableBody">
-      <div class="empty"><div class="empty-icon">📈</div>No throughput records yet.</div>
-    </div>
+    <div id="tpTableBody"><div class="empty"><div class="empty-icon">📈</div>No throughput records yet.</div></div>
   </div>
 </div>
 
-<!-- ══ SHIFT HANDOFF LIST ══ -->
+<!-- ══ HANDOFF LIST ══ -->
 <div class="view" id="view-handoff">
   <div class="panel" style="margin-bottom:12px;">
     <div class="panel-hdr">
       <div class="panel-title">Shift Handoff Records</div>
-      <button class="btn btn-teal btn-sm" onclick="showView('newhandoff',document.querySelectorAll('.nav-tab')[6])">＋ New Handoff</button>
+      <button class="btn btn-teal btn-sm" onclick="showView('newhandoff',document.querySelectorAll('.nav-tab')[11])">＋ New Handoff</button>
     </div>
   </div>
   <div class="handoff-list" id="handoffList">
-    <div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.<br><span style="font-family:var(--mono);font-size:10px;">Complete a handoff at shift transition.</span></div>
+    <div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.</div>
   </div>
 </div>
 
-<!-- ══ ESCALATIONS ══ -->
+<!-- ══ ESCALATIONS LIST ══ -->
 <div class="view" id="view-escalation">
   <div class="panel">
-    <div class="panel-hdr">
-      <div class="panel-title">Escalation Log</div>
-      <div class="panel-sub">Issues flagged for management follow-up across shifts</div>
-    </div>
-    <div id="escalationList">
-      <div class="empty"><div class="empty-icon">🚩</div>No escalations logged.</div>
-    </div>
+    <div class="panel-hdr"><div class="panel-title">Escalation Log</div></div>
+    <div id="escalationList"><div class="empty"><div class="empty-icon">🚩</div>No escalations logged.</div></div>
   </div>
 </div>
 
 <!-- ══ LOG THROUGHPUT ══ -->
 <div class="view" id="view-newthroughput">
   <div class="panel">
-    <div class="panel-hdr">
-      <div class="panel-title">Log Throughput Entry</div>
-      <div class="panel-sub">Record guest count, duration, and operational notes per attraction per time window</div>
-    </div>
+    <div class="panel-hdr"><div class="panel-title">Log Throughput Entry</div></div>
     <div class="panel-body">
       <div class="form-grid">
         <div class="ff"><label>Date</label><input type="date" id="tp-date"></div>
         <div class="ff"><label>Shift</label>
-          <select id="tp-shift">
-            <option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option>
-          </select>
+          <select id="tp-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select>
         </div>
       </div>
       <div class="form-grid">
@@ -415,7 +824,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <div class="ff"><label>Operator</label><input type="text" id="tp-operator" placeholder="Name or badge ID"></div>
         <div class="ff"><label>Vehicles / Units in Service</label><input type="number" id="tp-units" placeholder="e.g. 3" min="1"></div>
       </div>
-      <div class="ff"><label>Notes / Downtime</label><textarea id="tp-notes" rows="2" placeholder="Breakdown, queue issues, weather delay, dispatch holds, unusual conditions…"></textarea></div>
+      <div class="ff"><label>Notes / Downtime</label><textarea id="tp-notes" rows="2" placeholder="Breakdown, queue issues, weather delay, dispatch holds…"></textarea></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:4px;">
         <button class="btn btn-teal" onclick="saveThroughput()">Save Entry →</button>
         <div id="tp-calc-preview" style="font-family:var(--mono);font-size:12px;color:var(--teal);"></div>
@@ -424,18 +833,13 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   </div>
 </div>
 
-<!-- ══ NEW SHIFT HANDOFF ══ -->
+<!-- ══ NEW HANDOFF ══ -->
 <div class="view" id="view-newhandoff">
   <div class="panel">
     <div class="panel-hdr">
-      <div>
-        <div class="panel-title">Shift Handoff Document</div>
-        <div class="panel-sub">Complete at shift transition — outgoing manager to incoming manager</div>
-      </div>
+      <div><div class="panel-title">Shift Handoff Document</div><div class="panel-sub">Complete at shift transition — outgoing to incoming manager</div></div>
     </div>
     <div class="panel-body">
-
-      <!-- SECTION 1: Shift Info -->
       <div class="sec-label">// 1 · Shift Information</div>
       <div class="form-grid">
         <div class="ff"><label>Date</label><input type="date" id="ho-date"></div>
@@ -455,22 +859,19 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <div class="ff"><label>Handoff Time</label><input type="time" id="ho-time"></div>
         <div class="ff"><label>Overall Shift Rating</label>
           <select id="ho-rating">
-            <option value="smooth">✅ Smooth — no significant issues</option>
-            <option value="minor">🟡 Minor issues — documented below</option>
-            <option value="rough">🔴 Rough shift — escalations required</option>
+            <option value="smooth">✅ Smooth</option>
+            <option value="minor">🟡 Minor issues</option>
+            <option value="rough">🔴 Rough shift</option>
           </select>
         </div>
       </div>
 
-      <!-- SECTION 2: Operational Status -->
       <div class="sec-label" style="margin-top:8px;">// 2 · Operational Status</div>
       <div class="form-grid">
         <div class="ff"><label>Attractions Open at Handoff</label><input type="number" id="ho-open-count" placeholder="e.g. 12" min="0"></div>
-        <div class="ff"><label>Attractions Closed / Down</label><input type="text" id="ho-closed-attrs" placeholder="e.g. Scrambler (mechanical), Wave Pool (staffing)"></div>
+        <div class="ff"><label>Attractions Closed / Down</label><input type="text" id="ho-closed-attrs" placeholder="e.g. Scrambler (mechanical)"></div>
       </div>
-      <div class="ff"><label>Down Attractions — Detail & Expected Return</label>
-        <textarea id="ho-down-detail" rows="2" placeholder="For each closed attraction: reason, who was notified, expected return to service…"></textarea>
-      </div>
+      <div class="ff"><label>Down Attractions — Detail</label><textarea id="ho-down-detail" rows="2" placeholder="Reason, who was notified, expected return…"></textarea></div>
       <div class="form-grid">
         <div class="ff"><label>Staffing at Handoff</label>
           <select id="ho-staffing-status">
@@ -482,62 +883,39 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <div class="ff"><label>Staffing Notes</label><input type="text" id="ho-staffing-notes" placeholder="Callouts, coverage arrangements…"></div>
       </div>
 
-      <!-- SECTION 3: Safety & Incidents -->
-      <div class="sec-label" style="margin-top:8px;">// 3 · Safety & Incidents This Shift</div>
-      <div id="ho-safety-checks" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
-        <!-- checklist items rendered by JS -->
-      </div>
-      <div class="ff"><label>NMRs Filed This Shift (IDs or summary)</label>
-        <input type="text" id="ho-nmr" placeholder="e.g. NMR-2026-0091 — Scrambler, guest tripped at unload ramp. Or: None.">
-      </div>
-      <div class="ff"><label>Incidents / IRL Reports Filed</label>
-        <input type="text" id="ho-irl" placeholder="IRL report IDs or None">
-      </div>
-      <div class="ff"><label>Safety Observations / Concerns for Incoming Manager</label>
-        <textarea id="ho-safety-notes" rows="2" placeholder="Any trends, repeat behaviors, equipment concerns noticed this shift that incoming should watch…"></textarea>
-      </div>
+      <div class="sec-label" style="margin-top:8px;">// 3 · Safety & Incidents</div>
+      <div id="ho-safety-checks" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:12px;"></div>
+      <div class="ff"><label>NMRs Filed This Shift</label><input type="text" id="ho-nmr" placeholder="e.g. NMR-2026-0091 or None"></div>
+      <div class="ff"><label>IRL Reports Filed</label><input type="text" id="ho-irl" placeholder="Report IDs or None"></div>
+      <div class="ff"><label>Safety Notes for Incoming Manager</label><textarea id="ho-safety-notes" rows="2" placeholder="Trends, repeat behaviors, equipment concerns…"></textarea></div>
 
-      <!-- SECTION 4: Corrective Actions -->
       <div class="sec-label" style="margin-top:8px;">// 4 · Corrective Actions</div>
       <div class="form-grid">
         <div class="ff"><label>CAs Opened This Shift</label><input type="number" id="ho-ca-opened" placeholder="0" min="0" value="0"></div>
         <div class="ff"><label>CAs Closed This Shift</label><input type="number" id="ho-ca-closed" placeholder="0" min="0" value="0"></div>
       </div>
-      <div class="ff"><label>Open CAs Requiring Incoming Manager Attention</label>
-        <textarea id="ho-ca-notes" rows="2" placeholder="CA IDs and brief action needed — e.g. IHS-CA-A1B2C3 assigned to Maintenance, follow up by 14:00…"></textarea>
-      </div>
+      <div class="ff"><label>Open CAs Requiring Incoming Attention</label><textarea id="ho-ca-notes" rows="2" placeholder="CA IDs and action needed…"></textarea></div>
 
-      <!-- SECTION 5: Throughput & Guest Experience -->
       <div class="sec-label" style="margin-top:8px;">// 5 · Throughput & Guest Experience</div>
       <div class="form-grid">
         <div class="ff"><label>Estimated Total Guests Served</label><input type="number" id="ho-guests" placeholder="0" min="0"></div>
-        <div class="ff"><label>Peak TPH Attraction (if known)</label><input type="text" id="ho-peak-attr" placeholder="e.g. Steel Coaster — 820/hr"></div>
+        <div class="ff"><label>Peak TPH Attraction</label><input type="text" id="ho-peak-attr" placeholder="e.g. Steel Coaster — 820/hr"></div>
       </div>
-      <div class="ff"><label>Guest Complaints / Escalations This Shift</label>
-        <textarea id="ho-complaints" rows="2" placeholder="Summary of any complaint that required management involvement, refunds issued, or guest incidents…"></textarea>
-      </div>
+      <div class="ff"><label>Guest Complaints / Escalations</label><textarea id="ho-complaints" rows="2" placeholder="Any complaint requiring management involvement…"></textarea></div>
 
-      <!-- SECTION 6: Escalations to Flag -->
-      <div class="sec-label" style="margin-top:8px;">// 6 · Items Escalated to Incoming Manager</div>
-      <div id="ho-escalations-list" style="margin-bottom:10px;">
-        <!-- dynamic rows -->
-      </div>
+      <div class="sec-label" style="margin-top:8px;">// 6 · Escalated Items</div>
+      <div id="ho-escalations-list" style="margin-bottom:10px;"></div>
       <button class="btn btn-ghost btn-sm" onclick="addEscalationRow()">＋ Add Escalation Item</button>
 
-      <!-- SECTION 7: End-of-Shift Checklist -->
       <div class="sec-label" style="margin-top:16px;">// 7 · End-of-Shift Checklist</div>
-      <div id="ho-eod-checklist" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:16px;">
-        <!-- rendered by JS -->
-      </div>
+      <div id="ho-eod-checklist" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:16px;"></div>
 
-      <!-- SECTION 8: Notes -->
-      <div class="sec-label">// 8 · Outgoing Manager Notes</div>
+      <div class="sec-label">// 8 · Manager Notes</div>
       <div class="ff"><label>Anything Else Incoming Should Know</label>
-        <textarea id="ho-final-notes" rows="3" placeholder="Weather forecast, VIP visits, special events, vendor access, unusual crowd patterns expected, anything not covered above…"></textarea>
+        <textarea id="ho-final-notes" rows="3" placeholder="Weather, VIP visits, events, anything not covered above…"></textarea>
       </div>
 
-      <!-- SUBMIT -->
-      <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--border);margin-top:8px;">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--border);">
         <button class="btn btn-green" onclick="saveHandoff()">Submit Handoff Document →</button>
         <button class="btn btn-ghost" onclick="clearHandoffForm()">Clear</button>
       </div>
@@ -549,222 +927,665 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 <div id="toast"></div>
 
 <script>
-// ── STORAGE KEYS ─────────────────────────────────────────────────────────────
+// ── STORAGE KEYS ──────────────────────────────────────────────────────────────
 const KEY_TP    = 'as360_mgr_tp_v1';
 const KEY_HO    = 'as360_mgr_ho_v1';
 const KEY_SL    = 'as360_mgr_sl_v1';
 const KEY_ESC   = 'as360_mgr_esc_v1';
+const KEY_OOS   = 'as360_mgr_oos_v1';
+const KEY_CAR   = 'as360_mgr_car_v1';
+const KEY_AUD   = 'as360_mgr_aud_v1';
+const KEY_MTX   = 'as360_mgr_mtx_v1';
+const KEY_PIL   = 'as360_mgr_pil_v1';
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
-let throughputs = [];
-let handoffs    = [];
-let shiftLogs   = [];
-let escalations = [];
-
-const ATTRACTIONS = [
-  'Wooden Rollercoaster 1','Wooden Rollercoaster 2','Steel Coaster','Family Coaster',
-  'Ferris Wheel','Carousel','Scrambler','Tilt-A-Whirl','Swing Ride','Drop Tower','Gravitron',
-  'Go-Kart Track — Inner Lane','Go-Kart Track — Outer Lane','Bumper Cars',
-  'Waterslide A','Waterslide B','Wave Pool','Lazy River',
-  'Kiddie Coaster','Kiddie Cars','Kiddie Ferris Wheel'
-];
+let throughputs=[],handoffs=[],shiftLogs=[],escalations=[];
+let oosUnits=[],cars=[],audits=[],matrixContacts=[],pillarScores={R:null,I:null,D:null,E:null,ts:null};
+let carFilter='all';
 
 const SAFETY_CHECKS = [
-  {id:'sc-nmr',  label:'All NMRs documented and filed'},
-  {id:'sc-irl',  label:'Any incident reports (IRL) completed and submitted'},
-  {id:'sc-equip',label:'Equipment anomalies noted in ATR / operator log'},
-  {id:'sc-emer', label:'Emergency action plan binders confirmed in place'},
-  {id:'sc-hck',  label:'Height check stations operational at handoff'},
+  {id:'sc-nmr',   label:'All NMRs documented and filed'},
+  {id:'sc-irl',   label:'Any incident reports (IRL) completed'},
+  {id:'sc-equip', label:'Equipment anomalies noted in ATR / operator log'},
+  {id:'sc-emer',  label:'Emergency action plan binders confirmed in place'},
+  {id:'sc-hck',   label:'Height check stations operational at handoff'},
   {id:'sc-radio', label:'Radio / communication equipment checked and handed off'},
 ];
-
 const EOD_CHECKS = [
-  {id:'eod-ca',     label:'All open CAs updated with latest status'},
-  {id:'eod-disp',   label:'Dispatch log current through end of shift'},
-  {id:'eod-cash',   label:'Cash / revenue procedures completed (if applicable)'},
-  {id:'eod-keys',   label:'Keys / access credentials transferred to incoming manager'},
-  {id:'eod-walk',   label:'Final walkthrough completed with incoming manager'},
-  {id:'eod-brief',  label:'Verbal briefing given to incoming manager'},
-  {id:'eod-sign',   label:'Both managers confirm handoff is complete'},
+  {id:'eod-ca',    label:'All open CAs updated with latest status'},
+  {id:'eod-disp',  label:'Dispatch log current through end of shift'},
+  {id:'eod-keys',  label:'Keys / access credentials transferred to incoming manager'},
+  {id:'eod-walk',  label:'Final walkthrough completed with incoming manager'},
+  {id:'eod-brief', label:'Verbal briefing given to incoming manager'},
+  {id:'eod-sign',  label:'Both managers confirm handoff is complete'},
+];
+let hoSafetyChecked={},hoEodChecked={},hoEscalRows=[],hoEscalCounter=0;
+
+const DEFAULT_MATRIX = [
+  {tier:'1',role:'Maintenance Supervisor',name:'[Name]',contact:'Radio Ch. 3 · ext. 201',triggers:['Mechanical ride stoppage','Equipment malfunction requiring parts','Pre-opening equipment clearance']},
+  {tier:'1',role:'Operations Supervisor',name:'[Name]',contact:'Radio Ch. 1 · ext. 200',triggers:['Staffing coverage gap','Operator performance concern','Queue management escalation']},
+  {tier:'2',role:'General Manager / AGM',name:'[Name]',contact:'Cell: 555-0100',triggers:['Guest injury requiring EMS','Media / press inquiry on premises','Ride closure lasting 60+ minutes','Any NMR involving guest contact']},
+  {tier:'2',role:'Risk Manager',name:'[Name]',contact:'Cell: 555-0101',triggers:['Any IRL filed','Near-miss with injury potential','Regulatory inspector on premises']},
+  {tier:'3',role:'VP Operations / Ownership',name:'[Name]',contact:'Cell: 555-0199',triggers:['Serious guest injury / fatality','Regulatory shutdown order','Media incident / viral content']},
+  {tier:'3',role:'Legal Counsel',name:'[Name]',contact:'Cell: 555-0180',triggers:['Any incident with litigation potential','Regulatory violation notice','Insurance claim triggered']},
 ];
 
-let hoSafetyChecked = {};
-let hoEodChecked    = {};
-let hoEscalRows     = [];
-let hoEscalCounter  = 0;
-
-// ── INIT ─────────────────────────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────────────────
 function init(){
   load();
-  buildAttractionChecklist();
+  if(!matrixContacts.length) matrixContacts=[...DEFAULT_MATRIX];
   buildSafetyChecklist();
   buildEodChecklist();
-  buildEscalRow(); // start with one blank escalation row
+  buildEscalRow();
   setDefaults();
   refreshAll();
   tickClock(); setInterval(tickClock,1000);
 }
 
 function load(){
-  try{ throughputs = JSON.parse(localStorage.getItem(KEY_TP)||'[]'); }catch(e){ throughputs=[]; }
-  try{ handoffs    = JSON.parse(localStorage.getItem(KEY_HO)||'[]'); }catch(e){ handoffs=[]; }
-  try{ shiftLogs   = JSON.parse(localStorage.getItem(KEY_SL)||'[]'); }catch(e){ shiftLogs=[]; }
-  try{ escalations = JSON.parse(localStorage.getItem(KEY_ESC)||'[]'); }catch(e){ escalations=[]; }
+  const parse=(k,d=[])=>{try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(d));}catch{return d;}};
+  throughputs=parse(KEY_TP);handoffs=parse(KEY_HO);shiftLogs=parse(KEY_SL);escalations=parse(KEY_ESC);
+  oosUnits=parse(KEY_OOS);cars=parse(KEY_CAR);audits=parse(KEY_AUD);
+  matrixContacts=parse(KEY_MTX,[]);
+  pillarScores=parse(KEY_PIL,{R:null,I:null,D:null,E:null,ts:null});
 }
+function save(key,data){localStorage.setItem(key,JSON.stringify(data));}
 
-function save(key, data){ localStorage.setItem(key, JSON.stringify(data)); }
-
-function tickClock(){
-  document.getElementById('clock').textContent =
-    new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-}
+function tickClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
 
 function setDefaults(){
-  const today = new Date().toISOString().split('T')[0];
-  const now   = new Date().toTimeString().slice(0,5);
-  ['sl-date','tp-date','ho-date'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=today; });
-  ['sl-start','tp-time-start','ho-time'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=now; });
-  document.getElementById('tp-today-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-  document.getElementById('db-date').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const today=new Date().toISOString().split('T')[0];
+  const now=new Date().toTimeString().slice(0,5);
+  ['sl-date','tp-date','ho-date','aud-date','car-due'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=today;});
+  ['sl-start','tp-time-start','ho-time','oos-time'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=now;});
 }
 
 // ── VIEWS ─────────────────────────────────────────────────────────────────────
-function showView(name, tabEl){
+function showView(name,tabEl){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('view-'+name).classList.add('active');
-  if(tabEl) tabEl.classList.add('active');
-  if(name==='dashboard') refreshDash();
-  if(name==='throughput') renderThroughput();
-  if(name==='handoff') renderHandoffs();
-  if(name==='escalation') renderEscalations();
-  if(name==='shift') renderShiftLogs();
+  const view=document.getElementById('view-'+name);
+  if(view)view.classList.add('active');
+  if(tabEl)tabEl.classList.add('active');
+  const refresh={dashboard:refreshDash,pillar:renderPillars,oos:renderOOS,car:renderCARs,audit:renderAudits,matrix:renderMatrix,throughput:renderThroughput,handoff:renderHandoffs,escalation:renderEscalations,shift:renderShiftLogs};
+  if(refresh[name])refresh[name]();
 }
 
-// ── REFRESH ───────────────────────────────────────────────────────────────────
 function refreshAll(){
-  refreshDash();
-  renderThroughput();
-  renderHandoffs();
-  renderEscalations();
-  renderShiftLogs();
-  updateTabBadges();
+  refreshDash();renderPillars();renderOOS();renderCARs();renderAudits();renderMatrix();
+  renderThroughput();renderHandoffs();renderEscalations();renderShiftLogs();updateTabBadges();
 }
 
 function updateTabBadges(){
-  document.getElementById('handoffCount').textContent = handoffs.length;
-  const openEsc = escalations.filter(e=>e.status==='open').length;
-  const escBadge = document.getElementById('escalCount');
-  escBadge.textContent = openEsc;
-  escBadge.className = 'tab-badge ' + (openEsc>0?'red':'neutral');
+  document.getElementById('handoffCount').textContent=handoffs.length;
+  const openEsc=escalations.filter(e=>e.status==='open').length;
+  const escBadge=document.getElementById('escalCount');
+  escBadge.textContent=openEsc;
+  escBadge.className='tab-badge '+(openEsc>0?'red':'neutral');
+  const activeOOS=oosUnits.filter(o=>o.status==='active').length;
+  const oosBadge=document.getElementById('oosBadge');
+  oosBadge.textContent=activeOOS;
+  oosBadge.className='tab-badge '+(activeOOS>0?'red':'neutral');
+  const openCARs=cars.filter(c=>c.status==='open').length;
+  const carBadge=document.getElementById('carBadge');
+  carBadge.textContent=openCARs;
+  carBadge.className='tab-badge '+(openCARs>0?'amber':'neutral');
+  const overdue=getOverdueAudits().length;
+  const audBadge=document.getElementById('auditBadge');
+  audBadge.textContent=overdue;
+  audBadge.className='tab-badge '+(overdue>0?'red':'neutral');
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
 function refreshDash(){
-  const today = new Date().toISOString().split('T')[0];
-  const todayTP = throughputs.filter(t=>t.date===today);
-  const totalGuests = todayTP.reduce((s,t)=>s+t.guests,0);
-  const tphs = todayTP.filter(t=>t.tph>0).map(t=>t.tph);
-  const avgTPH = tphs.length ? Math.round(tphs.reduce((a,b)=>a+b)/tphs.length) : null;
-  const maxTPH = tphs.length ? Math.max(...tphs) : null;
-  const uniqueAttrs = [...new Set(todayTP.map(t=>t.attraction))];
+  const today=new Date().toISOString().split('T')[0];
+  const todayTP=throughputs.filter(t=>t.date===today);
+  const totalGuests=todayTP.reduce((s,t)=>s+t.guests,0);
+  const tphs=todayTP.filter(t=>t.tph>0).map(t=>t.tph);
+  const avgTPH=tphs.length?Math.round(tphs.reduce((a,b)=>a+b)/tphs.length):null;
+  const uniqueAttrs=[...new Set(todayTP.map(t=>t.attraction))];
+  const activeOOS=oosUnits.filter(o=>o.status==='active').length;
+  const openCARs=cars.filter(c=>c.status==='open').length;
+  const critCARs=cars.filter(c=>c.status==='open'&&getAgeDays(c.createdAt)>30).length;
+  const auditsDue=audits.filter(a=>a.status==='scheduled'&&daysUntil(a.date)<=7&&daysUntil(a.date)>=0).length;
 
-  document.getElementById('db-attractions').textContent = uniqueAttrs.length || '—';
-  document.getElementById('db-tph').textContent = avgTPH ? avgTPH+'/hr' : '—';
-  document.getElementById('db-escalations').textContent = escalations.filter(e=>e.status==='open').length;
-  document.getElementById('db-handoffs').textContent = handoffs.filter(h=>{
-    const d = new Date(h.date); const now = new Date();
-    const diff = (now - d) / 86400000;
-    return diff <= 7;
-  }).length;
+  document.getElementById('db-attractions').textContent=uniqueAttrs.length||'—';
+  document.getElementById('db-oos').textContent=activeOOS;
+  document.getElementById('db-oos-count-sm').textContent=activeOOS+' out of service';
+  document.getElementById('db-car-open').textContent=openCARs;
+  document.getElementById('db-car-critical-sm').textContent=critCARs+' critical aging';
+  document.getElementById('db-audits-due').textContent=auditsDue;
 
-  // Current shift from latest shift log
-  const latestSL = shiftLogs.slice().sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))[0];
-  if(latestSL){
-    document.getElementById('db-shift').textContent = latestSL.shift.charAt(0).toUpperCase()+latestSL.shift.slice(1)+' Shift';
-    document.getElementById('db-manager').textContent = latestSL.manager||'—';
-    document.getElementById('db-start').textContent = latestSL.start||'—';
+  // RIDE Score in topbar
+  const comp=calcComposite();
+  document.getElementById('db-ride-score').textContent=comp!==null?comp:'—';
+
+  // Pillar mini
+  const pillMini=document.getElementById('db-pillar-mini');
+  const pillars=[{k:'R',n:'Readiness',c:'teal'},{k:'I',n:'Integrity',c:'red'},{k:'D',n:'Delivery',c:'green'},{k:'E',n:'Environment',c:'purple'}];
+  pillMini.innerHTML=pillars.map(p=>{
+    const sc=pillarScores[p.k];
+    return `<div style="text-align:center;padding:8px;background:var(--panel2);border-radius:8px;border:1px solid var(--border);">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px;">${p.k}</div>
+      <div style="font-family:var(--cond);font-size:24px;font-weight:800;color:var(--${p.c})">${sc!==null?sc:'—'}</div>
+      <div style="font-size:9px;color:var(--text-dim);margin-top:2px;">${p.n}</div>
+    </div>`;
+  }).join('');
+
+  // OOS mini
+  const activeList=oosUnits.filter(o=>o.status==='active').slice(0,3);
+  const oosEl=document.getElementById('db-oos-mini');
+  if(!activeList.length){
+    oosEl.innerHTML='<div class="empty" style="padding:20px"><div class="empty-icon" style="font-size:20px">✅</div>All units in service</div>';
   } else {
-    document.getElementById('db-shift').textContent = '—';
-    document.getElementById('db-manager').textContent = '—';
-    document.getElementById('db-start').textContent = '—';
+    oosEl.innerHTML=activeList.map(o=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid rgba(36,45,62,.5);">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--text)">${o.attraction}</div>
+          <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:1px;">${o.reason.toUpperCase()} · Down ${getAgeDays(o.createdAt)===0?'<1 day':getAgeDays(o.createdAt)+' day(s)'}</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--amber)">ETA: ${o.returnTime||'Unknown'}</div>
+      </div>`).join('');
   }
 
-  // Today's throughput table
-  const tpRows = document.getElementById('db-tp-rows');
+  // Today's throughput
+  const tpRows=document.getElementById('db-tp-rows');
   if(!todayTP.length){
-    tpRows.innerHTML = '<div class="empty"><div class="empty-icon">📈</div>No throughput logged today.</div>';
+    tpRows.innerHTML='<div class="empty"><div class="empty-icon">📈</div>No throughput logged today.</div>';
   } else {
-    const byAttr = {};
-    todayTP.forEach(t=>{ if(!byAttr[t.attraction]) byAttr[t.attraction]={guests:0,tphs:[],design:t.design}; byAttr[t.attraction].guests+=t.guests; if(t.tph) byAttr[t.attraction].tphs.push(t.tph); });
-    tpRows.innerHTML = Object.entries(byAttr).map(([attr,d])=>{
-      const avg = d.tphs.length?Math.round(d.tphs.reduce((a,b)=>a+b)/d.tphs.length):null;
-      const pct  = d.design&&avg ? Math.min(100,Math.round(avg/d.design*100)) : null;
-      const col  = pct===null?'var(--text-dim)':pct>=85?'var(--green)':pct>=65?'var(--amber)':'var(--red)';
+    const byAttr={};
+    todayTP.forEach(t=>{if(!byAttr[t.attraction])byAttr[t.attraction]={guests:0,tphs:[],design:t.design};byAttr[t.attraction].guests+=t.guests;if(t.tph)byAttr[t.attraction].tphs.push(t.tph);});
+    tpRows.innerHTML=Object.entries(byAttr).map(([attr,d])=>{
+      const avg=d.tphs.length?Math.round(d.tphs.reduce((a,b)=>a+b)/d.tphs.length):null;
+      const pct=d.design&&avg?Math.min(100,Math.round(avg/d.design*100)):null;
+      const col=pct===null?'var(--text-dim)':pct>=85?'var(--green)':pct>=65?'var(--amber)':'var(--red)';
       return `<div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid rgba(36,45,62,.5);">
         <div style="flex:1;font-size:13px;font-weight:600;color:var(--text)">${attr}</div>
         <div style="font-family:var(--mono);font-size:11px;color:var(--text-dim)">${d.guests.toLocaleString()} guests</div>
         <div style="font-family:var(--mono);font-size:12px;font-weight:700;color:${col}">${avg?avg+'/hr':'—'}</div>
-        ${pct!==null?`<div style="font-family:var(--mono);font-size:10px;color:${col}">${pct}% cap</div>`:''}
+        ${pct!==null?`<div style="font-family:var(--mono);font-size:10px;color:${col}">${pct}%</div>`:''}
+      </div>`;
+    }).join('');
+  }
+  // Shift log
+  const latestSL=shiftLogs.slice().sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))[0];
+  if(latestSL){
+    document.getElementById('db-shift').textContent=latestSL.shift.charAt(0).toUpperCase()+latestSL.shift.slice(1)+' Shift';
+    document.getElementById('db-manager').textContent=latestSL.manager||'—';
+    document.getElementById('db-start').textContent=latestSL.start||'—';
+  }
+}
+
+// ── PILLAR STATUS ─────────────────────────────────────────────────────────────
+function calcComposite(){
+  const {R,I,D,E}=pillarScores;
+  if(R===null||I===null||D===null||E===null)return null;
+  return Math.round(R*0.30+I*0.30+D*0.25+E*0.15);
+}
+
+function scoreBand(s){
+  if(s>=90)return{label:'EXCELLENT',color:'var(--green)'};
+  if(s>=75)return{label:'STRONG',color:'var(--teal)'};
+  if(s>=60)return{label:'MODERATE',color:'var(--amber)'};
+  if(s>=45)return{label:'ELEVATED',color:'var(--orange)'};
+  return{label:'CRITICAL',color:'var(--red)'};
+}
+
+function renderPillars(){
+  const comp=calcComposite();
+  document.getElementById('comp-score').textContent=comp!==null?comp:'—';
+  if(comp!==null){
+    const band=scoreBand(comp);
+    document.getElementById('comp-band').textContent=band.label;
+    document.getElementById('comp-band').style.color=band.color;
+  } else {
+    document.getElementById('comp-band').textContent='No data — enter scores below';
+    document.getElementById('comp-band').style.color='var(--text-dim)';
+  }
+  document.getElementById('pillar-last-calc').textContent=pillarScores.ts?new Date(pillarScores.ts).toLocaleString():'Not yet calculated';
+
+  const defs=[
+    {k:'R',name:'Readiness',full:'Readiness',streams:['iGSA','IHS','TPS','NMR','ATR'],weights:'30%'},
+    {k:'I',name:'Integrity',full:'Integrity',streams:['NMR','IRL','CAR','TPS'],weights:'30%'},
+    {k:'D',name:'Delivery',full:'Delivery',streams:['mGSA','QR','EXS','OPD'],weights:'25%'},
+    {k:'E',name:'Environment',full:'Environment',streams:['iGSA','mGSA','EXS','QR'],weights:'15%'},
+  ];
+  const cards=defs.map(p=>{
+    const sc=pillarScores[p.k];
+    const pct=sc!==null?sc:0;
+    const band=sc!==null?scoreBand(sc):{label:'—',color:'var(--text-dim)'};
+    return `<div class="pillar-card pillar-${p.k}" onclick="document.getElementById('ps-${p.k}').focus()">
+      <div class="pillar-letter">${p.k} — ${p.full.toUpperCase()} · ${p.weights}</div>
+      <div class="pillar-score">${sc!==null?sc:'—'}</div>
+      <div class="pillar-name" style="color:${band.color}">${band.label}</div>
+      <div class="pillar-bar-wrap"><div class="pillar-bar-fill" style="width:${pct}%"></div></div>
+      <div class="pillar-streams">
+        ${p.streams.map(s=>`<div class="stream-row"><span class="stream-name">${s}</span><span class="stream-val" style="color:var(--text-dim)">—</span></div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('pillar-cards').innerHTML=cards;
+
+  // Alerts
+  const alerts=[];
+  defs.forEach(p=>{
+    const sc=pillarScores[p.k];
+    if(sc!==null&&sc<45)alerts.push({msg:`${p.full} score CRITICAL (${sc}) — immediate review required`,color:'var(--red)'});
+    else if(sc!==null&&sc<60)alerts.push({msg:`${p.full} score ELEVATED (${sc}) — insurer notification may be required`,color:'var(--orange)'});
+  });
+  const aPanel=document.getElementById('pillar-alerts-panel');
+  if(alerts.length){
+    aPanel.style.display='block';
+    aPanel.innerHTML=`<div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--red);margin-bottom:8px;">⚠ SCORE ALERTS</div>`+
+      alerts.map(a=>`<div style="font-size:12px;color:${a.color};padding:4px 0;border-bottom:1px solid var(--border);">${a.msg}</div>`).join('');
+  } else { aPanel.style.display='none'; }
+}
+
+function previewScore(){
+  const R=parseInt(document.getElementById('ps-R').value)||0;
+  const I=parseInt(document.getElementById('ps-I').value)||0;
+  const D=parseInt(document.getElementById('ps-D').value)||0;
+  const E=parseInt(document.getElementById('ps-E').value)||0;
+  const comp=Math.round(R*0.30+I*0.30+D*0.25+E*0.15);
+  document.getElementById('ps-preview').textContent='→ Composite: '+comp;
+}
+
+function savePillarScores(){
+  const R=parseInt(document.getElementById('ps-R').value);
+  const I=parseInt(document.getElementById('ps-I').value);
+  const D=parseInt(document.getElementById('ps-D').value);
+  const E=parseInt(document.getElementById('ps-E').value);
+  if([R,I,D,E].some(v=>isNaN(v)||v<0||v>100)){toast('All scores must be 0–100',1);return;}
+  pillarScores={R,I,D,E,ts:new Date().toISOString()};
+  save(KEY_PIL,pillarScores);
+  renderPillars();
+  refreshDash();
+  toast('RIDE Score updated — Composite: '+calcComposite(),'ok');
+}
+
+function recalcPillars(){
+  renderPillars();
+  toast('Scores refreshed','ok');
+}
+
+// ── OUT OF SERVICE ─────────────────────────────────────────────────────────────
+function saveOOS(){
+  const attraction=document.getElementById('oos-attraction').value;
+  if(!attraction){toast('Select attraction',1);return;}
+  const unit={
+    id:'OOS-'+Date.now().toString(36).toUpperCase().slice(-6),
+    attraction,
+    reason:document.getElementById('oos-reason').value,
+    time:document.getElementById('oos-time').value,
+    returnTime:document.getElementById('oos-return').value.trim(),
+    detail:document.getElementById('oos-detail').value.trim(),
+    notified:document.getElementById('oos-notified').value.trim(),
+    source:document.getElementById('oos-source').value,
+    status:'active',
+    createdAt:new Date().toISOString(),
+  };
+  oosUnits.unshift(unit);
+  save(KEY_OOS,oosUnits);
+  renderOOS();
+  updateTabBadges();
+  refreshDash();
+  document.getElementById('oos-attraction').value='';
+  document.getElementById('oos-detail').value='';
+  document.getElementById('oos-return').value='';
+  document.getElementById('oos-notified').value='';
+  toast('OOS unit logged — '+attraction,'ok');
+}
+
+function restoreOOS(id){
+  const u=oosUnits.find(o=>o.id===id);
+  if(u){u.status='restored';u.restoredAt=new Date().toISOString();}
+  save(KEY_OOS,oosUnits);
+  renderOOS();
+  updateTabBadges();
+  refreshDash();
+  toast('Unit restored to service','ok');
+}
+
+function renderOOS(){
+  const active=oosUnits.filter(o=>o.status==='active');
+  const restored=oosUnits.filter(o=>o.status==='restored');
+  const today=new Date().toISOString().split('T')[0];
+  const todayRestored=restored.filter(o=>o.restoredAt&&o.restoredAt.split('T')[0]===today);
+
+  document.getElementById('oos-total').textContent=active.length;
+  document.getElementById('oos-mechanical').textContent=active.filter(o=>o.reason==='mechanical').length;
+  document.getElementById('oos-staffing').textContent=active.filter(o=>o.reason==='staffing').length;
+  document.getElementById('oos-weather').textContent=active.filter(o=>o.reason==='weather').length;
+  document.getElementById('oos-other').textContent=active.filter(o=>['inspection','scheduled'].includes(o.reason)).length;
+
+  const grid=document.getElementById('oos-active-grid');
+  if(!active.length){
+    grid.innerHTML='<div class="empty" style="grid-column:1/-1;padding:30px"><div class="empty-icon">✅</div>No units currently out of service.</div>';
+  } else {
+    grid.innerHTML=active.map(o=>{
+      const ageMins=Math.round((Date.now()-new Date(o.createdAt))/60000);
+      const ageStr=ageMins<60?ageMins+'m':(Math.floor(ageMins/60)+'h '+(ageMins%60)+'m');
+      const srcLabel={manual:'MGR Entry',atr:'ATR Flag',nmr:'NMR Trigger',maintenance:'Work Order'}[o.source]||o.source;
+      return `<div class="oos-card ${o.reason}">
+        <div class="oos-attraction">${o.attraction}</div>
+        <div class="oos-reason">${o.reason.toUpperCase()}</div>
+        <div class="oos-detail">${o.detail||'No detail provided'}</div>
+        <div class="oos-meta">
+          <div class="oos-duration">Down: <span>${ageStr}</span></div>
+          <div class="oos-return ${o.returnTime?'':''}">ETA: <span style="color:var(--amber)">${o.returnTime||'Unknown'}</span></div>
+        </div>
+        ${o.notified?`<div style="font-size:10px;color:var(--text-dim);margin-top:4px;">Notified: ${o.notified}</div>`:''}
+        <div class="oos-source"><span class="oos-atr-badge">📡 ${srcLabel}</span> · ${new Date(o.createdAt).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div>
+        <div style="margin-top:10px;"><button class="btn btn-green btn-sm" onclick="restoreOOS('${o.id}')">✓ Restore to Service</button></div>
       </div>`;
     }).join('');
   }
 
-  // Latest handoff
-  const latestHO = handoffs.slice().sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))[0];
-  const hoEl = document.getElementById('db-latest-handoff');
-  if(!latestHO){
-    hoEl.innerHTML = '<div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.</div>';
+  const restEl=document.getElementById('oos-restored-list');
+  if(!todayRestored.length){
+    restEl.innerHTML='<div class="empty"><div class="empty-icon">📋</div>No units restored today.</div>';
   } else {
-    const ratingMap = {smooth:'✅ Smooth',minor:'🟡 Minor Issues',rough:'🔴 Rough Shift'};
-    hoEl.innerHTML = `<div style="padding:14px 16px;">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;">
-        <span style="font-family:var(--cond);font-size:15px;font-weight:700;color:var(--text-bright)">${latestHO.date}</span>
-        <span class="hc-shift ${latestHO.shift}-shift">${latestHO.shift.toUpperCase()}</span>
-        <span style="font-size:12px;color:var(--text-dim)">${latestHO.outMgr} → ${latestHO.inMgr}</span>
-        <span style="font-family:var(--mono);font-size:11px;">${ratingMap[latestHO.rating]||latestHO.rating}</span>
-      </div>
-      ${latestHO.finalNotes?`<div style="font-size:12px;color:var(--text-dim);line-height:1.5;">${latestHO.finalNotes}</div>`:''}
-    </div>`;
+    restEl.innerHTML=todayRestored.map(o=>`
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid rgba(36,45,62,.5);">
+        <span class="pill pill-closed">RESTORED</span>
+        <div style="flex:1;font-size:13px;font-weight:600;color:var(--text)">${o.attraction}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim)">Down: ${o.time||'—'} → Restored: ${new Date(o.restoredAt).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-muted)">${o.reason.toUpperCase()}</div>
+      </div>`).join('');
   }
 }
 
-// ── SHIFT LOG ─────────────────────────────────────────────────────────────────
-function buildAttractionChecklist(){
-  const wrap = document.getElementById('sl-attractions-list');
-  wrap.innerHTML = ATTRACTIONS.slice(0,10).map(a=>`
-    <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text);cursor:pointer;white-space:nowrap;">
-      <input type="checkbox" name="sl-attr" value="${a}" style="accent-color:var(--teal);width:14px;height:14px;">
-      ${a}
-    </label>`).join('');
+// ── CAR AGING ─────────────────────────────────────────────────────────────────
+function getAgeDays(dateStr){
+  return Math.floor((Date.now()-new Date(dateStr))/86400000);
+}
+function ageBucket(days){
+  if(days<=7)return'fresh';
+  if(days<=14)return'watch';
+  if(days<=30)return'stale';
+  return'critical';
+}
+function agePriClass(days){
+  return{fresh:'age-fresh',watch:'age-watch',stale:'age-stale',critical:'age-critical'}[ageBucket(days)];
 }
 
+function saveCAR(){
+  const id=document.getElementById('car-id-in').value.trim();
+  const finding=document.getElementById('car-finding').value.trim();
+  if(!finding){toast('Enter finding description',1);return;}
+  const car={
+    id:id||('CAR-'+Date.now().toString(36).toUpperCase().slice(-6)),
+    source:document.getElementById('car-source').value,
+    location:document.getElementById('car-location').value.trim(),
+    assigned:document.getElementById('car-assigned').value.trim(),
+    finding,
+    priority:document.getElementById('car-priority').value,
+    due:document.getElementById('car-due').value,
+    status:'open',
+    createdAt:new Date().toISOString(),
+  };
+  cars.unshift(car);
+  save(KEY_CAR,cars);
+  renderCARs();
+  updateTabBadges();
+  refreshDash();
+  ['car-id-in','car-location','car-assigned','car-finding'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  toast('CAR opened — '+car.id,'ok');
+}
+
+function closeCAR(id){
+  const c=cars.find(c=>c.id===id);
+  if(c){c.status='closed';c.closedAt=new Date().toISOString();}
+  save(KEY_CAR,cars);
+  renderCARs();
+  updateTabBadges();
+  refreshDash();
+  toast('CAR closed','ok');
+}
+
+function filterCAR(bucket){
+  carFilter=bucket;
+  renderCARs();
+}
+
+function renderCARs(search=''){
+  const statusFilter=document.getElementById('car-status-filter')?.value||'open';
+  let rows=[...cars];
+  if(statusFilter==='open')rows=rows.filter(c=>c.status==='open');
+  else if(statusFilter==='closed')rows=rows.filter(c=>c.status==='closed');
+  if(carFilter&&carFilter!=='all')rows=rows.filter(c=>ageBucket(getAgeDays(c.createdAt))===carFilter);
+  if(search){const q=search.toLowerCase();rows=rows.filter(c=>(c.id||'').toLowerCase().includes(q)||(c.finding||'').toLowerCase().includes(q)||(c.location||'').toLowerCase().includes(q)||(c.assigned||'').toLowerCase().includes(q));}
+
+  const openCARs=cars.filter(c=>c.status==='open');
+  const freshCount=openCARs.filter(c=>ageBucket(getAgeDays(c.createdAt))==='fresh').length;
+  const watchCount=openCARs.filter(c=>ageBucket(getAgeDays(c.createdAt))==='watch').length;
+  const staleCount=openCARs.filter(c=>ageBucket(getAgeDays(c.createdAt))==='stale').length;
+  const critCount=openCARs.filter(c=>ageBucket(getAgeDays(c.createdAt))==='critical').length;
+  document.getElementById('car-fresh').textContent=freshCount;
+  document.getElementById('car-watch').textContent=watchCount;
+  document.getElementById('car-stale').textContent=staleCount;
+  document.getElementById('car-critical').textContent=critCount;
+
+  const body=document.getElementById('carTableBody');
+  if(!rows.length){body.innerHTML='<div class="empty"><div class="empty-icon">📂</div>No CARs matching filter.</div>';return;}
+  const priMap={critical:'🔴',high:'🟠',medium:'🟡',low:'🟢'};
+  body.innerHTML=rows.map(c=>{
+    const days=getAgeDays(c.createdAt);
+    const ageClass=agePriClass(days);
+    const isPastDue=c.due&&new Date(c.due)<new Date()&&c.status==='open';
+    return `<div class="car-row">
+      <div class="car-id">${c.id}</div>
+      <div>
+        <div style="font-size:12px;color:var(--text);font-weight:600">${priMap[c.priority]||''} ${c.finding.length>60?c.finding.slice(0,60)+'…':c.finding}</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;">${c.location||'—'} · ${c.source}</div>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--teal)">${c.source}</div>
+      <div style="font-size:12px;color:var(--text-dim)">${c.assigned||'Unassigned'}</div>
+      <div style="font-family:var(--mono);font-size:10px;color:${isPastDue?'var(--red)':'var(--text-dim)'}">${c.due||'—'}${isPastDue?' ⚠':''}</div>
+      <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+        <div class="car-age-days ${ageClass}">${days}d</div>
+        ${c.status==='open'?`<button class="btn btn-ghost btn-sm" onclick="closeCAR('${c.id}')">Close</button>`:`<span class="pill pill-closed">CLOSED</span>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── AUDIT SCHEDULE ────────────────────────────────────────────────────────────
+function daysUntil(dateStr){
+  if(!dateStr)return null;
+  const d=new Date(dateStr);
+  const today=new Date();today.setHours(0,0,0,0);
+  return Math.floor((d-today)/86400000);
+}
+
+function getOverdueAudits(){
+  return audits.filter(a=>a.status==='scheduled'&&daysUntil(a.date)<0);
+}
+
+function saveAudit(){
+  const date=document.getElementById('aud-date').value;
+  const type=document.getElementById('aud-type').value;
+  if(!date){toast('Select a date',1);return;}
+  const audit={
+    id:'AUD-'+Date.now().toString(36).toUpperCase().slice(-6),
+    type,
+    date,
+    auditor:document.getElementById('aud-auditor').value.trim(),
+    scope:document.getElementById('aud-scope').value.trim(),
+    notes:document.getElementById('aud-notes').value.trim(),
+    status:'scheduled',
+    createdAt:new Date().toISOString(),
+  };
+  audits.unshift(audit);
+  save(KEY_AUD,audits);
+  renderAudits();
+  updateTabBadges();
+  ['aud-auditor','aud-scope','aud-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  toast('Audit scheduled — '+type+' on '+date,'ok');
+}
+
+function completeAudit(id,outcome){
+  const a=audits.find(a=>a.id===id);
+  if(a){a.status='completed';a.outcome=outcome;a.completedAt=new Date().toISOString();}
+  save(KEY_AUD,audits);
+  renderAudits();
+  updateTabBadges();
+  toast('Audit marked complete','ok');
+}
+
+function renderAudits(search=''){
+  const filter=document.getElementById('aud-filter')?.value||'upcoming';
+  const today=new Date();today.setHours(0,0,0,0);
+  const in30=new Date(today);in30.setDate(in30.getDate()+30);
+  let rows=[...audits];
+  if(filter==='upcoming')rows=rows.filter(a=>a.status==='scheduled'&&daysUntil(a.date)>=0);
+  else if(filter==='overdue')rows=rows.filter(a=>a.status==='scheduled'&&daysUntil(a.date)<0);
+  else if(filter==='completed')rows=rows.filter(a=>a.status==='completed');
+  if(search){const q=search.toLowerCase();rows=rows.filter(a=>(a.type||'').toLowerCase().includes(q)||(a.auditor||'').toLowerCase().includes(q)||(a.scope||'').toLowerCase().includes(q));}
+  rows.sort((a,b)=>new Date(a.date)-new Date(b.date));
+
+  const all=audits.length;
+  const overdue=getOverdueAudits().length;
+  const due7=audits.filter(a=>a.status==='scheduled'&&daysUntil(a.date)>=0&&daysUntil(a.date)<=7).length;
+  const due30=audits.filter(a=>a.status==='scheduled'&&daysUntil(a.date)>=0&&daysUntil(a.date)<=30).length;
+  const completed30=audits.filter(a=>a.status==='completed'&&a.completedAt&&getAgeDays(a.completedAt)<=30).length;
+  const scheduled=audits.filter(a=>a.status==='scheduled').length;
+  const compRate=all>0?Math.round(audits.filter(a=>a.status==='completed').length/all*100):0;
+  document.getElementById('audit-overdue').textContent=overdue;
+  document.getElementById('audit-due-7').textContent=due7;
+  document.getElementById('audit-due-30').textContent=due30;
+  document.getElementById('audit-completed').textContent=completed30;
+  document.getElementById('audit-total').textContent=all;
+  document.getElementById('audit-score').textContent=compRate+'%';
+  document.getElementById('auditBadge').textContent=overdue;
+
+  const body=document.getElementById('auditTableBody');
+  if(!rows.length){body.innerHTML='<div class="empty"><div class="empty-icon">📅</div>No audits matching filter.</div>';return;}
+  const typeColor={iGSA:'teal',mGSA:'teal',IHS:'blue',TPS:'purple',SB:'amber',State:'red',Insurance:'orange',NAARSO:'green'};
+  body.innerHTML=rows.map(a=>{
+    const du=daysUntil(a.date);
+    const isOverdue=du!==null&&du<0&&a.status==='scheduled';
+    const isDueSoon=du!==null&&du<=3&&du>=0&&a.status==='scheduled';
+    const col=a.status==='completed'?'var(--green)':isOverdue?'var(--red)':isDueSoon?'var(--amber)':'var(--text-dim)';
+    const statusPill=a.status==='completed'?'<span class="pill pill-closed">COMPLETE</span>':isOverdue?'<span class="pill pill-open">OVERDUE</span>':isDueSoon?'<span class="pill pill-warn">DUE SOON</span>':'<span class="pill pill-info">SCHEDULED</span>';
+    const tc=typeColor[a.type]||'teal';
+    return `<div class="audit-row">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--teal)">${a.id}</div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--${tc})">${a.type}</div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:1px;">${a.scope||'Facility-wide'}</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-dim)">${a.auditor||'—'}</div>
+      <div style="font-family:var(--mono);font-size:10px;color:${col}">${a.date}${isOverdue?' ('+Math.abs(du)+'d late)':du!==null&&a.status==='scheduled'?' (in '+du+'d)':''}</div>
+      <div>${statusPill}</div>
+      <div style="display:flex;gap:4px;">
+        ${a.status==='scheduled'?`<button class="btn btn-green btn-sm" onclick="completeAudit('${a.id}','pass')">Complete</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── ESCALATION MATRIX ─────────────────────────────────────────────────────────
+function saveMatrixContact(){
+  const tier=document.getElementById('mc-tier').value;
+  const role=document.getElementById('mc-role').value.trim();
+  const name=document.getElementById('mc-name').value.trim();
+  const contact=document.getElementById('mc-contact').value.trim();
+  const triggers=document.getElementById('mc-triggers').value.trim().split('\n').filter(Boolean);
+  if(!role||!contact){toast('Role and contact required',1);return;}
+  matrixContacts.push({tier,role,name,contact,triggers});
+  save(KEY_MTX,matrixContacts);
+  renderMatrix();
+  ['mc-role','mc-name','mc-contact','mc-triggers'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('matrix-edit-panel').style.display='none';
+  toast('Contact added','ok');
+}
+
+function renderMatrix(){
+  const tierDefs=[
+    {t:'1',label:'TIER 1',desc:'Manager Resolves — On-shift management can action without escalating further'},
+    {t:'2',label:'TIER 2',desc:'Supervisor / Department Head — Requires escalation beyond shift manager'},
+    {t:'3',label:'TIER 3',desc:'GM / Ownership / Regulatory — Serious incidents, legal exposure, or media'},
+  ];
+  const tiersHTML=tierDefs.map(td=>{
+    const contacts=matrixContacts.filter(c=>c.tier===td.t);
+    const allTriggers=[...new Set(contacts.flatMap(c=>c.triggers||[]))];
+    return `<div class="esc-tier tier-${td.t}">
+      <div class="esc-tier-hdr" onclick="toggleTier('tier-body-${td.t}')">
+        <span class="esc-tier-badge">${td.label}</span>
+        <span class="esc-tier-label">${td.desc}</span>
+      </div>
+      <div class="esc-tier-body" id="tier-body-${td.t}" ${td.t==='1'?'class="esc-tier-body open"':''}>
+        ${contacts.length?contacts.map(c=>`
+          <div class="esc-contact-row">
+            <div>
+              <div class="esc-contact-name">${c.name||c.role}</div>
+              <div class="esc-contact-role">${c.name?c.role:''}</div>
+            </div>
+            <div class="esc-contact-detail">${c.contact}</div>
+            <button class="btn btn-teal btn-sm" onclick="logEscContact('${c.role}')">Log Call →</button>
+          </div>`).join(''):'<div style="font-size:12px;color:var(--text-dim);padding:8px 0;">No contacts defined. Add via Edit Contacts.</div>'}
+        ${allTriggers.length?`<div class="esc-trigger-list">
+          <div class="esc-trigger-title">Escalation Triggers for This Tier</div>
+          ${allTriggers.map(t=>`<div class="esc-trigger-item">${t}</div>`).join('')}
+        </div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('matrix-tiers').innerHTML=tiersHTML;
+  // Re-open tier 1 by default
+  const t1body=document.getElementById('tier-body-1');
+  if(t1body)t1body.classList.add('open');
+}
+
+function toggleTier(id){
+  const el=document.getElementById(id);
+  if(el)el.classList.toggle('open');
+}
+
+function logEscContact(role){
+  const esc={
+    id:'ESC-'+Date.now().toString(36).toUpperCase().slice(-5),
+    source:'MATRIX',
+    date:new Date().toISOString().split('T')[0],
+    from:'Manager',
+    to:role,
+    note:'Matrix escalation logged — contact: '+role,
+    priority:'urgent',
+    status:'open',
+    createdAt:new Date().toISOString()
+  };
+  escalations.unshift(esc);
+  save(KEY_ESC,escalations);
+  updateTabBadges();
+  toast('Escalation logged to '+role,'ok');
+}
+
+// ── SHIFT LOG ─────────────────────────────────────────────────────────────────
 function saveShiftLog(){
-  const date    = document.getElementById('sl-date').value;
-  const shift   = document.getElementById('sl-shift').value;
-  const manager = document.getElementById('sl-manager').value.trim();
-  const start   = document.getElementById('sl-start').value;
-  if(!manager){ toast('Enter manager name',1); return; }
-  const openAttrs = [...document.querySelectorAll('input[name="sl-attr"]:checked')].map(c=>c.value);
-  const log = {
-    id: 'SL-'+Date.now().toString(36).toUpperCase().slice(-6),
-    date, shift, manager, start,
-    openAttractions: openAttrs,
-    staffing: document.getElementById('sl-staffing').value.trim(),
-    conditions: document.getElementById('sl-conditions').value.trim(),
-    createdAt: new Date().toISOString()
+  const manager=document.getElementById('sl-manager').value.trim();
+  if(!manager){toast('Enter manager name',1);return;}
+  const log={
+    id:'SL-'+Date.now().toString(36).toUpperCase().slice(-6),
+    date:document.getElementById('sl-date').value,
+    shift:document.getElementById('sl-shift').value,
+    manager,
+    start:document.getElementById('sl-start').value,
+    staffing:document.getElementById('sl-staffing').value.trim(),
+    conditions:document.getElementById('sl-conditions').value.trim(),
+    createdAt:new Date().toISOString()
   };
   shiftLogs.unshift(log);
-  save(KEY_SL, shiftLogs);
+  save(KEY_SL,shiftLogs);
   renderShiftLogs();
   refreshDash();
   toast('Shift log saved ✓','ok');
 }
 
 function renderShiftLogs(){
-  const el = document.getElementById('shiftLogList');
-  if(!shiftLogs.length){ el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div>No shift logs yet.</div>'; return; }
-  el.innerHTML = shiftLogs.slice(0,20).map(sl=>`
+  const el=document.getElementById('shiftLogList');
+  if(!shiftLogs.length){el.innerHTML='<div class="empty"><div class="empty-icon">📋</div>No shift logs yet.</div>';return;}
+  el.innerHTML=shiftLogs.slice(0,20).map(sl=>`
     <div style="padding:12px 16px;border-bottom:1px solid rgba(36,45,62,.5);">
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
         <span style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright)">${sl.date}</span>
@@ -772,320 +1593,238 @@ function renderShiftLogs(){
         <span style="font-size:12px;color:var(--text-dim)">${sl.manager} · Start: ${sl.start}</span>
         <span style="font-family:var(--mono);font-size:10px;color:var(--text-dim)">${sl.id}</span>
       </div>
-      ${sl.openAttractions.length?`<div style="font-size:11px;color:var(--text-dim);margin-bottom:3px;">Open: ${sl.openAttractions.join(', ')}</div>`:''}
       ${sl.conditions?`<div style="font-size:11px;color:var(--text-dim);">${sl.conditions}</div>`:''}
     </div>`).join('');
 }
 
 // ── THROUGHPUT ────────────────────────────────────────────────────────────────
-document.addEventListener('input', function(e){
+document.addEventListener('input',function(e){
   if(['tp-guests','tp-duration'].includes(e.target.id)){
-    const g = parseInt(document.getElementById('tp-guests').value)||0;
-    const d = parseInt(document.getElementById('tp-duration').value)||60;
-    const tph = d>0 ? Math.round(g/(d/60)) : 0;
-    const prev = document.getElementById('tp-calc-preview');
-    if(g>0) prev.textContent = '→ '+tph.toLocaleString()+' guests/hr';
-    else prev.textContent = '';
+    const g=parseInt(document.getElementById('tp-guests').value)||0;
+    const d=parseInt(document.getElementById('tp-duration').value)||60;
+    const tph=d>0?Math.round(g/(d/60)):0;
+    const prev=document.getElementById('tp-calc-preview');
+    if(g>0)prev.textContent='→ '+tph.toLocaleString()+' guests/hr';
+    else prev.textContent='';
   }
 });
 
 function saveThroughput(){
-  const attraction = document.getElementById('tp-attraction').value;
-  const guests     = parseInt(document.getElementById('tp-guests').value)||0;
-  const duration   = parseInt(document.getElementById('tp-duration').value)||60;
-  if(!attraction){ toast('Select an attraction',1); return; }
-  if(guests<=0){ toast('Enter guest count',1); return; }
-  const tph = duration>0 ? Math.round(guests/(duration/60)) : 0;
-  const design = parseInt(document.getElementById('tp-design').value)||0;
-  const entry = {
-    id: 'TP-'+Date.now().toString(36).toUpperCase().slice(-6),
-    date: document.getElementById('tp-date').value,
-    shift: document.getElementById('tp-shift').value,
-    timeStart: document.getElementById('tp-time-start').value,
-    attraction,
-    guests,
-    duration,
-    tph,
-    design,
-    utilization: design>0 ? Math.round(tph/design*100) : null,
-    units: parseInt(document.getElementById('tp-units').value)||null,
-    operator: document.getElementById('tp-operator').value.trim(),
-    notes: document.getElementById('tp-notes').value.trim(),
-    createdAt: new Date().toISOString()
+  const attraction=document.getElementById('tp-attraction').value;
+  const guests=parseInt(document.getElementById('tp-guests').value)||0;
+  const duration=parseInt(document.getElementById('tp-duration').value)||60;
+  if(!attraction){toast('Select an attraction',1);return;}
+  if(guests<=0){toast('Enter guest count',1);return;}
+  const tph=duration>0?Math.round(guests/(duration/60)):0;
+  const design=parseInt(document.getElementById('tp-design').value)||0;
+  const entry={
+    id:'TP-'+Date.now().toString(36).toUpperCase().slice(-6),
+    date:document.getElementById('tp-date').value,
+    shift:document.getElementById('tp-shift').value,
+    timeStart:document.getElementById('tp-time-start').value,
+    attraction,guests,duration,tph,design,
+    utilization:design>0?Math.round(tph/design*100):null,
+    units:parseInt(document.getElementById('tp-units').value)||null,
+    operator:document.getElementById('tp-operator').value.trim(),
+    notes:document.getElementById('tp-notes').value.trim(),
+    createdAt:new Date().toISOString()
   };
   throughputs.unshift(entry);
-  save(KEY_TP, throughputs);
+  save(KEY_TP,throughputs);
   renderThroughput();
   refreshDash();
   document.getElementById('tp-guests').value='';
   document.getElementById('tp-notes').value='';
   document.getElementById('tp-calc-preview').textContent='';
-  toast('Throughput entry saved — '+tph.toLocaleString()+'/hr','ok');
+  toast('Throughput saved — '+tph.toLocaleString()+'/hr','ok');
 }
 
 function renderThroughput(search=''){
-  const dateFilter = document.getElementById('tp-filter-date')?.value||'today';
-  const today = new Date().toISOString().split('T')[0];
-  const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
-
-  let rows = [...throughputs];
-  if(dateFilter==='today') rows = rows.filter(t=>t.date===today);
-  else if(dateFilter==='week') rows = rows.filter(t=>new Date(t.date)>=weekAgo);
-
-  if(search){ const q=search.toLowerCase(); rows=rows.filter(t=>(t.attraction||'').toLowerCase().includes(q)||(t.operator||'').toLowerCase().includes(q)); }
-
-  // metrics
-  const allTphs = rows.filter(t=>t.tph>0).map(t=>t.tph);
-  const totalG  = rows.reduce((s,t)=>s+t.guests,0);
-  const avgTph  = allTphs.length?Math.round(allTphs.reduce((a,b)=>a+b)/allTphs.length):0;
-  const maxTph  = allTphs.length?Math.max(...allTphs):0;
-  document.getElementById('tpm-total').textContent = totalG.toLocaleString();
-  document.getElementById('tpm-avg-tph').textContent = avgTph?avgTph+'/hr':'—';
-  document.getElementById('tpm-top').textContent = maxTph?maxTph+'/hr':'—';
-
-  const body = document.getElementById('tpTableBody');
-  if(!rows.length){
-    body.innerHTML = '<div class="empty"><div class="empty-icon">📈</div>No throughput records for this period.</div>';
-    return;
-  }
-  body.innerHTML = rows.map(t=>{
-    const utilColor = !t.utilization?'var(--text-dim)':t.utilization>=85?'var(--green)':t.utilization>=65?'var(--amber)':'var(--red)';
-    const utilStr   = t.utilization!=null?t.utilization+'%':'—';
-    const shiftLabel = {open:'OPEN',mid:'MID',close:'CLOSE'}[t.shift]||t.shift.toUpperCase();
+  const dateFilter=document.getElementById('tp-filter-date')?.value||'today';
+  const today=new Date().toISOString().split('T')[0];
+  const weekAgo=new Date();weekAgo.setDate(weekAgo.getDate()-7);
+  let rows=[...throughputs];
+  if(dateFilter==='today')rows=rows.filter(t=>t.date===today);
+  else if(dateFilter==='week')rows=rows.filter(t=>new Date(t.date)>=weekAgo);
+  if(search){const q=search.toLowerCase();rows=rows.filter(t=>(t.attraction||'').toLowerCase().includes(q));}
+  const allTphs=rows.filter(t=>t.tph>0).map(t=>t.tph);
+  const totalG=rows.reduce((s,t)=>s+t.guests,0);
+  const avgTph=allTphs.length?Math.round(allTphs.reduce((a,b)=>a+b)/allTphs.length):0;
+  const maxTph=allTphs.length?Math.max(...allTphs):0;
+  document.getElementById('tpm-total').textContent=totalG.toLocaleString();
+  document.getElementById('tpm-avg-tph').textContent=avgTph?avgTph+'/hr':'—';
+  document.getElementById('tpm-top').textContent=maxTph?maxTph+'/hr':'—';
+  const body=document.getElementById('tpTableBody');
+  if(!rows.length){body.innerHTML='<div class="empty"><div class="empty-icon">📈</div>No throughput records for this period.</div>';return;}
+  body.innerHTML=rows.map(t=>{
+    const utilColor=!t.utilization?'var(--text-dim)':t.utilization>=85?'var(--green)':t.utilization>=65?'var(--amber)':'var(--red)';
+    const shiftLabel={open:'OPEN',mid:'MID',close:'CLOSE'}[t.shift]||t.shift.toUpperCase();
     return `<div class="tp-row">
       <div class="tp-id">${t.id}</div>
       <div class="tp-attraction">${t.attraction}<span>${t.date} · ${t.timeStart||'—'}</span></div>
       <div class="tp-num ok">${t.guests.toLocaleString()}</div>
       <div class="tp-num ok">${t.duration}m</div>
       <div class="tp-num" style="color:${t.tph>=800?'var(--green)':t.tph>=500?'var(--teal)':'var(--text)'}">${t.tph?t.tph.toLocaleString()+'/hr':'—'}</div>
-      <div class="tp-num" style="color:${utilColor}">${utilStr}</div>
+      <div class="tp-num" style="color:${utilColor}">${t.utilization!=null?t.utilization+'%':'—'}</div>
       <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">${shiftLabel}</div>
     </div>`;
   }).join('');
 }
 
-// ── HANDOFF FORM HELPERS ──────────────────────────────────────────────────────
+// ── HANDOFF ───────────────────────────────────────────────────────────────────
 function buildSafetyChecklist(){
-  const el = document.getElementById('ho-safety-checks');
-  el.innerHTML = SAFETY_CHECKS.map(item=>`
+  const el=document.getElementById('ho-safety-checks');
+  el.innerHTML=SAFETY_CHECKS.map(item=>`
     <div class="chk-row">
       <div class="chk-box" id="chk-${item.id}" onclick="toggleChk('sc','${item.id}')"></div>
       <div><div class="chk-label">${item.label}</div></div>
     </div>`).join('');
 }
-
 function buildEodChecklist(){
-  const el = document.getElementById('ho-eod-checklist');
-  el.innerHTML = EOD_CHECKS.map(item=>`
+  const el=document.getElementById('ho-eod-checklist');
+  el.innerHTML=EOD_CHECKS.map(item=>`
     <div class="chk-row">
       <div class="chk-box" id="chk-${item.id}" onclick="toggleChk('eod','${item.id}')"></div>
       <div><div class="chk-label">${item.label}</div></div>
     </div>`).join('');
 }
-
-function toggleChk(type, id){
-  const store = type==='sc' ? hoSafetyChecked : hoEodChecked;
-  store[id] = !store[id];
-  const el = document.getElementById('chk-'+id);
-  if(store[id]) el.classList.add('checked'); else el.classList.remove('checked');
+function toggleChk(type,id){
+  const store=type==='sc'?hoSafetyChecked:hoEodChecked;
+  store[id]=!store[id];
+  const el=document.getElementById('chk-'+id);
+  if(store[id])el.classList.add('checked');else el.classList.remove('checked');
 }
-
 function addEscalationRow(){
   hoEscalCounter++;
-  const rowId = 'esc-row-'+hoEscalCounter;
+  const rowId='esc-row-'+hoEscalCounter;
   hoEscalRows.push(rowId);
-  const el = document.getElementById('ho-escalations-list');
-  const div = document.createElement('div');
-  div.id = rowId;
-  div.style.cssText = 'display:grid;grid-template-columns:1fr 120px auto;gap:8px;margin-bottom:8px;align-items:start;';
-  div.innerHTML = `
-    <div class="ff" style="margin:0"><input type="text" placeholder="Describe the item being escalated to incoming manager…" id="esc-note-${hoEscalCounter}"></div>
-    <div class="ff" style="margin:0"><select id="esc-priority-${hoEscalCounter}">
-      <option value="info">📘 Info</option>
-      <option value="watch">🟡 Watch</option>
-      <option value="urgent">🔴 Urgent</option>
-    </select></div>
+  const el=document.getElementById('ho-escalations-list');
+  const div=document.createElement('div');
+  div.id=rowId;
+  div.style.cssText='display:grid;grid-template-columns:1fr 120px auto;gap:8px;margin-bottom:8px;align-items:start;';
+  div.innerHTML=`<div class="ff" style="margin:0"><input type="text" placeholder="Describe item being escalated…" id="esc-note-${hoEscalCounter}"></div>
+    <div class="ff" style="margin:0"><select id="esc-priority-${hoEscalCounter}"><option value="info">📘 Info</option><option value="watch">🟡 Watch</option><option value="urgent">🔴 Urgent</option></select></div>
     <button class="btn-icon" onclick="removeEscRow('${rowId}')" style="margin-top:2px;">✕</button>`;
   el.appendChild(div);
 }
+function buildEscalRow(){addEscalationRow();}
+function removeEscRow(id){const el=document.getElementById(id);if(el)el.remove();hoEscalRows=hoEscalRows.filter(r=>r!==id);}
 
-function buildEscalRow(){ addEscalationRow(); }
-
-function removeEscRow(id){
-  const el = document.getElementById(id);
-  if(el) el.remove();
-  hoEscalRows = hoEscalRows.filter(r=>r!==id);
-}
-
-// ── SAVE HANDOFF ──────────────────────────────────────────────────────────────
 function saveHandoff(){
-  const date   = document.getElementById('ho-date').value;
-  const shift  = document.getElementById('ho-shift').value;
-  const outMgr = document.getElementById('ho-out-mgr').value.trim();
-  const inMgr  = document.getElementById('ho-in-mgr').value.trim();
-  if(!date||!outMgr||!inMgr){ toast('Date and both manager names required',1); return; }
-
-  // Collect escalation rows
-  const escalItems = hoEscalRows.map((rowId,i)=>{
-    const num = rowId.split('-').pop();
-    const noteEl = document.getElementById('esc-note-'+num);
-    const priEl  = document.getElementById('esc-priority-'+num);
-    if(!noteEl||!noteEl.value.trim()) return null;
-    return { note: noteEl.value.trim(), priority: priEl?.value||'info' };
+  const date=document.getElementById('ho-date').value;
+  const outMgr=document.getElementById('ho-out-mgr').value.trim();
+  const inMgr=document.getElementById('ho-in-mgr').value.trim();
+  if(!date||!outMgr||!inMgr){toast('Date and both manager names required',1);return;}
+  const escalItems=hoEscalRows.map((rowId)=>{
+    const num=rowId.split('-').pop();
+    const noteEl=document.getElementById('esc-note-'+num);
+    const priEl=document.getElementById('esc-priority-'+num);
+    if(!noteEl||!noteEl.value.trim())return null;
+    return{note:noteEl.value.trim(),priority:priEl?.value||'info'};
   }).filter(Boolean);
-
-  const ho = {
-    id: 'HO-'+Date.now().toString(36).toUpperCase().slice(-6),
-    date, shift, outMgr, inMgr,
-    time:    document.getElementById('ho-time').value,
-    rating:  document.getElementById('ho-rating').value,
-    openCount: parseInt(document.getElementById('ho-open-count').value)||0,
-    closedAttrs: document.getElementById('ho-closed-attrs').value.trim(),
-    downDetail:  document.getElementById('ho-down-detail').value.trim(),
-    staffingStatus: document.getElementById('ho-staffing-status').value,
-    staffingNotes:  document.getElementById('ho-staffing-notes').value.trim(),
-    safetyChecks:   {...hoSafetyChecked},
-    nmr:    document.getElementById('ho-nmr').value.trim(),
-    irl:    document.getElementById('ho-irl').value.trim(),
-    safetyNotes: document.getElementById('ho-safety-notes').value.trim(),
-    caOpened: parseInt(document.getElementById('ho-ca-opened').value)||0,
-    caClosed: parseInt(document.getElementById('ho-ca-closed').value)||0,
-    caNotes:  document.getElementById('ho-ca-notes').value.trim(),
-    guests:   parseInt(document.getElementById('ho-guests').value)||0,
-    peakAttr: document.getElementById('ho-peak-attr').value.trim(),
-    complaints: document.getElementById('ho-complaints').value.trim(),
-    escalations: escalItems,
-    eodChecks: {...hoEodChecked},
-    finalNotes: document.getElementById('ho-final-notes').value.trim(),
-    createdAt: new Date().toISOString()
+  const ho={
+    id:'HO-'+Date.now().toString(36).toUpperCase().slice(-6),
+    date,shift:document.getElementById('ho-shift').value,outMgr,inMgr,
+    time:document.getElementById('ho-time').value,
+    rating:document.getElementById('ho-rating').value,
+    openCount:parseInt(document.getElementById('ho-open-count').value)||0,
+    closedAttrs:document.getElementById('ho-closed-attrs').value.trim(),
+    downDetail:document.getElementById('ho-down-detail').value.trim(),
+    staffingStatus:document.getElementById('ho-staffing-status').value,
+    staffingNotes:document.getElementById('ho-staffing-notes').value.trim(),
+    safetyChecks:{...hoSafetyChecked},
+    nmr:document.getElementById('ho-nmr').value.trim(),
+    irl:document.getElementById('ho-irl').value.trim(),
+    safetyNotes:document.getElementById('ho-safety-notes').value.trim(),
+    caOpened:parseInt(document.getElementById('ho-ca-opened').value)||0,
+    caClosed:parseInt(document.getElementById('ho-ca-closed').value)||0,
+    caNotes:document.getElementById('ho-ca-notes').value.trim(),
+    guests:parseInt(document.getElementById('ho-guests').value)||0,
+    peakAttr:document.getElementById('ho-peak-attr').value.trim(),
+    complaints:document.getElementById('ho-complaints').value.trim(),
+    escalations:escalItems,
+    eodChecks:{...hoEodChecked},
+    finalNotes:document.getElementById('ho-final-notes').value.trim(),
+    createdAt:new Date().toISOString()
   };
-
-  // Save escalation items as open escalations too
   escalItems.forEach(item=>{
     escalations.unshift({
-      id: 'ESC-'+Date.now().toString(36).toUpperCase().slice(-5),
-      source: ho.id,
-      date: ho.date,
-      shift: ho.shift,
-      from: ho.outMgr,
-      to:   ho.inMgr,
-      note: item.note,
-      priority: item.priority,
-      status: 'open',
-      createdAt: new Date().toISOString()
+      id:'ESC-'+Date.now().toString(36).toUpperCase().slice(-5),
+      source:ho.id,date:ho.date,shift:ho.shift,from:ho.outMgr,to:ho.inMgr,
+      note:item.note,priority:item.priority,status:'open',createdAt:new Date().toISOString()
     });
   });
-
   handoffs.unshift(ho);
-  save(KEY_HO, handoffs);
-  save(KEY_ESC, escalations);
-  clearHandoffForm();
-  renderHandoffs();
-  renderEscalations();
-  updateTabBadges();
-  refreshDash();
-  toast('Handoff document saved ✓','ok');
-  showView('handoff', document.querySelectorAll('.nav-tab')[3]);
+  save(KEY_HO,handoffs);save(KEY_ESC,escalations);
+  clearHandoffForm();renderHandoffs();renderEscalations();updateTabBadges();refreshDash();
+  toast('Handoff saved ✓','ok');
+  showView('handoff',document.querySelectorAll('.nav-tab')[8]);
 }
 
 function clearHandoffForm(){
-  ['ho-date','ho-out-mgr','ho-in-mgr','ho-time','ho-closed-attrs','ho-down-detail',
-   'ho-staffing-notes','ho-nmr','ho-irl','ho-safety-notes','ho-ca-notes','ho-guests',
-   'ho-peak-attr','ho-complaints','ho-final-notes'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.value='';
-  });
-  ['ho-shift','ho-rating','ho-staffing-status','ho-open-count','ho-ca-opened','ho-ca-closed'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.selectedIndex=0;
-  });
-  hoSafetyChecked={}; hoEodChecked={};
+  ['ho-date','ho-out-mgr','ho-in-mgr','ho-time','ho-closed-attrs','ho-down-detail','ho-staffing-notes',
+   'ho-nmr','ho-irl','ho-safety-notes','ho-ca-notes','ho-guests','ho-peak-attr','ho-complaints','ho-final-notes']
+    .forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  hoSafetyChecked={};hoEodChecked={};
   document.querySelectorAll('.chk-box').forEach(b=>b.classList.remove('checked'));
   document.getElementById('ho-escalations-list').innerHTML='';
-  hoEscalRows=[]; hoEscalCounter=0;
-  buildEscalRow();
-  setDefaults();
+  hoEscalRows=[];hoEscalCounter=0;buildEscalRow();setDefaults();
 }
 
-// ── RENDER HANDOFFS ───────────────────────────────────────────────────────────
 function renderHandoffs(){
-  const el = document.getElementById('handoffList');
-  if(!handoffs.length){
-    el.innerHTML = '<div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.</div>';
-    return;
-  }
-  el.innerHTML = handoffs.map(ho=>{
-    const ratingMap = {smooth:['green','✅ Smooth'],minor:['amber','🟡 Minor Issues'],rough:['red','🔴 Rough']};
-    const [rc,rl] = ratingMap[ho.rating]||['neutral',ho.rating];
-    const flags = [];
-    if(ho.escalations?.length) flags.push(`<span class="hc-flag amber">${ho.escalations.length} ESCALATED</span>`);
-    if(ho.nmr&&ho.nmr!=='None'&&ho.nmr!=='none'&&ho.nmr.length>2) flags.push('<span class="hc-flag red">NMR FILED</span>');
-    if(ho.irl&&ho.irl!=='None'&&ho.irl!=='none'&&ho.irl.length>2) flags.push('<span class="hc-flag red">IRL FILED</span>');
-    if(ho.caOpened>0) flags.push(`<span class="hc-flag amber">${ho.caOpened} CA OPENED</span>`);
-    if(ho.rating==='smooth'&&!flags.length) flags.push('<span class="hc-flag green">NO FLAGS</span>');
-
-    const sections = [];
-    if(ho.closedAttrs) sections.push(`<div class="handoff-section"><div class="handoff-section-title">Down Attractions</div><div style="font-size:12px;color:var(--text);line-height:1.6">${ho.closedAttrs}</div>${ho.downDetail?`<div style="font-size:11px;color:var(--text-dim);margin-top:4px;line-height:1.5">${ho.downDetail}</div>`:''}</div>`);
-    if(ho.safetyNotes) sections.push(`<div class="handoff-section"><div class="handoff-section-title">Safety Notes</div><div style="font-size:12px;color:var(--text);line-height:1.6">${ho.safetyNotes}</div></div>`);
-    if(ho.caNotes) sections.push(`<div class="handoff-section"><div class="handoff-section-title">CA Follow-up Needed</div><div style="font-size:12px;color:var(--text);line-height:1.6">${ho.caNotes}</div></div>`);
-    if(ho.escalations?.length) sections.push(`<div class="handoff-section"><div class="handoff-section-title">Escalated Items</div>${ho.escalations.map(e=>{
-      const priMap={info:'var(--blue)',watch:'var(--amber)',urgent:'var(--red)'};
-      return `<div class="ho-item-row"><div class="ho-dot" style="background:${priMap[e.priority]||'var(--text-dim)'}"></div><div class="ho-item-label">${e.note}</div><span class="pill pill-${e.priority==='urgent'?'open':e.priority==='watch'?'progress':'info'}">${e.priority.toUpperCase()}</span></div>`;
-    }).join('')}</div>`);
-    if(ho.finalNotes) sections.push(`<div class="handoff-section"><div class="handoff-section-title">Manager Notes</div><div style="font-size:12px;color:var(--text);line-height:1.6">${ho.finalNotes}</div></div>`);
-
-    const statsLine = [
-      ho.openCount?`${ho.openCount} attractions open`:'',
-      ho.guests?`${ho.guests.toLocaleString()} guests`:'',
-      ho.caOpened||ho.caClosed?`CAs: ${ho.caOpened} opened / ${ho.caClosed} closed`:'',
-    ].filter(Boolean).join(' · ');
-
-    return `<div class="handoff-card" id="hc-${ho.id}">
-      <div class="hc-hdr" onclick="toggleHandoff('${ho.id}')">
+  const el=document.getElementById('handoffList');
+  if(!handoffs.length){el.innerHTML='<div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.</div>';return;}
+  el.innerHTML=handoffs.map(ho=>{
+    const ratingMap={smooth:['green','✅ Smooth'],minor:['amber','🟡 Minor Issues'],rough:['red','🔴 Rough']};
+    const[rc,rl]=ratingMap[ho.rating]||['neutral',ho.rating];
+    const flags=[];
+    if(ho.escalations?.length)flags.push(`<span class="hc-flag amber">${ho.escalations.length} ESC</span>`);
+    if(ho.nmr&&ho.nmr!=='None'&&ho.nmr.length>2)flags.push('<span class="hc-flag red">NMR</span>');
+    if(ho.irl&&ho.irl!=='None'&&ho.irl.length>2)flags.push('<span class="hc-flag red">IRL</span>');
+    if(ho.caOpened>0)flags.push(`<span class="hc-flag amber">${ho.caOpened} CA</span>`);
+    if(ho.rating==='smooth'&&!flags.length)flags.push('<span class="hc-flag green">CLEAN</span>');
+    const sections=[];
+    if(ho.closedAttrs)sections.push(`<div class="handoff-section"><div class="handoff-section-title">Down Attractions</div><div style="font-size:12px;color:var(--text)">${ho.closedAttrs}</div></div>`);
+    if(ho.safetyNotes)sections.push(`<div class="handoff-section"><div class="handoff-section-title">Safety Notes</div><div style="font-size:12px;color:var(--text)">${ho.safetyNotes}</div></div>`);
+    if(ho.escalations?.length)sections.push(`<div class="handoff-section"><div class="handoff-section-title">Escalated Items</div>${ho.escalations.map(e=>{const priMap={info:'var(--blue)',watch:'var(--amber)',urgent:'var(--red)'};return`<div class="ho-item-row"><div class="ho-dot" style="background:${priMap[e.priority]}"></div><div class="ho-item-label">${e.note}</div></div>`;}).join('')}</div>`);
+    if(ho.finalNotes)sections.push(`<div class="handoff-section"><div class="handoff-section-title">Manager Notes</div><div style="font-size:12px;color:var(--text)">${ho.finalNotes}</div></div>`);
+    return `<div class="handoff-card">
+      <div class="hc-hdr" onclick="this.nextElementSibling.classList.toggle('open')">
         <div class="hc-meta">
           <span class="hc-date">${ho.date}</span>
           <span class="hc-shift ${ho.shift.split(' ')[0]}-shift">${ho.shift.toUpperCase()}</span>
           <span class="hc-manager">${ho.outMgr} → ${ho.inMgr} · ${ho.time||'—'}</span>
-          ${statsLine?`<span style="font-family:var(--mono);font-size:10px;color:var(--text-dim)">${statsLine}</span>`:''}
         </div>
         <div class="hc-flags">${flags.join('')}</div>
-        <span class="hc-flag ${rc}" style="font-size:11px;">${rl}</span>
+        <span class="hc-flag ${rc}">${rl}</span>
       </div>
-      <div class="hc-body" id="hcb-${ho.id}">${sections.length?sections.join(''):'<div style="padding:12px;font-size:12px;color:var(--text-dim);">No additional detail recorded.</div>'}</div>
+      <div class="hc-body">${sections.length?sections.join(''):'<div style="padding:12px;font-size:12px;color:var(--text-dim);">No additional detail.</div>'}</div>
     </div>`;
   }).join('');
 }
 
-function toggleHandoff(id){
-  const body = document.getElementById('hcb-'+id);
-  if(body) body.classList.toggle('open');
-}
-
-// ── ESCALATIONS ───────────────────────────────────────────────────────────────
 function renderEscalations(){
-  const el = document.getElementById('escalationList');
-  if(!escalations.length){
-    el.innerHTML = '<div class="empty"><div class="empty-icon">🚩</div>No escalations logged.</div>';
-    return;
-  }
-  const open   = escalations.filter(e=>e.status==='open');
-  const closed = escalations.filter(e=>e.status==='closed');
-  const priMap = {info:'pill-info',watch:'pill-warn',urgent:'pill-open'};
-  const priIcon = {info:'📘',watch:'🟡',urgent:'🔴'};
-  const rows = (list)=>list.map(e=>`
-    <div style="display:grid;grid-template-columns:70px 1fr auto auto;gap:10px;align-items:start;padding:10px 16px;border-bottom:1px solid rgba(36,45,62,.5);">
-      <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">${e.date}<br>${e.from}→${e.inMgr||e.to||''}</div>
-      <div style="font-size:12px;color:var(--text);line-height:1.5">${priIcon[e.priority]||''} ${e.note}</div>
+  const el=document.getElementById('escalationList');
+  if(!escalations.length){el.innerHTML='<div class="empty"><div class="empty-icon">🚩</div>No escalations logged.</div>';return;}
+  const open=escalations.filter(e=>e.status==='open');
+  const closed=escalations.filter(e=>e.status==='closed');
+  const priMap={info:'pill-info',watch:'pill-warn',urgent:'pill-open'};
+  const priIcon={info:'📘',watch:'🟡',urgent:'🔴'};
+  const rows=(list)=>list.map(e=>`
+    <div style="display:grid;grid-template-columns:80px 1fr auto auto;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid rgba(36,45,62,.5);">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">${e.date}<br>${e.from||'—'}</div>
+      <div style="font-size:12px;color:var(--text)">${priIcon[e.priority]||''} ${e.note}</div>
       <span class="pill ${priMap[e.priority]||'pill-info'}">${(e.priority||'info').toUpperCase()}</span>
       ${e.status==='open'?`<button class="btn btn-ghost btn-sm" onclick="closeEscalation('${e.id}')">Resolve</button>`:`<span class="pill pill-closed">DONE</span>`}
     </div>`).join('');
-
-  el.innerHTML = (open.length?`<div style="padding:10px 16px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--red);">OPEN — ${open.length}</div>${rows(open)}`:'')
-    + (closed.length?`<div style="padding:10px 16px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text-dim);">RESOLVED — ${closed.length}</div>${rows(closed)}`:'');
+  el.innerHTML=(open.length?`<div style="padding:8px 16px;background:var(--panel2);font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--red);">OPEN — ${open.length}</div>${rows(open)}`:'')
+    +(closed.length?`<div style="padding:8px 16px;background:var(--panel2);font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text-dim);">RESOLVED — ${closed.length}</div>${rows(closed)}`:'');
 }
 
 function closeEscalation(id){
-  const e = escalations.find(e=>e.id===id);
-  if(e){ e.status='closed'; e.resolvedAt=new Date().toISOString(); }
-  save(KEY_ESC, escalations);
+  const e=escalations.find(e=>e.id===id);
+  if(e){e.status='closed';e.resolvedAt=new Date().toISOString();}
+  save(KEY_ESC,escalations);
   renderEscalations();
   updateTabBadges();
   toast('Escalation resolved','ok');
@@ -1094,8 +1833,8 @@ function closeEscalation(id){
 // ── TOAST ─────────────────────────────────────────────────────────────────────
 function toast(msg,type){
   const t=document.getElementById('toast');
-  t.textContent=msg; t.className='show'+(type==='ok'?' ok':type===1?' err':'');
-  clearTimeout(t._t); t._t=setTimeout(()=>t.className='',2800);
+  t.textContent=msg;t.className='show'+(type==='ok'?' ok':type===1?' err':'');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);
 }
 
 init();
