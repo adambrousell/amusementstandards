@@ -114,7 +114,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 
 /* CENTER */
 .node-center .node-inner{padding:14px 18px;border-color:var(--gold);background:rgba(212,175,55,.09);min-width:130px;}
-.center-score{font-family:var(--display);font-size:34px;color:var(--gold);line-height:1;margin:2px 0;}
+.center-score{font-family:var(--display);font-size:48px;color:var(--gold);line-height:1;margin:2px 0;}
 .center-label{font-family:var(--mono);font-size:8px;color:var(--gold);letter-spacing:2px;}
 .center-sub{font-size:10px;color:rgba(255,255,255,.35);margin-top:3px;}
 
@@ -132,6 +132,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 /* TOOLTIP */
 .tooltip{position:fixed;z-index:1000;pointer-events:none;background:#0D1422;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 16px;max-width:240px;opacity:0;transition:opacity .15s;box-shadow:0 8px 32px rgba(0,0,0,.6);}
 .tooltip.show{opacity:1;}
+.tt-big-letter{font-family:var(--display);font-size:52px;line-height:1;margin-bottom:6px;display:none;}
 .tt-code{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;margin-bottom:4px;font-weight:700;}
 .tt-name{font-size:13px;font-weight:600;color:var(--text-bright);margin-bottom:6px;}
 .tt-desc{font-size:11px;color:var(--text);line-height:1.55;margin-bottom:10px;}
@@ -230,6 +231,10 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .ip-name{font-family:var(--display);font-size:13px;letter-spacing:1px;color:var(--text-bright);margin-bottom:4px;}
 .ip-desc{font-size:11px;color:var(--text);line-height:1.5;font-weight:300;}
 
+/* PILLAR LETTER HOVER */
+.node-pillar:hover .pillar-letter-main{font-size:42px !important;margin-bottom:2px !important;}
+.node-pillar:hover .node-code{opacity:.7;}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 @keyframes ringDraw{from{stroke-dashoffset:440;}to{stroke-dashoffset:80;}}
 .ring-anim{animation:ringDraw 1.8s 1s ease forwards;}
@@ -286,7 +291,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
   <div class="flow-wrap">
     <div class="flow-label reveal">SYSTEM ARCHITECTURE</div>
     <div class="flow-title reveal">How the streams converge</div>
-    <div class="flow-desc reveal">Every form feeds a stream. Every stream feeds a pillar. Every pillar feeds the RIDE Score. Click any node to open its form.</div>
+    <div class="flow-desc reveal">The RIDE Score is built from 16 independent data streams across four categories: <strong style="color:var(--text-bright)">audit data</strong> (in-house GSA, mystery shopper, safety inspections), <strong style="color:var(--text-bright)">incident & compliance data</strong> (near-miss reports, incident records, corrective action closure rate), <strong style="color:var(--text-bright)">guest intelligence</strong> (QR feedback, post-visit surveys, online reviews), and <strong style="color:var(--text-bright)">operational data</strong> (dispatch logs, at-ride records, queue times, weather). No single stream controls a pillar — when sources agree, confidence is high. When they diverge, that gap is the finding. Hover any node to learn more. Click to open its form.</div>
 
     <div class="diagram-wrap" id="diagramWrap">
       <svg id="edgeSvg"></svg>
@@ -356,7 +361,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
         <div class="m-desc">Full 7-section legal incident record — guest, injury, sequence, response, notifications, witnesses, certification.</div>
         <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
       </a>
-      <a href="manager.html" class="module-card mc-teal reveal">
+      <a href="ca-manager-v2.html" class="module-card mc-teal reveal">
         <div class="m-icon">✅</div><div class="m-code">CAR</div>
         <div class="m-name">CA Manager</div>
         <div class="m-desc">Corrective action lifecycle. CACR dashboard, aging buckets, audit schedule, certification tracker. Core scoring stream.</div>
@@ -396,7 +401,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
   <div class="sf-brand">Amusement <span>Standards</span></div>
   <div class="sf-links">
     <a href="https://amusementstandards.com/as360-ride-score.html">Live Demo</a>
-    <a href="manager.html">CA Manager</a>
+    <a href="ca-manager-v2.html">CA Manager</a>
     <a href="ride-incident-report.html">Incident Report</a>
     <a href="/cdn-cgi/l/email-protection#573633363a17363a2224323a3239232423363933362533247934383a">Contact</a>
   </div>
@@ -405,6 +410,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 
 <!-- TOOLTIP -->
 <div class="tooltip" id="tooltip">
+  <div class="tt-big-letter" id="tt-big-letter"></div>
   <div class="tt-code" id="tt-code"></div>
   <div class="tt-name" id="tt-name"></div>
   <div class="tt-desc" id="tt-desc"></div>
@@ -510,11 +516,11 @@ function buildDiagram(){
   centerEl.style.cursor = 'default';
   centerEl.innerHTML = `<div class="node-inner" style="border-color:var(--gold);background:rgba(212,175,55,.09);">
     <div style="font-size:11px;opacity:.5;margin-bottom:2px;color:var(--gold)">◈</div>
-    <div class="center-score" style="color:var(--gold)">81</div>
+    <div class="center-score" style="color:var(--gold);font-size:48px;">81</div>
     <div class="center-label" style="color:var(--gold)">RIDE SCORE™</div>
     <div class="center-sub">AS 360 Composite</div>
   </div>`;
-  centerEl.addEventListener('mouseenter', ev=>showTooltip(ev,{code:'AS 360',name:'RIDE Score™',desc:'Composite operational risk index — 0 to 100. Aggregates all four pillar scores.',pillars:[],color:'teal',noLink:true}));
+  centerEl.addEventListener('mouseenter', ev=>showTooltip(ev,{code:'AS 360',name:'RIDE Score™',desc:'Composite operational risk index — 0 to 100. Aggregates all four pillar scores.',pillars:[],color:'gold',noLink:true}));
   centerEl.addEventListener('mouseleave', hideTooltip);
   centerEl.addEventListener('mousemove', moveTooltip);
   rowPillars.appendChild(centerEl);
@@ -568,9 +574,9 @@ function makePillarNode(p){
   // Mini SVG arc for score
   const r = 22, circ = 2*Math.PI*r;
   const fill = circ - (circ * p.score / 100);
-  el.innerHTML = `<div class="node-inner" style="border-color:${col}50;background:${col}12;min-width:110px;text-align:center;padding:12px 16px;">
-    <div style="font-family:var(--display);font-size:30px;color:${col};line-height:1;margin-bottom:4px">${p.id}</div>
-    <div class="node-code" style="color:${col};font-size:9px;letter-spacing:2px;margin-bottom:8px">${p.name}</div>
+  el.innerHTML = `<div class="node-inner pillar-inner" style="border-color:${col}50;background:${col}12;min-width:110px;text-align:center;padding:12px 16px;">
+    <div class="pillar-letter-main" style="font-family:var(--display);color:${col};line-height:1;margin-bottom:4px;font-size:30px;transition:font-size .15s ease,margin .15s ease;">${p.id}</div>
+    <div class="node-code" style="color:${col};font-size:9px;letter-spacing:2px;margin-bottom:8px;">${p.name}</div>
     <div style="position:relative;width:54px;height:54px;margin:0 auto;">
       <svg width="54" height="54" viewBox="0 0 54 54" style="transform:rotate(-90deg)">
         <circle cx="27" cy="27" r="${r}" fill="none" stroke="${col}20" stroke-width="4"/>
@@ -590,8 +596,17 @@ function makePillarNode(p){
     D:'Guest experience execution — GSA scores, feedback streams, queue performance. What is the guest actually receiving vs. what the operation is designed to deliver?',
     E:'Conditions — weather, cleanliness, emergency access, ADA, crowd density. Is the physical environment safe and comfortable?'
   };
-  el.addEventListener('mouseenter', ev=>showTooltip(ev,{code:'PILLAR · '+p.id,name:p.name,desc:pDesc[p.id],pillars:[p.id],color:p.color,noLink:true}));
-  el.addEventListener('mouseleave', hideTooltip);
+  const letterEl = el.querySelector('.pillar-letter-main');
+  el.addEventListener('mouseenter', ev=>{
+    showTooltip(ev,{code:'PILLAR · '+p.id,name:p.name,desc:pDesc[p.id],pillars:[p.id],color:p.color,noLink:true});
+    letterEl.style.setProperty('font-size','46px','important');
+    letterEl.style.setProperty('margin-bottom','8px','important');
+  });
+  el.addEventListener('mouseleave', ()=>{
+    hideTooltip();
+    letterEl.style.setProperty('font-size','30px','important');
+    letterEl.style.setProperty('margin-bottom','4px','important');
+  });
   el.addEventListener('mousemove', moveTooltip);
   return el;
 }
@@ -671,6 +686,16 @@ function showTooltip(ev,n){
   clearTimeout(ttTimeout);
   const tt=document.getElementById('tooltip');
   const col=NC[n.color]||'#00D4D0';
+  const bigLetter=document.getElementById('tt-big-letter');
+  if(n.pillars&&n.pillars.length===1&&n.noLink){
+    bigLetter.textContent=n.pillars[0];
+    bigLetter.style.color=col;
+    bigLetter.style.display='block';
+    document.getElementById('tt-pillars').style.display='none';
+  } else {
+    bigLetter.style.display='none';
+    document.getElementById('tt-pillars').style.display='flex';
+  }
   document.getElementById('tt-code').textContent=n.code;
   document.getElementById('tt-code').style.color=col;
   document.getElementById('tt-name').textContent=n.name;
