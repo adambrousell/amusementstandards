@@ -292,17 +292,6 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
     <div class="flow-title reveal">How the streams converge</div>
     <div class="flow-desc reveal">Every form feeds a stream. Every stream feeds a pillar. Every pillar feeds the RIDE Score. Click any node to open its form.</div>
 
-    <!-- INLINE PILLARS STRIP -->
-    <div class="inline-pillars reveal">
-      <div class="ip-item ip-r"><span class="ip-letter">R</span><span class="ip-name">Readiness</span><span class="ip-desc">Operational preparedness — staffing, dispatch, pre-opening inspections.</span></div>
-      <div class="ip-divider"></div>
-      <div class="ip-item ip-i"><span class="ip-letter">I</span><span class="ip-name">Integrity</span><span class="ip-desc">Physical plant and procedural compliance — equipment, restraints, service bulletins.</span></div>
-      <div class="ip-divider"></div>
-      <div class="ip-item ip-d"><span class="ip-letter">D</span><span class="ip-name">Delivery</span><span class="ip-desc">Guest experience execution — GSA scores, feedback streams, queue performance.</span></div>
-      <div class="ip-divider"></div>
-      <div class="ip-item ip-e"><span class="ip-letter">E</span><span class="ip-name">Environment</span><span class="ip-desc">Conditions — weather, cleanliness, emergency access, ADA, crowd density.</span></div>
-    </div>
-
     <div class="diagram-wrap" id="diagramWrap">
       <svg id="edgeSvg"></svg>
       <div class="diagram-rows" id="diagramRows"></div>
@@ -479,12 +468,12 @@ const STREAMS = [
   // bottom row — left to right (8 streams)
   {id:'opd',  code:'OPD',  name:'Ops Dispatch',     icon:'📡', color:'blue',   file:'ops-dispatch.html',       row:'bot', desc:'Operator assignments, rotation compliance, coverage gaps.'},
   {id:'atr',  code:'ATR',  name:'At-Ride Log',      icon:'🎡', color:'orange', file:'operator-log.html',       row:'bot', desc:'Opening checklist, cycle counts, restraint checks, anomalies.'},
-  {id:'qtx',  code:'QTX',  name:'Queue & Wait',     icon:'⏱', color:'teal',   file:'ops-dispatch.html',       row:'bot', desc:'Live queue and wait times. Feeds Readiness and Delivery.'},
-  {id:'oli',  code:'OLI',  name:'Op. Load Obs.',    icon:'📊', color:'teal',   file:'ops-dispatch.html',       row:'bot', desc:'Field observation cross-validating dispatch vs. operational reality.'},
-  {id:'qr',   code:'QR',   name:'Guest Feedback',   icon:'📱', color:'gold',   file:'guest-feedback.html',     row:'bot', desc:'In-park QR real-time guest sentiment. Feeds Delivery and Environment.'},
-  {id:'exs',  code:'EXS',  name:'Post-Visit Survey',icon:'✉️', color:'gold',   file:'post-visit.html',         row:'bot', desc:'Reflective post-visit email feedback. Feeds Delivery and Environment.'},
-  {id:'olr',  code:'OLR',  name:'Online Reviews',   icon:'⭐', color:'gold',   file:'index.html',              row:'bot', desc:'Google, Yelp, TripAdvisor intelligence. Delivery and Environment.'},
-  {id:'wx',   code:'WX',   name:'Weather Data',     icon:'🌤', color:'blue',   file:'index.html',              row:'bot', desc:'Live Open-Meteo feed. Adjusts Environment scoring.'},
+  {id:'qtx',  code:'QTX',  name:'Queue & Wait',     icon:'⏱', color:'teal',   file:'',          row:'bot', noLink:true, desc:'Live queue and wait times. Feeds Readiness and Delivery.'},
+  {id:'oli',  code:'OLI',  name:'Op. Load Obs.',    icon:'📊', color:'teal',   file:'',          row:'bot', noLink:true, desc:'Field observation cross-validating dispatch vs. operational reality.'},
+  {id:'qr',   code:'QR',   name:'Guest Feedback',   icon:'📱', color:'gold',   file:'guest-feedback.html', row:'bot', desc:'In-park QR real-time guest sentiment. Feeds Delivery and Environment.'},
+  {id:'exs',  code:'EXS',  name:'Post-Visit Survey',icon:'✉️', color:'gold',   file:'post-visit.html',     row:'bot', desc:'Reflective post-visit email feedback. Feeds Delivery and Environment.'},
+  {id:'olr',  code:'OLR',  name:'Online Reviews',   icon:'⭐', color:'gold',   file:'',          row:'bot', noLink:true, desc:'Google, Yelp, TripAdvisor intelligence. Delivery and Environment.'},
+  {id:'wx',   code:'WX',   name:'Weather Data',     icon:'🌤', color:'blue',   file:'',          row:'bot', noLink:true, desc:'Live Open-Meteo feed. Adjusts Environment scoring.'},
 ];
 
 const PILLARS = [
@@ -503,7 +492,7 @@ function buildDiagram(){
   const topStreams = STREAMS.filter(s=>s.row==='top');
   const rowTop = document.createElement('div');
   rowTop.className = 'row-streams-top';
-  rowTop.style.cssText = 'padding:16px 0 20px;gap:8px;flex-wrap:wrap;justify-content:center;';
+  rowTop.style.cssText = 'padding:16px 0 48px;gap:8px;flex-wrap:wrap;justify-content:center;';
   topStreams.forEach(s=>{
     rowTop.appendChild(makeStreamNode(s));
   });
@@ -543,7 +532,7 @@ function buildDiagram(){
   const botStreams = STREAMS.filter(s=>s.row==='bot');
   const rowBot = document.createElement('div');
   rowBot.className = 'row-streams-bot';
-  rowBot.style.cssText = 'padding:20px 0 16px;gap:8px;flex-wrap:wrap;justify-content:center;';
+  rowBot.style.cssText = 'padding:48px 0 16px;gap:8px;flex-wrap:wrap;justify-content:center;';
   botStreams.forEach(s=>{
     rowBot.appendChild(makeStreamNode(s));
   });
@@ -566,7 +555,11 @@ function makeStreamNode(s){
   el.addEventListener('mouseenter', ev=>showTooltip(ev,{...s, pillars: STREAM_PILLARS[s.id]||[]}));
   el.addEventListener('mouseleave', hideTooltip);
   el.addEventListener('mousemove', moveTooltip);
-  el.addEventListener('click', ()=>window.location.href=s.file);
+  if(s.file && !s.noLink){
+    el.addEventListener('click', ()=>window.location.href=s.file);
+  } else {
+    el.style.cursor = 'default';
+  }
   return el;
 }
 
@@ -595,8 +588,13 @@ function makePillarNode(p){
       </div>
     </div>
   </div>`;
-  const pDesc = {R:'Operational preparedness — staffing, dispatch, pre-opening inspections.',I:'Physical plant and procedural compliance — equipment, restraints, service bulletins.',D:'Guest experience execution — GSA scores, feedback streams, queue performance.',E:'Conditions — weather, cleanliness, emergency access, ADA, crowd density.'};
-  el.addEventListener('mouseenter', ev=>showTooltip(ev,{code:'PILLAR '+p.id,name:p.name,desc:pDesc[p.id],pillars:[p.id],color:p.color,noLink:true}));
+  const pDesc = {
+    R:'Operational preparedness — staffing, dispatch, pre-opening inspections. Are your people, equipment, and protocols in position before gates open?',
+    I:'Physical plant and procedural compliance — equipment, restraints, service bulletins. Is the hardware and documentation maintaining standard?',
+    D:'Guest experience execution — GSA scores, feedback streams, queue performance. What is the guest actually receiving vs. what the operation is designed to deliver?',
+    E:'Conditions — weather, cleanliness, emergency access, ADA, crowd density. Is the physical environment safe and comfortable?'
+  };
+  el.addEventListener('mouseenter', ev=>showTooltip(ev,{code:'PILLAR · '+p.id,name:p.name,desc:pDesc[p.id],pillars:[p.id],color:p.color,noLink:true}));
   el.addEventListener('mouseleave', hideTooltip);
   el.addEventListener('mousemove', moveTooltip);
   return el;
