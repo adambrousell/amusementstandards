@@ -168,7 +168,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 /* MODULES */
 .modules-section{padding:80px 24px;background:rgba(0,0,0,.25);border-top:1px solid var(--dim);}
 .modules-inner{max-width:1200px;margin:0 auto;}
-.module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:44px;}
+.module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px;padding:16px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;}
 @media(min-width:600px){.module-grid{grid-template-columns:repeat(3,1fr);}}
 @media(min-width:900px){.module-grid{grid-template-columns:repeat(4,1fr);}}
 .module-card{background:rgba(255,255,255,.03);border:1px solid var(--dim);border-radius:12px;padding:20px 16px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:all .18s;position:relative;overflow:hidden;}
@@ -190,6 +190,12 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .m-tag{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.35);}
 .m-arrow{font-size:13px;color:rgba(255,255,255,.2);transition:color .15s;}
 .module-card:hover .m-arrow{color:var(--teal);}
+
+/* MODULE GROUP LABELS */
+.module-group-label{display:flex;align-items:center;gap:14px;margin:36px 0 14px;}
+.mgl-text{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);white-space:nowrap;font-weight:700;}
+.mgl-line{flex:1;height:1px;background:rgba(0,212,208,.15);}
+.mgl-sub{font-size:11px;color:rgba(255,255,255,.25);white-space:nowrap;font-style:italic;}
 
 /* CTA */
 .cta-section{padding:100px 24px;text-align:center;}
@@ -305,81 +311,116 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
   <div class="modules-inner">
     <div class="sec-eyebrow reveal">ALL MODULES & FORMS</div>
     <div class="sec-title reveal">Every stream. <span>One click.</span></div>
-    <div class="sec-body reveal">Each card links directly to the live operational form. All data flows into the AS 360 scoring engine automatically on submission.</div>
-    <div class="module-grid">
-      <a href="manager.html" class="module-card mc-teal reveal">
+    <div class="sec-body reveal">16 data streams organized by how the data enters the system — from your operators on the floor, your management team, independent auditors deployed by AS, and your guests in real time.</div>
+
+    <!-- GROUP 1: Operator Documentation -->
+    <div class="module-group-label reveal">
+      <span class="mgl-text">Operator Documentation</span>
+      <span class="mgl-line"></span>
+      <span class="mgl-sub">Completed by your team, on shift, at the point of activity</span>
+    </div>
+    <div class="module-grid reveal">
+      <a href="manager.html" class="module-card mc-teal">
         <div class="m-icon">👔</div><div class="m-code">MGR</div>
         <div class="m-name">Manager Module</div>
-        <div class="m-desc">Shift open/close, escalation log, staffing overrides, corrective action tracking, audit schedule reminders.</div>
-        <div class="m-footer"><span class="m-tag">R · I · D</span><span class="m-arrow">→</span></div>
+        <div class="m-desc">Shift open/close, escalation log, staffing overrides, corrective action tracking, audit schedule, CACR dashboard, aging buckets, and certification tracker.</div>
+        <div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div>
       </a>
-      <a href="ops-dispatch.html" class="module-card mc-blue reveal">
+      <a href="ops-dispatch.html" class="module-card mc-blue">
         <div class="m-icon">📡</div><div class="m-code">OPD</div>
         <div class="m-name">Ops Dispatcher</div>
-        <div class="m-desc">Operator-to-unit assignments, rotation compliance, coverage gaps, unplanned closures, OLI trigger flag.</div>
+        <div class="m-desc">Ride status board, operator-to-unit assignments, rotation compliance, radio log book.</div>
         <div class="m-footer"><span class="m-tag">R · D</span><span class="m-arrow">→</span></div>
       </a>
-      <a href="operator-log.html" class="module-card mc-orange reveal">
+      <a href="operator-log.html" class="module-card mc-orange">
         <div class="m-icon">🎡</div><div class="m-code">ATR</div>
         <div class="m-name">At-Ride / Operator Log</div>
-        <div class="m-desc">Opening checklist, cycle counts, restraint checks, load observations, anomalies, units in service.</div>
+        <div class="m-desc">Opening checklist, dynamic operator log with reminders to rotate positions, throughput linked to ops dispatch, units in service tracker.</div>
         <div class="m-footer"><span class="m-tag">R · I · D</span><span class="m-arrow">→</span></div>
       </a>
-      <a href="inhouse-gsa.html" class="module-card mc-amber reveal">
+    </div>
+
+    <!-- GROUP 2: In-House Audits & Compliance -->
+    <div class="module-group-label reveal">
+      <span class="mgl-text">In-House Audits & Compliance</span>
+      <span class="mgl-line"></span>
+      <span class="mgl-sub">Completed by your management team on a rotating schedule</span>
+    </div>
+    <div class="module-grid reveal">
+      <a href="inhouse-gsa.html" class="module-card mc-amber">
         <div class="m-icon">📝</div><div class="m-code">iGSA</div>
         <div class="m-name">In-House GSA</div>
         <div class="m-desc">Rotating management guest services audit — scheduled, distributed execution for convergence validity.</div>
         <div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div>
       </a>
-      <a href="inhouse-safety.html" class="module-card mc-green reveal">
+      <a href="inhouse-safety.html" class="module-card mc-green">
         <div class="m-icon">🏢</div><div class="m-code">IHS</div>
         <div class="m-name">In-House Safety Audit</div>
         <div class="m-desc">Internal inspection against SOPs, pre-opening checklists, maintenance logs, and equipment standards.</div>
         <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
       </a>
-      <a href="third-party-safety.html" class="module-card mc-teal reveal">
-        <div class="m-icon">🔍</div><div class="m-code">TPS</div>
-        <div class="m-name">Third-Party Safety</div>
-        <div class="m-desc">AS-conducted ASTM-aligned compliance inspection from an independent auditor perspective.</div>
-        <div class="m-footer"><span class="m-tag">R · I · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="third-party-gsa.html" class="module-card mc-purple reveal">
-        <div class="m-icon">🕵️</div><div class="m-code">mGSA</div>
-        <div class="m-name">Mystery Shopper GSA</div>
-        <div class="m-desc">AS-deployed covert auditor scoring from queue entry through exit ramp. iGSA divergence is the key finding.</div>
-        <div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="nmr.html" class="module-card mc-red reveal">
+      <a href="nmr.html" class="module-card mc-red">
         <div class="m-icon">⚠️</div><div class="m-code">NMR</div>
         <div class="m-name">Near-Miss Report</div>
-        <div class="m-desc">Structured triage flag. Adjusts Readiness and Integrity scores immediately on submission. Auto-escalates to CA.</div>
+        <div class="m-desc">Structured triage flag submitted by staff or guests. Adjusts Readiness and Integrity scores immediately on submission. Auto-escalates to CA.</div>
         <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
       </a>
-      <a href="ride-incident-report.html" class="module-card mc-red reveal">
+      <a href="ride-incident-report.html" class="module-card mc-red">
         <div class="m-icon">🚨</div><div class="m-code">IRL</div>
         <div class="m-name">Ride Incident Report</div>
         <div class="m-desc">Full 7-section legal incident record — guest, injury, sequence, response, notifications, witnesses, certification.</div>
         <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
       </a>
-      <a href="ca-manager-v2.html" class="module-card mc-teal reveal">
-        <div class="m-icon">✅</div><div class="m-code">CAR</div>
-        <div class="m-name">CA Manager</div>
-        <div class="m-desc">Corrective action lifecycle. CACR dashboard, aging buckets, audit schedule, certification tracker. Core scoring stream.</div>
+    </div>
+
+    <!-- GROUP 3: Third-Party & Independent Audits -->
+    <div class="module-group-label reveal">
+      <span class="mgl-text">Third-Party & Independent Audits</span>
+      <span class="mgl-line"></span>
+      <span class="mgl-sub">Conducted by Amusement Standards — identity unknown to staff</span>
+    </div>
+    <div class="module-grid reveal">
+      <a href="third-party-gsa.html" class="module-card mc-purple">
+        <div class="m-icon">🕵️</div><div class="m-code">mGSA</div>
+        <div class="m-name">Mystery Shopper GSA</div>
+        <div class="m-desc">AS-deployed covert auditor scoring from queue entry through exit ramp. iGSA divergence is the key finding.</div>
         <div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div>
       </a>
-      <a href="guest-feedback.html" class="module-card mc-gold reveal">
+      <a href="third-party-safety.html" class="module-card mc-teal">
+        <div class="m-icon">🔍</div><div class="m-code">TPS</div>
+        <div class="m-name">Third-Party Safety</div>
+        <div class="m-desc">AS-conducted ASTM-aligned compliance inspection from an independent auditor perspective.</div>
+        <div class="m-footer"><span class="m-tag">R · I · E</span><span class="m-arrow">→</span></div>
+      </a>
+    </div>
+
+    <!-- GROUP 4: Guest Intelligence -->
+    <div class="module-group-label reveal">
+      <span class="mgl-text">Guest Intelligence</span>
+      <span class="mgl-line"></span>
+      <span class="mgl-sub">Captured via QR code in-park and triggered email survey post-visit</span>
+    </div>
+    <div class="module-grid reveal">
+      <a href="guest-feedback.html" class="module-card mc-gold">
         <div class="m-icon">📱</div><div class="m-code">QR</div>
         <div class="m-name">Guest Feedback (QR)</div>
         <div class="m-desc">In-park QR-triggered feedback capture. Real-time guest sentiment feeding Delivery and Environment pillars.</div>
         <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div>
       </a>
-      <a href="post-visit.html" class="module-card mc-gold reveal">
+      <a href="post-visit.html" class="module-card mc-gold">
         <div class="m-icon">✉️</div><div class="m-code">EXS</div>
         <div class="m-name">Post-Visit Survey</div>
         <div class="m-desc">Triggered email survey capturing reflective sentiment and loyalty data after the guest experience concludes.</div>
         <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div>
       </a>
+      <a href="nmr.html" class="module-card mc-red">
+        <div class="m-icon">⚠️</div><div class="m-code">NMR</div>
+        <div class="m-name">Near-Miss Report</div>
+        <div class="m-desc">Guests can submit a near-miss flag directly — same triage pipeline as staff submissions. Adjusts scores immediately on submission.</div>
+        <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
+      </a>
     </div>
+
   </div>
 </section>
 
@@ -446,8 +487,7 @@ const STREAM_PILLARS = {
   irl:  ['R','I'],
   qtx:  ['R','D'],
   oli:  ['R','D'],
-  car:  ['R','I','D','E'],
-  mgr:  ['R','I','D'],
+  mgr:  ['R','I','D','E'],
   opd:  ['R','D'],
   atr:  ['R','I','D'],
   qr:   ['D','E'],
@@ -465,8 +505,7 @@ const STREAMS = [
   {id:'tps',  code:'TPS',  name:'3rd-Party Safety', icon:'🔍', color:'teal',   file:'third-party-safety.html', row:'top', desc:'AS-conducted ASTM-aligned compliance inspection.'},
   {id:'nmr',  code:'NMR',  name:'Near-Miss',        icon:'⚠️', color:'red',    file:'nmr.html',                row:'top', desc:'Structured triage flag. Adjusts R and I scores immediately.'},
   {id:'irl',  code:'IRL',  name:'Incident Report',  icon:'🚨', color:'red',    file:'ride-incident-report.html', row:'top', desc:'Full 7-section legal incident record.'},
-  {id:'car',  code:'CAR',  name:'CA Manager',       icon:'✅', color:'teal',   file:'ca-manager-v2.html',      row:'top', desc:'Corrective action lifecycle and CACR. Core signal across all pillars.'},
-  {id:'mgr',  code:'MGR',  name:'Manager Module',   icon:'👔', color:'teal',   file:'manager.html',            row:'top', desc:'Shift open/close, escalation log, staffing overrides.'},
+  {id:'mgr',  code:'MGR',  name:'Manager Module',   icon:'👔', color:'teal',   file:'manager.html',            row:'top', desc:'Shift open/close, escalation log, staffing overrides, CA lifecycle, CACR dashboard, audit schedule.'},
   // bottom row — left to right (8 streams)
   {id:'opd',  code:'OPD',  name:'Ops Dispatch',     icon:'📡', color:'blue',   file:'ops-dispatch.html',       row:'bot', desc:'Operator assignments, rotation compliance, coverage gaps.'},
   {id:'atr',  code:'ATR',  name:'At-Ride Log',      icon:'🎡', color:'orange', file:'operator-log.html',       row:'bot', desc:'Opening checklist, cycle counts, restraint checks, anomalies.'},
