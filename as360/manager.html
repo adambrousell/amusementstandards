@@ -330,6 +330,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="tb-sub">AS 360 · RIDE SCORE · MGR STREAM</div>
   </div>
   <div class="topbar-right">
+    <div style="font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:.5px;" id="at-sync-status">⬤ AIRTABLE</div>
     <div class="tb-clock" id="clock">--:--</div>
   </div>
 </div>
@@ -980,6 +981,7 @@ function init(){
   setDefaults();
   refreshAll();
   tickClock(); setInterval(tickClock,1000);
+  checkATConfig();
 }
 
 function load(){
@@ -990,6 +992,148 @@ function load(){
   pillarScores=parse(KEY_PIL,{R:null,I:null,D:null,E:null,ts:null});
 }
 function save(key,data){localStorage.setItem(key,JSON.stringify(data));}
+
+// ── AIRTABLE INTEGRATION — via Cloudflare Worker proxy ───────────────────────
+// Token lives in the Worker — no credentials ever in this file
+const AT_URL = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+function getATHdr(){ return {'Content-Type':'application/json'}; }
+function checkATConfig(){
+  const el=document.getElementById('at-sync-status');
+  if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';el.title='Syncing via secure proxy';}
+}
+
+async function atPush(table, fields){
+  const el=document.getElementById('at-sync-status');
+  if(el){el.style.color='var(--amber)';el.textContent='⬤ SYNCING';}
+  try{
+    const res = await fetch(`${AT_URL}/${encodeURIComponent(table)}`,{
+      method:'POST', headers:getATHdr(),
+      body:JSON.stringify({fields})
+    });
+    if(!res.ok){
+      const e=await res.json();
+      console.warn('AT push failed:',e?.error?.message);
+      if(el){el.style.color='var(--red)';el.textContent='⬤ SYNC ERR';}
+      setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},3000);
+    } else {
+      if(el){el.style.color='var(--green)';el.textContent='⬤ SYNCED';}
+      setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},2000);
+    }
+  } catch(e){
+    console.warn('AT push error:',e.message);
+    if(el){el.style.color='var(--red)';el.textContent='⬤ OFFLINE';}
+    setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},3000);
+  }
+}
+
+async function atUpdate(table, recordId, fields){
+  try{
+    const res = await fetch(`${AT_URL}/${encodeURIComponent(table)}/${recordId}`,{
+      method:'PATCH', headers:getATHdr(),
+      body:JSON.stringify({fields})
+    });
+    if(!res.ok){const e=await res.json();console.warn('AT update failed:',e?.error?.message);}
+  } catch(e){console.warn('AT update error:',e.message);}
+}
+
+async function atRead(table, filterFormula=''){
+  try{
+    let url = `${AT_URL}/${encodeURIComponent(table)}?pageSize=100`;
+    if(filterFormula) url += '&filterByFormula='+encodeURIComponent(filterFormula);
+    const res = await fetch(url,{headers:getATHdr()});
+    if(!res.ok) return [];
+    const data = await res.json();
+    return (data.records||[]).map(r=>({...r.fields, _atId:r.id}));
+  } catch(e){console.warn('AT read error:',e.message); return [];}
+}
+
+// Push helpers — called after each local save
+function pushThroughput(entry){
+  atPush('TPH_Log',{
+    'Record ID':entry.id,
+    'Date':entry.date,
+    'Shift':entry.shift,
+    'Time Start':entry.timeStart,
+    'Attraction':entry.attraction,
+    'Guests Loaded':entry.guests||0,
+    'Duration Min':entry.duration||0,
+    'TPH':entry.tph||0,
+    'Design Capacity':entry.design||0,
+    'Utilization Pct':entry.utilization||0,
+    'Units in Service':entry.units||0,
+    'Operator':entry.operator||'',
+    'Notes':entry.notes||'',
+    'Source':'MGR Manual',
+    'Submitted At':entry.createdAt
+  });
+}
+
+function pushOOS(entry){
+  atPush('OOS_Log',{
+    'Record ID':entry.id,
+    'Attraction':entry.attraction||'',
+    'Reason':entry.reason||'',
+    'Down Since':entry.downSince||'',
+    'Expected Return':entry.expectedReturn||'',
+    'Detail':entry.detail||'',
+    'Notified':entry.notified||'',
+    'Status':entry.status||'Active',
+    'Source':entry.source||'MGR Manual',
+    'Date':entry.date||new Date().toISOString().split('T')[0],
+    'Submitted At':entry.createdAt||new Date().toISOString()
+  });
+}
+
+function pushCAR(entry){
+  atPush('CAR_Log',{
+    'CAR ID':entry.id,
+    'Source Stream':entry.source||'MGR',
+    'Attraction / Area':entry.attraction||'',
+    'Finding':entry.finding||'',
+    'Priority':entry.priority||'Medium',
+    'Assigned To':entry.assignedTo||'',
+    'Due Date':entry.due||'',
+    'Status':entry.status||'Open',
+    'Opened At':entry.createdAt||new Date().toISOString(),
+    'Age Days':0
+  });
+}
+
+function pushAudit(entry){
+  atPush('Audit_Schedule',{
+    'Audit ID':entry.id,
+    'Type':entry.type||'',
+    'Scheduled Date':entry.date||'',
+    'Auditor':entry.auditor||'',
+    'Scope':entry.scope||'',
+    'Notes':entry.notes||'',
+    'Status':entry.status||'Scheduled',
+    'Created At':entry.createdAt||new Date().toISOString()
+  });
+}
+
+function pushHandoff(ho){
+  atPush('MGR_Handoffs',{
+    'Handoff ID':ho.id,
+    'Date':ho.date,
+    'Shift':ho.shift,
+    'Outgoing Manager':ho.outMgr||'',
+    'Incoming Manager':ho.inMgr||'',
+    'Handoff Time':ho.time||'',
+    'Rating':ho.rating||'',
+    'Attractions Open':ho.openCount||0,
+    'Closed Attractions':ho.closedAttrs||'',
+    'NMRs Filed':ho.nmr||'',
+    'IRLs Filed':ho.irl||'',
+    'CAs Opened':ho.caOpened||0,
+    'CAs Closed':ho.caClosed||0,
+    'Guests Served':ho.guests||0,
+    'Safety Notes':ho.safetyNotes||'',
+    'Final Notes':ho.finalNotes||'',
+    'Submitted At':ho.createdAt||new Date().toISOString()
+  });
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 function tickClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
 
@@ -1226,6 +1370,7 @@ function saveOOS(){
   };
   oosUnits.unshift(unit);
   save(KEY_OOS,oosUnits);
+  pushOOS(unit);
   renderOOS();
   updateTabBadges();
   refreshDash();
@@ -1326,10 +1471,11 @@ function saveCAR(){
   };
   cars.unshift(car);
   save(KEY_CAR,cars);
+  pushCAR(car);
   renderCARs();
   updateTabBadges();
   refreshDash();
-  ['car-id-in','car-location','car-assigned','car-finding'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['car-id-in','car-location','car-assigned','car-finding'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});;
   toast('CAR opened — '+car.id,'ok');
 }
 
@@ -1418,6 +1564,7 @@ function saveAudit(){
   };
   audits.unshift(audit);
   save(KEY_AUD,audits);
+  pushAudit(audit);
   renderAudits();
   updateTabBadges();
   ['aud-auditor','aud-scope','aud-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
@@ -1631,6 +1778,7 @@ function saveThroughput(){
   };
   throughputs.unshift(entry);
   save(KEY_TP,throughputs);
+  pushThroughput(entry);
   renderThroughput();
   refreshDash();
   document.getElementById('tp-guests').value='';
@@ -1756,6 +1904,7 @@ function saveHandoff(){
   });
   handoffs.unshift(ho);
   save(KEY_HO,handoffs);save(KEY_ESC,escalations);
+  pushHandoff(ho);
   clearHandoffForm();renderHandoffs();renderEscalations();updateTabBadges();refreshDash();
   toast('Handoff saved ✓','ok');
   showView('handoff',document.querySelectorAll('.nav-tab')[8]);
