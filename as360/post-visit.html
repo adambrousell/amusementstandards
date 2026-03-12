@@ -42,7 +42,6 @@ body{
     radial-gradient(ellipse 60% 40% at 100% 100%, rgba(249,115,22,.06) 0%, transparent 50%);
 }
 
-/* ── HERO HEADER ── */
 .hero{
   background:linear-gradient(160deg, #1E293B 0%, #2D3A52 40%, #3B2B1A 100%);
   padding:36px 20px 48px;
@@ -82,10 +81,17 @@ body{
   padding:4px 14px;border-radius:20px;
 }
 
-/* ── WRAPPER ── */
+/* SYNC DOT */
+#sync-dot{
+  position:fixed;top:12px;right:12px;
+  width:8px;height:8px;border-radius:50%;
+  background:#4A5568;z-index:999;
+  transition:background .3s;
+  box-shadow:0 0 0 2px rgba(255,255,255,.15);
+}
+
 .wrapper{max-width:480px;margin:0 auto;padding:0 16px 60px;}
 
-/* ── PROGRESS DOTS ── */
 .progress-dots{
   display:flex;align-items:center;justify-content:center;gap:8px;
   padding:20px 0 4px;
@@ -97,7 +103,6 @@ body{
 .pdot.active{background:var(--gold);width:24px;border-radius:4px;box-shadow:0 0 8px rgba(232,160,32,.4);}
 .pdot.done{background:var(--gold-deep);}
 
-/* ── SECTION CARD ── */
 .card{
   background:#fff;border:1px solid var(--border);border-radius:20px;
   padding:24px 20px;margin-top:20px;
@@ -110,7 +115,6 @@ body{
 .card-sub{font-size:13px;color:var(--slate);line-height:1.5;margin-bottom:20px;}
 .card-sub strong{color:var(--navy);}
 
-/* ── OVERALL STARS (BIG) ── */
 .big-stars{display:flex;gap:10px;justify-content:center;padding:8px 0 20px;}
 .big-star{
   font-size:48px;cursor:pointer;
@@ -126,7 +130,6 @@ body{
 }
 .star-label.show{color:var(--gold-deep);}
 
-/* ── CATEGORY RATINGS ── */
 .cat-row{
   display:flex;align-items:center;gap:10px;
   padding:11px 0;border-bottom:1px solid var(--border);
@@ -139,7 +142,6 @@ body{
 .cat-star.lit{color:var(--amber);}
 .cat-star:hover{transform:scale(1.1);}
 
-/* ── TEXTAREA / INPUT ── */
 .field{margin-bottom:16px;}
 .field label{
   display:block;font-size:11px;font-weight:800;letter-spacing:1px;
@@ -161,7 +163,6 @@ body{
 .field textarea::placeholder,.field input::placeholder{color:var(--slate-light);}
 .char-count{font-size:10px;color:var(--slate-light);text-align:right;margin-top:3px;}
 
-/* ── HIGHLIGHT ITEM ── */
 .highlight-row{
   display:flex;align-items:center;justify-content:space-between;gap:8px;
   padding:10px 14px;background:var(--gold-pale);border:1.5px solid var(--border2);
@@ -174,11 +175,10 @@ body{
   width:20px;height:20px;border-radius:50%;
   border:2px solid var(--border2);flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  font-size:10px;transition:all .12s;
+  font-size:10px;transition:all .12px;
 }
 .highlight-row.sel .hr-check{background:var(--gold-deep);border-color:var(--gold-deep);color:#fff;}
 
-/* ── REVIEW ROUTING ── */
 .review-gate{text-align:center;padding:4px 0 12px;}
 .review-gate-score{
   font-family:'Playfair Display',serif;
@@ -209,7 +209,6 @@ body{
 .internal-route p{font-size:13px;color:var(--slate);line-height:1.5;}
 .internal-route strong{color:var(--navy);}
 
-/* ── COUPON ── */
 .coupon-wrap{position:relative;margin-top:4px;}
 .coupon{
   background:linear-gradient(135deg,var(--navy) 0%,#2D3A52 100%);
@@ -259,7 +258,6 @@ body{
 .coupon-copy:hover{border-color:var(--gold);color:var(--gold);}
 .coupon-copy.copied{color:var(--green);border-color:var(--green);}
 
-/* ── SHARE ROW ── */
 .share-row{display:flex;gap:8px;margin-top:10px;}
 .share-btn{
   flex:1;padding:12px 8px;border:1.5px solid var(--border2);border-radius:12px;
@@ -268,7 +266,6 @@ body{
 }
 .share-btn:hover{border-color:var(--gold);color:var(--gold-deep);background:var(--gold-pale);}
 
-/* ── BUTTONS ── */
 .btn-primary{
   width:100%;padding:15px;border:none;border-radius:14px;
   background:linear-gradient(135deg,var(--gold),var(--gold-deep));
@@ -286,14 +283,12 @@ body{
 .btn-ghost:hover{border-color:var(--slate);color:var(--navy);}
 .skip-link{display:block;text-align:center;font-size:12px;color:var(--slate-light);cursor:pointer;margin-top:14px;text-decoration:underline;}
 
-/* ── SUCCESS SCREEN ── */
 .success-screen{text-align:center;padding:40px 0 20px;animation:slideUp .5s ease;}
 .success-emoji{font-size:72px;margin-bottom:16px;display:block;animation:bounce .6s ease .2s both;}
 @keyframes bounce{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
 .success-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:800;color:var(--navy);margin-bottom:8px;}
 .success-sub{font-size:14px;color:var(--slate);line-height:1.6;max-width:320px;margin:0 auto 24px;}
 
-/* ── TOAST ── */
 #toast{
   position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);
   background:var(--navy);color:#fff;
@@ -303,11 +298,12 @@ body{
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 #toast.ok{background:var(--green);color:#fff;}
 
-/* ── RESPONSIVE ── */
 @media(max-width:400px){.big-star{font-size:40px;}.big-stars{gap:6px;}}
 </style>
 </head>
 <body>
+
+<div id="sync-dot" title="Airtable sync"></div>
 
 <!-- HERO -->
 <div class="hero">
@@ -321,13 +317,12 @@ body{
 <div class="wrapper">
   <div class="progress-dots" id="progressDots"></div>
 
-  <!-- ══════════════════════════════════ STEP 1 · OVERALL RATING -->
+  <!-- STEP 1 · OVERALL RATING -->
   <div id="step1" class="step">
     <div class="card">
       <span class="card-icon">⭐</span>
       <div class="card-title">Overall, how was your visit?</div>
       <div class="card-sub">Tap a star to rate your experience from 1 (poor) to 5 (outstanding).</div>
-
       <div class="big-stars" id="bigStars">
         <span class="big-star" data-val="1" onclick="setOverall(1)">⭐</span>
         <span class="big-star" data-val="2" onclick="setOverall(2)">⭐</span>
@@ -336,70 +331,44 @@ body{
         <span class="big-star" data-val="5" onclick="setOverall(5)">⭐</span>
       </div>
       <div class="star-label" id="starLabel">Tap a star to begin</div>
-
       <button class="btn-primary" onclick="goStep(2)" id="btnStep1" disabled style="opacity:.45;">Continue →</button>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════ STEP 2 · CATEGORY RATINGS -->
+  <!-- STEP 2 · CATEGORY RATINGS -->
   <div id="step2" class="step" style="display:none;">
     <div class="card">
       <span class="card-icon">🎡</span>
       <div class="card-title">Rate each part of your day</div>
       <div class="card-sub">A quick rating for each area helps us know where to focus.</div>
-
       <div id="catRatings">
-        <div class="cat-row">
-          <span class="cat-emoji">🎢</span>
-          <span class="cat-label">Rides &amp; Attractions</span>
-          <div class="cat-stars" id="cat-rides"></div>
-        </div>
-        <div class="cat-row">
-          <span class="cat-emoji">👷</span>
-          <span class="cat-label">Staff &amp; Operators</span>
-          <div class="cat-stars" id="cat-staff"></div>
-        </div>
-        <div class="cat-row">
-          <span class="cat-emoji">🧹</span>
-          <span class="cat-label">Cleanliness</span>
-          <div class="cat-stars" id="cat-clean"></div>
-        </div>
-        <div class="cat-row">
-          <span class="cat-emoji">🍔</span>
-          <span class="cat-label">Food &amp; Beverage</span>
-          <div class="cat-stars" id="cat-food"></div>
-        </div>
-        <div class="cat-row">
-          <span class="cat-emoji">💵</span>
-          <span class="cat-label">Value for Money</span>
-          <div class="cat-stars" id="cat-value"></div>
-        </div>
+        <div class="cat-row"><span class="cat-emoji">🎢</span><span class="cat-label">Rides &amp; Attractions</span><div class="cat-stars" id="cat-rides"></div></div>
+        <div class="cat-row"><span class="cat-emoji">👷</span><span class="cat-label">Staff &amp; Operators</span><div class="cat-stars" id="cat-staff"></div></div>
+        <div class="cat-row"><span class="cat-emoji">🧹</span><span class="cat-label">Cleanliness</span><div class="cat-stars" id="cat-clean"></div></div>
+        <div class="cat-row"><span class="cat-emoji">🍔</span><span class="cat-label">Food &amp; Beverage</span><div class="cat-stars" id="cat-food"></div></div>
+        <div class="cat-row"><span class="cat-emoji">💵</span><span class="cat-label">Value for Money</span><div class="cat-stars" id="cat-value"></div></div>
       </div>
-
       <button class="btn-primary" onclick="goStep(3)" style="margin-top:16px;">Continue →</button>
       <span class="skip-link" onclick="goStep(3)">Skip this step</span>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════ STEP 3 · HIGHLIGHTS & COMMENTS -->
+  <!-- STEP 3 · HIGHLIGHTS & COMMENTS -->
   <div id="step3" class="step" style="display:none;">
     <div class="card">
       <span class="card-icon">💬</span>
       <div class="card-title">Tell us more</div>
       <div class="card-sub">What stood out — good or bad? Anything specific helps us improve.</div>
-
       <div class="field">
         <label>Best part of your visit</label>
         <textarea id="commentBest" placeholder="What made today great? A ride, a staff member, something unexpected…" maxlength="400" oninput="updateChar(this,'charBest')"></textarea>
         <div class="char-count" id="charBest">0 / 400</div>
       </div>
-
       <div class="field" id="improvField">
         <label>Anything we could do better?</label>
         <textarea id="commentImprov" placeholder="Be honest — we read every response and take action on feedback…" maxlength="400" oninput="updateChar(this,'charImprov')"></textarea>
         <div class="char-count" id="charImprov">0 / 400</div>
       </div>
-
       <div style="margin-bottom:16px;">
         <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--slate);margin-bottom:10px;">What was the highlight of your day?</div>
         <div id="highlightOptions">
@@ -411,26 +380,22 @@ body{
           <div class="highlight-row" onclick="toggleHighlight(this,'Something else')"><span class="hr-label">💡 Something else</span><span class="hr-check"></span></div>
         </div>
       </div>
-
       <button class="btn-primary" onclick="goStep(4)">Continue →</button>
       <span class="skip-link" onclick="goStep(4)">Skip this step</span>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════ STEP 4 · REVIEW ROUTING -->
+  <!-- STEP 4 · REVIEW ROUTING -->
   <div id="step4" class="step" style="display:none;">
-    <div class="card" id="reviewCard">
-      <!-- Populated dynamically based on overall score -->
-    </div>
+    <div class="card" id="reviewCard"></div>
   </div>
 
-  <!-- ══════════════════════════════════ STEP 5 · CONTACT (OPTIONAL) -->
+  <!-- STEP 5 · CONTACT (OPTIONAL) -->
   <div id="step5" class="step" style="display:none;">
     <div class="card">
       <span class="card-icon">🎁</span>
       <div class="card-title">One last thing — claim your reward</div>
       <div class="card-sub">Leave your email and we'll send your <strong>bounce-back discount</strong> right away. No spam, ever.</div>
-
       <div class="field">
         <label>Email Address <span style="color:var(--slate-light);font-size:9px;font-weight:600;">(optional but required for coupon)</span></label>
         <input type="email" id="emailInput" placeholder="your@email.com">
@@ -439,21 +404,18 @@ body{
         <label>First Name <span style="color:var(--slate-light);font-size:9px;font-weight:600;">(optional)</span></label>
         <input type="text" id="firstNameInput" placeholder="What should we call you?">
       </div>
-
       <button class="btn-primary" onclick="submitFeedback()">Get My Reward 🎉</button>
       <span class="skip-link" onclick="submitFeedback(true)">Submit without email</span>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════ STEP 6 · THANK YOU + COUPON -->
+  <!-- STEP 6 · THANK YOU + COUPON -->
   <div id="step6" class="step" style="display:none;">
     <div class="success-screen">
       <span class="success-emoji" id="successEmoji">🎉</span>
       <div class="success-title" id="successTitle">You're the best!</div>
       <div class="success-sub" id="successSub">—</div>
     </div>
-
-    <!-- Coupon card — shown if email provided -->
     <div id="couponWrap" style="display:none;">
       <div class="coupon">
         <div class="coupon-top">
@@ -473,14 +435,11 @@ body{
           <div class="coupon-copy" id="copyBtn" onclick="copyCoupon()">Copy</div>
         </div>
       </div>
-
       <div class="share-row" style="margin-top:14px;">
         <button class="share-btn" onclick="shareNative()">📤 Share</button>
         <button class="share-btn" onclick="saveToWallet()">📅 Add to Calendar</button>
       </div>
     </div>
-
-    <!-- No-email thank you -->
     <div id="noEmailThanks" style="display:none;">
       <div class="coupon" style="margin-top:0;">
         <div class="coupon-top">
@@ -499,14 +458,38 @@ body{
         </div>
       </div>
     </div>
-
   </div>
 
 </div><!-- /wrapper -->
-
 <div id="toast"></div>
 
 <script>
+// ── PROXY CONFIG ───────────────────────────────────────────────────────────
+const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+
+async function pushPVE(fields) {
+  const si = document.getElementById('sync-dot');
+  if (si) { si.style.background = '#F59E0B'; si.title = 'Syncing…'; }
+  try {
+    const res = await fetch(AT_PROXY + '/PVE_Submissions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields }),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (si) {
+      si.style.background = '#22C55E'; si.title = 'Synced';
+      setTimeout(() => { si.style.background = '#4A5568'; }, 3000);
+    }
+  } catch(e) {
+    if (si) {
+      si.style.background = '#F43F5E'; si.title = 'Sync error';
+      setTimeout(() => { si.style.background = '#4A5568'; }, 5000);
+    }
+    console.warn('[PVE] Sync failed:', e.message);
+  }
+}
+
 // ── STATE ──────────────────────────────────────────────────────────────────
 const CAT_KEYS = ['rides','staff','clean','food','value'];
 const STAR_LABELS = ['','Poor experience','Below expectations','Pretty good!','Really enjoyed it!','Outstanding! 🎉'];
@@ -535,7 +518,6 @@ let currentStep = 1;
 const TOTAL_STEPS = 5;
 
 // ── INIT ───────────────────────────────────────────────────────────────────
-// Sparkles
 (function(){
   const wrap = document.getElementById('sparkles');
   for(let i=0;i<20;i++){
@@ -546,17 +528,14 @@ const TOTAL_STEPS = 5;
   }
 })();
 
-// Category stars
 CAT_KEYS.forEach(k=>{
   const el=document.getElementById('cat-'+k);
   if(!el) return;
   el.innerHTML=[1,2,3,4,5].map(i=>`<span class="cat-star" data-key="${k}" data-val="${i}" onclick="setCat('${k}',${i})">★</span>`).join('');
 });
 
-// Progress dots
 renderDots();
 
-// URL params (park name, etc.)
 const params = new URLSearchParams(window.location.search);
 if(params.get('park')) document.getElementById('parkName').textContent = decodeURIComponent(params.get('park'));
 
@@ -591,8 +570,6 @@ function setOverall(val){
   lbl.className='star-label show';
   const btn=document.getElementById('btnStep1');
   btn.disabled=false;btn.style.opacity='1';
-
-  // Tint card based on sentiment
   if(val>=4) lbl.style.color='var(--gold-deep)';
   else if(val===3) lbl.style.color='var(--amber)';
   else lbl.style.color='var(--rose)';
@@ -627,7 +604,6 @@ function buildReviewStep(){
   const score=survey.overall||3;
   const card=document.getElementById('reviewCard');
   const isHappy = score>=4;
-
   const scoreClass = score>=4?'high':score===3?'mid':'low';
   const scoreWord = score===5?'Outstanding':score===4?'Great':score===3?'Good':score===2?'Fair':'Poor';
 
@@ -692,6 +668,28 @@ function submitFeedback(skipEmail=false){
   const code = couponData.code + Math.random().toString(36).substr(2,6).toUpperCase();
   survey.couponCode = code;
 
+  // ── PROXY: push to Airtable (non-blocking) ──
+  pushPVE({
+    'Session ID':         survey.sessionId,
+    'Timestamp':          survey.timestamp,
+    'Park':               document.getElementById('parkName').textContent,
+    'Overall Rating':     String(survey.overall),
+    'Rating — Rides':     survey.cats.rides ? String(survey.cats.rides) : '',
+    'Rating — Staff':     survey.cats.staff ? String(survey.cats.staff) : '',
+    'Rating — Clean':     survey.cats.clean ? String(survey.cats.clean) : '',
+    'Rating — Food':      survey.cats.food  ? String(survey.cats.food)  : '',
+    'Rating — Value':     survey.cats.value ? String(survey.cats.value) : '',
+    'Comment — Best':     survey.commentBest,
+    'Comment — Improve':  survey.commentImprov,
+    'Highlights':         survey.highlights.join(' | '),
+    'Review Routed':      survey.reviewRouted || '',
+    'Email':              survey.email,
+    'First Name':         survey.firstName,
+    'Coupon Code':        survey.couponCode,
+    'Has Email':          hasEmail ? 'Yes' : 'No',
+    'Score Tier':         score >= 4 ? 'Promoter' : score === 3 ? 'Passive' : 'Detractor',
+  });
+
   // Success screen
   const firstName = survey.firstName ? ', '+survey.firstName : '';
   const successEmoji = score>=4?'🎉':score===3?'😊':'💛';
@@ -720,7 +718,6 @@ function submitFeedback(skipEmail=false){
   }
 
   goStep(6);
-  // In production: POST survey to Airtable / backend here
 }
 
 // ── COUPON INTERACTIONS ────────────────────────────────────────────────────
@@ -756,9 +753,7 @@ function shareNative(){
 }
 
 function saveToWallet(){
-  // Expiry date 60 days from now
   const exp=new Date(); exp.setDate(exp.getDate()+60);
-  const fmt=d=>d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
   const code=document.getElementById('couponCode').textContent;
   const ical=[
     'BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT',
