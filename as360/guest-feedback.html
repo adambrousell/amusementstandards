@@ -35,7 +35,6 @@
     padding-bottom: 48px;
   }
 
-  /* ── TOP BAR ── */
   .topbar {
     background: var(--navy);
     padding: 14px 24px;
@@ -61,31 +60,29 @@
     padding: 4px 10px;
     border-radius: 20px;
   }
+  /* sync indicator */
+  .sync-dot {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--slate-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sync-dot .dot { font-size: 8px; }
+  .sync-dot.syncing { color: #FCD34D; }
+  .sync-dot.synced  { color: #6EE7B7; }
+  .sync-dot.error   { color: #FCA5A5; }
 
-  /* ── HERO HEADER ── */
   .form-header {
     background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%);
     padding: 36px 24px 28px;
     color: white;
   }
-  .form-header .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(59,130,246,0.15);
-    border: 1px solid rgba(59,130,246,0.3);
-    color: #93C5FD;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-    margin-bottom: 12px;
-  }
   .form-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
   .form-header .sub { font-size: 13px; color: var(--slate-light); line-height: 1.6; max-width: 560px; }
-  /* ── SAFETY BANNER ── */
+
   .safety-banner {
     display: block;
     width: 100%;
@@ -102,14 +99,12 @@
   }
   .safety-banner:hover { background: var(--amber-dark); color: white; }
 
-  /* ── FORM BODY ── */
   .form-wrap {
     max-width: 640px;
     margin: 0 auto;
     padding: 28px 20px 0;
   }
 
-  /* ── SECTION HEADERS ── */
   .section-label {
     display: flex;
     align-items: center;
@@ -136,7 +131,6 @@
     font-weight: 700;
   }
 
-  /* ── FIELDS ── */
   .field { margin-bottom: 18px; }
   .field label {
     display: block;
@@ -172,7 +166,6 @@
     color: #065F46 !important;
     font-weight: 500;
   }
-  /* ── LIVE DATETIME ── */
   .datetime-display {
     padding: 11px 14px;
     background: var(--green-light);
@@ -187,7 +180,6 @@
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } }
 
-  /* ── STAR RATING ── */
   .star-row {
     display: flex;
     align-items: center;
@@ -214,11 +206,7 @@
     display: block;
     margin-top: 2px;
   }
-  .stars {
-    display: flex;
-    gap: 4px;
-    flex-shrink: 0;
-  }
+  .stars { display: flex; gap: 4px; flex-shrink: 0; }
   .star {
     font-size: 26px;
     cursor: pointer;
@@ -229,9 +217,7 @@
   }
   .star:hover, .star.lit { color: var(--amber); }
   .star:hover { transform: scale(1.15); }
-  .star.lit { color: var(--amber); }
 
-  /* ── OVERALL SCORE (large) ── */
   .overall-wrap {
     background: var(--card);
     border: 1.5px solid var(--border);
@@ -248,12 +234,7 @@
     color: var(--slate);
     margin-bottom: 14px;
   }
-  .overall-stars {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
+  .overall-stars { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; }
   .overall-stars .star { font-size: 36px; }
   .overall-label {
     font-size: 13px;
@@ -262,7 +243,6 @@
     transition: color 0.15s;
   }
 
-  /* ── CHIP SELECTORS ── */
   .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip {
     padding: 8px 14px;
@@ -278,14 +258,8 @@
     user-select: none;
   }
   .chip:hover { border-color: var(--blue); color: var(--navy); }
-  .chip.active {
-    border-color: var(--blue);
-    background: var(--blue-light);
-    color: #1D4ED8;
-    font-weight: 700;
-  }
+  .chip.active { border-color: var(--blue); background: var(--blue-light); color: #1D4ED8; font-weight: 700; }
 
-  /* ── ANON TOGGLE ── */
   .anon-toggle {
     display: flex;
     align-items: center;
@@ -318,10 +292,8 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
   }
   .toggle-switch.on .knob { transform: translateX(20px); }
-  #contact-fields { transition: opacity 0.2s; }
   #contact-fields.hidden { display: none; }
 
-  /* ── SUBMIT ── */
   .submit-btn {
     width: 100%;
     padding: 17px;
@@ -340,8 +312,8 @@
   }
   .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
   .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-  /* ── SUCCESS SCREEN ── */
   @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
   .success-screen {
     display: none;
@@ -379,7 +351,6 @@
     cursor: pointer;
   }
 
-  /* ── FOOTER ── */
   .form-footer {
     text-align: center;
     font-size: 11px;
@@ -394,7 +365,7 @@
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="brand">💬 Guest Feedback</div>
-  <div class="badge-pill">AS 360 · GFB</div>
+  <div class="sync-dot" id="syncDot"><span class="dot">⬤</span> <span id="syncTxt">AS 360 · GFB</span></div>
 </div>
 
 <!-- HERO HEADER -->
@@ -438,57 +409,37 @@
   <div class="section-label"><div class="num">2</div><div class="txt">Rate Your Experience</div></div>
 
   <div class="star-row" id="row-ride">
-    <div class="star-label">
-      🎢 Ride Experience
-      <span class="star-sub">Excitement, smoothness, wait time</span>
-    </div>
+    <div class="star-label">🎢 Ride Experience<span class="star-sub">Excitement, smoothness, wait time</span></div>
     <div class="stars" id="stars-ride">
-      <span class="star" onclick="rate('ride',1)">★</span>
-      <span class="star" onclick="rate('ride',2)">★</span>
-      <span class="star" onclick="rate('ride',3)">★</span>
-      <span class="star" onclick="rate('ride',4)">★</span>
+      <span class="star" onclick="rate('ride',1)">★</span><span class="star" onclick="rate('ride',2)">★</span>
+      <span class="star" onclick="rate('ride',3)">★</span><span class="star" onclick="rate('ride',4)">★</span>
       <span class="star" onclick="rate('ride',5)">★</span>
     </div>
   </div>
 
   <div class="star-row" id="row-staff">
-    <div class="star-label">
-      👋 Staff Interaction
-      <span class="star-sub">Friendliness, helpfulness, professionalism</span>
-    </div>
+    <div class="star-label">👋 Staff Interaction<span class="star-sub">Friendliness, helpfulness, professionalism</span></div>
     <div class="stars" id="stars-staff">
-      <span class="star" onclick="rate('staff',1)">★</span>
-      <span class="star" onclick="rate('staff',2)">★</span>
-      <span class="star" onclick="rate('staff',3)">★</span>
-      <span class="star" onclick="rate('staff',4)">★</span>
+      <span class="star" onclick="rate('staff',1)">★</span><span class="star" onclick="rate('staff',2)">★</span>
+      <span class="star" onclick="rate('staff',3)">★</span><span class="star" onclick="rate('staff',4)">★</span>
       <span class="star" onclick="rate('staff',5)">★</span>
     </div>
   </div>
 
   <div class="star-row" id="row-clean">
-    <div class="star-label">
-      🧹 Cleanliness
-      <span class="star-sub">Area, queue, restrooms, surroundings</span>
-    </div>
+    <div class="star-label">🧹 Cleanliness<span class="star-sub">Area, queue, restrooms, surroundings</span></div>
     <div class="stars" id="stars-clean">
-      <span class="star" onclick="rate('clean',1)">★</span>
-      <span class="star" onclick="rate('clean',2)">★</span>
-      <span class="star" onclick="rate('clean',3)">★</span>
-      <span class="star" onclick="rate('clean',4)">★</span>
+      <span class="star" onclick="rate('clean',1)">★</span><span class="star" onclick="rate('clean',2)">★</span>
+      <span class="star" onclick="rate('clean',3)">★</span><span class="star" onclick="rate('clean',4)">★</span>
       <span class="star" onclick="rate('clean',5)">★</span>
     </div>
   </div>
 
   <div class="star-row" id="row-safety">
-    <div class="star-label">
-      🦺 Felt Safe
-      <span class="star-sub">Safety procedures, operator attentiveness</span>
-    </div>
+    <div class="star-label">🦺 Felt Safe<span class="star-sub">Safety procedures, operator attentiveness</span></div>
     <div class="stars" id="stars-safety">
-      <span class="star" onclick="rate('safety',1)">★</span>
-      <span class="star" onclick="rate('safety',2)">★</span>
-      <span class="star" onclick="rate('safety',3)">★</span>
-      <span class="star" onclick="rate('safety',4)">★</span>
+      <span class="star" onclick="rate('safety',1)">★</span><span class="star" onclick="rate('safety',2)">★</span>
+      <span class="star" onclick="rate('safety',3)">★</span><span class="star" onclick="rate('safety',4)">★</span>
       <span class="star" onclick="rate('safety',5)">★</span>
     </div>
   </div>
@@ -497,10 +448,8 @@
   <div class="overall-wrap">
     <div class="ov-title">⭐ Overall Satisfaction</div>
     <div class="overall-stars" id="stars-overall">
-      <span class="star" onclick="rate('overall',1)">★</span>
-      <span class="star" onclick="rate('overall',2)">★</span>
-      <span class="star" onclick="rate('overall',3)">★</span>
-      <span class="star" onclick="rate('overall',4)">★</span>
+      <span class="star" onclick="rate('overall',1)">★</span><span class="star" onclick="rate('overall',2)">★</span>
+      <span class="star" onclick="rate('overall',3)">★</span><span class="star" onclick="rate('overall',4)">★</span>
       <span class="star" onclick="rate('overall',5)">★</span>
     </div>
     <div class="overall-label" id="overall-label">Tap to rate your overall visit</div>
@@ -552,7 +501,7 @@
 
   <!-- SUBMIT -->
   <hr style="border:none;border-top:1px solid var(--border);margin:8px 0 20px;">
-  <button class="submit-btn" onclick="submitFeedback()">Submit Feedback →</button>
+  <button class="submit-btn" id="submitBtn" onclick="submitFeedback()">Submit Feedback →</button>
 
   <p class="form-footer">
     Powered by <strong>Amusement Standards · AS 360</strong> &nbsp;·&nbsp; Guest Feedback (QR Capture) &nbsp;·&nbsp;
@@ -572,7 +521,41 @@
 </div>
 
 <script>
+  // ── PROXY ─────────────────────────────────────────────────────────────────
+  const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+
+  async function pushGFB(fields) {
+    setSyncState('syncing');
+    try {
+      const res = await fetch(AT_PROXY + '/GFB_Submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields })
+      });
+      if (res.ok) {
+        setSyncState('synced');
+      } else {
+        console.warn('Proxy sync failed', res.status);
+        setSyncState('error');
+      }
+    } catch (e) {
+      console.warn('Proxy error:', e.message);
+      setSyncState('error');
+    }
+  }
+
+  function setSyncState(state) {
+    const dot = document.getElementById('syncDot');
+    const txt = document.getElementById('syncTxt');
+    dot.className = 'sync-dot ' + state;
+    if (state === 'syncing') txt.textContent = 'SYNCING…';
+    else if (state === 'synced') txt.textContent = 'SYNCED ✓';
+    else if (state === 'error') txt.textContent = 'SYNC ERROR';
+    else txt.textContent = 'AS 360 · GFB';
+  }
+
   // ── Live clock ────────────────────────────────────────────────────────────
+  let submitTimestamp = null;
   function tickClock() {
     const t = new Date();
     const el = document.getElementById('datetime-display');
@@ -596,11 +579,11 @@
     if (row) row.classList.toggle('rated', value > 0);
     if (category === 'overall') {
       document.getElementById('overall-label').textContent = overallLabels[value];
-      document.getElementById('overall-label').style.color = value >= 4 ? '#065F46' : value === 3 ? '#92400E' : '#991B1B';
+      document.getElementById('overall-label').style.color =
+        value >= 4 ? '#065F46' : value === 3 ? '#92400E' : '#991B1B';
     }
   }
 
-  // Hover preview
   document.querySelectorAll('.stars, .overall-stars').forEach(group => {
     const stars = group.querySelectorAll('.star');
     const cat = group.id.replace('stars-','');
@@ -614,55 +597,87 @@
     });
   });
 
-  // ── Chip select (single) ──────────────────────────────────────────────────
+  // ── Chip select ───────────────────────────────────────────────────────────
   function selectChip(el, groupId) {
     const wasActive = el.classList.contains('active');
     document.getElementById(groupId).querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
     if (!wasActive) el.classList.add('active');
   }
 
+  function getActiveChip(groupId) {
+    const active = document.getElementById(groupId).querySelector('.chip.active');
+    return active ? active.textContent.trim() : '';
+  }
+
   // ── Anonymous toggle ──────────────────────────────────────────────────────
   let isAnon = true;
   function toggleAnon() {
     isAnon = !isAnon;
-    const sw = document.getElementById('anon-switch');
-    sw.classList.toggle('on', isAnon);
+    document.getElementById('anon-switch').classList.toggle('on', isAnon);
     document.getElementById('contact-fields').classList.toggle('hidden', isAnon);
   }
 
   // ── Submit ────────────────────────────────────────────────────────────────
-  function submitFeedback() {
+  async function submitFeedback() {
     if (!ratings.overall) {
       alert('Please rate your overall satisfaction before submitting.');
       return;
     }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
     const year = new Date().getFullYear();
-    const id = 'GFB-' + year + '-' + String(Math.floor(Math.random()*9000)+1000);
-    document.getElementById('ref-number').textContent = id;
+    const refId = 'GFB-' + year + '-' + String(Math.floor(Math.random()*9000)+1000);
+    submitTimestamp = new Date().toISOString();
+
+    const fields = {
+      'Reference ID':        refId,
+      'Timestamp':           submitTimestamp,
+      'Attraction':          document.getElementById('location-field').value,
+      'Visit Type':          getActiveChip('visit-type-chips'),
+      'Rating — Ride':       ratings.ride   ? String(ratings.ride)   : '',
+      'Rating — Staff':      ratings.staff  ? String(ratings.staff)  : '',
+      'Rating — Clean':      ratings.clean  ? String(ratings.clean)  : '',
+      'Rating — Safety':     ratings.safety ? String(ratings.safety) : '',
+      'Rating — Overall':    String(ratings.overall),
+      'Highlight':           document.getElementById('highlight').value.trim(),
+      'Notes':               document.getElementById('notes').value.trim(),
+      'Anonymous':           isAnon ? 'Yes' : 'No',
+      'Guest Name':          isAnon ? '' : (document.getElementById('guest-name').value.trim()),
+      'Guest Email':         isAnon ? '' : (document.getElementById('guest-email').value.trim()),
+      'Follow-Up Requested': isAnon ? '' : getActiveChip('followup-chips'),
+    };
+
+    // Push to Airtable via proxy (non-blocking — success screen shows immediately)
+    pushGFB(fields);
+
+    document.getElementById('ref-number').textContent = refId;
     document.getElementById('form-view').style.display = 'none';
     document.getElementById('success-screen').classList.add('show');
-    window.scrollTo({top:0,behavior:'smooth'});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    btn.disabled = false;
+    btn.textContent = 'Submit Feedback →';
   }
 
   function resetForm() {
     document.getElementById('form-view').style.display = 'block';
     document.getElementById('success-screen').classList.remove('show');
-    // Reset ratings
     Object.keys(ratings).forEach(k => { ratings[k] = 0; });
     document.querySelectorAll('.star').forEach(s => { s.classList.remove('lit'); s.style.color = ''; });
     document.querySelectorAll('.star-row').forEach(r => r.classList.remove('rated'));
     document.getElementById('overall-label').textContent = 'Tap to rate your overall visit';
     document.getElementById('overall-label').style.color = '';
-    // Reset chips
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-    // Reset textareas
     document.getElementById('highlight').value = '';
     document.getElementById('notes').value = '';
-    // Reset anon
     isAnon = true;
     document.getElementById('anon-switch').classList.add('on');
     document.getElementById('contact-fields').classList.add('hidden');
-    window.scrollTo({top:0,behavior:'smooth'});
+    setSyncState('idle');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
 </body>
