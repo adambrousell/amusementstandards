@@ -37,11 +37,8 @@ body{font-family:var(--sans);background:var(--void);color:var(--text);min-height
     radial-gradient(ellipse 60% 40% at 80% 0%, rgba(124,58,237,.06) 0%, transparent 60%),
     radial-gradient(ellipse 40% 30% at 20% 100%, rgba(124,58,237,.04) 0%, transparent 60%);
 }
-
-/* ── SCANLINES overlay ── */
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:0;}
 
-/* ── TOPBAR ── */
 .topbar{position:sticky;top:0;z-index:200;background:rgba(10,11,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;}
 .topbar-left{display:flex;align-items:center;gap:10px;}
 .op-pip{width:8px;height:8px;border-radius:50%;background:var(--violet-bright);box-shadow:0 0 8px var(--violet-bright);animation:pip 2s ease-in-out infinite;}
@@ -49,14 +46,13 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .brand{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--violet-bright);font-weight:700;}
 .classified-tag{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--text-muted);border:1px solid var(--border);padding:2px 8px;border-radius:3px;}
 .topbar-right{display:flex;align-items:center;gap:12px;}
+#sync-dot{width:7px;height:7px;border-radius:50%;background:#3D4F6A;flex-shrink:0;transition:background .3s;}
 .clock{font-family:var(--mono);font-size:11px;color:var(--text-dim);}
 .phase-indicator{font-family:var(--mono);font-size:9px;color:var(--violet-bright);letter-spacing:.5px;}
 
-/* ── PHASES ── */
 .phase{display:none;padding:20px 16px;position:relative;z-index:1;}
 .phase.active{display:block;}
 
-/* ── MISSION HEADER ── */
 .mission-hdr{margin:-20px -16px 24px;padding:0;overflow:hidden;}
 .mhdr-top{background:linear-gradient(135deg,#0D0F18 0%,#131629 50%,#0D0F18 100%);padding:32px 20px 20px;border-bottom:1px solid var(--border);position:relative;}
 .mhdr-top::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 0%,var(--violet-light) 50%,transparent 100%);pointer-events:none;}
@@ -74,17 +70,14 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .trail-name.done{color:rgba(124,58,237,.5);}
 .trail-sep{width:14px;height:1px;background:var(--border);margin:0 2px;}
 
-/* ── PROGRESS BAR ── */
 .prog-bar-wrap{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:18px;}
 .prog-bar-label{font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:.5px;margin-bottom:6px;display:flex;justify-content:space-between;}
 .prog-bar-track{height:3px;background:var(--border);border-radius:2px;}
 .prog-bar-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--violet-bright));border-radius:2px;transition:width .3s;}
 
-/* ── SECTION RULE ── */
 .sec-rule{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border);padding-bottom:7px;margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
 .sec-rule::before{content:'//';color:var(--violet);font-weight:700;}
 
-/* ── SCORE ITEM ── */
 .score-item{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 13px;margin-bottom:8px;transition:border-color .15s,background .15s;}
 .score-item.s-yes{border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.04);}
 .score-item.s-no{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.04);}
@@ -103,7 +96,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .item-note textarea{width:100%;padding:8px 10px;background:var(--surface);border:1px solid var(--border2);border-radius:6px;font-family:var(--sans);font-size:12px;color:var(--text-dim);resize:vertical;min-height:52px;line-height:1.4;}
 .item-note textarea:focus{outline:none;border-color:var(--violet);color:var(--text);}
 
-/* ── RATING STARS ── */
 .star-row{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
 .star-row label{font-size:11px;color:var(--text-dim);flex:1;font-family:var(--mono);letter-spacing:.3px;}
 .stars{display:flex;gap:3px;}
@@ -111,7 +103,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .star.lit{color:var(--amber);}
 .star:hover{transform:scale(1.15);}
 
-/* ── FIELDS ── */
 .field{margin-bottom:14px;}
 .field label{display:block;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
 .field input,.field select,.field textarea{width:100%;padding:10px 12px;background:var(--panel);border:1px solid var(--border);border-radius:7px;font-family:var(--sans);font-size:14px;color:var(--text);-webkit-appearance:none;transition:border-color .15s;}
@@ -123,7 +114,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 @media(max-width:440px){.two-col{grid-template-columns:1fr;}}
 
-/* ── TIMER INPUT ── */
 .timer-field{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:14px;}
 .timer-field-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;}
 .timer-btns{display:flex;gap:6px;align-items:center;}
@@ -133,16 +123,13 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .timer-display{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);margin-left:auto;letter-spacing:2px;}
 .timer-display.running{color:var(--violet-bright);}
 
-/* ── COVERT NOTE ── */
 .covert-note{background:linear-gradient(135deg,var(--panel),var(--panel2));border:1px solid var(--border);border-left:3px solid var(--violet);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:12px;color:var(--text-dim);line-height:1.5;font-family:var(--mono);}
 .covert-note strong{color:var(--violet-bright);}
 
-/* ── MISSION CARD (P0 identity setup) ── */
 .mission-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
 .mc-header{background:var(--panel2);padding:10px 14px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);}
 .mc-body{padding:14px;}
 
-/* ── SUMMARY CARD ── */
 .sum-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px;}
 .sum-card-hdr{background:var(--panel2);padding:10px 14px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);display:flex;align-items:center;gap:6px;}
 .sum-row{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid rgba(42,46,61,.6);font-size:12px;}
@@ -153,7 +140,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .sum-val.fail{color:var(--red);}
 .sum-val.na{color:var(--text-muted);}
 
-/* ── SCORE OVERVIEW BOX ── */
 .score-overview{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
 .score-box{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 10px;text-align:center;}
 .score-box-val{font-family:var(--display);font-size:26px;font-weight:800;color:var(--text);line-height:1;}
@@ -162,33 +148,29 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .score-box-val.lo{color:var(--red);}
 .score-box-label{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-top:4px;}
 
-/* ── FLAG ── */
 .flag-item{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;background:var(--red-light);border:1px solid rgba(239,68,68,.2);border-radius:7px;margin-bottom:6px;}
 .flag-dot{width:6px;height:6px;border-radius:50%;background:var(--red);flex-shrink:0;margin-top:4px;}
 .flag-text{font-size:12px;color:rgba(239,68,68,.9);line-height:1.4;}
 .flag-where{font-family:var(--mono);font-size:9px;color:rgba(239,68,68,.5);display:block;margin-bottom:2px;letter-spacing:.5px;}
 
-/* ── BUTTONS ── */
 .btn{width:100%;padding:14px;border:none;border-radius:9px;font-family:var(--display);font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.2px;transition:all .15s;margin-top:6px;}
 .btn-violet{background:linear-gradient(135deg,var(--violet),#6D28D9);color:#fff;box-shadow:0 4px 20px rgba(124,58,237,.3);}
 .btn-violet:hover{box-shadow:0 6px 28px rgba(124,58,237,.45);transform:translateY(-1px);}
+.btn-violet:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .btn-ghost{background:transparent;color:var(--text-muted);border:1px solid var(--border);font-size:13px;padding:10px;}
 .btn-ghost:hover{border-color:var(--border2);color:var(--text);}
 
-/* ── SUCCESS ── */
 .success-wrap{text-align:center;padding:40px 20px;}
 .success-icon{font-size:64px;margin-bottom:20px;display:block;}
 .success-ref{display:inline-block;background:var(--violet-glow);border:1px solid rgba(124,58,237,.4);color:var(--violet-bright);font-family:var(--mono);font-size:14px;letter-spacing:2px;padding:8px 20px;border-radius:4px;margin-bottom:18px;}
 .success-title{font-family:var(--display);font-size:24px;font-weight:800;color:#fff;margin-bottom:10px;}
 .success-body{font-size:13px;color:var(--text-dim);line-height:1.6;max-width:360px;margin:0 auto 28px;}
 
-/* ── TOAST ── */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--panel2);color:var(--text);border:1px solid var(--border2);padding:10px 18px;border-radius:8px;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.3px;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 #toast.err{background:rgba(239,68,68,.15);border-color:var(--red);color:var(--red);}
 #toast.ok{background:var(--green-light);border-color:rgba(16,185,129,.3);color:var(--green);}
 
-/* ── EMPTY ── */
 .empty{text-align:center;padding:24px;color:var(--text-muted);font-size:12px;font-family:var(--mono);}
 </style>
 </head>
@@ -202,6 +184,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     <div class="classified-tag">COVERT · AS 360</div>
   </div>
   <div class="topbar-right">
+    <div id="sync-dot" title="Airtable sync"></div>
     <div class="phase-indicator" id="phaseIndicator">SETUP</div>
     <div class="clock" id="clock">--:--</div>
   </div>
@@ -259,36 +242,24 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
         <select id="attractionName">
           <option value="">Select ride…</option>
           <optgroup label="🎢 Coasters &amp; Thrill">
-            <option>Wooden Rollercoaster 1</option>
-            <option>Wooden Rollercoaster 2</option>
-            <option>Steel Coaster</option>
-            <option>Family Coaster</option>
-            <option>Drop Tower</option>
-            <option>Swing Ride</option>
+            <option>Wooden Rollercoaster 1</option><option>Wooden Rollercoaster 2</option>
+            <option>Steel Coaster</option><option>Family Coaster</option>
+            <option>Drop Tower</option><option>Swing Ride</option>
           </optgroup>
           <optgroup label="🎡 Flat Rides">
-            <option>Ferris Wheel</option>
-            <option>Carousel</option>
-            <option>Scrambler</option>
-            <option>Tilt-A-Whirl</option>
-            <option>Gravitron</option>
+            <option>Ferris Wheel</option><option>Carousel</option><option>Scrambler</option>
+            <option>Tilt-A-Whirl</option><option>Gravitron</option>
           </optgroup>
           <optgroup label="🚗 Driving">
-            <option>Go-Kart Track — Inner Lane</option>
-            <option>Go-Kart Track — Outer Lane</option>
+            <option>Go-Kart Track — Inner Lane</option><option>Go-Kart Track — Outer Lane</option>
             <option>Bumper Cars</option>
           </optgroup>
           <optgroup label="💧 Water">
-            <option>Waterslide A</option>
-            <option>Waterslide B</option>
-            <option>Wave Pool</option>
-            <option>Lazy River</option>
-            <option>Splash Pad</option>
+            <option>Waterslide A</option><option>Waterslide B</option>
+            <option>Wave Pool</option><option>Lazy River</option><option>Splash Pad</option>
           </optgroup>
           <optgroup label="👶 Kiddie">
-            <option>Kiddie Coaster</option>
-            <option>Kiddie Cars</option>
-            <option>Kiddie Ferris Wheel</option>
+            <option>Kiddie Coaster</option><option>Kiddie Cars</option><option>Kiddie Ferris Wheel</option>
           </optgroup>
         </select>
       </div>
@@ -297,23 +268,15 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
           <label>Estimated Wait Time (posted)</label>
           <select id="postedWait">
             <option value="">— Not posted —</option>
-            <option>5 min</option>
-            <option>10 min</option>
-            <option>15 min</option>
-            <option>20 min</option>
-            <option>30 min</option>
-            <option>45 min</option>
-            <option>60+ min</option>
+            <option>5 min</option><option>10 min</option><option>15 min</option>
+            <option>20 min</option><option>30 min</option><option>45 min</option><option>60+ min</option>
           </select>
         </div>
         <div class="field">
           <label>Crowd Level</label>
           <select id="crowdLevel">
             <option value="">— Select —</option>
-            <option>Light</option>
-            <option>Moderate</option>
-            <option>Heavy</option>
-            <option>Extreme</option>
+            <option>Light</option><option>Moderate</option><option>Heavy</option><option>Extreme</option>
           </select>
         </div>
       </div>
@@ -321,11 +284,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
         <label>Weather Conditions</label>
         <select id="weather">
           <option value="">— Select —</option>
-          <option>Clear / Sunny</option>
-          <option>Partly Cloudy</option>
-          <option>Overcast</option>
-          <option>Light Rain</option>
-          <option>Hot / Humid</option>
+          <option>Clear / Sunny</option><option>Partly Cloudy</option>
+          <option>Overcast</option><option>Light Rain</option><option>Hot / Humid</option>
         </select>
       </div>
     </div>
@@ -344,17 +304,11 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     </div>
     <div class="mhdr-trail" id="trail1"></div>
   </div>
-
-  <div class="covert-note">
-    <strong>NOTE.</strong> You are standing in line. Score everything visible from a guest's perspective — signage, queue condition, operator behavior at the head of the line. Do not approach the ride yet.
-  </div>
-
+  <div class="covert-note"><strong>NOTE.</strong> You are standing in line. Score everything visible from a guest's perspective — signage, queue condition, operator behavior at the head of the line. Do not approach the ride yet.</div>
   <div class="prog-bar-wrap">
     <div class="prog-bar-label"><span id="q-prog-label">0 of 8 scored</span><span id="q-prog-pct" style="color:var(--violet-bright);">0%</span></div>
     <div class="prog-bar-track"><div class="prog-bar-fill" id="q-prog-fill" style="width:0%"></div></div>
   </div>
-
-  <!-- Wait time capture -->
   <div class="timer-field">
     <div class="timer-field-label">// Actual Queue Wait Time</div>
     <div class="timer-btns">
@@ -364,107 +318,16 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       <div class="timer-display" id="timerDisplay">00:00</div>
     </div>
   </div>
-
   <div class="sec-rule">Signage &amp; Queue Area</div>
-
-  <div class="score-item" id="qi-q1">
-    <div class="score-item-inner">
-      <div class="score-item-text">Height requirement sign is clearly posted and legible at queue entrance<span class="item-sub">visible without entering queue · accurate measurement</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('q','q1','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('q','q1','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('q','q1','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-q-q1"><textarea placeholder="Note…" id="nt-q-q1"></textarea></div>
-  </div>
-
-  <div class="score-item" id="qi-q2">
-    <div class="score-item-inner">
-      <div class="score-item-text">Height measurement device is in place and accessible<span class="item-sub">height stick, board, or measuring post visible and plumb</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('q','q2','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('q','q2','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('q','q2','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-q-q2"><textarea placeholder="Note…" id="nt-q-q2"></textarea></div>
-  </div>
-
-  <div class="score-item" id="qi-q3">
-    <div class="score-item-inner">
-      <div class="score-item-text">Queue area is clean and free of trip hazards<span class="item-sub">no trash, standing water, damaged queue rails</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('q','q3','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('q','q3','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('q','q3','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-q-q3"><textarea placeholder="Note…" id="nt-q-q3"></textarea></div>
-  </div>
-
-  <div class="score-item" id="qi-q4">
-    <div class="score-item-inner">
-      <div class="score-item-text">Rider restriction signs (health, age, size) are posted and visible<span class="item-sub">not faded, obscured, or missing</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('q','q4','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('q','q4','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('q','q4','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-q-q4"><textarea placeholder="Note…" id="nt-q-q4"></textarea></div>
-  </div>
-
+  <div class="score-item" id="qi-q1"><div class="score-item-inner"><div class="score-item-text">Height requirement sign is clearly posted and legible at queue entrance<span class="item-sub">visible without entering queue · accurate measurement</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('q','q1','yes')">YES</button><button class="score-btn" onclick="scoreItem('q','q1','no')">NO</button><button class="score-btn" onclick="scoreItem('q','q1','na')">N/A</button></div></div><div class="item-note" id="in-q-q1"><textarea placeholder="Note…" id="nt-q-q1"></textarea></div></div>
+  <div class="score-item" id="qi-q2"><div class="score-item-inner"><div class="score-item-text">Height measurement device is in place and accessible<span class="item-sub">height stick, board, or measuring post visible and plumb</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('q','q2','yes')">YES</button><button class="score-btn" onclick="scoreItem('q','q2','no')">NO</button><button class="score-btn" onclick="scoreItem('q','q2','na')">N/A</button></div></div><div class="item-note" id="in-q-q2"><textarea placeholder="Note…" id="nt-q-q2"></textarea></div></div>
+  <div class="score-item" id="qi-q3"><div class="score-item-inner"><div class="score-item-text">Queue area is clean and free of trip hazards<span class="item-sub">no trash, standing water, damaged queue rails</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('q','q3','yes')">YES</button><button class="score-btn" onclick="scoreItem('q','q3','no')">NO</button><button class="score-btn" onclick="scoreItem('q','q3','na')">N/A</button></div></div><div class="item-note" id="in-q-q3"><textarea placeholder="Note…" id="nt-q-q3"></textarea></div></div>
+  <div class="score-item" id="qi-q4"><div class="score-item-inner"><div class="score-item-text">Rider restriction signs (health, age, size) are posted and visible<span class="item-sub">not faded, obscured, or missing</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('q','q4','yes')">YES</button><button class="score-btn" onclick="scoreItem('q','q4','no')">NO</button><button class="score-btn" onclick="scoreItem('q','q4','na')">N/A</button></div></div><div class="item-note" id="in-q-q4"><textarea placeholder="Note…" id="nt-q-q4"></textarea></div></div>
   <div class="sec-rule">Observed Operator Behavior (from queue)</div>
-
-  <div class="score-item" id="qi-q5">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator visually scans attraction / load zone at all times while ride is in motion<span class="item-sub">no phone, no looking away from ride during cycle</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('q','q5','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('q','q5','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('q','q5','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-q-q5"><textarea placeholder="Note…" id="nt-q-q5"></textarea></div>
-  </div>
-
-  <div class="score-item" id="qi-q6">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator remains in safety zone during ride operation<span class="item-sub">not leaning on fence, sitting, or in restricted area</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('q','q6','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('q','q6','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('q','q6','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-q-q6"><textarea placeholder="Note…" id="nt-q-q6"></textarea></div>
-  </div>
-
-  <div class="score-item" id="qi-q7">
-    <div class="score-item-inner">
-      <div class="score-item-text">Queue flow was actively managed — guests directed by operator<span class="item-sub">not self-organizing without any direction</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('q','q7','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('q','q7','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('q','q7','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-q-q7"><textarea placeholder="Note…" id="nt-q-q7"></textarea></div>
-  </div>
-
-  <div class="score-item" id="qi-q8">
-    <div class="score-item-inner">
-      <div class="score-item-text">Posted wait time was accurate relative to actual wait experienced<span class="item-sub">within reasonable margin · not wildly over or underestimated</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('q','q8','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('q','q8','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('q','q8','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-q-q8"><textarea placeholder="Note…" id="nt-q-q8"></textarea></div>
-  </div>
-
+  <div class="score-item" id="qi-q5"><div class="score-item-inner"><div class="score-item-text">Operator visually scans attraction / load zone at all times while ride is in motion<span class="item-sub">no phone, no looking away from ride during cycle</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('q','q5','yes')">YES</button><button class="score-btn" onclick="scoreItem('q','q5','no')">NO</button><button class="score-btn" onclick="scoreItem('q','q5','na')">N/A</button></div></div><div class="item-note" id="in-q-q5"><textarea placeholder="Note…" id="nt-q-q5"></textarea></div></div>
+  <div class="score-item" id="qi-q6"><div class="score-item-inner"><div class="score-item-text">Operator remains in safety zone during ride operation<span class="item-sub">not leaning on fence, sitting, or in restricted area</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('q','q6','yes')">YES</button><button class="score-btn" onclick="scoreItem('q','q6','no')">NO</button><button class="score-btn" onclick="scoreItem('q','q6','na')">N/A</button></div></div><div class="item-note" id="in-q-q6"><textarea placeholder="Note…" id="nt-q-q6"></textarea></div></div>
+  <div class="score-item" id="qi-q7"><div class="score-item-inner"><div class="score-item-text">Queue flow was actively managed — guests directed by operator<span class="item-sub">not self-organizing without any direction</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('q','q7','yes')">YES</button><button class="score-btn" onclick="scoreItem('q','q7','no')">NO</button><button class="score-btn" onclick="scoreItem('q','q7','na')">N/A</button></div></div><div class="item-note" id="in-q-q7"><textarea placeholder="Note…" id="nt-q-q7"></textarea></div></div>
+  <div class="score-item" id="qi-q8"><div class="score-item-inner"><div class="score-item-text">Posted wait time was accurate relative to actual wait experienced<span class="item-sub">within reasonable margin · not wildly over or underestimated</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('q','q8','yes')">YES</button><button class="score-btn" onclick="scoreItem('q','q8','no')">NO</button><button class="score-btn" onclick="scoreItem('q','q8','na')">N/A</button></div></div><div class="item-note" id="in-q-q8"><textarea placeholder="Note…" id="nt-q-q8"></textarea></div></div>
   <button class="btn btn-violet" onclick="nextPhase(2)" style="margin-top:8px;">Load Zone →</button>
   <button class="btn btn-ghost" onclick="cancelMission()">✕ Abort Mission</button>
 </div>
@@ -479,142 +342,24 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     </div>
     <div class="mhdr-trail" id="trail2"></div>
   </div>
-
-  <div class="covert-note">
-    <strong>NOTE.</strong> You are now at the platform and boarding the ride. Score the operator interaction exactly as a first-time guest would experience it.
-  </div>
-
+  <div class="covert-note"><strong>NOTE.</strong> You are now at the platform and boarding the ride. Score the operator interaction exactly as a first-time guest would experience it.</div>
   <div class="prog-bar-wrap">
     <div class="prog-bar-label"><span id="l-prog-label">0 of 10 scored</span><span id="l-prog-pct" style="color:var(--violet-bright);">0%</span></div>
     <div class="prog-bar-track"><div class="prog-bar-fill" id="l-prog-fill" style="width:0%"></div></div>
   </div>
-
   <div class="sec-rule">Operator Greeting &amp; Guest Interaction</div>
-
-  <div class="score-item" id="li-l1">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator greeted you / your group upon approach<span class="item-sub">eye contact, verbal acknowledgment, welcoming demeanor</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('l','l1','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('l','l1','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('l','l1','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-l-l1"><textarea placeholder="Note…" id="nt-l-l1"></textarea></div>
-  </div>
-
-  <div class="score-item" id="li-l2">
-    <div class="score-item-inner">
-      <div class="score-item-text">Safety spiel delivered — ride instructions communicated clearly<span class="item-sub">verbal or PA · not rushed or mumbled</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('l','l2','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('l','l2','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('l','l2','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-l-l2"><textarea placeholder="Note…" id="nt-l-l2"></textarea></div>
-  </div>
-
-  <div class="score-item" id="li-l3">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator directed seating assignment or managed boarding flow<span class="item-sub">did not leave guests to figure it out on their own</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('l','l3','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('l','l3','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('l','l3','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-l-l3"><textarea placeholder="Note…" id="nt-l-l3"></textarea></div>
-  </div>
-
-  <div class="score-item" id="li-l4">
-    <div class="score-item-inner">
-      <div class="score-item-text">Loose article policy communicated or enforced before boarding<span class="item-sub">bags, phones, hats addressed without you asking</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('l','l4','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('l','l4','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('l','l4','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-l-l4"><textarea placeholder="Note…" id="nt-l-l4"></textarea></div>
-  </div>
-
+  <div class="score-item" id="li-l1"><div class="score-item-inner"><div class="score-item-text">Operator greeted you / your group upon approach<span class="item-sub">eye contact, verbal acknowledgment, welcoming demeanor</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('l','l1','yes')">YES</button><button class="score-btn" onclick="scoreItem('l','l1','no')">NO</button><button class="score-btn" onclick="scoreItem('l','l1','na')">N/A</button></div></div><div class="item-note" id="in-l-l1"><textarea placeholder="Note…" id="nt-l-l1"></textarea></div></div>
+  <div class="score-item" id="li-l2"><div class="score-item-inner"><div class="score-item-text">Safety spiel delivered — ride instructions communicated clearly<span class="item-sub">verbal or PA · not rushed or mumbled</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('l','l2','yes')">YES</button><button class="score-btn" onclick="scoreItem('l','l2','no')">NO</button><button class="score-btn" onclick="scoreItem('l','l2','na')">N/A</button></div></div><div class="item-note" id="in-l-l2"><textarea placeholder="Note…" id="nt-l-l2"></textarea></div></div>
+  <div class="score-item" id="li-l3"><div class="score-item-inner"><div class="score-item-text">Operator directed seating assignment or managed boarding flow<span class="item-sub">did not leave guests to figure it out on their own</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('l','l3','yes')">YES</button><button class="score-btn" onclick="scoreItem('l','l3','no')">NO</button><button class="score-btn" onclick="scoreItem('l','l3','na')">N/A</button></div></div><div class="item-note" id="in-l-l3"><textarea placeholder="Note…" id="nt-l-l3"></textarea></div></div>
+  <div class="score-item" id="li-l4"><div class="score-item-inner"><div class="score-item-text">Loose article policy communicated or enforced before boarding<span class="item-sub">bags, phones, hats addressed without you asking</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('l','l4','yes')">YES</button><button class="score-btn" onclick="scoreItem('l','l4','no')">NO</button><button class="score-btn" onclick="scoreItem('l','l4','na')">N/A</button></div></div><div class="item-note" id="in-l-l4"><textarea placeholder="Note…" id="nt-l-l4"></textarea></div></div>
   <div class="sec-rule">Safety Procedures (guest-visible)</div>
-
-  <div class="score-item" id="li-l5">
-    <div class="score-item-inner">
-      <div class="score-item-text">Height check was performed on guests in your group or queue<span class="item-sub">physical stick used or clearly verified — not just glanced at</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('l','l5','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('l','l5','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('l','l5','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-l-l5"><textarea placeholder="Note…" id="nt-l-l5"></textarea></div>
-  </div>
-
-  <div class="score-item" id="li-l6">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator physically checked and tested restraints on riders<span class="item-sub">push down and pull up — not just a visual scan</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('l','l6','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('l','l6','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('l','l6','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-l-l6"><textarea placeholder="Note…" id="nt-l-l6"></textarea></div>
-  </div>
-
-  <div class="score-item" id="li-l7">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator performed pre-dispatch scan before sending ride<span class="item-sub">visible visual sweep of load zone · no rush to dispatch</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('l','l7','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('l','l7','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('l','l7','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-l-l7"><textarea placeholder="Note…" id="nt-l-l7"></textarea></div>
-  </div>
-
+  <div class="score-item" id="li-l5"><div class="score-item-inner"><div class="score-item-text">Height check was performed on guests in your group or queue<span class="item-sub">physical stick used or clearly verified — not just glanced at</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('l','l5','yes')">YES</button><button class="score-btn" onclick="scoreItem('l','l5','no')">NO</button><button class="score-btn" onclick="scoreItem('l','l5','na')">N/A</button></div></div><div class="item-note" id="in-l-l5"><textarea placeholder="Note…" id="nt-l-l5"></textarea></div></div>
+  <div class="score-item" id="li-l6"><div class="score-item-inner"><div class="score-item-text">Operator physically checked and tested restraints on riders<span class="item-sub">push down and pull up — not just a visual scan</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('l','l6','yes')">YES</button><button class="score-btn" onclick="scoreItem('l','l6','no')">NO</button><button class="score-btn" onclick="scoreItem('l','l6','na')">N/A</button></div></div><div class="item-note" id="in-l-l6"><textarea placeholder="Note…" id="nt-l-l6"></textarea></div></div>
+  <div class="score-item" id="li-l7"><div class="score-item-inner"><div class="score-item-text">Operator performed pre-dispatch scan before sending ride<span class="item-sub">visible visual sweep of load zone · no rush to dispatch</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('l','l7','yes')">YES</button><button class="score-btn" onclick="scoreItem('l','l7','no')">NO</button><button class="score-btn" onclick="scoreItem('l','l7','na')">N/A</button></div></div><div class="item-note" id="in-l-l7"><textarea placeholder="Note…" id="nt-l-l7"></textarea></div></div>
   <div class="sec-rule">Professionalism</div>
-
-  <div class="score-item" id="li-l8">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator maintained professional image — no horseplay or off-task behavior<span class="item-sub">phone away, engaged, no socializing during loading</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('l','l8','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('l','l8','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('l','l8','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-l-l8"><textarea placeholder="Note…" id="nt-l-l8"></textarea></div>
-  </div>
-
-  <div class="score-item" id="li-l9">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator uniform was neat and complete (name tag visible)<span class="item-sub">no missing pieces, untucked, or heavily soiled</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('l','l9','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('l','l9','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('l','l9','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-l-l9"><textarea placeholder="Note…" id="nt-l-l9"></textarea></div>
-  </div>
-
-  <div class="score-item" id="li-l10">
-    <div class="score-item-inner">
-      <div class="score-item-text">Load area was clean and orderly<span class="item-sub">no loose debris, queue rails functioning, gates operating</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('l','l10','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('l','l10','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('l','l10','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-l-l10"><textarea placeholder="Note…" id="nt-l-l10"></textarea></div>
-  </div>
-
+  <div class="score-item" id="li-l8"><div class="score-item-inner"><div class="score-item-text">Operator maintained professional image — no horseplay or off-task behavior<span class="item-sub">phone away, engaged, no socializing during loading</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('l','l8','yes')">YES</button><button class="score-btn" onclick="scoreItem('l','l8','no')">NO</button><button class="score-btn" onclick="scoreItem('l','l8','na')">N/A</button></div></div><div class="item-note" id="in-l-l8"><textarea placeholder="Note…" id="nt-l-l8"></textarea></div></div>
+  <div class="score-item" id="li-l9"><div class="score-item-inner"><div class="score-item-text">Operator uniform was neat and complete (name tag visible)<span class="item-sub">no missing pieces, untucked, or heavily soiled</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('l','l9','yes')">YES</button><button class="score-btn" onclick="scoreItem('l','l9','no')">NO</button><button class="score-btn" onclick="scoreItem('l','l9','na')">N/A</button></div></div><div class="item-note" id="in-l-l9"><textarea placeholder="Note…" id="nt-l-l9"></textarea></div></div>
+  <div class="score-item" id="li-l10"><div class="score-item-inner"><div class="score-item-text">Load area was clean and orderly<span class="item-sub">no loose debris, queue rails functioning, gates operating</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('l','l10','yes')">YES</button><button class="score-btn" onclick="scoreItem('l','l10','no')">NO</button><button class="score-btn" onclick="scoreItem('l','l10','na')">N/A</button></div></div><div class="item-note" id="in-l-l10"><textarea placeholder="Note…" id="nt-l-l10"></textarea></div></div>
   <button class="btn btn-violet" onclick="nextPhase(3)" style="margin-top:8px;">Ride Cycle →</button>
   <button class="btn btn-ghost" onclick="gp(1)">← Back</button>
 </div>
@@ -629,78 +374,17 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     </div>
     <div class="mhdr-trail" id="trail3"></div>
   </div>
-
-  <div class="covert-note">
-    <strong>NOTE.</strong> Score items based on what you could observe during and immediately after the cycle. Some items are observable from the ride itself; others are post-ride recollections.
-  </div>
-
+  <div class="covert-note"><strong>NOTE.</strong> Score items based on what you could observe during and immediately after the cycle.</div>
   <div class="prog-bar-wrap">
     <div class="prog-bar-label"><span id="r-prog-label">0 of 5 scored</span><span id="r-prog-pct" style="color:var(--violet-bright);">0%</span></div>
     <div class="prog-bar-track"><div class="prog-bar-fill" id="r-prog-fill" style="width:0%"></div></div>
   </div>
-
   <div class="sec-rule">In-Ride Observation</div>
-
-  <div class="score-item" id="ri-r1">
-    <div class="score-item-inner">
-      <div class="score-item-text">Ride operated smoothly — no unexpected stops, jolts, or mechanical anomalies<span class="item-sub">note any unusual sounds, vibrations, or interruptions</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('r','r1','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('r','r1','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('r','r1','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-r-r1"><textarea placeholder="Note…" id="nt-r-r1"></textarea></div>
-  </div>
-
-  <div class="score-item" id="ri-r2">
-    <div class="score-item-inner">
-      <div class="score-item-text">Restraint felt secure and correctly fitted throughout the ride<span class="item-sub">no excessive play, shifting, or rider discomfort from restraint</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('r','r2','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('r','r2','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('r','r2','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-r-r2"><textarea placeholder="Note…" id="nt-r-r2"></textarea></div>
-  </div>
-
-  <div class="score-item" id="ri-r3">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator was visibly in position and attending to ride during cycle<span class="item-sub">observed from ride — not absent, seated, or on phone</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('r','r3','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('r','r3','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('r','r3','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-r-r3"><textarea placeholder="Note…" id="nt-r-r3"></textarea></div>
-  </div>
-
-  <div class="score-item" id="ri-r4">
-    <div class="score-item-inner">
-      <div class="score-item-text">Ride environment was clear of hazards or foreign objects along track / ride path<span class="item-sub">debris, equipment, unauthorized persons in restricted zone</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('r','r4','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('r','r4','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('r','r4','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-r-r4"><textarea placeholder="Note…" id="nt-r-r4"></textarea></div>
-  </div>
-
-  <div class="score-item" id="ri-r5">
-    <div class="score-item-inner">
-      <div class="score-item-text">Overall ride experience matched what signage and spiels led you to expect<span class="item-sub">not misleading, surprising in a negative way, or misrepresented</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('r','r5','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('r','r5','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('r','r5','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-r-r5"><textarea placeholder="Note…" id="nt-r-r5"></textarea></div>
-  </div>
-
+  <div class="score-item" id="ri-r1"><div class="score-item-inner"><div class="score-item-text">Ride operated smoothly — no unexpected stops, jolts, or mechanical anomalies<span class="item-sub">note any unusual sounds, vibrations, or interruptions</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('r','r1','yes')">YES</button><button class="score-btn" onclick="scoreItem('r','r1','no')">NO</button><button class="score-btn" onclick="scoreItem('r','r1','na')">N/A</button></div></div><div class="item-note" id="in-r-r1"><textarea placeholder="Note…" id="nt-r-r1"></textarea></div></div>
+  <div class="score-item" id="ri-r2"><div class="score-item-inner"><div class="score-item-text">Restraint felt secure and correctly fitted throughout the ride<span class="item-sub">no excessive play, shifting, or rider discomfort from restraint</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('r','r2','yes')">YES</button><button class="score-btn" onclick="scoreItem('r','r2','no')">NO</button><button class="score-btn" onclick="scoreItem('r','r2','na')">N/A</button></div></div><div class="item-note" id="in-r-r2"><textarea placeholder="Note…" id="nt-r-r2"></textarea></div></div>
+  <div class="score-item" id="ri-r3"><div class="score-item-inner"><div class="score-item-text">Operator was visibly in position and attending to ride during cycle<span class="item-sub">observed from ride — not absent, seated, or on phone</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('r','r3','yes')">YES</button><button class="score-btn" onclick="scoreItem('r','r3','no')">NO</button><button class="score-btn" onclick="scoreItem('r','r3','na')">N/A</button></div></div><div class="item-note" id="in-r-r3"><textarea placeholder="Note…" id="nt-r-r3"></textarea></div></div>
+  <div class="score-item" id="ri-r4"><div class="score-item-inner"><div class="score-item-text">Ride environment was clear of hazards or foreign objects along track / ride path<span class="item-sub">debris, equipment, unauthorized persons in restricted zone</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('r','r4','yes')">YES</button><button class="score-btn" onclick="scoreItem('r','r4','no')">NO</button><button class="score-btn" onclick="scoreItem('r','r4','na')">N/A</button></div></div><div class="item-note" id="in-r-r4"><textarea placeholder="Note…" id="nt-r-r4"></textarea></div></div>
+  <div class="score-item" id="ri-r5"><div class="score-item-inner"><div class="score-item-text">Overall ride experience matched what signage and spiels led you to expect<span class="item-sub">not misleading, surprising in a negative way, or misrepresented</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('r','r5','yes')">YES</button><button class="score-btn" onclick="scoreItem('r','r5','no')">NO</button><button class="score-btn" onclick="scoreItem('r','r5','na')">N/A</button></div></div><div class="item-note" id="in-r-r5"><textarea placeholder="Note…" id="nt-r-r5"></textarea></div></div>
   <button class="btn btn-violet" onclick="nextPhase(4)" style="margin-top:8px;">Unload &amp; Exit →</button>
   <button class="btn btn-ghost" onclick="gp(2)">← Back</button>
 </div>
@@ -715,100 +399,19 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     </div>
     <div class="mhdr-trail" id="trail4"></div>
   </div>
-
   <div class="prog-bar-wrap">
     <div class="prog-bar-label"><span id="u-prog-label">0 of 7 scored</span><span id="u-prog-pct" style="color:var(--violet-bright);">0%</span></div>
     <div class="prog-bar-track"><div class="prog-bar-fill" id="u-prog-fill" style="width:0%"></div></div>
   </div>
-
   <div class="sec-rule">Unload Procedure</div>
-
-  <div class="score-item" id="ui-u1">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator directed riders to stay seated until ride came to a complete stop<span class="item-sub">verbal instruction or clear signal given before restraint release</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('u','u1','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('u','u1','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('u','u1','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-u-u1"><textarea placeholder="Note…" id="nt-u-u1"></textarea></div>
-  </div>
-
-  <div class="score-item" id="ui-u2">
-    <div class="score-item-inner">
-      <div class="score-item-text">Restraints were released by operator — not self-released by riders<span class="item-sub">operator controlled the release sequence</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('u','u2','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('u','u2','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('u','u2','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-u-u2"><textarea placeholder="Note…" id="nt-u-u2"></textarea></div>
-  </div>
-
-  <div class="score-item" id="ui-u3">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator assisted riders who needed help exiting the vehicle<span class="item-sub">offered or provided assistance without being asked</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('u','u3','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('u','u3','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('u','u3','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-u-u3"><textarea placeholder="Note…" id="nt-u-u3"></textarea></div>
-  </div>
-
-  <div class="score-item" id="ui-u4">
-    <div class="score-item-inner">
-      <div class="score-item-text">Operator issued farewell or closing remark to riders<span class="item-sub">"thank you," "enjoy your day," or equivalent · not silent dismissal</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('u','u4','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('u','u4','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('u','u4','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-u-u4"><textarea placeholder="Note…" id="nt-u-u4"></textarea></div>
-  </div>
-
+  <div class="score-item" id="ui-u1"><div class="score-item-inner"><div class="score-item-text">Operator directed riders to stay seated until ride came to a complete stop<span class="item-sub">verbal instruction or clear signal given before restraint release</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('u','u1','yes')">YES</button><button class="score-btn" onclick="scoreItem('u','u1','no')">NO</button><button class="score-btn" onclick="scoreItem('u','u1','na')">N/A</button></div></div><div class="item-note" id="in-u-u1"><textarea placeholder="Note…" id="nt-u-u1"></textarea></div></div>
+  <div class="score-item" id="ui-u2"><div class="score-item-inner"><div class="score-item-text">Restraints were released by operator — not self-released by riders<span class="item-sub">operator controlled the release sequence</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('u','u2','yes')">YES</button><button class="score-btn" onclick="scoreItem('u','u2','no')">NO</button><button class="score-btn" onclick="scoreItem('u','u2','na')">N/A</button></div></div><div class="item-note" id="in-u-u2"><textarea placeholder="Note…" id="nt-u-u2"></textarea></div></div>
+  <div class="score-item" id="ui-u3"><div class="score-item-inner"><div class="score-item-text">Operator assisted riders who needed help exiting the vehicle<span class="item-sub">offered or provided assistance without being asked</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('u','u3','yes')">YES</button><button class="score-btn" onclick="scoreItem('u','u3','no')">NO</button><button class="score-btn" onclick="scoreItem('u','u3','na')">N/A</button></div></div><div class="item-note" id="in-u-u3"><textarea placeholder="Note…" id="nt-u-u3"></textarea></div></div>
+  <div class="score-item" id="ui-u4"><div class="score-item-inner"><div class="score-item-text">Operator issued farewell or closing remark to riders<span class="item-sub">"thank you," "enjoy your day," or equivalent · not silent dismissal</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('u','u4','yes')">YES</button><button class="score-btn" onclick="scoreItem('u','u4','no')">NO</button><button class="score-btn" onclick="scoreItem('u','u4','na')">N/A</button></div></div><div class="item-note" id="in-u-u4"><textarea placeholder="Note…" id="nt-u-u4"></textarea></div></div>
   <div class="sec-rule">Exit Ramp &amp; Egress</div>
-
-  <div class="score-item" id="ui-u5">
-    <div class="score-item-inner">
-      <div class="score-item-text">Exit path was clearly marked and unobstructed<span class="item-sub">no backflow of guests, no blocked signage, no debris</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('u','u5','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('u','u5','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('u','u5','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-u-u5"><textarea placeholder="Note…" id="nt-u-u5"></textarea></div>
-  </div>
-
-  <div class="score-item" id="ui-u6">
-    <div class="score-item-inner">
-      <div class="score-item-text">Exit ramp / area was clean and in good physical condition<span class="item-sub">no slip hazards, damaged railing, pooled water</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('u','u6','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('u','u6','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('u','u6','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-u-u6"><textarea placeholder="Note…" id="nt-u-u6"></textarea></div>
-  </div>
-
-  <div class="score-item" id="ui-u7">
-    <div class="score-item-inner">
-      <div class="score-item-text">Lost &amp; found / personal item retrieval process was visible or communicated<span class="item-sub">bin location signage, or operator mentioned it during unload</span></div>
-      <div class="score-btns">
-        <button class="score-btn" onclick="scoreItem('u','u7','yes')">YES</button>
-        <button class="score-btn" onclick="scoreItem('u','u7','no')">NO</button>
-        <button class="score-btn" onclick="scoreItem('u','u7','na')">N/A</button>
-      </div>
-    </div>
-    <div class="item-note" id="in-u-u7"><textarea placeholder="Note…" id="nt-u-u7"></textarea></div>
-  </div>
-
+  <div class="score-item" id="ui-u5"><div class="score-item-inner"><div class="score-item-text">Exit path was clearly marked and unobstructed<span class="item-sub">no backflow of guests, no blocked signage, no debris</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('u','u5','yes')">YES</button><button class="score-btn" onclick="scoreItem('u','u5','no')">NO</button><button class="score-btn" onclick="scoreItem('u','u5','na')">N/A</button></div></div><div class="item-note" id="in-u-u5"><textarea placeholder="Note…" id="nt-u-u5"></textarea></div></div>
+  <div class="score-item" id="ui-u6"><div class="score-item-inner"><div class="score-item-text">Exit ramp / area was clean and in good physical condition<span class="item-sub">no slip hazards, damaged railing, pooled water</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('u','u6','yes')">YES</button><button class="score-btn" onclick="scoreItem('u','u6','no')">NO</button><button class="score-btn" onclick="scoreItem('u','u6','na')">N/A</button></div></div><div class="item-note" id="in-u-u6"><textarea placeholder="Note…" id="nt-u-u6"></textarea></div></div>
+  <div class="score-item" id="ui-u7"><div class="score-item-inner"><div class="score-item-text">Lost &amp; found / personal item retrieval process was visible or communicated<span class="item-sub">bin location signage, or operator mentioned it during unload</span></div><div class="score-btns"><button class="score-btn" onclick="scoreItem('u','u7','yes')">YES</button><button class="score-btn" onclick="scoreItem('u','u7','no')">NO</button><button class="score-btn" onclick="scoreItem('u','u7','na')">N/A</button></div></div><div class="item-note" id="in-u-u7"><textarea placeholder="Note…" id="nt-u-u7"></textarea></div></div>
   <button class="btn btn-violet" onclick="nextPhase(5)" style="margin-top:8px;">Overall Impression →</button>
   <button class="btn btn-ghost" onclick="gp(3)">← Back</button>
 </div>
@@ -823,13 +426,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
     </div>
     <div class="mhdr-trail" id="trail5"></div>
   </div>
-
-  <div class="covert-note">
-    <strong>NOTE.</strong> Rate the full experience end-to-end as a guest would — first impression through exit. These ratings are separate from the checklist and captured as a holistic guest sentiment score.
-  </div>
-
+  <div class="covert-note"><strong>NOTE.</strong> Rate the full experience end-to-end as a guest would — first impression through exit. These ratings are separate from the checklist and captured as a holistic guest sentiment score.</div>
   <div class="sec-rule">Guest Experience Ratings</div>
-
   <div class="mission-card">
     <div class="mc-header">// Star Ratings — score 1 to 5</div>
     <div class="mc-body">
@@ -840,17 +438,9 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       <div class="star-row"><label>Would Recommend to Others</label><div class="stars" id="stars-recommend"></div></div>
     </div>
   </div>
-
   <div class="sec-rule">Field Notes</div>
-
-  <div class="field">
-    <label>Most Notable Positive Observation</label>
-    <textarea id="notePositive" placeholder="What did staff do exceptionally well from a guest perspective?"></textarea>
-  </div>
-  <div class="field">
-    <label>Most Notable Negative Observation</label>
-    <textarea id="noteNegative" placeholder="What was the most impactful guest-facing failure or gap?"></textarea>
-  </div>
+  <div class="field"><label>Most Notable Positive Observation</label><textarea id="notePositive" placeholder="What did staff do exceptionally well from a guest perspective?"></textarea></div>
+  <div class="field"><label>Most Notable Negative Observation</label><textarea id="noteNegative" placeholder="What was the most impactful guest-facing failure or gap?"></textarea></div>
   <div class="field">
     <label>Operator Demeanor — Overall Assessment</label>
     <select id="opDemeanor">
@@ -861,17 +451,9 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       <option>Concerning — safety or conduct issues observed</option>
     </select>
   </div>
-  <div class="field">
-    <label>Any Staff Member Names / IDs Observed?</label>
-    <input type="text" id="staffObserved" placeholder="Name tag, badge, or description if name unknown">
-  </div>
-  <div class="field">
-    <label>Additional Intelligence Notes</label>
-    <textarea id="noteAdditional" placeholder="Anything else relevant not captured above…" style="min-height:80px;"></textarea>
-  </div>
-
+  <div class="field"><label>Any Staff Member Names / IDs Observed?</label><input type="text" id="staffObserved" placeholder="Name tag, badge, or description if name unknown"></div>
+  <div class="field"><label>Additional Intelligence Notes</label><textarea id="noteAdditional" placeholder="Anything else relevant not captured above…" style="min-height:80px;"></textarea></div>
   <div class="sec-rule">Wait Time Intelligence</div>
-
   <div class="timer-field" style="margin-bottom:18px;">
     <div class="timer-field-label">// Queue Wait — Actual vs. Posted</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
@@ -889,7 +471,6 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       <div style="font-family:var(--mono);font-size:11px;font-weight:700;" id="p5Variance">—</div>
     </div>
   </div>
-
   <button class="btn btn-violet" onclick="buildReview()" style="margin-top:8px;">Review &amp; Submit →</button>
   <button class="btn btn-ghost" onclick="gp(4)">← Back</button>
 </div>
@@ -903,38 +484,20 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
       <div class="mhdr-sub" id="p6Meta">—</div>
     </div>
   </div>
-
-  <div class="score-overview" id="scoreOverview"><!-- populated --></div>
-
-  <div class="sum-card" id="sumQueue">
-    <div class="sum-card-hdr">📍 Queue Entry</div>
-    <div id="sumQueueRows"></div>
-  </div>
-  <div class="sum-card" id="sumLoad">
-    <div class="sum-card-hdr">🎢 Load Zone</div>
-    <div id="sumLoadRows"></div>
-  </div>
-  <div class="sum-card" id="sumRide">
-    <div class="sum-card-hdr">🔄 Ride Cycle</div>
-    <div id="sumRideRows"></div>
-  </div>
-  <div class="sum-card" id="sumUnload">
-    <div class="sum-card-hdr">🚪 Unload &amp; Exit</div>
-    <div id="sumUnloadRows"></div>
-  </div>
-
-  <!-- Flags -->
+  <div class="score-overview" id="scoreOverview"></div>
+  <div class="sum-card"><div class="sum-card-hdr">📍 Queue Entry</div><div id="sumQueueRows"></div></div>
+  <div class="sum-card"><div class="sum-card-hdr">🎢 Load Zone</div><div id="sumLoadRows"></div></div>
+  <div class="sum-card"><div class="sum-card-hdr">🔄 Ride Cycle</div><div id="sumRideRows"></div></div>
+  <div class="sum-card"><div class="sum-card-hdr">🚪 Unload &amp; Exit</div><div id="sumUnloadRows"></div></div>
   <div id="flagsWrap" style="display:none;margin-top:4px;">
     <div class="sec-rule" style="color:var(--red);border-color:rgba(239,68,68,.15);">⚠ Flags Requiring Action</div>
     <div id="flagsList"></div>
   </div>
-
   <div class="field" style="margin-top:18px;">
     <label>Auditor Summary &amp; Recommendations <span style="color:var(--text-muted);font-size:8px;font-weight:400;letter-spacing:0;text-transform:none;">— required</span></label>
     <textarea id="auditSummary" placeholder="Summarize the guest experience, key risk findings, and recommended corrective actions…" style="min-height:90px;"></textarea>
   </div>
-
-  <button class="btn btn-violet" onclick="submitMission()">Submit Mission Report ✓</button>
+  <button class="btn btn-violet" id="submitBtn" onclick="submitMission()">Submit Mission Report ✓</button>
   <button class="btn btn-ghost" onclick="gp(5)">← Back</button>
 </div>
 
@@ -952,47 +515,72 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 <div id="toast"></div>
 
 <script>
+// ── PROXY CONFIG ─────────────────────────────────────────────────────────────
+const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+
+async function atPost(table, fields) {
+  const si = document.getElementById('sync-dot');
+  if (si) { si.style.background = '#F59E0B'; si.title = 'Syncing…'; }
+  try {
+    const res = await fetch(AT_PROXY + '/' + encodeURIComponent(table), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields }),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (si) {
+      si.style.background = '#10B981'; si.title = 'Synced';
+      setTimeout(() => { si.style.background = '#3D4F6A'; si.title = ''; }, 3000);
+    }
+    return true;
+  } catch(e) {
+    if (si) {
+      si.style.background = '#EF4444'; si.title = 'Sync error';
+      setTimeout(() => { si.style.background = '#3D4F6A'; si.title = ''; }, 5000);
+    }
+    console.warn('[mGSA] Proxy error:', e.message);
+    return false;
+  }
+}
+
 // ── STATE ────────────────────────────────────────────────────────────────────
 let session = null;
 let timerInterval = null, timerSeconds = 0, timerRunning = false;
 
 const SECTIONS = {
-  q: {keys:['q1','q2','q3','q4','q5','q6','q7','q8'], prefix:'qi', progBase:'q'},
-  l: {keys:['l1','l2','l3','l4','l5','l6','l7','l8','l9','l10'], prefix:'li', progBase:'l'},
-  r: {keys:['r1','r2','r3','r4','r5'], prefix:'ri', progBase:'r'},
-  u: {keys:['u1','u2','u3','u4','u5','u6','u7'], prefix:'ui', progBase:'u'},
+  q: {keys:['q1','q2','q3','q4','q5','q6','q7','q8'], prefix:'qi'},
+  l: {keys:['l1','l2','l3','l4','l5','l6','l7','l8','l9','l10'], prefix:'li'},
+  r: {keys:['r1','r2','r3','r4','r5'], prefix:'ri'},
+  u: {keys:['u1','u2','u3','u4','u5','u6','u7'], prefix:'ui'},
 };
 
 const LABELS = {
-  q1:'Height sign posted at entrance',q2:'Height measurement device in place',
-  q3:'Queue area clean and hazard-free',q4:'Rider restriction signs posted',
-  q5:'Operator scanning ride during cycle',q6:'Operator in safety zone during operation',
-  q7:'Queue flow actively managed',q8:'Posted wait time accurate',
-  l1:'Operator greeted guests on approach',l2:'Safety spiel delivered clearly',
-  l3:'Seating direction / boarding managed',l4:'Loose article policy communicated',
-  l5:'Height check performed physically',l6:'Restraints physically tested',
-  l7:'Pre-dispatch scan performed',l8:'Professional image — no horseplay',
-  l9:'Uniform neat and complete',l10:'Load area clean and orderly',
-  r1:'Ride operated without anomalies',r2:'Restraint felt secure throughout ride',
+  q1:'Height sign posted at entrance',        q2:'Height measurement device in place',
+  q3:'Queue area clean and hazard-free',       q4:'Rider restriction signs posted',
+  q5:'Operator scanning ride during cycle',    q6:'Operator in safety zone during operation',
+  q7:'Queue flow actively managed',            q8:'Posted wait time accurate',
+  l1:'Operator greeted guests on approach',    l2:'Safety spiel delivered clearly',
+  l3:'Seating direction / boarding managed',   l4:'Loose article policy communicated',
+  l5:'Height check performed physically',      l6:'Restraints physically tested',
+  l7:'Pre-dispatch scan performed',            l8:'Professional image — no horseplay',
+  l9:'Uniform neat and complete',              l10:'Load area clean and orderly',
+  r1:'Ride operated without anomalies',        r2:'Restraint felt secure throughout ride',
   r3:'Operator visibly attending during cycle',r4:'Ride path clear of hazards',
   r5:'Experience matched pre-ride expectations',
-  u1:'Stay-seated instruction before restraint release',u2:'Restraints released by operator',
-  u3:'Unload assistance offered',u4:'Farewell remark issued',
-  u5:'Exit path clearly marked and clear',u6:'Exit ramp clean and in good condition',
+  u1:'Stay-seated instruction before release', u2:'Restraints released by operator',
+  u3:'Unload assistance offered',              u4:'Farewell remark issued',
+  u5:'Exit path clearly marked and clear',     u6:'Exit ramp clean and in good condition',
   u7:'Lost & found process visible or communicated',
 };
 
-const PHASE_NAMES = ['Setup','Queue','Load','Ride','Unload','Impression','Review','Done'];
-const PHASE_IDS = [0,1,2,3,4,5,6,7];
+const PHASE_LABELS = ['SETUP','QUEUE','LOAD','RIDE','UNLOAD','IMPRESSION','REVIEW','COMPLETE'];
+let currentPhase = 0;
 
 // ── CLOCK ────────────────────────────────────────────────────────────────────
-function tickClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
-tickClock(); setInterval(tickClock,1000);
+function tickClock(){ document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}); }
+tickClock(); setInterval(tickClock, 1000);
 
 // ── PHASE NAV ────────────────────────────────────────────────────────────────
-let currentPhase = 0;
-const PHASE_LABELS = ['SETUP','QUEUE','LOAD','RIDE','UNLOAD','IMPRESSION','REVIEW','COMPLETE'];
-
 function gp(n){
   document.querySelectorAll('.phase').forEach(p=>p.classList.remove('active'));
   document.getElementById('p'+n).classList.add('active');
@@ -1004,33 +592,25 @@ function gp(n){
 }
 
 function renderTrail(active){
-  const steps = [
-    {n:1,label:'Queue'},{n:2,label:'Load'},{n:3,label:'Ride'},
-    {n:4,label:'Unload'},{n:5,label:'Impression'}
-  ];
-  ['trail1','trail2','trail3','trail4','trail5'].forEach((id,i)=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.innerHTML = steps.map((s,j)=>{
-      const done = active > s.n;
-      const isActive = active === s.n;
-      const sep = j<steps.length-1?'<div class="trail-sep"></div>':'';
-      return `<div class="trail-step">
-        <div class="trail-dot ${done?'done':isActive?'active':''}">${done?'✓':s.n}</div>
-        <div class="trail-name ${done?'done':isActive?'active':''}">${s.label}</div>
-      </div>${sep}`;
+  const steps=[{n:1,label:'Queue'},{n:2,label:'Load'},{n:3,label:'Ride'},{n:4,label:'Unload'},{n:5,label:'Impression'}];
+  ['trail1','trail2','trail3','trail4','trail5'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    el.innerHTML=steps.map((s,j)=>{
+      const done=active>s.n, isActive=active===s.n;
+      const sep=j<steps.length-1?'<div class="trail-sep"></div>':'';
+      return `<div class="trail-step"><div class="trail-dot ${done?'done':isActive?'active':''}">${done?'✓':s.n}</div><div class="trail-name ${done?'done':isActive?'active':''}">${s.label}</div></div>${sep}`;
     }).join('');
   });
 }
 
 // ── MISSION START ────────────────────────────────────────────────────────────
 function beginMission(){
-  const name = document.getElementById('auditorName').value.trim();
-  const attr = document.getElementById('attractionName').value;
+  const name=document.getElementById('auditorName').value.trim();
+  const attr=document.getElementById('attractionName').value;
   if(!name){toast('Enter auditor code or name',1);return;}
   if(!attr){toast('Select an attraction',1);return;}
-  session = {
-    id: Date.now(),
+  session={
+    id: 'MGSA-'+Date.now().toString(36).toUpperCase().slice(-8),
     timestamp: new Date().toISOString(),
     auditor: name,
     auditorRole: document.getElementById('auditorRole').value,
@@ -1039,9 +619,9 @@ function beginMission(){
     postedWait: document.getElementById('postedWait').value,
     crowdLevel: document.getElementById('crowdLevel').value,
     weather: document.getElementById('weather').value,
-    scores: {q:{},l:{},r:{},u:{}},
-    notes: {q:{},l:{},r:{},u:{}},
-    stars: {},
+    scores:{q:{},l:{},r:{},u:{}},
+    notes:{q:{},l:{},r:{},u:{}},
+    stars:{},
     timerSecs: 0,
   };
   gp(1);
@@ -1049,49 +629,46 @@ function beginMission(){
 
 // ── SCORE ITEM ────────────────────────────────────────────────────────────────
 function scoreItem(section, key, val){
-  session.scores[section][key] = val;
-  const sec = SECTIONS[section];
-  const row = document.getElementById(sec.prefix+'-'+key);
+  session.scores[section][key]=val;
+  const sec=SECTIONS[section];
+  const row=document.getElementById(sec.prefix+'-'+key);
   row.classList.remove('s-yes','s-no','s-na');
   row.classList.add('s-'+val);
   row.querySelectorAll('.score-btn').forEach(b=>{
     b.classList.remove('yes','no','na');
     if(b.textContent.toLowerCase()===val) b.classList.add(val);
   });
-  const note = document.getElementById('in-'+section+'-'+key);
+  const note=document.getElementById('in-'+section+'-'+key);
   if(note) note.classList.toggle('show', val==='no');
   updateProg(section);
 }
 
 function updateProg(section){
-  const sec = SECTIONS[section];
-  const scored = Object.keys(session.scores[section]).length;
-  const total = sec.keys.length;
-  const pct = Math.round(scored/total*100);
-  const fill = document.getElementById(section+'-prog-fill');
-  const label = document.getElementById(section+'-prog-label');
-  const pctEl = document.getElementById(section+'-prog-pct');
-  if(fill) fill.style.width = pct+'%';
-  if(label) label.textContent = scored+' of '+total+' scored';
-  if(pctEl) pctEl.textContent = pct+'%';
+  const sec=SECTIONS[section];
+  const scored=Object.keys(session.scores[section]).length;
+  const total=sec.keys.length;
+  const pct=Math.round(scored/total*100);
+  const fill=document.getElementById(section+'-prog-fill');
+  const label=document.getElementById(section+'-prog-label');
+  const pctEl=document.getElementById(section+'-prog-pct');
+  if(fill) fill.style.width=pct+'%';
+  if(label) label.textContent=scored+' of '+total+' scored';
+  if(pctEl) pctEl.textContent=pct+'%';
 }
 
 function nextPhase(n){
   const sectionMap={2:'q',3:'l',4:'r',5:'u'};
-  const sec = sectionMap[n];
+  const sec=sectionMap[n];
   if(sec){
-    const scored = Object.keys(session.scores[sec]||{}).length;
-    const total = SECTIONS[sec].keys.length;
-    if(scored < total){
-      if(!confirm((total-scored)+' item(s) not yet scored. Continue anyway?')) return;
-    }
-    // Capture notes
+    const scored=Object.keys(session.scores[sec]||{}).length;
+    const total=SECTIONS[sec].keys.length;
+    if(scored<total){ if(!confirm((total-scored)+' item(s) not yet scored. Continue anyway?')) return; }
     SECTIONS[sec].keys.forEach(k=>{
-      const ta = document.getElementById('nt-'+sec+'-'+k);
-      if(ta && ta.value.trim()) session.notes[sec][k] = ta.value.trim();
+      const ta=document.getElementById('nt-'+sec+'-'+k);
+      if(ta && ta.value.trim()) session.notes[sec][k]=ta.value.trim();
     });
   }
-  if(n===2) timerStop(); // stop queue timer when moving to load
+  if(n===2) timerStop();
   gp(n);
 }
 
@@ -1104,9 +681,8 @@ function timerStart(){
   document.getElementById('timerDisplay').classList.add('running');
   timerInterval=setInterval(()=>{
     timerSeconds++;
-    const m=Math.floor(timerSeconds/60).toString().padStart(2,'0');
-    const s=(timerSeconds%60).toString().padStart(2,'0');
-    document.getElementById('timerDisplay').textContent=m+':'+s;
+    document.getElementById('timerDisplay').textContent=
+      Math.floor(timerSeconds/60).toString().padStart(2,'0')+':'+(timerSeconds%60).toString().padStart(2,'0');
   },1000);
 }
 function timerStop(){
@@ -1116,132 +692,84 @@ function timerStop(){
   document.getElementById('timerStopBtn').style.display='none';
   document.getElementById('timerResetBtn').style.display='';
   document.getElementById('timerDisplay').classList.remove('running');
-  if(session) session.timerSecs = timerSeconds;
+  if(session) session.timerSecs=timerSeconds;
 }
 function timerReset(){
-  timerStop();
-  timerSeconds=0;
+  timerStop(); timerSeconds=0;
   document.getElementById('timerDisplay').textContent='00:00';
   document.getElementById('timerStartBtn').style.display='';
   document.getElementById('timerResetBtn').style.display='none';
   document.getElementById('timerStopBtn').style.display='none';
 }
-
 function populateTimerReadout(){
   if(!session) return;
-  const secs = session.timerSecs || timerSeconds;
-  const m = Math.floor(secs/60).toString().padStart(2,'0');
-  const s = (secs%60).toString().padStart(2,'0');
-  document.getElementById('p5TimerDisplay').textContent = secs>0 ? m+':'+s : 'Not timed';
-
-  const posted = session.postedWait || '—';
-  document.getElementById('p5PostedWait').textContent = posted;
-
-  // Variance
-  const varEl = document.getElementById('p5Variance');
-  if(!secs || !posted || posted==='—'){
-    varEl.textContent = 'Insufficient data';
-    varEl.style.color = 'var(--text-muted)';
-    return;
-  }
-  // Parse posted wait to minutes
-  const postedMatch = posted.match(/(\d+)/);
-  if(!postedMatch){ varEl.textContent='—'; return; }
-  const postedMins = parseInt(postedMatch[1]);
-  const actualMins = secs/60;
-  const diff = actualMins - postedMins;
-  const absDiff = Math.abs(diff);
-  const pct = Math.round(absDiff/postedMins*100);
-
-  if(absDiff <= 2){
-    varEl.textContent = '✓ Accurate — within 2 min of posted time';
-    varEl.style.color = 'var(--green)';
-  } else if(diff > 0){
-    varEl.textContent = `⚠ Over by ~${Math.round(diff)} min (${pct}% longer than posted)`;
-    varEl.style.color = 'var(--amber)';
-  } else {
-    varEl.textContent = `↓ Under by ~${Math.round(absDiff)} min (${pct}% shorter than posted)`;
-    varEl.style.color = 'var(--violet-bright)';
-  }
+  const secs=session.timerSecs||timerSeconds;
+  const m=Math.floor(secs/60).toString().padStart(2,'0'), s=(secs%60).toString().padStart(2,'0');
+  document.getElementById('p5TimerDisplay').textContent=secs>0?m+':'+s:'Not timed';
+  const posted=session.postedWait||'—';
+  document.getElementById('p5PostedWait').textContent=posted;
+  const varEl=document.getElementById('p5Variance');
+  if(!secs||!posted||posted==='—'){varEl.textContent='Insufficient data';varEl.style.color='var(--text-muted)';return;}
+  const postedMatch=posted.match(/(\d+)/);
+  if(!postedMatch){varEl.textContent='—';return;}
+  const postedMins=parseInt(postedMatch[1]), actualMins=secs/60, diff=actualMins-postedMins, absDiff=Math.abs(diff), pct=Math.round(absDiff/postedMins*100);
+  if(absDiff<=2){varEl.textContent='✓ Accurate — within 2 min of posted time';varEl.style.color='var(--green)';}
+  else if(diff>0){varEl.textContent=`⚠ Over by ~${Math.round(diff)} min (${pct}% longer than posted)`;varEl.style.color='var(--amber)';}
+  else{varEl.textContent=`↓ Under by ~${Math.round(absDiff)} min (${pct}% shorter than posted)`;varEl.style.color='var(--violet-bright)';}
 }
 
 // ── STARS ────────────────────────────────────────────────────────────────────
-const STAR_KEYS = ['safety','friendly','queue','clean','recommend'];
+const STAR_KEYS=['safety','friendly','queue','clean','recommend'];
 function initStars(){
   STAR_KEYS.forEach(k=>{
-    const el = document.getElementById('stars-'+k);
-    if(!el) return;
-    el.innerHTML = [1,2,3,4,5].map(i=>`<span class="star" data-key="${k}" data-val="${i}" onclick="setStar('${k}',${i})">★</span>`).join('');
+    const el=document.getElementById('stars-'+k); if(!el) return;
+    el.innerHTML=[1,2,3,4,5].map(i=>`<span class="star" data-key="${k}" data-val="${i}" onclick="setStar('${k}',${i})">★</span>`).join('');
   });
 }
 function setStar(key, val){
-  session.stars[key] = val;
-  document.querySelectorAll(`.star[data-key="${key}"]`).forEach(s=>{
-    s.classList.toggle('lit', parseInt(s.dataset.val) <= val);
-  });
+  session.stars[key]=val;
+  document.querySelectorAll(`.star[data-key="${key}"]`).forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.val)<=val));
 }
 document.addEventListener('DOMContentLoaded', initStars);
 
 // ── BUILD REVIEW ─────────────────────────────────────────────────────────────
 function buildReview(){
-  // Capture P5 fields
-  session.notePositive = document.getElementById('notePositive').value.trim();
-  session.noteNegative = document.getElementById('noteNegative').value.trim();
-  session.opDemeanor = document.getElementById('opDemeanor').value;
-  session.staffObserved = document.getElementById('staffObserved').value.trim();
-  session.noteAdditional = document.getElementById('noteAdditional').value.trim();
+  session.notePositive=document.getElementById('notePositive').value.trim();
+  session.noteNegative=document.getElementById('noteNegative').value.trim();
+  session.opDemeanor=document.getElementById('opDemeanor').value;
+  session.staffObserved=document.getElementById('staffObserved').value.trim();
+  session.noteAdditional=document.getElementById('noteAdditional').value.trim();
 
-  // Score overview
-  const allScores = ['q','l','r','u'].flatMap(sec=>
-    SECTIONS[sec].keys.map(k=>session.scores[sec][k])
-  ).filter(Boolean);
-  const yesCount = allScores.filter(v=>v==='yes').length;
-  const noCount = allScores.filter(v=>v==='no').length;
-  const naCount = allScores.filter(v=>v==='na').length;
-  const total = allScores.length;
-  const pct = total>0?Math.round(yesCount/( yesCount+noCount)*100):0;
+  const allScores=['q','l','r','u'].flatMap(sec=>SECTIONS[sec].keys.map(k=>session.scores[sec][k])).filter(Boolean);
+  const yesCount=allScores.filter(v=>v==='yes').length;
+  const noCount=allScores.filter(v=>v==='no').length;
+  const pct=yesCount+noCount>0?Math.round(yesCount/(yesCount+noCount)*100):0;
+  const pctClass=pct>=85?'hi':pct>=65?'mid':'lo';
+  const secs=session.timerSecs||0;
+  const waitStr=secs>0?Math.floor(secs/60).toString().padStart(2,'0')+':'+(secs%60).toString().padStart(2,'0'):'—';
 
-  const pctClass = pct>=85?'hi':pct>=65?'mid':'lo';
-  const secs = session.timerSecs||0;
-  const wm = Math.floor(secs/60).toString().padStart(2,'0');
-  const ws = (secs%60).toString().padStart(2,'0');
-  const waitStr = secs>0 ? wm+':'+ws : '—';
-  document.getElementById('scoreOverview').innerHTML = `
+  document.getElementById('scoreOverview').innerHTML=`
     <div class="score-box"><div class="score-box-val ${pctClass}">${pct}<span style="font-size:14px">%</span></div><div class="score-box-label">Pass Rate</div></div>
     <div class="score-box"><div class="score-box-val" style="color:var(--green);">${yesCount}</div><div class="score-box-label">Passing</div></div>
-    <div class="score-box"><div class="score-box-val" style="color:var(--red);">${noCount}</div><div class="score-box-label">Flags</div></div>
-  `;
-  // Wait time block below overview
+    <div class="score-box"><div class="score-box-val" style="color:var(--red);">${noCount}</div><div class="score-box-label">Flags</div></div>`;
+
   if(secs>0||session.postedWait){
-    const existing = document.getElementById('waitTimeBlock');
-    const block = existing || document.createElement('div');
-    block.id='waitTimeBlock';
-    block.style.cssText='background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:16px;';
-    block.innerHTML=`
-      <div style="flex:1;"><div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px;">Actual Wait</div><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--violet-bright);">${waitStr}</div></div>
-      <div style="flex:1;"><div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px;">Posted Wait</div><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--text-dim);">${session.postedWait||'—'}</div></div>
-    `;
-    if(!existing) document.getElementById('scoreOverview').insertAdjacentElement('afterend',block);
+    const ex=document.getElementById('waitTimeBlock');
+    const blk=ex||document.createElement('div');
+    blk.id='waitTimeBlock';
+    blk.style.cssText='background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:16px;';
+    blk.innerHTML=`<div style="flex:1;"><div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px;">Actual Wait</div><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--violet-bright);">${waitStr}</div></div><div style="flex:1;"><div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:3px;">Posted Wait</div><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--text-dim);">${session.postedWait||'—'}</div></div>`;
+    if(!ex) document.getElementById('scoreOverview').insertAdjacentElement('afterend',blk);
   }
 
-  // Section summaries
-  const sectionDefs = [
-    {sec:'q', elId:'sumQueueRows', keys:SECTIONS.q.keys},
-    {sec:'l', elId:'sumLoadRows',  keys:SECTIONS.l.keys},
-    {sec:'r', elId:'sumRideRows',  keys:SECTIONS.r.keys},
-    {sec:'u', elId:'sumUnloadRows',keys:SECTIONS.u.keys},
-  ];
-  sectionDefs.forEach(({sec,elId,keys})=>{
-    document.getElementById(elId).innerHTML = keys.map(k=>{
-      const v = session.scores[sec][k];
-      const cls = v==='yes'?'pass':v==='no'?'fail':'na';
+  [['q','sumQueueRows'],['l','sumLoadRows'],['r','sumRideRows'],['u','sumUnloadRows']].forEach(([sec,elId])=>{
+    document.getElementById(elId).innerHTML=SECTIONS[sec].keys.map(k=>{
+      const v=session.scores[sec][k], cls=v==='yes'?'pass':v==='no'?'fail':'na';
       return `<div class="sum-row"><span class="sum-row-label">${LABELS[k]}</span><span class="sum-val ${cls}">${(v||'—').toUpperCase()}</span></div>`;
     }).join('');
   });
 
-  // Flags
-  const flags=[];
-  const sectionNames={q:'Queue Entry',l:'Load Zone',r:'Ride Cycle',u:'Unload/Exit'};
+  const flags=[], sectionNames={q:'Queue Entry',l:'Load Zone',r:'Ride Cycle',u:'Unload/Exit'};
   ['q','l','r','u'].forEach(sec=>{
     SECTIONS[sec].keys.filter(k=>session.scores[sec][k]==='no').forEach(k=>{
       flags.push({where:sectionNames[sec],label:LABELS[k],note:session.notes[sec][k]||''});
@@ -1249,58 +777,155 @@ function buildReview(){
   });
   if(flags.length){
     document.getElementById('flagsWrap').style.display='block';
-    document.getElementById('flagsList').innerHTML=flags.map(f=>`
-      <div class="flag-item">
-        <div class="flag-dot"></div>
-        <div class="flag-text"><span class="flag-where">${f.where}</span>${f.label}${f.note?'<br><em style="color:rgba(239,68,68,.6);">'+f.note+'</em>':''}</div>
-      </div>`).join('');
-  } else {
-    document.getElementById('flagsWrap').style.display='none';
-  }
+    document.getElementById('flagsList').innerHTML=flags.map(f=>`<div class="flag-item"><div class="flag-dot"></div><div class="flag-text"><span class="flag-where">${f.where}</span>${f.label}${f.note?'<br><em style="color:rgba(239,68,68,.6);">'+f.note+'</em>':''}</div></div>`).join('');
+  } else { document.getElementById('flagsWrap').style.display='none'; }
 
-  document.getElementById('p6Meta').textContent =
-    session.attraction+' · '+new Date(session.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' · '+session.auditor;
+  document.getElementById('p6Meta').textContent=session.attraction+' · '+new Date(session.timestamp).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+' · '+session.auditor;
   gp(6);
 }
 
 // ── SUBMIT ────────────────────────────────────────────────────────────────────
-function submitMission(){
-  const summary = document.getElementById('auditSummary').value.trim();
+async function submitMission(){
+  const summary=document.getElementById('auditSummary').value.trim();
   if(!summary){toast('Auditor summary required',1);return;}
-  session.summary = summary;
+  session.summary=summary;
 
-  const hasFlags = ['q','l','r','u'].some(s=>Object.values(session.scores[s]).includes('no'));
-  const ref = 'MGSA-'+new Date().getFullYear()+'-'+String(Math.floor(Math.random()*9000)+1000);
-  document.getElementById('missionRef').textContent = ref;
-  document.getElementById('successMsg').textContent = hasFlags
-    ? 'Mission report filed with '+['q','l','r','u'].flatMap(s=>SECTIONS[s].keys.filter(k=>session.scores[s][k]==='no')).length+' flag(s). Forward to Operations for corrective action follow-up.'
-    : 'All items passed or marked N/A. No corrective actions required. Mission report recorded.';
+  const btn=document.getElementById('submitBtn');
+  btn.disabled=true; btn.textContent='Submitting…';
+
+  const now=new Date();
+  const ref='MGSA-'+now.getFullYear()+'-'+String(Math.floor(Math.random()*9000)+1000);
+
+  // ── Compute scores ──────────────────────────────────────────────────────
+  const allScores=['q','l','r','u'].flatMap(sec=>SECTIONS[sec].keys.map(k=>session.scores[sec][k])).filter(Boolean);
+  const yesCount=allScores.filter(v=>v==='yes').length;
+  const noCount=allScores.filter(v=>v==='no').length;
+  const passRate=yesCount+noCount>0?Math.round(yesCount/(yesCount+noCount)*100):null;
+
+  // ── Collect all item scores as individual fields ────────────────────────
+  const itemFields={};
+  ['q','l','r','u'].forEach(sec=>{
+    SECTIONS[sec].keys.forEach(k=>{
+      const v=session.scores[sec][k];
+      if(v) itemFields['Score '+k.toUpperCase()]=v.toUpperCase();
+      const n=session.notes[sec][k];
+      if(n) itemFields['Note '+k.toUpperCase()]=n;
+    });
+  });
+
+  // ── All notes as a single rollup string ─────────────────────────────────
+  const flagSummary=['q','l','r','u'].flatMap(sec=>
+    SECTIONS[sec].keys.filter(k=>session.scores[sec][k]==='no')
+      .map(k=>LABELS[k]+(session.notes[sec][k]?' — '+session.notes[sec][k]:''))
+  ).join(' | ');
+
+  // ── mGSA_Submissions payload ────────────────────────────────────────────
+  const mgsaFields={
+    'Session ID':         session.id,
+    'Mission Ref':        ref,
+    'Submitted At':       now.toISOString(),
+    'Timestamp':          session.timestamp,
+
+    'Auditor':            session.auditor,
+    'Auditor Role':       session.auditorRole||'',
+    'Visit Type':         session.visitType||'',
+    'Attraction':         session.attraction,
+    'Posted Wait':        session.postedWait||'',
+    'Crowd Level':        session.crowdLevel||'',
+    'Weather':            session.weather||'',
+    'Timer Seconds':      session.timerSecs||0,
+
+    // Aggregate scores
+    'Pass Rate':          passRate,
+    'Yes Count':          yesCount,
+    'No Count':           noCount,
+    'Flag Count':         noCount,
+    'Flag Summary':       flagSummary||'None',
+
+    // Star ratings
+    'Star Safety':        session.stars.safety||null,
+    'Star Friendliness':  session.stars.friendly||null,
+    'Star Queue':         session.stars.queue||null,
+    'Star Cleanliness':   session.stars.clean||null,
+    'Star Recommend':     session.stars.recommend||null,
+
+    // Field notes
+    'Note Positive':      session.notePositive||'',
+    'Note Negative':      session.noteNegative||'',
+    'Op Demeanor':        session.opDemeanor||'',
+    'Staff Observed':     session.staffObserved||'',
+    'Note Additional':    session.noteAdditional||'',
+    'Auditor Summary':    session.summary,
+
+    'Source':             'mGSA — Mystery Shopper',
+
+    ...itemFields,
+  };
+
+  // Remove null/empty
+  Object.keys(mgsaFields).forEach(k=>{
+    if(mgsaFields[k]===null||mgsaFields[k]===''||mgsaFields[k]===undefined) delete mgsaFields[k];
+  });
+
+  // ── Push 1: mGSA_Submissions ────────────────────────────────────────────
+  const mgsaOk=await atPost('mGSA_Submissions', mgsaFields);
+
+  // ── Push 2: CAR_Log — one auto-CAR per flagged item ─────────────────────
+  const flaggedItems=['q','l','r','u'].flatMap(sec=>
+    SECTIONS[sec].keys.filter(k=>session.scores[sec][k]==='no')
+      .map(k=>({sec, key:k, label:LABELS[k], note:session.notes[sec][k]||''}))
+  );
+
+  // Safety-critical items get Critical priority regardless of count
+  const CRITICAL_KEYS=new Set(['l6','l7','q5','r1','r2','u2']);
+  let carsCreated=0;
+  for(const item of flaggedItems){
+    const priority=CRITICAL_KEYS.has(item.key)?'Critical':'Medium';
+    const daysOut=priority==='Critical'?1:5;
+    const due=new Date(); due.setDate(due.getDate()+daysOut);
+    await atPost('CAR_Log',{
+      'CAR ID':           'CAR-'+Date.now().toString(36).toUpperCase().slice(-6)+'-'+item.key.toUpperCase(),
+      'Source Stream':    'mGSA — Mystery GSA',
+      'Attraction / Area':session.attraction,
+      'Finding':          `[mGSA ${ref}] ${item.label}${item.note?' — '+item.note:''}`,
+      'Priority':         priority,
+      'Assigned To':      '',
+      'Due Date':         due.toISOString().split('T')[0],
+      'Status':           'Open',
+      'Opened At':        now.toISOString(),
+    });
+    carsCreated++;
+  }
+
+  // ── Show success ─────────────────────────────────────────────────────────
+  document.getElementById('missionRef').textContent=ref;
+  const syncNote=mgsaOk?'':' (sync pending — check connection)';
+  const carNote=carsCreated>0?` ${carsCreated} corrective action${carsCreated>1?'s':''} auto-queued in CA Manager.`:'';
+  document.getElementById('successMsg').textContent=noCount>0
+    ? `Mission report filed with ${noCount} flag${noCount>1?'s':''}.${carNote} Forward to Operations for follow-up.${syncNote}`
+    : `All items passed or marked N/A. No corrective actions required. Mission report recorded.${syncNote}`;
   gp(7);
 }
 
 // ── RESET ────────────────────────────────────────────────────────────────────
 function resetAll(){
-  session = null;
-  timerReset();
-  // Clear all scores
+  session=null; timerReset();
   ['q','l','r','u'].forEach(sec=>{
     SECTIONS[sec].keys.forEach(k=>{
-      const row = document.getElementById(SECTIONS[sec].prefix+'-'+k);
+      const row=document.getElementById(SECTIONS[sec].prefix+'-'+k);
       if(row){row.classList.remove('s-yes','s-no','s-na');row.querySelectorAll('.score-btn').forEach(b=>b.classList.remove('yes','no','na'));}
-      const note = document.getElementById('in-'+sec+'-'+k);
-      if(note) note.classList.remove('show');
-      const ta = document.getElementById('nt-'+sec+'-'+k);
-      if(ta) ta.value='';
+      const note=document.getElementById('in-'+sec+'-'+k); if(note) note.classList.remove('show');
+      const ta=document.getElementById('nt-'+sec+'-'+k); if(ta) ta.value='';
     });
     updateProg(sec);
   });
-  // Clear stars
-  STAR_KEYS.forEach(k=>{document.querySelectorAll(`.star[data-key="${k}"]`).forEach(s=>s.classList.remove('lit'));});
-  // Clear P5 fields
+  STAR_KEYS.forEach(k=>document.querySelectorAll(`.star[data-key="${k}"]`).forEach(s=>s.classList.remove('lit')));
   ['notePositive','noteNegative','noteAdditional','auditSummary','staffObserved'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   ['opDemeanor','auditorRole','visitType','attractionName','postedWait','crowdLevel','weather'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   document.getElementById('auditorName').value='';
   document.getElementById('flagsWrap').style.display='none';
+  const btn=document.getElementById('submitBtn');
+  if(btn){btn.disabled=false;btn.textContent='Submit Mission Report ✓';}
   gp(0);
 }
 
@@ -1309,13 +934,10 @@ function cancelMission(){
   resetAll();
 }
 
-// ── TOAST ─────────────────────────────────────────────────────────────────────
 function toast(msg,type){
   const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.className='show'+(type===1?' err':type==='ok'?' ok':'');
-  clearTimeout(t._t);
-  t._t=setTimeout(()=>t.className='',2800);
+  t.textContent=msg; t.className='show'+(type===1?' err':type==='ok'?' ok':'');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className='',2800);
 }
 </script>
 </body>
