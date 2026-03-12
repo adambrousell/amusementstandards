@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 RIDE Score™ — System Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #06080D;
+  --teal: #00D4D0;
+  --teal2: #00A8A5;
+  --gold: #D4AF37;
+  --gold2: #B8960C;
+  --red: #FF3B5C;
+  --blue: #2E6FFF;
+  --green: #00D68F;
+  --amber: #FFB800;
+  --purple: #8B5CF6;
+  --orange: #FF6B35;
+  --text: #94A3B8;
+  --text-bright: #E2EAF4;
+  --dim: #1E293B;
+  --mono: 'JetBrains Mono', monospace;
+  --display: 'Bebas Neue', sans-serif;
+  --body: 'DM Sans', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; overflow-x:hidden; }
+body {
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text-bright);
+  min-height: 100vh;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 80px 24px 60px;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 30%, rgba(0,212,208,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 20% 70%, rgba(212,175,55,.04) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 80% 20%, rgba(46,111,255,.04) 0%, transparent 50%);
+}
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,212,208,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,208,.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+}
+.hero-content { position: relative; z-index: 2; text-align: center; max-width: 820px; }
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 3px;
+  color: var(--teal); margin-bottom: 18px; opacity: 0;
+  animation: fadeUp .6s .2s ease forwards;
+}
+.hero-title {
+  font-family: var(--display); font-size: clamp(56px, 9vw, 110px);
+  line-height: .95; color: var(--text-bright); margin-bottom: 6px;
+  opacity: 0; animation: fadeUp .7s .35s ease forwards;
+}
+.hero-title span { color: var(--teal); }
+.hero-sub-title {
+  font-family: var(--display); font-size: clamp(28px, 4vw, 52px);
+  color: var(--gold); letter-spacing: 2px; margin-bottom: 24px;
+  opacity: 0; animation: fadeUp .7s .45s ease forwards;
+}
+.hero-desc {
+  font-size: 17px; line-height: 1.7; color: var(--text); max-width: 600px;
+  margin: 0 auto 36px; opacity: 0; animation: fadeUp .7s .55s ease forwards;
+}
+.hero-cta {
+  display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .7s .65s ease forwards;
+}
+.btn-primary {
+  padding: 14px 32px; background: linear-gradient(135deg, var(--teal), var(--teal2));
+  border: none; border-radius: 8px; font-family: var(--display); font-size: 18px;
+  letter-spacing: 1px; color: #06080D; cursor: pointer; text-decoration: none;
+  transition: all .2s; box-shadow: 0 4px 24px rgba(0,212,208,.25);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(0,212,208,.4); }
+.btn-secondary {
+  padding: 14px 28px; border: 1.5px solid rgba(212,175,55,.4); border-radius: 8px;
+  font-family: var(--display); font-size: 18px; letter-spacing: 1px;
+  color: var(--gold); cursor: pointer; text-decoration: none; transition: all .2s;
+  background: rgba(212,175,55,.06);
+}
+.btn-secondary:hover { border-color: var(--gold); background: rgba(212,175,55,.12); }
+
+/* ── SCORE RING HERO ── */
+.score-ring-hero {
+  margin: 40px auto 0; position: relative; width: 160px; height: 160px;
+  opacity: 0; animation: fadeUp .8s .75s ease forwards;
+}
+.score-ring-hero svg { width: 100%; height: 100%; }
+.score-ring-hero .inner {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.score-ring-hero .score-num { font-family: var(--display); font-size: 56px; color: var(--text-bright); line-height: 1; }
+.score-ring-hero .score-label { font-family: var(--mono); font-size: 9px; color: var(--teal); letter-spacing: 2px; margin-top: 2px; }
+
+/* ── SECTION ── */
+.section { padding: 80px 24px; max-width: 1200px; margin: 0 auto; }
+.sec-eyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 12px;
+}
+.sec-title {
+  font-family: var(--display); font-size: clamp(36px, 5vw, 64px);
+  color: var(--text-bright); line-height: 1; margin-bottom: 16px;
+}
+.sec-title span { color: var(--gold); }
+.sec-body { font-size: 16px; line-height: 1.75; color: var(--text); max-width: 620px; }
+
+/* ── FLOW DIAGRAM ── */
+.flow-section { background: rgba(0,0,0,.3); border-top: 1px solid var(--dim); border-bottom: 1px solid var(--dim); padding: 80px 24px; }
+.flow-wrap { max-width: 1200px; margin: 0 auto; }
+.flow-label { font-family: var(--mono); font-size: 10px; letter-spacing: 3px; color: var(--teal); margin-bottom: 12px; text-align: center; }
+.flow-title { font-family: var(--display); font-size: clamp(32px, 5vw, 60px); text-align: center; color: var(--text-bright); margin-bottom: 8px; }
+.flow-desc { font-size: 15px; color: var(--text); text-align: center; max-width: 560px; margin: 0 auto 56px; line-height: 1.65; }
+
+/* NODE DIAGRAM — radial absolute layout */
+.diagram {
+  position: relative; width: 100%; overflow: hidden;
+}
+.diagram-inner {
+  position: relative; max-width: 1000px; margin: 0 auto;
+}
+svg#flowSvg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; overflow: visible;
+}
+svg#flowSvg path { stroke-dasharray: 5 4; animation: dashFlow 1.4s linear infinite; }
+@keyframes dashFlow { to { stroke-dashoffset: -18; } }
+
+/* NODES — absolutely positioned by JS */
+.node {
+  position: absolute; transform: translate(-50%, -50%);
+  cursor: pointer; transition: transform .2s, z-index 0s; z-index: 10;
+}
+.node:hover { transform: translate(-50%, -50%) scale(1.1); z-index: 20; }
+
+.node-inner {
+  border-radius: 10px; border: 1.5px solid; padding: 9px 11px;
+  backdrop-filter: blur(8px); transition: box-shadow .2s;
+  text-align: center; min-width: 90px; max-width: 118px;
+  box-shadow: 0 3px 16px rgba(0,0,0,.45);
+}
+.node:hover .node-inner { box-shadow: 0 8px 32px rgba(0,0,0,.65); }
+
+.node-icon  { font-size: 18px; margin-bottom: 4px; line-height: 1; }
+.node-code  { font-family: var(--mono); font-size: 8px; letter-spacing: 1.5px; margin-bottom: 2px; font-weight: 700; }
+.node-name  { font-size: 10px; font-weight: 600; line-height: 1.25; color: var(--text-bright); }
+.node-stream{ font-family: var(--mono); font-size: 7px; color: rgba(255,255,255,.3); margin-top: 2px; }
+
+/* CENTER NODE */
+.node-center .node-inner {
+  min-width: 130px; max-width: 150px; padding: 14px 16px;
+  border-color: var(--teal); background: rgba(0,212,208,.09);
+}
+.node-center:hover .node-inner { background: rgba(0,212,208,.15); }
+.center-score { font-family: var(--display); font-size: 36px; color: var(--teal); line-height: 1; margin: 2px 0; }
+.center-label { font-family: var(--mono); font-size: 8px; color: var(--teal); letter-spacing: 2px; }
+.center-sub   { font-size: 10px; color: rgba(255,255,255,.35); margin-top: 3px; }
+
+/* PILLAR NODES */
+.node-pillar .node-inner { min-width: 100px; padding: 10px 10px; }
+
+/* COLOR VARIANTS */
+.c-teal  .node-inner { border-color: rgba(0,212,208,.4);  background: rgba(0,212,208,.07);  }
+.c-teal  .node-code  { color: var(--teal); }
+.c-blue  .node-inner { border-color: rgba(46,111,255,.4); background: rgba(46,111,255,.07); }
+.c-blue  .node-code  { color: var(--blue); }
+.c-green .node-inner { border-color: rgba(0,214,143,.4);  background: rgba(0,214,143,.07);  }
+.c-green .node-code  { color: var(--green); }
+.c-amber .node-inner { border-color: rgba(255,184,0,.4);  background: rgba(255,184,0,.07);  }
+.c-amber .node-code  { color: var(--amber); }
+.c-red   .node-inner { border-color: rgba(255,59,92,.4);  background: rgba(255,59,92,.07);  }
+.c-red   .node-code  { color: var(--red); }
+.c-purple .node-inner{ border-color: rgba(139,92,246,.4); background: rgba(139,92,246,.07); }
+.c-purple .node-code { color: var(--purple); }
+.c-orange .node-inner{ border-color: rgba(255,107,53,.4); background: rgba(255,107,53,.07); }
+.c-orange .node-code { color: var(--orange); }
+.c-gold  .node-inner { border-color: rgba(212,175,55,.4); background: rgba(212,175,55,.07); }
+.c-gold  .node-code  { color: var(--gold); }
+
+/* TOOLTIP */
+.tooltip {
+  position: fixed; z-index: 1000; pointer-events: none;
+  background: #0D1422; border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px; padding: 12px 16px; max-width: 240px;
+  opacity: 0; transition: opacity .15s; box-shadow: 0 8px 32px rgba(0,0,0,.6);
+}
+.tooltip.show { opacity: 1; }
+.tt-code { font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; margin-bottom: 4px; font-weight: 700; }
+.tt-name { font-size: 13px; font-weight: 600; color: var(--text-bright); margin-bottom: 6px; }
+.tt-desc { font-size: 11px; color: var(--text); line-height: 1.55; margin-bottom: 10px; }
+.tt-pillars { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+.tt-pill { font-family: var(--mono); font-size: 9px; padding: 2px 7px; border-radius: 4px; letter-spacing: .5px; font-weight: 700; }
+.tt-link { font-family: var(--mono); font-size: 10px; color: var(--teal); display: block; }
+
+/* ── PILLAR SECTION ── */
+.pillars-strip { padding: 80px 24px; }
+.pillars-inner { max-width: 1200px; margin: 0 auto; }
+.pillar-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 48px; }
+@media(min-width: 800px) { .pillar-grid { grid-template-columns: repeat(4, 1fr); } }
+.pillar-card {
+  background: rgba(255,255,255,.03); border: 1px solid var(--dim);
+  border-radius: 14px; padding: 28px 22px; transition: all .2s; position: relative; overflow: hidden;
+}
+.pillar-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.pc-r::before { background: var(--blue); }
+.pc-i::before { background: var(--green); }
+.pc-d::before { background: var(--orange); }
+.pc-e::before { background: var(--purple); }
+.pillar-card:hover { border-color: rgba(255,255,255,.1); transform: translateY(-3px); }
+.pc-letter { font-family: var(--display); font-size: 64px; line-height: 1; margin-bottom: 6px; opacity: .9; }
+.pc-r .pc-letter { color: var(--blue); }
+.pc-i .pc-letter { color: var(--green); }
+.pc-d .pc-letter { color: var(--orange); }
+.pc-e .pc-letter { color: var(--purple); }
+.pc-name { font-family: var(--display); font-size: 22px; color: var(--text-bright); letter-spacing: 1px; margin-bottom: 10px; }
+.pc-desc { font-size: 13px; line-height: 1.65; color: var(--text); margin-bottom: 16px; }
+.pc-streams { display: flex; flex-direction: column; gap: 5px; }
+.pc-stream-item {
+  font-family: var(--mono); font-size: 10px; padding: 5px 10px;
+  background: rgba(255,255,255,.04); border-radius: 5px; color: rgba(255,255,255,.5);
+  display: flex; align-items: center; gap: 7px;
+}
+.pc-stream-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── MODULE GRID ── */
+.modules-section { padding: 80px 24px; background: rgba(0,0,0,.25); border-top: 1px solid var(--dim); }
+.modules-inner { max-width: 1200px; margin: 0 auto; }
+.module-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 44px; }
+@media(min-width: 600px) { .module-grid { grid-template-columns: repeat(3, 1fr); } }
+@media(min-width: 900px) { .module-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.module-card {
+  background: rgba(255,255,255,.03); border: 1px solid var(--dim);
+  border-radius: 12px; padding: 20px 16px; text-decoration: none;
+  color: inherit; display: flex; flex-direction: column; gap: 8px;
+  transition: all .18s; position: relative; overflow: hidden;
+}
+.module-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  opacity: 0; transition: opacity .18s;
+}
+.module-card:hover { border-color: rgba(255,255,255,.1); transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0,0,0,.4); }
+.module-card:hover::after { opacity: 1; }
+.mc-teal::after  { background: var(--teal); }
+.mc-blue::after  { background: var(--blue); }
+.mc-green::after { background: var(--green); }
+.mc-amber::after { background: var(--amber); }
+.mc-red::after   { background: var(--red); }
+.mc-purple::after{ background: var(--purple); }
+.mc-orange::after{ background: var(--orange); }
+.mc-gold::after  { background: var(--gold); }
+.m-icon { font-size: 24px; }
+.m-code { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; font-weight: 700; margin-bottom: 1px; }
+.mc-teal .m-code  { color: var(--teal); }
+.mc-blue .m-code  { color: var(--blue); }
+.mc-green .m-code { color: var(--green); }
+.mc-amber .m-code { color: var(--amber); }
+.mc-red .m-code   { color: var(--red); }
+.mc-purple .m-code{ color: var(--purple); }
+.mc-orange .m-code{ color: var(--orange); }
+.mc-gold .m-code  { color: var(--gold); }
+.m-name { font-size: 14px; font-weight: 600; color: var(--text-bright); line-height: 1.25; }
+.m-desc { font-size: 11px; color: var(--text); line-height: 1.55; flex: 1; }
+.m-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+.m-tag { font-family: var(--mono); font-size: 9px; padding: 3px 8px; border-radius: 4px; background: rgba(255,255,255,.05); color: rgba(255,255,255,.35); }
+.m-arrow { font-size: 13px; color: rgba(255,255,255,.2); transition: color .15s; }
+.module-card:hover .m-arrow { color: var(--teal); }
+
+/* ── STATS BAR ── */
+.stats-bar { padding: 60px 24px; border-top: 1px solid var(--dim); border-bottom: 1px solid var(--dim); }
+.stats-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+@media(min-width: 600px) { .stats-inner { grid-template-columns: repeat(4, 1fr); } }
+.stat-item { text-align: center; padding: 20px; border-right: 1px solid var(--dim); }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: var(--display); font-size: 52px; color: var(--teal); line-height: 1; }
+.stat-label { font-family: var(--mono); font-size: 10px; letter-spacing: 2px; color: var(--text); margin-top: 6px; }
+
+/* ── CTA SECTION ── */
+.cta-section { padding: 100px 24px; text-align: center; }
+.cta-inner { max-width: 640px; margin: 0 auto; }
+.cta-title { font-family: var(--display); font-size: clamp(40px, 7vw, 80px); color: var(--text-bright); line-height: .95; margin-bottom: 20px; }
+.cta-title span { color: var(--teal); }
+.cta-body { font-size: 17px; line-height: 1.7; color: var(--text); margin-bottom: 36px; }
+.cta-note { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,.2); margin-top: 20px; letter-spacing: .5px; }
+
+/* ── FOOTER ── */
+.site-footer { border-top: 1px solid var(--dim); padding: 28px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.sf-brand { font-family: var(--display); font-size: 20px; color: var(--text); letter-spacing: 1px; }
+.sf-brand span { color: var(--teal); }
+.sf-links { display: flex; gap: 20px; }
+.sf-links a { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,.3); text-decoration: none; letter-spacing: 1px; transition: color .15s; }
+.sf-links a:hover { color: var(--teal); }
+.sf-copy { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,.15); }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: translateY(0); } }
+@keyframes ringDraw { from { stroke-dashoffset: 440; } to { stroke-dashoffset: 80; } }
+.ring-anim { animation: ringDraw 1.8s 1s ease forwards; }
+
+/* SCROLL REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">AMUSEMENT STANDARDS · AS 360 PLATFORM</div>
+    <div class="hero-title">RIDE<br><span>SCORE™</span></div>
+    <div class="hero-sub-title">The Operational Risk Index</div>
+    <div class="hero-desc">16 independent data streams. Four scored pillars. One composite index that quantifies your operational risk the way FICO scores creditworthiness — built for amusement parks, water parks, FECs, and ride manufacturers.</div>
+    <div class="hero-cta">
+      <a href="#diagram" class="btn-primary">Explore the System</a>
+      <a href="index.html" class="btn-secondary">Open Ops Hub</a>
+    </div>
+    <div class="score-ring-hero">
+      <svg viewBox="0 0 160 160">
+        <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(0,212,208,.08)" stroke-width="10"/>
+        <circle cx="80" cy="80" r="70" fill="none" stroke="url(#heroGrad)" stroke-width="10"
+          stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440"
+          transform="rotate(-90 80 80)" class="ring-anim"/>
+        <defs>
+          <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#005F5E"/>
+            <stop offset="100%" stop-color="#00D4D0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="inner">
+        <div class="score-num">81</div>
+        <div class="score-label">STRONG</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS BAR ══ -->
+<div class="stats-bar reveal">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-num">16</div><div class="stat-label">Data Streams</div></div>
+    <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Scored Pillars</div></div>
+    <div class="stat-item"><div class="stat-num">360°</div><div class="stat-label">Coverage</div></div>
+    <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Composite Index</div></div>
+  </div>
+</div>
+
+<!-- ══ FLOW DIAGRAM ══ -->
+<section class="flow-section" id="diagram">
+  <div class="flow-wrap">
+    <div class="flow-label reveal">SYSTEM ARCHITECTURE</div>
+    <div class="flow-title reveal">How the streams converge</div>
+    <div class="flow-desc reveal">Every form feeds a stream. Every stream feeds a pillar. Every pillar feeds the RIDE Score. Click any node to open its form.</div>
+    <div class="diagram">
+      <div class="diagram-inner" id="diagramInner">
+        <svg id="flowSvg"></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PILLARS ══ -->
+<section class="pillars-strip">
+  <div class="pillars-inner">
+    <div class="sec-eyebrow reveal">THE FOUR PILLARS</div>
+    <div class="sec-title reveal">R · I · D · <span>E</span></div>
+    <div class="sec-body reveal">Each pillar aggregates multiple independent data streams with weighted convergence logic. Pillar scores are 0–100. No single stream controls a pillar — divergence between streams is the signal.</div>
+    <div class="pillar-grid">
+      <div class="pillar-card pc-r reveal">
+        <div class="pc-letter">R</div>
+        <div class="pc-name">Readiness</div>
+        <div class="pc-desc">Operational preparedness — are people, equipment, and protocols in position before gates open?</div>
+        <div class="pc-streams">
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>iGSA · In-House GSA</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>mGSA · Mystery Shopper</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>IHS · In-House Safety</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>TPS · Third-Party Safety</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>NMR · Near-Miss</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>QTX · Queue & Wait</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>OLI · Operational Load</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>CAR · Corrective Actions</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>MGR · Manager Module</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>OPD · Ops Dispatch</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--teal)"></div>ATR · At-Ride</div>
+        </div>
+      </div>
+      <div class="pillar-card pc-i reveal">
+        <div class="pc-letter">I</div>
+        <div class="pc-name">Integrity</div>
+        <div class="pc-desc">Physical plant and procedural compliance — is the hardware and documentation maintaining standard?</div>
+        <div class="pc-streams">
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--green)"></div>iGSA · In-House GSA</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--green)"></div>mGSA · Mystery Shopper</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--green)"></div>IHS · In-House Safety</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--green)"></div>TPS · Third-Party Safety</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--green)"></div>NMR · Near-Miss</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--green)"></div>CAR · Corrective Actions</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--green)"></div>ATR · At-Ride</div>
+        </div>
+      </div>
+      <div class="pillar-card pc-d reveal">
+        <div class="pc-letter">D</div>
+        <div class="pc-name">Delivery</div>
+        <div class="pc-desc">Guest experience execution — what is the guest actually receiving versus what the operation is designed to deliver?</div>
+        <div class="pc-streams">
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>iGSA · In-House GSA</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>mGSA · Mystery Shopper</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>QR · Guest Feedback</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>EXS · Post-Visit Survey</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>OLR · Online Reviews</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>QTX · Queue & Wait</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>OLI · Operational Load</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>CAR · Corrective Actions</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>MGR · Manager Module</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>OPD · Ops Dispatch</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--orange)"></div>ATR · At-Ride</div>
+        </div>
+      </div>
+      <div class="pillar-card pc-e reveal">
+        <div class="pc-letter">E</div>
+        <div class="pc-name">Environment</div>
+        <div class="pc-desc">Conditions — weather-adjusted safety, cleanliness, emergency access, and ADA compliance across the facility.</div>
+        <div class="pc-streams">
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--purple)"></div>iGSA · In-House GSA</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--purple)"></div>mGSA · Mystery Shopper</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--purple)"></div>TPS · Third-Party Safety</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--purple)"></div>QR · Guest Feedback</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--purple)"></div>EXS · Post-Visit Survey</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--purple)"></div>OLR · Online Reviews</div>
+          <div class="pc-stream-item"><div class="pc-stream-dot" style="background:var(--purple)"></div>WX · Weather Data</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MODULE DIRECTORY ══ -->
+<section class="modules-section">
+  <div class="modules-inner">
+    <div class="sec-eyebrow reveal">ALL MODULES & FORMS</div>
+    <div class="sec-title reveal">Every stream. <span>One click.</span></div>
+    <div class="sec-body reveal">Each card links directly to the live operational form. All data flows into the AS 360 scoring engine automatically on submission.</div>
+    <div class="module-grid">
+      <a href="manager.html" class="module-card mc-teal reveal">
+        <div class="m-icon">👔</div><div class="m-code">MGR</div>
+        <div class="m-name">Manager Module</div>
+        <div class="m-desc">Shift open/close, escalation log, staffing overrides, corrective action tracking, audit schedule reminders.</div>
+        <div class="m-footer"><span class="m-tag">R · I · D</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="ops-dispatch.html" class="module-card mc-blue reveal">
+        <div class="m-icon">📡</div><div class="m-code">OPD</div>
+        <div class="m-name">Ops Dispatcher</div>
+        <div class="m-desc">Operator-to-unit assignments, rotation compliance, coverage gaps, unplanned closures, OLI trigger flag.</div>
+        <div class="m-footer"><span class="m-tag">R · D</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="operator-log.html" class="module-card mc-orange reveal">
+        <div class="m-icon">🎡</div><div class="m-code">ATR</div>
+        <div class="m-name">At-Ride / Operator Log</div>
+        <div class="m-desc">Opening checklist, cycle counts, restraint checks, load observations, anomalies, units in service.</div>
+        <div class="m-footer"><span class="m-tag">R · I · D</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="inhouse-gsa.html" class="module-card mc-amber reveal">
+        <div class="m-icon">📝</div><div class="m-code">iGSA</div>
+        <div class="m-name">In-House GSA</div>
+        <div class="m-desc">Rotating management guest services audit — scheduled, distributed execution for convergence validity.</div>
+        <div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="inhouse-safety.html" class="module-card mc-green reveal">
+        <div class="m-icon">🏢</div><div class="m-code">IHS</div>
+        <div class="m-name">In-House Safety Audit</div>
+        <div class="m-desc">Internal inspection against SOPs, pre-opening checklists, maintenance logs, and equipment standards.</div>
+        <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="third-party-safety.html" class="module-card mc-teal reveal">
+        <div class="m-icon">🔍</div><div class="m-code">TPS</div>
+        <div class="m-name">Third-Party Safety</div>
+        <div class="m-desc">AS-conducted ASTM-aligned compliance inspection from an independent auditor perspective.</div>
+        <div class="m-footer"><span class="m-tag">R · I · E</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="third-party-gsa.html" class="module-card mc-purple reveal">
+        <div class="m-icon">🕵️</div><div class="m-code">mGSA</div>
+        <div class="m-name">Mystery Shopper GSA</div>
+        <div class="m-desc">AS-deployed covert auditor scoring from queue entry through exit ramp. iGSA divergence is the key finding.</div>
+        <div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="nmr.html" class="module-card mc-red reveal">
+        <div class="m-icon">⚠️</div><div class="m-code">NMR</div>
+        <div class="m-name">Near-Miss Report</div>
+        <div class="m-desc">Structured triage flag. Adjusts Readiness and Integrity scores immediately on submission. Auto-escalates to CA.</div>
+        <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="ride-incident-report.html" class="module-card mc-red reveal">
+        <div class="m-icon">🚨</div><div class="m-code">IRL</div>
+        <div class="m-name">Ride Incident Report</div>
+        <div class="m-desc">Full 7-section legal incident record — guest, injury, sequence, response, notifications, witnesses, certification.</div>
+        <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="ca-manager-v2.html" class="module-card mc-teal reveal">
+        <div class="m-icon">✅</div><div class="m-code">CAR</div>
+        <div class="m-name">CA Manager</div>
+        <div class="m-desc">Corrective action lifecycle. CACR dashboard, aging buckets, audit schedule, certification tracker. Core scoring stream.</div>
+        <div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="guest-feedback.html" class="module-card mc-gold reveal">
+        <div class="m-icon">📱</div><div class="m-code">QR</div>
+        <div class="m-name">Guest Feedback (QR)</div>
+        <div class="m-desc">In-park QR-triggered feedback capture. Real-time guest sentiment feeding Delivery and Environment pillars.</div>
+        <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div>
+      </a>
+      <a href="post-visit.html" class="module-card mc-gold reveal">
+        <div class="m-icon">✉️</div><div class="m-code">EXS</div>
+        <div class="m-name">Post-Visit Survey</div>
+        <div class="m-desc">Triggered email survey capturing reflective sentiment and loyalty data after the guest experience concludes.</div>
+        <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-title reveal">Ready to score<br>your <span>operation?</span></div>
+    <div class="cta-body reveal">Amusement Standards deploys AS 360 across your facility and delivers a composite RIDE Score that your insurers, operators, and ownership can act on. Specialty lines insurers receive a structured risk dossier — not an anecdotal report.</div>
+    <div class="hero-cta reveal">
+      <a href="index.html" class="btn-primary">Open Ops Hub</a>
+      <a href="/cdn-cgi/l/email-protection#7b1a1f1a163b1a160e081e161e150f080f1a151f1a091f0855181416" class="btn-secondary">Contact Amusement Standards</a>
+    </div>
+    <div class="cta-note reveal">amusementstandards.com · AS 360 RIDE Score™ is proprietary methodology</div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="site-footer">
+  <div class="sf-brand">Amusement <span>Standards</span></div>
+  <div class="sf-links">
+    <a href="index.html">Ops Hub</a>
+    <a href="ca-manager-v2.html">CA Manager</a>
+    <a href="ride-incident-report.html">Incident Report</a>
+    <a href="/cdn-cgi/l/email-protection#e78683868aa7868a9294828a828993949386898386958394c984888a">Contact</a>
+  </div>
+  <div class="sf-copy">AS 360 RIDE Score™ · Proprietary</div>
+</footer>
+
+<!-- TOOLTIP -->
+<div class="tooltip" id="tooltip">
+  <div class="tt-code" id="tt-code"></div>
+  <div class="tt-name" id="tt-name"></div>
+  <div class="tt-desc" id="tt-desc"></div>
+  <div class="tt-pillars" id="tt-pillars"></div>
+  <a class="tt-link" id="tt-link">Open form →</a>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── SCROLL REVEAL ── */
+const reveals = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+}, { threshold: 0.08 });
+reveals.forEach(el => ro.observe(el));
+
+/* ── DIAGRAM ── */
+const PILLAR_COLORS = { R:'#2E6FFF', I:'#00D68F', D:'#FF6B35', E:'#8B5CF6' };
+const NODE_COLORS   = { teal:'#00D4D0', blue:'#2E6FFF', green:'#00D68F', amber:'#FFB800', red:'#FF3B5C', purple:'#8B5CF6', orange:'#FF6B35', gold:'#D4AF37' };
+
+const NODES = [
+  // Center
+  { id:'ride', code:'AS 360',   name:'RIDE Score™',       icon:'◈',  color:'teal',   type:'center', file:'index.html',
+    desc:'Composite operational risk index — 0 to 100. Aggregates all four pillar scores.', pillars:[], noLink:true },
+  // Pillars — inner ring at r=32%
+  { id:'R', code:'PILLAR R', name:'Readiness',   icon:'', color:'blue',   type:'pillar', file:'index.html',
+    desc:'Operational preparedness — staffing, dispatch, pre-opening inspections, near-miss history.', pillars:['R'], a: -90 },
+  { id:'I', code:'PILLAR I', name:'Integrity',   icon:'', color:'green',  type:'pillar', file:'index.html',
+    desc:'Physical plant and procedural compliance — equipment, restraints, service bulletins.', pillars:['I'], a: 0 },
+  { id:'D', code:'PILLAR D', name:'Delivery',    icon:'', color:'orange', type:'pillar', file:'index.html',
+    desc:'Guest experience execution — GSA scores, feedback streams, queue performance.', pillars:['D'], a: 90 },
+  { id:'E', code:'PILLAR E', name:'Environment', icon:'', color:'purple', type:'pillar', file:'index.html',
+    desc:'Conditions — weather, cleanliness, emergency access, ADA, crowd density.', pillars:['E'], a: 180 },
+  // Streams — outer ring at r=82%, evenly distributed clockwise starting top-right
+  { id:'igsa', code:'iGSA', name:'In-House GSA',      icon:'📝', color:'amber',  type:'stream', file:'inhouse-gsa.html',       a:  -90, r:82, desc:'Rotating management guest services audit. Feeds all four pillars.', pillars:['R','I','D','E'] },
+  { id:'mgsa', code:'mGSA', name:'Mystery Shopper',   icon:'🕵️', color:'purple', type:'stream', file:'third-party-gsa.html',   a:  -65, r:82, desc:'AS-deployed covert auditor. iGSA divergence is the primary finding.', pillars:['R','I','D','E'] },
+  { id:'ihs',  code:'IHS',  name:'In-House Safety',   icon:'🏢', color:'amber',  type:'stream', file:'inhouse-safety.html',    a:  -40, r:82, desc:'Internal safety inspection against SOPs, pre-opening checklists.', pillars:['R','I'] },
+  { id:'mgr',  code:'MGR',  name:'Manager Module',    icon:'👔', color:'teal',   type:'stream', file:'manager.html',           a:  -15, r:82, desc:'Shift open/close, escalation log, staffing overrides.', pillars:['R','I','D'] },
+  { id:'tps',  code:'TPS',  name:'3rd-Party Safety',  icon:'🔍', color:'teal',   type:'stream', file:'third-party-safety.html', a:  10, r:82, desc:'AS-conducted ASTM-aligned compliance inspection.', pillars:['R','I','E'] },
+  { id:'opd',  code:'OPD',  name:'Ops Dispatch',      icon:'📡', color:'blue',   type:'stream', file:'ops-dispatch.html',      a:  35, r:82, desc:'Operator assignments, rotation compliance, coverage gaps.', pillars:['R','D'] },
+  { id:'atr',  code:'ATR',  name:'At-Ride Log',       icon:'🎡', color:'orange', type:'stream', file:'operator-log.html',      a:  60, r:82, desc:'Opening checklist, cycle counts, restraint checks, anomalies.', pillars:['R','I','D'] },
+  { id:'car',  code:'CAR',  name:'CA Manager',        icon:'✅', color:'teal',   type:'stream', file:'ca-manager-v2.html',     a:  85, r:82, desc:'Corrective action lifecycle and CACR. Core signal across all pillars.', pillars:['R','I','D','E'] },
+  { id:'qtx',  code:'QTX',  name:'Queue & Wait',      icon:'⏱', color:'teal',   type:'stream', file:'ops-dispatch.html',      a: 110, r:82, desc:'Live queue and wait times. Feeds Readiness and Delivery.', pillars:['R','D'] },
+  { id:'qr',   code:'QR',   name:'Guest Feedback',    icon:'📱', color:'gold',   type:'stream', file:'guest-feedback.html',    a: 135, r:82, desc:'In-park QR real-time guest sentiment. Feeds Delivery and Environment.', pillars:['D','E'] },
+  { id:'exs',  code:'EXS',  name:'Post-Visit Survey', icon:'✉️', color:'gold',   type:'stream', file:'post-visit.html',        a: 160, r:82, desc:'Reflective post-visit email feedback. Feeds Delivery and Environment.', pillars:['D','E'] },
+  { id:'olr',  code:'OLR',  name:'Online Reviews',    icon:'⭐', color:'gold',   type:'stream', file:'index.html',             a: 185, r:82, desc:'Google, Yelp, TripAdvisor intelligence. Feeds Delivery and Environment.', pillars:['D','E'] },
+  { id:'nmr',  code:'NMR',  name:'Near-Miss',         icon:'⚠️', color:'red',    type:'stream', file:'nmr.html',               a: 210, r:82, desc:'Structured triage flag. Adjusts R and I scores immediately.', pillars:['R','I'] },
+  { id:'irl',  code:'IRL',  name:'Incident Report',   icon:'🚨', color:'red',    type:'stream', file:'ride-incident-report.html', a: 235, r:82, desc:'Full 7-section legal incident record.', pillars:['R','I'] },
+  { id:'wx',   code:'WX',   name:'Weather Data',      icon:'🌤', color:'blue',   type:'stream', file:'index.html',             a: 260, r:82, desc:'Live Open-Meteo feed. Adjusts Environment scoring.', pillars:['E'] },
+  { id:'oli',  code:'OLI',  name:'Operational Load',  icon:'📊', color:'teal',   type:'stream', file:'ops-dispatch.html',      a: -115,r:82, desc:'Field observation layer cross-validating dispatch vs. operational reality.', pillars:['R','D'] },
+];
+
+const EDGES = [
+  // pillars → center
+  {from:'R',to:'ride'},{from:'I',to:'ride'},{from:'D',to:'ride'},{from:'E',to:'ride'},
+  // streams → their primary pillar (first in list)
+  ...NODES.filter(n=>n.type==='stream').map(n=>({from:n.id, to:n.pillars[0]})),
+];
+
+function buildDiagram() {
+  const container = document.getElementById('diagramInner');
+  const W = container.offsetWidth;
+  const H = Math.round(W * 0.72);
+  container.style.height = H + 'px';
+  container.querySelectorAll('.node').forEach(n=>n.remove());
+
+  const svg = document.getElementById('flowSvg');
+  svg.innerHTML = '';
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+
+  const cx = W * 0.5, cy = H * 0.5;
+  const rInner = Math.min(W, H) * 0.28;  // pillar ring
+  const rOuter = Math.min(W, H) * 0.46;  // stream ring
+
+  const pos = {};
+
+  NODES.forEach(n => {
+    let x, y;
+    if (n.type === 'center') {
+      x = cx; y = cy;
+    } else if (n.type === 'pillar') {
+      const rad = n.a * Math.PI / 180;
+      x = cx + Math.cos(rad) * rInner;
+      y = cy + Math.sin(rad) * rInner;
+    } else {
+      const rad = n.a * Math.PI / 180;
+      const r = rOuter;
+      x = cx + Math.cos(rad) * r;
+      y = cy + Math.sin(rad) * r;
+    }
+    pos[n.id] = {x, y};
+  });
+
+  // Draw edges
+  EDGES.forEach(e => {
+    const from = pos[e.from]; const to = pos[e.to];
+    if (!from || !to) return;
+    const toNode = NODES.find(n => n.id === e.to);
+    const col = toNode?.type === 'center' ? '#00D4D0'
+              : PILLAR_COLORS[toNode?.id] || 'rgba(255,255,255,.12)';
+    const isToCenter = toNode?.type === 'center';
+
+    const dx = to.x - from.x, dy = to.y - from.y;
+    const cx1 = from.x + dx * 0.45, cy1 = from.y + dy * 0.05;
+    const cx2 = from.x + dx * 0.55, cy2 = from.y + dy * 0.95;
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d', `M${from.x},${from.y} C${cx1},${cy1} ${cx2},${cy2} ${to.x},${to.y}`);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', col);
+    path.setAttribute('stroke-width', isToCenter ? '2' : '1.2');
+    path.setAttribute('opacity', isToCenter ? '0.55' : '0.22');
+    path.style.animationDuration = (1.1 + Math.random() * 0.7).toFixed(2) + 's';
+    svg.appendChild(path);
+  });
+
+  // Build nodes
+  NODES.forEach(n => {
+    const p = pos[n.id];
+    const el = document.createElement('div');
+    el.className = 'node' + (n.type==='center'?' node-center':n.type==='pillar'?' node-pillar':'');
+    el.id = 'dn-' + n.id;
+    el.style.left = p.x + 'px';
+    el.style.top  = p.y + 'px';
+
+    const col  = NODE_COLORS[n.color] || '#00D4D0';
+    const pCol = PILLAR_COLORS[n.id]  || col;
+
+    let inner;
+    if (n.type === 'center') {
+      inner = `<div class="node-inner">
+        <div style="font-size:12px;opacity:.6;margin-bottom:2px">◈</div>
+        <div class="center-score">81</div>
+        <div class="center-label">RIDE SCORE™</div>
+        <div class="center-sub">AS 360 Composite</div>
+      </div>`;
+    } else if (n.type === 'pillar') {
+      inner = `<div class="node-inner" style="border-color:${pCol}50;background:${pCol}10">
+        <div class="node-code" style="color:${pCol}">${n.code}</div>
+        <div style="font-family:var(--display);font-size:24px;color:${pCol};line-height:1;margin:2px 0">${n.id}</div>
+        <div class="node-stream">${n.name}</div>
+      </div>`;
+    } else {
+      inner = `<div class="node-inner" style="border-color:${col}38;background:${col}09">
+        <div class="node-icon">${n.icon}</div>
+        <div class="node-code" style="color:${col}">${n.code}</div>
+        <div class="node-name">${n.name}</div>
+      </div>`;
+    }
+
+    el.innerHTML = inner;
+    el.addEventListener('mouseenter', ev => showTooltip(ev, n));
+    el.addEventListener('mouseleave', hideTooltip);
+    el.addEventListener('mousemove',  moveTooltip);
+    if (!n.noLink) el.addEventListener('click', () => window.location.href = n.file);
+    else el.style.cursor = 'default';
+    container.appendChild(el);
+  });
+}
+
+let ttTimeout;
+function showTooltip(ev, n) {
+  clearTimeout(ttTimeout);
+  const tt  = document.getElementById('tooltip');
+  const col = NODE_COLORS[n.color] || '#00D4D0';
+  document.getElementById('tt-code').textContent = n.code;
+  document.getElementById('tt-code').style.color  = col;
+  document.getElementById('tt-name').textContent = n.name || n.label;
+  document.getElementById('tt-desc').textContent = n.desc;
+  const pe = document.getElementById('tt-pillars');
+  if (n.pillars.length) {
+    pe.innerHTML = n.pillars.map(p =>
+      `<span class="tt-pill" style="background:${PILLAR_COLORS[p]}18;color:${PILLAR_COLORS[p]};border:1px solid ${PILLAR_COLORS[p]}40">${p}</span>`
+    ).join('');
+  } else {
+    pe.innerHTML = `<span class="tt-pill" style="background:rgba(0,212,208,.12);color:#00D4D0;border:1px solid rgba(0,212,208,.3)">COMPOSITE</span>`;
+  }
+  const lk = document.getElementById('tt-link');
+  lk.href = n.file; lk.style.color = col;
+  lk.style.display = n.noLink ? 'none' : 'block';
+  tt.classList.add('show');
+  moveTooltip(ev);
+}
+function hideTooltip() { ttTimeout = setTimeout(() => document.getElementById('tooltip').classList.remove('show'), 120); }
+function moveTooltip(ev) {
+  const tt = document.getElementById('tooltip');
+  let x = ev.clientX + 16, y = ev.clientY - 20;
+  if (x + 260 > window.innerWidth)  x = ev.clientX - 264;
+  if (y + 200 > window.innerHeight) y = ev.clientY - 204;
+  tt.style.left = x + 'px'; tt.style.top = y + 'px';
+}
+
+buildDiagram();
+window.addEventListener('resize', () => { clearTimeout(window._rt); window._rt = setTimeout(buildDiagram, 160); });
+
+document.querySelector('a[href="#diagram"]').addEventListener('click', e => {
+  e.preventDefault();
+  document.getElementById('diagram').scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>
