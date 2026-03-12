@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Operator Log · AS 360</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#111214;
+  --surface:#18191D;
+  --panel:#1E2026;
+  --panel2:#242830;
+  --panel3:#2C3040;
+  --border:#2E323C;
+  --border2:#363B48;
+  --orange:#FF6B1A;
+  --orange-dim:rgba(255,107,26,.15);
+  --orange-glow:rgba(255,107,26,.08);
+  --orange2:#E85D10;
+  --red:#F43F5E;
+  --red-dim:rgba(244,63,94,.15);
+  --amber:#F59E0B;
+  --amber-dim:rgba(245,158,11,.15);
+  --green:#22C55E;
+  --green-dim:rgba(34,197,94,.15);
+  --blue:#38BDF8;
+  --blue-dim:rgba(56,189,248,.12);
+  --text:#E8EAF0;
+  --text-dim:#8892A4;
+  --text-muted:#4A5568;
+  --mono:'JetBrains Mono',monospace;
+  --ui:'Inter',sans-serif;
+  --display:'Rajdhani',sans-serif;
+  --tap:56px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{height:100%;background:var(--bg);}
+body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--bg);
+  background-image:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(255,107,26,.04) 0%,transparent 60%);
+  display:flex;flex-direction:column;max-width:600px;margin:0 auto;}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--surface);border-bottom:2px solid var(--orange);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.tb-left{display:flex;flex-direction:column;}
+.ride-name{font-family:var(--display);font-size:22px;font-weight:700;color:var(--text);letter-spacing:.5px;line-height:1;}
+.ride-meta{font-family:var(--mono);font-size:10px;color:var(--orange);letter-spacing:1px;margin-top:2px;}
+.tb-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;}
+.tb-clock{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);letter-spacing:1px;}
+.tb-date{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.5px;}
+.tb-status{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;letter-spacing:.5px;}
+.status-dot{width:7px;height:7px;border-radius:50%;}
+.status-dot.closed{background:var(--red);box-shadow:0 0 6px var(--red);}
+.status-dot.opening{background:var(--amber);box-shadow:0 0 6px var(--amber);}
+.status-dot.open{background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;}
+.status-dot.closing{background:var(--orange);box-shadow:0 0 6px var(--orange);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ── MODE TABS ── */
+.mode-tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
+.mode-tab{height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:var(--mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;position:relative;}
+.mode-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
+.mode-tab .tab-icon{font-size:16px;line-height:1;}
+.mode-tab .tab-badge{position:absolute;top:6px;right:8px;background:var(--red);color:#fff;font-size:8px;font-weight:700;font-family:var(--mono);padding:1px 5px;border-radius:3px;display:none;}
+.mode-tab .tab-badge.show{display:block;}
+
+/* ── MAIN SCROLL ── */
+.main{flex:1;overflow-y:auto;padding:14px 14px 80px;}
+
+/* ── VIEWS ── */
+.view{display:none;}
+.view.active{display:block;animation:fadeIn .2s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ── SECTION LABEL ── */
+.sec-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border);padding-bottom:6px;margin:18px 0 10px;}
+.sec-label:first-child{margin-top:0;}
+
+/* ── OPENING CHECKLIST ── */
+.check-item{display:flex;align-items:center;gap:0;margin-bottom:8px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--panel);transition:border-color .15s;}
+.check-item.pass{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.04);}
+.check-item.fail{border-color:rgba(244,63,94,.4);background:rgba(244,63,94,.04);}
+.check-label{flex:1;padding:14px 14px;font-size:14px;font-weight:500;line-height:1.3;color:var(--text);}
+.check-label .check-cat{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:2px;}
+.check-btns{display:flex;flex-shrink:0;}
+.check-btn{width:var(--tap);height:var(--tap);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;border-left:1px solid var(--border);transition:all .12s;background:transparent;}
+.check-btn:active{transform:scale(.9);}
+.check-btn.pass-btn:hover,.check-btn.pass-btn.sel{background:var(--green-dim);color:var(--green);}
+.check-btn.fail-btn:hover,.check-btn.fail-btn.sel{background:var(--red-dim);color:var(--red);}
+.check-btn.na-btn:hover,.check-btn.na-btn.sel{background:var(--panel3);color:var(--text-dim);}
+.fail-note{padding:0 14px 12px;display:none;}
+.fail-note.show{display:block;}
+.fail-note textarea{width:100%;background:var(--panel2);border:1px solid rgba(244,63,94,.3);border-radius:7px;padding:10px;font-family:var(--ui);font-size:13px;color:var(--text);resize:none;min-height:60px;line-height:1.4;}
+.fail-note textarea:focus{outline:none;border-color:var(--red);}
+.fail-note textarea::placeholder{color:var(--text-muted);}
+
+.check-progress{height:4px;background:var(--panel3);border-radius:2px;margin-bottom:14px;overflow:hidden;}
+.check-progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--orange),var(--green));transition:width .3s;}
+
+/* ── SIGN-OFF BLOCK ── */
+.signoff-block{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;}
+.signoff-row{display:flex;align-items:center;gap:10px;padding:13px 14px;border-bottom:1px solid var(--border);transition:background .15s;}
+.signoff-row.signed{background:rgba(34,197,94,.04);border-bottom-color:rgba(34,197,94,.15);}
+.signoff-role{display:flex;align-items:center;gap:9px;flex-shrink:0;width:110px;}
+.signoff-icon{font-size:18px;flex-shrink:0;}
+.signoff-title{font-size:12px;font-weight:700;color:var(--text);line-height:1.1;}
+.signoff-sub{font-family:var(--mono);font-size:8px;color:var(--text-muted);margin-top:2px;}
+.signoff-inputs{display:flex;flex-direction:column;gap:5px;flex:1;}
+.signoff-input{width:100%;padding:7px 10px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--orange);letter-spacing:1px;text-transform:uppercase;}
+.signoff-input:focus{outline:none;border-color:var(--orange);}
+.signoff-input::placeholder{color:var(--text-muted);font-size:10px;letter-spacing:0;font-weight:400;}
+.signoff-name-input{width:100%;padding:7px 10px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;font-family:var(--ui);font-size:12px;color:var(--text);}
+.signoff-name-input:focus{outline:none;border-color:var(--orange);}
+.signoff-name-input::placeholder{color:var(--text-muted);}
+.signoff-btn{padding:8px 14px;background:linear-gradient(135deg,var(--orange),var(--orange2));border:none;border-radius:8px;font-family:var(--display);font-size:14px;font-weight:700;color:#fff;cursor:pointer;flex-shrink:0;transition:all .12s;}
+.signoff-btn:hover{filter:brightness(1.1);}
+.signoff-btn:disabled{opacity:.3;cursor:not-allowed;filter:none;}
+.signoff-check{width:28px;height:28px;border-radius:50%;background:var(--green-dim);border:2px solid var(--green);color:var(--green);font-size:13px;font-weight:700;display:none;align-items:center;justify-content:center;flex-shrink:0;}
+.signoff-check.show{display:flex;}
+.signoff-status{padding:10px 14px;background:var(--panel2);border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text-dim);text-align:center;}
+.signoff-status.complete{background:rgba(34,197,94,.08);border-top-color:rgba(34,197,94,.2);color:var(--green);}
+
+/* ── OPERATOR BADGE ENTRY ── */
+.badge-entry{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;}
+.badge-entry label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:8px;}
+.badge-row{display:flex;gap:8px;}
+.badge-input{flex:1;background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:16px;font-weight:700;color:var(--orange);letter-spacing:2px;text-transform:uppercase;}
+.badge-input:focus{outline:none;border-color:var(--orange);}
+.badge-input::placeholder{color:var(--text-muted);font-size:12px;letter-spacing:.5px;font-weight:400;}
+.badge-add-btn{padding:0 20px;background:linear-gradient(135deg,var(--orange),var(--orange2));border:none;border-radius:8px;font-family:var(--display);font-size:15px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;}
+
+/* ── SUBMIT OPENING ── */
+.submit-btn{width:100%;height:60px;border:none;border-radius:12px;font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;margin-top:12px;}
+.submit-btn.primary{background:linear-gradient(135deg,var(--orange),var(--orange2));color:#fff;box-shadow:0 4px 20px rgba(255,107,26,.3);}
+.submit-btn.primary:hover{filter:brightness(1.1);}
+.submit-btn.primary:disabled{opacity:.35;cursor:not-allowed;filter:none;}
+.submit-btn.danger{background:linear-gradient(135deg,var(--red),#C2185B);color:#fff;box-shadow:0 4px 20px rgba(244,63,94,.25);}
+.submit-btn.ghost{background:var(--panel2);border:1px solid var(--border2);color:var(--text-dim);}
+
+/* ── LIVE VIEW ── */
+/* Cycle counter */
+.cycle-counter{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.cycle-left{display:flex;flex-direction:column;}
+.cycle-val{font-family:var(--display);font-size:52px;font-weight:700;color:var(--orange);line-height:1;}
+.cycle-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-top:2px;}
+.cycle-btns{display:flex;flex-direction:column;gap:8px;}
+.cycle-btn{width:64px;height:40px;border-radius:8px;border:none;font-family:var(--display);font-size:20px;font-weight:700;cursor:pointer;transition:all .12s;}
+.cycle-btn:active{transform:scale(.92);}
+.cycle-btn.inc{background:var(--orange);color:#fff;}
+.cycle-btn.dec{background:var(--panel3);color:var(--text-dim);}
+.cycle-sub{font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-top:4px;}
+
+/* Rotation grid */
+.rotation-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.position-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .3s;}
+.position-card.warn{border-color:var(--amber);}
+.position-card.crit{border-color:var(--red);animation:borderPulse 1.5s infinite;}
+@keyframes borderPulse{0%,100%{border-color:var(--red)}50%{border-color:rgba(244,63,94,.3)}}
+.pos-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--panel2);border-bottom:1px solid var(--border);}
+.pos-name{font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.3px;color:var(--text-dim);}
+.pos-timer{font-family:var(--mono);font-size:18px;font-weight:700;letter-spacing:1px;}
+.pos-timer.ok{color:var(--green);}
+.pos-timer.warn{color:var(--amber);}
+.pos-timer.crit{color:var(--red);}
+.pos-body{padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.pos-op{flex:1;}
+.pos-op-name{font-size:15px;font-weight:600;color:var(--text);}
+.pos-op-id{font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:1px;}
+.pos-op-empty{font-size:13px;color:var(--text-muted);font-style:italic;}
+.pos-actions{display:flex;gap:6px;}
+.pos-btn{padding:8px 14px;border-radius:7px;border:1px solid var(--border2);background:var(--panel3);font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--text-dim);cursor:pointer;transition:all .12s;white-space:nowrap;}
+.pos-btn:hover{border-color:var(--orange);color:var(--orange);}
+.pos-btn.rotate{border-color:rgba(255,107,26,.4);color:var(--orange);background:var(--orange-dim);}
+.pos-btn.assign{border-color:rgba(56,189,248,.3);color:var(--blue);background:var(--blue-dim);}
+
+/* Rotation modal */
+.rot-modal{display:none;position:fixed;inset:0;background:rgba(10,10,12,.85);backdrop-filter:blur(6px);z-index:200;padding:20px;align-items:flex-end;}
+.rot-modal.show{display:flex;}
+.rot-panel{background:var(--panel);border:1px solid var(--border2);border-radius:16px 16px 0 0;width:100%;padding:20px;max-height:80vh;overflow-y:auto;}
+.rot-title{font-family:var(--display);font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.rot-sub{font-size:12px;color:var(--text-dim);margin-bottom:16px;}
+.rot-field{margin-bottom:12px;}
+.rot-field label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:6px;}
+.rot-field input,.rot-field select{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:14px;color:var(--text);-webkit-appearance:none;}
+.rot-field input:focus,.rot-field select:focus{outline:none;border-color:var(--orange);}
+.rot-field select option{background:var(--panel);}
+.rot-btns{display:flex;gap:8px;margin-top:4px;}
+.rot-btn-confirm{flex:1;height:52px;background:linear-gradient(135deg,var(--orange),var(--orange2));border:none;border-radius:10px;font-family:var(--display);font-size:17px;font-weight:700;color:#fff;cursor:pointer;}
+.rot-btn-cancel{padding:0 20px;height:52px;background:var(--panel2);border:1px solid var(--border2);border-radius:10px;font-family:var(--display);font-size:15px;color:var(--text-dim);cursor:pointer;}
+
+/* Rotation log */
+.rot-log{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.rot-log-hdr{padding:8px 12px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);display:flex;justify-content:space-between;}
+.rot-log-body{max-height:200px;overflow-y:auto;}
+.rot-entry{display:grid;grid-template-columns:60px 1fr 1fr 60px;gap:6px;padding:8px 12px;border-bottom:1px solid rgba(46,50,60,.5);font-family:var(--mono);font-size:10px;align-items:center;}
+.rot-entry:last-child{border-bottom:none;}
+.rot-time{color:var(--orange);}
+.rot-op{color:var(--text);}
+.rot-pos{color:var(--text-dim);}
+.rot-dur{color:var(--text-muted);text-align:right;}
+
+/* ── UNITS VIEW ── */
+.unit-summary-bar{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;}
+.unit-summary-div{width:1px;height:36px;background:var(--border2);}
+.unit-sum-val{font-family:var(--display);font-size:40px;font-weight:700;line-height:1;color:var(--green);}
+.unit-sum-val.out{color:var(--red);}
+.unit-sum-val.total{color:var(--text-dim);}
+.unit-sum-label{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-top:3px;}
+
+.unit-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:border-color .2s;}
+.unit-card.in-service{border-color:rgba(34,197,94,.35);}
+.unit-card.out-service{border-color:rgba(244,63,94,.3);background:rgba(244,63,94,.03);}
+.unit-card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;}
+.unit-name{font-family:var(--display);font-size:22px;font-weight:700;letter-spacing:.5px;color:var(--text);}
+.unit-status-pill{padding:4px 12px;border-radius:5px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;}
+.unit-in{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+.unit-out{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.3);}
+.unit-toggle-row{padding:0 16px 14px;display:flex;gap:8px;}
+.unit-toggle-btn{flex:1;height:52px;border-radius:10px;border:none;font-family:var(--display);font-size:16px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.3px;}
+.unit-toggle-btn:active{transform:scale(.97);}
+.unit-btn-in{background:linear-gradient(135deg,var(--green),#16A34A);color:#fff;}
+.unit-btn-out{background:var(--panel2);border:1.5px solid var(--border2);color:var(--red);}
+.unit-btn-out:hover{border-color:var(--red);background:var(--red-dim);}
+.unit-reason-wrap{padding:0 16px 14px;display:none;}
+.unit-reason-wrap.show{display:block;}
+.unit-reason-input{width:100%;background:var(--panel2);border:1px solid rgba(244,63,94,.3);border-radius:8px;padding:10px 12px;font-family:var(--ui);font-size:13px;color:var(--text);resize:none;min-height:56px;line-height:1.4;}
+.unit-reason-input:focus{outline:none;border-color:var(--red);}
+.unit-reason-input::placeholder{color:var(--text-muted);}
+.unit-save-btn{margin-top:7px;width:100%;height:44px;background:linear-gradient(135deg,var(--orange),var(--orange2));border:none;border-radius:9px;font-family:var(--display);font-size:16px;font-weight:700;color:#fff;cursor:pointer;}
+.unit-since{font-family:var(--mono);font-size:9px;color:var(--text-muted);padding:0 16px 10px;}
+
+.unit-log-wrap{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.unit-log-entry{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-bottom:1px solid rgba(46,50,60,.5);}
+.unit-log-entry:last-child{border-bottom:none;}
+.unit-log-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.unit-log-dot.in{background:var(--green);}
+.unit-log-dot.out{background:var(--red);}
+.unit-log-body{flex:1;}
+.unit-log-title{font-family:var(--mono);font-size:10px;font-weight:700;}
+.unit-log-title.in{color:var(--green);}
+.unit-log-title.out{color:var(--red);}
+.unit-log-note{font-size:11px;color:var(--text-dim);margin-top:2px;line-height:1.4;}
+.unit-log-time{font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-top:2px;}
+
+/* ── CLOSING VIEW ── */
+.shift-summary{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;}
+.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.summary-stat{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px;}
+.summary-stat-val{font-family:var(--display);font-size:28px;font-weight:700;color:var(--orange);line-height:1;}
+.summary-stat-label{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-top:3px;}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--panel2);color:var(--text);border:1px solid var(--border2);padding:11px 20px;border-radius:10px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.3px;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;max-width:90vw;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.ok{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.4);color:var(--green);}
+#toast.warn{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.4);color:var(--amber);}
+#toast.err{background:rgba(244,63,94,.12);border-color:rgba(244,63,94,.4);color:var(--red);}
+
+/* ── ROTATION MODAL ── */
+#rotModal{display:none;position:fixed;inset:0;background:rgba(10,10,12,.85);backdrop-filter:blur(6px);z-index:200;padding:20px 14px;align-items:flex-end;}
+#rotModal.show{display:flex;}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-left">
+    <div class="ride-name" id="rideName">Steel Coaster</div>
+    <div class="ride-meta" id="rideMeta">UNIT-SC01 · AS 360 OPERATOR LOG</div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-clock" id="clock">--:--</div>
+    <div class="tb-date" id="dateDisp">---</div>
+    <div class="tb-status" id="rideStatus">
+      <div class="status-dot closed" id="statusDot"></div>
+      <span id="statusText" style="font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--text-dim);">CLOSED</span>
+    </div>
+  </div>
+</div>
+
+<!-- MODE TABS -->
+<div class="mode-tabs">
+  <div class="mode-tab active" onclick="showMode('opening')" id="tab-opening">
+    <span class="tab-icon">📋</span>
+    <span>Opening</span>
+  </div>
+  <div class="mode-tab" onclick="showMode('live')" id="tab-live">
+    <span class="tab-icon">🔄</span>
+    <span>Live</span>
+  </div>
+  <div class="mode-tab" onclick="showMode('units')" id="tab-units">
+    <span class="tab-icon">🚃</span>
+    <span>Units</span>
+    <span class="tab-badge" id="unitsBadge"></span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ══════════ OPENING VIEW -->
+  <div class="view active" id="view-opening">
+
+    <div class="sec-label">// Pre-Opening Sign-Off</div>
+    <div class="signoff-block">
+
+      <div class="signoff-row" id="so-supervisor">
+        <div class="signoff-role">
+          <span class="signoff-icon">🔑</span>
+          <div>
+            <div class="signoff-title">Supervisor</div>
+            <div class="signoff-sub">Area supervisor approval</div>
+          </div>
+        </div>
+        <div class="signoff-inputs">
+          <input class="badge-input signoff-input" type="text" id="supBadge" placeholder="Badge ID" maxlength="12">
+          <input class="signoff-name-input" type="text" id="supName" placeholder="Print name">
+        </div>
+        <button class="signoff-btn" id="soBtn-supervisor" onclick="setSignoff('supervisor')">SET</button>
+        <div class="signoff-check" id="soCheck-supervisor">✓</div>
+      </div>
+
+      <div class="signoff-row" id="so-maintenance">
+        <div class="signoff-role">
+          <span class="signoff-icon">🔧</span>
+          <div>
+            <div class="signoff-title">Maintenance</div>
+            <div class="signoff-sub">Cleared for operation</div>
+          </div>
+        </div>
+        <div class="signoff-inputs">
+          <input class="badge-input signoff-input" type="text" id="maintBadge" placeholder="Badge ID" maxlength="12">
+          <input class="signoff-name-input" type="text" id="maintName" placeholder="Print name">
+        </div>
+        <button class="signoff-btn" id="soBtn-maintenance" onclick="setSignoff('maintenance')">SET</button>
+        <div class="signoff-check" id="soCheck-maintenance">✓</div>
+      </div>
+
+      <div class="signoff-status" id="signoffStatus">
+        <span id="signoffStatusText">Supervisor and maintenance sign-off required before opening</span>
+      </div>
+    </div>
+
+    <div class="sec-label">// Pre-Opening Inspection Checklist</div>
+    <div class="check-progress"><div class="check-progress-fill" id="checkProgress" style="width:0%"></div></div>
+    <div id="checklistBody"></div>
+
+    <button class="submit-btn primary" id="openRideBtn" onclick="openRide()" disabled>
+      ✓ SIGN OFF &amp; OPEN RIDE
+    </button>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;" id="openHint">Sign-off required: supervisor, maintenance</div>
+
+  </div>
+
+  <!-- ══════════ LIVE VIEW -->
+  <div class="view" id="view-live">
+
+    <!-- Cycle Counter -->
+    <div class="cycle-counter">
+      <div class="cycle-info">
+        <div class="cycle-label">// Total Dispatches</div>
+        <div class="cycle-count" id="cycleCount">0</div>
+        <div class="cycle-sub" id="cycleSub">Shift started: —</div>
+      </div>
+      <div class="cycle-btns">
+        <button class="cycle-btn inc" onclick="incrementCycle()" title="Dispatch">+1</button>
+        <button class="cycle-btn dec" onclick="decrementCycle()" title="Undo">−1</button>
+      </div>
+    </div>
+
+    <!-- Rotation Tracker -->
+    <div class="sec-label">// Live Position Rotation</div>
+    <div id="rotationGrid" class="rotation-grid"></div>
+
+    <!-- Rotation Log -->
+    <div class="sec-label">// Rotation Log</div>
+    <div class="rot-log">
+      <div class="rot-log-hdr"><span>Time</span><span>Operator</span><span>Position</span><span>Duration</span></div>
+      <div class="rot-log-body" id="rotLogBody">
+        <div style="padding:16px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No rotations logged yet</div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="view" id="view-units">
+
+    <div class="sec-label">// Vehicles / Trains in Service</div>
+
+    <div class="unit-summary-bar" id="unitSummaryBar">
+      <div class="unit-summary-in">
+        <div class="unit-sum-val" id="unitInService">0</div>
+        <div class="unit-sum-label">In Service</div>
+      </div>
+      <div class="unit-summary-div"></div>
+      <div class="unit-summary-out">
+        <div class="unit-sum-val out" id="unitOutService">0</div>
+        <div class="unit-sum-label">Out of Service</div>
+      </div>
+      <div class="unit-summary-div"></div>
+      <div class="unit-summary-total">
+        <div class="unit-sum-val total" id="unitTotal">0</div>
+        <div class="unit-sum-label">Total Fleet</div>
+      </div>
+    </div>
+
+    <div id="unitCards"></div>
+
+    <div class="unit-log-wrap">
+      <div class="sec-label" style="margin-top:20px;">// Unit Status Log</div>
+      <div id="unitLog">
+        <div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No unit changes logged yet</div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /main -->
+
+<!-- ROTATION MODAL -->
+<div id="rotModal">
+  <div class="rot-panel">
+    <div class="rot-title" id="rotModalTitle">Rotate / Assign Position</div>
+    <div class="rot-sub" id="rotModalSub">—</div>
+    <div class="rot-field">
+      <label>Incoming Operator Badge ID</label>
+      <input type="text" id="rotBadgeIn" placeholder="Badge ID or name" class="badge-input" style="width:100%;">
+    </div>
+    <div class="rot-field">
+      <label>Incoming Operator Name</label>
+      <input type="text" id="rotNameIn" placeholder="Full name">
+    </div>
+    <div class="rot-btns">
+      <button class="rot-btn-confirm" onclick="confirmRotation()">Confirm Rotation</button>
+      <button class="rot-btn-cancel" onclick="closeRotModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────
+const RIDE_NAME = new URLSearchParams(window.location.search).get('ride') || 'Steel Coaster';
+const RIDE_ID   = new URLSearchParams(window.location.search).get('id')   || 'UNIT-SC01';
+const UNIT_COUNT = parseInt(new URLSearchParams(window.location.search).get('units') || '3');
+const UNIT_NAMES = Array.from({length:UNIT_COUNT},(_,i)=>'Train '+String.fromCharCode(65+i)); // Train A, B, C…
+document.getElementById('rideName').textContent = RIDE_NAME;
+document.getElementById('rideMeta').textContent = RIDE_ID + ' · AS 360 OPERATOR LOG';
+
+// Positions — configurable per ride
+const POSITIONS = ['Load/Dispatch','Unload/Exit','Queue/Greeter','Rover'];
+
+// Opening checklist items
+const OPEN_CHECKS = [
+  // Section I — Maintenance Verification
+  {cat:'I · Maintenance Verification', item:'The ride has been cleared for operation and is properly signed and dated — Carpentry initials verified'},
+  {cat:'I · Maintenance Verification', item:'The ride has been cleared for operation and is properly signed and dated — Supervisor initials verified'},
+
+  // Section II — General Safety
+  {cat:'II · General Safety', item:'A. Communication devices are operating properly (phone / PA, or a temporary system is in place)'},
+  {cat:'II · General Safety', item:'B. Fire extinguishers are in place, properly charged and displaying current inspection tags'},
+  {cat:'II · General Safety', item:'C. Team members are certified for their assigned positions'},
+  {cat:'II · General Safety', item:'D. Measuring device is in place'},
+  {cat:'II · General Safety', item:'E. Warning or ride instruction signs are in place, clean and legible'},
+  {cat:'II · General Safety', item:'F. The ride SOP is available and in good condition'},
+  {cat:'II · General Safety', item:'G. Safety equipment is available and in good condition'},
+  {cat:'II · General Safety', item:'H. Entrances, exits, including stairs, walkways are intact and free of obstructions'},
+  {cat:'II · General Safety', item:'I. Ride barriers, chains, gates, doors, queue line posts and railings are physically checked, secured and in good condition'},
+  {cat:'II · General Safety', item:'J. Safety zones are clearly marked'},
+  {cat:'II · General Safety', item:'K. Control panel areas are in good condition, clean and free of debris'},
+  {cat:'II · General Safety', item:'L. Control panel lights are in proper working condition'},
+
+  // Section III — Unit Safety
+  {cat:'III · Unit Safety', item:'A. All ride units in service are in working order, clean and in good condition'},
+  {cat:'III · Unit Safety', item:'B. All safety restraint devices in service operate correctly'},
+
+  // Section IV — Ride Safety
+  {cat:'IV · Ride Safety', item:'A. The loading / unloading gates open and close properly'},
+  {cat:'IV · Ride Safety', item:'B. The ride areas and infields are clear of all personnel and any other objects'},
+  {cat:'IV · Ride Safety', item:'C. In normal operating mode the ride cycles normally with no unusual noises, vibrations, sights or smells'},
+  {cat:'IV · Ride Safety', item:'D. The ride appropriately starts and stops in the proper positions'},
+  {cat:'IV · Ride Safety', item:'E. The system check has been completed'},
+  {cat:'IV · Ride Safety', item:'F. The ride has been cycled at least one time empty prior to loading any persons'},
+
+  // Section V — Miscellaneous / Quality
+  {cat:'V · Quality Checks', item:'A. All team members are in proper uniform including name tag and certification badge'},
+  {cat:'V · Quality Checks', item:'B. All queue lines, flowerbeds and surrounding ride areas are clean and litter free'},
+  {cat:'V · Quality Checks', item:'C. Water is available for all team members'},
+  {cat:'V · Quality Checks', item:'D. Turnstile / counting device is working properly'},
+  {cat:'V · Quality Checks', item:'E. State of New Jersey Permit to Operate is present'},
+];
+
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let state = {
+  rideStatus: 'closed',
+  signoffs: { supervisor: null, maintenance: null },
+  openChecks: {},
+  cycleCount: 0,
+  shiftStart: null,
+  positions: {},
+  rotLog: [],
+  flags: [],
+  units: {}, // unitName: {inService:bool, since:timestamp, reason:''}
+  unitLog: [],
+};
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+function init(){
+  tickClock(); setInterval(tickClock, 1000);
+  buildChecklist('open');
+  initPositions();
+  initUnits();
+  setInterval(tickRotations, 10000);
+  setInterval(tickRotations, 500);
+}
+
+function tickClock(){
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
+  document.getElementById('dateDisp').textContent = now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+}
+
+// ── CHECKLIST BUILD ────────────────────────────────────────────────────────
+function buildChecklist(type){
+  const items = OPEN_CHECKS;
+  const bodyId = 'checklistBody';
+  const el = document.getElementById(bodyId);
+  el.innerHTML = items.map((c,i)=>{
+    const id = type+'_'+i;
+    return `<div class="check-item" id="ci_${id}">
+      <div class="check-label">
+        <span class="check-cat">${c.cat}</span>
+        ${c.item}
+      </div>
+      <div class="check-btns">
+        <div class="check-btn pass-btn" onclick="setCheck('${id}','pass','${type}')" title="Pass">✓</div>
+        <div class="check-btn fail-btn" onclick="setCheck('${id}','fail','${type}')" title="Fail">✗</div>
+        <div class="check-btn na-btn" onclick="setCheck('${id}','na','${type}')" title="N/A">—</div>
+      </div>
+    </div>
+    <div class="fail-note" id="fn_${id}">
+      <textarea placeholder="Describe the issue — what failed, condition observed, action taken…" onchange="setCheckNote('${id}',this.value,'${type}')"></textarea>
+    </div>`;
+  }).join('');
+}
+
+function setCheck(id, val, type){
+  const checks = state.openChecks;
+  if(!checks[id]) checks[id]={};
+  checks[id].val = val;
+
+  const ci = document.getElementById('ci_'+id);
+  ci.classList.remove('pass','fail');
+  if(val==='pass') ci.classList.add('pass');
+  if(val==='fail') ci.classList.add('fail');
+
+  // Buttons
+  ci.querySelectorAll('.check-btn').forEach(b=>b.classList.remove('sel'));
+  const btnClass = val==='pass'?'.pass-btn':val==='fail'?'.fail-btn':'.na-btn';
+  ci.querySelector(btnClass).classList.add('sel');
+
+  // Fail note
+  const fn = document.getElementById('fn_'+id);
+  if(val==='fail') fn.classList.add('show');
+  else fn.classList.remove('show');
+
+  updateOpenProgress();
+}
+
+function setCheckNote(id, val, type){
+  const checks = state.openChecks;
+  if(!checks[id]) checks[id]={};
+  checks[id].note = val;
+}
+
+function updateOpenProgress(){
+  const total = OPEN_CHECKS.length;
+  const done = Object.values(state.openChecks).filter(c=>c.val).length;
+  const fails = Object.values(state.openChecks).filter(c=>c.val==='fail');
+  const failsWithNote = fails.filter(c=>c.note && c.note.trim().length>0);
+  document.getElementById('checkProgress').style.width = (done/total*100)+'%';
+  const allSigned = Object.values(state.signoffs).every(s=>s!==null);
+  const allDone = done===total && allSigned;
+  const failsOk = fails.length===0 || fails.length===failsWithNote.length;
+  const btn = document.getElementById('openRideBtn');
+  btn.disabled = !(allDone && failsOk);
+  const hint = document.getElementById('openHint');
+  if(!allSigned){
+    const missing = Object.entries(state.signoffs).filter(([,v])=>!v).map(([k])=>k).join(', ');
+    hint.textContent = 'Sign-off required: '+missing;
+  }
+  else if(done<total) hint.textContent = (total-done)+' items remaining';
+  else if(!failsOk) hint.textContent = 'Add notes for all failed items';
+  else hint.textContent = done+' / '+total+' items checked · Ready to open';
+}
+
+// ── SIGN-OFFS ─────────────────────────────────────────────────────────────
+const SIGNOFF_FIELDS = {
+  supervisor:  { badge:'supBadge',   name:'supName'   },
+  maintenance: { badge:'maintBadge', name:'maintName' },
+};
+
+function setSignoff(role){
+  const f = SIGNOFF_FIELDS[role];
+  const badge = document.getElementById(f.badge).value.trim().toUpperCase();
+  const name  = document.getElementById(f.name).value.trim();
+  if(!badge){ toast('Enter a badge ID for '+role,'err'); return; }
+  if(!name){  toast('Print name required for '+role,'err'); return; }
+
+  state.signoffs[role] = { badge, name, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) };
+
+  // Lock the row
+  document.getElementById(f.badge).disabled = true;
+  document.getElementById(f.name).disabled  = true;
+  document.getElementById('soBtn-'+role).disabled = true;
+  document.getElementById('so-'+role).classList.add('signed');
+  document.getElementById('soCheck-'+role).classList.add('show');
+
+  const allSigned = Object.values(state.signoffs).every(s=>s!==null);
+  const statusEl = document.getElementById('signoffStatus');
+  if(allSigned){
+    statusEl.classList.add('complete');
+    document.getElementById('signoffStatusText').textContent = '✓ All sign-offs complete — proceed with inspection';
+  } else {
+    const remaining = Object.entries(state.signoffs).filter(([,v])=>!v).map(([k])=>k).join(', ');
+    document.getElementById('signoffStatusText').textContent = 'Still needed: '+remaining;
+  }
+
+  updateOpenProgress();
+  toast(role.charAt(0).toUpperCase()+role.slice(1)+' signed off: '+name+' ('+badge+')','ok');
+}
+
+// ── OPEN RIDE ─────────────────────────────────────────────────────────────
+function openRide(){
+  state.rideStatus = 'open';
+  state.shiftStart = new Date();
+  setStatus('open','OPEN');
+  // Auto-assign lead to Load position
+  state.positions['Load/Dispatch'] = {badge:'', name:'Unassigned', since:Date.now()};
+  renderPositions();
+  document.getElementById('cycleSub').textContent = 'Shift started: '+state.shiftStart.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  toast('Ride opened · Shift started','ok');
+  showMode('live');
+  document.getElementById('tab-live').click();
+}
+
+function setStatus(cls, text){
+  document.getElementById('statusDot').className = 'status-dot '+cls;
+  document.getElementById('statusText').textContent = text;
+}
+
+// ── POSITIONS / ROTATION ──────────────────────────────────────────────────
+function initPositions(){
+  POSITIONS.forEach(p=>{ state.positions[p] = null; });
+  renderPositions();
+}
+
+function renderPositions(){
+  const el = document.getElementById('rotationGrid');
+  el.innerHTML = POSITIONS.map(pos=>{
+    const op = state.positions[pos];
+    const minsOn = op ? Math.floor((Date.now()-op.since)/60000) : 0;
+    const timerClass = !op?'ok':minsOn<45?'ok':minsOn<60?'warn':'crit';
+    const cardClass = !op?'':minsOn<45?'':minsOn<60?'warn':'crit';
+    const timerStr = op ? fmtMins(minsOn) : '—';
+    return `<div class="position-card ${cardClass}" id="pc_${pos.replace(/[^a-z]/gi,'_')}">
+      <div class="pos-header">
+        <div class="pos-name">${pos}</div>
+        <div class="pos-timer ${timerClass}">${timerStr}</div>
+      </div>
+      <div class="pos-body">
+        <div class="pos-op">
+          ${op
+            ? `<div class="pos-op-name">${op.name}</div><div class="pos-op-id">${op.badge}</div>`
+            : `<div class="pos-op-empty">Unassigned</div>`
+          }
+        </div>
+        <div class="pos-actions">
+          ${op ? `<button class="pos-btn rotate" onclick="openRotModal('${pos}',true)">Rotate</button>` : ''}
+          <button class="pos-btn assign" onclick="openRotModal('${pos}',false)">${op?'Reassign':'Assign'}</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function tickRotations(){
+  if(state.rideStatus!=='open') return;
+  renderPositions();
+}
+
+function fmtMins(m){
+  if(m<60) return m+'m';
+  return Math.floor(m/60)+'h '+( m%60)+'m';
+}
+
+let rotModalPos = null;
+let rotModalIsRotate = false;
+
+function openRotModal(pos, isRotate){
+  rotModalPos = pos;
+  rotModalIsRotate = isRotate;
+  const op = state.positions[pos];
+  document.getElementById('rotModalTitle').textContent = isRotate ? 'Rotate: '+pos : 'Assign: '+pos;
+  document.getElementById('rotModalSub').textContent = op ? 'Current: '+op.name+' ('+op.badge+')' : 'No operator currently assigned';
+  document.getElementById('rotBadgeIn').value='';
+  document.getElementById('rotNameIn').value='';
+  document.getElementById('rotModal').classList.add('show');
+}
+
+function closeRotModal(){
+  document.getElementById('rotModal').classList.remove('show');
+  rotModalPos = null;
+}
+
+function confirmRotation(){
+  const badge = document.getElementById('rotBadgeIn').value.trim().toUpperCase();
+  const name = document.getElementById('rotNameIn').value.trim() || badge;
+  if(!badge){ toast('Enter badge ID','err'); return; }
+
+  const pos = rotModalPos;
+  const prev = state.positions[pos];
+
+  // Log outgoing
+  if(prev && rotModalIsRotate){
+    const dur = Math.floor((Date.now()-prev.since)/60000);
+    state.rotLog.unshift({
+      time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
+      badge: prev.badge,
+      name: prev.name,
+      pos,
+      dur: fmtMins(dur),
+    });
+  }
+
+  // Assign incoming
+  state.positions[pos] = {badge, name, since:Date.now()};
+  closeRotModal();
+  renderPositions();
+  renderRotLog();
+  toast((rotModalIsRotate?'Rotated':'Assigned')+': '+name+' → '+pos,'ok');
+}
+
+function renderRotLog(){
+  const el = document.getElementById('rotLogBody');
+  if(!state.rotLog.length){
+    el.innerHTML='<div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No rotations logged yet</div>';
+    return;
+  }
+  el.innerHTML = state.rotLog.map(r=>`
+    <div class="rot-entry">
+      <div class="rot-time">${r.time}</div>
+      <div class="rot-op">${r.name}</div>
+      <div class="rot-pos">${r.pos}</div>
+      <div class="rot-dur">${r.dur}</div>
+    </div>`).join('');
+}
+
+// ── CYCLE COUNTER ─────────────────────────────────────────────────────────
+function incrementCycle(){
+  state.cycleCount++;
+  document.getElementById('cycleCount').textContent = state.cycleCount;
+}
+function decrementCycle(){
+  if(state.cycleCount>0) state.cycleCount--;
+  document.getElementById('cycleCount').textContent = state.cycleCount;
+}
+
+// ── UNITS ─────────────────────────────────────────────────────────────────
+function initUnits(){
+  UNIT_NAMES.forEach(u=>{
+    state.units[u] = {inService:true, since:null, reason:''};
+  });
+  renderUnits();
+}
+
+function renderUnits(){
+  const inCount  = Object.values(state.units).filter(u=>u.inService).length;
+  const outCount = UNIT_NAMES.length - inCount;
+  document.getElementById('unitInService').textContent  = inCount;
+  document.getElementById('unitOutService').textContent = outCount;
+  document.getElementById('unitTotal').textContent      = UNIT_NAMES.length;
+
+  // Tab badge — show out-of-service count if any
+  const badge = document.getElementById('unitsBadge');
+  if(outCount>0){ badge.textContent=outCount; badge.classList.add('show'); }
+  else { badge.classList.remove('show'); }
+
+  const el = document.getElementById('unitCards');
+  el.innerHTML = UNIT_NAMES.map(name=>{
+    const u = state.units[name];
+    const isIn = u.inService;
+    const sinceStr = u.since
+      ? new Date(u.since).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
+      : null;
+    const safeId = name.replace(/\s+/g,'_');
+    return `
+    <div class="unit-card ${isIn?'in-service':'out-service'}" id="uc_${safeId}">
+      <div class="unit-card-header">
+        <div class="unit-name">${name}</div>
+        <div class="unit-status-pill ${isIn?'unit-in':'unit-out'}">${isIn?'IN SERVICE':'OUT OF SERVICE'}</div>
+      </div>
+      ${sinceStr?`<div class="unit-since">Since ${sinceStr}${!isIn&&u.reason?' · '+u.reason:''}</div>`:''}
+      <div class="unit-toggle-row">
+        <button class="unit-toggle-btn unit-btn-in ${isIn?'':''}${isIn?'opacity:1':'opacity:.4'}"
+          onclick="setUnit('${name}',true)"
+          ${isIn?'disabled style="opacity:.35;cursor:default;"':''}>
+          ✓ In Service
+        </button>
+        <button class="unit-toggle-btn unit-btn-out"
+          onclick="toggleUnitOut('${name}')"
+          ${!isIn?'disabled style="opacity:.35;cursor:default;"':''}>
+          ✗ Take Out
+        </button>
+      </div>
+      <div class="unit-reason-wrap ${!isIn&&!u.reason?'show':''}" id="ur_${safeId}" style="${isIn?'display:none':(!u.reason?'':'display:none')}">
+        <textarea class="unit-reason-input" id="urtext_${safeId}" placeholder="Reason — mechanical issue, cleanliness, capacity reduction…"></textarea>
+        <button class="unit-save-btn" onclick="setUnit('${name}',false,'${safeId}')">Confirm Out of Service</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleUnitOut(name){
+  const safeId = name.replace(/\s+/g,'_');
+  const wrap = document.getElementById('ur_'+safeId);
+  if(wrap) wrap.style.display='block';
+}
+
+function setUnit(name, inService, safeId){
+  const u = state.units[name];
+  const wasIn = u.inService;
+  if(inService===wasIn) return;
+
+  let reason = '';
+  if(!inService && safeId){
+    const ta = document.getElementById('urtext_'+safeId);
+    reason = ta ? ta.value.trim() : '';
+  }
+
+  u.inService = inService;
+  u.since = Date.now();
+  u.reason = reason;
+
+  const entry = {
+    unit: name,
+    inService,
+    reason,
+    time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),
+    ts: Date.now(),
+  };
+  state.unitLog.unshift(entry);
+
+  renderUnits();
+  renderUnitLog();
+  toast(name+' → '+(inService?'IN SERVICE':'OUT OF SERVICE'), inService?'ok':'warn');
+}
+
+function renderUnitLog(){
+  const el = document.getElementById('unitLog');
+  if(!state.unitLog.length){
+    el.innerHTML='<div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No unit changes logged yet</div>';
+    return;
+  }
+  el.innerHTML = state.unitLog.map(e=>`
+    <div class="unit-log-entry">
+      <div class="unit-log-dot ${e.inService?'in':'out'}"></div>
+      <div class="unit-log-body">
+        <div class="unit-log-title ${e.inService?'in':'out'}">${e.unit} → ${e.inService?'IN SERVICE':'OUT OF SERVICE'}</div>
+        ${e.reason?`<div class="unit-log-note">${e.reason}</div>`:''}
+        <div class="unit-log-time">${e.time}</div>
+      </div>
+    </div>`).join('');
+}
+
+
+function showMode(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+
+  if(name==='units') renderUnits();
+}
+
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+function toast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='show'+(type?(' '+type):'');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);
+}
+
+init();
+</script>
+</body>
+</html>
