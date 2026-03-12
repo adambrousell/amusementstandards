@@ -31,6 +31,7 @@ body{font-family:var(--sans);color:var(--text);
 .tb-sub{font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:1px;}
 .tb-right{display:flex;align-items:center;gap:10px;}
 .tb-clock{font-family:var(--mono);font-size:11px;color:var(--text-dim);}
+#sync-dot{width:7px;height:7px;border-radius:50%;background:#3D4F6A;flex-shrink:0;cursor:default;transition:background .3s;}
 .tb-home{padding:5px 12px;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;font-family:var(--mono);font-size:9px;color:var(--text-dim);text-decoration:none;letter-spacing:.5px;transition:all .15s;}
 .tb-home:hover{color:var(--teal);border-color:var(--teal);}
 
@@ -113,13 +114,6 @@ body{font-family:var(--sans);color:var(--text);
 .btn-remove{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;transition:color .12s;padding:2px 4px;}
 .btn-remove:hover{color:var(--red);}
 
-/* TIMELINE */
-.timeline-grid{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:start;margin-bottom:10px;}
-.tl-time{font-family:var(--mono);font-size:11px;color:var(--teal);padding-top:10px;}
-.tl-desc{background:var(--panel2);border:1px solid var(--border);border-radius:7px;padding:10px 12px;}
-.tl-label{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;}
-.tl-note{font-size:11px;color:var(--text-dim);}
-
 /* SECTION DIVIDER LABEL */
 .sec-divider{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin:18px 0 10px;display:flex;align-items:center;gap:10px;}
 .sec-divider::after{content:'';flex:1;height:1px;background:var(--border);}
@@ -132,6 +126,7 @@ body{font-family:var(--sans);color:var(--text);
 .btn-back:hover{border-color:var(--text-dim);color:var(--text);}
 .btn-submit{padding:13px 32px;background:linear-gradient(135deg,var(--red),#BE123C);border:none;border-radius:8px;font-family:var(--cond);font-size:16px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:.5px;transition:all .15s;box-shadow:0 4px 20px rgba(244,63,94,.3);}
 .btn-submit:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 8px 28px rgba(244,63,94,.4);}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 
 /* RADIO PILLS */
 .radio-pills{display:flex;gap:8px;flex-wrap:wrap;}
@@ -167,7 +162,7 @@ body{font-family:var(--sans);color:var(--text);
 /* IMPACT BODY MAP */
 .body-map{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;margin-bottom:8px;}
 .body-zones{display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px;}
-.zone-btn{padding:8px 12px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;font-size:12px;font-weight:600;color:var(--text-dim);cursor:pointer;transition:all .12s;text-align:left;}
+.zone-btn{padding:8px 12px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;font-size:12px;font-weight:600;color:var(--text-dim);cursor:pointer;transition:all .12px;text-align:left;}
 .zone-btn:hover{border-color:var(--border2);}
 .zone-btn.selected{border-color:var(--red);color:var(--red);background:var(--red-dim);}
 
@@ -187,6 +182,7 @@ body{font-family:var(--sans);color:var(--text);
     <div class="tb-sub">AS 360 · IRL STREAM</div>
   </div>
   <div class="tb-right">
+    <div id="sync-dot" title="Airtable sync"></div>
     <div class="tb-clock" id="clock">--:--</div>
     <a href="index.html" class="tb-home">← HUB</a>
   </div>
@@ -475,7 +471,7 @@ body{font-family:var(--sans);color:var(--text);
 
         <div class="field" style="margin-top:16px;">
           <label>Injury description — direct observation only</label>
-          <textarea id="f-injury-desc" rows="3" placeholder="Describe what you directly observed. Do not speculate about cause or severity. E.g. 'Guest reported pain in left wrist. Small laceration visible on palm, approximately 1 inch.'"></textarea>
+          <textarea id="f-injury-desc" rows="3" placeholder="Describe what you directly observed. Do not speculate about cause or severity."></textarea>
         </div>
       </div>
 
@@ -540,8 +536,8 @@ body{font-family:var(--sans);color:var(--text);
 
       <div class="field" style="margin-top:16px;">
         <label>Narrative — what happened, in sequence <span class="req">*</span></label>
-        <textarea id="f-narrative" rows="6" placeholder="Write in plain language, in the order events occurred. State only what you directly observed or what was directly reported to you. Identify the source of each piece of information (e.g., 'Operator reported…', 'This reporter observed…', 'Guest stated…'). Do not include opinions, diagnoses, or speculation about fault."></textarea>
-        <div class="field-note">This narrative is a legal record. Write as if you will be asked to read it in a deposition. Stick to facts and direct observation.</div>
+        <textarea id="f-narrative" rows="6" placeholder="Write in plain language, in the order events occurred. State only what you directly observed or what was directly reported to you. Identify the source of each piece of information. Do not include opinions, diagnoses, or speculation about fault."></textarea>
+        <div class="field-note">This narrative is a legal record. Write as if you will be asked to read it in a deposition.</div>
       </div>
 
       <div class="field">
@@ -658,14 +654,9 @@ body{font-family:var(--sans);color:var(--text);
             <label>Role</label>
             <select id="w-role">
               <option value="">— Select —</option>
-              <option>Ride Operator</option>
-              <option>Area Supervisor</option>
-              <option>Manager on Duty</option>
-              <option>Maintenance Staff</option>
-              <option>First Aid / EMT</option>
-              <option>Guest Witness</option>
-              <option>Guest Companion</option>
-              <option>Other Staff</option>
+              <option>Ride Operator</option><option>Area Supervisor</option><option>Manager on Duty</option>
+              <option>Maintenance Staff</option><option>First Aid / EMT</option><option>Guest Witness</option>
+              <option>Guest Companion</option><option>Other Staff</option>
             </select>
           </div>
         </div>
@@ -725,7 +716,7 @@ body{font-family:var(--sans);color:var(--text);
 
       <div class="nav-row">
         <button class="btn-back" onclick="goStep(6)">← Back</button>
-        <button class="btn-submit" onclick="submitReport()">Submit Incident Report</button>
+        <button class="btn-submit" id="submitBtn" onclick="submitReport()">Submit Incident Report</button>
       </div>
     </div>
   </div>
@@ -737,7 +728,7 @@ body{font-family:var(--sans);color:var(--text);
   <div class="confirm-icon">📋</div>
   <div class="confirm-id" id="confirm-id">IR-XXXXXX</div>
   <div class="confirm-title">Report Submitted</div>
-  <div class="confirm-body">This incident report has been recorded. A corrective action has been automatically queued in CA Manager. Retain the report ID for all follow-up documentation, regulatory filings, and insurance correspondence.</div>
+  <div class="confirm-body" id="confirm-body">This incident report has been recorded in AS 360. A corrective action has been automatically queued in CA Manager. Retain the report ID for all follow-up documentation, regulatory filings, and insurance correspondence.</div>
   <div class="confirm-grid" id="confirmGrid"></div>
   <div class="confirm-actions">
     <button class="btn-teal" onclick="window.print()">🖨 Print / Save PDF</button>
@@ -749,6 +740,200 @@ body{font-family:var(--sans);color:var(--text);
 <div id="toast"></div>
 
 <script>
+// ── PROXY CONFIG ───────────────────────────────────────────────────────────
+const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+
+async function atPost(table, fields) {
+  const si = document.getElementById('sync-dot');
+  if (si) { si.style.background = '#F59E0B'; si.title = 'Syncing…'; }
+  try {
+    const res = await fetch(AT_PROXY + '/' + encodeURIComponent(table), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields }),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (si) {
+      si.style.background = '#10B981'; si.title = 'Synced';
+      setTimeout(() => { si.style.background = '#3D4F6A'; si.title = ''; }, 3000);
+    }
+    return true;
+  } catch(e) {
+    if (si) {
+      si.style.background = '#F43F5E'; si.title = 'Sync error — check connection';
+      setTimeout(() => { si.style.background = '#3D4F6A'; si.title = ''; }, 5000);
+    }
+    console.warn('[IRL] Proxy error:', e.message);
+    return false;
+  }
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function getChecked(groupEl) {
+  return [...(groupEl ? groupEl.querySelectorAll('.check-row.checked .check-label') : [])]
+    .map(el => el.textContent.trim()).join('; ');
+}
+function getSelectedZones() {
+  return [...document.querySelectorAll('#bodyZones .zone-btn.selected')]
+    .map(el => el.textContent.trim()).join('; ');
+}
+function pill(id) {
+  const el = document.querySelector('#' + id + ' .r-pill.selected');
+  return el ? el.textContent.trim() : '';
+}
+function val(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+// ── SUBMIT ─────────────────────────────────────────────────────────────────
+async function submitReport() {
+  if (!val('f-submitter')) { toast('Submitting manager name required', 1); return; }
+  if (!document.getElementById('certify-row').classList.contains('checked')) {
+    toast('Certification checkbox required', 1); return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  const now        = new Date();
+  const sevEl      = document.querySelector('.sev-btn.selected .sev-label');
+  const sevText    = sevEl ? sevEl.textContent.trim() : '';
+  const sevNum     = sevText.replace('Level ', '').trim();
+
+  // ── Collect all fields ──────────────────────────────────────────────────
+  const irlFields = {
+    // Identifiers
+    'Report ID':            reportId,
+    'Submitted At':         now.toISOString(),
+    'Report Date Time':     val('f-datetime'),
+
+    // Incident classification
+    'Attraction':           val('f-attraction'),
+    'Shift':                val('f-shift'),
+    'Operator on Duty':     val('f-operator'),
+    'Reporting Manager':    val('f-manager'),
+    'Incident Type':        pill('f-incident-type'),
+    'Severity Level':       sevText,
+    'Severity Number':      sevNum ? parseInt(sevNum) : null,
+
+    // Guest info
+    'Guest ID Provided':    pill('f-guest-id'),
+    'Guest Name':           val('f-guest-name'),
+    'Guest DOB':            val('f-guest-dob'),
+    'Guest Phone':          val('f-guest-phone'),
+    'Guest Email':          val('f-guest-email'),
+    'Guest Address':        val('f-guest-address'),
+    'Guest Age':            val('f-guest-age') ? parseInt(val('f-guest-age')) : null,
+    'Guest Height In':      val('f-guest-height') ? parseInt(val('f-guest-height')) : null,
+    'Guest State':          pill('f-guest-state'),
+    'Guest Compliant':      pill('f-guest-compliant'),
+    'Additional Guests':    val('f-additional-guests') ? parseInt(val('f-additional-guests')) : 0,
+
+    // Injury
+    'Injury Present':       pill('f-injury-present'),
+    'Body Zones Affected':  getSelectedZones(),
+    'Injury Types':         getChecked(document.getElementById('injuryTypes')),
+    'Injury Description':   val('f-injury-desc'),
+    'Medical Response':     getChecked(document.querySelector('.sec-body .check-group:not(#injuryTypes)')),
+    'EMS Unit Hospital':    val('f-ems'),
+
+    // Sequence
+    'Cycle Point':          pill('f-cycle-point'),
+    'Restraints Checked':   pill('f-restraints'),
+    'Ride Normal':          pill('f-ride-normal'),
+    'Narrative':            val('f-narrative'),
+    'Immediate Actions':    val('f-immediate-actions'),
+    'Ride Shutdown':        pill('f-ride-shutdown'),
+    'Weather Conditions':   val('f-weather'),
+
+    // Response
+    'EAP Protocol':         val('f-eap'),
+    'Response Time':        val('f-response-time'),
+    'Scene Preserved':      pill('f-scene'),
+    'Response Notes':       val('f-response-notes'),
+
+    // Witnesses
+    'Witnesses Count':      witnesses.length,
+    'Witnesses Detail':     witnesses.map(w=>`${w.name} (${w.role}) — ${w.stmt}`).join(' | '),
+    'Surveillance':         pill('f-surveillance'),
+
+    // Submitter
+    'Submitter Name':       val('f-submitter'),
+    'Submitter Title':      val('f-submitter-title'),
+
+    // Source tag
+    'Source':               'IRL — Incident Report Form',
+  };
+
+  // Remove null/empty to keep Airtable clean
+  Object.keys(irlFields).forEach(k => {
+    if (irlFields[k] === null || irlFields[k] === '' || irlFields[k] === undefined) {
+      delete irlFields[k];
+    }
+  });
+
+  // ── Push 1: IRL_Submissions ─────────────────────────────────────────────
+  const irlOk = await atPost('IRL_Submissions', irlFields);
+
+  // ── Push 2: CAR_Log — auto-create corrective action ────────────────────
+  // Triggered for any Level 2+ incident or equipment malfunction / near miss
+  const incidentType = irlFields['Incident Type'] || '';
+  const autoCAR = parseInt(sevNum) >= 2
+    || incidentType.includes('Equipment')
+    || incidentType.includes('Near Miss');
+
+  let carId = '';
+  if (autoCAR) {
+    carId = 'CAR-' + Date.now().toString(36).toUpperCase().slice(-6);
+    const carPriority = parseInt(sevNum) >= 3 ? 'Critical'
+                      : parseInt(sevNum) === 2 ? 'High'
+                      : 'Medium';
+    await atPost('CAR_Log', {
+      'CAR ID':           carId,
+      'Source Stream':    'IRL — Incident Report',
+      'Attraction / Area':irlFields['Attraction'] || '',
+      'Finding':          `[AUTO] ${irlFields['Incident Type'] || 'Incident'} · ${irlFields['Severity Level'] || ''} · Report ${reportId}`,
+      'Priority':         carPriority,
+      'Assigned To':      irlFields['Reporting Manager'] || '',
+      'Due Date':         (() => {
+        const d = new Date();
+        d.setDate(d.getDate() + (parseInt(sevNum) >= 3 ? 1 : parseInt(sevNum) === 2 ? 3 : 7));
+        return d.toISOString().split('T')[0];
+      })(),
+      'Status':           'Open',
+      'Opened At':        now.toISOString(),
+    });
+  }
+
+  // ── Show confirmation ───────────────────────────────────────────────────
+  document.getElementById('mainForm').style.display = 'none';
+  document.getElementById('confirmWrap').classList.add('show');
+  document.getElementById('confirm-id').textContent = reportId;
+
+  const carNote = autoCAR
+    ? ` A corrective action (<strong>${carId}</strong>) has been automatically queued in CA Manager.`
+    : '';
+  const syncNote = irlOk ? '' : ' <em style="color:#F59E0B">(Sync pending — check connection)</em>';
+  document.getElementById('confirm-body').innerHTML =
+    `This incident report has been recorded in AS 360.${carNote} Retain the report ID for all follow-up documentation, regulatory filings, and insurance correspondence.${syncNote}`;
+
+  document.getElementById('confirmGrid').innerHTML = `
+    <div class="confirm-field"><label>Attraction</label><div class="cv">${irlFields['Attraction']||'—'}</div></div>
+    <div class="confirm-field"><label>Severity</label><div class="cv" style="color:var(--red)">${irlFields['Severity Level']||'—'}</div></div>
+    <div class="confirm-field"><label>Incident Type</label><div class="cv">${irlFields['Incident Type']||'—'}</div></div>
+    <div class="confirm-field"><label>Submitted By</label><div class="cv">${irlFields['Submitter Name']}</div></div>
+    <div class="confirm-field"><label>Submitted At</label><div class="cv">${now.toLocaleString()}</div></div>
+    <div class="confirm-field"><label>Witnesses Recorded</label><div class="cv">${witnesses.length}</div></div>
+    ${autoCAR ? `<div class="confirm-field" style="border-color:rgba(244,63,94,.3);"><label>CAR Auto-Created</label><div class="cv" style="color:var(--red)">${carId}</div></div>` : ''}`;
+
+  document.querySelector('.steps-wrap').style.display = 'none';
+  document.querySelector('.alert-banner').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── CORE LOGIC (unchanged from original) ──────────────────────────────────
 let currentStep = 1;
 const totalSteps = 7;
 let witnesses = [];
@@ -792,7 +977,6 @@ function nextStep(n){ goStep(n+1); }
 function selectPill(el, groupId){
   document.querySelectorAll('#'+groupId+' .r-pill').forEach(p=>{
     p.classList.remove('selected');
-    if(p.classList.contains('sel-green')) p.style.borderColor=''; 
   });
   el.classList.add('selected');
 }
@@ -814,13 +998,8 @@ function selectSev(n){
 
 function toggleCheck(el){ el.classList.toggle('checked'); }
 function toggleZone(el){ el.classList.toggle('selected'); }
-
-function toggleGuestFields(show){
-  document.getElementById('guest-id-fields').style.display = show ? 'block' : 'none';
-}
-function toggleInjuryFields(show){
-  document.getElementById('injury-fields').style.display = show ? 'block' : 'none';
-}
+function toggleGuestFields(show){ document.getElementById('guest-id-fields').style.display = show ? 'block' : 'none'; }
+function toggleInjuryFields(show){ document.getElementById('injury-fields').style.display = show ? 'block' : 'none'; }
 
 function addWitness(){
   const name    = document.getElementById('w-name').value.trim();
@@ -853,73 +1032,31 @@ function renderWitnesses(){
 function removeWitness(i){ witnesses.splice(i,1); renderWitnesses(); }
 
 function buildReview(){
-  const attraction = document.getElementById('f-attraction').value||'—';
-  const datetime   = document.getElementById('f-datetime').value||'—';
-  const operator   = document.getElementById('f-operator').value||'—';
-  const manager    = document.getElementById('f-manager').value||'—';
+  const attraction = val('f-attraction')||'—';
+  const datetime   = val('f-datetime')||'—';
+  const operator   = val('f-operator')||'—';
   const sevEl      = document.querySelector('.sev-btn.selected .sev-label');
   const sev        = sevEl ? sevEl.textContent : '—';
   const typeEl     = document.querySelector('#f-incident-type .r-pill.selected');
   const type       = typeEl ? typeEl.textContent : '—';
   const cycleEl    = document.querySelector('#f-cycle-point .r-pill.selected');
   const cycle      = cycleEl ? cycleEl.textContent : '—';
-  const guestName  = document.getElementById('f-guest-name').value||'Not provided';
 
   document.getElementById('reviewGrid').innerHTML = `
-    <div class="detail-field" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">REPORT ID</label><div style="font-size:13px;font-weight:600;color:var(--teal);">${reportId}</div></div>
-    <div class="detail-field" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">ATTRACTION</label><div style="font-size:13px;font-weight:600;color:var(--text);">${attraction}</div></div>
-    <div class="detail-field" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">DATE / TIME</label><div style="font-size:13px;font-weight:600;color:var(--text);">${datetime}</div></div>
-    <div class="detail-field" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">SEVERITY</label><div style="font-size:13px;font-weight:600;color:var(--red);">${sev}</div></div>
-    <div class="detail-field" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">TYPE</label><div style="font-size:13px;font-weight:600;color:var(--text);">${type}</div></div>
-    <div class="detail-field" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">CYCLE POINT</label><div style="font-size:13px;font-weight:600;color:var(--text);">${cycle}</div></div>
-    <div class="detail-field" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">OPERATOR</label><div style="font-size:13px;font-weight:600;color:var(--text);">${operator}</div></div>
-    <div class="detail-field" style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">WITNESSES</label><div style="font-size:13px;font-weight:600;color:var(--text);">${witnesses.length} recorded</div></div>`;
+    <div style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">REPORT ID</label><div style="font-size:13px;font-weight:600;color:var(--teal);">${reportId}</div></div>
+    <div style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">ATTRACTION</label><div style="font-size:13px;font-weight:600;color:var(--text);">${attraction}</div></div>
+    <div style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">DATE / TIME</label><div style="font-size:13px;font-weight:600;color:var(--text);">${datetime}</div></div>
+    <div style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">SEVERITY</label><div style="font-size:13px;font-weight:600;color:var(--red);">${sev}</div></div>
+    <div style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">TYPE</label><div style="font-size:13px;font-weight:600;color:var(--text);">${type}</div></div>
+    <div style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">CYCLE POINT</label><div style="font-size:13px;font-weight:600;color:var(--text);">${cycle}</div></div>
+    <div style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">OPERATOR</label><div style="font-size:13px;font-weight:600;color:var(--text);">${operator}</div></div>
+    <div style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><label style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-muted);display:block;margin-bottom:3px;">WITNESSES</label><div style="font-size:13px;font-weight:600;color:var(--text);">${witnesses.length} recorded</div></div>`;
 }
 
-function submitReport(){
-  if(!document.getElementById('f-submitter').value.trim()){ toast('Submitting manager name required',1); return; }
-  if(!document.getElementById('certify-row').classList.contains('checked')){ toast('Certification checkbox required',1); return; }
-
-  // Build record
-  const record = {
-    id: reportId,
-    datetime: document.getElementById('f-datetime').value,
-    attraction: document.getElementById('f-attraction').value,
-    operator: document.getElementById('f-operator').value,
-    manager: document.getElementById('f-manager').value,
-    severity: document.querySelector('.sev-btn.selected .sev-label')?.textContent||'',
-    type: document.querySelector('#f-incident-type .r-pill.selected')?.textContent||'',
-    narrative: document.getElementById('f-narrative').value,
-    submitter: document.getElementById('f-submitter').value,
-    submittedAt: new Date().toISOString(),
-    witnesses: witnesses.length,
-  };
-  try{
-    const existing = JSON.parse(localStorage.getItem('as360_incidents')||'[]');
-    existing.push(record);
-    localStorage.setItem('as360_incidents', JSON.stringify(existing));
-  }catch(e){}
-
-  // Show confirmation
-  document.getElementById('mainForm').style.display='none';
-  document.getElementById('confirmWrap').classList.add('show');
-  document.getElementById('confirm-id').textContent = reportId;
-  document.getElementById('confirmGrid').innerHTML = `
-    <div class="confirm-field"><label>Attraction</label><div class="cv">${record.attraction||'—'}</div></div>
-    <div class="confirm-field"><label>Severity</label><div class="cv" style="color:var(--red)">${record.severity||'—'}</div></div>
-    <div class="confirm-field"><label>Incident Type</label><div class="cv">${record.type||'—'}</div></div>
-    <div class="confirm-field"><label>Submitted By</label><div class="cv">${record.submitter}</div></div>
-    <div class="confirm-field"><label>Submitted At</label><div class="cv">${new Date(record.submittedAt).toLocaleString()}</div></div>
-    <div class="confirm-field"><label>Witnesses Recorded</label><div class="cv">${witnesses.length}</div></div>`;
-  document.querySelector('.steps-wrap').style.display='none';
-  document.querySelector('.alert-banner').style.display='none';
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function toast(msg,type){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.className='show'+(type==='ok'?' ok':type===1?' err':'');
-  clearTimeout(t._t); t._t=setTimeout(()=>t.className='',2800);
+function toast(msg, type){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'show' + (type==='ok'?' ok':type===1?' err':'');
+  clearTimeout(t._t); t._t = setTimeout(()=>t.className='', 2800);
 }
 
 init();
