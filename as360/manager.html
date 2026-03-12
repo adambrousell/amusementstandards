@@ -27,6 +27,8 @@
   --blue-dim:rgba(59,130,246,.15);
   --purple:#8B5CF6;
   --purple-dim:rgba(139,92,246,.15);
+  --orange:#F97316;
+  --orange-dim:rgba(249,115,22,.15);
   --text:#CBD5E1;
   --text-bright:#E8EDF5;
   --text-dim:#64748B;
@@ -54,6 +56,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .tb-clock{font-family:var(--mono);font-size:11px;color:var(--text-dim);}
 .tb-badge{font-family:var(--mono);font-size:9px;background:var(--red-dim);border:1px solid rgba(244,63,94,.3);color:var(--red);padding:3px 8px;border-radius:4px;letter-spacing:.5px;display:none;}
 .tb-badge.show{display:block;}
+.tb-badge-amber{font-family:var(--mono);font-size:9px;background:var(--amber-dim);border:1px solid rgba(245,158,11,.3);color:var(--amber);padding:3px 8px;border-radius:4px;letter-spacing:.5px;display:none;}
+.tb-badge-amber.show{display:block;}
 .tb-sync-btn{padding:5px 12px;background:var(--teal-dim);border:1px solid rgba(10,191,188,.3);color:var(--teal);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:1px;border-radius:5px;cursor:pointer;transition:all .15s;}
 .tb-sync-btn:hover{background:rgba(10,191,188,.25);}
 
@@ -64,11 +68,11 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .nav-tab.active{color:var(--teal);border-bottom-color:var(--teal);}
 .nav-tab .tab-count{font-family:var(--mono);font-size:9px;background:var(--panel3);padding:2px 6px;border-radius:3px;color:var(--text-dim);}
 .nav-tab.active .tab-count{background:var(--teal-dim);color:var(--teal);}
+.nav-tab .tab-alert{font-family:var(--mono);font-size:9px;background:var(--red-dim);border:1px solid rgba(244,63,94,.25);padding:2px 6px;border-radius:3px;color:var(--red);}
+.nav-tab .tab-warn{font-family:var(--mono);font-size:9px;background:var(--amber-dim);border:1px solid rgba(245,158,11,.25);padding:2px 6px;border-radius:3px;color:var(--amber);}
 
 /* ── MAIN CONTENT ── */
 .main{flex:1;overflow-y:auto;padding:20px;}
-
-/* ── VIEWS ── */
 .view{display:none;}
 .view.active{display:block;}
 
@@ -81,11 +85,13 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .metric-card.red::before{background:var(--red);}
 .metric-card.amber::before{background:var(--amber);}
 .metric-card.green::before{background:var(--green);}
+.metric-card.orange::before{background:var(--orange);}
 .metric-val{font-family:var(--cond);font-size:32px;font-weight:800;line-height:1;margin-bottom:3px;}
 .metric-val.teal{color:var(--teal);}
 .metric-val.red{color:var(--red);}
 .metric-val.amber{color:var(--amber);}
 .metric-val.green{color:var(--green);}
+.metric-val.orange{color:var(--orange);}
 .metric-label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);}
 .metric-sub{font-size:11px;color:var(--text-dim);margin-top:4px;}
 
@@ -149,6 +155,75 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .empty-state{text-align:center;padding:40px 20px;color:var(--text-muted);}
 .empty-icon{font-size:36px;margin-bottom:8px;}
 
+/* ── AUDIT SCHEDULE ── */
+.sched-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px;}
+@media(min-width:600px){.sched-summary{grid-template-columns:repeat(4,1fr);}}
+
+.sched-section-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px;margin-top:4px;}
+
+.sched-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+
+.audit-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 18px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;transition:background .12s;}
+.audit-card:hover{background:var(--panel2);}
+.audit-card.overdue{border-color:rgba(244,63,94,.35);background:rgba(244,63,94,.04);}
+.audit-card.due-soon{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.03);}
+.audit-card.ok{border-color:rgba(16,185,129,.2);}
+
+.ac-left{display:flex;flex-direction:column;gap:4px;}
+.ac-type{font-family:var(--cond);font-size:15px;font-weight:700;color:var(--text-bright);display:flex;align-items:center;gap:8px;}
+.ac-code{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--text-dim);}
+.ac-meta{font-size:12px;color:var(--text-dim);display:flex;gap:14px;flex-wrap:wrap;margin-top:2px;}
+.ac-meta span{display:flex;align-items:center;gap:4px;}
+.ac-meta .dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+
+.ac-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.ac-days{font-family:var(--cond);font-size:28px;font-weight:800;line-height:1;}
+.ac-days.overdue{color:var(--red);}
+.ac-days.soon{color:var(--amber);}
+.ac-days.ok{color:var(--green);}
+.ac-days-label{font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--text-dim);text-align:right;}
+.ac-bar{width:80px;height:4px;background:var(--panel3);border-radius:2px;overflow:hidden;margin-top:2px;}
+.ac-bar-fill{height:100%;border-radius:2px;transition:width .5s;}
+
+.ac-status-badge{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:4px;}
+.badge-overdue{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.3);}
+.badge-soon{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+.badge-ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.badge-scheduled{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(59,130,246,.3);}
+
+/* PRE-AUDIT CHECKLIST */
+.pre-audit-wrap{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:18px;}
+.pre-audit-hdr{padding:12px 16px;background:var(--panel2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.pre-audit-title{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);}
+.pre-audit-sub{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.pre-audit-score{font-family:var(--cond);font-size:22px;font-weight:800;}
+
+.pac-row{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid rgba(36,45,62,.4);}
+.pac-row:last-child{border-bottom:none;}
+.pac-check{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;margin-top:1px;}
+.pac-check.checked{background:var(--green);border-color:var(--green);}
+.pac-check.checked::after{content:'✓';font-size:10px;color:#fff;font-weight:700;}
+.pac-check.warn{border-color:var(--amber);}
+.pac-body{flex:1;}
+.pac-label{font-size:13px;color:var(--text);font-weight:600;margin-bottom:2px;}
+.pac-detail{font-size:11px;color:var(--text-dim);line-height:1.5;}
+.pac-tag{font-family:var(--mono);font-size:8px;letter-spacing:.5px;padding:2px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;}
+.tag-open-ca{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.2);}
+.tag-training{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(139,92,246,.2);}
+.tag-docs{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(59,130,246,.2);}
+.pac-right{flex-shrink:0;font-size:11px;color:var(--text-dim);text-align:right;}
+
+/* TRAINING TRACKER */
+.training-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.cert-row{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 16px;display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;}
+.cert-name{font-size:13px;font-weight:600;color:var(--text);}
+.cert-type{font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;}
+.cert-expiry{font-family:var(--mono);font-size:11px;text-align:right;}
+.cert-pill{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:4px;}
+.cert-expired{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.25);}
+.cert-expiring{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
+.cert-current{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25);}
+
 /* ── DETAIL MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(8,10,16,.8);backdrop-filter:blur(4px);z-index:300;overflow-y:auto;padding:20px 16px;}
 .modal-overlay.show{display:block;}
@@ -178,6 +253,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .btn-green:hover{filter:brightness(1.1);}
 .btn-ghost{padding:10px 16px;border:1px solid var(--border2);border-radius:8px;background:transparent;font-family:var(--cond);font-size:14px;font-weight:600;color:var(--text-dim);cursor:pointer;transition:all .15s;}
 .btn-ghost:hover{border-color:var(--text-dim);color:var(--text);}
+.btn-sm-amber{padding:6px 12px;border:1px solid rgba(245,158,11,.3);border-radius:6px;background:var(--amber-dim);font-family:var(--mono);font-size:9px;font-weight:700;color:var(--amber);cursor:pointer;letter-spacing:.5px;transition:all .12s;}
+.btn-sm-amber:hover{background:rgba(245,158,11,.25);}
 
 /* ── NEW CA FORM ── */
 .form-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px;}
@@ -191,6 +268,12 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .form-field input:focus,.form-field select:focus,.form-field textarea:focus{outline:none;border-color:var(--teal);}
 .form-field select option{background:var(--panel);}
 .form-field textarea{min-height:80px;resize:vertical;line-height:1.5;}
+
+/* ── SCHEDULE CONFIG (Settings) ── */
+.sched-config-row{display:grid;grid-template-columns:1fr 100px 120px;gap:10px;align-items:end;padding:12px 0;border-bottom:1px solid rgba(36,45,62,.5);}
+.sched-config-row:last-child{border-bottom:none;}
+.sched-type-name{font-size:13px;font-weight:600;color:var(--text-bright);}
+.sched-type-code{font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;}
 
 /* ── SETTINGS ── */
 .settings-section{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px;}
@@ -222,6 +305,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   </div>
   <div class="topbar-right">
     <div class="tb-badge" id="overdueBadge">— OVERDUE</div>
+    <div class="tb-badge-amber" id="auditDueBadge">AUDIT DUE</div>
     <button class="tb-sync-btn" onclick="syncAirtable()">↑ SYNC AT</button>
     <div class="tb-clock" id="clock">--:--</div>
   </div>
@@ -229,19 +313,19 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
 <!-- NAV TABS -->
 <div class="nav-tabs">
-  <div class="nav-tab active" onclick="showView('dashboard')">📊 Dashboard</div>
-  <div class="nav-tab" onclick="showView('open')">🔴 Open <span class="tab-count" id="openCount">0</span></div>
-  <div class="nav-tab" onclick="showView('closed')">✅ Closed <span class="tab-count" id="closedCount">0</span></div>
-  <div class="nav-tab" onclick="showView('new')">＋ New CA</div>
-  <div class="nav-tab" onclick="showView('settings')">⚙ Settings</div>
+  <div class="nav-tab active" onclick="showView('dashboard',this)">📊 Dashboard</div>
+  <div class="nav-tab" onclick="showView('open',this)">🔴 Open <span class="tab-count" id="openCount">0</span></div>
+  <div class="nav-tab" onclick="showView('closed',this)">✅ Closed <span class="tab-count" id="closedCount">0</span></div>
+  <div class="nav-tab" id="schedTab" onclick="showView('schedule',this)">📅 Audit Schedule</div>
+  <div class="nav-tab" onclick="showView('new',this)">＋ New CA</div>
+  <div class="nav-tab" onclick="showView('settings',this)">⚙ Settings</div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
 
-  <!-- ══════════════════════════════════ DASHBOARD -->
+  <!-- ══ DASHBOARD ══ -->
   <div class="view active" id="view-dashboard">
-
     <div class="metric-grid">
       <div class="metric-card teal">
         <div class="metric-val teal" id="m-cacr">—%</div>
@@ -277,7 +361,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
       <div class="cacr-ticks"><span>0%</span><span>25%</span><span>50%</span><span style="color:var(--amber)">75%</span><span style="color:var(--green)">90%</span><span>100%</span></div>
     </div>
 
-    <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px;">// Aging Buckets — Open CAs</div>
+    <div class="sched-section-label">// Aging Buckets — Open CAs</div>
     <div class="aging-grid">
       <div class="aging-bar"><div class="aging-bar-val age-ok" id="age-0">0</div><div class="aging-bar-label">0–24h</div></div>
       <div class="aging-bar"><div class="aging-bar-val age-warn" id="age-24">0</div><div class="aging-bar-label">24–48h</div></div>
@@ -296,9 +380,14 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
       </div>
     </div>
 
+    <!-- Dashboard audit mini-summary -->
+    <div class="stream-list" id="dashAuditSummary">
+      <div class="stream-hdr"><span>Upcoming Audits</span><span style="cursor:pointer;color:var(--teal)" onclick="showView('schedule',document.getElementById('schedTab'))">View all →</span></div>
+      <div id="dashAuditRows"></div>
+    </div>
   </div>
 
-  <!-- ══════════════════════════════════ OPEN CAs -->
+  <!-- ══ OPEN CAs ══ -->
   <div class="view" id="view-open">
     <div class="table-wrap">
       <div class="table-toolbar">
@@ -310,16 +399,14 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <button class="filter-btn" onclick="setFilter('open','SGSA',this)">Shadow</button>
         <button class="filter-btn" onclick="setFilter('open','NMR',this)">NMR</button>
       </div>
-      <div class="table-hdr">
-        <span>ID</span><span>Item / Finding</span><span>Attraction</span><span>Age</span><span>Status</span><span>Action</span>
-      </div>
+      <div class="table-hdr"><span>ID</span><span>Item / Finding</span><span>Attraction</span><span>Age</span><span>Status</span><span>Action</span></div>
       <div class="table-body" id="openTableBody">
         <div class="empty-state"><div class="empty-icon">✅</div>No open corrective actions.<br><span style="font-size:11px;font-family:var(--mono);">All clear — or add CAs from the New CA tab.</span></div>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════ CLOSED CAs -->
+  <!-- ══ CLOSED CAs ══ -->
   <div class="view" id="view-closed">
     <div class="table-wrap">
       <div class="table-toolbar">
@@ -331,21 +418,73 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <button class="filter-btn" onclick="setFilter('closed','SGSA',this)">Shadow</button>
         <button class="filter-btn" onclick="setFilter('closed','NMR',this)">NMR</button>
       </div>
-      <div class="table-hdr">
-        <span>ID</span><span>Item / Finding</span><span>Attraction</span><span>Closed In</span><span>Status</span><span></span>
-      </div>
+      <div class="table-hdr"><span>ID</span><span>Item / Finding</span><span>Attraction</span><span>Closed In</span><span>Status</span><span></span></div>
       <div class="table-body" id="closedTableBody">
         <div class="empty-state"><div class="empty-icon">📂</div>No closed actions yet.</div>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════ NEW CA -->
+  <!-- ══ AUDIT SCHEDULE ══ -->
+  <div class="view" id="view-schedule">
+
+    <!-- Summary metrics -->
+    <div class="sched-summary">
+      <div class="metric-card red">
+        <div class="metric-val red" id="s-overdue">0</div>
+        <div class="metric-label">Overdue Audits</div>
+        <div class="metric-sub">missed scheduled window</div>
+      </div>
+      <div class="metric-card amber">
+        <div class="metric-val amber" id="s-soon">0</div>
+        <div class="metric-label">Due Within 14 Days</div>
+        <div class="metric-sub">plan now</div>
+      </div>
+      <div class="metric-card red">
+        <div class="metric-val red" id="s-open-ca">0</div>
+        <div class="metric-label">Open CAs Pre-Audit</div>
+        <div class="metric-sub">should be resolved first</div>
+      </div>
+      <div class="metric-card amber">
+        <div class="metric-val amber" id="s-certs">0</div>
+        <div class="metric-label">Expiring Certs</div>
+        <div class="metric-sub">within 30 days</div>
+      </div>
+    </div>
+
+    <!-- Audit schedule cards -->
+    <div class="sched-section-label">// Audit Schedule — All Types</div>
+    <div class="sched-grid" id="auditSchedGrid"></div>
+
+    <!-- Pre-audit readiness checklist -->
+    <div class="pre-audit-wrap">
+      <div class="pre-audit-hdr">
+        <div>
+          <div class="pre-audit-title">Pre-Audit Readiness Checklist</div>
+          <div class="pre-audit-sub">Items to resolve before your next scheduled audit — check off as completed</div>
+        </div>
+        <div>
+          <div class="pre-audit-score" id="pacScore" style="color:var(--teal)">0/0</div>
+          <div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);text-align:right;margin-top:2px;">READY</div>
+        </div>
+      </div>
+      <div id="pacList"></div>
+    </div>
+
+    <!-- Training & cert tracker -->
+    <div class="sched-section-label">// Training &amp; Certification Expiration Tracker</div>
+    <div class="training-grid" id="certGrid"></div>
+    <div style="text-align:right;margin-top:6px;">
+      <button class="btn-sm-amber" onclick="showView('settings',document.querySelector('.nav-tab:last-child'))">Manage certifications in Settings →</button>
+    </div>
+
+  </div>
+
+  <!-- ══ NEW CA ══ -->
   <div class="view" id="view-new">
     <div class="form-card">
       <div class="form-card-title">Log New Corrective Action</div>
       <div class="form-card-sub">Manually log a CA from any audit stream. CAs from IHS audit sessions are imported automatically when the audit form pushes to Airtable.</div>
-
       <div class="form-grid">
         <div class="form-field">
           <label>Audit Stream</label>
@@ -408,11 +547,47 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     </div>
   </div>
 
-  <!-- ══════════════════════════════════ SETTINGS -->
+  <!-- ══ SETTINGS ══ -->
   <div class="view" id="view-settings">
+
+    <!-- Audit Schedule Config -->
+    <div class="settings-section">
+      <div class="settings-title">Audit Schedule Configuration</div>
+      <div class="settings-sub">Set the frequency and last-completed date for each audit type. The schedule reminder tab will calculate days remaining and flag overdue or upcoming windows automatically.</div>
+      <div id="schedConfigRows"></div>
+      <button class="btn-teal" style="margin-top:16px;" onclick="saveScheduleConfig()">Save Schedule</button>
+    </div>
+
+    <!-- Certification Tracker Config -->
+    <div class="settings-section">
+      <div class="settings-title">Training &amp; Certification Tracker</div>
+      <div class="settings-sub">Track staff certification and training expiration dates. The schedule reminder will flag expirations within 30 days.</div>
+      <div id="certConfigList" style="margin-bottom:12px;"></div>
+      <div class="form-grid" style="margin-bottom:10px;">
+        <div class="form-field">
+          <label>Staff Name / Role</label>
+          <input type="text" id="cert-name" placeholder="e.g. J. Rivera — Ride Operator">
+        </div>
+        <div class="form-field">
+          <label>Certification Type</label>
+          <input type="text" id="cert-type" placeholder="e.g. CPR / First Aid, NAARSO-1">
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Expiration Date</label>
+          <input type="date" id="cert-expiry">
+        </div>
+        <div style="display:flex;align-items:flex-end;padding-bottom:12px;">
+          <button class="btn-teal" style="width:100%" onclick="addCert()">Add Certification</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Airtable -->
     <div class="settings-section">
       <div class="settings-title">Airtable Sync</div>
-      <div class="settings-sub">Connect to your AS 360 Airtable base to push CA records automatically. CAs logged here will sync to an <strong>AS 360 CA Manager</strong> table in your base.</div>
+      <div class="settings-sub">Connect to your AS 360 Airtable base to push CA records automatically.</div>
       <div class="form-field">
         <label>Personal Access Token (PAT)</label>
         <input type="password" id="at-pat" placeholder="patXXXXXXXXXXXXXXXX">
@@ -436,7 +611,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
     <div class="settings-section">
       <div class="settings-title">Sample Data</div>
-      <div class="settings-sub">Load demo CAs across all streams to preview the dashboard and workflow. This will not affect any real audit data.</div>
+      <div class="settings-sub">Load demo CAs and sample schedule data to preview the full dashboard and workflow.</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button class="btn-teal" onclick="loadSampleData()">Load Sample CAs</button>
         <button class="btn-ghost" onclick="clearAllData()">Clear All Data</button>
@@ -452,7 +627,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
 </div><!-- /main -->
 
-<!-- ══════════════════════════════════ DETAIL / CLOSE MODAL -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <div class="modal-hdr">
@@ -467,26 +642,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
       <div class="modal-sec">// Finding</div>
       <div style="font-size:13px;color:var(--text);line-height:1.5;margin-bottom:6px;" id="modal-item"></div>
       <div style="font-size:12px;color:var(--text-dim);line-height:1.5;" id="modal-desc"></div>
-
-      <div id="close-section">
-        <div class="modal-sec">// Close This Action</div>
-        <div class="modal-field">
-          <label>Resolution Description <span style="color:var(--red);font-size:9px;">— required</span></label>
-          <textarea id="modal-resolution" placeholder="Describe what was corrected, who took action, and when…"></textarea>
-        </div>
-        <div class="modal-field">
-          <label>Closed By</label>
-          <input type="text" id="modal-closed-by" placeholder="Name or badge ID">
-        </div>
-        <div class="modal-field">
-          <label>Update Status</label>
-          <select id="modal-status-sel">
-            <option value="open">Open</option>
-            <option value="in-progress">In Progress</option>
-            <option value="closed">Closed — Resolved</option>
-          </select>
-        </div>
-      </div>
+      <div id="close-section"></div>
     </div>
     <div class="modal-footer">
       <button class="btn-green" onclick="saveCAUpdate()">Save Update</button>
@@ -498,134 +654,394 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 <div id="toast"></div>
 
 <script>
-// ── STATE ───────────────────────────────────────────────────────────────────
+// ── CONSTANTS ────────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'as360_ca_v1';
-const AT_KEY = 'as360_ca_at';
-let cas = [];
-let activeFilters = {open:'all', closed:'all'};
-let activeCA = null;
+const AT_KEY      = 'as360_ca_at';
+const SCHED_KEY   = 'as360_sched_v1';
+const CERT_KEY    = 'as360_certs_v1';
+const PAC_KEY     = 'as360_pac_v1';
 
 const STREAM_COLORS = {IHS:'#10B981',TPA:'#3B82F6',GSA:'#F59E0B',SGSA:'#8B5CF6',NMR:'#F43F5E',OTHER:'#64748B'};
 
-// ── INIT ────────────────────────────────────────────────────────────────────
+const AUDIT_TYPES = [
+  {code:'iGSA', name:'In-House GSA',         color:'#F59E0B', defaultFreq:14,  icon:'📝'},
+  {code:'mGSA', name:'Mystery Shopper GSA',  color:'#8B5CF6', defaultFreq:30,  icon:'🕵️'},
+  {code:'IHS',  name:'In-House Safety Audit',color:'#10B981', defaultFreq:30,  icon:'🏢'},
+  {code:'TPS',  name:'Third-Party Safety',   color:'#3B82F6', defaultFreq:90,  icon:'🔍'},
+  {code:'NMR',  name:'Near-Miss Review',     color:'#F43F5E', defaultFreq:7,   icon:'⚠️'},
+];
+
+const PRE_AUDIT_ITEMS = [
+  {id:'pac-ca',    label:'All open CAs resolved or in-progress',   detail:'Review Open CAs tab — any critical or high priority items should be closed before audit day.',   tag:'open-ca',  dynamic:true},
+  {id:'pac-cert',  label:'No expired staff certifications',         detail:'Check Training & Certification Tracker — expired CPR, first aid, or ride operator credentials.',    tag:'training', dynamic:true},
+  {id:'pac-poi',   label:'Pre-opening inspection logs current',     detail:'Confirm daily ride inspection sign-offs are completed and documented for the past 7 days.',          tag:'docs'},
+  {id:'pac-sb',    label:'No open service bulletins',              detail:'Verify all manufacturer service bulletins are acknowledged and closed at the unit level.',           tag:'docs'},
+  {id:'pac-emer',  label:'Emergency action plans current & posted', detail:'EAP binders reviewed, posting locations confirmed, and all changes since last audit noted.',        tag:'docs'},
+  {id:'pac-hck',   label:'Height check equipment calibrated',       detail:'Verify all height measurement devices against certified gauge — document calibration date.',        tag:'docs'},
+  {id:'pac-disp',  label:'Dispatcher logs accessible for review',   detail:'OPD records from past 30 days available and organized by date.',                                   tag:'docs'},
+  {id:'pac-train', label:'Operator training records up to date',    detail:'Ride-specific qualifications documented for all currently assigned operators.',                     tag:'training'},
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let cas = [];
+let schedule = {};    // {code: {freq, lastDate}}
+let certs = [];       // [{id, name, type, expiry}]
+let pacChecked = {};  // {id: bool}
+let activeFilters = {open:'all', closed:'all'};
+let activeCA = null;
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
 function init(){
-  loadData();
+  loadData(); loadSchedule(); loadCerts(); loadPAC();
   loadATSettings();
+  buildSchedConfig();
+  buildCertConfig();
   refreshAll();
-  tickClock(); setInterval(tickClock,1000);
-  setInterval(refreshAll, 60000); // refresh aging every minute
+  tickClock(); setInterval(tickClock, 1000);
+  setInterval(refreshAll, 60000);
 }
 
 function tickClock(){
-  document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
 }
 
-// ── DATA PERSISTENCE ─────────────────────────────────────────────────────────
-function loadData(){
-  try{ cas = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); }
-  catch(e){ cas=[]; }
+// ── PERSISTENCE ──────────────────────────────────────────────────────────────
+function loadData(){ try{ cas = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); }catch(e){ cas=[]; } }
+function saveData(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cas)); refreshAll(); }
+function loadSchedule(){
+  try{ schedule = JSON.parse(localStorage.getItem(SCHED_KEY)||'{}'); }catch(e){ schedule={}; }
+  AUDIT_TYPES.forEach(t=>{ if(!schedule[t.code]) schedule[t.code]={freq:t.defaultFreq, lastDate:''}; });
 }
-function saveData(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(cas));
-  refreshAll();
-}
+function saveScheduleData(){ localStorage.setItem(SCHED_KEY, JSON.stringify(schedule)); }
+function loadCerts(){ try{ certs = JSON.parse(localStorage.getItem(CERT_KEY)||'[]'); }catch(e){ certs=[]; } }
+function saveCerts(){ localStorage.setItem(CERT_KEY, JSON.stringify(certs)); }
+function loadPAC(){ try{ pacChecked = JSON.parse(localStorage.getItem(PAC_KEY)||'{}'); }catch(e){ pacChecked={}; } }
+function savePAC(){ localStorage.setItem(PAC_KEY, JSON.stringify(pacChecked)); }
 
 // ── VIEWS ────────────────────────────────────────────────────────────────────
-function showView(name){
+function showView(name, tabEl){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
-  event.currentTarget.classList.add('active');
+  if(tabEl) tabEl.classList.add('active');
   if(name==='open') renderTable('open');
   if(name==='closed') renderTable('closed');
   if(name==='dashboard') refreshDash();
+  if(name==='schedule') renderSchedule();
+  if(name==='settings'){ buildSchedConfig(); buildCertConfig(); }
 }
 
-// ── METRICS ─────────────────────────────────────────────────────────────────
+// ── REFRESH ALL ──────────────────────────────────────────────────────────────
 function refreshAll(){
   refreshDash();
   renderTable('open');
   renderTable('closed');
   updateTabCounts();
   updateOverdueBadge();
+  renderSchedule();
+  renderDashAuditSummary();
 }
 
+// ── DASHBOARD ────────────────────────────────────────────────────────────────
 function refreshDash(){
-  const open = cas.filter(c=>c.status!=='closed');
+  const open   = cas.filter(c=>c.status!=='closed');
   const closed = cas.filter(c=>c.status==='closed');
-  const total = cas.length;
-  const cacr = total>0 ? Math.round(closed.length/total*100) : 0;
+  const total  = cas.length;
+  const cacr   = total>0 ? Math.round(closed.length/total*100) : 0;
 
-  // CACR
-  document.getElementById('m-cacr').textContent = cacr+'%';
+  document.getElementById('m-cacr').textContent     = cacr+'%';
   document.getElementById('m-cacr-sub').textContent = closed.length+' of '+total+' resolved';
   document.getElementById('cacr-gauge-val').textContent = cacr+'%';
-  document.getElementById('cacr-fill').style.width = cacr+'%';
-
-  // Open
-  document.getElementById('m-open').textContent = open.length;
+  document.getElementById('cacr-fill').style.width  = cacr+'%';
+  document.getElementById('m-open').textContent     = open.length;
   document.getElementById('m-open-sub').textContent = open.length===1?'1 awaiting resolution':open.length+' awaiting resolution';
 
-  // 48hr close rate
   const closedWith48 = closed.filter(c=>{
     if(!c.closedAt) return false;
-    const hrs = (new Date(c.closedAt)-new Date(c.createdAt))/3600000;
-    return hrs<=48;
+    return (new Date(c.closedAt)-new Date(c.createdAt))/3600000<=48;
   });
   const rate48 = closed.length>0 ? Math.round(closedWith48.length/closed.length*100) : 0;
   document.getElementById('m-48hr').textContent = rate48+'%';
 
-  // Avg close time
   const closeTimes = closed.filter(c=>c.closedAt).map(c=>(new Date(c.closedAt)-new Date(c.createdAt))/3600000);
   const avgClose = closeTimes.length>0 ? (closeTimes.reduce((a,b)=>a+b,0)/closeTimes.length).toFixed(1) : '—';
   document.getElementById('m-avg').textContent = avgClose==='—'?'—':avgClose+'h';
 
-  // Aging buckets
   const now = Date.now();
   const ages = open.map(c=>(now-new Date(c.createdAt))/3600000);
-  document.getElementById('age-0').textContent = ages.filter(a=>a<24).length;
+  document.getElementById('age-0').textContent  = ages.filter(a=>a<24).length;
   document.getElementById('age-24').textContent = ages.filter(a=>a>=24&&a<48).length;
   document.getElementById('age-48').textContent = ages.filter(a=>a>=48&&a<72).length;
   document.getElementById('age-72').textContent = ages.filter(a=>a>=72).length;
 
-  // Stream breakdown
   ['IHS','TPA','GSA','SGSA','NMR'].forEach(s=>{
-    const sOpen = cas.filter(c=>c.stream===s&&c.status!=='closed').length;
+    const sOpen   = cas.filter(c=>c.stream===s&&c.status!=='closed').length;
     const sClosed = cas.filter(c=>c.stream===s&&c.status==='closed').length;
-    const sTotal = sOpen+sClosed;
-    const pct = sTotal>0?Math.round(sClosed/sTotal*100):0;
-    const fillEl = document.getElementById('sb-'+s);
-    if(fillEl) fillEl.style.width = pct+'%';
-    const oel = document.getElementById('ss-'+s+'-o');
-    const cel = document.getElementById('ss-'+s+'-c');
-    if(oel) oel.textContent = sOpen;
-    if(cel) cel.textContent = sClosed;
+    const sTotal  = sOpen+sClosed;
+    const pct     = sTotal>0?Math.round(sClosed/sTotal*100):0;
+    const fill = document.getElementById('sb-'+s);
+    if(fill) fill.style.width = pct+'%';
+    const oel = document.getElementById('ss-'+s+'-o'); if(oel) oel.textContent = sOpen;
+    const cel = document.getElementById('ss-'+s+'-c'); if(cel) cel.textContent = sClosed;
   });
 }
 
-function updateTabCounts(){
-  document.getElementById('openCount').textContent = cas.filter(c=>c.status!=='closed').length;
-  document.getElementById('closedCount').textContent = cas.filter(c=>c.status==='closed').length;
-}
-
-function updateOverdueBadge(){
-  const overdue = cas.filter(c=>{
-    if(c.status==='closed') return false;
-    return (Date.now()-new Date(c.createdAt))/3600000>48;
-  }).length;
-  const badge = document.getElementById('overdueBadge');
-  if(overdue>0){
-    badge.textContent = overdue+' OVERDUE';
-    badge.classList.add('show');
-  } else {
-    badge.classList.remove('show');
+function renderDashAuditSummary(){
+  const rows = document.getElementById('dashAuditRows');
+  const auditData = computeAuditStatus();
+  const urgent = auditData.filter(a=>a.daysRemaining<=14).slice(0,4);
+  if(!urgent.length){
+    rows.innerHTML = `<div class="empty-state" style="padding:16px 14px;text-align:left;"><span style="font-family:var(--mono);font-size:11px;color:var(--green);">✓ All audits on schedule — nothing due within 14 days.</span></div>`;
+    return;
   }
+  rows.innerHTML = urgent.map(a=>{
+    const col = a.daysRemaining < 0 ? 'var(--red)' : a.daysRemaining <= 7 ? 'var(--amber)' : 'var(--text-dim)';
+    const label = a.daysRemaining < 0 ? Math.abs(a.daysRemaining)+'d overdue' : a.daysRemaining===0 ? 'due today' : a.daysRemaining+'d remaining';
+    return `<div class="stream-row">
+      <span class="stream-dot" style="background:${a.color}"></span>
+      <span class="stream-name">${a.icon} ${a.name}</span>
+      <span style="font-family:var(--mono);font-size:11px;color:${col};font-weight:700;">${label}</span>
+    </div>`;
+  }).join('');
 }
 
-// ── TABLE RENDER ─────────────────────────────────────────────────────────────
+// ── SCHEDULE RENDER ───────────────────────────────────────────────────────────
+function computeAuditStatus(){
+  const now = new Date(); now.setHours(0,0,0,0);
+  return AUDIT_TYPES.map(t=>{
+    const cfg = schedule[t.code]||{freq:t.defaultFreq,lastDate:''};
+    let daysRemaining = null;
+    let nextDate = null;
+    if(cfg.lastDate){
+      const last = new Date(cfg.lastDate);
+      nextDate = new Date(last); nextDate.setDate(last.getDate()+parseInt(cfg.freq));
+      daysRemaining = Math.round((nextDate-now)/86400000);
+    }
+    return {...t, freq:cfg.freq, lastDate:cfg.lastDate, nextDate, daysRemaining};
+  });
+}
+
+function renderSchedule(){
+  const auditData = computeAuditStatus();
+  const openCAs   = cas.filter(c=>c.status!=='closed').length;
+  const now       = new Date(); now.setHours(0,0,0,0);
+
+  // Summary metrics
+  document.getElementById('s-overdue').textContent = auditData.filter(a=>a.daysRemaining!==null && a.daysRemaining<0).length;
+  document.getElementById('s-soon').textContent    = auditData.filter(a=>a.daysRemaining!==null && a.daysRemaining>=0 && a.daysRemaining<=14).length;
+  document.getElementById('s-open-ca').textContent = openCAs;
+  const expiringCerts = certs.filter(c=>{
+    if(!c.expiry) return false;
+    const days = Math.round((new Date(c.expiry)-now)/86400000);
+    return days<=30 && days>=-0;
+  }).length;
+  document.getElementById('s-certs').textContent = expiringCerts;
+
+  // Audit cards
+  const grid = document.getElementById('auditSchedGrid');
+  grid.innerHTML = auditData.map(a=>{
+    const noDate = !a.lastDate;
+    const overdue = !noDate && a.daysRemaining < 0;
+    const soon    = !noDate && a.daysRemaining >= 0 && a.daysRemaining <= 14;
+    const cardClass = overdue ? 'overdue' : soon ? 'due-soon' : 'ok';
+    const daysClass = overdue ? 'overdue' : soon ? 'soon' : 'ok';
+    const badgeClass = overdue ? 'badge-overdue' : noDate ? 'badge-scheduled' : soon ? 'badge-soon' : 'badge-ok';
+    const badgeText  = overdue ? 'OVERDUE' : noDate ? 'NOT SET' : soon ? (a.daysRemaining===0?'TODAY':a.daysRemaining+'D') : 'ON TRACK';
+    const daysDisplay = noDate ? '—' : overdue ? '-'+Math.abs(a.daysRemaining) : a.daysRemaining;
+    const daysLabel   = noDate ? 'no date set' : overdue ? 'days overdue' : 'days remaining';
+    const barPct = noDate ? 0 : Math.max(0, Math.min(100, Math.round((1-(a.daysRemaining/a.freq))*100)));
+    const barColor = overdue ? 'var(--red)' : soon ? 'var(--amber)' : 'var(--green)';
+    const lastStr = a.lastDate ? new Date(a.lastDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : 'Never logged';
+    const nextStr = a.nextDate ? a.nextDate.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—';
+
+    return `<div class="audit-card ${cardClass}">
+      <div class="ac-left">
+        <div class="ac-type">
+          ${a.icon} ${a.name}
+          <span class="ac-status-badge ${badgeClass}">${badgeText}</span>
+        </div>
+        <div class="ac-code">${a.code} · Every ${a.freq} days</div>
+        <div class="ac-meta">
+          <span><span class="dot" style="background:${a.color}"></span>Last: ${lastStr}</span>
+          <span>Next: ${nextStr}</span>
+        </div>
+        <div class="ac-bar" style="margin-top:8px;width:100%;max-width:240px;">
+          <div class="ac-bar-fill" style="width:${barPct}%;background:${barColor};"></div>
+        </div>
+      </div>
+      <div class="ac-right">
+        <div class="ac-days ${daysClass}">${daysDisplay}</div>
+        <div class="ac-days-label">${daysLabel}</div>
+        <button class="btn-sm-amber" style="margin-top:8px;" onclick="markAuditComplete('${a.code}')">Mark Done</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Pre-audit checklist
+  renderPAC(openCAs, expiringCerts);
+
+  // Cert tracker
+  renderCerts();
+
+  // Tab alert badge
+  const overdueCt = auditData.filter(a=>a.daysRemaining!==null&&a.daysRemaining<0).length;
+  const soonCt    = auditData.filter(a=>a.daysRemaining!==null&&a.daysRemaining>=0&&a.daysRemaining<=7).length;
+  const schedTab  = document.getElementById('schedTab');
+  const existingBadge = schedTab.querySelector('.tab-alert,.tab-warn');
+  if(existingBadge) existingBadge.remove();
+  if(overdueCt>0){
+    schedTab.innerHTML = `📅 Audit Schedule <span class="tab-alert">${overdueCt} OVERDUE</span>`;
+    schedTab.onclick = function(){ showView('schedule',this); };
+  } else if(soonCt>0){
+    schedTab.innerHTML = `📅 Audit Schedule <span class="tab-warn">${soonCt} DUE SOON</span>`;
+    schedTab.onclick = function(){ showView('schedule',this); };
+  } else {
+    schedTab.innerHTML = `📅 Audit Schedule`;
+    schedTab.onclick = function(){ showView('schedule',this); };
+  }
+
+  // Topbar audit badge
+  const auditBadge = document.getElementById('auditDueBadge');
+  if(overdueCt>0){ auditBadge.textContent = overdueCt+' AUDIT'+(overdueCt>1?'S':'')+' OVERDUE'; auditBadge.classList.add('show'); }
+  else { auditBadge.classList.remove('show'); }
+}
+
+function markAuditComplete(code){
+  const today = new Date().toISOString().split('T')[0];
+  schedule[code].lastDate = today;
+  saveScheduleData();
+  renderSchedule();
+  toast(code+' marked complete ✓','ok');
+}
+
+// ── PRE-AUDIT CHECKLIST ──────────────────────────────────────────────────────
+function renderPAC(openCAs, expiringCerts){
+  const list = document.getElementById('pacList');
+  const items = PRE_AUDIT_ITEMS.map(item=>{
+    let isAutoFail = false;
+    if(item.id==='pac-ca' && openCAs>0) isAutoFail = true;
+    if(item.id==='pac-cert' && expiringCerts>0) isAutoFail = true;
+    const checked = pacChecked[item.id] && !isAutoFail;
+    const tagMap  = {'open-ca':'tag-open-ca','training':'tag-training','docs':'tag-docs'};
+    const tagLabelMap = {'open-ca':openCAs+' OPEN','training':'CHECK CERTS','docs':'DOCS'};
+    const tagHtml = item.tag ? `<span class="pac-tag ${tagMap[item.tag]}">${tagLabelMap[item.tag]||item.tag.toUpperCase()}</span>` : '';
+    return {item, checked, isAutoFail, tagHtml};
+  });
+  const checkedCt = items.filter(i=>i.checked).length;
+  document.getElementById('pacScore').textContent = checkedCt+'/'+items.length;
+  document.getElementById('pacScore').style.color = checkedCt===items.length ? 'var(--green)' : checkedCt >= items.length*0.75 ? 'var(--amber)' : 'var(--red)';
+
+  list.innerHTML = items.map(({item, checked, isAutoFail, tagHtml})=>`
+    <div class="pac-row">
+      <div class="pac-check ${checked?'checked':isAutoFail?'warn':''}" onclick="togglePAC('${item.id}',${isAutoFail})"></div>
+      <div class="pac-body">
+        <div class="pac-label">${item.label}${tagHtml}</div>
+        <div class="pac-detail">${item.detail}</div>
+      </div>
+    </div>`).join('');
+}
+
+function togglePAC(id, isAutoFail){
+  if(isAutoFail){ toast('Resolve the flagged items first',1); return; }
+  pacChecked[id] = !pacChecked[id];
+  savePAC();
+  // re-render just the checklist section
+  const openCAs   = cas.filter(c=>c.status!=='closed').length;
+  const now = new Date(); now.setHours(0,0,0,0);
+  const expiringCerts = certs.filter(c=>{
+    if(!c.expiry) return false;
+    return Math.round((new Date(c.expiry)-now)/86400000)<=30;
+  }).length;
+  renderPAC(openCAs, expiringCerts);
+}
+
+// ── CERT TRACKER ─────────────────────────────────────────────────────────────
+function renderCerts(){
+  const grid = document.getElementById('certGrid');
+  const now  = new Date(); now.setHours(0,0,0,0);
+  if(!certs.length){
+    grid.innerHTML = `<div class="empty-state" style="padding:20px;"><div class="empty-icon" style="font-size:24px;">📋</div>No certifications tracked yet.<br><span style="font-family:var(--mono);font-size:10px;">Add staff certifications in Settings.</span></div>`;
+    return;
+  }
+  const sorted = [...certs].sort((a,b)=>new Date(a.expiry)-new Date(b.expiry));
+  grid.innerHTML = sorted.map(c=>{
+    const days = Math.round((new Date(c.expiry)-now)/86400000);
+    const pillClass = days<0?'cert-expired':days<=30?'cert-expiring':'cert-current';
+    const pillText  = days<0?'EXPIRED':days===0?'TODAY':days<=30?days+'D LEFT':'CURRENT';
+    const expiryStr = new Date(c.expiry).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    return `<div class="cert-row">
+      <div><div class="cert-name">${c.name}</div><div class="cert-type">${c.type}</div></div>
+      <div class="cert-expiry" style="color:${days<0?'var(--red)':days<=30?'var(--amber)':'var(--text-dim)'}">${expiryStr}</div>
+      <span class="cert-pill ${pillClass}">${pillText}</span>
+    </div>`;
+  }).join('');
+}
+
+function buildCertConfig(){
+  const list = document.getElementById('certConfigList');
+  if(!certs.length){ list.innerHTML = '<div style="font-size:12px;color:var(--text-dim);padding:4px 0 10px;">No certifications added yet.</div>'; return; }
+  list.innerHTML = certs.map((c,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
+      <div style="flex:1;font-size:13px;color:var(--text);">${c.name} — <span style="color:var(--text-dim)">${c.type}</span></div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);">${c.expiry}</div>
+      <button onclick="removeCert(${i})" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:14px;">✕</button>
+    </div>`).join('');
+}
+
+function addCert(){
+  const name   = document.getElementById('cert-name').value.trim();
+  const type   = document.getElementById('cert-type').value.trim();
+  const expiry = document.getElementById('cert-expiry').value;
+  if(!name||!type||!expiry){ toast('All fields required',1); return; }
+  certs.push({id:Date.now().toString(36), name, type, expiry});
+  saveCerts(); buildCertConfig(); renderCerts();
+  document.getElementById('cert-name').value='';
+  document.getElementById('cert-type').value='';
+  document.getElementById('cert-expiry').value='';
+  toast('Certification added','ok');
+}
+
+function removeCert(i){
+  certs.splice(i,1); saveCerts(); buildCertConfig(); renderCerts();
+  toast('Removed');
+}
+
+// ── SCHEDULE CONFIG BUILD ─────────────────────────────────────────────────────
+function buildSchedConfig(){
+  const el = document.getElementById('schedConfigRows');
+  el.innerHTML = AUDIT_TYPES.map(t=>`
+    <div class="sched-config-row">
+      <div>
+        <div class="sched-type-name">${t.icon} ${t.name}</div>
+        <div class="sched-type-code">${t.code}</div>
+      </div>
+      <div class="form-field" style="margin:0">
+        <label>Frequency (days)</label>
+        <input type="number" id="cfg-freq-${t.code}" min="1" max="365" value="${schedule[t.code]?.freq||t.defaultFreq}">
+      </div>
+      <div class="form-field" style="margin:0">
+        <label>Last Completed</label>
+        <input type="date" id="cfg-last-${t.code}" value="${schedule[t.code]?.lastDate||''}">
+      </div>
+    </div>`).join('');
+}
+
+function saveScheduleConfig(){
+  AUDIT_TYPES.forEach(t=>{
+    const freq = parseInt(document.getElementById('cfg-freq-'+t.code).value)||t.defaultFreq;
+    const last = document.getElementById('cfg-last-'+t.code).value;
+    schedule[t.code] = {freq, lastDate:last};
+  });
+  saveScheduleData();
+  renderSchedule();
+  toast('Schedule saved ✓','ok');
+}
+
+// ── TABLE RENDER ──────────────────────────────────────────────────────────────
 function renderTable(type, search=''){
   const isClosed = type==='closed';
-  const filter = activeFilters[type];
+  const filter   = activeFilters[type];
   let rows = cas.filter(c=> isClosed ? c.status==='closed' : c.status!=='closed');
   if(filter!=='all') rows = rows.filter(c=>c.stream===filter);
   if(search){
@@ -637,43 +1053,30 @@ function renderTable(type, search=''){
       (c.desc||'').toLowerCase().includes(q)
     );
   }
-  // Sort: open by age desc, closed by closedAt desc
-  if(isClosed){
-    rows.sort((a,b)=>new Date(b.closedAt||b.createdAt)-new Date(a.closedAt||a.createdAt));
-  } else {
-    rows.sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt)); // oldest first = most urgent
-  }
+  if(isClosed) rows.sort((a,b)=>new Date(b.closedAt||b.createdAt)-new Date(a.closedAt||a.createdAt));
+  else         rows.sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt));
 
   const bodyId = isClosed ? 'closedTableBody' : 'openTableBody';
-  const el = document.getElementById(bodyId);
+  const el     = document.getElementById(bodyId);
 
   if(!rows.length){
     el.innerHTML = `<div class="empty-state"><div class="empty-icon">${isClosed?'📂':'✅'}</div>${isClosed?'No closed actions match.':'No open corrective actions.'}</div>`;
     return;
   }
-
   el.innerHTML = rows.map(c=>{
-    const ageHrs = (Date.now()-new Date(c.createdAt))/3600000;
-    const ageClass = ageHrs<24?'age-ok':ageHrs<48?'age-warn':'age-crit';
-    const ageStr = isClosed && c.closedAt
-      ? fmtHrs((new Date(c.closedAt)-new Date(c.createdAt))/3600000)
-      : fmtHrs(ageHrs);
-    const statusPill = c.status==='closed'
-      ? `<span class="status-pill status-closed">CLOSED</span>`
-      : c.status==='in-progress'
-      ? `<span class="status-pill status-progress">IN PROG</span>`
-      : `<span class="status-pill status-open">OPEN</span>`;
+    const ageHrs    = (Date.now()-new Date(c.createdAt))/3600000;
+    const ageClass  = ageHrs<24?'age-ok':ageHrs<48?'age-warn':'age-crit';
+    const ageStr    = isClosed && c.closedAt ? fmtHrs((new Date(c.closedAt)-new Date(c.createdAt))/3600000) : fmtHrs(ageHrs);
+    const statusPill = c.status==='closed' ? `<span class="status-pill status-closed">CLOSED</span>` :
+                       c.status==='in-progress' ? `<span class="status-pill status-progress">IN PROG</span>` :
+                       `<span class="status-pill status-open">OPEN</span>`;
     const streamColor = STREAM_COLORS[c.stream]||'#64748B';
-    const actionBtn = isClosed
+    const actionBtn   = isClosed
       ? `<button class="ca-action-btn" onclick="event.stopPropagation();openModal('${c.id}')">View</button>`
       : `<button class="ca-action-btn close-btn" onclick="event.stopPropagation();openModal('${c.id}')">Close</button>`;
-
     return `<div class="ca-row" onclick="openModal('${c.id}')">
       <div class="ca-id">${c.id}</div>
-      <div class="ca-item">
-        ${c.item}
-        <span class="ca-source" style="color:${streamColor}">${c.stream}${c.sessionId?' · '+c.sessionId:''}</span>
-      </div>
+      <div class="ca-item">${c.item}<span class="ca-source" style="color:${streamColor}">${c.stream}${c.sessionId?' · '+c.sessionId:''}</span></div>
       <div class="ca-attraction">${c.attraction||'—'}</div>
       <div class="ca-age ${isClosed?'':ageClass}">${ageStr}</div>
       ${statusPill}
@@ -695,74 +1098,68 @@ function setFilter(type, val, btn){
   renderTable(type);
 }
 
-// ── CREATE CA ────────────────────────────────────────────────────────────────
-function createCA(){
-  const stream = document.getElementById('new-stream').value;
-  const item = document.getElementById('new-item').value.trim();
-  const attraction = document.getElementById('new-attraction').value;
-  if(!stream){toast('Select an audit stream',1);return;}
-  if(!item){toast('Enter the flagged item',1);return;}
+// ── TAB COUNTS / BADGES ───────────────────────────────────────────────────────
+function updateTabCounts(){
+  document.getElementById('openCount').textContent   = cas.filter(c=>c.status!=='closed').length;
+  document.getElementById('closedCount').textContent = cas.filter(c=>c.status==='closed').length;
+}
 
+function updateOverdueBadge(){
+  const overdue = cas.filter(c=> c.status!=='closed' && (Date.now()-new Date(c.createdAt))/3600000>48).length;
+  const badge   = document.getElementById('overdueBadge');
+  if(overdue>0){ badge.textContent=overdue+' OVERDUE'; badge.classList.add('show'); }
+  else          badge.classList.remove('show');
+}
+
+// ── CREATE CA ─────────────────────────────────────────────────────────────────
+function createCA(){
+  const stream     = document.getElementById('new-stream').value;
+  const item       = document.getElementById('new-item').value.trim();
+  const attraction = document.getElementById('new-attraction').value;
+  if(!stream){ toast('Select an audit stream',1); return; }
+  if(!item){ toast('Enter the flagged item',1); return; }
   const id = stream+'-CA-'+Date.now().toString(36).toUpperCase().slice(-6);
   const ca = {
-    id,
-    stream,
-    sessionId: document.getElementById('new-sessionId').value.trim(),
+    id, stream,
+    sessionId:  document.getElementById('new-sessionId').value.trim(),
     attraction,
-    priority: document.getElementById('new-priority').value,
+    priority:   document.getElementById('new-priority').value,
     item,
-    desc: document.getElementById('new-desc').value.trim(),
-    assignee: document.getElementById('new-assignee').value.trim(),
-    auditor: document.getElementById('new-auditor').value.trim(),
-    status: 'open',
-    createdAt: new Date().toISOString(),
-    closedAt: null,
-    closedBy: '',
-    resolution: '',
+    desc:       document.getElementById('new-desc').value.trim(),
+    assignee:   document.getElementById('new-assignee').value.trim(),
+    auditor:    document.getElementById('new-auditor').value.trim(),
+    status:     'open',
+    createdAt:  new Date().toISOString(),
+    closedAt: null, closedBy:'', resolution:'',
   };
   cas.push(ca);
   saveData();
-
-  // Push to Airtable if configured
   const atCreds = getATCreds();
   if(atCreds) pushToAirtable(ca, atCreds);
-
   toast('CA '+id+' created','ok');
-
-  // Clear form
   ['new-stream','new-attraction','new-priority'].forEach(id=>{document.getElementById(id).selectedIndex=0;});
   ['new-sessionId','new-item','new-desc','new-assignee','new-auditor'].forEach(id=>{document.getElementById(id).value='';});
-
-  showView('open');
-  document.querySelector('.nav-tab:nth-child(2)').classList.add('active');
+  showView('open', document.querySelectorAll('.nav-tab')[1]);
 }
 
-// ── MODAL ────────────────────────────────────────────────────────────────────
+// ── MODAL ─────────────────────────────────────────────────────────────────────
 function openModal(id){
   const ca = cas.find(c=>c.id===id);
   if(!ca) return;
   activeCA = ca;
-
   document.getElementById('modal-title').textContent = ca.item;
-  document.getElementById('modal-id').textContent = ca.id + (ca.sessionId?' · Source: '+ca.sessionId:'');
-
-  const ageHrs = ca.closedAt
-    ? (new Date(ca.closedAt)-new Date(ca.createdAt))/3600000
-    : (Date.now()-new Date(ca.createdAt))/3600000;
-
+  document.getElementById('modal-id').textContent    = ca.id+(ca.sessionId?' · Source: '+ca.sessionId:'');
+  const ageHrs = ca.closedAt ? (new Date(ca.closedAt)-new Date(ca.createdAt))/3600000 : (Date.now()-new Date(ca.createdAt))/3600000;
   const streamColor = STREAM_COLORS[ca.stream]||'#64748B';
-
   document.getElementById('modal-detail-grid').innerHTML = `
     <div class="detail-field"><label>Stream</label><div class="dval" style="color:${streamColor}">${ca.stream}</div></div>
     <div class="detail-field"><label>Priority</label><div class="dval" style="color:${ca.priority==='critical'?'var(--red)':ca.priority==='high'?'var(--amber)':'var(--text)'}">${(ca.priority||'standard').toUpperCase()}</div></div>
     <div class="detail-field"><label>Attraction</label><div class="dval">${ca.attraction||'—'}</div></div>
     <div class="detail-field"><label>Assigned To</label><div class="dval">${ca.assignee||'—'}</div></div>
     <div class="detail-field"><label>Created</label><div class="dval mono">${new Date(ca.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div></div>
-    <div class="detail-field"><label>${ca.closedAt?'Time to Close':'Age'}</label><div class="dval mono" style="color:${ageHrs>48?'var(--red)':ageHrs>24?'var(--amber)':'var(--green)'}">${fmtHrs(ageHrs)}</div></div>
-  `;
+    <div class="detail-field"><label>${ca.closedAt?'Time to Close':'Age'}</label><div class="dval mono" style="color:${ageHrs>48?'var(--red)':ageHrs>24?'var(--amber)':'var(--green)'}">${fmtHrs(ageHrs)}</div></div>`;
   document.getElementById('modal-item').textContent = ca.item;
   document.getElementById('modal-desc').textContent = ca.desc||'';
-
   const closeSec = document.getElementById('close-section');
   if(ca.status==='closed'){
     closeSec.innerHTML = `<div class="modal-sec">// Resolution</div>
@@ -775,157 +1172,122 @@ function openModal(id){
       <div class="modal-field"><label>Closed By</label><input type="text" id="modal-closed-by" placeholder="Name or badge ID" value="${ca.closedBy||''}"></div>
       <div class="modal-field"><label>Update Status</label><select id="modal-status-sel"><option value="open"${ca.status==='open'?' selected':''}>Open</option><option value="in-progress"${ca.status==='in-progress'?' selected':''}>In Progress</option><option value="closed">Closed — Resolved</option></select></div>`;
   }
-
   document.getElementById('modal').classList.add('show');
 }
 
-function closeModal(){
-  document.getElementById('modal').classList.remove('show');
-  activeCA = null;
-}
+function closeModal(){ document.getElementById('modal').classList.remove('show'); activeCA=null; }
 
 function saveCAUpdate(){
   if(!activeCA) return;
   const ca = cas.find(c=>c.id===activeCA.id);
   if(!ca) return;
-
-  const resTa = document.getElementById('modal-resolution');
-  const cbInp = document.getElementById('modal-closed-by');
+  const resTa   = document.getElementById('modal-resolution');
+  const cbInp   = document.getElementById('modal-closed-by');
   const statSel = document.getElementById('modal-status-sel');
-  if(!resTa||!statSel) return; // already closed view
-
+  if(!resTa||!statSel) return;
   const newStatus = statSel.value;
-  if(newStatus==='closed' && !resTa.value.trim()){
-    toast('Resolution description required to close',1); return;
-  }
-
+  if(newStatus==='closed' && !resTa.value.trim()){ toast('Resolution description required to close',1); return; }
   ca.resolution = resTa.value.trim();
-  ca.closedBy = cbInp.value.trim();
-  ca.status = newStatus;
+  ca.closedBy   = cbInp.value.trim();
+  ca.status     = newStatus;
   if(newStatus==='closed' && !ca.closedAt) ca.closedAt = new Date().toISOString();
-
   saveData();
   const atCreds = getATCreds();
   if(atCreds) pushToAirtable(ca, atCreds);
-
   toast(newStatus==='closed'?'CA closed ✓':'Status updated','ok');
   closeModal();
 }
 
-// ── AIRTABLE SYNC ────────────────────────────────────────────────────────────
+// ── AIRTABLE ──────────────────────────────────────────────────────────────────
 function getATCreds(){
-  try{
-    const s = JSON.parse(localStorage.getItem(AT_KEY)||'{}');
-    return s.pat && s.base && s.table ? s : null;
-  } catch(e){ return null; }
+  try{ const s=JSON.parse(localStorage.getItem(AT_KEY)||'{}'); return s.pat&&s.base&&s.table?s:null; }catch(e){return null;}
 }
-
 function loadATSettings(){
-  const creds = getATCreds();
-  if(!creds) return;
-  document.getElementById('at-pat').value = creds.pat||'';
-  document.getElementById('at-base').value = creds.base||'';
+  const creds=getATCreds(); if(!creds) return;
+  document.getElementById('at-pat').value   = creds.pat||'';
+  document.getElementById('at-base').value  = creds.base||'';
   document.getElementById('at-table').value = creds.table||'';
   setATStatus(true,'Connected — credentials saved');
 }
-
 function saveATSettings(){
-  const pat = document.getElementById('at-pat').value.trim();
-  const base = document.getElementById('at-base').value.trim();
-  const table = document.getElementById('at-table').value.trim()||'CA Manager';
+  const pat=document.getElementById('at-pat').value.trim();
+  const base=document.getElementById('at-base').value.trim();
+  const table=document.getElementById('at-table').value.trim()||'CA Manager';
   if(!pat||!base){ toast('PAT and Base ID required',1); return; }
-  localStorage.setItem(AT_KEY, JSON.stringify({pat,base,table}));
+  localStorage.setItem(AT_KEY,JSON.stringify({pat,base,table}));
   testAirtable({pat,base,table});
 }
-
 async function testAirtable(creds){
   setATStatus(false,'Testing connection…');
   try{
-    const res = await fetch(`https://api.airtable.com/v0/${creds.base}/${encodeURIComponent(creds.table)}?maxRecords=1`,{
-      headers:{'Authorization':'Bearer '+creds.pat}
-    });
-    if(res.ok){ setATStatus(true,'Connected ✓'); toast('Airtable connected','ok'); }
-    else{ setATStatus(false,'Error: '+res.status); toast('Airtable error: '+res.status,1); }
-  } catch(e){ setATStatus(false,'Network error'); toast('Network error',1); }
+    const res=await fetch(`https://api.airtable.com/v0/${creds.base}/${encodeURIComponent(creds.table)}?maxRecords=1`,{headers:{'Authorization':'Bearer '+creds.pat}});
+    if(res.ok){setATStatus(true,'Connected ✓');toast('Airtable connected','ok');}
+    else{setATStatus(false,'Error: '+res.status);toast('Airtable error: '+res.status,1);}
+  }catch(e){setATStatus(false,'Network error');toast('Network error',1);}
 }
-
-function setATStatus(ok, msg){
-  document.getElementById('at-dot').className='status-dot '+(ok?'connected':'disconnected');
-  document.getElementById('at-status-text').textContent=msg;
+function setATStatus(ok,msg){ document.getElementById('at-dot').className='status-dot '+(ok?'connected':'disconnected'); document.getElementById('at-status-text').textContent=msg; }
+async function pushToAirtable(ca,creds){
+  const fields={'CA ID':ca.id,'Stream':ca.stream,'Session ID':ca.sessionId||'','Attraction':ca.attraction||'','Priority':ca.priority||'standard','Item':ca.item,'Description':ca.desc||'','Assigned To':ca.assignee||'','Auditor':ca.auditor||'','Status':ca.status,'Created At':ca.createdAt,'Closed At':ca.closedAt||'','Closed By':ca.closedBy||'','Resolution':ca.resolution||''};
+  try{ await fetch(`https://api.airtable.com/v0/${creds.base}/${encodeURIComponent(creds.table)}`,{method:'POST',headers:{'Authorization':'Bearer '+creds.pat,'Content-Type':'application/json'},body:JSON.stringify({fields})}); }catch(e){console.warn('AT push failed',e);}
 }
-
-async function pushToAirtable(ca, creds){
-  const fields = {
-    'CA ID':ca.id, 'Stream':ca.stream, 'Session ID':ca.sessionId||'',
-    'Attraction':ca.attraction||'', 'Priority':ca.priority||'standard',
-    'Item':ca.item, 'Description':ca.desc||'', 'Assigned To':ca.assignee||'',
-    'Auditor':ca.auditor||'', 'Status':ca.status,
-    'Created At':ca.createdAt, 'Closed At':ca.closedAt||'',
-    'Closed By':ca.closedBy||'', 'Resolution':ca.resolution||'',
-  };
-  try{
-    await fetch(`https://api.airtable.com/v0/${creds.base}/${encodeURIComponent(creds.table)}`,{
-      method:'POST',
-      headers:{'Authorization':'Bearer '+creds.pat,'Content-Type':'application/json'},
-      body:JSON.stringify({fields})
-    });
-  } catch(e){ console.warn('AT push failed',e); }
-}
-
 async function syncAirtable(){
-  const creds = getATCreds();
-  if(!creds){ toast('Configure Airtable in Settings first',1); return; }
-  toast('Syncing…');
-  let ok=0;
+  const creds=getATCreds(); if(!creds){toast('Configure Airtable in Settings first',1);return;}
+  toast('Syncing…'); let ok=0;
   for(const ca of cas){
-    try{
-      await fetch(`https://api.airtable.com/v0/${creds.base}/${encodeURIComponent(creds.table)}`,{
-        method:'POST',
-        headers:{'Authorization':'Bearer '+creds.pat,'Content-Type':'application/json'},
-        body:JSON.stringify({fields:{'CA ID':ca.id,'Stream':ca.stream,'Item':ca.item,'Attraction':ca.attraction||'','Status':ca.status,'Created At':ca.createdAt,'Closed At':ca.closedAt||'','Resolution':ca.resolution||'','Priority':ca.priority||''}})
-      });
-      ok++;
-    } catch(e){}
+    try{ await fetch(`https://api.airtable.com/v0/${creds.base}/${encodeURIComponent(creds.table)}`,{method:'POST',headers:{'Authorization':'Bearer '+creds.pat,'Content-Type':'application/json'},body:JSON.stringify({fields:{'CA ID':ca.id,'Stream':ca.stream,'Item':ca.item,'Attraction':ca.attraction||'','Status':ca.status,'Created At':ca.createdAt,'Closed At':ca.closedAt||'','Resolution':ca.resolution||'','Priority':ca.priority||''}})}); ok++; }catch(e){}
   }
   toast(ok+' records synced to Airtable','ok');
 }
 
-// ── SAMPLE DATA ──────────────────────────────────────────────────────────────
+// ── SAMPLE DATA ───────────────────────────────────────────────────────────────
 function loadSampleData(){
-  const now = Date.now();
-  const hr = 3600000;
-  cas = [
+  const now=Date.now(); const hr=3600000;
+  cas=[
     {id:'IHS-CA-A1B2C3',stream:'IHS',sessionId:'IHS-2026-4821',attraction:'Steel Coaster',priority:'critical',item:'Restraints not physically tested prior to dispatch',desc:'Operator performed visual scan only — push-down test not observed on any cycle during 15-minute observation.',assignee:'Park Supervisor',auditor:'M. Smith',status:'open',createdAt:new Date(now-74*hr).toISOString(),closedAt:null,closedBy:'',resolution:''},
     {id:'IHS-CA-D4E5F6',stream:'IHS',sessionId:'IHS-2026-4821',attraction:'Steel Coaster',priority:'high',item:'5-second pre-dispatch scan not performed',desc:'Operator dispatched multiple cycles without completing required visual sweep of load zone.',assignee:'Park Supervisor',auditor:'M. Smith',status:'in-progress',createdAt:new Date(now-52*hr).toISOString(),closedAt:null,closedBy:'',resolution:'Verbal coaching issued 3/10. Follow-up audit scheduled.'},
     {id:'TPA-CA-G7H8I9',stream:'TPA',sessionId:'TPA-2026-0312',attraction:'Wooden Rollercoaster 1',priority:'high',item:'Opening checklist not signed by maintenance',desc:'SOP binder present but daily checklist blank for 3 consecutive dates.',assignee:'Maintenance Lead',auditor:'L. Ansell',status:'open',createdAt:new Date(now-28*hr).toISOString(),closedAt:null,closedBy:'',resolution:''},
-    {id:'GSA-CA-J1K2L3',stream:'GSA',sessionId:'GSA-2026-1104',attraction:'Go-Kart Track — Inner Lane',priority:'standard',item:'No visible guest pressure on operator to dispatch sooner — FAIL',desc:'Queue pressure OLI flagged: operator dispatching before full restraint check during peak hour crowd.',assignee:'Area Supervisor',auditor:'A. Brousell',status:'open',createdAt:new Date(now-18*hr).toISOString(),closedAt:null,closedBy:'',resolution:''},
-    {id:'NMR-CA-M4N5O6',stream:'NMR',sessionId:'NMR-2026-0089',attraction:'Scrambler',priority:'high',item:'Guest nearly struck by vehicle arm during unload — gates closed prematurely',desc:'Guest began exiting before ride fully stopped. Exit gate opened while rotation still decelerating.',assignee:'Safety Director',auditor:'Staff Report',status:'closed',createdAt:new Date(now-96*hr).toISOString(),closedAt:new Date(now-44*hr).toISOString(),closedBy:'A. Brousell',resolution:'Exit gate timing adjusted via control panel. Operator retrained on unload sequence. Maintenance inspection completed.'},
-    {id:'IHS-CA-P7Q8R9',stream:'IHS',sessionId:'IHS-2026-4799',attraction:'Drop Tower',priority:'standard',item:'Height sticks not accurately calibrated',desc:'Auditor measured against certified gauge — height stick 0.75" low, allowing undersized riders to pass.',assignee:'Maintenance',auditor:'M. Smith',status:'closed',createdAt:new Date(now-120*hr).toISOString(),closedAt:new Date(now-96*hr).toISOString(),closedBy:'R. Torres',resolution:'Height stick replaced with new calibrated unit. All height measurement devices at park scheduled for annual calibration audit.'},
+    {id:'GSA-CA-J1K2L3',stream:'GSA',sessionId:'GSA-2026-1104',attraction:'Go-Kart Track — Inner Lane',priority:'standard',item:'Operator dispatching before full restraint check during peak crowd',desc:'Queue pressure flagged: operator dispatching before full restraint check during peak hour crowd.',assignee:'Area Supervisor',auditor:'A. Brousell',status:'open',createdAt:new Date(now-18*hr).toISOString(),closedAt:null,closedBy:'',resolution:''},
+    {id:'NMR-CA-M4N5O6',stream:'NMR',sessionId:'NMR-2026-0089',attraction:'Scrambler',priority:'high',item:'Guest nearly struck by vehicle arm during unload',desc:'Guest began exiting before ride fully stopped. Exit gate opened while rotation still decelerating.',assignee:'Safety Director',auditor:'Staff Report',status:'closed',createdAt:new Date(now-96*hr).toISOString(),closedAt:new Date(now-44*hr).toISOString(),closedBy:'A. Brousell',resolution:'Exit gate timing adjusted. Operator retrained on unload sequence.'},
+    {id:'IHS-CA-P7Q8R9',stream:'IHS',sessionId:'IHS-2026-4799',attraction:'Drop Tower',priority:'standard',item:'Height sticks not accurately calibrated',desc:'Auditor measured against certified gauge — height stick 0.75" low.',assignee:'Maintenance',auditor:'M. Smith',status:'closed',createdAt:new Date(now-120*hr).toISOString(),closedAt:new Date(now-96*hr).toISOString(),closedBy:'R. Torres',resolution:'Height stick replaced. All height measurement devices scheduled for annual calibration audit.'},
     {id:'SGSA-CA-S1T2U3',stream:'SGSA',sessionId:'MGSA-2026-7721',attraction:'Family Coaster',priority:'standard',item:'Operator on phone during loading cycle',desc:'Shadow auditor observed operator checking phone twice during consecutive loading cycles.',assignee:'Team Lead',auditor:'Shadow Auditor',status:'closed',createdAt:new Date(now-38*hr).toISOString(),closedAt:new Date(now-14*hr).toISOString(),closedBy:'D. Park',resolution:'Verbal coaching issued. Phone policy reminder communicated at team huddle.'},
     {id:'TPA-CA-V4W5X6',stream:'TPA',sessionId:'TPA-2026-0298',attraction:'Wave Pool',priority:'standard',item:'Fire extinguisher inspection tag expired',desc:'Extinguisher at lifeguard station B tag shows last inspection 14 months prior.',assignee:'Facilities',auditor:'L. Ansell',status:'open',createdAt:new Date(now-8*hr).toISOString(),closedAt:null,closedBy:'',resolution:''},
   ];
+  // Sample schedule — some overdue, some due soon
+  const today = new Date();
+  const daysAgo = (d)=>{ const dt=new Date(today); dt.setDate(dt.getDate()-d); return dt.toISOString().split('T')[0]; };
+  schedule['iGSA'] = {freq:14, lastDate: daysAgo(16)};  // 2d overdue
+  schedule['mGSA'] = {freq:30, lastDate: daysAgo(22)};  // 8d remaining
+  schedule['IHS']  = {freq:30, lastDate: daysAgo(28)};  // 2d remaining
+  schedule['TPS']  = {freq:90, lastDate: daysAgo(45)};  // 45d remaining
+  schedule['NMR']  = {freq:7,  lastDate: daysAgo(9)};   // 2d overdue
+  saveScheduleData();
+  // Sample certs
+  const certDay = (d)=>{ const dt=new Date(today); dt.setDate(dt.getDate()+d); return dt.toISOString().split('T')[0]; };
+  certs=[
+    {id:'c1',name:'J. Rivera — Ride Op.',    type:'CPR / First Aid',   expiry: certDay(8)},
+    {id:'c2',name:'T. Kim — Ride Op.',       type:'CPR / First Aid',   expiry: certDay(-3)},
+    {id:'c3',name:'M. Smith — Supervisor',   type:'NAARSO Level I',    expiry: certDay(120)},
+    {id:'c4',name:'A. Brousell — Director',  type:'Six Sigma GB',      expiry: certDay(200)},
+    {id:'c5',name:'D. Park — Area Lead',     type:'CPR / First Aid',   expiry: certDay(22)},
+  ];
+  saveCerts();
   saveData();
-  toast('Sample CAs loaded','ok');
+  toast('Sample data loaded','ok');
 }
 
 function clearAllData(){
-  if(!confirm('Clear all CA records? This cannot be undone.')) return;
-  cas=[];
-  saveData();
+  if(!confirm('Clear all CA records, schedule dates, and certifications? This cannot be undone.')) return;
+  cas=[]; certs=[]; pacChecked={};
+  AUDIT_TYPES.forEach(t=>{ schedule[t.code]={freq:t.defaultFreq,lastDate:''}; });
+  saveData(); saveCerts(); saveScheduleData(); savePAC();
   toast('All data cleared');
 }
 
-// ── EXPORT CSV ───────────────────────────────────────────────────────────────
+// ── EXPORT CSV ────────────────────────────────────────────────────────────────
 function exportCSV(){
   if(!cas.length){ toast('No CAs to export',1); return; }
-  const headers = ['CA ID','Stream','Session ID','Attraction','Priority','Item','Description','Assigned To','Auditor','Status','Created At','Closed At','Closed By','Resolution'];
-  const rows = cas.map(c=>[
-    c.id,c.stream,c.sessionId||'',c.attraction||'',c.priority||'',
-    `"${(c.item||'').replace(/"/g,'""')}"`,
-    `"${(c.desc||'').replace(/"/g,'""')}"`,
-    c.assignee||'',c.auditor||'',c.status,c.createdAt,c.closedAt||'',c.closedBy||'',
-    `"${(c.resolution||'').replace(/"/g,'""')}"`
-  ]);
+  const headers=['CA ID','Stream','Session ID','Attraction','Priority','Item','Description','Assigned To','Auditor','Status','Created At','Closed At','Closed By','Resolution'];
+  const rows=cas.map(c=>[c.id,c.stream,c.sessionId||'',c.attraction||'',c.priority||'',`"${(c.item||'').replace(/"/g,'""')}"`,`"${(c.desc||'').replace(/"/g,'""')}"`,c.assignee||'',c.auditor||'',c.status,c.createdAt,c.closedAt||'',c.closedBy||'',`"${(c.resolution||'').replace(/"/g,'""')}"`]);
   const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');
   const url=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   const a=document.createElement('a');a.href=url;a.download='as360-ca-log-'+new Date().toISOString().slice(0,10)+'.csv';a.click();
@@ -933,14 +1295,14 @@ function exportCSV(){
   toast('CSV exported','ok');
 }
 
-// ── TOAST ────────────────────────────────────────────────────────────────────
+// ── TOAST ─────────────────────────────────────────────────────────────────────
 function toast(msg,type){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.className='show'+(type==='ok'?' ok':type===1?' err':'');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);
+  t.textContent=msg; t.className='show'+(type==='ok'?' ok':type===1?' err':'');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className='',2800);
 }
 
-// ── BOOT ─────────────────────────────────────────────────────────────────────
+// ── BOOT ──────────────────────────────────────────────────────────────────────
 init();
 </script>
 </body>
