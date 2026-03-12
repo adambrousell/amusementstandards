@@ -94,6 +94,7 @@ a{text-decoration:none}
 .dash-sources-pills{display:flex;gap:4px;flex:1;flex-wrap:wrap}
 .ds-pill{font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;padding:3px 7px;border-radius:3px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.06)}
 .ds-pill.ds-active{background:rgba(0,82,204,.12);color:rgba(0,82,204,.7);border-color:rgba(0,82,204,.2)}
+.ds-pill.ds-new{background:rgba(255,107,53,.12);color:rgba(255,140,90,.85);border-color:rgba(255,107,53,.25)}
 .dash-nmr{margin-left:auto;display:flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.25)}
 .dash-nmr-dot{width:5px;height:5px;border-radius:50%;background:#28C840;animation:blink 2s ease infinite}
 
@@ -139,12 +140,19 @@ a{text-decoration:none}
 .streams-head .eyebrow{color:var(--secondary)}
 .streams-head .section-title{color:#fff}
 .streams-head .section-sub{color:rgba(255,255,255,.55)}
-/* 12 streams → 4-col, 3 rows */
-.streams-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+
+/* 15 streams grid — 5 col × 3 rows */
+.streams-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+
 .stream-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:22px 20px;transition:background var(--transition);position:relative}
 .stream-card:hover{background:rgba(255,255,255,.08)}
-/* visual indicator for bias-reduction scheduling */
 .stream-card.scheduled::after{content:'SCHEDULED';position:absolute;top:10px;right:10px;font-family:var(--font-mono);font-size:7px;letter-spacing:.1em;color:rgba(255,255,255,.25);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:2px 6px;border-radius:3px}
+
+/* NEW: operator-facing module cards */
+.stream-card.module-card{border-color:rgba(255,107,53,.22);background:rgba(255,107,53,.04)}
+.stream-card.module-card:hover{background:rgba(255,107,53,.08)}
+.stream-card.module-card::before{content:'MODULE';position:absolute;top:10px;right:10px;font-family:var(--font-mono);font-size:7px;letter-spacing:.1em;color:rgba(255,140,90,.5);background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2);padding:2px 6px;border-radius:3px}
+
 .stream-icon{font-size:22px;margin-bottom:10px}
 .stream-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
 .stream-code{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-bottom:8px}
@@ -156,11 +164,26 @@ a{text-decoration:none}
 .feed-d{background:rgba(255,107,53,.2);color:rgba(255,140,90,.9)}
 .feed-e{background:rgba(139,92,246,.2);color:rgba(180,140,255,.9)}
 
+/* MODULE DETAIL sub-items */
+.stream-sublist{margin-top:12px;display:flex;flex-direction:column;gap:6px;border-top:1px solid rgba(255,255,255,.07);padding-top:10px}
+.stream-subitem{display:flex;align-items:flex-start;gap:8px;font-size:11.5px;color:rgba(255,255,255,.38);line-height:1.45}
+.stream-subitem::before{content:'↳';font-family:var(--font-mono);font-size:9px;color:rgba(255,107,53,.4);flex-shrink:0;margin-top:1px}
+
+/* MODULE SECTION DIVIDER */
+.streams-module-label{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin-top:8px;margin-bottom:2px}
+.streams-module-label-text{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,107,53,.65);white-space:nowrap}
+.streams-module-line{flex:1;height:1px;background:rgba(255,107,53,.15)}
+
 /* SCHEDULED NOTE */
 .streams-note{margin-top:20px;padding:16px 20px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;display:flex;align-items:flex-start;gap:12px}
 .streams-note-icon{font-size:16px;flex-shrink:0;margin-top:1px}
 .streams-note-text{font-size:12.5px;color:rgba(255,255,255,.45);line-height:1.6;font-weight:300}
 .streams-note-text strong{color:rgba(255,255,255,.65);font-weight:600}
+
+/* MODULE NOTE — orange tint */
+.streams-note.module-note{background:rgba(255,107,53,.05);border-color:rgba(255,107,53,.15)}
+.streams-note.module-note .streams-note-text{color:rgba(255,200,170,.45)}
+.streams-note.module-note .streams-note-text strong{color:rgba(255,200,170,.7)}
 
 /* VENUE STRIP */
 .venue-strip{margin-top:36px;padding-top:32px;border-top:1.5px solid var(--border)}
@@ -248,6 +271,7 @@ a{text-decoration:none}
 .footer-brand{font-family:var(--font-mono);font-size:14px;font-weight:700;color:rgba(255,255,255,.5)}
 .footer-right{font-size:12px;color:rgba(255,255,255,.22)}
 
+@media(max-width:1100px){.streams-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:960px){
   .hero-inner{grid-template-columns:1fr;gap:48px}
   .pillar-grid{grid-template-columns:1fr}
@@ -288,7 +312,7 @@ a{text-decoration:none}
     <div>
       <div class="hero-eyebrow">AS 360 Data Analytics</div>
       <h1>The <span>RIDE</span> Score. <em>Four numbers that tell you everything.</em></h1>
-      <p class="hero-sub">Readiness. Integrity. Delivery. Environment. One composite score built from 12 independent data streams — so when you make a decision, every source agrees.</p>
+      <p class="hero-sub">Readiness. Integrity. Delivery. Environment. One composite score built from 16 independent data streams — so when you make a decision, every source agrees.</p>
       <div class="hero-actions">
         <a href="#contact" class="btn btn-primary btn-lg">Schedule a Demo</a>
         <a href="#pillars" class="btn btn-ghost btn-lg">See the Four Pillars</a>
@@ -362,7 +386,11 @@ a{text-decoration:none}
             <span class="ds-pill ds-active">QTX</span>
             <span class="ds-pill ds-active">OLI</span>
             <span class="ds-pill ds-active">CAR</span>
+            <span class="ds-pill ds-active">OLR</span>
             <span class="ds-pill ds-active">NMR</span>
+            <span class="ds-pill ds-new">MGR</span>
+            <span class="ds-pill ds-new">OPD</span>
+            <span class="ds-pill ds-new">ATR</span>
           </div>
           <div class="dash-nmr"><span class="dash-nmr-dot"></span>NMR Active</div>
         </div>
@@ -434,7 +462,7 @@ a{text-decoration:none}
           <div class="pc-letter">D</div>
           <div><div class="pc-name">Delivery</div><div class="pc-question">Is the guest experience being executed?</div></div>
         </div>
-        <div class="pc-desc">The experience quality score. Service interactions, queue flow, operator conduct, and throughput — the things guests write reviews about. This is where mystery shopper GSA scores, in-house GSA data, post-visit email feedback, QR guest captures, and online reviews converge into a single performance measure.</div>
+        <div class="pc-desc">The experience quality score. Service interactions, queue flow, operator conduct, and throughput — the things guests write reviews about. This is where mystery shopper GSA scores, in-house GSA data, post-visit email feedback, QR guest captures, and online review intelligence (OLR) converge into a single performance measure.</div>
         <div class="pc-examples">
           <div class="pc-example"><div class="pc-score high">87</div><div class="pc-meaning">Guest experience strong. Friendly staff, smooth throughput, post-visit surveys and reviews align with covert audit scores.</div></div>
           <div class="pc-example"><div class="pc-score low">63</div><div class="pc-meaning">Guest experience gaps. In-house and mystery shopper scores diverge — staff perform differently when observed. Exit surveys confirm gaps.</div></div>
@@ -521,12 +549,14 @@ a{text-decoration:none}
 <section class="streams-section" id="streams">
   <div class="streams-inner">
     <div class="streams-head">
-      <div class="eyebrow">12 Independent Data Streams</div>
+      <div class="eyebrow">16 Independent Data Streams</div>
       <h2 class="section-title">Multiple independent inputs. One unified score.</h2>
-      <p class="section-sub">No single source tells the whole story. The RIDE Score converges 12 independent streams so every pillar is cross-validated — and when sources disagree, you see exactly where and why.</p>
+      <p class="section-sub">No single source tells the whole story. The RIDE Score converges 16 independent streams — including three operator-facing documentation modules that capture the ground truth at the management, dispatch, and ride level — so every pillar is cross-validated from multiple angles.</p>
     </div>
 
     <div class="streams-grid">
+
+      <!-- ── EXISTING 12 STREAMS ── -->
 
       <div class="stream-card scheduled">
         <div class="stream-icon">📝</div>
@@ -624,11 +654,76 @@ a{text-decoration:none}
         <div class="stream-feeds"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
       </div>
 
-    </div>
+      <div class="stream-card">
+        <div class="stream-icon">⭐</div>
+        <div class="stream-name">Online Review Intelligence</div>
+        <div class="stream-code">OLR</div>
+        <div class="stream-desc">Aggregated public sentiment from Google, Yelp, and TripAdvisor — parsed for safety, staff, and operations mentions and weighted by recency. Cross-validates Delivery and Environment pillar scores against the unfiltered guest voice your team never sees in real time. When OLR trends diverge from internal GSA scores, that gap is a finding — not a footnote.</div>
+        <div class="stream-feeds"><span class="stream-feed feed-d">D</span><span class="stream-feed feed-e">E</span></div>
+      </div>
+
+      <!-- ── SECTION BREAK: OPERATOR MODULES ── -->
+      <div class="streams-module-label">
+        <span class="streams-module-label-text">Operator Documentation Modules</span>
+        <span class="streams-module-line"></span>
+      </div>
+
+      <!-- MGR — Manager Module -->
+      <div class="stream-card module-card" style="grid-column:span 1">
+        <div class="stream-icon">👔</div>
+        <div class="stream-name">Manager Module</div>
+        <div class="stream-code">MGR</div>
+        <div class="stream-desc">Shift-level management accountability log — structured documentation of decisions, escalations, staffing overrides, and safety observations made during the manager's watch. Turns informal management activity into a timestamped data stream.</div>
+        <div class="stream-sublist">
+          <div class="stream-subitem">Shift open/close sign-off with condition notes</div>
+          <div class="stream-subitem">Escalation log — issues surfaced, decisions made, and resolution status</div>
+          <div class="stream-subitem">Staffing override documentation with reason codes</div>
+          <div class="stream-subitem">Safety observation entries — manager-initiated flags outside NMR threshold</div>
+          <div class="stream-subitem">Corrective action initiated / closed during shift</div>
+        </div>
+        <div class="stream-feeds" style="margin-top:14px"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span></div>
+      </div>
+
+      <!-- OPD — Operations Dispatcher Module -->
+      <div class="stream-card module-card" style="grid-column:span 2">
+        <div class="stream-icon">📡</div>
+        <div class="stream-name">Operations Dispatcher Module</div>
+        <div class="stream-code">OPD</div>
+        <div class="stream-desc">The dispatch record as a data stream. Captures real-time unit assignments, rotation timing, coverage gaps, and operator reassignments — transforming the dispatcher's log from a paper artifact into a live feed of operational throughput and staffing integrity.</div>
+        <div class="stream-sublist">
+          <div class="stream-subitem">Operator-to-unit assignment log with timestamps — every position, every rotation</div>
+          <div class="stream-subitem">Coverage gap flags — unassigned positions and duration of gap</div>
+          <div class="stream-subitem">Rotation interval compliance — actual vs. scheduled break/rotation timing</div>
+          <div class="stream-subitem">Unplanned unit closure log — ride taken down mid-shift, reason, and duration</div>
+          <div class="stream-subitem">Dispatcher decision notes — manual overrides, priority calls, unusual conditions</div>
+        </div>
+        <div class="stream-feeds" style="margin-top:14px"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-d">D</span></div>
+      </div>
+
+      <!-- ATR — At-Ride Module (spans 2 cols for visual weight) -->
+      <div class="stream-card module-card" style="grid-column:span 2">
+        <div class="stream-icon">🎡</div>
+        <div class="stream-name">At-Ride Module</div>
+        <div class="stream-code">ATR</div>
+        <div class="stream-desc">The ground-level documentation layer — capturing what actually happens at the attraction from first cycle to last. Three structured sub-forms feed this stream, each targeting a distinct documentation gap that traditional audit programs miss entirely.</div>
+        <div class="stream-sublist">
+          <div class="stream-subitem"><strong style="color:rgba(255,200,170,.65)">Opening Checklist</strong> — step-by-step pre-operation inspection sign-off with completion timestamps, operator ID, and any item exceptions flagged before first cycle. Feeds Readiness and Integrity daily.</div>
+          <div class="stream-subitem"><strong style="color:rgba(255,200,170,.65)">Operator Log</strong> — shift-long running record of cycle counts, load observations, restraint check notes, guest interactions requiring intervention, and any operational anomalies. Operator-authored, timestamped, and attributed.</div>
+          <div class="stream-subitem"><strong style="color:rgba(255,200,170,.65)">Units in Service</strong> — real-time status of each vehicle, car, raft, or unit on the attraction: in service, out of service, hold, or standby. Paired with OPD dispatch data to cross-validate uptime reporting and identify undocumented downtime.</div>
+        </div>
+        <div class="stream-feeds" style="margin-top:14px"><span class="stream-feed feed-r">R</span><span class="stream-feed feed-i">I</span><span class="stream-feed feed-d">D</span></div>
+      </div>
+
+    </div><!-- /streams-grid -->
 
     <div class="streams-note">
       <div class="streams-note-icon">📋</div>
       <div class="streams-note-text"><strong>On In-House Audit Design:</strong> Both the In-House GSA (iGSA) and In-House Safety Audit (IHS) are run on a fixed rotating schedule, completed by all members of the management team — not a single designated auditor. This distributed execution model reduces observer bias, builds cross-functional accountability, and ensures the RIDE Score reflects a true organizational consensus rather than one person's perspective. The contrast with unannounced mystery shopper results is intentional: when iGSA and mGSA scores align, you have strong convergence. When they diverge, you have your most important finding.</div>
+    </div>
+
+    <div class="streams-note module-note" style="margin-top:12px">
+      <div class="streams-note-icon">🔧</div>
+      <div class="streams-note-text"><strong>On the Operator Documentation Modules (MGR / OPD / ATR):</strong> These three streams are different in nature from external data feeds — they are structured documentation tools completed by your own people, on shift, at the point of activity. Their purpose is to close the documentation gap between what happens on the ground and what the score can see. MGR captures management-level decisions. OPD captures dispatch execution. ATR captures the at-ride record that no walkthrough audit can replicate. Together, they make the RIDE Score's Readiness and Integrity pillars defensible at the operator level — not just on the day of an audit, but every operating day.</div>
     </div>
 
   </div>
@@ -646,12 +741,12 @@ a{text-decoration:none}
       <div class="how-card">
         <div class="how-num">01</div>
         <div class="how-title">Connect Your Data Streams</div>
-        <div class="how-desc">We ingest your existing audit data, safety reports, pre-opening inspection logs, incident reports, and near-miss records. Post-visit email feedback, weather, and queue time data feed automatically. Most facilities already generate 80% of the required data — we capture and structure what's already happening.</div>
+        <div class="how-desc">We ingest your existing audit data, safety reports, pre-opening inspection logs, incident reports, and near-miss records. Post-visit email feedback, weather, and queue time data feed automatically. The three operator modules — Manager, Dispatcher, and At-Ride — are completed by your team on shift. Most facilities already generate 80% of the required data — we capture and structure what's already happening.</div>
       </div>
       <div class="how-card">
         <div class="how-num">02</div>
         <div class="how-title">AS 360 Computes the Scores</div>
-        <div class="how-desc">Our convergence engine processes all 12 streams, maps inputs to the four RIDE pillars, computes convergence confidence, and generates per-period scores with trend analysis and corrective action closure tracking. Built in R. Reproducible. Auditable.</div>
+        <div class="how-desc">Our convergence engine processes all 16 streams, maps inputs to the four RIDE pillars, computes convergence confidence, and generates per-period scores with trend analysis and corrective action closure tracking. Reproducible. Auditable.</div>
       </div>
       <div class="how-card">
         <div class="how-num">03</div>
@@ -683,10 +778,11 @@ a{text-decoration:none}
       <div class="price-card">
         <div class="price-tag">Single Facility</div>
         <div class="price-range">$25,000<span>/year</span></div>
-        <div class="price-desc">Full RIDE Score deployment for one facility. All 12 data streams active, quarterly scoring periods, convergence analysis, corrective action tracking, and API delivery to your dashboard.</div>
+        <div class="price-desc">Full RIDE Score deployment for one facility. All 15 data streams active, quarterly scoring periods, convergence analysis, corrective action tracking, and API delivery to your dashboard.</div>
         <ul class="price-includes">
           <li>Four quarterly RIDE Score reports</li>
-          <li>All 12 data stream integration</li>
+          <li>All 16 data stream integration</li>
+          <li>Manager, Dispatcher &amp; At-Ride module setup</li>
           <li>iGSA + mGSA divergence analysis</li>
           <li>Corrective action closure rate tracking</li>
           <li>Convergence confidence per pillar</li>
