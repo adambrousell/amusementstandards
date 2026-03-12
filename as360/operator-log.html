@@ -9,31 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#111214;
-  --surface:#18191D;
-  --panel:#1E2026;
-  --panel2:#242830;
-  --panel3:#2C3040;
-  --border:#2E323C;
-  --border2:#363B48;
-  --orange:#FF6B1A;
-  --orange-dim:rgba(255,107,26,.15);
-  --orange-glow:rgba(255,107,26,.08);
-  --orange2:#E85D10;
-  --red:#F43F5E;
-  --red-dim:rgba(244,63,94,.15);
-  --amber:#F59E0B;
-  --amber-dim:rgba(245,158,11,.15);
-  --green:#22C55E;
-  --green-dim:rgba(34,197,94,.15);
-  --blue:#38BDF8;
-  --blue-dim:rgba(56,189,248,.12);
-  --text:#E8EAF0;
-  --text-dim:#8892A4;
-  --text-muted:#4A5568;
-  --mono:'JetBrains Mono',monospace;
-  --ui:'Inter',sans-serif;
-  --display:'Rajdhani',sans-serif;
+  --bg:#111214;--surface:#18191D;--panel:#1E2026;--panel2:#242830;--panel3:#2C3040;
+  --border:#2E323C;--border2:#363B48;
+  --orange:#FF6B1A;--orange-dim:rgba(255,107,26,.15);--orange-glow:rgba(255,107,26,.08);--orange2:#E85D10;
+  --red:#F43F5E;--red-dim:rgba(244,63,94,.15);
+  --amber:#F59E0B;--amber-dim:rgba(245,158,11,.15);
+  --green:#22C55E;--green-dim:rgba(34,197,94,.15);
+  --blue:#38BDF8;--blue-dim:rgba(56,189,248,.12);
+  --teal:#0ABFBC;--teal-dim:rgba(10,191,188,.15);
+  --text:#E8EAF0;--text-dim:#8892A4;--text-muted:#4A5568;
+  --mono:'JetBrains Mono',monospace;--ui:'Inter',sans-serif;--display:'Rajdhani',sans-serif;
   --tap:56px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -42,7 +27,7 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
   background-image:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(255,107,26,.04) 0%,transparent 60%);
   display:flex;flex-direction:column;max-width:600px;margin:0 auto;}
 
-/* ── TOPBAR ── */
+/* TOPBAR */
 .topbar{background:var(--surface);border-bottom:2px solid var(--orange);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .tb-left{display:flex;flex-direction:column;}
 .ride-name{font-family:var(--display);font-size:22px;font-weight:700;color:var(--text);letter-spacing:.5px;line-height:1;}
@@ -50,35 +35,29 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .tb-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px;}
 .tb-clock{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);letter-spacing:1px;}
 .tb-date{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.5px;}
-.tb-status{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;letter-spacing:.5px;}
+.tb-status{display:flex;align-items:center;gap:5px;}
 .status-dot{width:7px;height:7px;border-radius:50%;}
 .status-dot.closed{background:var(--red);box-shadow:0 0 6px var(--red);}
-.status-dot.opening{background:var(--amber);box-shadow:0 0 6px var(--amber);}
 .status-dot.open{background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;}
-.status-dot.closing{background:var(--orange);box-shadow:0 0 6px var(--orange);}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 
-/* ── MODE TABS ── */
+/* MODE TABS — 4 tabs now */
 .mode-tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;}
-.mode-tab{height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:var(--mono);font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;position:relative;}
+.mode-tab{height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:var(--mono);font-size:8px;letter-spacing:.5px;text-transform:uppercase;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;position:relative;}
 .mode-tab.active{color:var(--orange);border-bottom-color:var(--orange);}
-.mode-tab .tab-icon{font-size:16px;line-height:1;}
-.mode-tab .tab-badge{position:absolute;top:6px;right:8px;background:var(--red);color:#fff;font-size:8px;font-weight:700;font-family:var(--mono);padding:1px 5px;border-radius:3px;display:none;}
-.mode-tab .tab-badge.show{display:block;}
+.tab-icon{font-size:15px;line-height:1;}
+.tab-badge{position:absolute;top:6px;right:6px;background:var(--red);color:#fff;font-size:8px;font-weight:700;font-family:var(--mono);padding:1px 5px;border-radius:3px;display:none;}
+.tab-badge.show{display:block;}
 
-/* ── MAIN SCROLL ── */
+/* MAIN */
 .main{flex:1;overflow-y:auto;padding:14px 14px 80px;}
-
-/* ── VIEWS ── */
 .view{display:none;}
 .view.active{display:block;animation:fadeIn .2s ease;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-
-/* ── SECTION LABEL ── */
 .sec-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border);padding-bottom:6px;margin:18px 0 10px;}
 .sec-label:first-child{margin-top:0;}
 
-/* ── OPENING CHECKLIST ── */
+/* CHECKLIST */
 .check-item{display:flex;align-items:center;gap:0;margin-bottom:8px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--panel);transition:border-color .15s;}
 .check-item.pass{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.04);}
 .check-item.fail{border-color:rgba(244,63,94,.4);background:rgba(244,63,94,.04);}
@@ -94,12 +73,10 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .fail-note.show{display:block;}
 .fail-note textarea{width:100%;background:var(--panel2);border:1px solid rgba(244,63,94,.3);border-radius:7px;padding:10px;font-family:var(--ui);font-size:13px;color:var(--text);resize:none;min-height:60px;line-height:1.4;}
 .fail-note textarea:focus{outline:none;border-color:var(--red);}
-.fail-note textarea::placeholder{color:var(--text-muted);}
-
 .check-progress{height:4px;background:var(--panel3);border-radius:2px;margin-bottom:14px;overflow:hidden;}
 .check-progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--orange),var(--green));transition:width .3s;}
 
-/* ── SIGN-OFF BLOCK ── */
+/* SIGNOFF */
 .signoff-block{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;}
 .signoff-row{display:flex;align-items:center;gap:10px;padding:13px 14px;border-bottom:1px solid var(--border);transition:background .15s;}
 .signoff-row.signed{background:rgba(34,197,94,.04);border-bottom-color:rgba(34,197,94,.15);}
@@ -110,39 +87,20 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .signoff-inputs{display:flex;flex-direction:column;gap:5px;flex:1;}
 .signoff-input{width:100%;padding:7px 10px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--orange);letter-spacing:1px;text-transform:uppercase;}
 .signoff-input:focus{outline:none;border-color:var(--orange);}
-.signoff-input::placeholder{color:var(--text-muted);font-size:10px;letter-spacing:0;font-weight:400;}
 .signoff-name-input{width:100%;padding:7px 10px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;font-family:var(--ui);font-size:12px;color:var(--text);}
 .signoff-name-input:focus{outline:none;border-color:var(--orange);}
-.signoff-name-input::placeholder{color:var(--text-muted);}
 .signoff-btn{padding:8px 14px;background:linear-gradient(135deg,var(--orange),var(--orange2));border:none;border-radius:8px;font-family:var(--display);font-size:14px;font-weight:700;color:#fff;cursor:pointer;flex-shrink:0;transition:all .12s;}
-.signoff-btn:hover{filter:brightness(1.1);}
-.signoff-btn:disabled{opacity:.3;cursor:not-allowed;filter:none;}
+.signoff-btn:disabled{opacity:.3;cursor:not-allowed;}
 .signoff-check{width:28px;height:28px;border-radius:50%;background:var(--green-dim);border:2px solid var(--green);color:var(--green);font-size:13px;font-weight:700;display:none;align-items:center;justify-content:center;flex-shrink:0;}
 .signoff-check.show{display:flex;}
 .signoff-status{padding:10px 14px;background:var(--panel2);border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text-dim);text-align:center;}
 .signoff-status.complete{background:rgba(34,197,94,.08);border-top-color:rgba(34,197,94,.2);color:var(--green);}
-
-/* ── OPERATOR BADGE ENTRY ── */
-.badge-entry{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;}
-.badge-entry label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:8px;}
-.badge-row{display:flex;gap:8px;}
-.badge-input{flex:1;background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:16px;font-weight:700;color:var(--orange);letter-spacing:2px;text-transform:uppercase;}
-.badge-input:focus{outline:none;border-color:var(--orange);}
-.badge-input::placeholder{color:var(--text-muted);font-size:12px;letter-spacing:.5px;font-weight:400;}
-.badge-add-btn{padding:0 20px;background:linear-gradient(135deg,var(--orange),var(--orange2));border:none;border-radius:8px;font-family:var(--display);font-size:15px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap;}
-
-/* ── SUBMIT OPENING ── */
 .submit-btn{width:100%;height:60px;border:none;border-radius:12px;font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:all .15s;margin-top:12px;}
 .submit-btn.primary{background:linear-gradient(135deg,var(--orange),var(--orange2));color:#fff;box-shadow:0 4px 20px rgba(255,107,26,.3);}
-.submit-btn.primary:hover{filter:brightness(1.1);}
-.submit-btn.primary:disabled{opacity:.35;cursor:not-allowed;filter:none;}
-.submit-btn.danger{background:linear-gradient(135deg,var(--red),#C2185B);color:#fff;box-shadow:0 4px 20px rgba(244,63,94,.25);}
-.submit-btn.ghost{background:var(--panel2);border:1px solid var(--border2);color:var(--text-dim);}
+.submit-btn.primary:disabled{opacity:.35;cursor:not-allowed;}
 
-/* ── LIVE VIEW ── */
-/* Cycle counter */
+/* LIVE */
 .cycle-counter{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
-.cycle-left{display:flex;flex-direction:column;}
 .cycle-val{font-family:var(--display);font-size:52px;font-weight:700;color:var(--orange);line-height:1;}
 .cycle-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-top:2px;}
 .cycle-btns{display:flex;flex-direction:column;gap:8px;}
@@ -150,9 +108,6 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .cycle-btn:active{transform:scale(.92);}
 .cycle-btn.inc{background:var(--orange);color:#fff;}
 .cycle-btn.dec{background:var(--panel3);color:var(--text-dim);}
-.cycle-sub{font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-top:4px;}
-
-/* Rotation grid */
 .rotation-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
 .position-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .3s;}
 .position-card.warn{border-color:var(--amber);}
@@ -161,9 +116,7 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .pos-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--panel2);border-bottom:1px solid var(--border);}
 .pos-name{font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.3px;color:var(--text-dim);}
 .pos-timer{font-family:var(--mono);font-size:18px;font-weight:700;letter-spacing:1px;}
-.pos-timer.ok{color:var(--green);}
-.pos-timer.warn{color:var(--amber);}
-.pos-timer.crit{color:var(--red);}
+.pos-timer.ok{color:var(--green);}.pos-timer.warn{color:var(--amber);}.pos-timer.crit{color:var(--red);}
 .pos-body{padding:10px 14px;display:flex;align-items:center;gap:10px;}
 .pos-op{flex:1;}
 .pos-op-name{font-size:15px;font-weight:600;color:var(--text);}
@@ -171,44 +124,22 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .pos-op-empty{font-size:13px;color:var(--text-muted);font-style:italic;}
 .pos-actions{display:flex;gap:6px;}
 .pos-btn{padding:8px 14px;border-radius:7px;border:1px solid var(--border2);background:var(--panel3);font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--text-dim);cursor:pointer;transition:all .12s;white-space:nowrap;}
-.pos-btn:hover{border-color:var(--orange);color:var(--orange);}
 .pos-btn.rotate{border-color:rgba(255,107,26,.4);color:var(--orange);background:var(--orange-dim);}
 .pos-btn.assign{border-color:rgba(56,189,248,.3);color:var(--blue);background:var(--blue-dim);}
-
-/* Rotation modal */
-.rot-modal{display:none;position:fixed;inset:0;background:rgba(10,10,12,.85);backdrop-filter:blur(6px);z-index:200;padding:20px;align-items:flex-end;}
-.rot-modal.show{display:flex;}
-.rot-panel{background:var(--panel);border:1px solid var(--border2);border-radius:16px 16px 0 0;width:100%;padding:20px;max-height:80vh;overflow-y:auto;}
-.rot-title{font-family:var(--display);font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;}
-.rot-sub{font-size:12px;color:var(--text-dim);margin-bottom:16px;}
-.rot-field{margin-bottom:12px;}
-.rot-field label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:6px;}
-.rot-field input,.rot-field select{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:14px;color:var(--text);-webkit-appearance:none;}
-.rot-field input:focus,.rot-field select:focus{outline:none;border-color:var(--orange);}
-.rot-field select option{background:var(--panel);}
-.rot-btns{display:flex;gap:8px;margin-top:4px;}
-.rot-btn-confirm{flex:1;height:52px;background:linear-gradient(135deg,var(--orange),var(--orange2));border:none;border-radius:10px;font-family:var(--display);font-size:17px;font-weight:700;color:#fff;cursor:pointer;}
-.rot-btn-cancel{padding:0 20px;height:52px;background:var(--panel2);border:1px solid var(--border2);border-radius:10px;font-family:var(--display);font-size:15px;color:var(--text-dim);cursor:pointer;}
-
-/* Rotation log */
 .rot-log{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .rot-log-hdr{padding:8px 12px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);display:flex;justify-content:space-between;}
 .rot-log-body{max-height:200px;overflow-y:auto;}
 .rot-entry{display:grid;grid-template-columns:60px 1fr 1fr 60px;gap:6px;padding:8px 12px;border-bottom:1px solid rgba(46,50,60,.5);font-family:var(--mono);font-size:10px;align-items:center;}
 .rot-entry:last-child{border-bottom:none;}
 .rot-time{color:var(--orange);}
-.rot-op{color:var(--text);}
-.rot-pos{color:var(--text-dim);}
-.rot-dur{color:var(--text-muted);text-align:right;}
 
-/* ── UNITS VIEW ── */
+/* UNITS */
 .unit-summary-bar{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;}
 .unit-summary-div{width:1px;height:36px;background:var(--border2);}
 .unit-sum-val{font-family:var(--display);font-size:40px;font-weight:700;line-height:1;color:var(--green);}
 .unit-sum-val.out{color:var(--red);}
 .unit-sum-val.total{color:var(--text-dim);}
 .unit-sum-label{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-top:3px;}
-
 .unit-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;transition:border-color .2s;}
 .unit-card.in-service{border-color:rgba(34,197,94,.35);}
 .unit-card.out-service{border-color:rgba(244,63,94,.3);background:rgba(244,63,94,.03);}
@@ -222,45 +153,85 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 .unit-toggle-btn:active{transform:scale(.97);}
 .unit-btn-in{background:linear-gradient(135deg,var(--green),#16A34A);color:#fff;}
 .unit-btn-out{background:var(--panel2);border:1.5px solid var(--border2);color:var(--red);}
-.unit-btn-out:hover{border-color:var(--red);background:var(--red-dim);}
 .unit-reason-wrap{padding:0 16px 14px;display:none;}
-.unit-reason-wrap.show{display:block;}
 .unit-reason-input{width:100%;background:var(--panel2);border:1px solid rgba(244,63,94,.3);border-radius:8px;padding:10px 12px;font-family:var(--ui);font-size:13px;color:var(--text);resize:none;min-height:56px;line-height:1.4;}
-.unit-reason-input:focus{outline:none;border-color:var(--red);}
-.unit-reason-input::placeholder{color:var(--text-muted);}
 .unit-save-btn{margin-top:7px;width:100%;height:44px;background:linear-gradient(135deg,var(--orange),var(--orange2));border:none;border-radius:9px;font-family:var(--display);font-size:16px;font-weight:700;color:#fff;cursor:pointer;}
 .unit-since{font-family:var(--mono);font-size:9px;color:var(--text-muted);padding:0 16px 10px;}
-
 .unit-log-wrap{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .unit-log-entry{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-bottom:1px solid rgba(46,50,60,.5);}
 .unit-log-entry:last-child{border-bottom:none;}
 .unit-log-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;}
 .unit-log-dot.in{background:var(--green);}
 .unit-log-dot.out{background:var(--red);}
-.unit-log-body{flex:1;}
 .unit-log-title{font-family:var(--mono);font-size:10px;font-weight:700;}
 .unit-log-title.in{color:var(--green);}
 .unit-log-title.out{color:var(--red);}
 .unit-log-note{font-size:11px;color:var(--text-dim);margin-top:2px;line-height:1.4;}
 .unit-log-time{font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-top:2px;}
 
-/* ── CLOSING VIEW ── */
-.shift-summary{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;}
-.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.summary-stat{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px;}
-.summary-stat-val{font-family:var(--display);font-size:28px;font-weight:700;color:var(--orange);line-height:1;}
-.summary-stat-label{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-top:3px;}
+/* ══ TURNSTILE ══ */
+.ts-hero{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:12px;}
+.ts-hero-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:10px;}
+.ts-val{font-family:var(--display);font-size:56px;font-weight:700;color:var(--teal);line-height:1;}
+.ts-val-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;}
+.ts-since{font-family:var(--mono);font-size:10px;color:var(--text-dim);}
+.ts-next-due{font-family:var(--mono);font-size:10px;font-weight:700;padding:4px 10px;border-radius:5px;}
+.ts-next-due.ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+.ts-next-due.soon{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+.ts-next-due.overdue{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.3);animation:tsPulse .8s infinite;}
+@keyframes tsPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.ts-entry-row{display:flex;align-items:center;gap:8px;}
+.ts-input{flex:1;background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:20px;font-weight:700;color:var(--teal);letter-spacing:1px;text-align:center;-webkit-appearance:none;}
+.ts-input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(10,191,188,.15);}
+.ts-submit{width:64px;height:52px;background:linear-gradient(135deg,var(--teal),#0891B2);border:none;border-radius:9px;font-family:var(--display);font-size:22px;font-weight:700;color:#fff;cursor:pointer;transition:all .12s;flex-shrink:0;}
+.ts-submit:active{transform:scale(.93);}
+.ts-hour-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;}
+.ts-hour-cell{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:10px 8px;text-align:center;}
+.ts-hour-cell.logged{border-color:rgba(10,191,188,.35);background:rgba(10,191,188,.05);}
+.ts-hour-cell.missed{border-color:rgba(244,63,94,.3);background:rgba(244,63,94,.04);}
+.ts-hour-cell.current{border-color:var(--amber);background:rgba(245,158,11,.06);}
+.ts-hc-hour{font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-bottom:3px;}
+.ts-hc-count{font-family:var(--display);font-size:22px;font-weight:700;line-height:1;}
+.ts-hc-count.logged{color:var(--teal);}
+.ts-hc-count.missed{color:var(--red);}
+.ts-hc-count.current{color:var(--amber);}
+.ts-hc-count.empty{color:var(--text-muted);}
+.ts-hc-delta{font-family:var(--mono);font-size:8px;margin-top:2px;}
+.ts-hc-delta.up{color:var(--green);}
+.ts-hc-delta.down{color:var(--red);}
+.ts-log{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:12px;}
+.ts-log-hdr{padding:8px 12px;background:var(--panel2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);display:grid;grid-template-columns:55px 60px 1fr 70px;}
+.ts-log-row{display:grid;grid-template-columns:55px 60px 1fr 70px;gap:6px;padding:9px 12px;border-bottom:1px solid rgba(46,50,60,.5);align-items:center;}
+.ts-log-row:last-child{border-bottom:none;}
+.ts-log-time{font-family:var(--mono);font-size:10px;color:var(--orange);}
+.ts-log-hour{font-family:var(--mono);font-size:10px;color:var(--text-dim);}
+.ts-log-count{font-family:var(--display);font-size:18px;font-weight:700;color:var(--teal);}
+.ts-log-delta{font-family:var(--mono);font-size:10px;font-weight:700;}
+.ts-log-delta.up{color:var(--green);}
+.ts-log-delta.dn{color:var(--red);}
+.ts-log-delta.eq{color:var(--text-muted);}
 
-/* ── TOAST ── */
+/* ROT MODAL */
+#rotModal{display:none;position:fixed;inset:0;background:rgba(10,10,12,.85);backdrop-filter:blur(6px);z-index:200;padding:20px 14px;align-items:flex-end;}
+#rotModal.show{display:flex;}
+.rot-panel{background:var(--panel);border:1px solid var(--border2);border-radius:16px 16px 0 0;width:100%;padding:20px;max-height:80vh;overflow-y:auto;}
+.rot-title{font-family:var(--display);font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.rot-sub{font-size:12px;color:var(--text-dim);margin-bottom:16px;}
+.rot-field{margin-bottom:12px;}
+.rot-field label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:6px;}
+.rot-field input{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;font-family:var(--mono);font-size:14px;color:var(--text);}
+.rot-field input:focus{outline:none;border-color:var(--orange);}
+.rot-btns{display:flex;gap:8px;}
+.rot-btn-confirm{flex:1;height:52px;background:linear-gradient(135deg,var(--orange),var(--orange2));border:none;border-radius:10px;font-family:var(--display);font-size:17px;font-weight:700;color:#fff;cursor:pointer;}
+.rot-btn-cancel{padding:0 20px;height:52px;background:var(--panel2);border:1px solid var(--border2);border-radius:10px;font-family:var(--display);font-size:15px;color:var(--text-dim);cursor:pointer;}
+
+/* TOAST */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--panel2);color:var(--text);border:1px solid var(--border2);padding:11px 20px;border-radius:10px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.3px;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;max-width:90vw;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 #toast.ok{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.4);color:var(--green);}
 #toast.warn{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.4);color:var(--amber);}
 #toast.err{background:rgba(244,63,94,.12);border-color:rgba(244,63,94,.4);color:var(--red);}
-
-/* ── ROTATION MODAL ── */
-#rotModal{display:none;position:fixed;inset:0;background:rgba(10,10,12,.85);backdrop-filter:blur(6px);z-index:200;padding:20px 14px;align-items:flex-end;}
-#rotModal.show{display:flex;}
+#toast.teal{background:rgba(10,191,188,.12);border-color:rgba(10,191,188,.4);color:var(--teal);}
 </style>
 </head>
 <body>
@@ -274,26 +245,23 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
   <div class="tb-right">
     <div class="tb-clock" id="clock">--:--</div>
     <div class="tb-date" id="dateDisp">---</div>
-    <div class="tb-status" id="rideStatus">
+    <div class="tb-status">
       <div class="status-dot closed" id="statusDot"></div>
       <span id="statusText" style="font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--text-dim);">CLOSED</span>
     </div>
   </div>
 </div>
 
-<!-- MODE TABS -->
+<!-- MODE TABS — 4 -->
 <div class="mode-tabs">
   <div class="mode-tab active" onclick="showMode('opening')" id="tab-opening">
-    <span class="tab-icon">📋</span>
-    <span>Opening</span>
+    <span class="tab-icon">📋</span><span>Opening</span>
   </div>
   <div class="mode-tab" onclick="showMode('live')" id="tab-live">
-    <span class="tab-icon">🔄</span>
-    <span>Live</span>
+    <span class="tab-icon">🔄</span><span>Live</span>
   </div>
   <div class="mode-tab" onclick="showMode('units')" id="tab-units">
-    <span class="tab-icon">🚃</span>
-    <span>Units</span>
+    <span class="tab-icon">🚃</span><span>Units</span>
     <span class="tab-badge" id="unitsBadge"></span>
   </div>
 </div>
@@ -301,139 +269,129 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 <!-- MAIN -->
 <div class="main">
 
-  <!-- ══════════ OPENING VIEW -->
-  <div class="view active" id="view-opening">
-
-    <div class="sec-label">// Pre-Opening Sign-Off</div>
-    <div class="signoff-block">
-
-      <div class="signoff-row" id="so-supervisor">
-        <div class="signoff-role">
-          <span class="signoff-icon">🔑</span>
-          <div>
-            <div class="signoff-title">Supervisor</div>
-            <div class="signoff-sub">Area supervisor approval</div>
-          </div>
-        </div>
-        <div class="signoff-inputs">
-          <input class="badge-input signoff-input" type="text" id="supBadge" placeholder="Badge ID" maxlength="12">
-          <input class="signoff-name-input" type="text" id="supName" placeholder="Print name">
-        </div>
-        <button class="signoff-btn" id="soBtn-supervisor" onclick="setSignoff('supervisor')">SET</button>
-        <div class="signoff-check" id="soCheck-supervisor">✓</div>
+<!-- ══ OPENING ══ -->
+<div class="view active" id="view-opening">
+  <div class="sec-label">// Pre-Opening Sign-Off</div>
+  <div class="signoff-block">
+    <div class="signoff-row" id="so-supervisor">
+      <div class="signoff-role">
+        <span class="signoff-icon">🔑</span>
+        <div><div class="signoff-title">Supervisor</div><div class="signoff-sub">Area supervisor approval</div></div>
       </div>
-
-      <div class="signoff-row" id="so-maintenance">
-        <div class="signoff-role">
-          <span class="signoff-icon">🔧</span>
-          <div>
-            <div class="signoff-title">Maintenance</div>
-            <div class="signoff-sub">Cleared for operation</div>
-          </div>
-        </div>
-        <div class="signoff-inputs">
-          <input class="badge-input signoff-input" type="text" id="maintBadge" placeholder="Badge ID" maxlength="12">
-          <input class="signoff-name-input" type="text" id="maintName" placeholder="Print name">
-        </div>
-        <button class="signoff-btn" id="soBtn-maintenance" onclick="setSignoff('maintenance')">SET</button>
-        <div class="signoff-check" id="soCheck-maintenance">✓</div>
+      <div class="signoff-inputs">
+        <input class="signoff-input" type="text" id="supBadge" placeholder="Badge ID" maxlength="12">
+        <input class="signoff-name-input" type="text" id="supName" placeholder="Print name">
       </div>
-
-      <div class="signoff-status" id="signoffStatus">
-        <span id="signoffStatusText">Supervisor and maintenance sign-off required before opening</span>
-      </div>
+      <button class="signoff-btn" id="soBtn-supervisor" onclick="setSignoff('supervisor')">SET</button>
+      <div class="signoff-check" id="soCheck-supervisor">✓</div>
     </div>
-
-    <div class="sec-label">// Pre-Opening Inspection Checklist</div>
-    <div class="check-progress"><div class="check-progress-fill" id="checkProgress" style="width:0%"></div></div>
-    <div id="checklistBody"></div>
-
-    <button class="submit-btn primary" id="openRideBtn" onclick="openRide()" disabled>
-      ✓ SIGN OFF &amp; OPEN RIDE
-    </button>
-    <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;" id="openHint">Sign-off required: supervisor, maintenance</div>
-
+    <div class="signoff-row" id="so-maintenance">
+      <div class="signoff-role">
+        <span class="signoff-icon">🔧</span>
+        <div><div class="signoff-title">Maintenance</div><div class="signoff-sub">Cleared for operation</div></div>
+      </div>
+      <div class="signoff-inputs">
+        <input class="signoff-input" type="text" id="maintBadge" placeholder="Badge ID" maxlength="12">
+        <input class="signoff-name-input" type="text" id="maintName" placeholder="Print name">
+      </div>
+      <button class="signoff-btn" id="soBtn-maintenance" onclick="setSignoff('maintenance')">SET</button>
+      <div class="signoff-check" id="soCheck-maintenance">✓</div>
+    </div>
+    <div class="signoff-status" id="signoffStatus">
+      <span id="signoffStatusText">Supervisor and maintenance sign-off required before opening</span>
+    </div>
   </div>
 
-  <!-- ══════════ LIVE VIEW -->
-  <div class="view" id="view-live">
+  <div class="sec-label">// Pre-Opening Inspection Checklist</div>
+  <div class="check-progress"><div class="check-progress-fill" id="checkProgress" style="width:0%"></div></div>
+  <div id="checklistBody"></div>
+  <button class="submit-btn primary" id="openRideBtn" onclick="openRide()" disabled>✓ SIGN OFF &amp; OPEN RIDE</button>
+  <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);text-align:center;margin-top:8px;" id="openHint">Sign-off required: supervisor, maintenance</div>
+</div>
 
-    <!-- Cycle Counter -->
-    <div class="cycle-counter">
-      <div class="cycle-info">
-        <div class="cycle-label">// Total Dispatches</div>
-        <div class="cycle-count" id="cycleCount">0</div>
-        <div class="cycle-sub" id="cycleSub">Shift started: —</div>
-      </div>
-      <div class="cycle-btns">
-        <button class="cycle-btn inc" onclick="incrementCycle()" title="Dispatch">+1</button>
-        <button class="cycle-btn dec" onclick="decrementCycle()" title="Undo">−1</button>
-      </div>
+<!-- ══ LIVE ══ -->
+<div class="view" id="view-live">
+  <div class="cycle-counter">
+    <div>
+      <div class="cycle-label">// Total Dispatches</div>
+      <div class="cycle-val" id="cycleCount">0</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-top:3px;" id="cycleSub">Shift started: —</div>
     </div>
-
-    <!-- Rotation Tracker -->
-    <div class="sec-label">// Live Position Rotation</div>
-    <div id="rotationGrid" class="rotation-grid"></div>
-
-    <!-- Rotation Log -->
-    <div class="sec-label">// Rotation Log</div>
-    <div class="rot-log">
-      <div class="rot-log-hdr"><span>Time</span><span>Operator</span><span>Position</span><span>Duration</span></div>
-      <div class="rot-log-body" id="rotLogBody">
-        <div style="padding:16px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No rotations logged yet</div>
-      </div>
+    <div class="cycle-btns">
+      <button class="cycle-btn inc" onclick="incrementCycle()">+1</button>
+      <button class="cycle-btn dec" onclick="decrementCycle()">−1</button>
     </div>
-
   </div>
 
-
-  <div class="view" id="view-units">
-
-    <div class="sec-label">// Vehicles / Trains in Service</div>
-
-    <div class="unit-summary-bar" id="unitSummaryBar">
-      <div class="unit-summary-in">
-        <div class="unit-sum-val" id="unitInService">0</div>
-        <div class="unit-sum-label">In Service</div>
+  <!-- Turnstile quick-entry -->
+  <div class="ts-hero">
+    <div class="ts-hero-top">
+      <div>
+        <div class="ts-val-label">// Turnstile Reading</div>
+        <div class="ts-val" id="ts-last-val">—</div>
+        <div class="ts-since" id="ts-last-time">No readings yet</div>
       </div>
-      <div class="unit-summary-div"></div>
-      <div class="unit-summary-out">
-        <div class="unit-sum-val out" id="unitOutService">0</div>
-        <div class="unit-sum-label">Out of Service</div>
-      </div>
-      <div class="unit-summary-div"></div>
-      <div class="unit-summary-total">
-        <div class="unit-sum-val total" id="unitTotal">0</div>
-        <div class="unit-sum-label">Total Fleet</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+        <div class="ts-next-due ok" id="ts-next-due">Log first reading</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)" id="ts-readings-today">0 readings this shift</div>
       </div>
     </div>
-
-    <div id="unitCards"></div>
-
-    <div class="unit-log-wrap">
-      <div class="sec-label" style="margin-top:20px;">// Unit Status Log</div>
-      <div id="unitLog">
-        <div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No unit changes logged yet</div>
-      </div>
+    <div class="ts-entry-row">
+      <input class="ts-input" type="number" id="ts-count-input" placeholder="000000" inputmode="numeric" min="0">
+      <button class="ts-submit" onclick="logTurnstile()">→</button>
     </div>
-
   </div>
+
+  <div id="ts-hour-grid" class="ts-hour-grid"></div>
+
+  <div class="ts-log">
+    <div class="ts-log-hdr"><span>Time</span><span>Hour</span><span>Count</span><span>Δ Guests</span></div>
+    <div id="ts-log-body">
+      <div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No readings logged yet</div>
+    </div>
+  </div>
+
+  <div class="sec-label" style="margin-top:18px;">// Live Position Rotation</div>
+  <div id="rotationGrid" class="rotation-grid"></div>
+
+  <div class="sec-label">// Rotation Log</div>
+  <div class="rot-log">
+    <div class="rot-log-hdr"><span>Time</span><span>Operator</span><span>Position</span><span>Duration</span></div>
+    <div class="rot-log-body" id="rotLogBody">
+      <div style="padding:16px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No rotations logged yet</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ UNITS ══ -->
+<div class="view" id="view-units">
+  <div class="sec-label">// Vehicles / Trains in Service</div>
+  <div class="unit-summary-bar">
+    <div><div class="unit-sum-val" id="unitInService">0</div><div class="unit-sum-label">In Service</div></div>
+    <div class="unit-summary-div"></div>
+    <div><div class="unit-sum-val out" id="unitOutService">0</div><div class="unit-sum-label">Out of Service</div></div>
+    <div class="unit-summary-div"></div>
+    <div><div class="unit-sum-val total" id="unitTotal">0</div><div class="unit-sum-label">Total Fleet</div></div>
+  </div>
+  <div id="unitCards"></div>
+  <div class="unit-log-wrap">
+    <div class="sec-label" style="margin-top:20px;">// Unit Status Log</div>
+    <div id="unitLog">
+      <div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No unit changes logged yet</div>
+    </div>
+  </div>
+</div>
 
 </div><!-- /main -->
 
-<!-- ROTATION MODAL -->
+<!-- ROT MODAL -->
 <div id="rotModal">
   <div class="rot-panel">
     <div class="rot-title" id="rotModalTitle">Rotate / Assign Position</div>
     <div class="rot-sub" id="rotModalSub">—</div>
-    <div class="rot-field">
-      <label>Incoming Operator Badge ID</label>
-      <input type="text" id="rotBadgeIn" placeholder="Badge ID or name" class="badge-input" style="width:100%;">
-    </div>
-    <div class="rot-field">
-      <label>Incoming Operator Name</label>
-      <input type="text" id="rotNameIn" placeholder="Full name">
-    </div>
+    <div class="rot-field"><label>Incoming Operator Badge ID</label><input type="text" id="rotBadgeIn" placeholder="Badge ID" style="font-family:var(--mono);font-size:14px;color:var(--orange);font-weight:700;letter-spacing:1px;"></div>
+    <div class="rot-field"><label>Incoming Operator Name</label><input type="text" id="rotNameIn" placeholder="Full name"></div>
     <div class="rot-btns">
       <button class="rot-btn-confirm" onclick="confirmRotation()">Confirm Rotation</button>
       <button class="rot-btn-cancel" onclick="closeRotModal()">Cancel</button>
@@ -444,24 +402,19 @@ body{font-family:var(--ui);color:var(--text);min-height:100vh;background:var(--b
 <div id="toast"></div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────────────────────────────
-const RIDE_NAME = new URLSearchParams(window.location.search).get('ride') || 'Steel Coaster';
-const RIDE_ID   = new URLSearchParams(window.location.search).get('id')   || 'UNIT-SC01';
+// ── CONFIG ─────────────────────────────────────────────────────────────────
+const RIDE_NAME  = new URLSearchParams(window.location.search).get('ride') || 'Steel Coaster';
+const RIDE_ID    = new URLSearchParams(window.location.search).get('id')   || 'UNIT-SC01';
 const UNIT_COUNT = parseInt(new URLSearchParams(window.location.search).get('units') || '3');
-const UNIT_NAMES = Array.from({length:UNIT_COUNT},(_,i)=>'Train '+String.fromCharCode(65+i)); // Train A, B, C…
+const UNIT_NAMES = Array.from({length:UNIT_COUNT},(_,i)=>'Train '+String.fromCharCode(65+i));
+const POSITIONS  = ['Load/Dispatch','Unload/Exit','Queue/Greeter','Rover'];
+
 document.getElementById('rideName').textContent = RIDE_NAME;
 document.getElementById('rideMeta').textContent = RIDE_ID + ' · AS 360 OPERATOR LOG';
 
-// Positions — configurable per ride
-const POSITIONS = ['Load/Dispatch','Unload/Exit','Queue/Greeter','Rover'];
-
-// Opening checklist items
 const OPEN_CHECKS = [
-  // Section I — Maintenance Verification
   {cat:'I · Maintenance Verification', item:'The ride has been cleared for operation and is properly signed and dated — Carpentry initials verified'},
   {cat:'I · Maintenance Verification', item:'The ride has been cleared for operation and is properly signed and dated — Supervisor initials verified'},
-
-  // Section II — General Safety
   {cat:'II · General Safety', item:'A. Communication devices are operating properly (phone / PA, or a temporary system is in place)'},
   {cat:'II · General Safety', item:'B. Fire extinguishers are in place, properly charged and displaying current inspection tags'},
   {cat:'II · General Safety', item:'C. Team members are certified for their assigned positions'},
@@ -474,20 +427,14 @@ const OPEN_CHECKS = [
   {cat:'II · General Safety', item:'J. Safety zones are clearly marked'},
   {cat:'II · General Safety', item:'K. Control panel areas are in good condition, clean and free of debris'},
   {cat:'II · General Safety', item:'L. Control panel lights are in proper working condition'},
-
-  // Section III — Unit Safety
   {cat:'III · Unit Safety', item:'A. All ride units in service are in working order, clean and in good condition'},
   {cat:'III · Unit Safety', item:'B. All safety restraint devices in service operate correctly'},
-
-  // Section IV — Ride Safety
   {cat:'IV · Ride Safety', item:'A. The loading / unloading gates open and close properly'},
   {cat:'IV · Ride Safety', item:'B. The ride areas and infields are clear of all personnel and any other objects'},
   {cat:'IV · Ride Safety', item:'C. In normal operating mode the ride cycles normally with no unusual noises, vibrations, sights or smells'},
   {cat:'IV · Ride Safety', item:'D. The ride appropriately starts and stops in the proper positions'},
   {cat:'IV · Ride Safety', item:'E. The system check has been completed'},
   {cat:'IV · Ride Safety', item:'F. The ride has been cycled at least one time empty prior to loading any persons'},
-
-  // Section V — Miscellaneous / Quality
   {cat:'V · Quality Checks', item:'A. All team members are in proper uniform including name tag and certification badge'},
   {cat:'V · Quality Checks', item:'B. All queue lines, flowerbeds and surrounding ride areas are clean and litter free'},
   {cat:'V · Quality Checks', item:'C. Water is available for all team members'},
@@ -495,29 +442,20 @@ const OPEN_CHECKS = [
   {cat:'V · Quality Checks', item:'E. State of New Jersey Permit to Operate is present'},
 ];
 
-
-// ── STATE ─────────────────────────────────────────────────────────────────
+// ── STATE ──────────────────────────────────────────────────────────────────
 let state = {
-  rideStatus: 'closed',
-  signoffs: { supervisor: null, maintenance: null },
-  openChecks: {},
-  cycleCount: 0,
-  shiftStart: null,
-  positions: {},
-  rotLog: [],
-  flags: [],
-  units: {}, // unitName: {inService:bool, since:timestamp, reason:''}
-  unitLog: [],
+  rideStatus:'closed', signoffs:{supervisor:null,maintenance:null},
+  openChecks:{}, cycleCount:0, shiftStart:null,
+  positions:{}, rotLog:[], units:{}, unitLog:[],
 };
 
-// ── INIT ──────────────────────────────────────────────────────────────────
+// ── INIT ───────────────────────────────────────────────────────────────────
 function init(){
-  tickClock(); setInterval(tickClock, 1000);
-  buildChecklist('open');
+  tickClock(); setInterval(tickClock,1000);
+  buildChecklist();
   initPositions();
   initUnits();
-  setInterval(tickRotations, 10000);
-  setInterval(tickRotations, 500);
+  setInterval(tickRotations,500);
 }
 
 function tickClock(){
@@ -526,163 +464,114 @@ function tickClock(){
   document.getElementById('dateDisp').textContent = now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
 }
 
-// ── CHECKLIST BUILD ────────────────────────────────────────────────────────
-function buildChecklist(type){
-  const items = OPEN_CHECKS;
-  const bodyId = 'checklistBody';
-  const el = document.getElementById(bodyId);
-  el.innerHTML = items.map((c,i)=>{
-    const id = type+'_'+i;
+// ── CHECKLIST ──────────────────────────────────────────────────────────────
+function buildChecklist(){
+  const el = document.getElementById('checklistBody');
+  el.innerHTML = OPEN_CHECKS.map((c,i)=>{
+    const id='open_'+i;
     return `<div class="check-item" id="ci_${id}">
-      <div class="check-label">
-        <span class="check-cat">${c.cat}</span>
-        ${c.item}
-      </div>
+      <div class="check-label"><span class="check-cat">${c.cat}</span>${c.item}</div>
       <div class="check-btns">
-        <div class="check-btn pass-btn" onclick="setCheck('${id}','pass','${type}')" title="Pass">✓</div>
-        <div class="check-btn fail-btn" onclick="setCheck('${id}','fail','${type}')" title="Fail">✗</div>
-        <div class="check-btn na-btn" onclick="setCheck('${id}','na','${type}')" title="N/A">—</div>
+        <div class="check-btn pass-btn" onclick="setCheck('${id}','pass')">✓</div>
+        <div class="check-btn fail-btn" onclick="setCheck('${id}','fail')">✗</div>
+        <div class="check-btn na-btn"   onclick="setCheck('${id}','na')">—</div>
       </div>
     </div>
     <div class="fail-note" id="fn_${id}">
-      <textarea placeholder="Describe the issue — what failed, condition observed, action taken…" onchange="setCheckNote('${id}',this.value,'${type}')"></textarea>
+      <textarea placeholder="Describe the issue…" onchange="setCheckNote('${id}',this.value)"></textarea>
     </div>`;
   }).join('');
 }
 
-function setCheck(id, val, type){
-  const checks = state.openChecks;
-  if(!checks[id]) checks[id]={};
-  checks[id].val = val;
-
-  const ci = document.getElementById('ci_'+id);
+function setCheck(id,val){
+  if(!state.openChecks[id]) state.openChecks[id]={};
+  state.openChecks[id].val=val;
+  const ci=document.getElementById('ci_'+id);
   ci.classList.remove('pass','fail');
   if(val==='pass') ci.classList.add('pass');
   if(val==='fail') ci.classList.add('fail');
-
-  // Buttons
   ci.querySelectorAll('.check-btn').forEach(b=>b.classList.remove('sel'));
-  const btnClass = val==='pass'?'.pass-btn':val==='fail'?'.fail-btn':'.na-btn';
-  ci.querySelector(btnClass).classList.add('sel');
-
-  // Fail note
-  const fn = document.getElementById('fn_'+id);
-  if(val==='fail') fn.classList.add('show');
-  else fn.classList.remove('show');
-
+  ci.querySelector(val==='pass'?'.pass-btn':val==='fail'?'.fail-btn':'.na-btn').classList.add('sel');
+  const fn=document.getElementById('fn_'+id);
+  fn.classList.toggle('show',val==='fail');
   updateOpenProgress();
 }
 
-function setCheckNote(id, val, type){
-  const checks = state.openChecks;
-  if(!checks[id]) checks[id]={};
-  checks[id].note = val;
+function setCheckNote(id,val){
+  if(!state.openChecks[id]) state.openChecks[id]={};
+  state.openChecks[id].note=val;
 }
 
 function updateOpenProgress(){
-  const total = OPEN_CHECKS.length;
-  const done = Object.values(state.openChecks).filter(c=>c.val).length;
-  const fails = Object.values(state.openChecks).filter(c=>c.val==='fail');
-  const failsWithNote = fails.filter(c=>c.note && c.note.trim().length>0);
-  document.getElementById('checkProgress').style.width = (done/total*100)+'%';
-  const allSigned = Object.values(state.signoffs).every(s=>s!==null);
-  const allDone = done===total && allSigned;
-  const failsOk = fails.length===0 || fails.length===failsWithNote.length;
-  const btn = document.getElementById('openRideBtn');
-  btn.disabled = !(allDone && failsOk);
-  const hint = document.getElementById('openHint');
-  if(!allSigned){
-    const missing = Object.entries(state.signoffs).filter(([,v])=>!v).map(([k])=>k).join(', ');
-    hint.textContent = 'Sign-off required: '+missing;
-  }
-  else if(done<total) hint.textContent = (total-done)+' items remaining';
-  else if(!failsOk) hint.textContent = 'Add notes for all failed items';
-  else hint.textContent = done+' / '+total+' items checked · Ready to open';
+  const total=OPEN_CHECKS.length;
+  const done=Object.values(state.openChecks).filter(c=>c.val).length;
+  const fails=Object.values(state.openChecks).filter(c=>c.val==='fail');
+  const failsOk=fails.every(c=>c.note&&c.note.trim());
+  document.getElementById('checkProgress').style.width=(done/total*100)+'%';
+  const allSigned=Object.values(state.signoffs).every(s=>s!==null);
+  document.getElementById('openRideBtn').disabled=!(done===total&&allSigned&&failsOk);
+  const hint=document.getElementById('openHint');
+  if(!allSigned) hint.textContent='Sign-off required: '+Object.entries(state.signoffs).filter(([,v])=>!v).map(([k])=>k).join(', ');
+  else if(done<total) hint.textContent=(total-done)+' items remaining';
+  else if(!failsOk) hint.textContent='Add notes for all failed items';
+  else hint.textContent=done+'/'+total+' items checked · Ready to open';
 }
 
-// ── SIGN-OFFS ─────────────────────────────────────────────────────────────
-const SIGNOFF_FIELDS = {
-  supervisor:  { badge:'supBadge',   name:'supName'   },
-  maintenance: { badge:'maintBadge', name:'maintName' },
-};
-
+// ── SIGNOFF ────────────────────────────────────────────────────────────────
 function setSignoff(role){
-  const f = SIGNOFF_FIELDS[role];
-  const badge = document.getElementById(f.badge).value.trim().toUpperCase();
-  const name  = document.getElementById(f.name).value.trim();
-  if(!badge){ toast('Enter a badge ID for '+role,'err'); return; }
-  if(!name){  toast('Print name required for '+role,'err'); return; }
-
-  state.signoffs[role] = { badge, name, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) };
-
-  // Lock the row
-  document.getElementById(f.badge).disabled = true;
-  document.getElementById(f.name).disabled  = true;
-  document.getElementById('soBtn-'+role).disabled = true;
+  const fields={supervisor:{badge:'supBadge',name:'supName'},maintenance:{badge:'maintBadge',name:'maintName'}};
+  const f=fields[role];
+  const badge=document.getElementById(f.badge).value.trim().toUpperCase();
+  const name=document.getElementById(f.name).value.trim();
+  if(!badge){toast('Enter badge ID for '+role,'err');return;}
+  if(!name){toast('Print name required','err');return;}
+  state.signoffs[role]={badge,name,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})};
+  document.getElementById(f.badge).disabled=true;
+  document.getElementById(f.name).disabled=true;
+  document.getElementById('soBtn-'+role).disabled=true;
   document.getElementById('so-'+role).classList.add('signed');
   document.getElementById('soCheck-'+role).classList.add('show');
-
-  const allSigned = Object.values(state.signoffs).every(s=>s!==null);
-  const statusEl = document.getElementById('signoffStatus');
-  if(allSigned){
-    statusEl.classList.add('complete');
-    document.getElementById('signoffStatusText').textContent = '✓ All sign-offs complete — proceed with inspection';
-  } else {
-    const remaining = Object.entries(state.signoffs).filter(([,v])=>!v).map(([k])=>k).join(', ');
-    document.getElementById('signoffStatusText').textContent = 'Still needed: '+remaining;
-  }
-
+  const allSigned=Object.values(state.signoffs).every(s=>s!==null);
+  const statusEl=document.getElementById('signoffStatus');
+  if(allSigned){statusEl.classList.add('complete');document.getElementById('signoffStatusText').textContent='✓ All sign-offs complete';}
+  else{document.getElementById('signoffStatusText').textContent='Still needed: '+Object.entries(state.signoffs).filter(([,v])=>!v).map(([k])=>k).join(', ');}
   updateOpenProgress();
-  toast(role.charAt(0).toUpperCase()+role.slice(1)+' signed off: '+name+' ('+badge+')','ok');
+  toast(role+' signed off: '+name,'ok');
 }
 
-// ── OPEN RIDE ─────────────────────────────────────────────────────────────
 function openRide(){
-  state.rideStatus = 'open';
-  state.shiftStart = new Date();
-  setStatus('open','OPEN');
-  // Auto-assign lead to Load position
-  state.positions['Load/Dispatch'] = {badge:'', name:'Unassigned', since:Date.now()};
+  state.rideStatus='open';
+  state.shiftStart=new Date();
+  document.getElementById('statusDot').className='status-dot open';
+  document.getElementById('statusText').textContent='OPEN';
+  state.positions['Load/Dispatch']={badge:'',name:'Unassigned',since:Date.now()};
   renderPositions();
-  document.getElementById('cycleSub').textContent = 'Shift started: '+state.shiftStart.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('cycleSub').textContent='Shift started: '+state.shiftStart.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
   toast('Ride opened · Shift started','ok');
   showMode('live');
-  document.getElementById('tab-live').click();
 }
 
-function setStatus(cls, text){
-  document.getElementById('statusDot').className = 'status-dot '+cls;
-  document.getElementById('statusText').textContent = text;
-}
-
-// ── POSITIONS / ROTATION ──────────────────────────────────────────────────
-function initPositions(){
-  POSITIONS.forEach(p=>{ state.positions[p] = null; });
-  renderPositions();
-}
+// ── POSITIONS ──────────────────────────────────────────────────────────────
+function initPositions(){ POSITIONS.forEach(p=>{state.positions[p]=null;}); renderPositions(); }
 
 function renderPositions(){
-  const el = document.getElementById('rotationGrid');
-  el.innerHTML = POSITIONS.map(pos=>{
-    const op = state.positions[pos];
-    const minsOn = op ? Math.floor((Date.now()-op.since)/60000) : 0;
-    const timerClass = !op?'ok':minsOn<45?'ok':minsOn<60?'warn':'crit';
-    const cardClass = !op?'':minsOn<45?'':minsOn<60?'warn':'crit';
-    const timerStr = op ? fmtMins(minsOn) : '—';
-    return `<div class="position-card ${cardClass}" id="pc_${pos.replace(/[^a-z]/gi,'_')}">
+  const el=document.getElementById('rotationGrid');
+  el.innerHTML=POSITIONS.map(pos=>{
+    const op=state.positions[pos];
+    const mins=op?Math.floor((Date.now()-op.since)/60000):0;
+    const tc=!op?'ok':mins<45?'ok':mins<60?'warn':'crit';
+    const cc=!op?'':mins<45?'':mins<60?'warn':'crit';
+    return `<div class="position-card ${cc}">
       <div class="pos-header">
         <div class="pos-name">${pos}</div>
-        <div class="pos-timer ${timerClass}">${timerStr}</div>
+        <div class="pos-timer ${tc}">${op?fmtMins(mins):'—'}</div>
       </div>
       <div class="pos-body">
         <div class="pos-op">
-          ${op
-            ? `<div class="pos-op-name">${op.name}</div><div class="pos-op-id">${op.badge}</div>`
-            : `<div class="pos-op-empty">Unassigned</div>`
-          }
+          ${op?`<div class="pos-op-name">${op.name}</div><div class="pos-op-id">${op.badge}</div>`:`<div class="pos-op-empty">Unassigned</div>`}
         </div>
         <div class="pos-actions">
-          ${op ? `<button class="pos-btn rotate" onclick="openRotModal('${pos}',true)">Rotate</button>` : ''}
+          ${op?`<button class="pos-btn rotate" onclick="openRotModal('${pos}',true)">Rotate</button>`:''}
           <button class="pos-btn assign" onclick="openRotModal('${pos}',false)">${op?'Reassign':'Assign'}</button>
         </div>
       </div>
@@ -690,210 +579,231 @@ function renderPositions(){
   }).join('');
 }
 
-function tickRotations(){
-  if(state.rideStatus!=='open') return;
-  renderPositions();
-}
+function tickRotations(){ if(state.rideStatus==='open') renderPositions(); }
+function fmtMins(m){ return m<60?m+'m':Math.floor(m/60)+'h '+(m%60)+'m'; }
 
-function fmtMins(m){
-  if(m<60) return m+'m';
-  return Math.floor(m/60)+'h '+( m%60)+'m';
-}
-
-let rotModalPos = null;
-let rotModalIsRotate = false;
-
-function openRotModal(pos, isRotate){
-  rotModalPos = pos;
-  rotModalIsRotate = isRotate;
-  const op = state.positions[pos];
-  document.getElementById('rotModalTitle').textContent = isRotate ? 'Rotate: '+pos : 'Assign: '+pos;
-  document.getElementById('rotModalSub').textContent = op ? 'Current: '+op.name+' ('+op.badge+')' : 'No operator currently assigned';
+let rotModalPos=null,rotModalIsRotate=false;
+function openRotModal(pos,isRotate){
+  rotModalPos=pos; rotModalIsRotate=isRotate;
+  const op=state.positions[pos];
+  document.getElementById('rotModalTitle').textContent=(isRotate?'Rotate: ':'Assign: ')+pos;
+  document.getElementById('rotModalSub').textContent=op?'Current: '+op.name+' ('+op.badge+')':'No operator assigned';
   document.getElementById('rotBadgeIn').value='';
   document.getElementById('rotNameIn').value='';
   document.getElementById('rotModal').classList.add('show');
 }
-
-function closeRotModal(){
-  document.getElementById('rotModal').classList.remove('show');
-  rotModalPos = null;
-}
-
+function closeRotModal(){ document.getElementById('rotModal').classList.remove('show'); }
 function confirmRotation(){
-  const badge = document.getElementById('rotBadgeIn').value.trim().toUpperCase();
-  const name = document.getElementById('rotNameIn').value.trim() || badge;
-  if(!badge){ toast('Enter badge ID','err'); return; }
-
-  const pos = rotModalPos;
-  const prev = state.positions[pos];
-
-  // Log outgoing
-  if(prev && rotModalIsRotate){
-    const dur = Math.floor((Date.now()-prev.since)/60000);
-    state.rotLog.unshift({
-      time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
-      badge: prev.badge,
-      name: prev.name,
-      pos,
-      dur: fmtMins(dur),
-    });
+  const badge=document.getElementById('rotBadgeIn').value.trim().toUpperCase();
+  const name=document.getElementById('rotNameIn').value.trim()||badge;
+  if(!badge){toast('Enter badge ID','err');return;}
+  const prev=state.positions[rotModalPos];
+  if(prev&&rotModalIsRotate){
+    const dur=Math.floor((Date.now()-prev.since)/60000);
+    state.rotLog.unshift({time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),badge:prev.badge,name:prev.name,pos:rotModalPos,dur:fmtMins(dur)});
   }
-
-  // Assign incoming
-  state.positions[pos] = {badge, name, since:Date.now()};
-  closeRotModal();
-  renderPositions();
-  renderRotLog();
-  toast((rotModalIsRotate?'Rotated':'Assigned')+': '+name+' → '+pos,'ok');
+  state.positions[rotModalPos]={badge,name,since:Date.now()};
+  closeRotModal(); renderPositions(); renderRotLog();
+  toast((rotModalIsRotate?'Rotated':'Assigned')+': '+name+' → '+rotModalPos,'ok');
 }
-
 function renderRotLog(){
-  const el = document.getElementById('rotLogBody');
-  if(!state.rotLog.length){
-    el.innerHTML='<div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No rotations logged yet</div>';
-    return;
-  }
-  el.innerHTML = state.rotLog.map(r=>`
-    <div class="rot-entry">
-      <div class="rot-time">${r.time}</div>
-      <div class="rot-op">${r.name}</div>
-      <div class="rot-pos">${r.pos}</div>
-      <div class="rot-dur">${r.dur}</div>
-    </div>`).join('');
+  const el=document.getElementById('rotLogBody');
+  if(!state.rotLog.length){el.innerHTML='<div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No rotations logged yet</div>';return;}
+  el.innerHTML=state.rotLog.map(r=>`<div class="rot-entry"><div class="rot-time">${r.time}</div><div>${r.name}</div><div style="color:var(--text-dim)">${r.pos}</div><div style="color:var(--text-muted);text-align:right">${r.dur}</div></div>`).join('');
 }
 
-// ── CYCLE COUNTER ─────────────────────────────────────────────────────────
-function incrementCycle(){
-  state.cycleCount++;
-  document.getElementById('cycleCount').textContent = state.cycleCount;
-}
-function decrementCycle(){
-  if(state.cycleCount>0) state.cycleCount--;
-  document.getElementById('cycleCount').textContent = state.cycleCount;
-}
+function incrementCycle(){ state.cycleCount++; document.getElementById('cycleCount').textContent=state.cycleCount; }
+function decrementCycle(){ if(state.cycleCount>0){state.cycleCount--;document.getElementById('cycleCount').textContent=state.cycleCount;} }
 
-// ── UNITS ─────────────────────────────────────────────────────────────────
-function initUnits(){
-  UNIT_NAMES.forEach(u=>{
-    state.units[u] = {inService:true, since:null, reason:''};
-  });
-  renderUnits();
-}
+
+// ── UNITS ──────────────────────────────────────────────────────────────────
+function initUnits(){ UNIT_NAMES.forEach(u=>{state.units[u]={inService:true,since:null,reason:''};}); renderUnits(); }
 
 function renderUnits(){
-  const inCount  = Object.values(state.units).filter(u=>u.inService).length;
-  const outCount = UNIT_NAMES.length - inCount;
-  document.getElementById('unitInService').textContent  = inCount;
-  document.getElementById('unitOutService').textContent = outCount;
-  document.getElementById('unitTotal').textContent      = UNIT_NAMES.length;
-
-  // Tab badge — show out-of-service count if any
-  const badge = document.getElementById('unitsBadge');
-  if(outCount>0){ badge.textContent=outCount; badge.classList.add('show'); }
-  else { badge.classList.remove('show'); }
-
-  const el = document.getElementById('unitCards');
-  el.innerHTML = UNIT_NAMES.map(name=>{
-    const u = state.units[name];
-    const isIn = u.inService;
-    const sinceStr = u.since
-      ? new Date(u.since).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
-      : null;
-    const safeId = name.replace(/\s+/g,'_');
-    return `
-    <div class="unit-card ${isIn?'in-service':'out-service'}" id="uc_${safeId}">
+  const inCt=Object.values(state.units).filter(u=>u.inService).length;
+  const outCt=UNIT_NAMES.length-inCt;
+  document.getElementById('unitInService').textContent=inCt;
+  document.getElementById('unitOutService').textContent=outCt;
+  document.getElementById('unitTotal').textContent=UNIT_NAMES.length;
+  const badge=document.getElementById('unitsBadge');
+  if(outCt>0){badge.textContent=outCt;badge.classList.add('show');}else{badge.classList.remove('show');}
+  const el=document.getElementById('unitCards');
+  el.innerHTML=UNIT_NAMES.map(name=>{
+    const u=state.units[name];
+    const isIn=u.inService;
+    const sinceStr=u.since?new Date(u.since).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):null;
+    const sid=name.replace(/\s+/g,'_');
+    return `<div class="unit-card ${isIn?'in-service':'out-service'}" id="uc_${sid}">
       <div class="unit-card-header">
         <div class="unit-name">${name}</div>
         <div class="unit-status-pill ${isIn?'unit-in':'unit-out'}">${isIn?'IN SERVICE':'OUT OF SERVICE'}</div>
       </div>
       ${sinceStr?`<div class="unit-since">Since ${sinceStr}${!isIn&&u.reason?' · '+u.reason:''}</div>`:''}
       <div class="unit-toggle-row">
-        <button class="unit-toggle-btn unit-btn-in ${isIn?'':''}${isIn?'opacity:1':'opacity:.4'}"
-          onclick="setUnit('${name}',true)"
-          ${isIn?'disabled style="opacity:.35;cursor:default;"':''}>
-          ✓ In Service
-        </button>
-        <button class="unit-toggle-btn unit-btn-out"
-          onclick="toggleUnitOut('${name}')"
-          ${!isIn?'disabled style="opacity:.35;cursor:default;"':''}>
-          ✗ Take Out
-        </button>
+        <button class="unit-toggle-btn unit-btn-in" onclick="setUnit('${name}',true)" ${isIn?'disabled style="opacity:.35;cursor:default;"':''}>✓ In Service</button>
+        <button class="unit-toggle-btn unit-btn-out" onclick="toggleUnitOut('${name}')" ${!isIn?'disabled style="opacity:.35;cursor:default;"':''}>✗ Take Out</button>
       </div>
-      <div class="unit-reason-wrap ${!isIn&&!u.reason?'show':''}" id="ur_${safeId}" style="${isIn?'display:none':(!u.reason?'':'display:none')}">
-        <textarea class="unit-reason-input" id="urtext_${safeId}" placeholder="Reason — mechanical issue, cleanliness, capacity reduction…"></textarea>
-        <button class="unit-save-btn" onclick="setUnit('${name}',false,'${safeId}')">Confirm Out of Service</button>
+      <div class="unit-reason-wrap" id="ur_${sid}" style="display:none">
+        <textarea class="unit-reason-input" id="urtext_${sid}" placeholder="Reason — mechanical, cleanliness, capacity reduction…"></textarea>
+        <button class="unit-save-btn" onclick="setUnit('${name}',false,'${sid}')">Confirm Out of Service</button>
       </div>
     </div>`;
   }).join('');
 }
 
-function toggleUnitOut(name){
-  const safeId = name.replace(/\s+/g,'_');
-  const wrap = document.getElementById('ur_'+safeId);
-  if(wrap) wrap.style.display='block';
-}
+function toggleUnitOut(name){ const sid=name.replace(/\s+/g,'_'); document.getElementById('ur_'+sid).style.display='block'; }
 
-function setUnit(name, inService, safeId){
-  const u = state.units[name];
-  const wasIn = u.inService;
-  if(inService===wasIn) return;
-
-  let reason = '';
-  if(!inService && safeId){
-    const ta = document.getElementById('urtext_'+safeId);
-    reason = ta ? ta.value.trim() : '';
-  }
-
-  u.inService = inService;
-  u.since = Date.now();
-  u.reason = reason;
-
-  const entry = {
-    unit: name,
-    inService,
-    reason,
-    time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),
-    ts: Date.now(),
-  };
-  state.unitLog.unshift(entry);
-
-  renderUnits();
-  renderUnitLog();
-  toast(name+' → '+(inService?'IN SERVICE':'OUT OF SERVICE'), inService?'ok':'warn');
+function setUnit(name,inService,sid){
+  const u=state.units[name];
+  if(inService===u.inService) return;
+  let reason='';
+  if(!inService&&sid){ const ta=document.getElementById('urtext_'+sid); reason=ta?ta.value.trim():''; }
+  u.inService=inService; u.since=Date.now(); u.reason=reason;
+  state.unitLog.unshift({unit:name,inService,reason,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),ts:Date.now()});
+  renderUnits(); renderUnitLog();
+  toast(name+' → '+(inService?'IN SERVICE':'OUT OF SERVICE'),inService?'ok':'warn');
 }
 
 function renderUnitLog(){
-  const el = document.getElementById('unitLog');
-  if(!state.unitLog.length){
-    el.innerHTML='<div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No unit changes logged yet</div>';
-    return;
-  }
-  el.innerHTML = state.unitLog.map(e=>`
-    <div class="unit-log-entry">
-      <div class="unit-log-dot ${e.inService?'in':'out'}"></div>
-      <div class="unit-log-body">
-        <div class="unit-log-title ${e.inService?'in':'out'}">${e.unit} → ${e.inService?'IN SERVICE':'OUT OF SERVICE'}</div>
-        ${e.reason?`<div class="unit-log-note">${e.reason}</div>`:''}
-        <div class="unit-log-time">${e.time}</div>
-      </div>
-    </div>`).join('');
+  const el=document.getElementById('unitLog');
+  if(!state.unitLog.length){el.innerHTML='<div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No unit changes logged yet</div>';return;}
+  el.innerHTML=state.unitLog.map(e=>`<div class="unit-log-entry">
+    <div class="unit-log-dot ${e.inService?'in':'out'}"></div>
+    <div style="flex:1">
+      <div class="unit-log-title ${e.inService?'in':'out'}">${e.unit} → ${e.inService?'IN SERVICE':'OUT OF SERVICE'}</div>
+      ${e.reason?`<div class="unit-log-note">${e.reason}</div>`:''}
+      <div class="unit-log-time">${e.time}</div>
+    </div>
+  </div>`).join('');
 }
 
 
+// ── TURNSTILE ─────────────────────────────────────────────────────────────
+let tsReadings = []; // [{ts, time, hour, count, delta}]
+let tsDueTimer = null;
+
+function logTurnstile(){
+  const inp = document.getElementById('ts-count-input');
+  if(!inp){ return; }
+  const count = parseInt(inp.value);
+  if(isNaN(count)||count<0){ toast('Enter a valid count','err'); return; }
+  const now   = new Date();
+  const hour  = now.getHours();
+  const timeStr = now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
+  const prev  = tsReadings.length ? tsReadings[tsReadings.length-1] : null;
+  const delta = prev ? count - prev.count : null;
+  const entry = { ts: Date.now(), time: timeStr, hour, count, delta };
+  tsReadings.push(entry);
+  inp.value = '';
+  renderTurnstile();
+  scheduleTsDue();
+  toast('Turnstile: '+count.toLocaleString()+(delta!==null?' (Δ '+(delta>=0?'+':'')+delta.toLocaleString()+')':''),'ok');
+}
+
+function scheduleTsDue(){
+  clearTimeout(tsDueTimer);
+  renderTsDueStatus();
+  // Re-check every 30s
+  tsDueTimer = setInterval(renderTsDueStatus, 30000);
+}
+
+function renderTsDueStatus(){
+  const dueEl = document.getElementById('ts-next-due');
+  if(!dueEl) return;
+  const lastReading = tsReadings.length ? tsReadings[tsReadings.length-1] : null;
+  if(!lastReading){
+    dueEl.className='ts-next-due ok';
+    dueEl.textContent='Log first reading';
+    return;
+  }
+  const minsAgo = Math.floor((Date.now()-lastReading.ts)/60000);
+  const minsUntilDue = 60 - minsAgo;
+  if(minsAgo>=75){
+    dueEl.className='ts-next-due overdue';
+    dueEl.textContent='⚠ OVERDUE — '+minsAgo+'m since last';
+  } else if(minsAgo>=50){
+    dueEl.className='ts-next-due soon';
+    dueEl.textContent='Due in ~'+minsUntilDue+'m';
+  } else {
+    dueEl.className='ts-next-due ok';
+    dueEl.textContent='Next in ~'+minsUntilDue+'m';
+  }
+}
+
+function renderTurnstile(){
+  if(!tsReadings.length) return;
+  const last = tsReadings[tsReadings.length-1];
+
+  // Hero
+  document.getElementById('ts-last-val').textContent = last.count.toLocaleString();
+  document.getElementById('ts-last-time').textContent = 'Read at '+last.time;
+  document.getElementById('ts-readings-today').textContent = tsReadings.length+' reading'+(tsReadings.length!==1?'s':'')+' this shift';
+  renderTsDueStatus();
+
+  // Hour grid — show hours from shift start to now
+  const shiftHour = state.shiftStart ? state.shiftStart.getHours() : (new Date().getHours() - tsReadings.length);
+  const nowHour   = new Date().getHours();
+  const gridEl    = document.getElementById('ts-hour-grid');
+  let cells = '';
+  for(let h = shiftHour; h <= nowHour; h++){
+    const reading = [...tsReadings].reverse().find(r=>r.hour===h);
+    const isCurrent = h === nowHour;
+    const isMissed  = !reading && h < nowHour;
+    const cls = reading?'logged':isMissed?'missed':isCurrent?'current':'';
+    const countStr = reading?reading.count.toLocaleString():isMissed?'—':'?';
+    const countCls = reading?'logged':isMissed?'missed':isCurrent?'current':'empty';
+    let delta = '';
+    if(reading&&reading.delta!==null){
+      const sign = reading.delta>=0?'+':'';
+      const dcls = reading.delta>0?'up':reading.delta<0?'down':'';
+      delta = `<div class="ts-hc-delta ${dcls}">${sign}${reading.delta.toLocaleString()}</div>`;
+    }
+    const label = h===0?'12 AM':h<12?h+' AM':h===12?'12 PM':(h-12)+' PM';
+    cells += `<div class="ts-hour-cell ${cls}">
+      <div class="ts-hc-hour">${label}</div>
+      <div class="ts-hc-count ${countCls}">${countStr}</div>
+      ${delta}
+    </div>`;
+  }
+  gridEl.innerHTML = cells;
+
+  // Log table
+  const logEl = document.getElementById('ts-log-body');
+  const rows = [...tsReadings].reverse().map((r,i,arr)=>{
+    const next = arr[i+1]; // previous chronologically
+    const deltaStr = r.delta!==null
+      ? (r.delta>=0?'+':'')+r.delta.toLocaleString()
+      : '—';
+    const deltaCls = r.delta===null?'eq':r.delta>0?'up':'dn';
+    const hourLabel = r.hour===0?'12 AM':r.hour<12?r.hour+' AM':r.hour===12?'12 PM':(r.hour-12)+' PM';
+    return `<div class="ts-log-row">
+      <div class="ts-log-time">${r.time}</div>
+      <div class="ts-log-hour">${hourLabel}</div>
+      <div class="ts-log-count">${r.count.toLocaleString()}</div>
+      <div class="ts-log-delta ${deltaCls}">${deltaStr}</div>
+    </div>`;
+  }).join('');
+  logEl.innerHTML = rows || '<div style="padding:14px;text-align:center;font-family:var(--mono);font-size:10px;color:var(--text-muted);">No readings logged yet</div>';
+}
+
+// Allow Enter key to submit turnstile reading
+document.addEventListener('keydown', function(e){
+  if(e.key==='Enter' && document.activeElement.id==='ts-count-input') logTurnstile();
+});
+
+// ── VIEWS ──────────────────────────────────────────────────────────────────
 function showMode(name){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
-
   if(name==='units') renderUnits();
 }
 
-
-// ── TOAST ─────────────────────────────────────────────────────────────────
+// ── TOAST ──────────────────────────────────────────────────────────────────
 function toast(msg,type){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.className='show'+(type?(' '+type):'');
+  t.textContent=msg;t.className='show'+(type?' '+type:'');
   clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);
 }
 
