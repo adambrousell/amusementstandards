@@ -42,6 +42,8 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
 .alert-dot.amber{background:var(--amber);}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .dispatcher-badge{font-family:var(--mono);font-size:9px;color:var(--text-dim);border:1px solid var(--border2);padding:3px 9px;border-radius:4px;}
+/* SYNC INDICATOR */
+#sync-dot{width:7px;height:7px;border-radius:50%;background:#4A5568;flex-shrink:0;cursor:default;transition:background .3s;margin-right:2px;}
 /* RIDE SCORE WIDGET */
 .rsw{display:flex;align-items:stretch;border:1px solid rgba(212,175,55,.3);border-radius:7px;overflow:hidden;cursor:pointer;transition:border-color .15s;height:38px;}
 .rsw:hover{border-color:rgba(212,175,55,.6);}
@@ -293,6 +295,7 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
         <div class="rsw-p d"><div class="rsw-pv" id="rsw-d">—</div><div class="rsw-pl">DELIV</div></div>
       </div>
     </div>
+    <div id="sync-dot" title="Airtable sync"></div>
     <div class="tb-clock" id="clock">--:--:--</div>
     <div class="tb-date" id="dateDisp">---</div>
     <div class="dispatcher-badge" id="dispBadge">—</div>
@@ -351,7 +354,91 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
   </div>
 </div>
 <div id="toast"></div>
+
 <script>
+// ── PROXY CONFIG ───────────────────────────────────────────────────────────
+const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+
+async function atPost(table, fields) {
+  const si = document.getElementById('sync-dot');
+  if (si) { si.style.background = '#F59E0B'; si.title = 'Syncing…'; }
+  try {
+    const res = await fetch(AT_PROXY + '/' + encodeURIComponent(table), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields }),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (si) {
+      si.style.background = '#22C55E'; si.title = 'Synced';
+      setTimeout(() => { si.style.background = '#4A5568'; }, 2000);
+    }
+  } catch(e) {
+    if (si) {
+      si.style.background = '#F43F5E'; si.title = 'Sync error';
+      setTimeout(() => { si.style.background = '#4A5568'; }, 4000);
+    }
+    console.warn('[OPD] Sync failed:', e.message);
+  }
+}
+
+// Push: shift start → OPD_Sessions
+function pushSession(status) {
+  const now = new Date();
+  const s   = computeScore();
+  atPost('OPD_Sessions', {
+    'Session ID':      dispatcher.badge + '-' + now.toISOString().slice(0,10) + '-' + Date.now().toString(36).toUpperCase().slice(-4),
+    'Dispatcher Name': dispatcher.name,
+    'Dispatcher Badge':dispatcher.badge,
+    'Shift':           dispatcher.shift,
+    'Date':            now.toISOString().split('T')[0],
+    'Status':          status,
+    'Timestamp':       now.toISOString(),
+    'Rides Open':      s.openCount,
+    'Rides Total':     RIDE_DEFS.length,
+    'OPD Score':       s.composite,
+    'Readiness Score': s.rScore,
+    'Delivery Score':  s.dScore,
+  });
+}
+
+// Push: ride status change → OOS_Log
+function pushOOS(ride, newStatus, oldStatus, note) {
+  if (newStatus === oldStatus) return;
+  const now = new Date();
+  atPost('OOS_Log', {
+    'Record ID':       ride.id + '-' + Date.now().toString(36).toUpperCase().slice(-6),
+    'Attraction':      ride.name,
+    'Reason':          newStatus === 'open' ? '' : (note || newStatus.charAt(0).toUpperCase() + newStatus.slice(1)),
+    'Down Since':      (newStatus === 'down' || newStatus === 'hold') ? now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) : '',
+    'Expected Return': '',
+    'Detail':          ride.name + ' status: ' + oldStatus.toUpperCase() + ' → ' + newStatus.toUpperCase() + (note ? ' · ' + note : ''),
+    'Notified':        dispatcher.name + ' (' + dispatcher.badge + ')',
+    'Status':          newStatus === 'open' ? 'Restored' : newStatus === 'down' ? 'Active' : newStatus === 'hold' ? 'Hold' : 'Closed',
+    'Source':          'OPD — Dispatcher',
+    'Date':            now.toISOString().split('T')[0],
+    'Submitted At':    now.toISOString(),
+  });
+}
+
+// Push: radio log entry → OPD_RadioLog
+function pushRadioLog(entry) {
+  atPost('OPD_RadioLog', {
+    'Log ID':          dispatcher.badge + '-LOG-' + Date.now().toString(36).toUpperCase().slice(-6),
+    'Dispatcher Name': dispatcher.name,
+    'Dispatcher Badge':dispatcher.badge,
+    'Shift':           dispatcher.shift,
+    'Date':            new Date().toISOString().split('T')[0],
+    'Timestamp':       new Date().toISOString(),
+    'Ride ID':         entry.rideId,
+    'Ride Name':       entry.rideName,
+    'Message':         entry.msg,
+    'Priority':        entry.priority,
+    'Time':            entry.time,
+  });
+}
+
+// ── RIDE DEFS ─────────────────────────────────────────────────────────────
 const RIDE_DEFS=[
   {id:'SC01',name:'Steel Coaster',positions:['Load/Dispatch','Unload','Queue']},
   {id:'WC01',name:'Wooden Coaster',positions:['Load/Dispatch','Unload','Queue','Rover']},
@@ -390,6 +477,8 @@ function startDispatch(){
   document.getElementById('setupOverlay').style.display='none';
   seedDemo();renderBoard();updateWidget();
   logRadio('ALL','Dispatch shift started · '+name+' ('+badge+') · '+dispatcher.shift+' shift','info');
+  // ── PROXY: push session open ──
+  pushSession('Open');
   toast('Shift started · '+dispatcher.shift,'ok');
 }
 
@@ -407,20 +496,12 @@ setInterval(()=>{
 },30000);
 
 // ── RIDE SCORE ENGINE ─────────────────────────────────────────────────────
-// OPD feeds Readiness (R) and Delivery (D) pillars
-// R: staffing compliance, rotation compliance, radio engagement
-// D: ride availability, throughput index
-
 function computeScore(){
   const all=Object.values(rides);
   const open=all.filter(r=>r.status==='open');
-
-  // Staffing: % of open positions filled
   let totPos=0,filPos=0;
   open.forEach(r=>{Object.values(r.positions).forEach(p=>{totPos++;if(p.op)filPos++;});});
   const staffPct=totPos>0?(filPos/totPos)*100:100;
-
-  // Rotation compliance: % of staffed positions NOT overdue
   let staffed=0,overdue=0;
   open.forEach(r=>{Object.values(r.positions).forEach(p=>{
     if(!p.op||!p.since)return;
@@ -429,27 +510,16 @@ function computeScore(){
   });});
   const rotPct=staffed>0?((staffed-overdue)/staffed)*100:100;
   const critOD=rotAlerts.filter(a=>a.level==='crit').length;
-
-  // Radio log engagement (cap 20 entries = 100)
   const logScore=Math.min(100,radioLog.length*5);
-
-  // Ride availability: deduct for DOWN and HOLD
   const downCount=all.filter(r=>r.status==='down').length;
   const holdCount=all.filter(r=>r.status==='hold').length;
   const availScore=Math.max(0,100-(downCount*12)-(holdCount*5));
-
-  // Throughput: cycles vs benchmark (80 cycles/open ride)
   const totalCycles=open.reduce((s,r)=>s+r.cycleCount,0);
   const benchmark=open.length*80;
   const throughput=benchmark>0?Math.min(100,(totalCycles/benchmark)*100):0;
-
-  // R = Staffing 40% + Rotation 35% + Log 25%
   const rScore=Math.round(staffPct*0.40+rotPct*0.35+logScore*0.25);
-  // D = Availability 55% + Throughput 45%
   const dScore=Math.round(availScore*0.55+throughput*0.45);
-  // Composite = R 50% + D 50%
   const composite=Math.round(rScore*0.5+dScore*0.5);
-
   return{composite,rScore,dScore,staffPct:Math.round(staffPct),rotPct:Math.round(rotPct),
     critOD,overdue,staffed,logScore:Math.round(logScore),
     availScore:Math.round(availScore),throughput:Math.round(throughput),
@@ -582,10 +652,14 @@ function renderTile(r){
     </div>
   </div>`;
 }
-function quickStatus(id,s){
-  const r=rides[id];const old=r.status;r.status=s;
+
+function quickStatus(id, s){
+  const r=rides[id]; const old=r.status;
+  r.status=s;
   if(s==='open'&&!r.openedAt)r.openedAt=Date.now();
   r.lastUpdated=Date.now();
+  // ── PROXY: push OOS status change ──
+  pushOOS(r, s, old, r.note);
   logRadio(id,`Status: ${old.toUpperCase()} → ${s.toUpperCase()}`,s==='down'?'high':s==='hold'?'med':'normal');
   renderBoard();updateWidget();if(currentTab==='score')renderScoreTab();
   toast(r.name+' → '+s.toUpperCase(),s==='down'?'err':s==='hold'?'warn':'ok');
@@ -614,8 +688,9 @@ function saveDetail(){
   if(!activeDetail)return;
   const r=rides[activeDetail];
   const ab=document.querySelector('.status-change-btn.active');
-  const ns=ab?ab.classList[1]:r.status;const os=r.status;
-  r.note=document.getElementById('detailNote').value.trim();
+  const ns=ab?ab.classList[1]:r.status; const os=r.status;
+  const note=document.getElementById('detailNote').value.trim();
+  r.note=note;
   Object.keys(r.positions).forEach(pos=>{
     const k=pos.replace(/[^a-z]/gi,'_');
     const ne=document.getElementById('pn-'+k),be=document.getElementById('pb-'+k);
@@ -628,7 +703,9 @@ function saveDetail(){
   });
   if(ns!==os){
     r.status=ns;if(ns==='open'&&!r.openedAt)r.openedAt=Date.now();
-    logRadio(r.id,`Status: ${os.toUpperCase()} → ${ns.toUpperCase()}${r.note?' · '+r.note:''}`,ns==='down'?'high':ns==='hold'?'med':'normal');
+    // ── PROXY: push OOS status change from detail modal ──
+    pushOOS(r, ns, os, note);
+    logRadio(r.id,`Status: ${os.toUpperCase()} → ${ns.toUpperCase()}${note?' · '+note:''}`,ns==='down'?'high':ns==='hold'?'med':'normal');
   }
   r.lastUpdated=Date.now();closeDetail();renderBoard();updateWidget();
   if(currentTab==='score')renderScoreTab();toast('Ride updated','ok');
@@ -678,8 +755,11 @@ function ackRotation(id,e){
 // ── RADIO LOG ─────────────────────────────────────────────────────────────
 function logRadio(rideId,msg,priority='normal'){
   const rideName=rideId==='ALL'?'ALL RIDES':(rides[rideId]?.name||rideId);
-  radioLog.unshift({rideId,rideName,msg,priority,dispatcher:dispatcher.name||'—',
-    time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),ts:Date.now()});
+  const entry={rideId,rideName,msg,priority,dispatcher:dispatcher.name||'—',
+    time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),ts:Date.now()};
+  radioLog.unshift(entry);
+  // ── PROXY: push radio log entry (skip auto-generated seeded entries) ──
+  if(dispatcher.name) pushRadioLog(entry);
   renderRadioLog();updateWidget();
 }
 function renderRadioLog(){
