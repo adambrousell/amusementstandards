@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 RIDE Score™ — Owner Intelligence Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1628;
+    --navy2: #0F1E35;
+    --navy3: #162844;
+    --gold: #C9A84C;
+    --gold2: #E8C97A;
+    --gold-dim: rgba(201,168,76,0.15);
+    --red: #E74C3C;
+    --orange: #E67E22;
+    --yellow: #F1C40F;
+    --green: #2ECC71;
+    --blue: #3498DB;
+    --white: #F0F4F8;
+    --muted: rgba(240,244,248,0.45);
+    --border: rgba(201,168,76,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 32px 48px;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-left {}
+
+  .brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+
+  .facility-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .facility-meta {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  .header-right {
+    text-align: right;
+  }
+
+  .report-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    opacity: 0.7;
+  }
+
+  .report-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--white);
+  }
+
+  .confidential {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+
+  /* RIDE SCORE HERO */
+  .hero {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 32px;
+    margin-bottom: 28px;
+    align-items: center;
+  }
+
+  .score-ring-wrap {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+  }
+
+  .score-ring-wrap svg {
+    width: 200px;
+    height: 200px;
+    transform: rotate(-90deg);
+  }
+
+  .score-ring-bg {
+    fill: none;
+    stroke: var(--navy3);
+    stroke-width: 12;
+  }
+
+  .score-ring-fill {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 565;
+    stroke-dashoffset: 100;
+    filter: drop-shadow(0 0 8px rgba(201,168,76,0.6));
+    transition: stroke-dashoffset 2s ease;
+  }
+
+  .score-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 68px;
+    line-height: 1;
+    color: var(--gold);
+    letter-spacing: 2px;
+    filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
+  }
+
+  .score-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .score-band {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: var(--green);
+    margin-top: 4px;
+  }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+
+  /* PILLAR BARS */
+  .pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pillar-row {
+    display: grid;
+    grid-template-columns: 160px 1fr 48px;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pillar-name {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .pillar-bar-bg {
+    height: 6px;
+    background: var(--navy3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .pillar-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 2s ease;
+  }
+
+  .pillar-score {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: right;
+  }
+
+  /* SECTION DIVIDER */
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    opacity: 0.5;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* KPI CARDS ROW */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .kpi-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  .kpi-card.alert::before { background: var(--red); opacity: 1; }
+  .kpi-card.warn::before { background: var(--orange); opacity: 1; }
+  .kpi-card.good::before { background: var(--green); opacity: 1; }
+
+  .kpi-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  .kpi-card.alert .kpi-value { color: var(--red); }
+  .kpi-card.warn .kpi-value { color: var(--orange); }
+  .kpi-card.good .kpi-value { color: var(--green); }
+  .kpi-card .kpi-value { color: var(--white); }
+
+  .kpi-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* BOTTOM GRID */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .panel {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .panel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 16px;
+  }
+
+  /* SECTION SCORECARD */
+  .section-rows { display: flex; flex-direction: column; gap: 8px; }
+
+  .section-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .section-row-name {
+    font-size: 11px;
+    color: var(--muted);
+    flex: 1;
+  }
+
+  .section-row-weight {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(201,168,76,0.5);
+    margin-right: 12px;
+  }
+
+  .section-row-score {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    min-width: 40px;
+    text-align: right;
+  }
+
+  .score-good { color: var(--green); }
+  .score-fair { color: var(--yellow); }
+  .score-poor { color: var(--orange); }
+  .score-crit { color: var(--red); }
+
+  /* CAR TABLE */
+  .car-table { width: 100%; border-collapse: collapse; }
+  .car-table th {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 0 10px;
+    text-align: left;
+    font-weight: 500;
+  }
+  .car-table td {
+    font-size: 11px;
+    padding: 8px 0;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    color: var(--white);
+    vertical-align: top;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+  .badge-critical { background: rgba(231,76,60,0.2); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
+  .badge-high { background: rgba(230,126,34,0.2); color: var(--orange); border: 1px solid rgba(230,126,34,0.3); }
+  .badge-medium { background: rgba(241,196,15,0.15); color: var(--yellow); border: 1px solid rgba(241,196,15,0.2); }
+  .badge-open { background: rgba(52,152,219,0.15); color: var(--blue); border: 1px solid rgba(52,152,219,0.2); }
+
+  /* STREAM CHART */
+  .stream-bars { display: flex; flex-direction: column; gap: 10px; }
+
+  .stream-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 42px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .stream-name {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .stream-bar-bg {
+    height: 8px;
+    background: var(--navy3);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .stream-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--gold);
+    opacity: 0.7;
+  }
+
+  .stream-score {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    text-align: right;
+    color: var(--white);
+  }
+
+  /* TREND MINI */
+  .trend-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .trend-panel {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .sparkline {
+    width: 100%;
+    height: 60px;
+    margin-top: 12px;
+  }
+
+  /* FOOTER */
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    opacity: 0.5;
+  }
+
+  .footer-note {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  .footer-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  /* ANIMATE IN */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero { animation: fadeUp 0.6s ease both; }
+  .kpi-grid { animation: fadeUp 0.6s ease 0.1s both; }
+  .bottom-grid { animation: fadeUp 0.6s ease 0.2s both; }
+  .trend-grid { animation: fadeUp 0.6s ease 0.3s both; }
+
+  @media print {
+    body { background: white; color: black; }
+    .page { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="brand">AS 360 RIDE SCORE™ · OWNER INTELLIGENCE REPORT</div>
+      <div class="facility-name">Adventure World Park</div>
+      <div class="facility-meta">FAC-AWP-001 · Ocean County, NJ · FEC / Outdoor Attraction</div>
+    </div>
+    <div class="header-right">
+      <div class="report-label">Report Period</div>
+      <div class="report-date">March 2026</div>
+      <div class="confidential">Confidential · Proprietary</div>
+    </div>
+  </div>
+
+  <!-- HERO: RIDE SCORE + PILLARS -->
+  <div class="hero">
+    <div class="score-ring-wrap">
+      <svg viewBox="0 0 200 200">
+        <circle class="score-ring-bg" cx="100" cy="100" r="90"/>
+        <circle class="score-ring-fill" cx="100" cy="100" r="90" id="ringFill"/>
+      </svg>
+      <div class="score-center">
+        <div class="score-number">81</div>
+        <div class="score-label">RIDE SCORE™</div>
+        <div class="score-band">GOOD</div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-title">Stream Performance Breakdown</div>
+      <div class="pillars">
+        <div class="pillar-row">
+          <div class="pillar-name">GSA Composite</div>
+          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:84%;background:var(--green)"></div></div>
+          <div class="pillar-score" style="color:var(--green)">84.2</div>
+        </div>
+        <div class="pillar-row">
+          <div class="pillar-name">Guest Feedback</div>
+          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:76%;background:var(--gold)"></div></div>
+          <div class="pillar-score" style="color:var(--gold)">76.0</div>
+        </div>
+        <div class="pillar-row">
+          <div class="pillar-name">Near Miss Rate</div>
+          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:88%;background:var(--green)"></div></div>
+          <div class="pillar-score" style="color:var(--green)">88.0</div>
+        </div>
+        <div class="pillar-row">
+          <div class="pillar-name">Incident Rate</div>
+          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:92%;background:var(--green)"></div></div>
+          <div class="pillar-score" style="color:var(--green)">92.0</div>
+        </div>
+        <div class="pillar-row">
+          <div class="pillar-name">CAR Closure</div>
+          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:67%;background:var(--yellow)"></div></div>
+          <div class="pillar-score" style="color:var(--yellow)">67.0</div>
+        </div>
+        <div class="pillar-row">
+          <div class="pillar-name">OOS Rate</div>
+          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:80%;background:var(--gold)"></div></div>
+          <div class="pillar-score" style="color:var(--gold)">80.0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="section-label">OPERATIONAL INTELLIGENCE — KEY INDICATORS</div>
+  <div class="kpi-grid">
+    <div class="kpi-card warn">
+      <div class="kpi-value" style="color:var(--orange)">3</div>
+      <div class="kpi-label">Open Corrective Actions</div>
+      <div class="kpi-sub">1 Critical · 2 High</div>
+    </div>
+    <div class="kpi-card alert">
+      <div class="kpi-value" style="color:var(--red)">1</div>
+      <div class="kpi-label">Overdue CARs</div>
+      <div class="kpi-sub">Past SLA deadline</div>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-value" style="color:var(--green)">4.1</div>
+      <div class="kpi-label">Guest Satisfaction Avg</div>
+      <div class="kpi-sub">Based on 14 responses</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-value">2</div>
+      <div class="kpi-label">Near Miss Reports</div>
+      <div class="kpi-sub">0 Critical severity</div>
+    </div>
+    <div class="kpi-card good">
+      <div class="kpi-value" style="color:var(--green)">0</div>
+      <div class="kpi-label">Recordable Incidents</div>
+      <div class="kpi-sub">30-day period</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM 3-COL -->
+  <div class="bottom-grid">
+
+    <!-- SECTION SCORECARD -->
+    <div class="panel">
+      <div class="panel-title">Section Scorecard</div>
+      <div class="section-rows">
+        <div class="section-row">
+          <div class="section-row-name">Ride Safety & Maintenance</div>
+          <div class="section-row-weight">20%</div>
+          <div class="section-row-score score-good">84</div>
+        </div>
+        <div class="section-row">
+          <div class="section-row-name">Emergency Preparedness</div>
+          <div class="section-row-weight">12%</div>
+          <div class="section-row-score score-good">88</div>
+        </div>
+        <div class="section-row">
+          <div class="section-row-name">Safety Signage & Compliance</div>
+          <div class="section-row-weight">10%</div>
+          <div class="section-row-score score-good">79</div>
+        </div>
+        <div class="section-row">
+          <div class="section-row-name">Ride Dispatch & Queue</div>
+          <div class="section-row-weight">12%</div>
+          <div class="section-row-score score-good">91</div>
+        </div>
+        <div class="section-row">
+          <div class="section-row-name">Staff Presentation</div>
+          <div class="section-row-weight">8%</div>
+          <div class="section-row-score score-fair">72</div>
+        </div>
+        <div class="section-row">
+          <div class="section-row-name">Arrival & First Impressions</div>
+          <div class="section-row-weight">8%</div>
+          <div class="section-row-score score-fair">75</div>
+        </div>
+        <div class="section-row">
+          <div class="section-row-name">Cleanliness & Facility</div>
+          <div class="section-row-weight">10%</div>
+          <div class="section-row-score score-good">82</div>
+        </div>
+        <div class="section-row">
+          <div class="section-row-name">Food & Beverage</div>
+          <div class="section-row-weight">8%</div>
+          <div class="section-row-score score-fair">68</div>
+        </div>
+        <div class="section-row">
+          <div class="section-row-name">Exit & Departure</div>
+          <div class="section-row-weight">5%</div>
+          <div class="section-row-score score-good">80</div>
+        </div>
+        <div class="section-row">
+          <div class="section-row-name">General Guest Service</div>
+          <div class="section-row-weight">7%</div>
+          <div class="section-row-score score-good">83</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPEN CARS -->
+    <div class="panel">
+      <div class="panel-title">Open Corrective Actions</div>
+      <table class="car-table">
+        <thead>
+          <tr>
+            <th>Finding</th>
+            <th>Priority</th>
+            <th>Due</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div style="color:var(--white);margin-bottom:3px;">Restraint check deviation observed on Steel Coaster</div>
+              <div style="font-size:10px;color:var(--muted);">IHS · Steel Coaster</div>
+            </td>
+            <td><span class="badge badge-critical">Critical</span></td>
+            <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--red);">Mar 13</td>
+          </tr>
+          <tr>
+            <td>
+              <div style="color:var(--white);margin-bottom:3px;">E-stop signage obscured at load zone</div>
+              <div style="font-size:10px;color:var(--muted);">TPA · Go-Karts</div>
+            </td>
+            <td><span class="badge badge-high">High</span></td>
+            <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--orange);">Mar 15</td>
+          </tr>
+          <tr>
+            <td>
+              <div style="color:var(--white);margin-bottom:3px;">Height check board damaged, non-compliant</div>
+              <div style="font-size:10px;color:var(--muted);">GSA · Bumper Boats</div>
+            </td>
+            <td><span class="badge badge-high">High</span></td>
+            <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--orange);">Mar 17</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- STREAM SCORES -->
+    <div class="panel">
+      <div class="panel-title">Stream Intelligence</div>
+      <div class="stream-bars">
+        <div class="stream-row">
+          <div class="stream-name">GSA</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:84%"></div></div>
+          <div class="stream-score">84.2</div>
+        </div>
+        <div class="stream-row">
+          <div class="stream-name">mGSA</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:78%"></div></div>
+          <div class="stream-score">78.1</div>
+        </div>
+        <div class="stream-row">
+          <div class="stream-name">IHS</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:71%;background:var(--yellow);opacity:1"></div></div>
+          <div class="stream-score" style="color:var(--yellow)">71.4</div>
+        </div>
+        <div class="stream-row">
+          <div class="stream-name">TPA</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:82%"></div></div>
+          <div class="stream-score">82.0</div>
+        </div>
+        <div class="stream-row">
+          <div class="stream-name">GFB</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:76%"></div></div>
+          <div class="stream-score">76.0</div>
+        </div>
+        <div class="stream-row">
+          <div class="stream-name">NMR</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:88%"></div></div>
+          <div class="stream-score">88.0</div>
+        </div>
+        <div class="stream-row">
+          <div class="stream-name">IRL</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:92%"></div></div>
+          <div class="stream-score">92.0</div>
+        </div>
+        <div class="stream-row">
+          <div class="stream-name">CAR</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:67%;background:var(--yellow);opacity:1"></div></div>
+          <div class="stream-score" style="color:var(--yellow)">67.0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TREND ROW -->
+  <div class="section-label">30-DAY TREND INDICATORS</div>
+  <div class="trend-grid">
+    <div class="trend-panel">
+      <div class="panel-title">RIDE Score™ — 6 Month Trend</div>
+      <svg class="sparkline" viewBox="0 0 400 60" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,45 L67,42 L133,38 L200,35 L267,28 L333,22 L400,12" 
+              fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+        <path d="M0,45 L67,42 L133,38 L200,35 L267,28 L333,22 L400,12 L400,60 L0,60 Z" 
+              fill="url(#trendGrad)"/>
+        <circle cx="400" cy="12" r="4" fill="#C9A84C"/>
+      </svg>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">Oct 25</span>
+        <span style="font-size:11px;color:var(--green)">↑ +7.3 pts over 6 months</span>
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">Mar 26</span>
+      </div>
+    </div>
+
+    <div class="trend-panel">
+      <div class="panel-title">CAR Closure Rate — 6 Month Trend</div>
+      <svg class="sparkline" viewBox="0 0 400 60" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="carGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#E67E22" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#E67E22" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,20 L67,25 L133,18 L200,30 L267,22 L333,35 L400,28" 
+              fill="none" stroke="#E67E22" stroke-width="2" stroke-linecap="round"/>
+        <path d="M0,20 L67,25 L133,18 L200,30 L267,22 L333,35 L400,28 L400,60 L0,60 Z" 
+              fill="url(#carGrad)"/>
+        <circle cx="400" cy="28" r="4" fill="#E67E22"/>
+      </svg>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">Oct 25</span>
+        <span style="font-size:11px;color:var(--orange)">⚠ Closure rate needs attention</span>
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">Mar 26</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">AMUSEMENT STANDARDS</div>
+    <div class="footer-note">
+      This report is generated by the AS 360 RIDE Score™ platform.<br>
+      Methodology is proprietary. Contact Amusement Standards for full scoring methodology disclosure under NDA.<br>
+      amusementstandards.com
+    </div>
+    <div class="footer-id">
+      Report ID: AS360-AWP-2026-03<br>
+      Generated: March 12, 2026
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Animate ring on load
+  window.addEventListener('load', () => {
+    const ring = document.getElementById('ringFill');
+    const score = 81;
+    const circumference = 565;
+    const offset = circumference - (score / 100) * circumference;
+    setTimeout(() => {
+      ring.style.strokeDashoffset = offset;
+    }, 300);
+  });
+</script>
+</body>
+</html>
