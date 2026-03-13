@@ -388,14 +388,21 @@ a{text-decoration:none}
 @media(max-width:960px){.streams-grid-unified{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:600px){.streams-grid-unified{grid-template-columns:repeat(2,1fr)}}
 
-.composite-bar{background:rgba(255,255,255,.04);border:1px solid rgba(255,107,53,.2);border-radius:12px;padding:28px 36px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
-.composite-left{display:flex;align-items:center;gap:20px}
-.composite-score{font-family:var(--font-mono);font-size:52px;font-weight:700;color:var(--secondary);line-height:1}
-.composite-label{font-size:13px;color:rgba(255,255,255,.45);font-weight:300;line-height:1.5;max-width:200px}
-.composite-label strong{display:block;font-size:15px;color:rgba(255,255,255,.75);font-weight:600;margin-bottom:4px}
-.composite-right{display:flex;gap:12px;flex-wrap:wrap}
+/* Convergence block */
+.convergence-block{margin-top:56px}
+.convergence-head{text-align:center;margin-bottom:32px}
+.convergence-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:10px}
+.convergence-title{font-size:clamp(22px,2.8vw,34px);font-weight:700;color:#fff;letter-spacing:-.5px;line-height:1.15;margin-bottom:10px}
+.convergence-title em{color:var(--secondary);font-style:normal}
+.convergence-sub{font-size:14px;color:rgba(255,255,255,.4);line-height:1.7;font-weight:300;max-width:480px;margin:0 auto}
+.convergence-canvas-wrap{position:relative;width:100%;max-width:900px;margin:0 auto}
+#convergence-canvas{width:100%;height:320px;display:block}
+.convergence-stat{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+.cs-num{font-family:var(--font-mono);font-size:48px;font-weight:700;color:var(--secondary);line-height:1}
+.cs-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px}
+.convergence-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
 .composite-btn{font-size:13px;font-weight:600;color:var(--secondary);background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.25);border-radius:6px;padding:10px 20px;transition:all var(--transition);cursor:pointer;text-decoration:none;display:inline-block}
-.composite-btn:hover{background:rgba(255,107,53,.18)}
+.composite-btn:hover{opacity:.8}
 
 /* ── GENERAL LAYOUT ── */
 .section{padding:96px 40px}.section-alt{background:var(--bg-light)}
@@ -1021,17 +1028,24 @@ a{text-decoration:none}
 
     </div>
 
-    <div class="composite-bar">
-      <div class="composite-left">
-        <div class="composite-score">37</div>
-        <div class="composite-label">
-          <strong>Independent Data Streams</strong>
-          Every stream feeds its respective score independently. No single source controls the outcome. Pillar composition and weighting are proprietary — see individual score pages for full architecture details.
+    <!-- CONVERGENCE NODE DIAGRAM -->
+    <div class="convergence-block">
+      <div class="convergence-head">
+        <div class="convergence-eyebrow">Stream Convergence Architecture</div>
+        <h3 class="convergence-title">37 independent streams.<br><em>One defensible composite.</em></h3>
+        <p class="convergence-sub">No single source controls the outcome. When streams agree, confidence is high. When they diverge, that gap is the finding.</p>
+      </div>
+      <div class="convergence-canvas-wrap">
+        <canvas id="convergence-canvas"></canvas>
+        <div class="convergence-stat" id="conv-stat-streams">
+          <div class="cs-num" id="conv-count">0</div>
+          <div class="cs-label">Active Streams</div>
         </div>
       </div>
-      <div class="composite-right">
+      <div class="convergence-btns">
         <a href="https://www.amusementstandards.com/as360-ride-score.html" class="composite-btn">Explore RIDE Score →</a>
-        <a href="/demos/risk-heatmap-live.html" class="composite-btn">Live Heatmap Demo</a>
+        <a href="as360-splash-score.html" class="composite-btn" style="color:var(--splash-brand);border-color:rgba(30,158,212,.3);background:rgba(30,158,212,.08)">Explore SPLASH Score →</a>
+        <a href="as360-play-score.html" class="composite-btn" style="color:var(--play-brand);border-color:rgba(31,184,122,.3);background:rgba(31,184,122,.08)">Explore PLAY Score →</a>
       </div>
     </div>
 
@@ -1533,11 +1547,9 @@ function toggleFAQ(item) {
 
   // Counter animations
   function animateCounters(){
-    // Bars
     document.querySelectorAll('.pic-bar-anim').forEach(el=>{
       el.style.width = el.dataset.w + '%';
     });
-    // Number counters
     document.querySelectorAll('.pic-val-anim').forEach(el=>{
       const target = parseInt(el.dataset.v);
       let current = 0;
@@ -1548,7 +1560,6 @@ function toggleFAQ(item) {
         if(current>=target) clearInterval(iv);
       }, 22);
     });
-    // Big PIC counter
     const pic = document.getElementById('pic-counter');
     if(pic){
       let c=0; const iv=setInterval(()=>{
@@ -1557,6 +1568,279 @@ function toggleFAQ(item) {
       },18);
     }
   }
+})();
+
+// ── CONVERGENCE NODE DIAGRAM ──────────────────────────────────────
+(function(){
+  const canvas = document.getElementById('convergence-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize(){
+    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  }
+  resize();
+  window.addEventListener('resize', ()=>{ resize(); });
+
+  const W = ()=> canvas.offsetWidth;
+  const H = ()=> canvas.offsetHeight;
+
+  // Score hub nodes
+  const hubs = [
+    { label:'RIDE',   color:'#FF6B35', streams:15 },
+    { label:'SPLASH', color:'#1e9ed4', streams:12 },
+    { label:'PLAY',   color:'#1fb87a', streams:10 },
+  ];
+
+  // PIC center node
+  const pic = { label:'PIC', color:'#FF6B35' };
+
+  // Stream node labels (abbreviated)
+  const streamLabels = [
+    'In-House Audit','Mystery Audit','3rd-Party Insp.','Near-Miss','Incident Log',
+    'CAR Pipeline','Mgmt Log','Ops Dispatch','Operator Log','Pre-Open Insp.',
+    'SOP Adherence','Svc Bulletin','Guest Feedback','Post-Visit Survey','Online Reviews',
+    'Lifeguard Audit','Water Quality','Bather Load','Health Dept.','VGB Compliance',
+    'EAP Review','Slide Survey','Youth Patron','Group Event','Height Enforce.',
+    'Floor Audit','Liability Log','Attraction Cond.','Uptime & Yield','Ops Load Index',
+    'Weather Feed','Lightning Proto.','Cleanliness','Emergency Access','Signage Audit',
+    'Infrastructure','Queue & Wait'
+  ];
+
+  let nodes = [];
+  let particles = [];
+  let animating = false;
+  let t = 0;
+  let revealed = false;
+
+  function buildLayout(){
+    const w = W(), h = H();
+    nodes = [];
+    particles = [];
+
+    // PIC node — center
+    nodes.push({ id:'pic', x:w/2, y:h/2, r:22, color:'#FF6B35', label:'PIC', type:'pic', alpha:0 });
+
+    // Hub nodes — arranged in triangle around PIC
+    const hubAngles = [-Math.PI/2, Math.PI/6, Math.PI - Math.PI/6]; // top, bottom-right, bottom-left
+    const hubR = Math.min(w,h)*0.28;
+    hubs.forEach((hub,i)=>{
+      const x = w/2 + Math.cos(hubAngles[i])*hubR;
+      const y = h/2 + Math.sin(hubAngles[i])*hubR;
+      nodes.push({ id:'hub'+i, x, y, r:16, color:hub.color, label:hub.label, type:'hub', hubIdx:i, alpha:0 });
+    });
+
+    // Stream nodes — orbit each hub
+    let streamIdx = 0;
+    hubs.forEach((hub,hi)=>{
+      const hubNode = nodes[hi+1];
+      const streamR = Math.min(w,h)*0.18;
+      const count = hub.streams;
+      // Fan the streams away from center
+      const baseAngle = hubAngles[hi];
+      const spread = Math.PI * 0.9;
+      for(let s=0;s<count;s++){
+        const frac = count===1?0.5:(s/(count-1));
+        const angle = baseAngle + Math.PI + (frac-0.5)*spread;
+        const x = hubNode.x + Math.cos(angle)*streamR;
+        const y = hubNode.y + Math.sin(angle)*streamR;
+        nodes.push({
+          id:`s${streamIdx}`,
+          x, y, r:4,
+          color:hub.color,
+          label:streamLabels[streamIdx] || '',
+          type:'stream',
+          hubId:'hub'+hi,
+          hubNode,
+          angle,
+          baseX:x, baseY:y,
+          phase:Math.random()*Math.PI*2,
+          alpha:0,
+          delay: hi*0.3 + s*0.06
+        });
+        streamIdx++;
+      }
+    });
+
+    // Spawn particles along edges
+    spawnParticles();
+  }
+
+  function spawnParticles(){
+    particles = [];
+    // Stream → Hub particles
+    nodes.filter(n=>n.type==='stream').forEach(sn=>{
+      const hub = nodes.find(n=>n.id===sn.hubId);
+      if(!hub) return;
+      particles.push({
+        from:sn, to:hub,
+        prog: Math.random(),
+        speed: 0.003 + Math.random()*0.003,
+        color: sn.color,
+        size: 2.5,
+        alpha:0
+      });
+    });
+    // Hub → PIC particles
+    nodes.filter(n=>n.type==='hub').forEach(hn=>{
+      const picN = nodes.find(n=>n.type==='pic');
+      for(let i=0;i<3;i++){
+        particles.push({
+          from:hn, to:picN,
+          prog: Math.random(),
+          speed: 0.004 + Math.random()*0.003,
+          color: hn.color,
+          size: 3.5,
+          alpha:0
+        });
+      }
+    });
+  }
+
+  function drawEdge(a, b, color, alpha, dashed=false){
+    ctx.save();
+    ctx.globalAlpha = alpha * 0.3;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
+    if(dashed) ctx.setLineDash([4,6]);
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawNode(n){
+    if(n.alpha<=0) return;
+    ctx.save();
+    ctx.globalAlpha = n.alpha;
+    // Glow
+    const grd = ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*3);
+    grd.addColorStop(0, n.color+'44');
+    grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd;
+    ctx.beginPath(); ctx.arc(n.x,n.y,n.r*3,0,Math.PI*2); ctx.fill();
+    // Circle
+    ctx.fillStyle = n.color;
+    ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.fill();
+    // Inner ring for hubs/pic
+    if(n.type!=='stream'){
+      ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.stroke();
+      // Label
+      ctx.fillStyle = '#fff';
+      ctx.font = `bold ${n.type==='pic'?11:10}px 'Space Mono', monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.globalAlpha = n.alpha;
+      ctx.fillText(n.label, n.x, n.y);
+    }
+    ctx.restore();
+  }
+
+  function drawParticle(p){
+    if(p.alpha<=0) return;
+    const x = p.from.x + (p.to.x-p.from.x)*p.prog;
+    const y = p.from.y + (p.to.y-p.from.y)*p.prog;
+    // Tail
+    const tx = p.from.x + (p.to.x-p.from.x)*Math.max(0,p.prog-.08);
+    const ty = p.from.y + (p.to.y-p.from.y)*Math.max(0,p.prog-.08);
+    ctx.save();
+    ctx.globalAlpha = p.alpha * 0.6;
+    const grd = ctx.createLinearGradient(tx,ty,x,y);
+    grd.addColorStop(0,'transparent');
+    grd.addColorStop(1,p.color);
+    ctx.strokeStyle = grd;
+    ctx.lineWidth = p.size*.6;
+    ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(x,y); ctx.stroke();
+    // Head
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = p.color;
+    ctx.shadowColor = p.color;
+    ctx.shadowBlur = 6;
+    ctx.beginPath(); ctx.arc(x,y,p.size,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  function frame(){
+    if(!animating) return;
+    t += 0.016;
+    ctx.clearRect(0,0,W(),H());
+
+    // Reveal nodes over time
+    nodes.forEach(n=>{
+      if(n.type==='stream'){
+        n.alpha = Math.min(1, Math.max(0,(t - n.delay)*2.5));
+        // Gentle float
+        n.x = n.baseX + Math.sin(t*0.6+n.phase)*3;
+        n.y = n.baseY + Math.cos(t*0.5+n.phase)*2;
+      } else if(n.type==='hub'){
+        n.alpha = Math.min(1, Math.max(0,(t-0.2)*3));
+        // Slow pulse scale handled via r
+        n.r = 16 + Math.sin(t*1.2+n.hubIdx)*1.5;
+      } else if(n.type==='pic'){
+        n.alpha = Math.min(1, Math.max(0,(t-0.5)*2));
+        n.r = 22 + Math.sin(t*0.9)*2;
+      }
+    });
+
+    // Edges: stream → hub
+    nodes.filter(n=>n.type==='stream').forEach(sn=>{
+      const hub = nodes.find(n=>n.id===sn.hubId);
+      if(hub) drawEdge(sn, hub, sn.color, sn.alpha*hub.alpha);
+    });
+    // Edges: hub → PIC
+    const picN = nodes.find(n=>n.type==='pic');
+    nodes.filter(n=>n.type==='hub').forEach(hn=>{
+      drawEdge(hn, picN, hn.color, hn.alpha*picN.alpha, false);
+    });
+
+    // Particles
+    particles.forEach(p=>{
+      const fromAlpha = p.from.alpha||0;
+      const toAlpha = p.to.alpha||0;
+      p.alpha = Math.min(fromAlpha, toAlpha);
+      p.prog += p.speed;
+      if(p.prog>1) p.prog=0;
+      drawParticle(p);
+    });
+
+    // Draw stream nodes (small, behind)
+    nodes.filter(n=>n.type==='stream').forEach(drawNode);
+    // Draw hubs
+    nodes.filter(n=>n.type==='hub').forEach(drawNode);
+    // Draw PIC last (top)
+    nodes.filter(n=>n.type==='pic').forEach(drawNode);
+
+    requestAnimationFrame(frame);
+  }
+
+  // Counter
+  function startCounter(){
+    const el = document.getElementById('conv-count');
+    if(!el) return;
+    let c=0;
+    const iv = setInterval(()=>{
+      c = Math.min(37, c+1);
+      el.textContent = c;
+      if(c>=37) clearInterval(iv);
+    }, 55);
+  }
+
+  const obs2 = new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting){
+      buildLayout();
+      animating=true;
+      frame();
+      startCounter();
+      obs2.disconnect();
+    }
+  },{threshold:.2});
+  obs2.observe(canvas);
+
+  window.addEventListener('resize', ()=>{
+    if(animating){ buildLayout(); }
+  });
 })();
 </script>
 
