@@ -397,7 +397,7 @@ a{text-decoration:none}
 .convergence-sub{font-size:14px;color:rgba(255,255,255,.4);line-height:1.7;font-weight:300;max-width:480px;margin:0 auto}
 .convergence-canvas-wrap{position:relative;width:100%;max-width:900px;margin:0 auto}
 #convergence-canvas{width:100%;height:320px;display:block}
-.convergence-stat{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+.convergence-stat{text-align:center;margin-top:16px;pointer-events:none}
 .cs-num{font-family:var(--font-mono);font-size:48px;font-weight:700;color:var(--secondary);line-height:1}
 .cs-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:4px}
 .convergence-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}
@@ -1037,10 +1037,10 @@ a{text-decoration:none}
       </div>
       <div class="convergence-canvas-wrap">
         <canvas id="convergence-canvas"></canvas>
-        <div class="convergence-stat" id="conv-stat-streams">
-          <div class="cs-num" id="conv-count">0</div>
-          <div class="cs-label">Active Streams</div>
-        </div>
+      </div>
+      <div class="convergence-stat">
+        <div class="cs-num" id="conv-count">0</div>
+        <div class="cs-label">Active Streams</div>
       </div>
       <div class="convergence-btns">
         <a href="https://www.amusementstandards.com/as360-ride-score.html" class="composite-btn">Explore RIDE Score →</a>
@@ -1587,17 +1587,13 @@ function toggleFAQ(item) {
   const W = ()=> canvas.offsetWidth;
   const H = ()=> canvas.offsetHeight;
 
-  // Score hub nodes
-  const hubs = [
+  // Score hub config
+  const hubConfigs = [
     { label:'RIDE',   color:'#FF6B35', streams:15 },
     { label:'SPLASH', color:'#1e9ed4', streams:12 },
     { label:'PLAY',   color:'#1fb87a', streams:10 },
   ];
 
-  // PIC center node
-  const pic = { label:'PIC', color:'#FF6B35' };
-
-  // Stream node labels (abbreviated)
   const streamLabels = [
     'In-House Audit','Mystery Audit','3rd-Party Insp.','Near-Miss','Incident Log',
     'CAR Pipeline','Mgmt Log','Ops Dispatch','Operator Log','Pre-Open Insp.',
@@ -1613,7 +1609,6 @@ function toggleFAQ(item) {
   let particles = [];
   let animating = false;
   let t = 0;
-  let revealed = false;
 
   function buildLayout(){
     const w = W(), h = H();
@@ -1621,66 +1616,107 @@ function toggleFAQ(item) {
     particles = [];
 
     // PIC node — center
-    nodes.push({ id:'pic', x:w/2, y:h/2, r:22, color:'#FF6B35', label:'PIC', type:'pic', alpha:0 });
+    nodes.push({ id:'pic', x:w/2, y:h/2, r:38, color:'#FF6B35', label:'Total Facility Score', type:'pic', alpha:0 });
 
-    // Hub nodes — arranged in triangle around PIC
-    const hubAngles = [-Math.PI/2, Math.PI/6, Math.PI - Math.PI/6]; // top, bottom-right, bottom-left
-    const hubR = Math.min(w,h)*0.28;
-    hubs.forEach((hub,i)=>{
+    // Hub nodes — triangle around PIC
+    const hubAngles = [-Math.PI/2, Math.PI/6, Math.PI - Math.PI/6];
+    const hubR = Math.min(w,h) * 0.28;
+    hubConfigs.forEach((hub,i)=>{
       const x = w/2 + Math.cos(hubAngles[i])*hubR;
       const y = h/2 + Math.sin(hubAngles[i])*hubR;
-      nodes.push({ id:'hub'+i, x, y, r:16, color:hub.color, label:hub.label, type:'hub', hubIdx:i, alpha:0 });
+      nodes.push({ id:'hub'+i, x, y, r:16, color:hub.color, label:hub.label, type:'hub', hubIdx:i, alpha:0, angle:hubAngles[i] });
     });
 
-    // Stream nodes — orbit each hub
+    // Stream nodes — fan outward from each hub
     let streamIdx = 0;
-    hubs.forEach((hub,hi)=>{
+    hubConfigs.forEach((hub,hi)=>{
       const hubNode = nodes[hi+1];
-      const streamR = Math.min(w,h)*0.18;
+      const streamR = Math.min(w,h) * 0.18;
       const count = hub.streams;
-      // Fan the streams away from center
-      const baseAngle = hubAngles[hi];
-      const spread = Math.PI * 0.9;
+      const spread = Math.PI * 0.85;
       for(let s=0;s<count;s++){
-        const frac = count===1?0.5:(s/(count-1));
-        const angle = baseAngle + Math.PI + (frac-0.5)*spread;
+        const frac = count===1 ? 0.5 : s/(count-1);
+        const angle = hubNode.angle + (frac-0.5)*spread;
         const x = hubNode.x + Math.cos(angle)*streamR;
         const y = hubNode.y + Math.sin(angle)*streamR;
         nodes.push({
-          id:`s${streamIdx}`,
-          x, y, r:4,
+          id:`s${streamIdx}`, x, y, r:4,
           color:hub.color,
           label:streamLabels[streamIdx] || '',
           type:'stream',
-          hubId:'hub'+hi,
-          hubNode,
-          angle,
+          hubIds:['hub'+hi],
           baseX:x, baseY:y,
           phase:Math.random()*Math.PI*2,
           alpha:0,
-          delay: hi*0.3 + s*0.06
+          delay: hi*0.25 + s*0.055
         });
         streamIdx++;
       }
     });
 
-    // Spawn particles along edges
     spawnParticles();
+
+    // Tag a few streams with cross-score links (dashed, subtle)
+    // These are streams whose data genuinely informs another score
+    const crossLinks = [
+      // RIDE → SPLASH (5)
+      { streamLabel:'Near-Miss',       toHub:'hub1' },
+      { streamLabel:'3rd-Party Insp.', toHub:'hub1' },
+      { streamLabel:'Svc Bulletin',    toHub:'hub1' },
+      { streamLabel:'Pre-Open Insp.',  toHub:'hub1' },
+      { streamLabel:'CAR Pipeline',    toHub:'hub1' },
+      // SPLASH → RIDE (5)
+      { streamLabel:'EAP Review',      toHub:'hub0' },
+      { streamLabel:'Height Enforce.', toHub:'hub0' },
+      { streamLabel:'Lifeguard Audit', toHub:'hub0' },
+      { streamLabel:'Slide Survey',    toHub:'hub0' },
+      { streamLabel:'VGB Compliance',  toHub:'hub0' },
+      // RIDE → PLAY (5)
+      { streamLabel:'Incident Log',    toHub:'hub2' },
+      { streamLabel:'Ops Dispatch',    toHub:'hub2' },
+      { streamLabel:'Mgmt Log',        toHub:'hub2' },
+      { streamLabel:'Guest Feedback',  toHub:'hub2' },
+      { streamLabel:'Online Reviews',  toHub:'hub2' },
+      // PLAY → RIDE (5)
+      { streamLabel:'Cleanliness',     toHub:'hub0' },
+      { streamLabel:'Weather Feed',    toHub:'hub0' },
+      { streamLabel:'Ops Load Index',  toHub:'hub0' },
+      { streamLabel:'Signage Audit',   toHub:'hub0' },
+      { streamLabel:'Queue & Wait',    toHub:'hub0' },
+      // SPLASH → PLAY (5)
+      { streamLabel:'Water Quality',   toHub:'hub2' },
+      { streamLabel:'Bather Load',     toHub:'hub2' },
+      { streamLabel:'Health Dept.',    toHub:'hub2' },
+      { streamLabel:'Liability Log',   toHub:'hub2' },
+      { streamLabel:'Group Event',     toHub:'hub2' },
+      // PLAY → SPLASH (5)
+      { streamLabel:'Youth Patron',    toHub:'hub1' },
+      { streamLabel:'Floor Audit',     toHub:'hub1' },
+      { streamLabel:'Attraction Cond.',toHub:'hub1' },
+      { streamLabel:'Uptime & Yield',  toHub:'hub1' },
+      { streamLabel:'Infrastructure',  toHub:'hub1' },
+    ];
+    crossLinks.forEach(cl=>{
+      const sn = nodes.find(n=>n.type==='stream' && n.label===cl.streamLabel);
+      if(sn) sn.crossHubId = cl.toHub;
+    });
   }
 
   function spawnParticles(){
     particles = [];
-    // Stream → Hub particles
+    // Stream → Hub(s) particles
     nodes.filter(n=>n.type==='stream').forEach(sn=>{
-      const hub = nodes.find(n=>n.id===sn.hubId);
-      if(!hub) return;
-      particles.push({
-        from:sn, to:hub,
-        prog: Math.random(),
-        speed: 0.003 + Math.random()*0.003,
-        color: sn.color,
-        size: 2.5,
-        alpha:0
+      sn.hubIds.forEach(hid=>{
+        const hub = nodes.find(n=>n.id===hid);
+        if(!hub) return;
+        particles.push({
+          from:sn, to:hub,
+          prog: Math.random(),
+          speed: 0.003 + Math.random()*0.003,
+          color: sn.color,
+          size: 2.5,
+          alpha:0
+        });
       });
     });
     // Hub → PIC particles
@@ -1729,11 +1765,21 @@ function toggleFAQ(item) {
       ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.stroke();
       // Label
       ctx.fillStyle = '#fff';
-      ctx.font = `bold ${n.type==='pic'?11:10}px 'Space Mono', monospace`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.globalAlpha = n.alpha;
-      ctx.fillText(n.label, n.x, n.y);
+      if(n.type==='pic'){
+        // Two-line label inside large circle
+        const words = n.label.split(' ');
+        const line1 = words.slice(0,2).join(' ');  // "Total Facility"
+        const line2 = words[2];                     // "Score"
+        ctx.font = `bold 9px 'Space Mono', monospace`;
+        ctx.fillText(line1, n.x, n.y - 7);
+        ctx.fillText(line2, n.x, n.y + 7);
+      } else {
+        ctx.font = `bold 10px 'Space Mono', monospace`;
+        ctx.fillText(n.label, n.x, n.y);
+      }
     }
     ctx.restore();
   }
@@ -1780,14 +1826,21 @@ function toggleFAQ(item) {
         n.r = 16 + Math.sin(t*1.2+n.hubIdx)*1.5;
       } else if(n.type==='pic'){
         n.alpha = Math.min(1, Math.max(0,(t-0.5)*2));
-        n.r = 22 + Math.sin(t*0.9)*2;
+        n.r = 38 + Math.sin(t*0.9)*2;
       }
     });
 
-    // Edges: stream → hub
+    // Edges: stream → hub(s)
     nodes.filter(n=>n.type==='stream').forEach(sn=>{
-      const hub = nodes.find(n=>n.id===sn.hubId);
-      if(hub) drawEdge(sn, hub, sn.color, sn.alpha*hub.alpha);
+      sn.hubIds.forEach(hid=>{
+        const hub = nodes.find(n=>n.id===hid);
+        if(hub) drawEdge(sn, hub, sn.color, sn.alpha*hub.alpha);
+      });
+      // Cross-score dashed links
+      if(sn.crossHubId){
+        const crossHub = nodes.find(n=>n.id===sn.crossHubId);
+        if(crossHub) drawEdge(sn, crossHub, crossHub.color, sn.alpha*crossHub.alpha*0.55, true);
+      }
     });
     // Edges: hub → PIC
     const picN = nodes.find(n=>n.type==='pic');
