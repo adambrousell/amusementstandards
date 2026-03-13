@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 PLAY Score™ — Amusement Standards</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #070d1a;
+    --navy2: #0d1525;
+    --navy3: #111d30;
+    --gold: #c9a84c;
+    --gold2: #e8c96a;
+    --green: #1fb87a;
+    --green2: #17a368;
+    --text: #d6dde8;
+    --muted: #6b7a90;
+    --border: rgba(201,168,76,0.18);
+    --border-green: rgba(31,184,122,0.22);
+    --card: rgba(255,255,255,0.035);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    height: 58px;
+    background: rgba(7,13,26,0.96);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-cta {
+    background: var(--green) !important;
+    color: #fff !important;
+    padding: 7px 16px;
+    border-radius: 3px;
+    font-weight: 600 !important;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 100px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(31,184,122,0.11) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .hero-score-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(72px, 12vw, 140px);
+    line-height: 0.9;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .hero-score-name span { color: var(--green); font-style: italic; }
+  .hero-trademark {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text);
+    max-width: 640px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .hero-sub strong { color: #fff; font-weight: 500; }
+  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--green);
+    color: #fff;
+    padding: 12px 26px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary {
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 26px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: border-color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--navy2);
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    text-align: center;
+    padding: 28px 48px;
+    border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .stat-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--green);
+    background: rgba(31,184,122,0.12);
+    border: 1px solid rgba(31,184,122,0.3);
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-top: 4px;
+  }
+
+  /* SECTION */
+  section { padding: 90px 40px; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 18px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(30px, 4vw, 46px);
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .section-title em { color: var(--green); font-style: italic; }
+  .section-sub { font-size: 15px; color: var(--muted); max-width: 560px; line-height: 1.7; }
+  .max-w { max-width: 1100px; margin: 0 auto; }
+
+  /* PROCESS */
+  .process-section { background: var(--navy2); }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 56px;
+  }
+  .process-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 36px 32px;
+  }
+  .process-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .process-icon { font-size: 28px; margin-bottom: 14px; }
+  .process-card h3 { font-family: 'DM Serif Display', serif; font-size: 20px; color: #fff; margin-bottom: 12px; }
+  .process-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* PILLARS */
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 56px;
+  }
+  .pillar-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    padding: 36px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pillar-card::before {
+    content: attr(data-letter);
+    position: absolute;
+    right: -10px; top: -20px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 120px;
+    color: rgba(31,184,122,0.05);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .pillar-letter {
+    width: 48px; height: 48px;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: #fff;
+    border-radius: 2px;
+    margin-bottom: 18px;
+  }
+  .pillar-word {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .pillar-card h3 { font-family: 'DM Serif Display', serif; font-size: 20px; color: #fff; margin-bottom: 10px; }
+  .pillar-card p { font-size: 13.5px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+  .pillar-streams-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .confidential {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    color: var(--gold);
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 8px 12px;
+    border-radius: 2px;
+  }
+
+  /* STREAMS */
+  .arch-section { background: var(--navy2); }
+  .streams-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 48px;
+  }
+  .stream-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+  .stream-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+  .stream-name { font-size: 12px; color: #fff; margin-bottom: 8px; }
+  .stream-pillars { display: flex; gap: 4px; flex-wrap: wrap; }
+  .stream-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background: rgba(31,184,122,0.12);
+    color: var(--green);
+    border: 1px solid rgba(31,184,122,0.3);
+  }
+
+  /* TIERS */
+  .tiers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 56px;
+  }
+  .tier-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    padding: 36px 30px;
+  }
+  .tier-card.featured { border-color: var(--green); background: rgba(31,184,122,0.05); }
+  .tier-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .tier-badge.featured { background: var(--green); color: #fff; }
+  .tier-badge.standard { background: rgba(107,122,144,0.2); color: var(--muted); border: 1px solid var(--border); }
+  .tier-name { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+  .tier-title { font-family: 'DM Serif Display', serif; font-size: 24px; color: #fff; margin-bottom: 4px; }
+  .tier-desc { font-size: 12px; color: var(--muted); margin-bottom: 24px; }
+  .sample-score { display: flex; align-items: baseline; gap: 10px; margin-bottom: 24px; }
+  .sample-score-num { font-family: 'DM Serif Display', serif; font-size: 52px; color: #fff; line-height: 1; }
+  .sample-score-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; color: var(--green); text-transform: uppercase; }
+  .tier-features { list-style: none; margin-bottom: 28px; }
+  .tier-features li {
+    font-size: 13px; color: var(--muted);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex; gap: 8px;
+  }
+  .tier-features li::before { content: '✓'; color: var(--green); flex-shrink: 0; }
+  .tier-features li.excluded::before { content: '—'; color: rgba(107,122,144,0.4); }
+  .tier-features li.excluded { opacity: 0.5; }
+  .tier-cta {
+    display: block; text-align: center;
+    padding: 11px; border-radius: 3px;
+    font-size: 12.5px; font-weight: 600;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .tier-cta.primary { background: var(--green); color: #fff; }
+  .tier-cta.secondary { border: 1px solid var(--border); color: var(--text); }
+  .tier-cta:hover { opacity: 0.8; }
+
+  /* YOUTH SPOTLIGHT */
+  .youth-section { background: var(--navy3); }
+  .youth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .youth-callout {
+    background: var(--navy2);
+    border: 1px solid var(--border-green);
+    border-left: 3px solid var(--green);
+    padding: 28px 24px;
+    margin-top: 28px;
+    border-radius: 0 2px 2px 0;
+  }
+  .youth-callout-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .youth-callout p { font-size: 14px; color: var(--text); line-height: 1.7; }
+  .youth-visual {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 40px;
+    text-align: center;
+  }
+  .score-display {
+    font-family: 'DM Serif Display', serif;
+    font-size: 90px;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .score-display-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .pillar-bars { text-align: left; }
+  .pillar-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .pillar-bar-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); width: 24px; flex-shrink: 0; }
+  .pillar-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; }
+  .pillar-bar-fill { height: 100%; background: var(--green); border-radius: 3px; }
+  .pillar-bar-val { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text); width: 28px; text-align: right; flex-shrink: 0; }
+
+  /* TRILOGY */
+  .trilogy-section { background: var(--navy2); text-align: center; }
+  .trilogy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 48px;
+  }
+  .trilogy-card {
+    background: var(--navy3);
+    border: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+  }
+  .trilogy-card.active { border-color: var(--green); background: rgba(31,184,122,0.05); }
+  .trilogy-score-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .trilogy-card.active .trilogy-score-name { color: var(--green); }
+  .trilogy-segment {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .trilogy-pillars { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .trilogy-current {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-top: 12px;
+    padding: 4px 10px;
+    background: rgba(31,184,122,0.1);
+    border: 1px solid rgba(31,184,122,0.3);
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  /* CTA */
+  .cta-section { text-align: center; padding: 90px 40px; }
+  .cta-section .section-title { max-width: 500px; margin: 0 auto 16px; }
+  .cta-section .section-sub { margin: 0 auto 40px; text-align: center; }
+  .cta-btns { display: flex; gap: 14px; justify-content: center; }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy2);
+    border-top: 1px solid var(--border);
+    padding: 40px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  }
+  .footer-logo { font-family: 'DM Serif Display', serif; font-size: 14px; color: var(--gold); }
+  .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 11px; color: var(--muted); }
+
+  @media (max-width: 900px) {
+    .process-grid, .pillar-grid, .streams-grid, .tiers-grid, .trilogy-grid { grid-template-columns: 1fr; }
+    .youth-grid { grid-template-columns: 1fr; }
+    .stat-item { padding: 20px 28px; }
+    nav { padding: 0 20px; }
+    section { padding: 60px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://amusementstandards.com" class="nav-logo">amusement standards.</a>
+  <div class="nav-links">
+    <a href="#how">How It Works</a>
+    <a href="#pillars">Four Pillars</a>
+    <a href="#tiers">Tiers</a>
+    <a href="#trilogy">The Trilogy</a>
+    <a href="mailto:adam@amusementstandards.com" class="nav-cta">Request a Score</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Amusement Standards · AS 360 Platform</div>
+  <div class="hero-score-name">PLAY<br><span>SCORE™</span></div>
+  <div class="hero-trademark">The FEC Risk Index</div>
+  <p class="hero-sub">
+    A composite risk index for <strong>family entertainment centers, trampoline parks, and mixed-use attractions</strong> — built the way FICO scores creditworthiness. Ten independent data streams. Four scored pillars. One number your insurers, operators, and ownership can act on.
+  </p>
+  <div class="hero-btns">
+    <a href="#tiers" class="btn-primary">See Deployment Tiers</a>
+    <a href="mailto:adam@amusementstandards.com" class="btn-secondary">Request a Score</a>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">83<sup>*</sup></div>
+    <div class="stat-label">Sample PLAY Score™</div>
+    <div class="stat-badge">STRONG</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">10</div>
+    <div class="stat-label">Data Streams</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">4</div>
+    <div class="stat-label">Scored Pillars</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">360°</div>
+    <div class="stat-label">Coverage</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">1</div>
+    <div class="stat-label">Composite Index</div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process-section" id="how">
+  <div class="max-w">
+    <div class="section-label">The Process</div>
+    <h2 class="section-title">Three phases.<br><em>One score.</em></h2>
+    <p class="section-sub">Amusement Standards deploys AS 360 PLAY across your FEC or entertainment venue. Every stream is independent. When streams agree, confidence is high. When they diverge, that gap is the finding.</p>
+    <div class="process-grid">
+      <div class="process-card">
+        <div class="process-num">01</div>
+        <div class="process-icon">🏗️</div>
+        <h3>Deploy</h3>
+        <p>Amusement Standards maps your full attraction inventory — go-karts, trampolines, laser tag, climbing walls, arcade, food service — and activates the appropriate data streams for each zone. Designed to scale with mixed-use FEC complexity.</p>
+      </div>
+      <div class="process-card">
+        <div class="process-num">02</div>
+        <div class="process-icon">📡</div>
+        <h3>Collect</h3>
+        <p>Ten independent streams feed the system simultaneously — floor guest audits, attraction condition reports, youth patron risk logs, liability documentation, covert observations, and near-miss reporting. Every stream is independent. No single source controls the outcome.</p>
+      </div>
+      <div class="process-card">
+        <div class="process-num">03</div>
+        <div class="process-icon">📊</div>
+        <h3>Score</h3>
+        <p>All streams converge into four pillar scores — Performance, Liability, Attraction, Youth — which aggregate into a single composite PLAY Score. Insurers receive a structured risk dossier. Operators receive a prioritized corrective action list.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section id="pillars">
+  <div class="max-w">
+    <div class="section-label">The Framework</div>
+    <h2 class="section-title">Four pillars.<br><em>360° FEC coverage.</em></h2>
+    <p class="section-sub">Every stream feeds one or more pillars. Pillar scores are independent — a strong Performance score does not mask a weak Youth score. The composite reflects all four dimensions simultaneously.</p>
+    <div class="pillar-grid">
+      <div class="pillar-card" data-letter="P">
+        <div class="pillar-letter">P</div>
+        <div class="pillar-word">Performance</div>
+        <h3>Operational Execution</h3>
+        <p>Throughput efficiency, staffing adequacy, attraction uptime rates, queue flow management, dispatch procedure compliance, and pre-opening inspection results. Performance measures whether the operation is running at the standard it was designed to deliver — and what it costs operationally when it isn't.</p>
+        <div class="pillar-streams-label">Contributing Streams</div>
+        <div class="confidential">🔒 WEIGHTING CONFIDENTIAL · NDA REQUIRED</div>
+      </div>
+      <div class="pillar-card" data-letter="L">
+        <div class="pillar-letter" style="background:#18a068;">L</div>
+        <div class="pillar-word">Liability</div>
+        <h3>Documentation & Exposure</h3>
+        <p>Waiver system quality and coverage, incident documentation standards, signage compliance, SOP currency, corrective action closure rates, and litigation-readiness of all operational records. The pillar your legal team cares about. Everything in Liability is designed to hold up when it has to.</p>
+        <div class="pillar-streams-label">Contributing Streams</div>
+        <div class="confidential">🔒 WEIGHTING CONFIDENTIAL · NDA REQUIRED</div>
+      </div>
+      <div class="pillar-card" data-letter="A">
+        <div class="pillar-letter" style="background:#128054;">A</div>
+        <div class="pillar-word">Attraction</div>
+        <h3>Physical Plant Condition</h3>
+        <p>Physical condition of all revenue-generating attractions across the FEC footprint — go-karts, trampolines, laser tag, climbing structures, bumper cars, and arcade equipment. Inspection cadence, manufacturer compliance, maintenance work order closure, and service bulletin status are all Attraction pillar inputs.</p>
+        <div class="pillar-streams-label">Contributing Streams</div>
+        <div class="confidential">🔒 WEIGHTING CONFIDENTIAL · NDA REQUIRED</div>
+      </div>
+      <div class="pillar-card" data-letter="Y">
+        <div class="pillar-letter" style="background:#0d6640;">Y</div>
+        <div class="pillar-word">Youth</div>
+        <h3>Minor Patron Safeguards</h3>
+        <p>Height and age enforcement protocols, unaccompanied minor policies, birthday group supervision standards, child-specific incident pattern tracking, staff training for minor patron interactions, and emergency reunification procedures. FECs are uniquely child-dominant environments — the Youth pillar is what no other risk index is measuring, and where the most preventable incidents occur.</p>
+        <div class="pillar-streams-label">Contributing Streams</div>
+        <div class="confidential">🔒 WEIGHTING CONFIDENTIAL · NDA REQUIRED</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STREAMS ARCHITECTURE -->
+<section class="arch-section" id="streams">
+  <div class="max-w">
+    <div class="section-label">System Architecture</div>
+    <h2 class="section-title">How the streams<br><em>converge.</em></h2>
+    <p class="section-sub">Ten independent data streams — spanning in-house audits, covert floor observation, attraction condition reporting, and documentation review — flow into four scored pillars, then into a single composite PLAY Score.</p>
+    <div class="streams-grid">
+      <div class="stream-card">
+        <div class="stream-code">FGA</div>
+        <div class="stream-name">Floor Guest Audit</div>
+        <div class="stream-pillars"><span class="stream-pill">P</span><span class="stream-pill">Y</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">ATR</div>
+        <div class="stream-name">Attraction Condition Report</div>
+        <div class="stream-pillars"><span class="stream-pill">A</span><span class="stream-pill">L</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">YPR</div>
+        <div class="stream-name">Youth Patron Risk Log</div>
+        <div class="stream-pillars"><span class="stream-pill">Y</span><span class="stream-pill">L</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">LBL</div>
+        <div class="stream-name">Liability Documentation Log</div>
+        <div class="stream-pillars"><span class="stream-pill">L</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">NMR</div>
+        <div class="stream-name">Near-Miss Reporting</div>
+        <div class="stream-pillars"><span class="stream-pill">P</span><span class="stream-pill">L</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">IRL</div>
+        <div class="stream-name">Incident Record Log</div>
+        <div class="stream-pillars"><span class="stream-pill">L</span><span class="stream-pill">Y</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">IHS</div>
+        <div class="stream-name">In-House Safety Inspection</div>
+        <div class="stream-pillars"><span class="stream-pill">P</span><span class="stream-pill">A</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">CAR</div>
+        <div class="stream-name">Corrective Action Pipeline</div>
+        <div class="stream-pillars"><span class="stream-pill">L</span><span class="stream-pill">A</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">QR</div>
+        <div class="stream-name">Guest Feedback — In-Park</div>
+        <div class="stream-pillars"><span class="stream-pill">P</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">MGR</div>
+        <div class="stream-name">Manager Operations Module</div>
+        <div class="stream-pillars"><span class="stream-pill">P</span><span class="stream-pill">L</span><span class="stream-pill">A</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIERS -->
+<section id="tiers">
+  <div class="max-w">
+    <div class="section-label">Deployment Tiers</div>
+    <h2 class="section-title">Right-sized for<br><em>every FEC operation.</em></h2>
+    <p class="section-sub">AS 360 PLAY deploys across three tiers. Each tier is a complete system — not a crippled version of the next. The right tier is determined by your attraction count, staffing model, and insurer requirements.</p>
+    <div class="tiers-grid">
+      <div class="tier-card">
+        <div class="tier-badge standard">Standard</div>
+        <div class="tier-name">AS 360 PLAY</div>
+        <div class="tier-title">Lite</div>
+        <div class="tier-desc">Single-location FECs · Trampoline parks · Boardwalk venues · 1–10 attractions</div>
+        <div class="sample-score">
+          <div class="sample-score-num">76</div>
+          <div class="sample-score-label">Sample Score™</div>
+        </div>
+        <ul class="tier-features">
+          <li><strong>FGA</strong> — Floor guest audit (monthly)</li>
+          <li><strong>IHS</strong> — In-house safety inspection</li>
+          <li><strong>NMR</strong> — Near-miss reporting</li>
+          <li><strong>IRL</strong> — Incident record logging</li>
+          <li><strong>CAR</strong> — Corrective action pipeline</li>
+          <li><strong>LBL</strong> — Liability documentation review</li>
+          <li class="excluded">YPR youth patron risk log not included</li>
+          <li class="excluded">Covert ATR audit not included</li>
+        </ul>
+        <a href="mailto:adam@amusementstandards.com?subject=PLAY Score Lite Inquiry" class="tier-cta secondary">Inquire About Lite →</a>
+      </div>
+      <div class="tier-card featured">
+        <div class="tier-badge featured">Most Common</div>
+        <div class="tier-name">AS 360 PLAY</div>
+        <div class="tier-title">Core</div>
+        <div class="tier-desc">Mid-size FECs · Multi-attraction parks · Dave & Buster's style · 10–25 attractions</div>
+        <div class="sample-score">
+          <div class="sample-score-num">83</div>
+          <div class="sample-score-label">Sample Score™</div>
+        </div>
+        <ul class="tier-features">
+          <li><strong>All Lite streams</strong> — FGA, IHS, NMR, IRL, CAR, LBL</li>
+          <li><strong>YPR</strong> — Youth patron risk log (quarterly AS-deployed)</li>
+          <li><strong>ATR</strong> — Covert attraction condition audit</li>
+          <li><strong>QR</strong> — In-park and post-visit guest feedback</li>
+          <li><strong>MGR</strong> — Full manager operations module</li>
+          <li><strong>Structured insurer dossier</strong> — Underwriting-ready format</li>
+          <li><strong>Score trend line</strong> — Quarter-over-quarter movement</li>
+          <li><strong>Youth pillar deep-dive</strong> — Dedicated minor patron report</li>
+        </ul>
+        <a href="mailto:adam@amusementstandards.com?subject=PLAY Score Core Inquiry" class="tier-cta primary">Inquire About Core →</a>
+      </div>
+      <div class="tier-card">
+        <div class="tier-badge standard">Portfolio</div>
+        <div class="tier-name">AS 360 PLAY</div>
+        <div class="tier-title">Enterprise</div>
+        <div class="tier-desc">Regional FEC chains · Multi-location operators · 25+ attractions across sites</div>
+        <div class="sample-score">
+          <div class="sample-score-num">87</div>
+          <div class="sample-score-label">Portfolio Score™</div>
+        </div>
+        <ul class="tier-features">
+          <li><strong>All Core streams</strong> — Complete 10-stream deployment per site</li>
+          <li><strong>Portfolio dashboard</strong> — All locations scored side-by-side</li>
+          <li><strong>Cross-facility CAR management</strong> — Regional outlier view</li>
+          <li><strong>Portfolio insurer dossier</strong> — Surplus lines placement ready</li>
+          <li><strong>Custom stream integration</strong> — POS, CRM, or CMMS API access</li>
+          <li><strong>Youth benchmarking</strong> — Minor incident rate vs. industry</li>
+          <li><strong>Dedicated AS account manager</strong> + quarterly briefing</li>
+          <li><strong>White-labeled reporting</strong> for ownership and board</li>
+        </ul>
+        <a href="mailto:adam@amusementstandards.com?subject=PLAY Score Enterprise Inquiry" class="tier-cta secondary">Inquire About Enterprise →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- YOUTH SPOTLIGHT -->
+<section class="youth-section" id="youth">
+  <div class="max-w">
+    <div class="youth-grid">
+      <div>
+        <div class="section-label">The Youth Pillar · What No One Else Is Measuring</div>
+        <h2 class="section-title">FECs are child-dominant<br>environments. <em>The data should reflect that.</em></h2>
+        <p class="section-sub">Most risk indices treat minor patrons as a subset of general guest safety. The PLAY Score treats Youth as a standalone scored dimension — because birthday parties, school groups, and unaccompanied minors represent a fundamentally different risk profile than adult guests.</p>
+        <div class="youth-callout">
+          <div class="youth-callout-label">Why Youth Is a Standalone Pillar</div>
+          <p>Height and age enforcement, unaccompanied minor protocols, birthday group supervision ratios, and child-specific incident pattern tracking are all Youth pillar inputs. A strong Performance score does not mask a weak Youth score. No other index is quantifying this separately — and no other pillar drives FEC liability exposure more directly.</p>
+        </div>
+      </div>
+      <div class="youth-visual">
+        <div class="score-display">83</div>
+        <div class="score-display-label">PLAY Score™ · STRONG</div>
+        <div class="pillar-bars">
+          <div class="pillar-bar-row">
+            <div class="pillar-bar-label">P</div>
+            <div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:88%"></div></div>
+            <div class="pillar-bar-val">88</div>
+          </div>
+          <div class="pillar-bar-row">
+            <div class="pillar-bar-label">L</div>
+            <div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:81%"></div></div>
+            <div class="pillar-bar-val">81</div>
+          </div>
+          <div class="pillar-bar-row">
+            <div class="pillar-bar-label">A</div>
+            <div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:84%"></div></div>
+            <div class="pillar-bar-val">84</div>
+          </div>
+          <div class="pillar-bar-row">
+            <div class="pillar-bar-label">Y</div>
+            <div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:79%"></div></div>
+            <div class="pillar-bar-val">79</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRILOGY -->
+<section class="trilogy-section" id="trilogy">
+  <div class="max-w">
+    <div class="section-label">The AS 360 Scoring Trilogy</div>
+    <h2 class="section-title">Three scores.<br><em>Every segment. One platform.</em></h2>
+    <p class="section-sub" style="margin: 0 auto; text-align:center;">RIDE, SPLASH, and PLAY together form a complete market map of the attractions industry. Three scores, three segments, one methodology, one platform.</p>
+    <div class="trilogy-grid">
+      <div class="trilogy-card">
+        <div class="trilogy-score-name">RIDE</div>
+        <div class="trilogy-segment">Amusement Parks & Coasters</div>
+        <div class="trilogy-pillars">Readiness · Integrity<br>Delivery · Environment</div>
+        <div style="margin-top:14px;"><a href="https://www.amusementstandards.com/as360-ride-score.html" style="font-size:12px;color:var(--muted);text-decoration:none;">View RIDE Score →</a></div>
+      </div>
+      <div class="trilogy-card">
+        <div class="trilogy-score-name">SPLASH</div>
+        <div class="trilogy-segment">Water Parks & Aquatic Venues</div>
+        <div class="trilogy-pillars">Safety · Protocol · Lifeguard<br>Aquatic · Structure · Hazard</div>
+        <div style="margin-top:14px;"><a href="mailto:adam@amusementstandards.com?subject=SPLASH Score Inquiry" style="font-size:12px;color:var(--muted);text-decoration:none;">Request SPLASH Score →</a></div>
+      </div>
+      <div class="trilogy-card active">
+        <div class="trilogy-score-name">PLAY</div>
+        <div class="trilogy-segment">FECs & Entertainment Centers</div>
+        <div class="trilogy-pillars">Performance · Liability<br>Attraction · Youth</div>
+        <div class="trilogy-current">You Are Here</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-label">Get Started</div>
+  <h2 class="section-title">Ready to score your<br>FEC operation?</h2>
+  <p class="section-sub">Amusement Standards deploys AS 360 PLAY and delivers a composite score your insurers, operators, and ownership can act on. Contact us to discuss deployment scope, timeline, and deliverables.</p>
+  <div class="cta-btns">
+    <a href="mailto:adam@amusementstandards.com" class="btn-primary">Contact Amusement Standards</a>
+    <a href="https://amusementstandards.com" class="btn-secondary">Visit Our Site</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">amusement standards.</div>
+  <div class="footer-links">
+    <a href="https://amusementstandards.com">Home</a>
+    <a href="https://www.amusementstandards.com/as360-ride-score.html">RIDE Score</a>
+    <a href="mailto:adam@amusementstandards.com">Contact</a>
+    <a href="https://www.linkedin.com/company/amusement-standards">LinkedIn</a>
+  </div>
+  <div class="footer-copy">© 2025 Amusement Standards. AS 360 PLAY Score™ is proprietary methodology.</div>
+</footer>
+
+</body>
+</html>
