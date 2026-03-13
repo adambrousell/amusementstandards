@@ -257,7 +257,22 @@ a{text-decoration:none}
 .pic-title{font-size:clamp(20px,2.5vw,28px);font-weight:700;color:#fff;letter-spacing:-.5px;line-height:1.2;margin-bottom:8px}
 .pic-title em{color:var(--secondary);font-style:normal}
 .pic-desc{font-size:14px;color:rgba(255,255,255,.45);line-height:1.7;font-weight:300;max-width:480px}
-.pic-right{display:flex;align-items:center;gap:24px;flex-shrink:0}
+.pic-right-enhanced{display:flex;gap:24px;align-items:flex-start;flex-shrink:0}
+.pic-panel-left{display:flex;flex-direction:column;gap:0}
+/* Heatmap */
+.pic-heatmap-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0}
+.pic-heatmap-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.28);text-align:center}
+#pic-heatmap{border-radius:6px;border:1px solid rgba(255,255,255,.08);display:block}
+.hm-leg-bar{flex:1;height:4px;background:linear-gradient(90deg,#1a3a2a,#1fb87a,#f59e0b,#ef4444);border-radius:2px}
+.pic-heatmap-legend{display:flex;align-items:center;gap:6px;width:100%}
+.hm-leg{font-family:var(--font-mono);font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.pic-heatmap-zones{display:flex;justify-content:space-between;width:100%}
+.hm-zone{font-family:var(--font-mono);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:2px}
+.hm-zone-ride{color:var(--ride-brand);background:rgba(255,107,53,.12)}
+.hm-zone-splash{color:var(--splash-brand);background:rgba(30,158,212,.12)}
+.hm-zone-play{color:var(--play-brand);background:rgba(31,184,122,.12)}
+/* Bar animation */
+.pic-bar-anim{transition:width 1.4s cubic-bezier(.25,.46,.45,.94)}
 .pic-score-display{text-align:center}
 .pic-score-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:4px}
 .pic-score-num{font-family:var(--font-mono);font-size:60px;font-weight:700;color:var(--secondary);line-height:1}
@@ -781,34 +796,55 @@ a{text-decoration:none}
         <h3 class="pic-title">Park Intelligence Composite — <em>the whole-park number.</em></h3>
         <p class="pic-desc">When RIDE, SPLASH, and PLAY are all deployed, AS 360 generates a single Park Intelligence Composite (PIC) — a weighted, cross-validated composite that covers every guest-facing zone of your operation. No carrier, no buyer, no regulator has ever seen a score like this for an attractions facility. It is the first whole-park risk index in the industry.</p>
       </div>
-      <div class="pic-right">
-        <div class="pic-score-display">
-          <div class="pic-score-label">Park Intelligence Composite™</div>
-          <div class="pic-score-num">84</div>
-          <div class="pic-score-tier">STRONG · Sample</div>
+      <div class="pic-right pic-right-enhanced">
+
+        <!-- SCORE DISPLAY + ANIMATED BARS -->
+        <div class="pic-panel-left">
+          <div class="pic-score-display">
+            <div class="pic-score-label">Park Intelligence Composite™</div>
+            <div class="pic-score-num" id="pic-counter">0</div>
+            <div class="pic-score-tier">STRONG · Sample</div>
+          </div>
+          <div class="pic-breakdown">
+            <div class="pic-br-row">
+              <div class="pic-br-label" style="color:rgba(255,107,53,.8);">RIDE</div>
+              <div class="pic-br-track"><div class="pic-br-fill pic-br-fill-ride pic-bar-anim" style="width:0%" data-w="81"></div></div>
+              <div class="pic-br-val pic-val-anim" data-v="81">0</div>
+            </div>
+            <div class="pic-br-row">
+              <div class="pic-br-label" style="color:rgba(30,158,212,.8);">SPLASH</div>
+              <div class="pic-br-track"><div class="pic-br-fill pic-br-fill-splash pic-bar-anim" style="width:0%" data-w="78"></div></div>
+              <div class="pic-br-val pic-val-anim" data-v="78">0</div>
+            </div>
+            <div class="pic-br-row">
+              <div class="pic-br-label" style="color:rgba(31,184,122,.8);">PLAY</div>
+              <div class="pic-br-track"><div class="pic-br-fill pic-br-fill-play pic-bar-anim" style="width:0%" data-w="83"></div></div>
+              <div class="pic-br-val pic-val-anim" data-v="83">0</div>
+            </div>
+            <div class="pic-br-row" style="border-top:1px solid rgba(255,255,255,.1);padding-top:8px;margin-top:4px">
+              <div class="pic-br-label" style="color:var(--secondary);">PIC</div>
+              <div class="pic-br-track"><div class="pic-br-fill pic-bar-anim" style="width:0%;background:var(--secondary)" data-w="84"></div></div>
+              <div class="pic-br-val pic-val-anim" style="color:var(--secondary);font-weight:700" data-v="84">0</div>
+            </div>
+          </div>
         </div>
-        <div class="pic-breakdown">
-          <div class="pic-br-row">
-            <div class="pic-br-label" style="color:rgba(255,107,53,.7);">RIDE</div>
-            <div class="pic-br-track"><div class="pic-br-fill pic-br-fill-ride" style="width:81%"></div></div>
-            <div class="pic-br-val">81</div>
+
+        <!-- LIVE HEATMAP -->
+        <div class="pic-heatmap-wrap">
+          <div class="pic-heatmap-label">Risk Heatmap · Live Sample</div>
+          <canvas id="pic-heatmap" width="220" height="160"></canvas>
+          <div class="pic-heatmap-legend">
+            <span class="hm-leg hm-low">Low</span>
+            <div class="hm-leg-bar"></div>
+            <span class="hm-leg hm-high">High</span>
           </div>
-          <div class="pic-br-row">
-            <div class="pic-br-label" style="color:rgba(30,158,212,.7);">SPLASH</div>
-            <div class="pic-br-track"><div class="pic-br-fill pic-br-fill-splash" style="width:78%"></div></div>
-            <div class="pic-br-val">78</div>
-          </div>
-          <div class="pic-br-row">
-            <div class="pic-br-label" style="color:rgba(31,184,122,.7);">PLAY</div>
-            <div class="pic-br-track"><div class="pic-br-fill pic-br-fill-play" style="width:83%"></div></div>
-            <div class="pic-br-val">83</div>
-          </div>
-          <div class="pic-br-row" style="border-top:1px solid rgba(255,255,255,.1);padding-top:8px;margin-top:4px">
-            <div class="pic-br-label" style="color:var(--secondary);">PIC</div>
-            <div class="pic-br-track"><div class="pic-br-fill" style="width:84%;background:var(--secondary)"></div></div>
-            <div class="pic-br-val" style="color:var(--secondary);font-weight:700">84</div>
+          <div class="pic-heatmap-zones">
+            <span class="hm-zone hm-zone-ride">RIDE</span>
+            <span class="hm-zone hm-zone-splash">SPLASH</span>
+            <span class="hm-zone hm-zone-play">PLAY</span>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -1402,6 +1438,126 @@ function toggleFAQ(item) {
   document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
   if (!wasOpen) item.classList.add('open');
 }
+
+// ── PIC HEATMAP + COUNTER ANIMATION ──────────────────────────────
+(function(){
+  const canvas = document.getElementById('pic-heatmap');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 220, H = 160;
+
+  // Zone definitions: x start %, width %, base risk 0-1
+  const zones = [
+    { name:'RIDE',   x:0,     w:0.38, color:[255,107,53],  cells: [
+      [.55,.3,.4],[.72,.2,.25],[.82,.45,.6],[.60,.65,.3],[.45,.55,.5],[.85,.75,.2]
+    ]},
+    { name:'SPLASH', x:0.38,  w:0.31, color:[30,158,212],  cells: [
+      [.5,.3,.55],[.65,.5,.35],[.75,.2,.65],[.55,.65,.4],[.62,.45,.5],[.48,.55,.3]
+    ]},
+    { name:'PLAY',   x:0.69,  w:0.31, color:[31,184,122],  cells: [
+      [.5,.3,.3],[.65,.5,.25],[.75,.2,.4],[.55,.65,.35],[.62,.45,.28],[.48,.55,.45]
+    ]}
+  ];
+
+  // Build flat heatmap cells
+  const COLS = 22, ROWS = 10;
+  const cellW = W/COLS, cellH = H/ROWS;
+  let cells = [];
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const cx = (c+.5)/COLS, cy = (r+.5)/ROWS;
+      // Determine zone
+      let zone = zones[0];
+      for(const z of zones){ if(cx >= z.x && cx < z.x+z.w) zone=z; }
+      // Base risk from nearest hotspot
+      let risk = 0.1;
+      for(const [hx,hy,hr] of zone.cells){
+        const d = Math.sqrt((cx-zone.x-hx*zone.w)**2 + (cy-hy)**2);
+        risk = Math.max(risk, hr*Math.exp(-d*d*18));
+      }
+      cells.push({c,r,risk,base:risk,zone,phase:Math.random()*Math.PI*2});
+    }
+  }
+
+  let t=0, animating=true;
+
+  function riskColor(risk,zoneColor){
+    // low = dark teal, mid = zone color, high = orange-red
+    const r0=[10,40,30], r1=zoneColor, r2=[239,68,68];
+    let r,g,b;
+    if(risk<0.5){
+      const s=risk*2;
+      r=r0[0]+(r1[0]-r0[0])*s; g=r0[1]+(r1[1]-r0[1])*s; b=r0[2]+(r1[2]-r0[2])*s;
+    } else {
+      const s=(risk-.5)*2;
+      r=r1[0]+(r2[0]-r1[0])*s; g=r1[1]+(r2[1]-r1[1])*s; b=r1[2]+(r2[2]-r1[2])*s;
+    }
+    return `rgba(${Math.round(r)},${Math.round(g)},${Math.round(b)},${0.55+risk*.45})`;
+  }
+
+  function drawFrame(){
+    ctx.clearRect(0,0,W,H);
+    t += 0.018;
+    for(const cell of cells){
+      // Slow pulse per cell
+      const pulse = Math.sin(t + cell.phase) * 0.12;
+      const risk = Math.min(1, Math.max(0, cell.base + pulse));
+      ctx.fillStyle = riskColor(risk, cell.zone.color);
+      const pad = 1;
+      ctx.beginPath();
+      ctx.roundRect(cell.c*cellW+pad, cell.r*cellH+pad, cellW-pad*2, cellH-pad*2, 2);
+      ctx.fill();
+    }
+    // Zone divider lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 1;
+    for(const z of zones.slice(1)){
+      const x = z.x * W;
+      ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke();
+    }
+    if(animating) requestAnimationFrame(drawFrame);
+  }
+
+  // Intersection observer — start when visible
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        animating=true;
+        drawFrame();
+        animateCounters();
+        obs.disconnect();
+      }
+    });
+  },{threshold:.3});
+  obs.observe(canvas);
+
+  // Counter animations
+  function animateCounters(){
+    // Bars
+    document.querySelectorAll('.pic-bar-anim').forEach(el=>{
+      el.style.width = el.dataset.w + '%';
+    });
+    // Number counters
+    document.querySelectorAll('.pic-val-anim').forEach(el=>{
+      const target = parseInt(el.dataset.v);
+      let current = 0;
+      const step = target / 50;
+      const iv = setInterval(()=>{
+        current = Math.min(target, current + step);
+        el.textContent = Math.round(current);
+        if(current>=target) clearInterval(iv);
+      }, 22);
+    });
+    // Big PIC counter
+    const pic = document.getElementById('pic-counter');
+    if(pic){
+      let c=0; const iv=setInterval(()=>{
+        c=Math.min(84,c+2); pic.textContent=c;
+        if(c>=84)clearInterval(iv);
+      },18);
+    }
+  }
+})();
 </script>
 
 </body>
