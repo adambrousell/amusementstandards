@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 SPLASH Score™ — Amusement Standards</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #070d1a;
+    --navy2: #0d1525;
+    --navy3: #111d30;
+    --gold: #c9a84c;
+    --gold2: #e8c96a;
+    --blue-accent: #1e9ed4;
+    --text: #d6dde8;
+    --muted: #6b7a90;
+    --border: rgba(201,168,76,0.18);
+    --card: rgba(255,255,255,0.035);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    height: 58px;
+    background: rgba(7,13,26,0.96);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold) !important;
+    color: var(--navy) !important;
+    padding: 7px 16px;
+    border-radius: 3px;
+    font-weight: 600 !important;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 100px 40px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(30,158,212,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--blue-accent);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .hero-score-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(72px, 12vw, 140px);
+    line-height: 0.9;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .hero-score-name span {
+    color: var(--blue-accent);
+    font-style: italic;
+  }
+  .hero-trademark {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text);
+    max-width: 620px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .hero-sub strong { color: #fff; font-weight: 500; }
+  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--blue-accent);
+    color: #fff;
+    padding: 12px 26px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary {
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 26px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: border-color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* STATS BAR */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--navy2);
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    text-align: center;
+    padding: 28px 48px;
+    border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-num sup { font-size: 20px; color: var(--blue-accent); }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .stat-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: #1fb87a;
+    background: rgba(31,184,122,0.12);
+    border: 1px solid rgba(31,184,122,0.3);
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-top: 4px;
+  }
+
+  /* SECTION SHARED */
+  section { padding: 90px 40px; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--blue-accent);
+    margin-bottom: 18px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(30px, 4vw, 46px);
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 18px;
+  }
+  .section-title em { color: var(--blue-accent); font-style: italic; }
+  .section-sub {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+  .max-w { max-width: 1100px; margin: 0 auto; }
+
+  /* PROCESS */
+  .process-section { background: var(--navy2); }
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 56px;
+    border: 1px solid var(--border);
+  }
+  .process-card {
+    background: var(--card);
+    padding: 36px 32px;
+    position: relative;
+  }
+  .process-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .process-icon { font-size: 28px; margin-bottom: 14px; }
+  .process-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .process-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* PILLARS */
+  .pillars-section {}
+  .pillars-intro { margin-bottom: 56px; }
+  .pillar-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .pillar-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    padding: 36px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pillar-card::before {
+    content: attr(data-letter);
+    position: absolute;
+    right: -10px; top: -20px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 120px;
+    color: rgba(30,158,212,0.06);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .pillar-letter {
+    width: 48px; height: 48px;
+    background: var(--blue-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: #fff;
+    border-radius: 2px;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+  }
+  .pillar-card h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .pillar-word {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--blue-accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .pillar-card p { font-size: 13.5px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
+  .pillar-streams-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .confidential {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    color: var(--gold);
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 8px 12px;
+    border-radius: 2px;
+  }
+
+  /* STREAMS ARCHITECTURE */
+  .arch-section { background: var(--navy2); }
+  .streams-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 48px;
+  }
+  .stream-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+  .stream-code {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--blue-accent);
+    margin-bottom: 4px;
+  }
+  .stream-name {
+    font-size: 12px;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .stream-pillars { display: flex; gap: 4px; }
+  .stream-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background: rgba(30,158,212,0.15);
+    color: var(--blue-accent);
+    border: 1px solid rgba(30,158,212,0.3);
+  }
+
+  /* TIERS */
+  .tiers-section {}
+  .tiers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 56px;
+  }
+  .tier-card {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    padding: 36px 30px;
+    position: relative;
+  }
+  .tier-card.featured {
+    border-color: var(--blue-accent);
+    background: rgba(30,158,212,0.06);
+  }
+  .tier-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .tier-badge.featured { background: var(--blue-accent); color: #fff; }
+  .tier-badge.standard { background: rgba(107,122,144,0.2); color: var(--muted); border: 1px solid var(--border); }
+  .tier-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .tier-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .tier-desc { font-size: 12px; color: var(--muted); margin-bottom: 24px; }
+  .sample-score {
+    display: flex; align-items: baseline; gap: 10px;
+    margin-bottom: 24px;
+  }
+  .sample-score-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    color: #fff;
+    line-height: 1;
+  }
+  .sample-score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: #1fb87a;
+    text-transform: uppercase;
+  }
+  .tier-features { list-style: none; margin-bottom: 28px; }
+  .tier-features li {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex; gap: 8px;
+  }
+  .tier-features li::before { content: '✓'; color: var(--blue-accent); flex-shrink: 0; }
+  .tier-features li.excluded::before { content: '—'; color: rgba(107,122,144,0.4); }
+  .tier-features li.excluded { opacity: 0.5; }
+  .tier-cta {
+    display: block;
+    text-align: center;
+    padding: 11px;
+    border-radius: 3px;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .tier-cta.primary { background: var(--blue-accent); color: #fff; }
+  .tier-cta.secondary { border: 1px solid var(--border); color: var(--text); }
+  .tier-cta:hover { opacity: 0.8; }
+
+  /* INSURER */
+  .insurer-section { background: var(--navy3); }
+  .insurer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .insurer-features { list-style: none; margin-top: 32px; }
+  .insurer-features li {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text);
+  }
+  .insurer-features li::before { content: '◈'; color: var(--blue-accent); flex-shrink: 0; margin-top: 2px; }
+  .insurer-visual {
+    background: var(--navy2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 40px;
+    text-align: center;
+  }
+  .score-display {
+    font-family: 'DM Serif Display', serif;
+    font-size: 90px;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .score-display-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: #1fb87a;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .pillar-bars { text-align: left; }
+  .pillar-bar-row {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 10px;
+  }
+  .pillar-bar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    width: 24px;
+    flex-shrink: 0;
+  }
+  .pillar-bar-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .pillar-bar-fill {
+    height: 100%;
+    background: var(--blue-accent);
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+  .pillar-bar-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+    width: 28px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* CTA */
+  .cta-section { text-align: center; padding: 90px 40px; }
+  .cta-section .section-title { max-width: 500px; margin: 0 auto 16px; }
+  .cta-section .section-sub { margin: 0 auto 40px; text-align: center; }
+  .cta-btns { display: flex; gap: 14px; justify-content: center; }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy2);
+    border-top: 1px solid var(--border);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 14px;
+    color: var(--gold);
+  }
+  .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-copy { font-size: 11px; color: var(--muted); }
+
+  @media (max-width: 900px) {
+    .process-grid, .pillar-grid, .streams-grid, .tiers-grid { grid-template-columns: 1fr; }
+    .insurer-grid { grid-template-columns: 1fr; }
+    .stat-item { padding: 20px 28px; }
+    nav { padding: 0 20px; }
+    section { padding: 60px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://amusementstandards.com" class="nav-logo">amusement standards.</a>
+  <div class="nav-links">
+    <a href="#how">How It Works</a>
+    <a href="#pillars">Six Pillars</a>
+    <a href="#tiers">Tiers</a>
+    <a href="#streams">Architecture</a>
+    <a href="mailto:adam@amusementstandards.com" class="nav-cta">Request a Score</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Amusement Standards · AS 360 Platform</div>
+  <div class="hero-score-name">SPLASH<br><span>SCORE™</span></div>
+  <div class="hero-trademark">The Aquatic Risk Index</div>
+  <p class="hero-sub">
+    A composite risk index for <strong>water parks, aquatic attractions, and swim facilities</strong> — built the way FICO scores creditworthiness. Twelve independent data streams. Six scored pillars. One number your insurers, operators, and ownership can act on.
+  </p>
+  <div class="hero-btns">
+    <a href="#tiers" class="btn-primary">See Deployment Tiers</a>
+    <a href="mailto:adam@amusementstandards.com" class="btn-secondary">Request a Score</a>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">78<sup>*</sup></div>
+    <div class="stat-label">Sample SPLASH Score™</div>
+    <div class="stat-badge">GOOD</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">12</div>
+    <div class="stat-label">Data Streams</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">6</div>
+    <div class="stat-label">Scored Pillars</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">360°</div>
+    <div class="stat-label">Coverage</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">1</div>
+    <div class="stat-label">Composite Index</div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process-section" id="how">
+  <div class="max-w">
+    <div class="section-label">The Process</div>
+    <h2 class="section-title">Three phases.<br><em>One score.</em></h2>
+    <p class="section-sub">Amusement Standards deploys AS 360 SPLASH across your aquatic facility. Every data stream is independent — no single source controls the outcome. When streams agree, confidence is high. When they diverge, that gap is the finding.</p>
+    <div class="process-grid">
+      <div class="process-card">
+        <div class="process-num">01</div>
+        <div class="process-icon">🏗️</div>
+        <h3>Deploy</h3>
+        <p>Amusement Standards embeds AS 360 SPLASH across your aquatic operation. Audit schedules are set, water quality feeds are connected, and lifeguard zone mapping is documented. No disruption to daily operations or guest programming.</p>
+      </div>
+      <div class="process-card">
+        <div class="process-num">02</div>
+        <div class="process-icon">📡</div>
+        <h3>Collect</h3>
+        <p>Twelve independent streams feed the system simultaneously — in-house inspections, lifeguard zone audits, water chemistry readings, covert guest patrols, near-miss logs, and automated health department feeds. No single source controls the outcome.</p>
+      </div>
+      <div class="process-card">
+        <div class="process-num">03</div>
+        <div class="process-icon">📊</div>
+        <h3>Score</h3>
+        <p>All streams converge into six pillar scores — Safety, Protocol, Lifeguard, Aquatic, Structure, Hazard — which aggregate into a single composite SPLASH Score. Insurers receive a structured risk dossier. Operators receive a prioritized action list.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section id="pillars">
+  <div class="max-w">
+    <div class="pillars-intro">
+      <div class="section-label">The Framework</div>
+      <h2 class="section-title">Six pillars.<br><em>360° aquatic coverage.</em></h2>
+      <p class="section-sub">Every stream feeds one or more pillars. Pillar scores are independent — a strong Safety score does not mask a weak Lifeguard score. The composite reflects all six dimensions simultaneously.</p>
+    </div>
+    <div class="pillar-grid">
+      <div class="pillar-card" data-letter="S">
+        <div class="pillar-letter">S</div>
+        <div class="pillar-word">Safety</div>
+        <h3>Active Prevention</h3>
+        <p>Active incident prevention systems, emergency action plan currency, first aid station readiness, AED placement and certification, and guest safety communication — signage, PA coverage, and staff visibility throughout the aquatic footprint.</p>
+        <div class="pillar-streams-label">Contributing Streams</div>
+        <div class="confidential">🔒 WEIGHTING CONFIDENTIAL · NDA REQUIRED</div>
+      </div>
+      <div class="pillar-card" data-letter="P">
+        <div class="pillar-letter">P</div>
+        <div class="pillar-word">Protocol</div>
+        <h3>Documented Compliance</h3>
+        <p>SOP currency for slide cycles, capacity management, height enforcement, chemical handling, opening/closing procedures, and corrective action closure rates. The paper trail pillar — what your regulators and insurers will ask for first.</p>
+        <div class="pillar-streams-label">Contributing Streams</div>
+        <div class="confidential">🔒 WEIGHTING CONFIDENTIAL · NDA REQUIRED</div>
+      </div>
+      <div class="pillar-card" data-letter="L">
+        <div class="pillar-letter">L</div>
+        <div class="pillar-word">Lifeguard</div>
+        <h3>Zone & Staff Performance</h3>
+        <p>Certification currency (Ellis, StarGuard, Red Cross), rotation schedule adherence, scanning zone coverage maps, fatigue management compliance, in-service training frequency, and response time documentation. The highest liability exposure pillar in aquatic operations.</p>
+        <div class="pillar-streams-label">Contributing Streams</div>
+        <div class="confidential">🔒 WEIGHTING CONFIDENTIAL · NDA REQUIRED</div>
+      </div>
+      <div class="pillar-card" data-letter="A">
+        <div class="pillar-letter">A</div>
+        <div class="pillar-word">Aquatic</div>
+        <h3>Water Quality & Chemistry</h3>
+        <p>Water chemistry (pH, free chlorine, combined chlorine, turbidity, temperature), filtration system operational status, health department inspection history, recreational water illness (RWI) prevention protocols, and bather load management against permitted capacity.</p>
+        <div class="pillar-streams-label">Contributing Streams</div>
+        <div class="confidential">🔒 WEIGHTING CONFIDENTIAL · NDA REQUIRED</div>
+      </div>
+      <div class="pillar-card" data-letter="S">
+        <div class="pillar-letter" style="background:#1a7fc1;">S</div>
+        <div class="pillar-word">Structure</div>
+        <h3>Physical Plant Condition</h3>
+        <p>Physical condition of slides, pools, decks, ladders, wave and flow systems, drainage infrastructure, and mechanical ride components. Inspection cadence, maintenance work order closure rates, and manufacturer service bulletin compliance status.</p>
+        <div class="pillar-streams-label">Contributing Streams</div>
+        <div class="confidential">🔒 WEIGHTING CONFIDENTIAL · NDA REQUIRED</div>
+      </div>
+      <div class="pillar-card" data-letter="H">
+        <div class="pillar-letter" style="background:#1565a8;">H</div>
+        <div class="pillar-word">Hazard</div>
+        <h3>Environmental Risk</h3>
+        <p>Weather response protocols and lightning detection compliance, Virginia Graeme Baker Act drain entrapment compliance, slip/fall surface condition audits, chemical storage and handling safety, UV exposure management, and crowd density monitoring at peak load.</p>
+        <div class="pillar-streams-label">Contributing Streams</div>
+        <div class="confidential">🔒 WEIGHTING CONFIDENTIAL · NDA REQUIRED</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STREAMS ARCHITECTURE -->
+<section class="arch-section" id="streams">
+  <div class="max-w">
+    <div class="section-label">System Architecture</div>
+    <h2 class="section-title">How the streams<br><em>converge.</em></h2>
+    <p class="section-sub">Twelve independent data streams — spanning in-house audits, lifeguard zone observation, water chemistry feeds, and regulatory records — flow into six scored pillars, then into a single composite SPLASH Score.</p>
+    <div class="streams-grid">
+      <div class="stream-card">
+        <div class="stream-code">LGA</div>
+        <div class="stream-name">Lifeguard Zone Audit</div>
+        <div class="stream-pillars"><span class="stream-pill">L</span><span class="stream-pill">S</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">WQA</div>
+        <div class="stream-name">Water Quality Analysis</div>
+        <div class="stream-pillars"><span class="stream-pill">A</span><span class="stream-pill">H</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">IHS</div>
+        <div class="stream-name">In-House Safety Inspection</div>
+        <div class="stream-pillars"><span class="stream-pill">S</span><span class="stream-pill">P</span><span class="stream-pill">S2</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">SGS</div>
+        <div class="stream-name">Slide & Geometry Survey</div>
+        <div class="stream-pillars"><span class="stream-pill">S2</span><span class="stream-pill">H</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">BAL</div>
+        <div class="stream-name">Bather Load Index</div>
+        <div class="stream-pillars"><span class="stream-pill">A</span><span class="stream-pill">H</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">EAP</div>
+        <div class="stream-name">Emergency Action Plan Review</div>
+        <div class="stream-pillars"><span class="stream-pill">S</span><span class="stream-pill">P</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">NMR</div>
+        <div class="stream-name">Near-Miss Reporting</div>
+        <div class="stream-pillars"><span class="stream-pill">S</span><span class="stream-pill">P</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">IRL</div>
+        <div class="stream-name">Incident Record Log</div>
+        <div class="stream-pillars"><span class="stream-pill">S</span><span class="stream-pill">L</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">HDI</div>
+        <div class="stream-name">Health Dept. Inspection History</div>
+        <div class="stream-pillars"><span class="stream-pill">A</span><span class="stream-pill">P</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">VGB</div>
+        <div class="stream-name">VGB Drain Compliance Audit</div>
+        <div class="stream-pillars"><span class="stream-pill">H</span><span class="stream-pill">P</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">CAR</div>
+        <div class="stream-name">Corrective Action Pipeline</div>
+        <div class="stream-pillars"><span class="stream-pill">P</span><span class="stream-pill">S2</span></div>
+      </div>
+      <div class="stream-card">
+        <div class="stream-code">WX</div>
+        <div class="stream-name">Live Weather Feed</div>
+        <div class="stream-pillars"><span class="stream-pill">H</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIERS -->
+<section id="tiers">
+  <div class="max-w">
+    <div class="section-label">Deployment Tiers</div>
+    <h2 class="section-title">Right-sized for<br><em>every aquatic operation.</em></h2>
+    <p class="section-sub">AS 360 SPLASH deploys across three tiers. Each tier is a complete system — not a crippled version of the next. The right tier is determined by your pool count, staffing model, and insurer requirements.</p>
+    <div class="tiers-grid">
+      <div class="tier-card">
+        <div class="tier-badge standard">Standard</div>
+        <div class="tier-name">AS 360 SPLASH</div>
+        <div class="tier-title">Lite</div>
+        <div class="tier-desc">Community pools · HOA facilities · Small water parks · 1–5 slides</div>
+        <div class="sample-score">
+          <div class="sample-score-num">72</div>
+          <div class="sample-score-label">Sample Score™</div>
+        </div>
+        <ul class="tier-features">
+          <li><strong>WQA</strong> — Water quality analysis (weekly)</li>
+          <li><strong>IHS</strong> — In-house safety inspection</li>
+          <li><strong>NMR</strong> — Near-miss reporting</li>
+          <li><strong>IRL</strong> — Incident record logging</li>
+          <li><strong>CAR</strong> — Corrective action pipeline</li>
+          <li><strong>EAP</strong> — Emergency action plan review</li>
+          <li class="excluded">LGA lifeguard zone audit not included</li>
+          <li class="excluded">VGB drain compliance not included</li>
+        </ul>
+        <a href="mailto:adam@amusementstandards.com?subject=SPLASH Score Lite Inquiry" class="tier-cta secondary">Inquire About Lite →</a>
+      </div>
+      <div class="tier-card featured">
+        <div class="tier-badge featured">Most Common</div>
+        <div class="tier-name">AS 360 SPLASH</div>
+        <div class="tier-title">Core</div>
+        <div class="tier-desc">Mid-size water parks · Municipal aquatic centers · 5–20 slides</div>
+        <div class="sample-score">
+          <div class="sample-score-num">78</div>
+          <div class="sample-score-label">Sample Score™</div>
+        </div>
+        <ul class="tier-features">
+          <li><strong>All Lite streams</strong> — WQA, IHS, NMR, IRL, CAR, EAP</li>
+          <li><strong>LGA</strong> — Quarterly AS-deployed lifeguard zone audit</li>
+          <li><strong>SGS</strong> — Slide & geometry survey (ASTM-aligned)</li>
+          <li><strong>BAL</strong> — Bather load index tracking</li>
+          <li><strong>VGB</strong> — VGB drain entrapment compliance</li>
+          <li><strong>HDI</strong> — Health department inspection history</li>
+          <li><strong>Structured insurer dossier</strong> — Underwriting-ready format</li>
+          <li><strong>Score trend line</strong> — Quarter-over-quarter movement</li>
+        </ul>
+        <a href="mailto:adam@amusementstandards.com?subject=SPLASH Score Core Inquiry" class="tier-cta primary">Inquire About Core →</a>
+      </div>
+      <div class="tier-card">
+        <div class="tier-badge standard">Portfolio</div>
+        <div class="tier-name">AS 360 SPLASH</div>
+        <div class="tier-title">Enterprise</div>
+        <div class="tier-desc">Regional chains · Large water parks · Multi-location operators · 20+ slides</div>
+        <div class="sample-score">
+          <div class="sample-score-num">85</div>
+          <div class="sample-score-label">Portfolio Score™</div>
+        </div>
+        <ul class="tier-features">
+          <li><strong>All Core streams</strong> — Complete 12-stream deployment</li>
+          <li><strong>WX</strong> — Live weather feed + lightning protocol monitoring</li>
+          <li><strong>Portfolio dashboard</strong> — All facilities scored side-by-side</li>
+          <li><strong>Cross-facility CAR management</strong> — Regional outlier view</li>
+          <li><strong>Portfolio insurer dossier</strong> — Surplus lines placement ready</li>
+          <li><strong>Custom stream integration</strong> — CMMS, HR, or POS API access</li>
+          <li><strong>Dedicated AS account manager</strong> + quarterly briefing</li>
+          <li><strong>White-labeled reporting</strong> for ownership presentations</li>
+        </ul>
+        <a href="mailto:adam@amusementstandards.com?subject=SPLASH Score Enterprise Inquiry" class="tier-cta secondary">Inquire About Enterprise →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSURER -->
+<section class="insurer-section">
+  <div class="max-w">
+    <div class="insurer-grid">
+      <div>
+        <div class="section-label">For Specialty Lines Insurers & MGAs</div>
+        <h2 class="section-title">Risk quantified.<br><em>Not described.</em></h2>
+        <p class="section-sub">The SPLASH Score translates aquatic operational risk into a structured, auditable index. Insurers receive a complete risk dossier — not an anecdotal survey or a checklist PDF.</p>
+        <ul class="insurer-features">
+          <li>Structured risk dossier with composite index + pillar breakdown</li>
+          <li>Independent audit trail with convergence-validated findings</li>
+          <li>Lifeguard certification and zone compliance documentation</li>
+          <li>Water chemistry trend history and health department record</li>
+          <li>Virginia Graeme Baker Act compliance status per attraction</li>
+          <li>Prioritized corrective actions in underwriting-ready format</li>
+        </ul>
+        <div style="margin-top:28px;">
+          <a href="mailto:adam@amusementstandards.com" class="btn-primary">Request Insurer Overview</a>
+        </div>
+      </div>
+      <div class="insurer-visual">
+        <div class="score-display">78</div>
+        <div class="score-display-label">SPLASH Score™ · GOOD</div>
+        <div class="pillar-bars">
+          <div class="pillar-bar-row">
+            <div class="pillar-bar-label">S</div>
+            <div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:82%"></div></div>
+            <div class="pillar-bar-val">82</div>
+          </div>
+          <div class="pillar-bar-row">
+            <div class="pillar-bar-label">P</div>
+            <div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:75%"></div></div>
+            <div class="pillar-bar-val">75</div>
+          </div>
+          <div class="pillar-bar-row">
+            <div class="pillar-bar-label">L</div>
+            <div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:71%"></div></div>
+            <div class="pillar-bar-val">71</div>
+          </div>
+          <div class="pillar-bar-row">
+            <div class="pillar-bar-label">A</div>
+            <div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:84%"></div></div>
+            <div class="pillar-bar-val">84</div>
+          </div>
+          <div class="pillar-bar-row">
+            <div class="pillar-bar-label">S</div>
+            <div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:79%"></div></div>
+            <div class="pillar-bar-val">79</div>
+          </div>
+          <div class="pillar-bar-row">
+            <div class="pillar-bar-label">H</div>
+            <div class="pillar-bar-track"><div class="pillar-bar-fill" style="width:77%"></div></div>
+            <div class="pillar-bar-val">77</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-label">Get Started</div>
+  <h2 class="section-title">Ready to score your<br>aquatic operation?</h2>
+  <p class="section-sub">Amusement Standards deploys AS 360 SPLASH and delivers a composite score your insurers, operators, and ownership can act on. Contact us to discuss deployment scope, timeline, and deliverables.</p>
+  <div class="cta-btns">
+    <a href="mailto:adam@amusementstandards.com" class="btn-primary">Contact Amusement Standards</a>
+    <a href="https://amusementstandards.com" class="btn-secondary">Visit Our Site</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">amusement standards.</div>
+  <div class="footer-links">
+    <a href="https://amusementstandards.com">Home</a>
+    <a href="https://www.amusementstandards.com/as360-ride-score.html">RIDE Score</a>
+    <a href="mailto:adam@amusementstandards.com">Contact</a>
+    <a href="https://www.linkedin.com/company/amusement-standards">LinkedIn</a>
+  </div>
+  <div class="footer-copy">© 2025 Amusement Standards. AS 360 SPLASH Score™ is proprietary methodology.</div>
+</footer>
+
+</body>
+</html>
