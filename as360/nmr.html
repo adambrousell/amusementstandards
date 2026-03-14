@@ -385,10 +385,15 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fields: payload }),
       });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
+      if (!res.ok) {
+        const body = await res.text();
+        console.warn('[NMR] Sync failed', res.status, body);
+        if (si) { si.textContent = res.status + ': ' + body; si.style.color = '#EF4444'; si.style.maxWidth = '400px'; si.style.whiteSpace = 'normal'; }
+        return;
+      }
       if (si) { si.textContent = 'SYNCED ✓'; si.style.color = '#10B981'; }
     } catch (e) {
-      if (si) { si.textContent = 'SYNC ERROR'; si.style.color = '#EF4444'; }
+      if (si) { si.textContent = 'SYNC ERROR: ' + e.message; si.style.color = '#EF4444'; }
       console.warn('[NMR] Airtable sync failed:', e);
     }
   }
