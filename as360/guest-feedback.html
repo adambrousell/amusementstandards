@@ -395,7 +395,7 @@
     </div>
     <div class="field">
       <label>Attraction / Location</label>
-      <input type="text" class="auto-filled" id="location-field" value="Wooden Rollercoaster 1 / Exit Ramp" readonly>
+      <input type="text" class="auto-filled" id="location-field" readonly>
     </div>
   </div>
 
@@ -582,6 +582,21 @@
   }
   tickClock();
   setInterval(tickClock, 1000);
+
+  // ── Random location lock ──────────────────────────────────────────────────
+  (function(){
+    const rides = [
+      'Constellation Carousel', 'Stardust Racers',
+      'Curse of the Werewolf', 'Monsters Unchained: The Frankenstein Experiment',
+      "Dragon Racer's Rally", 'Fyre Drill', "Hiccup's Wing Gliders",
+      'Bowser Jr. Challenge', 'Mario Kart: Bowser\'s Challenge',
+      'Mine-Cart Madness', "Yoshi's Adventure",
+      'Harry Potter and the Battle at the Ministry'
+    ];
+    const pick = rides[Math.floor(Math.random() * rides.length)];
+    const el = document.getElementById('location-field');
+    el.value = pick;
+  })();
 
   // ── Star rating ───────────────────────────────────────────────────────────
   const ratings = { ride: 0, staff: 0, clean: 0, safety: 0, overall: 0 };
