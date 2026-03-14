@@ -720,15 +720,231 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     </div>
   </div>
 
-  <!-- MONTHLY/QUARTERLY/ANNUAL COMING SOON GRID -->
+  <!-- ══ MONTHLY FORMS ══ -->
+
+  <div class="form-panel" id="form-SOA">
+    <div class="form-panel-hdr"><div class="form-panel-title">SOP Adherence Observation</div><button class="btn btn-ghost btn-sm" onclick="closeForm('SOA')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-SOA" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="soa-date"></div>
+        <div class="ff"><label>Shift</label><select id="soa-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Observer</label><input type="text" id="soa-observer" placeholder="Name"></div>
+        <div class="ff"><label>World / Area</label>
+          <select id="soa-world"><option value="">— Select —</option><option>Celestial Park</option><option>Ministry of Magic</option><option>Super Nintendo World</option><option>Isle of Berk</option><option>Dark Universe</option><option>Facility-Wide</option></select>
+        </div>
+      </div>
+      <div class="checklist-group">
+        <div class="cg-title">SOP Compliance — Pass · Flag · Fail · N/A</div>
+        <div id="soa-items"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Team Members Observed</label><input type="number" id="soa-count" placeholder="0" min="0"></div>
+        <div class="ff"><label>Overall Rating</label><select id="soa-rating"><option value="compliant">Fully Compliant</option><option value="minor">Minor Gaps</option><option value="significant">Significant Gaps</option><option value="fail">Non-Compliant — Action Required</option></select></div>
+      </div>
+      <div class="ff"><label>SOPs with Gaps (list by number/name)</label><input type="text" id="soa-gaps" placeholder="e.g. EU-OPS-003, EU-SAFETY-011 — or None"></div>
+      <div class="ff"><label>Coaching / Actions Taken</label><textarea id="soa-notes" rows="2" placeholder="On-the-spot coaching, retraining needed, CARs opened…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('SOA')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('SOA')">Cancel</button></div>
+    </div>
+  </div>
+
+  <div class="form-panel" id="form-SAC">
+    <div class="form-panel-hdr"><div class="form-panel-title">Signage &amp; Compliance Audit</div><button class="btn btn-ghost btn-sm" onclick="closeForm('SAC')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-SAC" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="sac-date"></div>
+        <div class="ff"><label>Inspector</label><input type="text" id="sac-inspector" placeholder="Name"></div>
+      </div>
+      <div class="checklist-group">
+        <div class="cg-title">Signage Compliance — Pass · Flag · Fail · N/A</div>
+        <div id="sac-items"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Signs Missing / Damaged</label><input type="number" id="sac-missing" placeholder="0" min="0" value="0"></div>
+        <div class="ff"><label>Non-Compliant Height Signs</label><input type="number" id="sac-noncompliant" placeholder="0" min="0" value="0"></div>
+      </div>
+      <div class="ff"><label>Specific Signs Needing Replacement</label><textarea id="sac-notes" rows="2" placeholder="Location and sign type for each item flagged…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('SAC')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('SAC')">Cancel</button></div>
+    </div>
+  </div>
+
+  <div class="form-panel" id="form-EAI">
+    <div class="form-panel-hdr"><div class="form-panel-title">Emergency Access Inspection</div><button class="btn btn-ghost btn-sm" onclick="closeForm('EAI')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-EAI" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="eai-date"></div>
+        <div class="ff"><label>Inspector</label><input type="text" id="eai-inspector" placeholder="Name"></div>
+      </div>
+      <div class="checklist-group">
+        <div class="cg-title">Emergency Access — Pass · Fail · N/A</div>
+        <div id="eai-items"></div>
+      </div>
+      <div class="ff"><label>Blocked / Obstructed Routes (describe)</label><textarea id="eai-blocked" rows="2" placeholder="Location, obstruction type, action taken…"></textarea></div>
+      <div class="ff"><label>Overall Status</label><select id="eai-status"><option value="clear">All Access Routes Clear</option><option value="minor">Minor Obstruction — Corrected On-Site</option><option value="critical">Critical Blockage — CAR Opened</option></select></div>
+      <div class="ff"><label>Notes</label><textarea id="eai-notes" rows="2" placeholder="Any findings, corrective actions, follow-up required…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('EAI')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('EAI')">Cancel</button></div>
+    </div>
+  </div>
+
+  <div class="form-panel" id="form-IPL">
+    <div class="form-panel-hdr"><div class="form-panel-title">Infrastructure &amp; Perimeter Log</div><button class="btn btn-ghost btn-sm" onclick="closeForm('IPL')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-IPL" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="ipl-date"></div>
+        <div class="ff"><label>Inspector</label><input type="text" id="ipl-inspector" placeholder="Name"></div>
+      </div>
+      <div class="checklist-group">
+        <div class="cg-title">Infrastructure Condition — Pass · Flag · Fail · N/A</div>
+        <div id="ipl-items"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Items Requiring Maintenance WO</label><input type="number" id="ipl-wo" placeholder="0" min="0" value="0"></div>
+        <div class="ff"><label>Overall Condition</label><select id="ipl-condition"><option value="good">Good</option><option value="fair">Fair — items noted</option><option value="poor">Poor — multiple findings</option></select></div>
+      </div>
+      <div class="ff"><label>Findings / Work Orders Opened</label><textarea id="ipl-notes" rows="2" placeholder="Describe any infrastructure issues found…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('IPL')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('IPL')">Cancel</button></div>
+    </div>
+  </div>
+
+  <div class="form-panel" id="form-OLI">
+    <div class="form-panel-hdr"><div class="form-panel-title">Operational Load Index</div><button class="btn btn-ghost btn-sm" onclick="closeForm('OLI')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-OLI" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="oli-date"></div>
+        <div class="ff"><label>Shift</label><select id="oli-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select></div>
+      </div>
+      <div class="ff"><label>Manager</label><input type="text" id="oli-manager" placeholder="Name"></div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:12px 0 8px;">Attraction Load — Actual vs. Design Capacity</div>
+      <div id="oli-ride-rows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
+      <button class="btn btn-ghost btn-sm" onclick="oliAddRow()" style="margin-bottom:12px;">＋ Add Attraction</button>
+      <div class="form-grid">
+        <div class="ff"><label>Peak Crowd Level (1–10)</label><input type="number" id="oli-crowd" placeholder="1–10" min="1" max="10" step="1"></div>
+        <div class="ff"><label>Avg Queue Wait — Park-Wide (min)</label><input type="number" id="oli-avg-wait" placeholder="e.g. 35" min="0"></div>
+      </div>
+      <div class="ff"><label>Bottlenecks / Capacity Issues Observed</label><textarea id="oli-notes" rows="2" placeholder="Which attractions hit capacity limits, queue overflow issues…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('OLI')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('OLI')">Cancel</button></div>
+    </div>
+  </div>
+
+  <!-- ══ QUARTERLY FORMS ══ -->
+
+  <div class="form-panel" id="form-YPR">
+    <div class="form-panel-hdr"><div class="form-panel-title">Youth Patron Risk Log</div><button class="btn btn-ghost btn-sm" onclick="closeForm('YPR')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-YPR" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="ypr-date"></div>
+        <div class="ff"><label>Reviewer</label><input type="text" id="ypr-reviewer" placeholder="Name"></div>
+      </div>
+      <div class="checklist-group">
+        <div class="cg-title">Youth Risk Controls — Pass · Flag · Fail · N/A</div>
+        <div id="ypr-items"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Youth Incidents This Quarter</label><input type="number" id="ypr-incidents" placeholder="0" min="0" value="0"></div>
+        <div class="ff"><label>Near-Misses Involving Minors</label><input type="number" id="ypr-nearmiss" placeholder="0" min="0" value="0"></div>
+      </div>
+      <div class="ff"><label>High-Risk Areas / Observations</label><textarea id="ypr-notes" rows="2" placeholder="Specific youth risk patterns, zones of concern, actions taken…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('YPR')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('YPR')">Cancel</button></div>
+    </div>
+  </div>
+
+  <div class="form-panel" id="form-GES">
+    <div class="form-panel-hdr"><div class="form-panel-title">Group &amp; Event Supervision Log</div><button class="btn btn-ghost btn-sm" onclick="closeForm('GES')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-GES" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="ges-date"></div>
+        <div class="ff"><label>Event / Group Name</label><input type="text" id="ges-event" placeholder="e.g. School Group — Westwood Elem."></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Group Size (approx.)</label><input type="number" id="ges-size" placeholder="0" min="0"></div>
+        <div class="ff"><label>Age Range</label><input type="text" id="ges-ages" placeholder="e.g. 8–12 yrs"></div>
+      </div>
+      <div class="checklist-group">
+        <div class="cg-title">Group Supervision Controls — Pass · Flag · Fail · N/A</div>
+        <div id="ges-items"></div>
+      </div>
+      <div class="ff"><label>Incidents / Issues During Event</label><textarea id="ges-incidents" rows="2" placeholder="Any safety incidents, behavior issues, or guest complaints…"></textarea></div>
+      <div class="ff"><label>Notes / Recommendations for Future Events</label><textarea id="ges-notes" rows="2" placeholder="What worked, what to change, staffing recommendations…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('GES')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('GES')">Cancel</button></div>
+    </div>
+  </div>
+
+  <div class="form-panel" id="form-ACR">
+    <div class="form-panel-hdr"><div class="form-panel-title">Attraction Condition Report</div><button class="btn btn-ghost btn-sm" onclick="closeForm('ACR')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-ACR" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="acr-date"></div>
+        <div class="ff"><label>Inspector</label><input type="text" id="acr-inspector" placeholder="Name"></div>
+      </div>
+      <div id="acr-ride-rows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
+      <div class="ff"><label>Overall Fleet Condition</label><select id="acr-overall"><option value="excellent">Excellent — All rides performing well</option><option value="good">Good — Minor items noted</option><option value="fair">Fair — Multiple concerns</option><option value="poor">Poor — Immediate maintenance required</option></select></div>
+      <div class="ff"><label>Rides Flagged for Engineering Review</label><input type="text" id="acr-flagged" placeholder="Ride names or None"></div>
+      <div class="ff"><label>Notes / Work Orders Initiated</label><textarea id="acr-notes" rows="2" placeholder="Describe findings requiring follow-up maintenance…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('ACR')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('ACR')">Cancel</button></div>
+    </div>
+  </div>
+
+  <!-- ══ ANNUAL FORMS ══ -->
+
+  <div class="form-panel" id="form-SBC">
+    <div class="form-panel-hdr"><div class="form-panel-title">Service Bulletin Compliance</div><button class="btn btn-ghost btn-sm" onclick="closeForm('SBC')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-SBC" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Review Date</label><input type="date" id="sbc-date"></div>
+        <div class="ff"><label>Reviewer</label><input type="text" id="sbc-reviewer" placeholder="Name"></div>
+      </div>
+      <div id="sbc-bulletin-rows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
+      <button class="btn btn-ghost btn-sm" onclick="sbcAddRow()" style="margin-bottom:12px;">＋ Add Service Bulletin</button>
+      <div class="form-grid">
+        <div class="ff"><label>Total Bulletins Reviewed</label><input type="number" id="sbc-total" placeholder="0" min="0" value="0"></div>
+        <div class="ff"><label>Bulletins Pending Compliance</label><input type="number" id="sbc-pending" placeholder="0" min="0" value="0"></div>
+      </div>
+      <div class="ff"><label>Overdue / Non-Compliant Bulletins</label><textarea id="sbc-overdue" rows="2" placeholder="List any service bulletins that have not been fully actioned…"></textarea></div>
+      <div class="ff"><label>Notes</label><textarea id="sbc-notes" rows="2" placeholder="Manufacturer contacts, scheduled work, documentation filed…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('SBC')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('SBC')">Cancel</button></div>
+    </div>
+  </div>
+
+  <div class="form-panel" id="form-EAP">
+    <div class="form-panel-hdr"><div class="form-panel-title">Emergency Action Plan Review</div><button class="btn btn-ghost btn-sm" onclick="closeForm('EAP')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-EAP" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Review Date</label><input type="date" id="eap-date"></div>
+        <div class="ff"><label>Reviewer</label><input type="text" id="eap-reviewer" placeholder="Name"></div>
+      </div>
+      <div class="checklist-group">
+        <div class="cg-title">EAP Review Checklist — Pass · Fail · N/A</div>
+        <div id="eap-items"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Last Drill Date</label><input type="date" id="eap-lastdrill"></div>
+        <div class="ff"><label>Next Drill Scheduled</label><input type="date" id="eap-nextdrill"></div>
+      </div>
+      <div class="ff"><label>Sections Requiring Update</label><textarea id="eap-updates" rows="2" placeholder="List any EAP sections that are outdated or need revision…"></textarea></div>
+      <div class="ff"><label>Notes / Findings</label><textarea id="eap-notes" rows="2" placeholder="Gaps identified, actions taken, staff training needed…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('EAP')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('EAP')">Cancel</button></div>
+    </div>
+  </div>
+
+  <!-- N/A for Epic Universe (no aquatic facilities) -->
   <div id="insp-coming-soon" style="display:none;">
     <div class="panel">
-      <div class="panel-hdr"><div class="panel-title" id="coming-soon-title">Monthly Inspections</div></div>
+      <div class="panel-hdr"><div class="panel-title" id="coming-soon-title">Inspections</div></div>
       <div class="panel-body" style="text-align:center;padding:24px;">
-        <div style="font-size:28px;margin-bottom:10px;">🔜</div>
-        <div style="font-size:14px;color:var(--text-bright);font-weight:600;margin-bottom:8px;">Forms coming next</div>
-        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;max-width:400px;margin:0 auto 16px;" id="coming-soon-list"></div>
-        <button class="btn btn-amber" onclick="alert('Build these forms next — say YES in the chat!')">Request Build →</button>
+        <div style="font-size:28px;margin-bottom:10px;">🚫</div>
+        <div style="font-size:14px;color:var(--text-bright);font-weight:600;margin-bottom:6px;" id="coming-soon-na-title">Not applicable</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;max-width:400px;margin:0 auto;" id="coming-soon-list"></div>
       </div>
     </div>
   </div>
@@ -1092,7 +1308,10 @@ function init(){
 function setDefaults(){
   const today=new Date().toISOString().split('T')[0];
   const now=new Date().toTimeString().slice(0,5);
-  ['sl-date','tp-date','ho-date','aud-date','car-due','cca-date','hae-date','wqa-date','tpa-date'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=today;});
+  ['sl-date','tp-date','ho-date','aud-date','car-due',
+   'cca-date','hae-date','wqa-date','tpa-date',
+   'soa-date','sac-date','eai-date','ipl-date','oli-date',
+   'ypr-date','ges-date','acr-date','sbc-date','eap-date'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=today;});
   ['sl-start','ho-time','wqa-time'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=now;});
 }
 
@@ -1179,58 +1398,52 @@ function updateFreqBadges(){
 
 function renderInspectionCards(){
   const freqIds=Object.keys(INSP_DEFS).filter(id=>INSP_DEFS[id].freq===currentFreq);
-  const hasForm=['CCA','HAE','WQA','TPA'];
+  const hasForm=['CCA','HAE','WQA','TPA','SOA','SAC','EAI','IPL','OLI','YPR','GES','ACR','SBC','EAP'];
+  const naForms={LGA:true,BAL:true,VGB:true,SGS:true};// no aquatics at Epic Universe
   const grid=document.getElementById('insp-card-grid');
   const cs=document.getElementById('insp-coming-soon');
+  const naIds=freqIds.filter(id=>naForms[id]);
+  const activeIds=freqIds.filter(id=>!naForms[id]);
 
-  if(currentFreq==='weekly'){
-    grid.style.display='grid';
-    cs.style.display='none';
-    grid.innerHTML=freqIds.map(id=>{
-      const def=INSP_DEFS[id];
-      const s=getInspStatus(id);
-      const built=hasForm.includes(id);
-      const statusClass=built?s.status:'not-started';
-      const lastFmt=s.lastDate?new Date(s.lastDate).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'Never';
-      let badgeClass='not-started',badgeText='NOT STARTED';
-      if(s.status==='overdue'){badgeClass='overdue';badgeText=`OVERDUE ${s.daysOverdue}d`;}
-      else if(s.status==='due-soon'){badgeClass='due-soon';badgeText=`DUE IN ${s.daysUntil}d`;}
-      else if(s.status==='current'){badgeClass='current';badgeText='CURRENT';}
-      let nextClass='dim';
-      let nextText=s.lastDate?`Next: ${new Date(new Date(s.lastDate).getTime()+def.cadence*86400000).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`:'-';
-      if(s.status==='overdue')nextClass='red';
-      else if(s.status==='due-soon')nextClass='amb';
-      else if(s.status==='current')nextClass='grn';
-      const btnClass=s.status==='overdue'?'red':'';
-      const btnText=!built?'Form Coming Soon':s.status==='overdue'?`Complete Now — ${s.daysOverdue}d overdue`:'Start Inspection';
-      return `<div class="insp-card ${statusClass}${!built?' coming-soon':''}">
-        <div class="ic-top">
-          <div><div class="ic-name">${def.name}</div><div class="ic-sub">${def.table} · Weekly</div></div>
-          <div class="ic-badge ${badgeClass}">${badgeText}</div>
-        </div>
-        <div class="ic-scores">${def.scores.map(s=>`<span class="sb sb-${s}">${s.toUpperCase()}</span>`).join('')}</div>
-        <div class="ic-meta">
-          <div class="ic-last">Last: ${lastFmt}</div>
-          <div class="ic-next ${nextClass}">${nextText}</div>
-        </div>
-        <button class="insp-btn ${btnClass}" onclick="${built?`openForm('${id}')`:'void(0)'}">${btnText}</button>
-      </div>`;
-    }).join('');
-  } else {
-    grid.style.display='none';
-    cs.style.display='block';
-    const csMap={monthly:'Monthly inspection forms — 6 forms',quarterly:'Quarterly inspection forms — 4 forms',annual:'Annual inspection forms — 3 forms'};
-    const listMap={
-      monthly:'SOP Adherence · Signage & Compliance · Emergency Access · Infrastructure & Perimeter · Operational Load Index · Lifeguard Zone Audit · Bather Load Index',
-      quarterly:'VGB Drain Compliance · Youth Patron Risk Log · Group & Event Supervision · Attraction Condition Report',
-      annual:'Service Bulletin Compliance · Emergency Action Plan Review · Slide & Geometry Survey'
-    };
-    document.getElementById('coming-soon-title').textContent=csMap[currentFreq]||'Coming Soon';
-    document.getElementById('coming-soon-list').textContent=listMap[currentFreq]||'';
-    freqIds.forEach(id=>{
-      const s=getInspStatus(id);
-    });
+  grid.style.display='grid';
+  cs.style.display=naIds.length&&!activeIds.length?'block':'none';
+
+  if(naIds.length&&!activeIds.length){
+    const naNames=naIds.map(id=>INSP_DEFS[id].name).join(' · ');
+    document.getElementById('coming-soon-title').textContent='Not applicable — Epic Universe';
+    document.getElementById('coming-soon-na-title').textContent='No aquatic facilities at this venue';
+    document.getElementById('coming-soon-list').textContent=naNames+' — mark N/A for this location';
+    grid.innerHTML='';return;
   }
+
+  grid.innerHTML=activeIds.map(id=>{
+    const def=INSP_DEFS[id];
+    const s=getInspStatus(id);
+    const built=hasForm.includes(id);
+    const statusClass=built?s.status:'not-started';
+    const lastFmt=s.lastDate?new Date(s.lastDate).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'Never';
+    let badgeClass='not-started',badgeText='NOT STARTED';
+    if(s.status==='overdue'){badgeClass='overdue';badgeText=`OVERDUE ${s.daysOverdue}d`;}
+    else if(s.status==='due-soon'){badgeClass='due-soon';badgeText=`DUE IN ${s.daysUntil}d`;}
+    else if(s.status==='current'){badgeClass='current';badgeText='CURRENT';}
+    const nextText=s.lastDate?`Next: ${new Date(new Date(s.lastDate).getTime()+def.cadence*86400000).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`:'-';
+    const nextClass=s.status==='overdue'?'red':s.status==='due-soon'?'amb':s.status==='current'?'grn':'dim';
+    const btnClass=s.status==='overdue'?'red':'';
+    const cadenceLabel=def.cadence<=7?'Weekly':def.cadence<=31?'Monthly':def.cadence<=92?'Quarterly':'Annual';
+    const btnText=!built?'Form Coming Soon':s.status==='overdue'?`Complete Now — ${s.daysOverdue}d overdue`:'Start Inspection';
+    return `<div class="insp-card ${statusClass}${!built?' coming-soon':''}">
+      <div class="ic-top">
+        <div><div class="ic-name">${def.name}</div><div class="ic-sub">${def.table} · ${cadenceLabel}</div></div>
+        <div class="ic-badge ${badgeClass}">${badgeText}</div>
+      </div>
+      <div class="ic-scores">${def.scores.map(sc=>`<span class="sb sb-${sc}">${sc.toUpperCase()}</span>`).join('')}</div>
+      <div class="ic-meta">
+        <div class="ic-last">Last: ${lastFmt}</div>
+        <div class="ic-next ${nextClass}">${nextText}</div>
+      </div>
+      <button class="insp-btn ${btnClass}" onclick="${built?`openForm('${id}')`:'void(0)'}">${btnText}</button>
+    </div>`;
+  }).join('');
 }
 
 function openForm(id){
@@ -1251,6 +1464,247 @@ function closeForm(id){
 
 function buildChecklistItems(){
   buildCCAZones();buildHAEStations();buildWQAZones();
+  buildSimpleChecklist('soa-items','SOA',SOA_ITEMS);
+  buildSimpleChecklist('sac-items','SAC',SAC_ITEMS);
+  buildSimpleChecklist('eai-items','EAI',EAI_ITEMS,true);
+  buildSimpleChecklist('ipl-items','IPL',IPL_ITEMS);
+  buildSimpleChecklist('ypr-items','YPR',YPR_ITEMS,true);
+  buildSimpleChecklist('ges-items','GES',GES_ITEMS);
+  buildSimpleChecklist('eap-items','EAP',EAP_ITEMS,true);
+  oliSeedRows();acrSeedRows();sbcSeedRows();
+}
+
+// Generic Pass/Flag/Fail/N/A or Pass/Fail/N/A builder
+function buildSimpleChecklist(elId,prefix,items,pfOnly=false){
+  const el=document.getElementById(elId);if(!el)return;
+  el.innerHTML=items.map((item,i)=>`
+    <div class="cg-row">
+      <div class="cg-label">${item}</div>
+      <div class="cg-options">
+        <div class="cg-opt" data-form="${prefix}" data-idx="${i}" data-val="pass" onclick="selectOpt(this,'pass')">PASS</div>
+        ${!pfOnly?`<div class="cg-opt" data-form="${prefix}" data-idx="${i}" data-val="flag" onclick="selectOpt(this,'flag')">FLAG</div>`:''}
+        <div class="cg-opt" data-form="${prefix}" data-idx="${i}" data-val="fail" onclick="selectOpt(this,'fail')">FAIL</div>
+        <div class="cg-opt" data-form="${prefix}" data-idx="${i}" data-val="na" onclick="selectOpt(this,'na')">N/A</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── CHECKLIST DATA ────────────────────────────────────────────────────────────
+const SOA_ITEMS=[
+  'Pre-opening ride inspection checklist completed per SOP',
+  'Operator positions staffed before gates open',
+  'Dispatch intervals following manufacturer-specified SOP',
+  'Load / unload zone clearance procedure followed correctly',
+  'Restraint verification performed per SOP on each cycle',
+  'Height check being performed at secondary check points',
+  'Emergency stop procedure knowledge confirmed with operators',
+  'Break relief procedures followed — no unsupervised rides',
+  'Incident reporting SOP posted and accessible at all attractions',
+  'Team member uniforms and appearance in compliance with SOP',
+];
+
+const SAC_ITEMS=[
+  'Height requirement signs — Stardust Racers (48″) posted and legible',
+  'Height requirement signs — Dragon Racer\'s Rally (48″) posted and legible',
+  'Height requirement signs — Fyre Drill (48″) posted and legible',
+  'Height requirement signs — Battle at Ministry (40″) posted and legible',
+  'Height requirement signs — Mario Kart (40″) posted and legible',
+  'Height requirement signs — Monsters Unchained (40″) posted and legible',
+  'Height requirement signs — Hiccup\'s Wing Gliders (40″) posted and legible',
+  'Height requirement signs — Mine-Cart Madness (36″) posted and legible',
+  'Height requirement signs — Yoshi\'s Adventure (34″) posted and legible',
+  'Child Swap signage visible at all applicable attractions',
+  'Test seat signage present and accurate',
+  'Emergency exit signs illuminated and unobstructed at all rides',
+  'Evacuation route signage present and legible in all worlds',
+  'No Smoking / prohibited items signage in place',
+  'ADA / accessible route signage accurate',
+  'Ride closure / temporary signage protocol followed when applicable',
+];
+
+const EAI_ITEMS=[
+  'Emergency vehicle access — main entry road clear and unobstructed',
+  'Emergency vehicle access — backstage service roads clear',
+  'Celestial Park emergency egress lanes unobstructed',
+  'Ministry of Magic emergency egress lanes clear',
+  'Super Nintendo World emergency egress lanes clear',
+  'Isle of Berk emergency egress lanes clear',
+  'Dark Universe emergency egress lanes clear',
+  'AED locations accessible and unobstructed — all worlds',
+  'First aid stations accessible and clearly marked',
+  'Fire extinguisher access points unobstructed — all locations',
+  'Emergency exits at all attractions functional and clearly marked',
+  'Gate / portal emergency release mechanisms tested and functional',
+];
+
+const IPL_ITEMS=[
+  'Perimeter fencing — no breaches, damage, or vegetation overgrowth',
+  'Guest entrance gates operational and structurally sound',
+  'Backstage access points — all secure, no unauthorized access risk',
+  'Pathway surfaces — no cracks, uneven sections, or trip hazards',
+  'Drainage systems clear — no pooling or flooding risk',
+  'Outdoor electrical conduit and panels — no exposed wiring',
+  'Lighting — all pathway and attraction lighting functional',
+  'Shade structures and overhead elements — no damage or instability',
+  'Celestial Park fountain infrastructure — no leaks or hazards',
+  'Seating and benches — no broken or unstable units',
+  'Portal / arch structures — no visible structural concerns',
+  'CCTV and security camera systems — visibly operational',
+];
+
+const YPR_ITEMS=[
+  'Child Swap stations — clearly staffed and operational at all applicable rides',
+  'Yoshi\'s Adventure (34″) — youngest guest controls in place',
+  'Mine-Cart Madness (36″) — secondary height check observed',
+  'Unsupervised minor policy visible and being enforced in queues',
+  'Dragon\'s Edge play area — sightlines clear, no entrapment hazards',
+  'Astronomica water play area — staff monitoring minor activity',
+  'Lost child protocol posted at guest services — staff trained',
+  'Designated reunification point clearly marked',
+  'Minor behavior incidents logged in NMR if applicable',
+];
+
+const GES_ITEMS=[
+  'Group wristband / identification system applied before park entry',
+  'Chaperone ratio confirmed with group leader before entry',
+  'Group briefed on height requirements before attraction queuing',
+  'Dedicated group entry / queue lane used where available',
+  'Group supervisor contact information on file with guest services',
+  'No-go zones or restricted access communicated to group',
+  'Incident reporting point of contact assigned for the group',
+  'Post-event debrief with group leader conducted',
+];
+
+const EAP_ITEMS=[
+  'EAP binder present and current at each world operations booth',
+  'EAP version number and revision date current (within 12 months)',
+  'Emergency contact list — all numbers verified and current',
+  'Evacuation assembly points current and posted in EAP',
+  'Ride-specific emergency procedures current for all 11 attractions',
+  'Medical emergency protocol current — AED, CPR, first aid',
+  'Fire emergency procedures current',
+  'Active threat / security incident protocol current',
+  'Lost child / missing person protocol current',
+  'Communication tree current — team leads, operations, security, GM',
+  'Mutual aid / external agency contacts current (Orlando Fire, EMS)',
+  'Last tabletop drill documented',
+  'Last full evacuation drill documented',
+];
+
+// ── OLI — Operational Load Index rows ────────────────────────────────────────
+const EU_ALL_RIDES=[
+  {name:'Stardust Racers',design:1800},
+  {name:'Constellation Carousel',design:600},
+  {name:'Harry Potter and the Battle at the Ministry',design:1400},
+  {name:'Donkey Kong Country: Mine-Cart Madness',design:1200},
+  {name:'Mario Kart: Bowser\'s Challenge',design:1600},
+  {name:'Yoshi\'s Adventure',design:900},
+  {name:'Dragon Racer\'s Rally',design:1400},
+  {name:'Hiccup\'s Wing Gliders',design:800},
+  {name:'Fyre Drill',design:700},
+  {name:'Viking Training Camp',design:null},
+  {name:'Monsters Unchained: The Curse of the Werewolf',design:1200},
+];
+
+let oliRowCount=0;
+function oliSeedRows(){
+  const el=document.getElementById('oli-ride-rows');if(!el)return;
+  el.innerHTML='';oliRowCount=0;
+  EU_ALL_RIDES.forEach(({name,design})=>{oliAddRow(name,design);});
+}
+function oliAddRow(name='',design=null){
+  oliRowCount++;const n=oliRowCount;
+  const row=document.createElement('div');
+  row.id=`oli-row-${n}`;
+  row.style.cssText='background:var(--panel3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;';
+  row.innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 80px 80px 70px;gap:8px;align-items:end;">
+      <div class="ff" style="margin:0"><label>Attraction</label><input type="text" id="oli-name-${n}" value="${name}" placeholder="Attraction name"></div>
+      <div class="ff" style="margin:0"><label>Design TPH</label><input type="number" id="oli-design-${n}" value="${design||''}" placeholder="—" min="0" oninput="calcOliUtil(${n})"></div>
+      <div class="ff" style="margin:0"><label>Actual TPH</label><input type="number" id="oli-actual-${n}" placeholder="—" min="0" oninput="calcOliUtil(${n})"></div>
+      <div class="ff" style="margin:0"><label>Util %</label>
+        <div id="oli-util-${n}" style="padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text-dim);min-height:44px;display:flex;align-items:center;justify-content:center;">—</div>
+      </div>
+    </div>`;
+  document.getElementById('oli-ride-rows').appendChild(row);
+}
+function calcOliUtil(n){
+  const design=parseFloat(document.getElementById(`oli-design-${n}`)?.value);
+  const actual=parseFloat(document.getElementById(`oli-actual-${n}`)?.value);
+  const el=document.getElementById(`oli-util-${n}`);if(!el)return;
+  if(isNaN(design)||isNaN(actual)||!design){el.textContent='—';el.style.color='var(--text-dim)';return;}
+  const pct=Math.round(actual/design*100);
+  el.textContent=pct+'%';
+  el.style.color=pct>=85?'var(--green)':pct>=60?'var(--amber)':'var(--red)';
+}
+
+// ── ACR — Attraction Condition Report rows ─────────────────────────────────
+let acrRowCount=0;
+function acrSeedRows(){
+  const el=document.getElementById('acr-ride-rows');if(!el)return;
+  el.innerHTML='';acrRowCount=0;
+  EU_ALL_RIDES.filter(r=>r.name!=='Viking Training Camp').forEach(({name})=>{acrAddRow(name);});
+}
+function acrAddRow(name=''){
+  acrRowCount++;const n=acrRowCount;
+  const row=document.createElement('div');
+  row.id=`acr-row-${n}`;
+  row.style.cssText='background:var(--panel3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;';
+  row.innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 110px 110px;gap:8px;align-items:end;">
+      <div class="ff" style="margin:0"><label>Attraction</label><input type="text" id="acr-name-${n}" value="${name}" placeholder="Name"></div>
+      <div class="ff" style="margin:0"><label>Condition</label>
+        <select id="acr-cond-${n}">
+          <option value="excellent">Excellent</option>
+          <option value="good">Good</option>
+          <option value="fair">Fair — monitor</option>
+          <option value="poor">Poor — action needed</option>
+        </select>
+      </div>
+      <div class="ff" style="margin:0"><label>Maintenance WO Needed</label>
+        <select id="acr-wo-${n}">
+          <option value="none">None</option>
+          <option value="routine">Routine / Scheduled</option>
+          <option value="urgent">Urgent — open now</option>
+        </select>
+      </div>
+    </div>`;
+  document.getElementById('acr-ride-rows').appendChild(row);
+}
+
+// ── SBC — Service Bulletin rows ────────────────────────────────────────────
+let sbcRowCount=0;
+function sbcSeedRows(){
+  const el=document.getElementById('sbc-bulletin-rows');if(!el)return;
+  el.innerHTML='';sbcRowCount=0;
+  sbcAddRow();
+}
+function sbcAddRow(){
+  sbcRowCount++;const n=sbcRowCount;
+  const row=document.createElement('div');
+  row.id=`sbc-row-${n}`;
+  row.style.cssText='background:var(--panel3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;';
+  row.innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">BULLETIN #${n}</div>
+      <button class="btn-icon" style="font-size:11px;" onclick="document.getElementById('sbc-row-${n}').remove()">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div class="ff" style="margin:0"><label>Bulletin #</label><input type="text" id="sbc-num-${n}" placeholder="e.g. SB-2025-047"></div>
+      <div class="ff" style="margin:0"><label>Attraction</label><input type="text" id="sbc-ride-${n}" placeholder="Ride name"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+      <div class="ff" style="margin:0"><label>Issued Date</label><input type="date" id="sbc-issued-${n}"></div>
+      <div class="ff" style="margin:0"><label>Status</label>
+        <select id="sbc-status-${n}">
+          <option value="compliant">Compliant — fully actioned</option>
+          <option value="in-progress">In Progress</option>
+          <option value="pending">Pending — not yet started</option>
+          <option value="na">N/A — does not apply</option>
+        </select>
+      </div>
+    </div>`;
+  document.getElementById('sbc-bulletin-rows').appendChild(row);
 }
 
 function buildCCAChecklist(){
@@ -1682,6 +2136,78 @@ function submitInspection(id){
     const inspector=document.getElementById('tpa-inspector').value.trim();
     if(!inspector){toast('Enter inspector name','err');return;}
     fields={'Date':document.getElementById('tpa-date').value,'Inspector':inspector,'Scope':document.getElementById('tpa-scope').value,'Attraction':document.getElementById('tpa-attraction').value,'Outcome':document.getElementById('tpa-outcome').value,'Findings Count':parseInt(document.getElementById('tpa-findings-count').value)||0,'CARs Generated':parseInt(document.getElementById('tpa-cars').value)||0,'Summary':document.getElementById('tpa-summary').value,'Report Ref':document.getElementById('tpa-report-ref').value,'Submitted At':new Date().toISOString()};
+  } else if(id==='SOA'){
+    const observer=document.getElementById('soa-observer').value.trim();
+    if(!observer){toast('Enter observer name','err');return;}
+    const results={};SOA_ITEMS.forEach((_,i)=>{results[i]=optState[`SOA-${i}`]||'not-rated';});
+    fields={'Date':document.getElementById('soa-date').value,'Shift':document.getElementById('soa-shift').value,'Observer':observer,'World':document.getElementById('soa-world').value,'Team Members Observed':parseInt(document.getElementById('soa-count').value)||0,'Overall Rating':document.getElementById('soa-rating').value,'SOPs with Gaps':document.getElementById('soa-gaps').value,'Notes':document.getElementById('soa-notes').value,'Results':JSON.stringify(results),'Fails':Object.values(results).filter(v=>v==='fail').length,'Flags':Object.values(results).filter(v=>v==='flag').length,'Submitted At':new Date().toISOString()};
+  } else if(id==='SAC'){
+    const inspector=document.getElementById('sac-inspector').value.trim();
+    if(!inspector){toast('Enter inspector name','err');return;}
+    const results={};SAC_ITEMS.forEach((_,i)=>{results[i]=optState[`SAC-${i}`]||'not-rated';});
+    fields={'Date':document.getElementById('sac-date').value,'Inspector':inspector,'Results':JSON.stringify(results),'Missing Signs':parseInt(document.getElementById('sac-missing').value)||0,'Non-Compliant Height Signs':parseInt(document.getElementById('sac-noncompliant').value)||0,'Notes':document.getElementById('sac-notes').value,'Fails':Object.values(results).filter(v=>v==='fail').length,'Submitted At':new Date().toISOString()};
+  } else if(id==='EAI'){
+    const inspector=document.getElementById('eai-inspector').value.trim();
+    if(!inspector){toast('Enter inspector name','err');return;}
+    const results={};EAI_ITEMS.forEach((_,i)=>{results[i]=optState[`EAI-${i}`]||'not-rated';});
+    fields={'Date':document.getElementById('eai-date').value,'Inspector':inspector,'Results':JSON.stringify(results),'Blocked Routes':document.getElementById('eai-blocked').value,'Overall Status':document.getElementById('eai-status').value,'Notes':document.getElementById('eai-notes').value,'Fails':Object.values(results).filter(v=>v==='fail').length,'Submitted At':new Date().toISOString()};
+  } else if(id==='IPL'){
+    const inspector=document.getElementById('ipl-inspector').value.trim();
+    if(!inspector){toast('Enter inspector name','err');return;}
+    const results={};IPL_ITEMS.forEach((_,i)=>{results[i]=optState[`IPL-${i}`]||'not-rated';});
+    fields={'Date':document.getElementById('ipl-date').value,'Inspector':inspector,'Results':JSON.stringify(results),'Work Orders Needed':parseInt(document.getElementById('ipl-wo').value)||0,'Overall Condition':document.getElementById('ipl-condition').value,'Notes':document.getElementById('ipl-notes').value,'Fails':Object.values(results).filter(v=>v==='fail').length,'Submitted At':new Date().toISOString()};
+  } else if(id==='OLI'){
+    const mgr=document.getElementById('oli-manager').value.trim();
+    if(!mgr){toast('Enter manager name','err');return;}
+    const rideData=[];
+    document.querySelectorAll('[id^="oli-row-"]').forEach(row=>{
+      const n=row.id.split('-')[2];
+      const name=document.getElementById(`oli-name-${n}`)?.value.trim();
+      const design=parseFloat(document.getElementById(`oli-design-${n}`)?.value)||null;
+      const actual=parseFloat(document.getElementById(`oli-actual-${n}`)?.value)||null;
+      if(name)rideData.push({name,design,actual,util:design&&actual?Math.round(actual/design*100):null});
+    });
+    fields={'Date':document.getElementById('oli-date').value,'Shift':document.getElementById('oli-shift').value,'Manager':mgr,'Crowd Level':parseInt(document.getElementById('oli-crowd').value)||null,'Avg Wait Min':parseInt(document.getElementById('oli-avg-wait').value)||null,'Ride Data':JSON.stringify(rideData),'Notes':document.getElementById('oli-notes').value,'Submitted At':new Date().toISOString()};
+  } else if(id==='YPR'){
+    const reviewer=document.getElementById('ypr-reviewer').value.trim();
+    if(!reviewer){toast('Enter reviewer name','err');return;}
+    const results={};YPR_ITEMS.forEach((_,i)=>{results[i]=optState[`YPR-${i}`]||'not-rated';});
+    fields={'Date':document.getElementById('ypr-date').value,'Reviewer':reviewer,'Results':JSON.stringify(results),'Youth Incidents':parseInt(document.getElementById('ypr-incidents').value)||0,'Near-Misses Involving Minors':parseInt(document.getElementById('ypr-nearmiss').value)||0,'Notes':document.getElementById('ypr-notes').value,'Fails':Object.values(results).filter(v=>v==='fail').length,'Submitted At':new Date().toISOString()};
+  } else if(id==='GES'){
+    const event=document.getElementById('ges-event').value.trim();
+    if(!event){toast('Enter event or group name','err');return;}
+    const results={};GES_ITEMS.forEach((_,i)=>{results[i]=optState[`GES-${i}`]||'not-rated';});
+    fields={'Date':document.getElementById('ges-date').value,'Event':event,'Group Size':parseInt(document.getElementById('ges-size').value)||0,'Age Range':document.getElementById('ges-ages').value,'Results':JSON.stringify(results),'Incidents':document.getElementById('ges-incidents').value,'Notes':document.getElementById('ges-notes').value,'Fails':Object.values(results).filter(v=>v==='fail').length,'Submitted At':new Date().toISOString()};
+  } else if(id==='ACR'){
+    const inspector=document.getElementById('acr-inspector').value.trim();
+    if(!inspector){toast('Enter inspector name','err');return;}
+    const rideData=[];
+    document.querySelectorAll('[id^="acr-row-"]').forEach(row=>{
+      const n=row.id.split('-')[2];
+      const name=document.getElementById(`acr-name-${n}`)?.value.trim();
+      const cond=document.getElementById(`acr-cond-${n}`)?.value;
+      const wo=document.getElementById(`acr-wo-${n}`)?.value;
+      if(name)rideData.push({name,condition:cond,workOrder:wo});
+    });
+    fields={'Date':document.getElementById('acr-date').value,'Inspector':inspector,'Ride Data':JSON.stringify(rideData),'Overall Condition':document.getElementById('acr-overall').value,'Flagged for Engineering':document.getElementById('acr-flagged').value,'Notes':document.getElementById('acr-notes').value,'Poor Condition Count':rideData.filter(r=>r.condition==='poor').length,'Submitted At':new Date().toISOString()};
+  } else if(id==='SBC'){
+    const reviewer=document.getElementById('sbc-reviewer').value.trim();
+    if(!reviewer){toast('Enter reviewer name','err');return;}
+    const bulletins=[];
+    document.querySelectorAll('[id^="sbc-row-"]').forEach(row=>{
+      const n=row.id.split('-')[2];
+      const num=document.getElementById(`sbc-num-${n}`)?.value.trim();
+      const ride=document.getElementById(`sbc-ride-${n}`)?.value.trim();
+      const issued=document.getElementById(`sbc-issued-${n}`)?.value;
+      const status=document.getElementById(`sbc-status-${n}`)?.value;
+      if(num||ride)bulletins.push({bulletin:num,ride,issued,status});
+    });
+    fields={'Date':document.getElementById('sbc-date').value,'Reviewer':reviewer,'Bulletins':JSON.stringify(bulletins),'Total Reviewed':parseInt(document.getElementById('sbc-total').value)||bulletins.length,'Pending Compliance':parseInt(document.getElementById('sbc-pending').value)||0,'Overdue':document.getElementById('sbc-overdue').value,'Notes':document.getElementById('sbc-notes').value,'Submitted At':new Date().toISOString()};
+  } else if(id==='EAP'){
+    const reviewer=document.getElementById('eap-reviewer').value.trim();
+    if(!reviewer){toast('Enter reviewer name','err');return;}
+    const results={};EAP_ITEMS.forEach((_,i)=>{results[i]=optState[`EAP-${i}`]||'not-rated';});
+    fields={'Date':document.getElementById('eap-date').value,'Reviewer':reviewer,'Results':JSON.stringify(results),'Last Drill Date':document.getElementById('eap-lastdrill').value,'Next Drill Scheduled':document.getElementById('eap-nextdrill').value,'Sections Needing Update':document.getElementById('eap-updates').value,'Notes':document.getElementById('eap-notes').value,'Fails':Object.values(results).filter(v=>v==='fail').length,'Submitted At':new Date().toISOString()};
   }
 
   inspections[id]={lastDate:today,lastFields:fields};
@@ -1695,16 +2221,16 @@ function submitInspection(id){
 }
 
 function clearFormState(id){
+  const simpleForms={SOA:SOA_ITEMS,SAC:SAC_ITEMS,EAI:EAI_ITEMS,IPL:IPL_ITEMS,YPR:YPR_ITEMS,GES:GES_ITEMS,EAP:EAP_ITEMS};
+  if(simpleForms[id])simpleForms[id].forEach((_,i)=>delete optState[`${id}-${i}`]);
   if(id==='CCA'){
     ccaSessionLocations=[];
     Object.keys(optState).filter(k=>k.startsWith('CCA-')).forEach(k=>delete optState[k]);
-    ccaClearLocation();
-    updateCCACompletedLog();
+    ccaClearLocation();updateCCACompletedLog();
   }
   if(id==='HAE'){
     HAE_STATIONS.forEach((_,i)=>delete optState[`HAE-${i}`]);
-    haeMeasureCount=0;
-    buildHAEStations();
+    haeMeasureCount=0;buildHAEStations();
     const sr=document.getElementById('hae-sticks-replace');if(sr)sr.value='';
   }
   if(id==='WQA'){
@@ -1717,8 +2243,10 @@ function clearFormState(id){
     const d=document.getElementById('wqa-turnover-display');if(d){d.textContent='— hrs';d.style.color='';}
     const n=document.getElementById('wqa-turnover-note');if(n)n.textContent='';
   }
-  const bar=document.getElementById(`prog-${id}`);
-  if(bar)bar.style.width='0%';
+  if(id==='OLI'){oliRowCount=0;oliSeedRows();}
+  if(id==='ACR'){acrRowCount=0;acrSeedRows();}
+  if(id==='SBC'){sbcRowCount=0;sbcSeedRows();}
+  const bar=document.getElementById(`prog-${id}`);if(bar)bar.style.width='0%';
   const panel=document.getElementById('form-'+id);
   if(panel){panel.querySelectorAll('.cg-opt').forEach(o=>{o.className='cg-opt';});}
 }
