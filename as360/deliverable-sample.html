@@ -3,519 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AS 360 RIDE Score™ — Owner Intelligence Dashboard</title>
+<title>AS 360 Park Intelligence Composite™ — Epic Universe · Universal Orlando</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0B1628;
-    --navy2: #0F1E35;
-    --navy3: #162844;
-    --gold: #C9A84C;
-    --gold2: #E8C97A;
-    --gold-dim: rgba(201,168,76,0.15);
-    --red: #E74C3C;
-    --orange: #E67E22;
-    --yellow: #F1C40F;
-    --green: #2ECC71;
-    --blue: #3498DB;
-    --white: #F0F4F8;
-    --muted: rgba(240,244,248,0.45);
-    --border: rgba(201,168,76,0.2);
+    --navy:#0B1628;--navy2:#0F1E35;--navy3:#162844;
+    --gold:#C9A84C;--gold2:#E8C97A;--gold-dim:rgba(201,168,76,0.15);
+    --red:#E74C3C;--orange:#E67E22;--yellow:#F1C40F;--green:#2ECC71;--blue:#3498DB;
+    --ride:#FF6B35;--splash:#1e9ed4;--play:#1fb87a;
+    --white:#F0F4F8;--muted:rgba(240,244,248,0.45);--border:rgba(201,168,76,0.2);
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--navy);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* GRID BACKGROUND */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .page {
-    position: relative;
-    z-index: 1;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 32px 32px 48px;
-  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(201,168,76,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+  .page{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:32px 32px 48px;}
 
   /* HEADER */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 36px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-  }
+  .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+  .brand{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:4px;color:var(--gold);margin-bottom:6px;opacity:0.8;}
+  .facility-name{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:2px;color:var(--white);line-height:1;}
+  .facility-meta{font-size:13px;color:var(--muted);margin-top:8px;font-family:'DM Mono',monospace;letter-spacing:1px;}
+  .header-right{text-align:right;}
+  .report-label{font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:4px;opacity:0.7;}
+  .report-date{font-family:'DM Mono',monospace;font-size:14px;color:var(--white);}
+  .confidential{font-size:10px;letter-spacing:2px;color:var(--muted);margin-top:6px;text-transform:uppercase;}
 
-  .header-left {}
+  /* PIC HERO */
+  .pic-hero{display:grid;grid-template-columns:auto 1fr;gap:32px;margin-bottom:28px;align-items:center;}
+  .score-ring-wrap{position:relative;width:200px;height:200px;flex-shrink:0;}
+  .score-ring-wrap svg{width:200px;height:200px;transform:rotate(-90deg);}
+  .score-ring-bg{fill:none;stroke:var(--navy3);stroke-width:12;}
+  .score-ring-fill{fill:none;stroke:var(--gold);stroke-width:12;stroke-linecap:round;stroke-dasharray:565;stroke-dashoffset:100;filter:drop-shadow(0 0 8px rgba(201,168,76,0.6));transition:stroke-dashoffset 2s ease;}
+  .score-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .score-number{font-family:'Bebas Neue',sans-serif;font-size:60px;line-height:1;color:var(--gold);letter-spacing:2px;filter:drop-shadow(0 0 20px rgba(201,168,76,0.4));}
+  .score-label{font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:2px;}
+  .score-band{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:3px;color:var(--green);margin-top:4px;}
 
-  .brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 13px;
-    letter-spacing: 4px;
-    color: var(--gold);
-    margin-bottom: 6px;
-    opacity: 0.8;
-  }
+  .pic-right{display:flex;flex-direction:column;gap:14px;}
+  .pic-eyebrow{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:var(--gold);opacity:.6;}
 
-  .facility-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 38px;
-    letter-spacing: 2px;
-    color: var(--white);
-    line-height: 1;
-  }
+  /* THREE SCORE STRIPS */
+  .score-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .score-card{border-radius:8px;padding:16px 18px;border:1px solid;position:relative;overflow:hidden;}
+  .score-card-ride{background:rgba(255,107,53,.08);border-color:rgba(255,107,53,.25);}
+  .score-card-splash{background:rgba(30,158,212,.08);border-color:rgba(30,158,212,.25);}
+  .score-card-play{background:rgba(31,184,122,.08);border-color:rgba(31,184,122,.25);}
+  .sc-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin-bottom:2px;}
+  .sc-ride .sc-name{color:var(--ride);}
+  .sc-splash .sc-name{color:var(--splash);}
+  .sc-play .sc-name{color:var(--play);}
+  .sc-seg{font-size:10px;color:var(--muted);margin-bottom:10px;letter-spacing:.5px;}
+  .sc-num{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;color:var(--white);}
+  .sc-band{font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+  .sc-ride .sc-band{color:var(--ride);}
+  .sc-splash .sc-band{color:var(--splash);}
+  .sc-play .sc-band{color:var(--play);}
+  .sc-pillars{margin-top:10px;display:flex;flex-direction:column;gap:5px;}
+  .sc-prow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;}
+  .sc-pname{font-size:10px;color:var(--muted);letter-spacing:.5px;}
+  .sc-pval{font-family:'DM Mono',monospace;font-size:11px;}
+  .sc-ride .sc-pval{color:var(--ride);}
+  .sc-splash .sc-pval{color:var(--splash);}
+  .sc-play .sc-pval{color:var(--play);}
 
-  .facility-meta {
-    font-size: 13px;
-    color: var(--muted);
-    margin-top: 8px;
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 1px;
-  }
-
-  .header-right {
-    text-align: right;
-  }
-
-  .report-label {
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: var(--gold);
-    text-transform: uppercase;
-    margin-bottom: 4px;
-    opacity: 0.7;
-  }
-
-  .report-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    color: var(--white);
-  }
-
-  .confidential {
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--muted);
-    margin-top: 6px;
-    text-transform: uppercase;
-  }
-
-  /* RIDE SCORE HERO */
-  .hero {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 32px;
-    margin-bottom: 28px;
-    align-items: center;
-  }
-
-  .score-ring-wrap {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    flex-shrink: 0;
-  }
-
-  .score-ring-wrap svg {
-    width: 200px;
-    height: 200px;
-    transform: rotate(-90deg);
-  }
-
-  .score-ring-bg {
-    fill: none;
-    stroke: var(--navy3);
-    stroke-width: 12;
-  }
-
-  .score-ring-fill {
-    fill: none;
-    stroke: var(--gold);
-    stroke-width: 12;
-    stroke-linecap: round;
-    stroke-dasharray: 565;
-    stroke-dashoffset: 100;
-    filter: drop-shadow(0 0 8px rgba(201,168,76,0.6));
-    transition: stroke-dashoffset 2s ease;
-  }
-
-  .score-center {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .score-number {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 68px;
-    line-height: 1;
-    color: var(--gold);
-    letter-spacing: 2px;
-    filter: drop-shadow(0 0 20px rgba(201,168,76,0.4));
-  }
-
-  .score-label {
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-top: 2px;
-  }
-
-  .score-band {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 14px;
-    letter-spacing: 3px;
-    color: var(--green);
-    margin-top: 4px;
-  }
-
-  .hero-right {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .hero-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 3px;
-    color: var(--gold);
-    opacity: 0.7;
-  }
-
-  /* PILLAR BARS */
-  .pillars {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .pillar-row {
-    display: grid;
-    grid-template-columns: 160px 1fr 48px;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .pillar-name {
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 500;
-  }
-
-  .pillar-bar-bg {
-    height: 6px;
-    background: var(--navy3);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-
-  .pillar-bar-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 2s ease;
-  }
-
-  .pillar-score {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    font-weight: 500;
-    text-align: right;
-  }
-
-  /* SECTION DIVIDER */
-  .section-label {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 12px;
-    letter-spacing: 4px;
-    color: var(--gold);
-    opacity: 0.5;
-    margin-bottom: 14px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* KPI CARDS ROW */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-
-  .kpi-card {
-    background: var(--navy2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 18px 16px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .kpi-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--gold);
-    opacity: 0.4;
-  }
-
-  .kpi-card.alert::before { background: var(--red); opacity: 1; }
-  .kpi-card.warn::before { background: var(--orange); opacity: 1; }
-  .kpi-card.good::before { background: var(--green); opacity: 1; }
-
-  .kpi-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 40px;
-    line-height: 1;
-    letter-spacing: 1px;
-  }
-
-  .kpi-card.alert .kpi-value { color: var(--red); }
-  .kpi-card.warn .kpi-value { color: var(--orange); }
-  .kpi-card.good .kpi-value { color: var(--green); }
-  .kpi-card .kpi-value { color: var(--white); }
-
-  .kpi-label {
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 6px;
-    line-height: 1.4;
-  }
-
-  .kpi-sub {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 8px;
-    font-family: 'DM Mono', monospace;
-  }
+  /* KPI */
+  .section-label{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:4px;color:var(--gold);opacity:.5;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+  .kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px;}
+  .kpi-card{background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:18px 16px;position:relative;overflow:hidden;}
+  .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:.4;}
+  .kpi-card.alert::before{background:var(--red);opacity:1;}
+  .kpi-card.warn::before{background:var(--orange);opacity:1;}
+  .kpi-card.good::before{background:var(--green);opacity:1;}
+  .kpi-value{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;letter-spacing:1px;color:var(--white);}
+  .kpi-card.alert .kpi-value{color:var(--red);}
+  .kpi-card.warn .kpi-value{color:var(--orange);}
+  .kpi-card.good .kpi-value{color:var(--green);}
+  .kpi-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:6px;line-height:1.4;}
+  .kpi-sub{font-size:11px;color:var(--muted);margin-top:8px;font-family:'DM Mono',monospace;}
 
   /* BOTTOM GRID */
-  .bottom-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 28px;
-  }
+  .bottom-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:28px;}
+  .bottom-grid .panel{display:flex;flex-direction:column;}
+  .bottom-grid .section-rows{overflow-y:auto;max-height:440px;}
+  .panel{background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:20px;}
+  .panel-title{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--gold);opacity:.7;margin-bottom:16px;}
+  .section-rows{display:flex;flex-direction:column;gap:8px;}
+  .section-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+  .section-row-name{font-size:11px;color:var(--muted);flex:1;}
+  .section-row-tag{font-family:'DM Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px;margin-right:10px;font-weight:600;}
+  .tag-ride{background:rgba(255,107,53,.15);color:var(--ride);}
+  .tag-splash{background:rgba(30,158,212,.15);color:var(--splash);}
+  .tag-play{background:rgba(31,184,122,.15);color:var(--play);}
+  .section-row-score{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;min-width:40px;text-align:right;}
+  .score-good{color:var(--green);}
+  .score-fair{color:var(--yellow);}
+  .score-poor{color:var(--orange);}
+  .score-crit{color:var(--red);}
 
-  .panel {
-    background: var(--navy2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-  }
+  .car-table{width:100%;border-collapse:collapse;}
+  .car-table th{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 0 10px;text-align:left;font-weight:500;}
+  .car-table td{font-size:11px;padding:8px 0;border-top:1px solid rgba(255,255,255,0.04);color:var(--white);vertical-align:top;}
+  .badge{display:inline-block;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:3px;font-weight:600;}
+  .badge-critical{background:rgba(231,76,60,.2);color:var(--red);border:1px solid rgba(231,76,60,.3);}
+  .badge-high{background:rgba(230,126,34,.2);color:var(--orange);border:1px solid rgba(230,126,34,.3);}
+  .badge-medium{background:rgba(241,196,15,.15);color:var(--yellow);border:1px solid rgba(241,196,15,.2);}
 
-  .panel-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 13px;
-    letter-spacing: 3px;
-    color: var(--gold);
-    opacity: 0.7;
-    margin-bottom: 16px;
-  }
+  .stream-bars{display:flex;flex-direction:column;gap:10px;}
+  .stream-row{display:grid;grid-template-columns:72px 1fr 42px;align-items:center;gap:10px;}
+  .stream-name{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+  .stream-bar-bg{height:8px;background:var(--navy3);border-radius:4px;overflow:hidden;}
+  .stream-bar-fill{height:100%;border-radius:4px;background:var(--gold);opacity:.7;}
+  .stream-score{font-family:'DM Mono',monospace;font-size:12px;text-align:right;color:var(--white);}
 
-  /* SECTION SCORECARD */
-  .section-rows { display: flex; flex-direction: column; gap: 8px; }
-
-  .section-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .section-row-name {
-    font-size: 11px;
-    color: var(--muted);
-    flex: 1;
-  }
-
-  .section-row-weight {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: rgba(201,168,76,0.5);
-    margin-right: 12px;
-  }
-
-  .section-row-score {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    font-weight: 500;
-    min-width: 40px;
-    text-align: right;
-  }
-
-  .score-good { color: var(--green); }
-  .score-fair { color: var(--yellow); }
-  .score-poor { color: var(--orange); }
-  .score-crit { color: var(--red); }
-
-  /* CAR TABLE */
-  .car-table { width: 100%; border-collapse: collapse; }
-  .car-table th {
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 0 0 10px;
-    text-align: left;
-    font-weight: 500;
-  }
-  .car-table td {
-    font-size: 11px;
-    padding: 8px 0;
-    border-top: 1px solid rgba(255,255,255,0.04);
-    color: var(--white);
-    vertical-align: top;
-  }
-
-  .badge {
-    display: inline-block;
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    border-radius: 3px;
-    font-weight: 600;
-  }
-  .badge-critical { background: rgba(231,76,60,0.2); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
-  .badge-high { background: rgba(230,126,34,0.2); color: var(--orange); border: 1px solid rgba(230,126,34,0.3); }
-  .badge-medium { background: rgba(241,196,15,0.15); color: var(--yellow); border: 1px solid rgba(241,196,15,0.2); }
-  .badge-open { background: rgba(52,152,219,0.15); color: var(--blue); border: 1px solid rgba(52,152,219,0.2); }
-
-  /* STREAM CHART */
-  .stream-bars { display: flex; flex-direction: column; gap: 10px; }
-
-  .stream-row {
-    display: grid;
-    grid-template-columns: 80px 1fr 42px;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .stream-name {
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .stream-bar-bg {
-    height: 8px;
-    background: var(--navy3);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .stream-bar-fill {
-    height: 100%;
-    border-radius: 4px;
-    background: var(--gold);
-    opacity: 0.7;
-  }
-
-  .stream-score {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    text-align: right;
-    color: var(--white);
-  }
-
-  /* TREND MINI */
-  .trend-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-
-  .trend-panel {
-    background: var(--navy2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-  }
-
-  .sparkline {
-    width: 100%;
-    height: 60px;
-    margin-top: 12px;
-  }
+  /* TREND */
+  .trend-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
+  .trend-panel{background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:20px;}
+  .sparkline{width:100%;height:60px;margin-top:12px;}
 
   /* FOOTER */
-  .footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-  }
+  .footer{display:flex;justify-content:space-between;align-items:center;padding-top:20px;border-top:1px solid var(--border);}
+  .footer-brand{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:3px;color:var(--gold);opacity:.5;}
+  .footer-note{font-size:10px;color:var(--muted);letter-spacing:1px;text-align:center;}
+  .footer-id{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:right;}
 
-  .footer-brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 16px;
-    letter-spacing: 3px;
-    color: var(--gold);
-    opacity: 0.5;
-  }
-
-  .footer-note {
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    text-align: center;
-  }
-
-  .footer-id {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-align: right;
-  }
-
-  /* ANIMATE IN */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .hero { animation: fadeUp 0.6s ease both; }
-  .kpi-grid { animation: fadeUp 0.6s ease 0.1s both; }
-  .bottom-grid { animation: fadeUp 0.6s ease 0.2s both; }
-  .trend-grid { animation: fadeUp 0.6s ease 0.3s both; }
-
-  @media print {
-    body { background: white; color: black; }
-    .page { padding: 20px; }
-  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  .pic-hero{animation:fadeUp .6s ease both;}
+  .kpi-grid{animation:fadeUp .6s ease .1s both;}
+  .bottom-grid{animation:fadeUp .6s ease .2s both;}
+  .trend-grid{animation:fadeUp .6s ease .3s both;}
 </style>
 </head>
 <body>
@@ -524,90 +139,103 @@
   <!-- HEADER -->
   <div class="header">
     <div class="header-left">
-      <div class="brand">AS 360 RIDE SCORE™ · OWNER INTELLIGENCE REPORT</div>
-      <div class="facility-name">Adventure World Park</div>
-      <div class="facility-meta">FAC-AWP-001 · Ocean County, NJ · FEC / Outdoor Attraction</div>
+      <div class="brand">AS 360 PARK INTELLIGENCE COMPOSITE™ · OWNER INTELLIGENCE REPORT</div>
+      <div class="facility-name">Universal's Epic Universe</div>
+      <div class="facility-meta">FAC-UEU-001 · Orlando, FL · Universal Orlando Resort · Theme Park Complex</div>
     </div>
     <div class="header-right">
       <div class="report-label">Report Period</div>
       <div class="report-date">March 2026</div>
-      <div class="confidential">Confidential · Proprietary</div>
+      <div class="confidential">Confidential · Proprietary · NDA Required</div>
     </div>
   </div>
 
-  <!-- HERO: RIDE SCORE + PILLARS -->
-  <div class="hero">
+  <!-- PIC HERO -->
+  <div class="pic-hero">
     <div class="score-ring-wrap">
       <svg viewBox="0 0 200 200">
         <circle class="score-ring-bg" cx="100" cy="100" r="90"/>
         <circle class="score-ring-fill" cx="100" cy="100" r="90" id="ringFill"/>
       </svg>
       <div class="score-center">
-        <div class="score-number">81</div>
-        <div class="score-label">RIDE SCORE™</div>
-        <div class="score-band">GOOD</div>
+        <div class="score-number">84</div>
+        <div class="score-label">PARK INTELLIGENCE COMPOSITE™</div>
+        <div class="score-band">STRONG</div>
       </div>
     </div>
 
-    <div class="hero-right">
-      <div class="hero-title">Stream Performance Breakdown</div>
-      <div class="pillars">
-        <div class="pillar-row">
-          <div class="pillar-name">GSA Composite</div>
-          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:84%;background:var(--green)"></div></div>
-          <div class="pillar-score" style="color:var(--green)">84.2</div>
+    <div class="pic-right">
+      <div class="pic-eyebrow">Three Active Scores · AS 360 Platform</div>
+      <div class="score-trio">
+
+        <div class="score-card score-card-ride sc-ride">
+          <div class="sc-name">RIDE</div>
+          <div class="sc-seg">Dry Attractions · Coasters · Flats</div>
+          <div class="sc-num">81</div>
+          <div class="sc-band">GOOD</div>
+          <div class="sc-pillars">
+            <div class="sc-prow"><div class="sc-pname">Readiness</div><div class="sc-pval">84</div></div>
+            <div class="sc-prow"><div class="sc-pname">Integrity</div><div class="sc-pval">79</div></div>
+            <div class="sc-prow"><div class="sc-pname">Delivery</div><div class="sc-pval">82</div></div>
+            <div class="sc-prow"><div class="sc-pname">Environment</div><div class="sc-pval">77</div></div>
+          </div>
         </div>
-        <div class="pillar-row">
-          <div class="pillar-name">Guest Feedback</div>
-          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:76%;background:var(--gold)"></div></div>
-          <div class="pillar-score" style="color:var(--gold)">76.0</div>
+
+        <div class="score-card score-card-splash sc-splash">
+          <div class="sc-name">SPLASH</div>
+          <div class="sc-seg">Aquatic · Hotel Pools · Fyre Drill</div>
+          <div class="sc-num">78</div>
+          <div class="sc-band">GOOD</div>
+          <div class="sc-pillars">
+            <div class="sc-prow"><div class="sc-pname">Safety</div><div class="sc-pval">82</div></div>
+            <div class="sc-prow"><div class="sc-pname">Protocol</div><div class="sc-pval">80</div></div>
+            <div class="sc-prow"><div class="sc-pname">Lifeguard</div><div class="sc-pval">72</div></div>
+            <div class="sc-prow"><div class="sc-pname">Aquatic</div><div class="sc-pval">78</div></div>
+            <div class="sc-prow"><div class="sc-pname">Structure</div><div class="sc-pval">81</div></div>
+            <div class="sc-prow"><div class="sc-pname">Hazard</div><div class="sc-pval">75</div></div>
+            <div class="sc-prow" style="margin-top:6px;border-top:1px solid rgba(30,158,212,0.2);padding-top:6px;"><div class="sc-pname" style="color:rgba(30,158,212,0.6);font-size:9px;">5 ASSETS · FYRE DRILL + 3 HOTELS + ASTRONOMICA (DUAL)</div></div>
+          </div>
         </div>
-        <div class="pillar-row">
-          <div class="pillar-name">Near Miss Rate</div>
-          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:88%;background:var(--green)"></div></div>
-          <div class="pillar-score" style="color:var(--green)">88.0</div>
+
+        <div class="score-card score-card-play sc-play">
+          <div class="sc-name">PLAY</div>
+          <div class="sc-seg">FEC Zones · Interactive · Mixed-Use</div>
+          <div class="sc-num">83</div>
+          <div class="sc-band">STRONG</div>
+          <div class="sc-pillars">
+            <div class="sc-prow"><div class="sc-pname">Performance</div><div class="sc-pval">86</div></div>
+            <div class="sc-prow"><div class="sc-pname">Liability</div><div class="sc-pval">81</div></div>
+            <div class="sc-prow"><div class="sc-pname">Attraction</div><div class="sc-pval">84</div></div>
+            <div class="sc-prow"><div class="sc-pname">Youth</div><div class="sc-pval">79</div></div>
+          </div>
         </div>
-        <div class="pillar-row">
-          <div class="pillar-name">Incident Rate</div>
-          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:92%;background:var(--green)"></div></div>
-          <div class="pillar-score" style="color:var(--green)">92.0</div>
-        </div>
-        <div class="pillar-row">
-          <div class="pillar-name">CAR Closure</div>
-          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:67%;background:var(--yellow)"></div></div>
-          <div class="pillar-score" style="color:var(--yellow)">67.0</div>
-        </div>
-        <div class="pillar-row">
-          <div class="pillar-name">OOS Rate</div>
-          <div class="pillar-bar-bg"><div class="pillar-bar-fill" style="width:80%;background:var(--gold)"></div></div>
-          <div class="pillar-score" style="color:var(--gold)">80.0</div>
-        </div>
+
       </div>
     </div>
   </div>
 
-  <!-- KPI CARDS -->
-  <div class="section-label">OPERATIONAL INTELLIGENCE — KEY INDICATORS</div>
+  <!-- KPIs -->
+  <div class="section-label">PARK INTELLIGENCE — KEY INDICATORS · ALL THREE SCORES</div>
   <div class="kpi-grid">
     <div class="kpi-card warn">
-      <div class="kpi-value" style="color:var(--orange)">3</div>
+      <div class="kpi-value" style="color:var(--orange)">5</div>
       <div class="kpi-label">Open Corrective Actions</div>
-      <div class="kpi-sub">1 Critical · 2 High</div>
+      <div class="kpi-sub">1 Critical · 2 High · 2 Med</div>
     </div>
     <div class="kpi-card alert">
       <div class="kpi-value" style="color:var(--red)">1</div>
       <div class="kpi-label">Overdue CARs</div>
-      <div class="kpi-sub">Past SLA deadline</div>
+      <div class="kpi-sub">SPLASH · Lifeguard zone</div>
     </div>
     <div class="kpi-card good">
-      <div class="kpi-value" style="color:var(--green)">4.1</div>
+      <div class="kpi-value" style="color:var(--green)">4.3</div>
       <div class="kpi-label">Guest Satisfaction Avg</div>
-      <div class="kpi-sub">Based on 14 responses</div>
+      <div class="kpi-sub">Based on 87 responses</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-value">2</div>
+      <div class="kpi-value">4</div>
       <div class="kpi-label">Near Miss Reports</div>
-      <div class="kpi-sub">0 Critical severity</div>
+      <div class="kpi-sub">0 Critical · 2 RIDE · 1 SPLASH · 1 PLAY</div>
     </div>
     <div class="kpi-card good">
       <div class="kpi-value" style="color:var(--green)">0</div>
@@ -619,141 +247,204 @@
   <!-- BOTTOM 3-COL -->
   <div class="bottom-grid">
 
-    <!-- SECTION SCORECARD -->
+    <!-- PILLAR SCORE SUMMARY -->
     <div class="panel">
-      <div class="panel-title">Section Scorecard</div>
-      <div class="section-rows">
-        <div class="section-row">
-          <div class="section-row-name">Ride Safety & Maintenance</div>
-          <div class="section-row-weight">20%</div>
-          <div class="section-row-score score-good">84</div>
-        </div>
-        <div class="section-row">
-          <div class="section-row-name">Emergency Preparedness</div>
-          <div class="section-row-weight">12%</div>
-          <div class="section-row-score score-good">88</div>
-        </div>
-        <div class="section-row">
-          <div class="section-row-name">Safety Signage & Compliance</div>
-          <div class="section-row-weight">10%</div>
-          <div class="section-row-score score-good">79</div>
-        </div>
-        <div class="section-row">
-          <div class="section-row-name">Ride Dispatch & Queue</div>
-          <div class="section-row-weight">12%</div>
-          <div class="section-row-score score-good">91</div>
-        </div>
-        <div class="section-row">
-          <div class="section-row-name">Staff Presentation</div>
-          <div class="section-row-weight">8%</div>
-          <div class="section-row-score score-fair">72</div>
-        </div>
-        <div class="section-row">
-          <div class="section-row-name">Arrival & First Impressions</div>
-          <div class="section-row-weight">8%</div>
-          <div class="section-row-score score-fair">75</div>
-        </div>
-        <div class="section-row">
-          <div class="section-row-name">Cleanliness & Facility</div>
-          <div class="section-row-weight">10%</div>
-          <div class="section-row-score score-good">82</div>
-        </div>
-        <div class="section-row">
-          <div class="section-row-name">Food & Beverage</div>
-          <div class="section-row-weight">8%</div>
-          <div class="section-row-score score-fair">68</div>
-        </div>
-        <div class="section-row">
-          <div class="section-row-name">Exit & Departure</div>
-          <div class="section-row-weight">5%</div>
-          <div class="section-row-score score-good">80</div>
-        </div>
-        <div class="section-row">
-          <div class="section-row-name">General Guest Service</div>
-          <div class="section-row-weight">7%</div>
-          <div class="section-row-score score-good">83</div>
+      <div class="panel-title">Pillar Score Summary</div>
+
+      <!-- RIDE -->
+      <div style="margin-bottom:14px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--ride);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(255,107,53,.2);">RIDE SCORE · 81</div>
+        <div class="stream-bars">
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--ride)">Readiness</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:84%;background:var(--ride);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--ride)">84</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--ride)">Integrity</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:79%;background:var(--ride);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--ride)">79</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--ride)">Delivery</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:82%;background:var(--ride);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--ride)">82</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--ride)">Environment</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:77%;background:var(--ride);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--ride)">77</div>
+          </div>
         </div>
       </div>
+
+      <!-- SPLASH -->
+      <div style="margin-bottom:14px;">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--splash);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(30,158,212,.2);">SPLASH SCORE · 78</div>
+        <div class="stream-bars">
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--splash)">Safety</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:82%;background:var(--splash);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--splash)">82</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--splash)">Protocol</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:80%;background:var(--splash);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--splash)">80</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--splash)">Lifeguard</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:72%;background:var(--red);opacity:.9"></div></div>
+            <div class="stream-score" style="color:var(--red)">72</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--splash)">Aquatic</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:78%;background:var(--splash);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--splash)">78</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--splash)">Structure</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:81%;background:var(--splash);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--splash)">81</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--splash)">Hazard</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:75%;background:var(--yellow);opacity:1"></div></div>
+            <div class="stream-score" style="color:var(--yellow)">75</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLAY -->
+      <div>
+        <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--play);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(31,184,122,.2);">PLAY SCORE · 83</div>
+        <div class="stream-bars">
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--play)">Performance</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:86%;background:var(--play);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--play)">86</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--play)">Liability</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:81%;background:var(--play);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--play)">81</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--play)">Attraction</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:84%;background:var(--play);opacity:.8"></div></div>
+            <div class="stream-score" style="color:var(--play)">84</div>
+          </div>
+          <div class="stream-row">
+            <div class="stream-name" style="color:var(--play)">Youth</div>
+            <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:79%;background:var(--yellow);opacity:1"></div></div>
+            <div class="stream-score" style="color:var(--yellow)">79</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- OPEN CARS -->
     <div class="panel">
       <div class="panel-title">Open Corrective Actions</div>
+      <div class="car-table-wrap">
       <table class="car-table">
         <thead>
           <tr>
             <th>Finding</th>
-            <th>Priority</th>
+            <th>Score</th>
             <th>Due</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <div style="color:var(--white);margin-bottom:3px;">Restraint check deviation observed on Steel Coaster</div>
-              <div style="font-size:10px;color:var(--muted);">IHS · Steel Coaster</div>
+              <div style="color:var(--white);margin-bottom:3px;">Lifeguard zone rotation gap observed — Fyre Drill landing zone</div>
+              <div style="font-size:10px;color:var(--muted);">LGA · Fyre Drill · Isle of Berk</div>
             </td>
-            <td><span class="badge badge-critical">Critical</span></td>
+            <td><span class="badge badge-critical" style="white-space:nowrap;">Critical</span></td>
             <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--red);">Mar 13</td>
           </tr>
           <tr>
             <td>
-              <div style="color:var(--white);margin-bottom:3px;">E-stop signage obscured at load zone</div>
-              <div style="font-size:10px;color:var(--muted);">TPA · Go-Karts</div>
+              <div style="color:var(--white);margin-bottom:3px;">Height enforcement inconsistency at Mine-Cart Madness queue entry</div>
+              <div style="font-size:10px;color:var(--muted);">HAE · Mine-Cart Madness · SNW</div>
             </td>
-            <td><span class="badge badge-high">High</span></td>
+            <td><span class="badge badge-high" style="white-space:nowrap;">High</span></td>
             <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--orange);">Mar 15</td>
           </tr>
           <tr>
             <td>
-              <div style="color:var(--white);margin-bottom:3px;">Height check board damaged, non-compliant</div>
-              <div style="font-size:10px;color:var(--muted);">GSA · Bumper Boats</div>
+              <div style="color:var(--white);margin-bottom:3px;">Dispatch hold procedure deviation — Hiccup's Wing Gliders</div>
+              <div style="font-size:10px;color:var(--muted);">IHS · Wing Gliders · Isle of Berk</div>
             </td>
-            <td><span class="badge badge-high">High</span></td>
+            <td><span class="badge badge-high" style="white-space:nowrap;">High</span></td>
             <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--orange);">Mar 17</td>
+          </tr>
+          <tr>
+            <td>
+              <div style="color:var(--white);margin-bottom:3px;">Unaccompanied minor policy gap — Bowser Jr. Challenge</div>
+              <div style="font-size:10px;color:var(--muted);">YPL · Bowser Jr. · Super Nintendo World</div>
+            </td>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--yellow);">Mar 20</td>
+          </tr>
+          <tr>
+            <td>
+              <div style="color:var(--white);margin-bottom:3px;">E-stop signage worn at Dark Universe — Werewolf load zone</div>
+              <div style="font-size:10px;color:var(--muted);">TPS · Curse of the Werewolf</div>
+            </td>
+            <td><span class="badge badge-medium">Medium</span></td>
+            <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--yellow);">Mar 22</td>
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
 
     <!-- STREAM SCORES -->
     <div class="panel">
-      <div class="panel-title">Stream Intelligence</div>
+      <div class="panel-title">Stream Intelligence · All Scores</div>
       <div class="stream-bars">
         <div class="stream-row">
-          <div class="stream-name">GSA</div>
-          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:84%"></div></div>
+          <div class="stream-name" style="color:var(--ride)">RIDE iGSA</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:84%;background:var(--ride)"></div></div>
           <div class="stream-score">84.2</div>
         </div>
         <div class="stream-row">
-          <div class="stream-name">mGSA</div>
-          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:78%"></div></div>
+          <div class="stream-name" style="color:var(--ride)">RIDE mGSA</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:78%;background:var(--ride)"></div></div>
           <div class="stream-score">78.1</div>
         </div>
         <div class="stream-row">
-          <div class="stream-name">IHS</div>
+          <div class="stream-name" style="color:var(--ride)">RIDE IHS</div>
           <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:71%;background:var(--yellow);opacity:1"></div></div>
           <div class="stream-score" style="color:var(--yellow)">71.4</div>
         </div>
         <div class="stream-row">
-          <div class="stream-name">TPA</div>
-          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:82%"></div></div>
-          <div class="stream-score">82.0</div>
+          <div class="stream-name" style="color:var(--splash)">SPLASH LGA</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:72%;background:var(--splash)"></div></div>
+          <div class="stream-score" style="color:var(--splash)">72.0</div>
         </div>
         <div class="stream-row">
-          <div class="stream-name">GFB</div>
-          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:76%"></div></div>
-          <div class="stream-score">76.0</div>
+          <div class="stream-name" style="color:var(--splash)">SPLASH WQA</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:81%;background:var(--splash)"></div></div>
+          <div class="stream-score" style="color:var(--splash)">81.0</div>
+        </div>
+        <div class="stream-row">
+          <div class="stream-name" style="color:var(--play)">PLAY YPL</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:79%;background:var(--play)"></div></div>
+          <div class="stream-score" style="color:var(--play)">79.0</div>
+        </div>
+        <div class="stream-row">
+          <div class="stream-name" style="color:var(--play)">PLAY AUY</div>
+          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:86%;background:var(--play)"></div></div>
+          <div class="stream-score" style="color:var(--play)">86.0</div>
         </div>
         <div class="stream-row">
           <div class="stream-name">NMR</div>
           <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:88%"></div></div>
           <div class="stream-score">88.0</div>
-        </div>
-        <div class="stream-row">
-          <div class="stream-name">IRL</div>
-          <div class="stream-bar-bg"><div class="stream-bar-fill" style="width:92%"></div></div>
-          <div class="stream-score">92.0</div>
         </div>
         <div class="stream-row">
           <div class="stream-name">CAR</div>
@@ -762,13 +453,14 @@
         </div>
       </div>
     </div>
+
   </div>
 
-  <!-- TREND ROW -->
+  <!-- TRENDS -->
   <div class="section-label">30-DAY TREND INDICATORS</div>
   <div class="trend-grid">
     <div class="trend-panel">
-      <div class="panel-title">RIDE Score™ — 6 Month Trend</div>
+      <div class="panel-title">Park Intelligence Composite™ — 6 Month Trend</div>
       <svg class="sparkline" viewBox="0 0 400 60" preserveAspectRatio="none">
         <defs>
           <linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1">
@@ -776,39 +468,95 @@
             <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <path d="M0,45 L67,42 L133,38 L200,35 L267,28 L333,22 L400,12" 
-              fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
-        <path d="M0,45 L67,42 L133,38 L200,35 L267,28 L333,22 L400,12 L400,60 L0,60 Z" 
-              fill="url(#trendGrad)"/>
-        <circle cx="400" cy="12" r="4" fill="#C9A84C"/>
+        <path d="M0,50 L67,46 L133,41 L200,36 L267,29 L333,22 L400,10" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round"/>
+        <path d="M0,50 L67,46 L133,41 L200,36 L267,29 L333,22 L400,10 L400,60 L0,60 Z" fill="url(#trendGrad)"/>
+        <circle cx="400" cy="10" r="4" fill="#C9A84C"/>
       </svg>
       <div style="display:flex;justify-content:space-between;margin-top:8px;">
         <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">Oct 25</span>
-        <span style="font-size:11px;color:var(--green)">↑ +7.3 pts over 6 months</span>
+        <span style="font-size:11px;color:var(--green)">↑ +8.1 pts PIC over 6 months</span>
         <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">Mar 26</span>
       </div>
     </div>
-
     <div class="trend-panel">
-      <div class="panel-title">CAR Closure Rate — 6 Month Trend</div>
+      <div class="panel-title">SPLASH Lifeguard Pillar — 6 Month Trend</div>
       <svg class="sparkline" viewBox="0 0 400 60" preserveAspectRatio="none">
         <defs>
-          <linearGradient id="carGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#E67E22" stop-opacity="0.3"/>
-            <stop offset="100%" stop-color="#E67E22" stop-opacity="0"/>
+          <linearGradient id="splashGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1e9ed4" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#1e9ed4" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <path d="M0,20 L67,25 L133,18 L200,30 L267,22 L333,35 L400,28" 
-              fill="none" stroke="#E67E22" stroke-width="2" stroke-linecap="round"/>
-        <path d="M0,20 L67,25 L133,18 L200,30 L267,22 L333,35 L400,28 L400,60 L0,60 Z" 
-              fill="url(#carGrad)"/>
-        <circle cx="400" cy="28" r="4" fill="#E67E22"/>
+        <path d="M0,22 L67,28 L133,20 L200,32 L267,24 L333,38 L400,30" fill="none" stroke="#1e9ed4" stroke-width="2" stroke-linecap="round"/>
+        <path d="M0,22 L67,28 L133,20 L200,32 L267,24 L333,38 L400,30 L400,60 L0,60 Z" fill="url(#splashGrad)"/>
+        <circle cx="400" cy="30" r="4" fill="#1e9ed4"/>
       </svg>
       <div style="display:flex;justify-content:space-between;margin-top:8px;">
         <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">Oct 25</span>
-        <span style="font-size:11px;color:var(--orange)">⚠ Closure rate needs attention</span>
+        <span style="font-size:11px;color:var(--orange)">⚠ Lifeguard pillar volatile — priority focus</span>
         <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">Mar 26</span>
       </div>
+    </div>
+  </div>
+
+  <!-- QTX LIVE SECTION -->
+  <div class="section-label">QTX STREAM · WAIT TIME HEATMAP · EPIC UNIVERSE · POWERED BY QUEUE-TIMES.COM</div>
+  <div class="panel" style="margin-bottom:28px;padding:18px 20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:#C9A84C;box-shadow:0 0 6px #C9A84C;"></div>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1px;">SAMPLE DATA · MARCH 2026</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);">LOW RISK</span>
+        <div style="width:120px;height:4px;background:linear-gradient(90deg,#2ECC71,#C9A84C,#E67E22,#E74C3C);border-radius:2px;"></div>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);">HIGH WAIT</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9px;color:rgba(240,244,248,0.2);margin-left:8px;">░ CLOSED</span>
+      </div>
+    </div>
+    <canvas id="hm-qtx" width="1180" height="200" style="width:100%;height:200px;border-radius:6px;display:block;"></canvas>
+  </div>
+
+  <!-- HEATMAP SECTION -->
+  <div class="section-label">RISK INTELLIGENCE HEATMAPS</div>
+
+  <!-- HM 2: Pillar Heatmap -->
+  <div class="panel" style="margin-bottom:16px;">
+    <div class="panel-title">Pillar Breakdown Heatmap · Attraction × Scored Dimension</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;">Rows = attractions. Columns = scored pillars per active score. Reveals which dimension drives each attraction's weakness.</div>
+    <canvas id="hm-pillar" width="1180" height="420" style="width:100%;height:420px;border-radius:6px;display:block;"></canvas>
+    <div style="display:flex;gap:20px;margin-top:10px;flex-wrap:wrap;">
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ride);">■ RIDE pillars</span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--splash);">■ SPLASH pillars</span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--play);">■ PLAY pillars</span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:#E8C97A;">◈ DUAL score asset — Fyre Drill (RIDE+SPLASH) · Astronomica (SPLASH+PLAY)</span>
+    </div>
+  </div>
+
+  <!-- HM 3: Time-of-Day -->
+  <div class="panel" style="margin-bottom:16px;">
+    <div class="panel-title">Operational Load Heatmap · Time-of-Day × Attraction (QTX Stream)</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;">Darker = higher operational load. Identifies when each attraction creates peak stress on dispatch and staffing systems.</div>
+    <canvas id="hm-time" width="1180" height="340" style="width:100%;height:340px;border-radius:6px;display:block;"></canvas>
+    <div style="display:flex;justify-content:space-between;margin-top:8px;">
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);">9 AM OPEN</span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);">NOON</span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);">3 PM</span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);">6 PM</span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);">9 PM CLOSE</span>
+    </div>
+  </div>
+
+  <!-- HM 4: Cross-Score -->
+  <div class="panel" style="margin-bottom:28px;">
+    <div class="panel-title">Cross-Score Heatmap · Land × Active Score (RIDE · SPLASH · PLAY)</div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;">Five lands × three scores. Immediately shows which world has the weakest score and where resources should be directed.</div>
+    <canvas id="hm-cross" width="1180" height="200" style="width:100%;height:200px;border-radius:6px;display:block;"></canvas>
+    <div style="display:flex;gap:20px;margin-top:10px;flex-wrap:wrap;">
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--ride);">■ RIDE Score</span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--splash);">■ SPLASH Score</span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--play);">■ PLAY Score</span>
+      <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);">N/A = score not active in this land</span>
     </div>
   </div>
 
@@ -816,28 +564,376 @@
   <div class="footer">
     <div class="footer-brand">AMUSEMENT STANDARDS</div>
     <div class="footer-note">
-      This report is generated by the AS 360 RIDE Score™ platform.<br>
-      Methodology is proprietary. Contact Amusement Standards for full scoring methodology disclosure under NDA.<br>
+      Park Intelligence Composite™ generated by the AS 360 Platform — RIDE Score™ · SPLASH Score™ · PLAY Score™<br>
+      Methodology is proprietary. Full scoring methodology available under NDA.<br>
       amusementstandards.com
     </div>
     <div class="footer-id">
-      Report ID: AS360-AWP-2026-03<br>
-      Generated: March 12, 2026
+      Report ID: AS360-UEU-2026-03<br>
+      Generated: March 13, 2026
     </div>
   </div>
 
 </div>
-
 <script>
-  // Animate ring on load
   window.addEventListener('load', () => {
     const ring = document.getElementById('ringFill');
-    const score = 81;
-    const circumference = 565;
-    const offset = circumference - (score / 100) * circumference;
-    setTimeout(() => {
-      ring.style.strokeDashoffset = offset;
-    }, 300);
+    const offset = 565 - (84 / 100) * 565;
+    setTimeout(() => { ring.style.strokeDashoffset = offset; }, 300);
+
+    // ── QTX HEATMAP ────────────────────────────────────────────────────────
+    (function(){
+      const LANDS = [
+        { name:'Celestial Park',  short:'Celestial',   color:'#C9A84C', score:'RIDE',       icon:'🌟',
+          rides:[
+            {name:'Stardust Racers',       wait:55, open:true},
+            {name:'Const. Carousel',       wait:15, open:true},
+          ]},
+        { name:'Dark Universe',   short:'Dark Universe',color:'#8B5CF6', score:'RIDE',      icon:'🧛',
+          rides:[
+            {name:'Monsters Unchained',    wait:75, open:true},
+            {name:'Curse of Werewolf',     wait:40, open:true},
+          ]},
+        { name:'Isle of Berk',    short:'Isle of Berk', color:'#FF6B35', score:'RIDE/SPLASH',icon:'🐉',
+          rides:[
+            {name:"Wing Gliders",          wait:45, open:true},
+            {name:"Dragon Racer's",        wait:30, open:true},
+            {name:'Fyre Drill',            wait:20, open:true},
+          ]},
+        { name:'Ministry of Magic',short:'Ministry',   color:'#1e9ed4', score:'RIDE',       icon:'⚡',
+          rides:[
+            {name:'Battle at Ministry',    wait:60, open:true},
+          ]},
+        { name:'SUPER NINTENDO WORLD',short:'SNW',     color:'#1fb87a', score:'PLAY',       icon:'🍄',
+          rides:[
+            {name:"Mario Kart™",           wait:90, open:true},
+            {name:"Mine-Cart Madness™",    wait:35, open:true},
+            {name:"Yoshi's Adventure™",    wait:10, open:true},
+            {name:'Bowser Jr.',            wait:0,  open:false},
+          ]},
+      ];
+
+      function cellColor(wait, open) {
+        if (!open)    return {bg:'rgba(22,40,68,0.7)',  text:'rgba(240,244,248,0.25)'};
+        if (wait===0) return {bg:'rgba(46,204,113,0.8)',text:'rgba(255,255,255,0.95)'};
+        if (wait<=15) return {bg:'rgba(46,204,113,0.8)',text:'rgba(255,255,255,0.95)'};
+        if (wait<=30) return {bg:'rgba(201,168,76,0.82)',text:'rgba(255,255,255,0.95)'};
+        if (wait<=50) return {bg:'rgba(230,126,34,0.85)',text:'rgba(255,255,255,0.95)'};
+        return              {bg:'rgba(231,76,60,0.88)', text:'rgba(255,255,255,0.95)'};
+      }
+
+      const c = document.getElementById('hm-qtx');
+      if (!c) return;
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
+      ctx.fillStyle = '#0F1E35';
+      ctx.fillRect(0,0,W,H);
+
+      const labelW = 130;   // left column for land name
+      const pad    = 5;
+      const rowH   = (H - pad * (LANDS.length + 1)) / LANDS.length;
+      const maxRides = Math.max(...LANDS.map(l=>l.rides.length));
+
+      LANDS.forEach((land, li) => {
+        const y = pad + li * (rowH + pad);
+
+        // Land label background strip
+        ctx.fillStyle = land.color + '18';
+        ctx.beginPath(); ctx.roundRect(pad, y, labelW - pad*2, rowH, 4); ctx.fill();
+
+        // Land icon + name
+        ctx.font = `${Math.min(13, rowH*0.32)}px Bebas Neue, sans-serif`;
+        ctx.fillStyle = land.color;
+        ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+        ctx.fillText(land.icon + '  ' + land.short, pad*2+2, y + rowH*0.38);
+
+        // Score tag
+        ctx.font = `7px DM Mono, monospace`;
+        ctx.fillStyle = land.color + 'AA';
+        ctx.fillText(land.score, pad*2+2, y + rowH*0.72);
+
+        // Ride cells
+        const cellAreaW = W - labelW - pad;
+        const cellW = cellAreaW / maxRides;
+
+        land.rides.forEach((ride, ri) => {
+          const cx = labelW + ri * cellW;
+          const cw = cellW - 3;
+          const {bg, text} = cellColor(ride.wait, ride.open);
+
+          ctx.fillStyle = bg;
+          ctx.beginPath(); ctx.roundRect(cx, y, cw, rowH, 4); ctx.fill();
+
+          // Wait time big number
+          ctx.font = `bold ${Math.min(18, rowH*0.42)}px Bebas Neue, sans-serif`;
+          ctx.fillStyle = text;
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          const label = !ride.open ? '—' : ride.wait === 0 ? '✓' : ride.wait + 'm';
+          ctx.fillText(label, cx + cw/2, y + rowH * 0.38);
+
+          // Ride name
+          ctx.font = `${Math.min(8, rowH*0.2)}px DM Sans, sans-serif`;
+          ctx.fillStyle = ride.open ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.2)';
+          const shortName = ride.name.length > 11 ? ride.name.slice(0,10)+'…' : ride.name;
+          ctx.fillText(shortName, cx + cw/2, y + rowH * 0.72);
+        });
+
+        // Empty slot placeholders (align grid)
+        for (let ri = land.rides.length; ri < maxRides; ri++) {
+          const cx = labelW + ri * cellW;
+          ctx.fillStyle = 'rgba(255,255,255,0.02)';
+          ctx.beginPath(); ctx.roundRect(cx, y, cellW-3, rowH, 4); ctx.fill();
+        }
+      });
+    })();
+
+
+    // RIDE = queued mechanical attractions · SPLASH = aquatic guest contact · PLAY = walk-up interactive / FEC / shows
+    const RIDES = [
+      // ── RIDE SCORE ──────────────────────────────────────────────────────
+      {name:'Monsters Unchained', score:86, r:84,i:88,d:87,e:85, splash:null, play:null, land:'Dark Universe'},
+      {name:'Curse of Werewolf',  score:81, r:79,i:82,d:83,e:80, splash:null, play:null, land:'Dark Universe'},
+      {name:'Stardust Racers',    score:80, r:79,i:81,d:82,e:78, splash:null, play:null, land:'Celestial Park'},
+      {name:'Const. Carousel',    score:82, r:81,i:80,d:84,e:83, splash:null, play:null, land:'Celestial Park'},
+      {name:'Wing Gliders',       score:83, r:82,i:80,d:86,e:85, splash:null, play:null, land:'Isle of Berk'},
+      {name:"Dragon Racer's",     score:78, r:76,i:79,d:80,e:77, splash:null, play:null, land:'Isle of Berk'},
+      {name:'Battle at Ministry', score:79, r:77,i:80,d:81,e:78, splash:null, play:null, land:'Ministry'},
+      {name:'Mario Kart',         score:85, r:84,i:83,d:87,e:86, splash:null, play:null, land:'SNW'},
+      {name:'Mine-Cart Madness',  score:82, r:81,i:80,d:83,e:82, splash:null, play:null, land:'SNW'},
+      {name:"Yoshi's Adventure",  score:76, r:75,i:74,d:78,e:77, splash:null, play:null, land:'SNW'},
+      // ── SPLASH SCORE ────────────────────────────────────────────────────
+      {name:'Fyre Drill',         score:74, r:74,i:72,d:76,e:73, splash:{s:76,p:78,l:70,a:74,st:77,h:71}, play:null, land:'Isle of Berk'},
+      {name:'Helios Grand Pool',  score:82, r:null,i:null,d:null,e:null, splash:{s:83,p:82,l:79,a:85,st:84,h:81}, play:null, land:'Helios Hotel'},
+      {name:'Stella Nova Pool',   score:78, r:null,i:null,d:null,e:null, splash:{s:79,p:78,l:74,a:81,st:80,h:77}, play:null, land:'Stella Nova'},
+      {name:'Terra Luna Pool',    score:79, r:null,i:null,d:null,e:null, splash:{s:80,p:79,l:75,a:82,st:81,h:78}, play:null, land:'Terra Luna'},
+      // ── PLAY SCORE ──────────────────────────────────────────────────────
+      {name:'Astronomica',        score:80, r:null,i:null,d:null,e:null, splash:{s:78,p:76,l:62,a:80,st:79,h:74}, play:{p:82,l:79,a:81,y:78}, land:'Celestial Park'},
+      {name:'Viking Training',    score:77, r:null,i:null,d:null,e:null, splash:null, play:{p:78,l:74,a:79,y:76}, land:'Isle of Berk'},
+      {name:'SNW Power-Up Zone',  score:88, r:null,i:null,d:null,e:null, splash:null, play:{p:90,l:85,a:91,y:86}, land:'SNW'},
+      {name:'Bowser Jr. Chlng',   score:84, r:null,i:null,d:null,e:null, splash:null, play:{p:86,l:82,a:85,y:83}, land:'SNW'},
+      {name:'Wand Experiences',   score:83, r:null,i:null,d:null,e:null, splash:null, play:{p:84,l:80,a:85,y:82}, land:'Ministry'},
+      {name:'Untrainable Dragon', score:79, r:null,i:null,d:null,e:null, splash:null, play:{p:81,l:76,a:80,y:80}, land:'Isle of Berk'},
+      {name:'Le Cirque Arcanus',  score:81, r:null,i:null,d:null,e:null, splash:null, play:{p:83,l:78,a:82,y:81}, land:'Ministry'},
+    ];
+
+    function scoreColor(s, a=1) {
+      if (s===null) return `rgba(22,40,68,${a})`;
+      if (s>=85) return `rgba(46,204,113,${a})`;
+      if (s>=78) return `rgba(201,168,76,${a})`;
+      if (s>=70) return `rgba(230,126,34,${a})`;
+      return `rgba(231,76,60,${a})`;
+    }
+
+    // ── HM2: Pillar Breakdown ──
+    (function(){
+      const c=document.getElementById('hm-pillar');if(!c)return;
+      const ctx=c.getContext('2d');const W=c.width,H=c.height;
+      ctx.fillStyle='#0F1E35';ctx.fillRect(0,0,W,H);
+      // Pillar columns: R I D E = RIDE · S P L A St H = SPLASH · Pe Li At Y = PLAY
+      const pillars=[
+        {k:'R', col:'#FF6B35', lbl:'R'},
+        {k:'I', col:'#FF6B35', lbl:'I'},
+        {k:'D', col:'#FF6B35', lbl:'D'},
+        {k:'E', col:'#FF6B35', lbl:'E'},
+        {k:'S', col:'#1e9ed4', lbl:'S'},
+        {k:'P', col:'#1e9ed4', lbl:'P'},
+        {k:'L', col:'#1e9ed4', lbl:'L'},
+        {k:'A', col:'#1e9ed4', lbl:'A'},
+        {k:'St',col:'#1e9ed4', lbl:'St'},
+        {k:'H', col:'#1e9ed4', lbl:'H'},
+        {k:'Pe',col:'#1fb87a', lbl:'Pe'},
+        {k:'Li',col:'#1fb87a', lbl:'Li'},
+        {k:'At',col:'#1fb87a', lbl:'At'},
+        {k:'Y', col:'#1fb87a', lbl:'Y'},
+      ];
+      const labelW=140,headerH=28,pad=4;
+      const rowH=(H-headerH-pad)/RIDES.length;
+      const colW=(W-labelW-pad)/pillars.length;
+
+      // Score-group header bands
+      [[0,4,'RIDE','#FF6B35'],[4,10,'SPLASH','#1e9ed4'],[10,14,'PLAY','#1fb87a']].forEach(([s,e,lbl,col])=>{
+        const x=labelW+s*colW, bw=(e-s)*colW-2;
+        ctx.fillStyle=col+'18';
+        ctx.beginPath();ctx.roundRect(x+1,2,bw,headerH-4,3);ctx.fill();
+        ctx.font='bold 9px DM Mono,monospace';ctx.fillStyle=col;ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(lbl,x+bw/2,headerH/2);
+      });
+
+      // Pillar letters
+      pillars.forEach((p,i)=>{
+        const x=labelW+i*colW+colW/2;
+        ctx.font='8px DM Mono,monospace';ctx.fillStyle=p.col;ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(p.lbl,x,headerH-6);
+      });
+
+      // Score group dividers
+      [[0,'#FF6B35'],[4,'#1e9ed4'],[10,'#1fb87a']].forEach(([ci,col])=>{
+        const x=labelW+ci*colW;
+        ctx.strokeStyle=col+'40';ctx.lineWidth=1;
+        ctx.beginPath();ctx.moveTo(x,headerH);ctx.lineTo(x,H);ctx.stroke();
+      });
+
+      RIDES.forEach((ride,ri)=>{
+        const y=headerH+ri*rowH;
+        const isDual = !!ride.splash && !!ride.play;
+        const isRide=!ride.splash&&!ride.play;
+        // Row background tint
+        const rowTint=isDual?'rgba(232,201,122,0.06)':ride.splash?'rgba(30,158,212,0.04)':ride.play?'rgba(31,184,122,0.04)':'rgba(255,107,53,0.04)';
+        ctx.fillStyle=rowTint;
+        ctx.beginPath();ctx.roundRect(labelW,y+1,W-labelW-pad,rowH-2,2);ctx.fill();
+
+        // Row label — gold for dual, otherwise score color
+        const labelColor=isDual?'#E8C97A':ride.splash?'#1e9ed4':ride.play?'#1fb87a':'#FF6B35';
+        ctx.font='9px DM Sans,sans-serif';ctx.fillStyle=labelColor;ctx.textAlign='left';ctx.textBaseline='middle';
+        ctx.fillText(ride.name.slice(0,17),6,y+rowH/2);
+        if(isDual){
+          ctx.font='bold 8px DM Mono,monospace';ctx.fillStyle='#E8C97A';
+          ctx.fillText('◈',6+ctx.measureText(ride.name.slice(0,17)).width+3,y+rowH/2);
+        }
+
+        const vals={
+          R:ride.r, I:ride.i, D:ride.d, E:ride.e,
+          S:ride.splash?.s??null, P:ride.splash?.p??null,
+          L:ride.splash?.l??null, A:ride.splash?.a??null,
+          St:ride.splash?.st??null, H:ride.splash?.h??null,
+          Pe:ride.play?.p??null, Li:ride.play?.l??null,
+          At:ride.play?.a??null, Y:ride.play?.y??null,
+        };
+        pillars.forEach((p,pi)=>{
+          const x=labelW+pi*colW, v=vals[p.k];
+          ctx.fillStyle=scoreColor(v,v!==null?0.82:0.1);
+          ctx.beginPath();ctx.roundRect(x+1,y+1,colW-2,rowH-2,2);ctx.fill();
+          if(v!==null){
+            ctx.font='8px DM Mono,monospace';ctx.fillStyle='rgba(255,255,255,0.9)';
+            ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(v,x+colW/2,y+rowH/2);
+          }
+        });
+      });
+    })();
+
+    // ── HM3: Time-of-Day ──
+    (function(){
+      const c=document.getElementById('hm-time');if(!c)return;
+      const ctx=c.getContext('2d');const W=c.width,H=c.height;
+      ctx.fillStyle='#0F1E35';ctx.fillRect(0,0,W,H);
+      const hours=[9,10,11,12,13,14,15,16,17,18,19,20,21];
+      // 21 load curves — RIDE=wait-time-driven · SPLASH/PLAY=foot-traffic-driven
+      const curves=[
+        // RIDE (10)
+        [30,55,70,85,90,88,82,78,72,65,55,40,25], // Monsters Unchained
+        [25,45,60,75,80,82,78,72,68,60,50,38,20], // Curse of Werewolf
+        [40,65,82,90,88,85,80,76,70,62,55,44,28], // Stardust Racers
+        [20,40,55,65,68,65,62,58,52,46,38,28,15], // Constellation Carousel
+        [35,60,75,88,92,90,85,80,75,68,58,42,28], // Wing Gliders
+        [20,40,55,68,72,74,70,65,60,52,44,32,18], // Dragon Racer's Rally
+        [40,65,80,92,95,93,88,84,78,70,62,48,30], // Battle at Ministry
+        [45,68,82,92,95,94,90,86,80,72,64,50,32], // Mario Kart
+        [25,48,62,74,78,76,72,66,60,52,44,33,20], // Mine-Cart Madness
+        [20,38,50,62,66,64,60,55,50,44,36,28,16], // Yoshi's Adventure
+        // SPLASH (4)
+        [18,35,55,72,80,82,78,72,65,55,42,28,14], // Fyre Drill
+        [10,20,35,55,72,80,82,78,70,58,44,28,10], // Helios Grand Pool
+        [8, 18,32,58,75,82,80,74,66,54,42,26, 8], // Stella Nova Pool
+        [8, 16,30,56,73,80,78,72,64,52,40,24, 8], // Terra Luna Pool
+        // PLAY (7)
+        [30,55,70,78,75,72,68,65,58,50,42,30,18], // Astronomica
+        [20,35,48,60,65,62,58,52,45,38,30,20,10], // Viking Training Camp
+        [35,58,72,85,90,88,84,80,74,66,58,44,26], // SNW Power-Up Zone
+        [28,50,65,78,82,80,76,70,64,56,48,36,20], // Bowser Jr. Challenge
+        [22,40,55,68,72,70,66,60,54,46,38,28,14], // Wand Experiences
+        [15,25,38,55,62,65,60,55,48,40,30,20,10], // Untrainable Dragon
+        [14,22,35,52,60,62,58,52,45,38,28,18, 8], // Le Cirque Arcanus
+      ];
+      const labelW=140,headerH=18,pad=4;
+      const rowH=(H-headerH-pad)/RIDES.length,colW=(W-labelW-pad)/hours.length;
+
+      hours.forEach((h,i)=>{
+        const x=labelW+i*colW+colW/2;const label=h===12?'12p':h<12?`${h}a`:`${h-12}p`;
+        ctx.font='8px DM Mono,monospace';ctx.fillStyle='rgba(240,244,248,0.35)';
+        ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x,headerH/2+2);
+      });
+
+      RIDES.forEach((ride,ri)=>{
+        const y=headerH+ri*rowH;
+        const labelColor=ride.splash?'#1e9ed4':ride.play?'#1fb87a':'#FF6B35';
+        ctx.font='9px DM Sans,sans-serif';ctx.fillStyle=labelColor;
+        ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(ride.name.slice(0,17),4,y+rowH/2);
+        (curves[ri]||[]).forEach((load,hi)=>{
+          const x=labelW+hi*colW,t=load/100;
+          const r2=Math.round(46+(231-46)*t),g2=Math.round(204+(76-204)*t),b2=Math.round(113+(60-113)*t);
+          ctx.fillStyle=`rgba(${r2},${g2},${b2},${0.12+(t*0.82)})`;
+          ctx.beginPath();ctx.roundRect(x+1,y+1,colW-2,rowH-2,2);ctx.fill();
+        });
+      });
+    })();
+
+    // ── HM4: Cross-Score (Land × Score) ──
+    (function(){
+      const c=document.getElementById('hm-cross');if(!c)return;
+      const ctx=c.getContext('2d');const W=c.width,H=c.height;
+      ctx.fillStyle='#0F1E35';ctx.fillRect(0,0,W,H);
+      const lands=[
+        {short:'Celestial'},
+        {short:'Dark Univ.'},
+        {short:'Isle of Berk'},
+        {short:'Ministry'},
+        {short:'SNW'},
+        {short:'Hotels ★', hotel:true},
+      ];
+      const rows=[
+        {name:'RIDE',  color:'#FF6B35', vals:[81,83,81,79,82,null]},
+        {name:'SPLASH',color:'#1e9ed4', vals:[77,null,74,null,null,80]},
+        {name:'PLAY',  color:'#1fb87a', vals:[80,null,78,82,86,null]},
+      ];
+      const labelW=150,headerH=28,pad=4;
+      const rowH=(H-headerH-pad)/rows.length,colW=(W-labelW-pad)/lands.length;
+
+      lands.forEach((l,i)=>{
+        const x=labelW+i*colW;
+        if(l.hotel){
+          ctx.fillStyle='rgba(30,158,212,0.07)';
+          ctx.beginPath();ctx.roundRect(x+2,headerH,colW-4,H-headerH-pad,4);ctx.fill();
+          ctx.strokeStyle='rgba(30,158,212,0.25)';ctx.lineWidth=1;
+          ctx.beginPath();ctx.moveTo(x,headerH);ctx.lineTo(x,H);ctx.stroke();
+        } else if(i>0){
+          ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;
+          ctx.beginPath();ctx.moveTo(x,headerH);ctx.lineTo(x,H);ctx.stroke();
+        }
+        ctx.font='bold 10px DM Sans,sans-serif';
+        ctx.fillStyle=l.hotel?'#1e9ed4':'rgba(240,244,248,0.6)';
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(l.short,x+colW/2,headerH/2+4);
+      });
+
+      rows.forEach((row,ri)=>{
+        const y=headerH+ri*rowH;
+        ctx.font='bold 13px Bebas Neue,sans-serif';ctx.fillStyle=row.color;
+        ctx.textAlign='left';ctx.textBaseline='middle';
+        ctx.fillText(row.name+' SCORE',6,y+rowH/2);
+        row.vals.forEach((v,li)=>{
+          const x=labelW+li*colW;
+          ctx.fillStyle=scoreColor(v,v!==null?0.85:0.07);
+          ctx.beginPath();ctx.roundRect(x+3,y+3,colW-6,rowH-6,6);ctx.fill();
+          if(v!==null){
+            ctx.font='bold 30px Bebas Neue,sans-serif';ctx.fillStyle='rgba(255,255,255,0.95)';
+            ctx.textAlign='center';ctx.textBaseline='middle';
+            ctx.fillText(v,x+colW/2,y+rowH/2-6);
+            ctx.font='8px DM Mono,monospace';ctx.fillStyle=row.color;
+            ctx.fillText(row.name,x+colW/2,y+rowH/2+14);
+          } else {
+            ctx.font='9px DM Mono,monospace';ctx.fillStyle='rgba(240,244,248,0.15)';
+            ctx.textAlign='center';ctx.textBaseline='middle';
+            ctx.fillText('N/A',x+colW/2,y+rowH/2);
+          }
+        });
+      });
+
+      // Hotels footnote
+      const hx=labelW+5*colW+colW/2;
+      ctx.font='7px DM Mono,monospace';ctx.fillStyle='rgba(30,158,212,0.45)';
+      ctx.textAlign='center';ctx.textBaseline='bottom';
+      ctx.fillText('Helios · Stella Nova · Terra Luna',hx,H-3);
+    })();
   });
 </script>
 </body>
