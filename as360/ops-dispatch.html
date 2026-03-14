@@ -235,6 +235,14 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
 .radio-text{width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;padding:7px 8px;font-family:var(--ui);font-size:12px;color:var(--text);resize:none;min-height:48px;line-height:1.4;margin-bottom:5px;}
 .radio-text:focus,.radio-select:focus,.cat-select:focus,.pri-select:focus{outline:none;border-color:var(--cyan);}
 .radio-text::placeholder{color:var(--text-muted);}
+
+/* CODE DROPDOWNS */
+.code-drop-row{display:flex;gap:4px;margin-bottom:6px;}
+.code-drop{flex:1;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;padding:5px 7px;font-family:var(--mono);font-size:10px;color:var(--text);-webkit-appearance:none;cursor:pointer;min-height:34px;}
+.code-drop:focus{outline:none;border-color:var(--cyan);}
+.code-drop-insert{padding:0 10px;height:34px;background:var(--panel3);border:1px solid var(--border2);border-radius:5px;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-dim);cursor:pointer;white-space:nowrap;transition:all .12s;flex-shrink:0;}
+.code-drop-insert:hover{border-color:var(--cyan);color:var(--cyan);}
+.code-drop-insert.inserted{border-color:var(--green);color:var(--green);background:var(--green-dim);}
 .radio-send-row{display:flex;gap:4px;}
 .radio-send-btn{flex:1;height:32px;background:linear-gradient(135deg,var(--cyan),#0090CC);border:none;border-radius:5px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.5px;color:#000;cursor:pointer;}
 .radio-inc-btn{padding:0 10px;height:32px;background:var(--red-dim);border:1px solid rgba(244,63,94,.35);border-radius:5px;font-family:var(--mono);font-size:10px;color:var(--red);cursor:pointer;white-space:nowrap;}
@@ -375,6 +383,15 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
             <option value="high">High</option>
             <option value="info">Info</option>
           </select>
+        </div>
+        <div class="code-drop-row">
+          <select class="code-drop" id="codeDrop10" onchange="codeDropPreview()">
+            <option value="">10-Code…</option>
+          </select>
+          <select class="code-drop" id="codeDropSig" onchange="codeDropPreview()">
+            <option value="">Signal…</option>
+          </select>
+          <button class="code-drop-insert" id="codeInsertBtn" onclick="codeInsert()">+ Insert</button>
         </div>
         <textarea class="radio-text" id="radioText" placeholder="Log communication, directive, or note…" maxlength="300"></textarea>
         <div class="radio-send-row">
@@ -573,7 +590,7 @@ function startDispatch(){
   document.getElementById('dispBadge').textContent=name+' · '+badge;
   document.getElementById('setupOverlay').style.display='none';
   document.getElementById('rp-sub').textContent=name.toUpperCase()+' · '+dispatcher.shift.toUpperCase()+' SHIFT';
-  seedDemo();renderBoard();updateWidget();
+  buildCodeDropdowns();seedDemo();renderBoard();updateWidget();
   logRadio('ALL','Dispatch shift started · '+name+' ('+badge+') · '+dispatcher.shift+' shift','info','comm');
   pushSession('Open');
   toast('Shift started · '+dispatcher.shift,'ok');
@@ -925,6 +942,107 @@ function renderRadioLog(){
       <div class="re-msg">${e.msg}</div>
       <div class="re-dispatcher">↗ ${e.dispatcher}</div>
     </div>`).join('');
+}
+
+
+// ── CODE DROPDOWN INSERT ──────────────────────────────────────────────────────
+function buildCodeDropdowns(){
+  const d10=document.getElementById('codeDrop10');
+  const dSig=document.getElementById('codeDropSig');
+  if(!d10||!dSig)return;
+
+  // Group 10-codes
+  d10.innerHTML='<option value="">10-Code…</option>';
+  TEN.forEach(([k,v])=>{
+    const o=document.createElement('option');
+    o.value=k+'|'+v;
+    o.textContent=k+' — '+v;
+    d10.appendChild(o);
+  });
+
+  // Group signals by severity
+  dSig.innerHTML='<option value="">Signal…</option>';
+  // High severity first
+  const order=['high','med','low'];
+  const labels={high:'▲ HIGH',med:'◆ MED',low:'◇ LOW'};
+  order.forEach(sev=>{
+    const items=SIG.filter(s=>s[2]===sev);
+    if(!items.length)return;
+    const og=document.createElement('optgroup');
+    og.label=labels[sev];
+    items.forEach(([k,v])=>{
+      const o=document.createElement('option');
+      o.value=k+'|'+v+'|'+sev;
+      o.textContent='SIG-'+k+' — '+v;
+      og.appendChild(o);
+    });
+    dSig.appendChild(og);
+  });
+}
+
+function codeDropPreview(){
+  // Highlight insert button if something is selected
+  const d10=document.getElementById('codeDrop10');
+  const dSig=document.getElementById('codeDropSig');
+  const btn=document.getElementById('codeInsertBtn');
+  const hasVal=d10?.value||dSig?.value;
+  if(btn){
+    btn.className='code-drop-insert'+(hasVal?' ':' ');
+    // Brief highlight
+    if(hasVal){btn.style.borderColor='var(--cyan)';btn.style.color='var(--cyan)';}
+    else{btn.style.borderColor='';btn.style.color='';}
+  }
+}
+
+function codeInsert(){
+  const d10=document.getElementById('codeDrop10');
+  const dSig=document.getElementById('codeDropSig');
+  const btn=document.getElementById('codeInsertBtn');
+  const ta=document.getElementById('radioText');
+  if(!ta)return;
+
+  let codeText='';
+  let autoCat='comm';
+  let autoPri='normal';
+
+  const v10=d10?.value;
+  const vSig=dSig?.value;
+
+  if(v10){
+    const [code,meaning]=v10.split('|');
+    codeText=code+' — '+meaning;
+    autoCat='comm';
+    autoPri='normal';
+  } else if(vSig){
+    const [code,meaning,sev]=vSig.split('|');
+    codeText='SIG-'+code+' — '+meaning;
+    autoCat='incident';
+    autoPri=sev==='high'?'high':sev==='med'?'med':'normal';
+  }
+
+  if(!codeText)return;
+
+  // Append to existing text or set
+  const cur=ta.value.trim();
+  ta.value=cur?(cur+' · '+codeText):codeText;
+  ta.focus();
+
+  // Auto-set category and priority if they haven't been changed from default
+  const catSel=document.getElementById('radioCat');
+  const priSel=document.getElementById('radioPriority');
+  if(catSel&&catSel.value==='comm')catSel.value=autoCat;
+  if(priSel&&priSel.value==='normal')priSel.value=autoPri;
+
+  // Flash insert button
+  if(btn){
+    btn.textContent='✓ Added';
+    btn.classList.add('inserted');
+    setTimeout(()=>{btn.textContent='+ Insert';btn.classList.remove('inserted');btn.style.borderColor='';btn.style.color='';},900);
+  }
+
+  // Reset dropdowns
+  if(d10)d10.value='';
+  if(dSig)dSig.value='';
 }
 
 function sendRadio(){
