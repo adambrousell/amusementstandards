@@ -550,6 +550,8 @@
         const body = await res.text();
         console.warn('Proxy sync failed', res.status, body);
         setSyncState('error');
+        // Store error detail for display
+        window._lastSyncError = res.status + ': ' + body;
         return false;
       }
     } catch (e) {
@@ -678,7 +680,13 @@
       document.getElementById('success-screen').classList.add('show');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      // Stay on form, show inline error
+      // Show inline error with actual response for diagnosis
+      const detail = window._lastSyncError || 'Unknown error';
+      errorBanner.innerHTML = `
+        <strong>⚠️ Submission failed — please try again.</strong>
+        Your response couldn't be saved. Check your connection and tap Submit again. If the problem continues, screenshot this page and send it to <a href="mailto:adam@amusementstandards.com" style="color:#991B1B;">adam@amusementstandards.com</a>.
+        <div style="margin-top:10px;padding:8px 10px;background:rgba(0,0,0,0.06);border-radius:6px;font-family:monospace;font-size:11px;word-break:break-all;color:#7f1d1d;">${detail}</div>
+      `;
       errorBanner.classList.add('show');
       errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
