@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water Experience Feedback — Amusement Standards</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --amber: #F59E0B;
+    --amber-dark: #D97706;
+    --amber-light: #FEF3C7;
+    --red: #EF4444;
+    --red-light: #FEE2E2;
+    --green: #10B981;
+    --green-light: #D1FAE5;
+    --blue: #3B82F6;
+    --blue-light: #EFF6FF;
+    --teal: #0891B2;
+    --teal-light: #ECFEFF;
+    --navy: #0F172A;
+    --slate: #334155;
+    --slate-light: #94A3B8;
+    --bg: #F8FAFC;
+    --card: #FFFFFF;
+    --border: #E2E8F0;
+    --shadow: 0 1px 3px rgba(15,23,42,0.08), 0 4px 12px rgba(15,23,42,0.04);
+    --shadow-lg: 0 4px 16px rgba(15,23,42,0.1), 0 12px 40px rgba(15,23,42,0.06);
+    --radius: 12px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--navy);
+    min-height: 100vh;
+    padding-bottom: 48px;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--navy);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .topbar .brand {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--amber);
+    font-weight: 700;
+  }
+  .sync-dot {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--slate-light);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sync-dot .dot { font-size: 8px; }
+  .sync-dot.syncing { color: #FCD34D; }
+  .sync-dot.synced  { color: #6EE7B7; }
+  .sync-dot.error   { color: #FCA5A5; }
+
+  /* ── HERO HEADER — ocean-tinted ── */
+  .form-header {
+    background: linear-gradient(135deg, #0F172A 0%, #0C3547 60%, #0E4558 100%);
+    padding: 36px 24px 28px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .form-header::before {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: -40px; right: -40px;
+    height: 60px;
+    background: rgba(8, 145, 178, 0.15);
+    border-radius: 50%;
+    filter: blur(20px);
+  }
+  .form-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; position: relative; }
+  .form-header .sub {
+    font-size: 13px;
+    color: var(--slate-light);
+    line-height: 1.6;
+    max-width: 560px;
+    position: relative;
+  }
+  .form-header .location-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 6px 12px;
+    background: rgba(8,145,178,.25);
+    border: 1px solid rgba(8,145,178,.4);
+    border-radius: 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #67E8F9;
+    letter-spacing: .5px;
+    position: relative;
+  }
+
+  /* ── SAFETY BANNER ── */
+  .safety-banner {
+    display: block;
+    width: 100%;
+    padding: 13px 24px;
+    background: var(--amber);
+    color: var(--navy);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    letter-spacing: 0.2px;
+    transition: background 0.15s;
+  }
+  .safety-banner:hover { background: var(--amber-dark); color: white; }
+
+  /* ── FORM WRAP ── */
+  .form-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 20px 0;
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 32px 0 14px;
+  }
+  .section-label:first-child { margin-top: 0; }
+  .section-label .num {
+    width: 24px; height: 24px;
+    background: var(--teal);
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-label .txt {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--slate);
+    font-weight: 700;
+  }
+
+  /* ── FIELDS ── */
+  .field { margin-bottom: 18px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 6px;
+  }
+  .field .hint {
+    font-size: 11px;
+    color: var(--slate-light);
+    font-weight: 400;
+    margin-left: 6px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--navy);
+    background: var(--card);
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(8,145,178,0.1);
+  }
+  .field textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+  .auto-filled {
+    background: var(--teal-light) !important;
+    border-color: var(--teal) !important;
+    color: #164E63 !important;
+    font-weight: 600;
+  }
+  .datetime-display {
+    padding: 11px 14px;
+    background: var(--green-light);
+    border: 1.5px solid var(--green);
+    border-radius: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: #065F46;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── STAR ROWS ── */
+  .star-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: border-color 0.15s;
+  }
+  .star-row:hover { border-color: #CBD5E1; }
+  .star-row.rated { border-color: var(--teal); background: var(--teal-light); }
+  .star-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+    flex: 1;
+  }
+  .star-label .star-sub {
+    font-size: 11px;
+    color: var(--slate-light);
+    font-weight: 400;
+    display: block;
+    margin-top: 2px;
+  }
+  .stars { display: flex; gap: 4px; flex-shrink: 0; }
+  .star {
+    font-size: 26px;
+    cursor: pointer;
+    color: #CBD5E1;
+    transition: color 0.1s, transform 0.1s;
+    line-height: 1;
+    user-select: none;
+  }
+  .star:hover, .star.lit { color: var(--amber); }
+  .star:hover { transform: scale(1.15); }
+
+  /* ── OVERALL ── */
+  .overall-wrap {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .overall-wrap .ov-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--slate);
+    margin-bottom: 14px;
+  }
+  .overall-stars { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; }
+  .overall-stars .star { font-size: 36px; }
+  .overall-label {
+    font-size: 13px;
+    color: var(--slate-light);
+    min-height: 18px;
+    transition: color 0.15s;
+  }
+
+  /* ── CHIPS ── */
+  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    padding: 8px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--slate);
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .chip:hover { border-color: var(--teal); color: var(--navy); }
+  .chip.active { border-color: var(--teal); background: var(--teal-light); color: #164E63; font-weight: 700; }
+
+  /* ── ANON TOGGLE ── */
+  .anon-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 14px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 18px;
+  }
+  .anon-toggle .left .title { font-size: 14px; font-weight: 600; }
+  .anon-toggle .left .sub   { font-size: 11px; color: var(--slate-light); }
+  .toggle-switch {
+    width: 44px; height: 24px;
+    background: var(--border);
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .toggle-switch.on { background: var(--green); }
+  .toggle-switch .knob {
+    width: 20px; height: 20px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px; left: 2px;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle-switch.on .knob { transform: translateX(20px); }
+  #contact-fields.hidden { display: none; }
+
+  /* ── SUBMIT ── */
+  .submit-btn {
+    width: 100%;
+    padding: 17px;
+    background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: transform 0.1s, box-shadow 0.15s;
+    box-shadow: 0 4px 12px rgba(8,145,178,0.35);
+    letter-spacing: 0.2px;
+  }
+  .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(8,145,178,0.45); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .error-banner {
+    display: none;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: var(--red-light);
+    border: 1.5px solid var(--red);
+    border-radius: 10px;
+    font-size: 13px;
+    color: #991B1B;
+    line-height: 1.5;
+  }
+  .error-banner.show { display: block; }
+  .error-banner strong { display: block; margin-bottom: 4px; }
+
+  /* ── SUCCESS ── */
+  @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+  .success-screen {
+    display: none;
+    max-width: 640px;
+    margin: 48px auto;
+    padding: 0 20px;
+    text-align: center;
+    animation: fadeIn 0.4s;
+  }
+  .success-screen.show { display: block; }
+  .success-icon { font-size: 72px; margin-bottom: 20px; }
+  .success-screen h2 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+  .success-screen .ref {
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    color: var(--teal);
+    background: var(--teal-light);
+    border: 1px solid rgba(8,145,178,0.3);
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+  .success-screen p { font-size: 14px; color: var(--slate); line-height: 1.6; max-width: 380px; margin: 0 auto 24px; }
+  .success-screen .new-report {
+    padding: 12px 28px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .form-footer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--slate-light);
+    margin-top: 36px;
+    padding: 0 20px 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand">💧 Water Experience Feedback</div>
+  <div class="sync-dot" id="syncDot"><span class="dot">⬤</span> <span id="syncTxt">AS 360 · GFB</span></div>
+</div>
+
+<!-- HERO HEADER -->
+<div class="form-header">
+  <h1>How Was the Water Experience?</h1>
+  <div class="sub">Your feedback goes directly to our operations team and helps us keep every water feature safe, clean, and enjoyable.</div>
+  <div class="location-badge" id="location-badge">📍 Loading location…</div>
+</div>
+
+<!-- SAFETY BANNER -->
+<a href="nmr.html" class="safety-banner">⚠️ Report a Safety Near-Miss instead →</a>
+
+<!-- FORM BODY -->
+<div id="form-view">
+<div class="form-wrap">
+
+  <!-- ① VISIT DETAILS -->
+  <div class="section-label"><div class="num">1</div><div class="txt">Visit Details</div></div>
+
+  <div class="two-col">
+    <div class="field">
+      <label>Date &amp; Time</label>
+      <div class="datetime-display" id="datetime-display">—</div>
+    </div>
+    <div class="field">
+      <label>Water Location</label>
+      <input type="text" class="auto-filled" id="location-field" readonly>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Visit Type <span class="hint">— select one</span></label>
+    <div class="chip-group" id="visit-type-chips">
+      <div class="chip" onclick="selectChip(this,'visit-type-chips')">First Visit 🎉</div>
+      <div class="chip" onclick="selectChip(this,'visit-type-chips')">Return Guest 🔄</div>
+      <div class="chip" onclick="selectChip(this,'visit-type-chips')">Season Pass Holder 🏷️</div>
+      <div class="chip" onclick="selectChip(this,'visit-type-chips')">Group / Event 👥</div>
+    </div>
+  </div>
+
+  <!-- ② RATINGS -->
+  <div class="section-label"><div class="num">2</div><div class="txt">Rate Your Experience</div></div>
+
+  <!-- maps to Rating — Ride field -->
+  <div class="star-row" id="row-ride">
+    <div class="star-label">💧 Water Experience<span class="star-sub">Play features, flow, fun factor, wait time</span></div>
+    <div class="stars" id="stars-ride">
+      <span class="star" onclick="rate('ride',1)">★</span><span class="star" onclick="rate('ride',2)">★</span>
+      <span class="star" onclick="rate('ride',3)">★</span><span class="star" onclick="rate('ride',4)">★</span>
+      <span class="star" onclick="rate('ride',5)">★</span>
+    </div>
+  </div>
+
+  <div class="star-row" id="row-staff">
+    <div class="star-label">👋 Staff Attentiveness<span class="star-sub">Friendliness, monitoring, responsiveness</span></div>
+    <div class="stars" id="stars-staff">
+      <span class="star" onclick="rate('staff',1)">★</span><span class="star" onclick="rate('staff',2)">★</span>
+      <span class="star" onclick="rate('staff',3)">★</span><span class="star" onclick="rate('staff',4)">★</span>
+      <span class="star" onclick="rate('staff',5)">★</span>
+    </div>
+  </div>
+
+  <div class="star-row" id="row-clean">
+    <div class="star-label">🧹 Cleanliness<span class="star-sub">Water clarity, surrounding area, drains, surfaces</span></div>
+    <div class="stars" id="stars-clean">
+      <span class="star" onclick="rate('clean',1)">★</span><span class="star" onclick="rate('clean',2)">★</span>
+      <span class="star" onclick="rate('clean',3)">★</span><span class="star" onclick="rate('clean',4)">★</span>
+      <span class="star" onclick="rate('clean',5)">★</span>
+    </div>
+  </div>
+
+  <div class="star-row" id="row-safety">
+    <div class="star-label">🦺 Felt Safe<span class="star-sub">Safety rules enforced, staff vigilance, clear signage</span></div>
+    <div class="stars" id="stars-safety">
+      <span class="star" onclick="rate('safety',1)">★</span><span class="star" onclick="rate('safety',2)">★</span>
+      <span class="star" onclick="rate('safety',3)">★</span><span class="star" onclick="rate('safety',4)">★</span>
+      <span class="star" onclick="rate('safety',5)">★</span>
+    </div>
+  </div>
+
+  <!-- Overall — maps to Rating — Overall -->
+  <div class="overall-wrap">
+    <div class="ov-title">⭐ Overall Satisfaction</div>
+    <div class="overall-stars" id="stars-overall">
+      <span class="star" onclick="rate('overall',1)">★</span><span class="star" onclick="rate('overall',2)">★</span>
+      <span class="star" onclick="rate('overall',3)">★</span><span class="star" onclick="rate('overall',4)">★</span>
+      <span class="star" onclick="rate('overall',5)">★</span>
+    </div>
+    <div class="overall-label" id="overall-label">Tap to rate your overall experience</div>
+  </div>
+
+  <!-- ③ COMMENTS -->
+  <div class="section-label"><div class="num">3</div><div class="txt">Comments</div></div>
+
+  <div class="field">
+    <label>What stood out? <span class="hint">— optional</span></label>
+    <textarea id="highlight" placeholder="Tell us what made the experience great, or what we could improve…"></textarea>
+  </div>
+
+  <div class="field">
+    <label>Anything we should know? <span class="hint">— optional</span></label>
+    <textarea id="notes" placeholder="Water concerns, staff names to recognize, specific observations, safety issues…" style="min-height:70px;"></textarea>
+  </div>
+
+  <!-- ④ ABOUT YOU -->
+  <div class="section-label"><div class="num">4</div><div class="txt">About You</div></div>
+
+  <div class="anon-toggle">
+    <div class="left">
+      <div class="title">Submit anonymously</div>
+      <div class="sub">Your name and contact info won't be recorded</div>
+    </div>
+    <div class="toggle-switch on" id="anon-switch" onclick="toggleAnon()"><div class="knob"></div></div>
+  </div>
+
+  <div id="contact-fields" class="hidden">
+    <div class="two-col">
+      <div class="field">
+        <label>Name</label>
+        <input type="text" id="guest-name" placeholder="Your name">
+      </div>
+      <div class="field">
+        <label>Email <span class="hint">— optional</span></label>
+        <input type="email" id="guest-email" placeholder="you@example.com">
+      </div>
+    </div>
+    <div class="field">
+      <label>Would you like a follow-up? <span class="hint">— optional</span></label>
+      <div class="chip-group" id="followup-chips">
+        <div class="chip" onclick="selectChip(this,'followup-chips')">Yes, please reach out 📩</div>
+        <div class="chip" onclick="selectChip(this,'followup-chips')">No thanks</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <hr style="border:none;border-top:1px solid var(--border);margin:8px 0 20px;">
+  <button class="submit-btn" id="submitBtn" onclick="submitFeedback()">Submit Feedback →</button>
+
+  <div class="error-banner" id="error-banner">
+    <strong>⚠️ Submission failed — please try again.</strong>
+    Your response couldn't be saved. Check your connection and tap Submit again. If the problem continues, screenshot this page and send it to
+    <a href="mailto:adam@amusementstandards.com" style="color:#991B1B;">adam@amusementstandards.com</a>.
+    <div id="error-detail" style="margin-top:10px;padding:8px 10px;background:rgba(0,0,0,0.06);border-radius:6px;font-family:monospace;font-size:11px;word-break:break-all;color:#7f1d1d;display:none;"></div>
+  </div>
+
+  <p class="form-footer">
+    Powered by <strong>Amusement Standards · AS 360</strong> &nbsp;·&nbsp; Aquatic Guest Feedback &nbsp;·&nbsp;
+    <a href="nmr.html" style="color:var(--slate-light);">Report a safety concern</a>
+  </p>
+
+</div>
+</div><!-- /form-view -->
+
+<!-- SUCCESS SCREEN — only shown after confirmed Airtable write -->
+<div class="success-screen" id="success-screen">
+  <div class="success-icon">🌊</div>
+  <h2>Thank You!</h2>
+  <div class="ref" id="ref-number">GFB-2026-0001</div>
+  <p>Your feedback has been submitted and will be reviewed by our operations team. We appreciate you helping us keep the water experience safe and enjoyable.</p>
+  <button class="new-report" onclick="resetForm()">Submit Another Response</button>
+</div>
+
+<script>
+  // ── CONFIG ────────────────────────────────────────────────────────────────
+  const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+  const AT_TABLE = 'GFB_Submissions'; // same table as main GFB form
+
+  // ── WATER LOCATIONS — Epic Universe aquatic zones ──────────────────────
+  const WATER_LOCATIONS = [
+    'Astronomica Water Play Area — Celestial Park',
+    'Viking Training Camp Splash Zone — Isle of Berk',
+    'Celestial Park Fountain Plaza — Celestial Park',
+  ];
+
+  // ── LOCATION LOCK (random, set on page load) ──────────────────────────
+  (function () {
+    const pick = WATER_LOCATIONS[Math.floor(Math.random() * WATER_LOCATIONS.length)];
+    document.getElementById('location-field').value = pick;
+    document.getElementById('location-badge').textContent = '📍 ' + pick;
+  })();
+
+  // ── LIVE CLOCK ────────────────────────────────────────────────────────
+  function tickClock() {
+    const t = new Date();
+    const el = document.getElementById('datetime-display');
+    if (el) el.textContent =
+      t.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) +
+      '  ·  ' +
+      t.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
+
+  // ── SYNC STATE ────────────────────────────────────────────────────────
+  function setSyncState(state) {
+    const dot = document.getElementById('syncDot');
+    const txt = document.getElementById('syncTxt');
+    dot.className = 'sync-dot ' + state;
+    if (state === 'syncing') txt.textContent = 'SYNCING…';
+    else if (state === 'synced') txt.textContent = 'SYNCED ✓';
+    else if (state === 'error')  txt.textContent = 'SYNC ERROR';
+    else txt.textContent = 'AS 360 · GFB';
+  }
+
+  // ── STAR RATINGS ──────────────────────────────────────────────────────
+  const ratings = { ride: 0, staff: 0, clean: 0, safety: 0, overall: 0 };
+  const overallLabels = ['', '😞 Poor', '😐 Fair', '🙂 Good', '😊 Great', '🤩 Excellent!'];
+
+  function rate(category, value) {
+    ratings[category] = value;
+    const stars = document.getElementById('stars-' + category).querySelectorAll('.star');
+    stars.forEach((s, i) => s.classList.toggle('lit', i < value));
+    const row = document.getElementById('row-' + category);
+    if (row) row.classList.toggle('rated', value > 0);
+    if (category === 'overall') {
+      const lbl = document.getElementById('overall-label');
+      lbl.textContent = overallLabels[value];
+      lbl.style.color = value >= 4 ? '#065F46' : value === 3 ? '#92400E' : '#991B1B';
+    }
+  }
+
+  // Star hover preview
+  document.querySelectorAll('.stars, .overall-stars').forEach(group => {
+    const stars = group.querySelectorAll('.star');
+    const cat = group.id.replace('stars-', '');
+    stars.forEach((s, i) => {
+      s.addEventListener('mouseenter', () => {
+        stars.forEach((x, j) => x.style.color = j <= i ? 'var(--amber)' : '');
+      });
+      s.addEventListener('mouseleave', () => {
+        stars.forEach((x, j) => x.style.color = j < ratings[cat] ? 'var(--amber)' : '');
+      });
+    });
+  });
+
+  // ── CHIP SELECT ───────────────────────────────────────────────────────
+  function selectChip(el, groupId) {
+    const wasActive = el.classList.contains('active');
+    document.getElementById(groupId).querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    if (!wasActive) el.classList.add('active');
+  }
+
+  function getActiveChip(groupId) {
+    const active = document.getElementById(groupId).querySelector('.chip.active');
+    return active ? active.textContent.trim() : '';
+  }
+
+  // ── ANON TOGGLE ───────────────────────────────────────────────────────
+  let isAnon = true;
+  function toggleAnon() {
+    isAnon = !isAnon;
+    document.getElementById('anon-switch').classList.toggle('on', isAnon);
+    document.getElementById('contact-fields').classList.toggle('hidden', isAnon);
+  }
+
+  // ── SUBMIT ────────────────────────────────────────────────────────────
+  async function submitFeedback() {
+    if (!ratings.overall) {
+      alert('Please rate your overall satisfaction before submitting.');
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    const errorBanner = document.getElementById('error-banner');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+    errorBanner.classList.remove('show');
+    setSyncState('syncing');
+
+    const refId = 'GFB-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random() * 9000) + 1000);
+
+    // Field names match GFB_Submissions columns exactly (from screenshot)
+    const pad = n => String(n).padStart(2, '0');
+    const d = new Date();
+    const ts = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+               'T' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+
+    const fields = {
+      'Reference ID':        refId,
+      'Timestamp':           ts,
+      'Attraction':          document.getElementById('location-field').value,
+      'Visit Type':          getActiveChip('visit-type-chips'),
+      'Rating — Ride':       ratings.ride   || null,   // Water Experience
+      'Rating — Staff':      ratings.staff  || null,
+      'Rating — Clean':      ratings.clean  || null,
+      'Rating — Safety':     ratings.safety || null,
+      'Rating — Overall':    ratings.overall,
+      'Highlight':           document.getElementById('highlight').value.trim(),
+      'Notes':               document.getElementById('notes').value.trim(),
+      'Anonymous':           isAnon ? 'Yes' : 'No',
+      'Guest Name':          isAnon ? '' : document.getElementById('guest-name').value.trim(),
+      'Guest Email':         isAnon ? '' : document.getElementById('guest-email').value.trim(),
+      'Follow-Up Requested': isAnon ? '' : getActiveChip('followup-chips'),
+    };
+
+    let ok = false;
+    let errDetail = '';
+
+    try {
+      const res = await fetch(AT_PROXY + '/' + AT_TABLE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields }),
+      });
+      if (res.ok) {
+        ok = true;
+        setSyncState('synced');
+      } else {
+        errDetail = res.status + ': ' + await res.text();
+        setSyncState('error');
+      }
+    } catch (e) {
+      errDetail = e.message;
+      setSyncState('error');
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Submit Feedback →';
+
+    if (ok) {
+      document.getElementById('ref-number').textContent = refId;
+      document.getElementById('form-view').style.display = 'none';
+      document.getElementById('success-screen').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const detail = document.getElementById('error-detail');
+      if (errDetail) { detail.textContent = errDetail; detail.style.display = 'block'; }
+      errorBanner.classList.add('show');
+      errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  // ── RESET ────────────────────────────────────────────────────────────
+  function resetForm() {
+    document.getElementById('form-view').style.display = 'block';
+    document.getElementById('success-screen').classList.remove('show');
+    document.getElementById('error-banner').classList.remove('show');
+    document.getElementById('error-detail').style.display = 'none';
+    Object.keys(ratings).forEach(k => { ratings[k] = 0; });
+    document.querySelectorAll('.star').forEach(s => { s.classList.remove('lit'); s.style.color = ''; });
+    document.querySelectorAll('.star-row').forEach(r => r.classList.remove('rated'));
+    document.getElementById('overall-label').textContent = 'Tap to rate your overall experience';
+    document.getElementById('overall-label').style.color = '';
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    document.getElementById('highlight').value = '';
+    document.getElementById('notes').value = '';
+    isAnon = true;
+    document.getElementById('anon-switch').classList.add('on');
+    document.getElementById('contact-fields').classList.add('hidden');
+    setSyncState('idle');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>v
