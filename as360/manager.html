@@ -397,14 +397,14 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   <div class="nav-tab" onclick="showView('opening',this)">🟢 Opening <span class="tab-badge neutral" id="ocBadge">—</span></div>
   <div class="nav-tab active" id="dashboard-tab" onclick="showView('dashboard',this)">📊 Dashboard <span class="tab-badge red" id="rnBadge" style="display:none">!</span></div>
   <div class="nav-tab" onclick="showView('pillar',this)">🎯 RIDE Score</div>
-  <div class="nav-tab" onclick="showView('oos',this)">⛔ OOS <span class="tab-badge red" id="oosBadge">0</span></div>
-  <div class="nav-tab" onclick="showView('car',this)">📂 CARs <span class="tab-badge neutral" id="carBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('oos',this)">⛔ Out of Service <span class="tab-badge red" id="oosBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('car',this)">📂 Corrective Actions <span class="tab-badge neutral" id="carBadge">0</span></div>
   <div class="nav-tab" onclick="showView('rotations',this)">🔁 Rotations <span class="tab-badge neutral" id="rotBadge">0</span></div>
   <div class="nav-tab insp-tab" onclick="showView('inspections',this)">🔍 Inspections <span class="tab-badge red" id="inspBadge">0</span></div>
   <div class="nav-tab" onclick="showView('audit',this)">📋 Audits <span class="tab-badge neutral" id="auditBadge">0</span></div>
   <div class="nav-tab" onclick="showView('matrix',this)">📞 Escalation</div>
   <div class="nav-divider"></div>
-  <div class="nav-tab" onclick="showView('throughput',this)">📈 TPH</div>
+  <div class="nav-tab" onclick="showView('throughput',this)">📈 Throughput</div>
   <div class="nav-tab" onclick="showView('shiftlog',this)">📋 Shift &amp; Handoff <span class="tab-badge neutral" id="handoffCount">0</span></div>
 </div>
 
@@ -467,7 +467,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   <div class="metric-grid">
     <div class="metric-card teal"><div class="mv teal" id="db-attractions">—</div><div class="ml">Attractions Open</div></div>
     <div class="metric-card red"><div class="mv red" id="db-oos">0</div><div class="ml">Out of Service</div></div>
-    <div class="metric-card amber"><div class="mv amber" id="db-car-open">0</div><div class="ml">Open CARs</div></div>
+    <div class="metric-card amber"><div class="mv amber" id="db-car-open">0</div><div class="ml">Open Corrective Actions</div></div>
     <div class="metric-card red"><div class="mv red" id="db-rot-crit">0</div><div class="ml">Critical Rotations</div></div>
     <div class="metric-card amber"><div class="mv amber" id="db-insp-overdue">0</div><div class="ml">Inspections Overdue</div></div>
   </div>
@@ -3284,10 +3284,10 @@ function renderRightNow(){
     cards.push({icon:'🟡',title:'Overdue Rotations',sub:rotWarns.length+' position'+(rotWarns.length>1?'s':'')+' need rotation',cls:'due',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))",badge:rotWarns.length});
   }
   if(activeOOS){
-    cards.push({icon:'⛔',title:activeOOS+' Attraction'+(activeOOS>1?'s':'')+' OOS',sub:'Active out-of-service units',cls:'urgent',action:"showView('oos',document.querySelector('[onclick*=oos]'))",badge:activeOOS});
+    cards.push({icon:'⛔',title:activeOOS+' Attraction'+(activeOOS>1?'s':'')+' Out of Service',sub:'Active out-of-service units',cls:'urgent',action:"showView('oos',document.querySelector('[onclick*=oos]'))",badge:activeOOS});
   }
   if(critCARs.length){
-    cards.push({icon:'📂',title:'CARs Requiring Escalation',sub:critCARs.length+' corrective action'+(critCARs.length>1?'s':'')+' over 30 days',cls:'urgent',action:"showView('car',document.querySelector('[onclick*=car]'))",badge:critCARs.length+'d+'});
+    cards.push({icon:'📂',title:'Corrective Actions — Escalation',sub:critCARs.length+' corrective action'+(critCARs.length>1?'s':'')+' over 30 days',cls:'urgent',action:"showView('car',document.querySelector('[onclick*=car]'))",badge:critCARs.length+'d+'});
   }
   if(inspOverdue.length){
     cards.push({icon:'🔍',title:'Overdue Inspections',sub:inspOverdue.map(id=>INSP_DEFS[id].name).slice(0,2).join(', ')+(inspOverdue.length>2?'…':''),cls:'urgent',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:inspOverdue.length});
@@ -3327,7 +3327,7 @@ function renderRightNow(){
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
       <div class="metric-card ${rotCrits.length?'red':rotWarns.length?'amber':'green'}"><div class="mv ${rotCrits.length?'red':rotWarns.length?'amber':'green'}">${rotAlerts.length}</div><div class="ml">Rotation Alerts</div></div>
       <div class="metric-card ${activeOOS?'red':'teal'}"><div class="mv ${activeOOS?'red':'teal'}">${activeOOS}</div><div class="ml">OOS Units</div></div>
-      <div class="metric-card ${critCARs.length?'red':openCARs.length?'amber':'green'}"><div class="mv ${critCARs.length?'red':openCARs.length?'amber':'green'}">${openCARs.length}</div><div class="ml">Open CARs</div></div>
+      <div class="metric-card ${critCARs.length?'red':openCARs.length?'amber':'green'}"><div class="mv ${critCARs.length?'red':openCARs.length?'amber':'green'}">${openCARs.length}</div><div class="ml">Open Corrective Actions</div></div>
     </div>`;
 }
 
@@ -3805,16 +3805,16 @@ function setDefaults(){
   ['sl-start','ho-time','wqa-time'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=now;});
 }
 function updateBadges(){
-  document.getElementById('handoffCount').textContent=handoffs.length;
+  const hc=document.getElementById('handoffCount');if(hc)hc.textContent=handoffs.length;
   const activeOOS=oosUnits.filter(o=>o.status==='active').length;
-  const ob=document.getElementById('oosBadge');ob.textContent=activeOOS;ob.className='tab-badge '+(activeOOS?'red':'neutral');
+  const ob=document.getElementById('oosBadge');if(ob){ob.textContent=activeOOS;ob.className='tab-badge '+(activeOOS?'red':'neutral');}
   const openCARs=cars.filter(c=>c.status==='open').length;
-  const cb=document.getElementById('carBadge');cb.textContent=openCARs;cb.className='tab-badge '+(openCARs?'amber':'neutral');
+  const cb=document.getElementById('carBadge');if(cb){cb.textContent=openCARs;cb.className='tab-badge '+(openCARs?'amber':'neutral');}
   const overdue=getOverdueAudits().length;
-  const ab=document.getElementById('auditBadge');ab.textContent=overdue;ab.className='tab-badge '+(overdue?'red':'neutral');
+  const ab=document.getElementById('auditBadge');if(ab){ab.textContent=overdue;ab.className='tab-badge '+(overdue?'red':'neutral');}
   const inspOverdue=getInspOverdue();
-  const ib=document.getElementById('inspBadge');ib.textContent=inspOverdue;ib.className='tab-badge '+(inspOverdue?'red':'neutral');
-  document.getElementById('db-insp-overdue').textContent=inspOverdue;
+  const ib=document.getElementById('inspBadge');if(ib){ib.textContent=inspOverdue;ib.className='tab-badge '+(inspOverdue?'red':'neutral');}
+  const dioel=document.getElementById('db-insp-overdue');if(dioel)dioel.textContent=inspOverdue;
   updateRotBadges();
 }
 function showView(name,tab){
