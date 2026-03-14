@@ -404,10 +404,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   <div class="nav-tab" onclick="showView('audit',this)">📋 Audits <span class="tab-badge neutral" id="auditBadge">0</span></div>
   <div class="nav-tab" onclick="showView('matrix',this)">📞 Escalation</div>
   <div class="nav-divider"></div>
-  <div class="nav-tab" onclick="showView('shift',this)">📋 Shift Log</div>
   <div class="nav-tab" onclick="showView('throughput',this)">📈 TPH</div>
-  <div class="nav-tab" onclick="showView('handoff',this)">🔄 Handoff <span class="tab-badge neutral" id="handoffCount">0</span></div>
-  <div class="nav-tab" onclick="showView('newhandoff',this)">＋ Handoff</div>
+  <div class="nav-tab" onclick="showView('shiftlog',this)">📋 Shift &amp; Handoff <span class="tab-badge neutral" id="handoffCount">0</span></div>
 </div>
 
 <div class="main">
@@ -453,7 +451,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="ssb-item"><div class="ssb-label">Current Shift</div><div class="ssb-val" id="db-shift">—</div></div>
     <div class="ssb-item"><div class="ssb-label">Manager</div><div class="ssb-val" id="db-manager">—</div></div>
     <div class="ssb-item"><div class="ssb-label">RIDE Score</div><div class="ssb-val" id="db-ride-score" style="color:var(--teal)">—</div></div>
-    <button class="btn btn-teal btn-sm" onclick="showView('newhandoff',document.querySelectorAll('.nav-tab')[11])">New Handoff →</button>
+    <button class="btn btn-teal btn-sm" onclick="showView('shiftlog',document.querySelector('[onclick*=shiftlog]')); setTimeout(function(){shlSwitch('new',document.getElementById('shl-tab-new'));},50);">New Handoff →</button>
   </div>
   <!-- Right Now panel -->
   <div style="background:var(--panel2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;margin-bottom:12px;">
@@ -821,46 +819,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     </div>
   </div>
 
-  <div class="form-panel" id="form-TPA">
-    <div class="form-panel-hdr">
-      <div class="form-panel-title">3rd-Party Safety Inspection</div>
-      <button class="btn btn-ghost btn-sm" onclick="closeForm('TPA')">✕ Close</button>
-    </div>
-    <div class="form-panel-body">
-      <div class="form-progress"><div class="form-progress-fill" id="prog-TPA" style="width:0%"></div></div>
-      <div class="form-grid">
-        <div class="ff"><label>Inspection Date</label><input type="date" id="tpa-date"></div>
-        <div class="ff"><label>Inspector / Company</label><input type="text" id="tpa-inspector" placeholder="Name or company"></div>
-      </div>
-      <div class="ff"><label>Scope</label>
-        <select id="tpa-scope"><option value="facility-wide">Facility-Wide</option><option value="specific-ride">Specific Ride</option><option value="aquatic">Aquatic Zone</option><option value="fec-floor">FEC Floor</option><option value="state-regulatory">State Regulatory</option><option value="insurance">Insurance Inspection</option></select>
-      </div>
-      <div class="ff"><label>Attraction / Zone (if specific)</label><input type="text" id="tpa-attraction" placeholder="Leave blank for facility-wide"></div>
-      <div class="ff"><label>Overall Outcome</label>
-        <select id="tpa-outcome"><option value="pass">Pass — No findings</option><option value="pass-minor">Pass with Minor Findings</option><option value="conditional">Conditional — Items to address</option><option value="fail">Fail — Ride/facility closed</option></select>
-      </div>
-      <div class="form-grid">
-        <div class="ff"><label>Findings Count</label><input type="number" id="tpa-findings-count" placeholder="0" min="0" value="0"></div>
-        <div class="ff"><label>CARs Generated</label><input type="number" id="tpa-cars" placeholder="0" min="0" value="0"></div>
-      </div>
-      <div class="ff"><label>Finding Summary</label><textarea id="tpa-summary" rows="3" placeholder="Key findings, recommendations, items flagged for follow-up…"></textarea></div>
-      <div class="ff"><label>Report Reference #</label><input type="text" id="tpa-report-ref" placeholder="Inspector's report ID or file reference"></div>
-      <div class="ff">
-        <label>Photos / Report Documents</label>
-        <label class="photo-capture-btn" for="tpa-photos">
-          📷 <span id="tpa-photo-label">Attach inspection report pages or site photos</span>
-          <span class="photo-count-badge" id="tpa-photo-count" style="display:none;">0 files</span>
-        </label>
-        <input type="file" id="tpa-photos" accept="image/*,application/pdf" multiple style="display:none;" onchange="updatePhotoCount('tpa',this)">
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn btn-teal" onclick="submitInspection('TPA')">Log Inspection →</button>
-        <button class="btn btn-ghost" onclick="closeForm('TPA')">Cancel</button>
-      </div>
-    </div>
-  </div>
 
-  <!-- ══ MONTHLY FORMS ══ -->
 
   <div class="form-panel" id="form-SOA">
     <div class="form-panel-hdr"><div class="form-panel-title">SOP Adherence Observation</div><button class="btn btn-ghost btn-sm" onclick="closeForm('SOA')">✕</button></div>
@@ -1382,7 +1341,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="metric-card green"><div class="mv green" id="audit-completed">0</div><div class="ml">Completed (30d)</div></div>
   </div>
   <div style="background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:11px;color:var(--text-dim);line-height:1.6;">
-    Third-party audits are scheduled externally. Use <strong style="color:var(--text)">Inspections → Weekly → TPA</strong> to log an inspection after it occurs. This view shows the schedule record only.
+    Third-party audits are scheduled externally and tracked here as the record of completed inspections. This view is read-only.
   </div>
   <div class="panel" style="margin-bottom:0">
     <div class="tp-toolbar">
@@ -1424,31 +1383,101 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   </div>
 
   <!-- Role Cards -->
-  <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);padding-bottom:5px;border-bottom:1px solid var(--border);margin:14px 0 6px;">// Emergency Response Role Cards</div>
-  <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">Eight roles activated during any declared emergency. Tap to expand responsibilities and assign personnel. Saved to localStorage.</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:5px;border-bottom:1px solid var(--border);margin:14px 0 6px;flex-wrap:wrap;gap:8px;">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);">// Emergency Response Role Cards</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div id="rc-status-badge" style="font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 9px;border-radius:4px;background:var(--panel3);color:var(--text-dim);border:1px solid var(--border);">8 UNASSIGNED</div>
+      <button class="btn btn-teal btn-sm" onclick="rcConfirmAssignments()" id="rc-confirm-btn">Confirm & Push to OPD →</button>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">Assign each role at shift start, then confirm to push the roster to <code style="font-family:var(--mono);font-size:9px;color:var(--teal);">EAP_RoleAssignments</code> — visible live in the OPD Dispatcher.</div>
+  <div id="rc-last-push" style="display:none;font-family:var(--mono);font-size:9px;color:var(--green);margin-bottom:8px;"></div>
   <div id="role-cards-grid"></div>
 
 </div>
 
 <!-- ══ SHIFT LOG ══ -->
-<div class="view" id="view-shift">
-  <div class="panel">
-    <div class="panel-hdr"><div class="panel-title">Shift Log</div></div>
-    <div class="panel-body">
-      <div class="form-grid">
-        <div class="ff"><label>Date</label><input type="date" id="sl-date"></div>
-        <div class="ff"><label>Shift</label><select id="sl-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select></div>
+<!-- ══ SHIFT & HANDOFF ══ -->
+<div class="view" id="view-shiftlog">
+
+  <!-- Sub-tab switcher -->
+  <div style="display:flex;gap:0;background:var(--panel2);border:1px solid var(--border2);border-radius:9px;padding:3px;margin-bottom:14px;">
+    <button class="btn btn-ghost" id="shl-tab-log" style="flex:1;border-radius:6px;" onclick="shlSwitch('log',this)">📋 Shift Log</button>
+    <button class="btn btn-ghost" id="shl-tab-handoffs" style="flex:1;border-radius:6px;" onclick="shlSwitch('handoffs',this)">📄 Handoffs <span id="shl-handoff-count" style="font-family:var(--mono);font-size:10px;opacity:.7;"></span></button>
+    <button class="btn btn-ghost" id="shl-tab-new" style="flex:1;border-radius:6px;" onclick="shlSwitch('new',this)">＋ New Handoff</button>
+  </div>
+
+  <!-- SHIFT LOG PANEL -->
+  <div id="shl-panel-log">
+    <div class="panel">
+      <div class="panel-hdr"><div class="panel-title">Log Shift Conditions</div></div>
+      <div class="panel-body">
+        <div class="form-grid">
+          <div class="ff"><label>Date</label><input type="date" id="sl-date"></div>
+          <div class="ff"><label>Shift</label><select id="sl-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select></div>
+        </div>
+        <div class="form-grid">
+          <div class="ff"><label>Manager</label><input type="text" id="sl-manager" placeholder="Name"></div>
+          <div class="ff"><label>Start Time</label><input type="time" id="sl-start"></div>
+        </div>
+        <div class="ff"><label>Staffing Notes</label><textarea id="sl-staffing" rows="2" placeholder="Coverage gaps, callouts…"></textarea></div>
+        <div class="ff"><label>Opening Conditions</label><textarea id="sl-conditions" rows="2" placeholder="Weather, crowd level, equipment issues…"></textarea></div>
+        <button class="btn btn-teal" onclick="saveShiftLog()">Save →</button>
       </div>
-      <div class="form-grid">
-        <div class="ff"><label>Manager</label><input type="text" id="sl-manager" placeholder="Name"></div>
-        <div class="ff"><label>Start Time</label><input type="time" id="sl-start"></div>
+    </div>
+    <div class="panel"><div class="panel-hdr"><div class="panel-title">Recent Shift Logs</div></div><div id="shiftLogList"><div class="empty"><div class="empty-icon">📋</div>No shift logs yet.</div></div></div>
+  </div>
+
+  <!-- HANDOFF RECORDS PANEL -->
+  <div id="shl-panel-handoffs" style="display:none;">
+    <div class="panel"><div class="panel-hdr"><div class="panel-title">Handoff Records</div><button class="btn btn-teal btn-sm" onclick="shlSwitch('new',document.getElementById('shl-tab-new'))">＋ New</button></div></div>
+    <div id="handoffList"><div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.</div></div>
+  </div>
+
+  <!-- NEW HANDOFF PANEL -->
+  <div id="shl-panel-new" style="display:none;">
+    <div class="panel">
+      <div class="panel-hdr"><div><div class="panel-title">Shift Handoff Document</div><div class="panel-sub">Complete at shift transition</div></div></div>
+      <div class="panel-body">
+        <div style="font-size:12px;color:var(--text-dim);margin-bottom:14px;background:var(--panel2);padding:10px 12px;border-radius:7px;border-left:3px solid var(--teal);">Five required fields. Everything else is optional — expand for additional detail.</div>
+        <div class="sec-label">// Required — 5 fields</div>
+        <div class="form-grid">
+          <div class="ff"><label>Outgoing Manager ✱</label><input type="text" id="ho-out-mgr" placeholder="Your name"></div>
+          <div class="ff"><label>Incoming Manager ✱</label><input type="text" id="ho-in-mgr" placeholder="Their name"></div>
+        </div>
+        <div class="form-grid">
+          <div class="ff"><label>Date ✱</label><input type="date" id="ho-date"></div>
+          <div class="ff"><label>Shift ✱</label><select id="ho-shift"><option value="open">Open → Mid</option><option value="mid">Mid → Close</option><option value="close">Close → Open</option></select></div>
+        </div>
+        <div class="ff"><label>Shift Rating ✱</label>
+          <div style="display:flex;gap:8px;">
+            <button type="button" id="ho-rating-smooth" class="btn btn-ghost" style="flex:1;min-height:50px;font-size:16px;" onclick="setHoRating('smooth',this)">✅ Smooth</button>
+            <button type="button" id="ho-rating-minor" class="btn btn-ghost" style="flex:1;min-height:50px;font-size:16px;" onclick="setHoRating('minor',this)">🟡 Minor</button>
+            <button type="button" id="ho-rating-rough" class="btn btn-ghost" style="flex:1;min-height:50px;font-size:16px;" onclick="setHoRating('rough',this)">🔴 Rough</button>
+          </div>
+          <input type="hidden" id="ho-rating" value="smooth">
+        </div>
+        <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
+          <button type="button" class="btn btn-ghost btn-sm" style="width:100%;margin-bottom:10px;" onclick="toggleHandoffDetail()">＋ Add Optional Detail ▾</button>
+          <div id="ho-detail-panel" style="display:none;">
+            <div class="form-grid">
+              <div class="ff"><label>Attractions Open</label><input type="number" id="ho-open-count" placeholder="0" min="0"></div>
+              <div class="ff"><label>Down Units</label><input type="text" id="ho-closed-attrs" placeholder="Names or None"></div>
+            </div>
+            <div class="ff"><label>NMRs Filed This Shift</label><input type="text" id="ho-nmr" placeholder="IDs or None"></div>
+            <div class="ff"><label>Safety Notes for Incoming</label><textarea id="ho-safety-notes" rows="2" placeholder="Incidents, equipment concerns, patterns to watch…"></textarea></div>
+            <div class="ff"><label>Anything Else Incoming Should Know</label><textarea id="ho-final-notes" rows="2" placeholder="VIP groups, weather, open CARs needing attention…"></textarea></div>
+            <div class="ff"><label>Handoff Time</label><input type="time" id="ho-time"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--border);">
+          <button class="btn btn-green" style="flex:1;" onclick="saveHandoff()">Submit Handoff →</button>
+          <button class="btn btn-ghost" onclick="clearHandoffForm()">Clear</button>
+        </div>
       </div>
-      <div class="ff"><label>Staffing Notes</label><textarea id="sl-staffing" rows="2" placeholder="Coverage gaps, callouts…"></textarea></div>
-      <div class="ff"><label>Opening Conditions</label><textarea id="sl-conditions" rows="2" placeholder="Weather, crowd level, equipment issues…"></textarea></div>
-      <button class="btn btn-teal" onclick="saveShiftLog()">Save →</button>
     </div>
   </div>
-  <div class="panel"><div class="panel-hdr"><div class="panel-title">Recent Logs</div></div><div id="shiftLogList"><div class="empty"><div class="empty-icon">📋</div>No shift logs yet.</div></div></div>
+
 </div>
 
 <!-- ══ THROUGHPUT ══ -->
@@ -1468,17 +1497,6 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="tp-table-hdr"><span>Attraction</span><span>Guests</span><span>TPH</span><span>%</span></div>
     <div id="tpTableBody"><div class="empty"><div class="empty-icon">📈</div>No throughput records yet.</div></div>
   </div>
-</div>
-
-<!-- ══ HANDOFF LIST ══ -->
-<div class="view" id="view-handoff">
-  <div class="panel" style="margin-bottom:10px;">
-    <div class="panel-hdr">
-      <div class="panel-title">Shift Handoff Records</div>
-      <button class="btn btn-teal btn-sm" onclick="showView('newhandoff',document.querySelectorAll('.nav-tab')[11])">＋ New</button>
-    </div>
-  </div>
-  <div id="handoffList"><div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.</div></div>
 </div>
 
 <!-- ══ LOG THROUGHPUT ══ -->
@@ -1514,53 +1532,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   </div>
 </div>
 
-<!-- ══ NEW HANDOFF ══ -->
-<div class="view" id="view-newhandoff">
-  <div class="panel">
-    <div class="panel-hdr"><div><div class="panel-title">Shift Handoff Document</div><div class="panel-sub">Complete at shift transition</div></div></div>
-    <div class="panel-body">
-      <div style="font-size:12px;color:var(--text-dim);margin-bottom:14px;background:var(--panel2);padding:10px 12px;border-radius:7px;border-left:3px solid var(--teal);">Five required fields. Everything else is optional — expand additional detail if needed.</div>
 
-      <div class="sec-label">// Required — 5 fields</div>
-      <div class="form-grid">
-        <div class="ff"><label>Outgoing Manager ✱</label><input type="text" id="ho-out-mgr" placeholder="Your name"></div>
-        <div class="ff"><label>Incoming Manager ✱</label><input type="text" id="ho-in-mgr" placeholder="Their name"></div>
-      </div>
-      <div class="form-grid">
-        <div class="ff"><label>Date ✱</label><input type="date" id="ho-date"></div>
-        <div class="ff"><label>Shift ✱</label><select id="ho-shift"><option value="open">Open → Mid</option><option value="mid">Mid → Close</option><option value="close">Close → Open</option></select></div>
-      </div>
-      <div class="ff"><label>Shift Rating ✱</label>
-        <div style="display:flex;gap:8px;">
-          <button type="button" id="ho-rating-smooth" class="btn btn-ghost" style="flex:1;min-height:50px;font-size:16px;" onclick="setHoRating('smooth',this)">✅ Smooth</button>
-          <button type="button" id="ho-rating-minor" class="btn btn-ghost" style="flex:1;min-height:50px;font-size:16px;" onclick="setHoRating('minor',this)">🟡 Minor</button>
-          <button type="button" id="ho-rating-rough" class="btn btn-ghost" style="flex:1;min-height:50px;font-size:16px;" onclick="setHoRating('rough',this)">🔴 Rough</button>
-        </div>
-        <input type="hidden" id="ho-rating" value="smooth">
-      </div>
-
-      <!-- Optional detail accordion -->
-      <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
-        <button type="button" class="btn btn-ghost btn-sm" style="width:100%;margin-bottom:10px;" onclick="toggleHandoffDetail()">＋ Add Optional Detail ▾</button>
-        <div id="ho-detail-panel" style="display:none;">
-          <div class="form-grid">
-            <div class="ff"><label>Attractions Open</label><input type="number" id="ho-open-count" placeholder="0" min="0"></div>
-            <div class="ff"><label>Down Units</label><input type="text" id="ho-closed-attrs" placeholder="Names or None"></div>
-          </div>
-          <div class="ff"><label>NMRs Filed This Shift</label><input type="text" id="ho-nmr" placeholder="IDs or None"></div>
-          <div class="ff"><label>Safety Notes for Incoming</label><textarea id="ho-safety-notes" rows="2" placeholder="Incidents, equipment concerns, patterns to watch…"></textarea></div>
-          <div class="ff"><label>Anything Else Incoming Should Know</label><textarea id="ho-final-notes" rows="2" placeholder="VIP groups, weather, open CARs needing attention…"></textarea></div>
-          <div class="ff"><label>Handoff Time</label><input type="time" id="ho-time"></div>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--border);">
-        <button class="btn btn-green" style="flex:1;" onclick="saveHandoff()">Submit Handoff →</button>
-        <button class="btn btn-ghost" onclick="clearHandoffForm()">Clear</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ══ ROTATIONS ══ -->
 <div class="view" id="view-rotations">
@@ -1624,7 +1596,6 @@ const INSP_DEFS={
   CCA:{id:'CCA',name:'Cleanliness & Condition',table:'CCA_Log',cadence:7,scores:['r','s','p'],freq:'weekly'},
   HAE:{id:'HAE',name:'Height & Age Enforcement',table:'HAE_Log',cadence:7,scores:['r','s','p'],freq:'weekly'},
   WQA:{id:'WQA',name:'Water Quality Analysis',table:'WQA_Log',cadence:7,scores:['s'],freq:'weekly'},
-  TPA:{id:'TPA',name:'3rd-Party Safety Inspection',table:'TPA_Submissions',cadence:7,scores:['r','s','p'],freq:'weekly'},
   FLC:{id:'FLC',name:'FEC Floor Operations Log',table:'FLC_Log',cadence:7,scores:['p'],freq:'weekly'},
   YPS:{id:'YPS',name:'Youth Patron Shift Log',table:'YPS_Log',cadence:7,scores:['p'],freq:'weekly'},
   // Monthly
@@ -2005,7 +1976,7 @@ const ROLE_CARDS=[
 let rcExpanded={};
 let rcNames={};
 function rcLoadNames(){try{const s=localStorage.getItem('as360_rc_names');if(s)rcNames=JSON.parse(s);}catch(e){}}
-function rcSaveName(id,val){rcNames[id]=val;try{localStorage.setItem('as360_rc_names',JSON.stringify(rcNames));}catch(e){}}
+function rcSaveName(id,val){rcNames[id]=val;try{localStorage.setItem('as360_rc_names',JSON.stringify(rcNames));}catch(e){}rcUpdateStatusBadge();}
 
 function renderRoleCards(){
   const el=document.getElementById('role-cards-grid');if(!el)return;
@@ -2090,110 +2061,6 @@ function getShiftPhase(){
   return{phase:'closing',label:'CLOSING',desc:'Closing phase',cls:'rn-phase-closing'};
 }
 
-function renderRightNow(){
-  const sp=getShiftPhase();
-  const badge=document.getElementById('rn-phase-badge');
-  const desc=document.getElementById('rn-phase-desc');
-  const clk=document.getElementById('rn-clock-large');
-  if(badge){badge.textContent=sp.label;badge.className='rn-phase-badge '+sp.cls;}
-  if(desc)desc.textContent=sp.desc;
-  if(clk)clk.textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-  const body=document.getElementById('rn-body');if(!body)return;
-  const inspOverdue=Object.keys(INSP_DEFS||{}).filter(function(id){return getInspStatus&&getInspStatus(id).status==='overdue';});
-  const activeOOS=(oosUnits||[]).filter(function(o){return o.status==='active';}).length;
-  const openCARs=(cars||[]).filter(function(c){return c.status==='open';});
-  const critCARs=openCARs.filter(function(c){return ageDays&&ageDays(c.createdAt)>30;});
-  const rotCrits=(rotAlerts||[]).filter(function(a){return a.level==='crit';});
-  const rotWarns=(rotAlerts||[]).filter(function(a){return a.level==='warn';});
-  const cards=[];
-  if(sp.phase==='preopening'){
-    cards.push({icon:'🟢',title:'Opening Checklist',sub:'Pre-opening ride check with ATR data',cls:'ok',action:"showView('opening',document.querySelector('[onclick*=opening]'))"});
-    cards.push({icon:'🔁',title:'Assign Positions',sub:'Staff all rotation slots before open',cls:'ok',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))"});
-  }
-  if(rotCrits.length)cards.push({icon:'🔴',title:'Critical Rotations',sub:rotCrits.length+' position'+(rotCrits.length>1?'s':'')+' critically overdue',cls:'urgent',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))",badge:rotCrits.length+'!'});
-  if(rotWarns.length&&!rotCrits.length)cards.push({icon:'🟡',title:'Overdue Rotations',sub:rotWarns.length+' need rotation',cls:'due',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))",badge:rotWarns.length});
-  if(activeOOS)cards.push({icon:'⛔',title:activeOOS+' Attraction'+(activeOOS>1?'s':'')+' OOS',sub:'Active out-of-service units',cls:'urgent',action:"showView('oos',document.querySelector('[onclick*=oos]'))",badge:activeOOS});
-  if(critCARs.length)cards.push({icon:'📂',title:'CARs Need Escalation',sub:critCARs.length+' open 30+ days',cls:'urgent',action:"showView('car',document.querySelector('[onclick*=car]'))",badge:critCARs.length});
-  if(inspOverdue.length)cards.push({icon:'🔍',title:'Overdue Inspections',sub:inspOverdue.slice(0,2).map(function(id){return INSP_DEFS[id].name;}).join(', ')+(inspOverdue.length>2?'…':''),cls:'urgent',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:inspOverdue.length});
-  if(sp.phase==='peak')cards.push({icon:'📈',title:'Log Throughput',sub:'Update TPH for peak period',cls:'ok',action:"showView('throughput',document.querySelector('[onclick*=throughput]'));setTimeout(function(){toggleTphForm(true);},100)"});
-  if(sp.phase==='closing')cards.push({icon:'🔄',title:'Prepare Handoff',sub:'Start shift handoff',cls:(handoffs||[]).length===0?'due':'ok',action:"showView('newhandoff',document.querySelector('[onclick*=newhandoff]'))"});
-  cards.push({icon:'🏃',title:'Floor Ops Log',sub:'Add floor observation',cls:'ok',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))"});
-  const urgent=inspOverdue.length+critCARs.length+rotCrits.length+activeOOS;
-  const nb=document.getElementById('rnBadge');
-  if(nb){nb.style.display=urgent>0?'':'none';nb.textContent=urgent;}
-  body.innerHTML='<div class="rn-action-grid">'+cards.slice(0,9).map(function(c){
-    return '<div class="rn-action-card '+c.cls+'" onclick="'+c.action+'">'
-      +(c.badge!==undefined?'<div class="rn-card-badge '+(c.cls==='urgent'?'red':'amber')+'">'+c.badge+'</div>':'')
-      +'<div class="rn-card-icon">'+c.icon+'</div>'
-      +'<div class="rn-card-title">'+c.title+'</div>'
-      +'<div class="rn-card-sub">'+c.sub+'</div></div>';
-  }).join('')+'</div>';
-}
-
-function init(){
-  load();
-  initRotPositions();
-  lgaSeedZones();
-  flcSessionEntries=[];
-  ypsSessionEntries=[];
-  if(!matrixContacts.length)matrixContacts=[...DEFAULT_MATRIX];
-  buildChecklistItems();
-  setDefaults();
-  refreshAll();
-  checkRotations();
-  setInterval(checkRotations,15000);
-  setInterval(()=>document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),1000);
-  document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
-}
-
-function setDefaults(){
-  const today=new Date().toISOString().split('T')[0];
-  const now=new Date().toTimeString().slice(0,5);
-  ['sl-date','tp-date','ho-date','aud-date','car-due',
-   'cca-date','hae-date','wqa-date','tpa-date','flc-date','yps-date',
-   'soa-date','sac-date','eai-date','ipl-date','oli-date','lga-date',
-   'ypr-date','ges-date','acr-date','sbc-date','eap-date'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=today;});
-  ['sl-start','ho-time','wqa-time'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=now;});
-}
-
-function refreshAll(){
-  refreshDash();renderPillars();renderOOS();renderCARs();renderAudits();renderMatrix();renderThroughput();renderHandoffs();renderShiftLogs();updateBadges();
-  renderRightNow();
-}
-
-function showView(name,tab){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  const v=document.getElementById('view-'+name);
-  if(v)v.classList.add('active');
-  if(tab)tab.classList.add('active');
-  if(name==='inspections'){renderInspections();return;}
-  if(name==='opening'){renderOpeningChecklist();return;}
-  if(name==='rotations'){renderRotations();return;}
-  const map={
-    dashboard:function(){refreshDash();renderRightNow();},
-    pillar:renderPillars,oos:renderOOS,car:renderCARs,
-    audit:renderAudits,matrix:renderMatrix,
-    throughput:renderThroughput,
-    newthroughput:function(){showView('throughput',document.querySelector('[onclick*=throughput]'));setTimeout(function(){toggleTphForm(true);},100);},
-    handoff:renderHandoffs,shift:renderShiftLogs
-  };
-  if(map[name])map[name]();
-}
-
-function updateBadges(){
-  document.getElementById('handoffCount').textContent=handoffs.length;
-  const activeOOS=oosUnits.filter(o=>o.status==='active').length;
-  const ob=document.getElementById('oosBadge');ob.textContent=activeOOS;ob.className='tab-badge '+(activeOOS?'red':'neutral');
-  const openCARs=cars.filter(c=>c.status==='open').length;
-  const cb=document.getElementById('carBadge');cb.textContent=openCARs;cb.className='tab-badge '+(openCARs?'amber':'neutral');
-  const overdue=getOverdueAudits().length;
-  const ab=document.getElementById('auditBadge');ab.textContent=overdue;ab.className='tab-badge '+(overdue?'red':'neutral');
-  const inspOverdue=getInspOverdue();
-  const ib=document.getElementById('inspBadge');ib.textContent=inspOverdue;ib.className='tab-badge '+(inspOverdue?'red':'neutral');
-  document.getElementById('db-insp-overdue').textContent=inspOverdue;
-  updateRotBadges();
-}
 
 // ── ROTATION ENGINE ────────────────────────────────────────────────────────────
 let ROT_WARN=45,ROT_CRIT=60;
@@ -2481,7 +2348,7 @@ function updateFreqBadges(){
 
 function renderInspectionCards(){
   const freqIds=Object.keys(INSP_DEFS).filter(id=>INSP_DEFS[id].freq===currentFreq);
-  const hasForm=['CCA','HAE','WQA','TPA','FLC','YPS','SOA','SAC','EAI','IPL','OLI','LGA','YPR','GES','ACR','SBC','EAP'];
+  const hasForm=['CCA','HAE','WQA','FLC','YPS','SOA','SAC','EAI','IPL','OLI','LGA','YPR','GES','ACR','SBC','EAP'];
   const naForms={BAL:true,VGB:true,SGS:true};// no deep aquatics at Epic Universe
   const grid=document.getElementById('insp-card-grid');
   const cs=document.getElementById('insp-coming-soon');
@@ -3220,10 +3087,7 @@ function submitInspection(id){
       'Zones Marginal':Object.values(zoneData).filter(z=>z.status==='flag').length,
       'Submitted At':new Date().toISOString()
     };
-  } else if(id==='TPA'){
-    const inspector=document.getElementById('tpa-inspector').value.trim();
-    if(!inspector){toast('Enter inspector name','err');return;}
-    fields={'Date':document.getElementById('tpa-date').value,'Inspector':inspector,'Scope':document.getElementById('tpa-scope').value,'Attraction':document.getElementById('tpa-attraction').value,'Outcome':document.getElementById('tpa-outcome').value,'Findings Count':parseInt(document.getElementById('tpa-findings-count').value)||0,'CARs Generated':parseInt(document.getElementById('tpa-cars').value)||0,'Summary':document.getElementById('tpa-summary').value,'Report Ref':document.getElementById('tpa-report-ref').value,'Submitted At':new Date().toISOString()};
+
   } else if(id==='SOA'){
     const observer=document.getElementById('soa-observer').value.trim();
     if(!observer){toast('Enter observer name','err');return;}
@@ -3394,16 +3258,21 @@ function renderRightNow(){
   const rotWarns=rotAlerts.filter(a=>a.level==='warn');
 
   // Update Right Now badge on tab
-  const urgent=inspOverdue.length+critCARs.length+rotCrits.length+activeOOS;
+  const urgent=inspOverdue.length+critCARs.length+rotCrits.length+activeOOS+(typeof ROLE_CARDS!=='undefined'?ROLE_CARDS.filter(r=>!rcNames[r.id]||!rcNames[r.id].trim()).length:0);
   const rnBadge=document.getElementById('rnBadge');
   if(rnBadge){rnBadge.style.display=urgent>0?'':'none';rnBadge.textContent=urgent;}
 
   const cards=[];
 
   // Phase-specific priority cards
+  // Unassigned emergency roles — always checked
+  const unassignedRoles=typeof ROLE_CARDS!=='undefined'?ROLE_CARDS.filter(r=>!rcNames[r.id]||!rcNames[r.id].trim()):[];
+  if(unassignedRoles.length>0){
+    cards.push({icon:'🚨',title:unassignedRoles.length+' Emergency Role'+(unassignedRoles.length>1?'s':'')+' Unassigned',sub:unassignedRoles.slice(0,3).map(r=>r.name).join(', ')+(unassignedRoles.length>3?'…':''),cls:'urgent',action:"showView('matrix',document.querySelector('[onclick*=matrix]'))",badge:unassignedRoles.length});
+  }
+
   if(sp.phase==='preopening'){
-    cards.push({icon:'🎢',title:'Pre-Opening Inspection',sub:'Complete before gates open',cls:inspDueSoon.length?'due':'ok',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:null});
-    cards.push({icon:'📏',title:'Height Stick Verification',sub:'Confirm all 9 EU sticks accurate',cls:'ok',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:null});
+    cards.push({icon:'🟢',title:'Opening Checklist',sub:'Pre-opening ride check with ATR data',cls:'ok',action:"showView('opening',document.querySelector('[onclick*=opening]'))",badge:null});
     cards.push({icon:'🔁',title:'Assign Positions',sub:'Staff all rotation slots before open',cls:Object.keys(rotPositions).length===0?'urgent':'ok',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))",badge:Object.keys(rotPositions).length===0?'UNASSIGNED':null});
   }
 
@@ -3433,8 +3302,8 @@ function renderRightNow(){
     cards.push({icon:'📈',title:'Log Throughput',sub:'Update TPH for peak period',cls:'ok',action:"showView('newthroughput',document.querySelector('[onclick*=newthroughput]'))",badge:null});
   }
   if(sp.phase==='closing'){
-    cards.push({icon:'🔄',title:'Prepare Handoff Doc',sub:'Start shift handoff',cls:handoffs.length===0?'due':'ok',action:"showView('newhandoff',document.querySelector('[onclick*=newhandoff]'))",badge:handoffs.length===0?'PENDING':null});
-    cards.push({icon:'📋',title:'Close Shift Log',sub:'Record closing conditions',cls:'ok',action:"showView('shift',document.querySelector('[onclick*=shift]'))",badge:null});
+    cards.push({icon:'🔄',title:'Prepare Handoff Doc',sub:'Start shift handoff',cls:handoffs.length===0?'due':'ok',action:"showView('shiftlog',document.querySelector('[onclick*=shiftlog]'));setTimeout(function(){shlSwitch('new',document.getElementById('shl-tab-new'));},50);",badge:handoffs.length===0?'PENDING':null});
+    cards.push({icon:'📋',title:'Close Shift Log',sub:'Record closing conditions',cls:'ok',action:"showView('shiftlog',document.querySelector('[onclick*=shift]'))",badge:null});
   }
 
   // Always useful
@@ -3775,6 +3644,7 @@ function renderAudits(search=''){
 function saveMatrixContact(){const tier=document.getElementById('mc-tier').value,role=document.getElementById('mc-role').value.trim(),name=document.getElementById('mc-name').value.trim(),contact=document.getElementById('mc-contact').value.trim();if(!role||!contact){toast('Role and contact required','err');return;}matrixContacts.push({tier,role,name,contact});save(K.MTX,matrixContacts);renderMatrix();['mc-role','mc-name','mc-contact'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('matrix-add-form').style.display='none';toast('Contact added','ok');}
 function renderMatrix(){
   renderRoleCards();
+  rcUpdateStatusBadge();
   const td=[{t:'1',l:'TIER 1',d:'Manager Resolves'},{t:'2',l:'TIER 2',d:'Supervisor / Dept Head'},{t:'3',l:'TIER 3',d:'GM / Ownership / Regulatory'}];
   const html=`<div class="panel" style="margin-bottom:0"><div id="matrix-tiers">${td.map(td=>`<div class="esc-tier tier-${td.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${td.l}</span><span class="esc-tier-label">${td.d}</span></div><div class="esc-tier-body ${td.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===td.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:1px;">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-dim);padding:8px 0;">No contacts — add via button above.</div>'}</div></div>`).join('')}</div></div>`;
   document.getElementById('matrix-tiers').innerHTML=td.map(t=>`<div class="esc-tier tier-${t.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${t.l}</span><span class="esc-tier-label">${t.d}</span></div><div class="esc-tier-body ${t.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===t.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-muted);padding:8px 0;">No contacts defined.</div>'}</div></div>`).join('');
@@ -3803,7 +3673,7 @@ function renderThroughput(search=''){
 }
 
 // ── HANDOFF ───────────────────────────────────────────────────────────────────
-function saveHandoff(){const date=document.getElementById('ho-date').value,outMgr=document.getElementById('ho-out-mgr').value.trim(),inMgr=document.getElementById('ho-in-mgr').value.trim();if(!date||!outMgr||!inMgr){toast('Date and both manager names required','err');return;}const ho={id:'HO-'+Date.now().toString(36).toUpperCase().slice(-5),date,shift:document.getElementById('ho-shift').value,outMgr,inMgr,time:document.getElementById('ho-time').value,rating:document.getElementById('ho-rating').value,openCount:parseInt(document.getElementById('ho-open-count').value)||0,closedAttrs:document.getElementById('ho-closed-attrs').value.trim(),nmr:document.getElementById('ho-nmr').value.trim(),safetyNotes:document.getElementById('ho-safety-notes').value.trim(),finalNotes:document.getElementById('ho-final-notes').value.trim(),createdAt:new Date().toISOString()};handoffs.unshift(ho);save(K.HO,handoffs);atPush('MGR_Handoffs',{'Handoff ID':ho.id,'Date':ho.date,'Shift':ho.shift,'Outgoing Manager':ho.outMgr,'Incoming Manager':ho.inMgr,'Rating':ho.rating,'Attractions Open':ho.openCount,'Closed Attractions':ho.closedAttrs,'NMRs Filed':ho.nmr,'Safety Notes':ho.safetyNotes,'Final Notes':ho.finalNotes,'Submitted At':ho.createdAt});clearHandoffForm();renderHandoffs();updateBadges();toast('Handoff saved ✓','ok');showView('handoff',document.querySelectorAll('.nav-tab')[9]);}
+function saveHandoff(){const date=document.getElementById('ho-date').value,outMgr=document.getElementById('ho-out-mgr').value.trim(),inMgr=document.getElementById('ho-in-mgr').value.trim();if(!date||!outMgr||!inMgr){toast('Date and both manager names required','err');return;}const ho={id:'HO-'+Date.now().toString(36).toUpperCase().slice(-5),date,shift:document.getElementById('ho-shift').value,outMgr,inMgr,time:document.getElementById('ho-time').value,rating:document.getElementById('ho-rating').value,openCount:parseInt(document.getElementById('ho-open-count').value)||0,closedAttrs:document.getElementById('ho-closed-attrs').value.trim(),nmr:document.getElementById('ho-nmr').value.trim(),safetyNotes:document.getElementById('ho-safety-notes').value.trim(),finalNotes:document.getElementById('ho-final-notes').value.trim(),createdAt:new Date().toISOString()};handoffs.unshift(ho);save(K.HO,handoffs);atPush('MGR_Handoffs',{'Handoff ID':ho.id,'Date':ho.date,'Shift':ho.shift,'Outgoing Manager':ho.outMgr,'Incoming Manager':ho.inMgr,'Rating':ho.rating,'Attractions Open':ho.openCount,'Closed Attractions':ho.closedAttrs,'NMRs Filed':ho.nmr,'Safety Notes':ho.safetyNotes,'Final Notes':ho.finalNotes,'Submitted At':ho.createdAt});clearHandoffForm();renderHandoffs();updateBadges();toast('Handoff saved ✓','ok');showView('shiftlog',document.querySelectorAll('.nav-tab')[9]);}
 function clearHandoffForm(){['ho-date','ho-out-mgr','ho-in-mgr','ho-time','ho-closed-attrs','ho-nmr','ho-safety-notes','ho-final-notes'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('ho-open-count').value='';setDefaults();}
 function renderHandoffs(){const el=document.getElementById('handoffList');if(!handoffs.length){el.innerHTML='<div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.</div>';return;}const rm={smooth:['green','✅ Smooth'],minor:['amber','🟡 Minor'],rough:['red','🔴 Rough']};el.innerHTML=handoffs.map(ho=>{const[rc,rl]=rm[ho.rating]||['neutral',ho.rating];return`<div class="handoff-card"><div class="hc-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><div class="hc-meta"><span class="hc-date">${ho.date}</span><span class="hc-shift ${ho.shift.split(' ')[0]}-shift">${ho.shift.toUpperCase()}</span><span style="font-size:11px;color:var(--text-dim)">${ho.outMgr} → ${ho.inMgr}</span></div><div class="hc-flags">${ho.nmr&&ho.nmr!=='None'&&ho.nmr.length>2?'<span class="hc-flag red">NMR</span>':''}<span class="hc-flag ${rc}">${rl}</span></div></div><div class="hc-body"><div style="font-size:12px;color:var(--text);line-height:1.6;">${ho.safetyNotes||''}</div>${ho.finalNotes?`<div style="font-size:11px;color:var(--text-dim);margin-top:8px;">${ho.finalNotes}</div>`:''}</div></div>`;}).join('');}
 
@@ -3816,6 +3686,173 @@ async function atPush(table,fields){
     if(!res.ok){const e=await res.json();console.warn('AT:',e?.error?.message);if(el){el.style.color='var(--red)';el.textContent='⬤ ERR';setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},3000);}}
     else{if(el){el.style.color='var(--green)';el.textContent='⬤ SYNCED';setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},2000);}}
   }catch(e){console.warn('AT err:',e.message);if(el){el.style.color='var(--red)';el.textContent='⬤ OFFLINE';setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},3000);}}
+}
+
+
+// ── SHIFT & HANDOFF UNIFIED VIEW ─────────────────────────────────────────────
+let shlActive='log';
+
+function shlSwitch(panel, btn){
+  shlActive=panel;
+  ['log','handoffs','new'].forEach(function(p){
+    const el=document.getElementById('shl-panel-'+p);
+    if(el)el.style.display=p===panel?'block':'none';
+    const tb=document.getElementById('shl-tab-'+p);
+    if(tb){tb.classList.toggle('btn-teal',p===panel);tb.classList.toggle('btn-ghost',p!==panel);}
+  });
+  if(panel==='log')renderShiftLogs();
+  if(panel==='handoffs')renderHandoffs();
+  if(panel==='new'){
+    const today=new Date().toISOString().split('T')[0];
+    const now=new Date().toTimeString().slice(0,5);
+    const d=document.getElementById('ho-date');if(d&&!d.value)d.value=today;
+    const t=document.getElementById('ho-time');if(t&&!t.value)t.value=now;
+  }
+  const cnt=document.getElementById('shl-handoff-count');
+  if(cnt)cnt.textContent=handoffs.length>0?'('+handoffs.length+')':'';
+}
+
+function renderShiftlog(){
+  // Refresh whichever sub-panel is currently active
+  if(shlActive==='log')renderShiftLogs();
+  else if(shlActive==='handoffs')renderHandoffs();
+  const cnt=document.getElementById('shl-handoff-count');
+  if(cnt)cnt.textContent=handoffs.length>0?'('+handoffs.length+')':'';
+}
+
+
+// ── ROLE CARD ASSIGNMENT ENGINE ──────────────────────────────────────────────
+
+function rcUpdateStatusBadge(){
+  const assigned = ROLE_CARDS.filter(r => rcNames[r.id] && rcNames[r.id].trim().length > 0).length;
+  const total = ROLE_CARDS.length;
+  const unassigned = total - assigned;
+  const badge = document.getElementById('rc-status-badge');
+  const btn = document.getElementById('rc-confirm-btn');
+  if(!badge) return;
+  if(unassigned === 0){
+    badge.textContent = '✓ ALL ASSIGNED';
+    badge.style.cssText = 'font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 9px;border-radius:4px;background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25);';
+    if(btn) btn.textContent = 'Confirm & Push to OPD →';
+  } else {
+    badge.textContent = unassigned + ' UNASSIGNED';
+    badge.style.cssText = 'font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 9px;border-radius:4px;background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.3);';
+    if(btn) btn.textContent = 'Confirm & Push to OPD →';
+  }
+}
+
+async function rcConfirmAssignments(){
+  const btn = document.getElementById('rc-confirm-btn');
+  const unassigned = ROLE_CARDS.filter(r => !rcNames[r.id] || !rcNames[r.id].trim()).length;
+
+  if(unassigned > 0){
+    if(!confirm(unassigned + ' role'+(unassigned>1?'s are':' is')+' unassigned. Push partial roster to OPD anyway?')) return;
+  }
+
+  if(btn){ btn.textContent = '↻ Pushing…'; btn.disabled = true; }
+
+  const now = new Date();
+  const sessionId = 'RCA-' + now.toISOString().slice(0,10).replace(/-/g,'') + '-' + Date.now().toString(36).toUpperCase().slice(-5);
+
+  // Build the role assignment record
+  const roleFields = {};
+  ROLE_CARDS.forEach(r => {
+    roleFields[r.name] = rcNames[r.id] || 'UNASSIGNED';
+  });
+
+  const fields = {
+    'Session ID':        sessionId,
+    'Date':              now.toISOString().split('T')[0],
+    'Shift':             document.getElementById('db-shift')?.textContent || '—',
+    'Confirmed At':      now.toISOString(),
+    'Confirmed By':      document.getElementById('db-manager')?.textContent || '—',
+    'Facility':          'Epic Universe',
+    'Total Roles':       ROLE_CARDS.length,
+    'Assigned Count':    ROLE_CARDS.length - unassigned,
+    'Unassigned Count':  unassigned,
+    'Roster Status':     unassigned === 0 ? 'Complete' : 'Partial — ' + unassigned + ' unassigned',
+    ...roleFields,
+  };
+
+  await atPush('EAP_RoleAssignments', fields);
+
+  // Update last push label
+  const lastPush = document.getElementById('rc-last-push');
+  if(lastPush){
+    lastPush.style.display = 'block';
+    lastPush.textContent = '✓ Roster pushed to OPD · ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) + ' · Session ' + sessionId;
+  }
+
+  // Store session ID in localStorage for OPD to reference
+  try{ localStorage.setItem('as360_rc_session', sessionId); }catch(e){}
+
+  if(btn){ btn.textContent = '✓ Pushed — Confirm Again →'; btn.disabled = false; }
+  toast('Role roster pushed to OPD · ' + (ROLE_CARDS.length - unassigned) + '/' + ROLE_CARDS.length + ' assigned', unassigned > 0 ? 'warn' : 'ok');
+  renderRightNow(); // refresh unassigned count in Right Now
+}
+
+function refreshAll(){
+  refreshDash();renderPillars();renderOOS();renderCARs();renderAudits();renderMatrix();renderThroughput();renderHandoffs();renderShiftLogs();updateBadges();
+  renderRightNow();
+}
+function setDefaults(){
+  const today=new Date().toISOString().split('T')[0];
+  const now=new Date().toTimeString().slice(0,5);
+  ['sl-date','tp-date','ho-date','aud-date','car-due',
+   'cca-date','hae-date','wqa-date','tpa-date','flc-date','yps-date',
+   'soa-date','sac-date','eai-date','ipl-date','oli-date','lga-date',
+   'ypr-date','ges-date','acr-date','sbc-date','eap-date'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=today;});
+  ['sl-start','ho-time','wqa-time'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=now;});
+}
+function updateBadges(){
+  document.getElementById('handoffCount').textContent=handoffs.length;
+  const activeOOS=oosUnits.filter(o=>o.status==='active').length;
+  const ob=document.getElementById('oosBadge');ob.textContent=activeOOS;ob.className='tab-badge '+(activeOOS?'red':'neutral');
+  const openCARs=cars.filter(c=>c.status==='open').length;
+  const cb=document.getElementById('carBadge');cb.textContent=openCARs;cb.className='tab-badge '+(openCARs?'amber':'neutral');
+  const overdue=getOverdueAudits().length;
+  const ab=document.getElementById('auditBadge');ab.textContent=overdue;ab.className='tab-badge '+(overdue?'red':'neutral');
+  const inspOverdue=getInspOverdue();
+  const ib=document.getElementById('inspBadge');ib.textContent=inspOverdue;ib.className='tab-badge '+(inspOverdue?'red':'neutral');
+  document.getElementById('db-insp-overdue').textContent=inspOverdue;
+  updateRotBadges();
+}
+function showView(name,tab){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const v=document.getElementById('view-'+name);
+  if(v)v.classList.add('active');
+  if(tab)tab.classList.add('active');
+  if(name==='inspections'){renderInspections();return;}
+  if(name==='opening'){renderOpeningChecklist();return;}
+  if(name==='rotations'){renderRotations();return;}
+  const map={
+    dashboard:function(){refreshDash();renderRightNow();},
+    pillar:renderPillars,oos:renderOOS,car:renderCARs,
+    audit:renderAudits,matrix:renderMatrix,
+    throughput:renderThroughput,
+    newthroughput:function(){showView('throughput',document.querySelector('[onclick*=throughput]'));setTimeout(function(){toggleTphForm(true);},100);},
+    handoff:renderHandoffs,shift:renderShiftLogs
+  };
+  if(map[name])map[name]();
+}
+
+function init(){
+  load();
+  initRotPositions();
+  ocInit();
+  rcLoadNames();
+  lgaSeedZones();
+  flcSessionEntries=[];
+  ypsSessionEntries=[];
+  if(!matrixContacts.length)matrixContacts=[...DEFAULT_MATRIX];
+  buildChecklistItems();
+  setDefaults();
+  refreshAll();
+  checkRotations();
+  setInterval(checkRotations,15000);
+  setInterval(()=>document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),1000);
+  document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
