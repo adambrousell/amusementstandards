@@ -22,370 +22,111 @@
     --bg: #F8FAFC;
     --card: #FFFFFF;
     --border: #E2E8F0;
-    --shadow: 0 1px 3px rgba(15,23,42,0.08), 0 4px 12px rgba(15,23,42,0.04);
-    --shadow-lg: 0 4px 16px rgba(15,23,42,0.1), 0 12px 40px rgba(15,23,42,0.06);
     --radius: 12px;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--navy);
-    min-height: 100vh;
-    padding-bottom: 48px;
-  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--navy); min-height: 100vh; padding-bottom: 48px; }
 
-  .topbar {
-    background: var(--navy);
-    padding: 14px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .topbar .brand {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--amber);
-    font-weight: 700;
-  }
-  .sync-dot {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 1px;
-    color: var(--slate-light);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+  .topbar { background: var(--navy); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar .brand { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); font-weight: 700; }
+  .sync-dot { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--slate-light); display: flex; align-items: center; gap: 6px; }
   .sync-dot .dot { font-size: 8px; }
   .sync-dot.syncing { color: #FCD34D; }
   .sync-dot.synced  { color: #6EE7B7; }
   .sync-dot.error   { color: #FCA5A5; }
 
-  .form-header {
-    background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%);
-    padding: 36px 24px 28px;
-    color: white;
-  }
+  .form-header { background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 100%); padding: 36px 24px 28px; color: white; }
   .form-header h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
   .form-header .sub { font-size: 13px; color: var(--slate-light); line-height: 1.6; max-width: 560px; }
 
-  .safety-banner {
-    display: block;
-    width: 100%;
-    padding: 13px 24px;
-    background: var(--amber);
-    color: var(--navy);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    text-decoration: none;
-    text-align: center;
-    letter-spacing: 0.2px;
-    transition: background 0.15s;
-  }
+  .safety-banner { display: block; width: 100%; padding: 13px 24px; background: var(--amber); color: var(--navy); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; text-decoration: none; text-align: center; letter-spacing: 0.2px; transition: background 0.15s; }
   .safety-banner:hover { background: var(--amber-dark); color: white; }
 
-  .form-wrap {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 28px 20px 0;
-  }
+  .form-wrap { max-width: 640px; margin: 0 auto; padding: 28px 20px 0; }
 
-  .section-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 32px 0 14px;
-  }
+  .section-label { display: flex; align-items: center; gap: 10px; margin: 32px 0 14px; }
   .section-label:first-child { margin-top: 0; }
-  .section-label .num {
-    width: 24px; height: 24px;
-    background: var(--blue);
-    color: white;
-    border-radius: 50%;
-    font-size: 12px;
-    font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .section-label .txt {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--slate);
-    font-weight: 700;
-  }
+  .section-label .num { width: 24px; height: 24px; background: var(--blue); color: white; border-radius: 50%; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-label .txt { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--slate); font-weight: 700; }
 
   .field { margin-bottom: 18px; }
-  .field label {
-    display: block;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    color: var(--slate);
-    margin-bottom: 6px;
-  }
+  .field label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--slate); margin-bottom: 6px; }
   .field .hint { font-size: 11px; color: var(--slate-light); font-weight: 400; margin-left: 6px; text-transform: none; letter-spacing: 0; }
-  .field input, .field select, .field textarea {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--navy);
-    background: var(--card);
-    transition: border-color 0.15s;
-    -webkit-appearance: none;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    outline: none;
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
-  }
+  .field input, .field select, .field textarea { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--navy); background: var(--card); transition: border-color 0.15s; -webkit-appearance: none; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
   .field textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
-  .auto-filled {
-    background: var(--green-light) !important;
-    border-color: var(--green) !important;
-    color: #065F46 !important;
-    font-weight: 500;
-  }
-  .datetime-display {
-    padding: 11px 14px;
-    background: var(--green-light);
-    border: 1.5px solid var(--green);
-    border-radius: 10px;
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    color: #065F46;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-  }
+  .auto-filled { background: var(--green-light) !important; border-color: var(--green) !important; color: #065F46 !important; font-weight: 500; }
+  .datetime-display { padding: 11px 14px; background: var(--green-light); border: 1.5px solid var(--green); border-radius: 10px; font-family: 'Space Mono', monospace; font-size: 13px; color: #065F46; font-weight: 700; letter-spacing: 0.3px; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   @media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } }
 
-  .star-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    margin-bottom: 10px;
-    transition: border-color 0.15s;
-  }
+  .star-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; margin-bottom: 10px; transition: border-color 0.15s; }
   .star-row:hover { border-color: #CBD5E1; }
   .star-row.rated { border-color: var(--blue); background: var(--blue-light); }
-  .star-label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--navy);
-    flex: 1;
-  }
-  .star-label .star-sub {
-    font-size: 11px;
-    color: var(--slate-light);
-    font-weight: 400;
-    display: block;
-    margin-top: 2px;
-  }
+  .star-label { font-size: 14px; font-weight: 600; color: var(--navy); flex: 1; }
+  .star-label .star-sub { font-size: 11px; color: var(--slate-light); font-weight: 400; display: block; margin-top: 2px; }
   .stars { display: flex; gap: 4px; flex-shrink: 0; }
-  .star {
-    font-size: 26px;
-    cursor: pointer;
-    color: #CBD5E1;
-    transition: color 0.1s, transform 0.1s;
-    line-height: 1;
-    user-select: none;
-  }
+  .star { font-size: 26px; cursor: pointer; color: #CBD5E1; transition: color 0.1s, transform 0.1s; line-height: 1; user-select: none; }
   .star:hover, .star.lit { color: var(--amber); }
   .star:hover { transform: scale(1.15); }
 
-  .overall-wrap {
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 18px;
-  }
-  .overall-wrap .ov-title {
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--slate);
-    margin-bottom: 14px;
-  }
+  .overall-wrap { background: var(--card); border: 1.5px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 18px; }
+  .overall-wrap .ov-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--slate); margin-bottom: 14px; }
   .overall-stars { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; }
   .overall-stars .star { font-size: 36px; }
-  .overall-label {
-    font-size: 13px;
-    color: var(--slate-light);
-    min-height: 18px;
-    transition: color 0.15s;
-  }
+  .overall-label { font-size: 13px; color: var(--slate-light); min-height: 18px; transition: color 0.15s; }
 
   .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip {
-    padding: 8px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    background: var(--card);
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--slate);
-    transition: all 0.15s;
-    user-select: none;
-  }
+  .chip { padding: 8px 14px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--card); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--slate); transition: all 0.15s; user-select: none; }
   .chip:hover { border-color: var(--blue); color: var(--navy); }
   .chip.active { border-color: var(--blue); background: var(--blue-light); color: #1D4ED8; font-weight: 700; }
 
-  .anon-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 13px 14px;
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    margin-bottom: 18px;
-  }
+  .anon-toggle { display: flex; align-items: center; justify-content: space-between; padding: 13px 14px; background: var(--card); border: 1.5px solid var(--border); border-radius: 10px; margin-bottom: 18px; }
   .anon-toggle .left .title { font-size: 14px; font-weight: 600; }
   .anon-toggle .left .sub   { font-size: 11px; color: var(--slate-light); }
-  .toggle-switch {
-    width: 44px; height: 24px;
-    background: var(--border);
-    border-radius: 12px;
-    position: relative;
-    cursor: pointer;
-    transition: background 0.2s;
-    flex-shrink: 0;
-  }
+  .toggle-switch { width: 44px; height: 24px; background: var(--border); border-radius: 12px; position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
   .toggle-switch.on { background: var(--green); }
-  .toggle-switch .knob {
-    width: 20px; height: 20px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 2px; left: 2px;
-    transition: transform 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-  }
+  .toggle-switch .knob { width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
   .toggle-switch.on .knob { transform: translateX(20px); }
   #contact-fields.hidden { display: none; }
 
-  .submit-btn {
-    width: 100%;
-    padding: 17px;
-    background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: transform 0.1s, box-shadow 0.15s;
-    box-shadow: 0 4px 12px rgba(59,130,246,0.3);
-    letter-spacing: 0.2px;
-  }
+  .submit-btn { width: 100%; padding: 17px; background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%); border: none; border-radius: 12px; color: white; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: transform 0.1s, box-shadow 0.15s; box-shadow: 0 4px 12px rgba(59,130,246,0.3); letter-spacing: 0.2px; }
   .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(59,130,246,0.4); }
   .submit-btn:active { transform: translateY(0); }
   .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-  /* Error banner shown inline if sync fails */
-  .error-banner {
-    display: none;
-    margin-top: 14px;
-    padding: 14px 16px;
-    background: var(--red-light);
-    border: 1.5px solid var(--red);
-    border-radius: 10px;
-    font-size: 13px;
-    color: #991B1B;
-    line-height: 1.5;
-  }
+  .error-banner { display: none; margin-top: 14px; padding: 14px 16px; background: var(--red-light); border: 1.5px solid var(--red); border-radius: 10px; font-size: 13px; color: #991B1B; line-height: 1.5; }
   .error-banner.show { display: block; }
   .error-banner strong { display: block; margin-bottom: 4px; }
 
   @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
-  .success-screen {
-    display: none;
-    max-width: 640px;
-    margin: 48px auto;
-    padding: 0 20px;
-    text-align: center;
-    animation: fadeIn 0.4s;
-  }
+  .success-screen { display: none; max-width: 640px; margin: 48px auto; padding: 0 20px; text-align: center; animation: fadeIn 0.4s; }
   .success-screen.show { display: block; }
   .success-icon { font-size: 72px; margin-bottom: 20px; }
   .success-screen h2 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
-  .success-screen .ref {
-    font-family: 'Space Mono', monospace;
-    font-size: 16px;
-    color: var(--blue);
-    background: var(--blue-light);
-    border: 1px solid rgba(59,130,246,0.3);
-    display: inline-block;
-    padding: 8px 20px;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    letter-spacing: 1px;
-  }
+  .success-screen .ref { font-family: 'Space Mono', monospace; font-size: 16px; color: var(--blue); background: var(--blue-light); border: 1px solid rgba(59,130,246,0.3); display: inline-block; padding: 8px 20px; border-radius: 8px; margin-bottom: 16px; letter-spacing: 1px; }
   .success-screen p { font-size: 14px; color: var(--slate); line-height: 1.6; max-width: 380px; margin: 0 auto 24px; }
-  .success-screen .new-report {
-    padding: 12px 28px;
-    background: var(--navy);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  .form-footer {
-    text-align: center;
-    font-size: 11px;
-    color: var(--slate-light);
-    margin-top: 36px;
-    padding: 0 20px 8px;
-  }
+  .success-screen .new-report { padding: 12px 28px; background: var(--navy); color: white; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .form-footer { text-align: center; font-size: 11px; color: var(--slate-light); margin-top: 36px; padding: 0 20px 8px; }
 </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
 <div class="topbar">
   <div class="brand">💬 Guest Feedback</div>
   <div class="sync-dot" id="syncDot"><span class="dot">⬤</span> <span id="syncTxt">AS 360 · GFB</span></div>
 </div>
 
-<!-- HERO HEADER -->
 <div class="form-header">
   <h1>How Was Your Ride?</h1>
   <div class="sub">Real-time guest sentiment captured at the attraction — your feedback helps us improve every ride, every interaction, every visit.</div>
 </div>
 
-<!-- SAFETY BANNER -->
 <a href="nmr.html" class="safety-banner">⚠️ Report a Safety Near-Miss instead →</a>
 
-<!-- FORM BODY -->
 <div id="form-view">
 <div class="form-wrap">
 
-  <!-- ① VISIT DETAILS -->
   <div class="section-label"><div class="num">1</div><div class="txt">Visit Details</div></div>
 
   <div class="two-col">
@@ -409,7 +150,6 @@
     </div>
   </div>
 
-  <!-- ② RATINGS -->
   <div class="section-label"><div class="num">2</div><div class="txt">Rate Your Experience</div></div>
 
   <div class="star-row" id="row-ride">
@@ -448,7 +188,6 @@
     </div>
   </div>
 
-  <!-- Overall -->
   <div class="overall-wrap">
     <div class="ov-title">⭐ Overall Satisfaction</div>
     <div class="overall-stars" id="stars-overall">
@@ -459,7 +198,6 @@
     <div class="overall-label" id="overall-label">Tap to rate your overall visit</div>
   </div>
 
-  <!-- ③ COMMENTS -->
   <div class="section-label"><div class="num">3</div><div class="txt">Comments</div></div>
 
   <div class="field">
@@ -472,7 +210,6 @@
     <textarea id="notes" placeholder="Staff names, specific incidents, suggestions…" style="min-height:70px;"></textarea>
   </div>
 
-  <!-- ④ ABOUT YOU -->
   <div class="section-label"><div class="num">4</div><div class="txt">About You</div></div>
 
   <div class="anon-toggle">
@@ -503,14 +240,14 @@
     </div>
   </div>
 
-  <!-- SUBMIT -->
   <hr style="border:none;border-top:1px solid var(--border);margin:8px 0 20px;">
   <button class="submit-btn" id="submitBtn" onclick="submitFeedback()">Submit Feedback →</button>
 
-  <!-- Inline error shown if Airtable sync fails -->
   <div class="error-banner" id="error-banner">
     <strong>⚠️ Submission failed — please try again.</strong>
-    Your response couldn't be saved. Check your connection and tap Submit again. If the problem continues, screenshot this page and send it to <a href="/cdn-cgi/l/email-protection#2e4f4a4f436e4f435b5d4b434b405a5d5a4f404a4f5c4a5d004d4143" style="color:#991B1B;"><span class="__cf_email__" data-cfemail="b4d5d0d5d9f4d5d9c1c7d1d9d1dac0c7c0d5dad0d5c6d0c79ad7dbd9">[email&#160;protected]</span></a>.
+    Your response couldn't be saved. Check your connection and tap Submit again. If the problem continues, screenshot this page and send it to
+    <a href="mailto:adam@amusementstandards.com" style="color:#991B1B;">adam@amusementstandards.com</a>.
+    <div id="error-detail" style="margin-top:10px;padding:8px 10px;background:rgba(0,0,0,0.06);border-radius:6px;font-family:monospace;font-size:11px;word-break:break-all;color:#7f1d1d;display:none;"></div>
   </div>
 
   <p class="form-footer">
@@ -519,9 +256,8 @@
   </p>
 
 </div>
-</div><!-- /form-view -->
+</div>
 
-<!-- SUCCESS SCREEN — only shown after confirmed Airtable write -->
 <div class="success-screen" id="success-screen">
   <div class="success-icon">🌟</div>
   <h2>Thank You!</h2>
@@ -530,11 +266,9 @@
   <button class="new-report" onclick="resetForm()">Submit Another Response</button>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // ── PROXY ─────────────────────────────────────────────────────────────────
+<script>
   const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
 
-  // Returns true on success, false on failure
   async function pushGFB(fields) {
     setSyncState('syncing');
     try {
@@ -543,21 +277,15 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fields })
       });
-      if (res.ok) {
-        setSyncState('synced');
-        return true;
-      } else {
+      if (res.ok) { setSyncState('synced'); return true; }
+      else {
         const body = await res.text();
-        console.warn('Proxy sync failed', res.status, body);
-        setSyncState('error');
-        // Store error detail for display
         window._lastSyncError = res.status + ': ' + body;
-        return false;
+        setSyncState('error'); return false;
       }
     } catch (e) {
-      console.warn('Proxy error:', e.message);
-      setSyncState('error');
-      return false;
+      window._lastSyncError = e.message;
+      setSyncState('error'); return false;
     }
   }
 
@@ -571,7 +299,6 @@
     else txt.textContent = 'AS 360 · GFB';
   }
 
-  // ── Live clock ────────────────────────────────────────────────────────────
   function tickClock() {
     const t = new Date();
     const el = document.getElementById('datetime-display');
@@ -580,67 +307,54 @@
       '  ·  ' +
       t.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit'});
   }
-  tickClock();
-  setInterval(tickClock, 1000);
+  tickClock(); setInterval(tickClock, 1000);
 
-  // ── Random location lock ──────────────────────────────────────────────────
   (function(){
     const rides = [
-      'Constellation Carousel', 'Stardust Racers',
-      'Curse of the Werewolf', 'Monsters Unchained: The Frankenstein Experiment',
-      "Dragon Racer's Rally", 'Fyre Drill', "Hiccup's Wing Gliders",
-      'Bowser Jr. Challenge', 'Mario Kart: Bowser\'s Challenge',
-      'Mine-Cart Madness', "Yoshi's Adventure",
-      'Harry Potter and the Battle at the Ministry'
+      'Constellation Carousel','Stardust Racers',
+      'Monsters Unchained: The Curse of the Werewolf',
+      "Dragon Racer's Rally",'Fyre Drill',"Hiccup's Wing Gliders",
+      "Mario Kart: Bowser's Challenge",'Donkey Kong Country: Mine-Cart Madness',
+      "Yoshi's Adventure",'Harry Potter and the Battle at the Ministry'
     ];
-    const pick = rides[Math.floor(Math.random() * rides.length)];
-    const el = document.getElementById('location-field');
-    el.value = pick;
+    document.getElementById('location-field').value = rides[Math.floor(Math.random()*rides.length)];
   })();
 
-  // ── Star rating ───────────────────────────────────────────────────────────
   const ratings = { ride: 0, staff: 0, clean: 0, safety: 0, overall: 0 };
   const overallLabels = ['','😞 Poor','😐 Fair','🙂 Good','😊 Great','🤩 Excellent!'];
 
   function rate(category, value) {
     ratings[category] = value;
-    const stars = document.getElementById('stars-' + category).querySelectorAll('.star');
-    stars.forEach((s, i) => s.classList.toggle('lit', i < value));
-    const row = document.getElementById('row-' + category);
+    document.getElementById('stars-'+category).querySelectorAll('.star').forEach((s,i) => s.classList.toggle('lit', i < value));
+    const row = document.getElementById('row-'+category);
     if (row) row.classList.toggle('rated', value > 0);
     if (category === 'overall') {
-      document.getElementById('overall-label').textContent = overallLabels[value];
-      document.getElementById('overall-label').style.color =
-        value >= 4 ? '#065F46' : value === 3 ? '#92400E' : '#991B1B';
+      const lbl = document.getElementById('overall-label');
+      lbl.textContent = overallLabels[value];
+      lbl.style.color = value >= 4 ? '#065F46' : value === 3 ? '#92400E' : '#991B1B';
     }
   }
 
   document.querySelectorAll('.stars, .overall-stars').forEach(group => {
     const stars = group.querySelectorAll('.star');
     const cat = group.id.replace('stars-','');
-    stars.forEach((s, i) => {
-      s.addEventListener('mouseenter', () => {
-        stars.forEach((x, j) => x.style.color = j <= i ? 'var(--amber)' : '');
-      });
-      s.addEventListener('mouseleave', () => {
-        stars.forEach((x, j) => x.style.color = j < ratings[cat] ? 'var(--amber)' : '');
-      });
+    stars.forEach((s,i) => {
+      s.addEventListener('mouseenter', () => stars.forEach((x,j) => x.style.color = j <= i ? 'var(--amber)' : ''));
+      s.addEventListener('mouseleave', () => stars.forEach((x,j) => x.style.color = j < ratings[cat] ? 'var(--amber)' : ''));
     });
   });
 
-  // ── Chip select ───────────────────────────────────────────────────────────
   function selectChip(el, groupId) {
-    const wasActive = el.classList.contains('active');
+    const was = el.classList.contains('active');
     document.getElementById(groupId).querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-    if (!wasActive) el.classList.add('active');
+    if (!was) el.classList.add('active');
   }
 
   function getActiveChip(groupId) {
-    const active = document.getElementById(groupId).querySelector('.chip.active');
-    return active ? active.textContent.trim() : '';
+    const a = document.getElementById(groupId).querySelector('.chip.active');
+    return a ? a.textContent.trim() : '';
   }
 
-  // ── Anonymous toggle ──────────────────────────────────────────────────────
   let isAnon = true;
   function toggleAnon() {
     isAnon = !isAnon;
@@ -648,50 +362,39 @@
     document.getElementById('contact-fields').classList.toggle('hidden', isAnon);
   }
 
-  // ── Submit ────────────────────────────────────────────────────────────────
   async function submitFeedback() {
-    if (!ratings.overall) {
-      alert('Please rate your overall satisfaction before submitting.');
-      return;
-    }
-
+    if (!ratings.overall) { alert('Please rate your overall satisfaction before submitting.'); return; }
     const btn = document.getElementById('submitBtn');
     const errorBanner = document.getElementById('error-banner');
-    btn.disabled = true;
-    btn.textContent = 'Submitting…';
+    btn.disabled = true; btn.textContent = 'Submitting…';
     errorBanner.classList.remove('show');
 
-    const year = new Date().getFullYear();
-    const refId = 'GFB-' + year + '-' + String(Math.floor(Math.random()*9000)+1000);
+    const refId = 'GFB-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random()*9000)+1000);
+    const pad = n => String(n).padStart(2,'0');
+    const d = new Date();
+    const ts = d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
 
-    // Field names use regular hyphens to match Airtable column names exactly
     const fields = {
-      'Reference ID':          refId,
-      'Timestamp':             (() => {
-        const d = new Date();
-        const pad = n => String(n).padStart(2,'0');
-        return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
-      })(),
-      'Attraction':            document.getElementById('location-field').value,
-      'Visit Type':            getActiveChip('visit-type-chips'),
-      'Rating — Ride':         ratings.ride   || null,
-      'Rating — Staff':        ratings.staff  || null,
-      'Rating — Clean':        ratings.clean  || null,
-      'Rating — Safety':       ratings.safety || null,
-      'Rating — Overall':      ratings.overall,
-      'Highlight':             document.getElementById('highlight').value.trim(),
-      'Notes':                 document.getElementById('notes').value.trim(),
-      'Anonymous':             isAnon ? 'Yes' : 'No',
-      'Guest Name':            isAnon ? '' : (document.getElementById('guest-name').value.trim()),
-      'Guest Email':           isAnon ? '' : (document.getElementById('guest-email').value.trim()),
-      'Follow-Up Requested':   isAnon ? '' : getActiveChip('followup-chips'),
+      'Reference ID':        refId,
+      'Timestamp':           ts,
+      'Attraction':          document.getElementById('location-field').value,
+      'Visit Type':          getActiveChip('visit-type-chips'),
+      'Rating — Ride':       ratings.ride   || null,
+      'Rating — Staff':      ratings.staff  || null,
+      'Rating — Clean':      ratings.clean  || null,
+      'Rating — Safety':     ratings.safety || null,
+      'Rating — Overall':    ratings.overall,
+      'Highlight':           document.getElementById('highlight').value.trim(),
+      'Notes':               document.getElementById('notes').value.trim(),
+      'Anonymous':           isAnon ? 'Yes' : 'No',
+      'Guest Name':          isAnon ? '' : document.getElementById('guest-name').value.trim(),
+      'Guest Email':         isAnon ? '' : document.getElementById('guest-email').value.trim(),
+      'Follow-Up Requested': isAnon ? '' : getActiveChip('followup-chips'),
+      'Form Source':         'Ride QR',
     };
 
-    // Await confirmed sync before showing success
     const ok = await pushGFB(fields);
-
-    btn.disabled = false;
-    btn.textContent = 'Submit Feedback →';
+    btn.disabled = false; btn.textContent = 'Submit Feedback →';
 
     if (ok) {
       document.getElementById('ref-number').textContent = refId;
@@ -699,13 +402,8 @@
       document.getElementById('success-screen').classList.add('show');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      // Show inline error with actual response for diagnosis
-      const detail = window._lastSyncError || 'Unknown error';
-      errorBanner.innerHTML = `
-        <strong>⚠️ Submission failed — please try again.</strong>
-        Your response couldn't be saved. Check your connection and tap Submit again. If the problem continues, screenshot this page and send it to <a href="mailto:adam@amusementstandards.com" style="color:#991B1B;">adam@amusementstandards.com</a>.
-        <div style="margin-top:10px;padding:8px 10px;background:rgba(0,0,0,0.06);border-radius:6px;font-family:monospace;font-size:11px;word-break:break-all;color:#7f1d1d;">${detail}</div>
-      `;
+      const detail = document.getElementById('error-detail');
+      if (window._lastSyncError) { detail.textContent = window._lastSyncError; detail.style.display = 'block'; }
       errorBanner.classList.add('show');
       errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
@@ -715,6 +413,7 @@
     document.getElementById('form-view').style.display = 'block';
     document.getElementById('success-screen').classList.remove('show');
     document.getElementById('error-banner').classList.remove('show');
+    document.getElementById('error-detail').style.display = 'none';
     Object.keys(ratings).forEach(k => { ratings[k] = 0; });
     document.querySelectorAll('.star').forEach(s => { s.classList.remove('lit'); s.style.color = ''; });
     document.querySelectorAll('.star-row').forEach(r => r.classList.remove('rated'));
@@ -723,7 +422,7 @@
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
     document.getElementById('highlight').value = '';
     document.getElementById('notes').value = '';
-        isAnon = true;
+    isAnon = true;
     document.getElementById('anon-switch').classList.add('on');
     document.getElementById('contact-fields').classList.add('hidden');
     setSyncState('idle');
