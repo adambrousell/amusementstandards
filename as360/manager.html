@@ -394,64 +394,41 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 </div>
 
 <div class="nav-tabs">
-  <div class="nav-tab" id="rightnow-tab" onclick="showView('rightnow',this)">⚡ Right Now <span class="tab-badge red" id="rnBadge" style="display:none">!</span></div>
   <div class="nav-tab" onclick="showView('opening',this)">🟢 Opening <span class="tab-badge neutral" id="ocBadge">—</span></div>
-  <div class="nav-tab active" onclick="showView('dashboard',this)">📊 Dashboard</div>
+  <div class="nav-tab active" id="dashboard-tab" onclick="showView('dashboard',this)">📊 Dashboard <span class="tab-badge red" id="rnBadge" style="display:none">!</span></div>
   <div class="nav-tab" onclick="showView('pillar',this)">🎯 RIDE Score</div>
   <div class="nav-tab" onclick="showView('oos',this)">⛔ OOS <span class="tab-badge red" id="oosBadge">0</span></div>
   <div class="nav-tab" onclick="showView('car',this)">📂 CARs <span class="tab-badge neutral" id="carBadge">0</span></div>
   <div class="nav-tab" onclick="showView('rotations',this)">🔁 Rotations <span class="tab-badge neutral" id="rotBadge">0</span></div>
   <div class="nav-tab insp-tab" onclick="showView('inspections',this)">🔍 Inspections <span class="tab-badge red" id="inspBadge">0</span></div>
-  <div class="nav-tab" onclick="showView('audit',this)">📅 3rd-Party <span class="tab-badge neutral" id="auditBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('audit',this)">📋 Audits <span class="tab-badge neutral" id="auditBadge">0</span></div>
   <div class="nav-tab" onclick="showView('matrix',this)">📞 Escalation</div>
   <div class="nav-divider"></div>
   <div class="nav-tab" onclick="showView('shift',this)">📋 Shift Log</div>
   <div class="nav-tab" onclick="showView('throughput',this)">📈 TPH</div>
   <div class="nav-tab" onclick="showView('handoff',this)">🔄 Handoff <span class="tab-badge neutral" id="handoffCount">0</span></div>
-  <div class="nav-tab" onclick="showView('newthroughput',this)">＋ Log TPH</div>
   <div class="nav-tab" onclick="showView('newhandoff',this)">＋ Handoff</div>
 </div>
 
 <div class="main">
 
 <!-- ══ RIGHT NOW ══ -->
-<div class="view" id="view-rightnow">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
-    <div>
-      <div style="font-family:var(--cond);font-size:18px;font-weight:700;color:var(--text-bright);">Right Now
-        <span class="rn-phase-badge" id="rn-phase-badge">—</span>
-      </div>
-      <div style="font-size:11px;color:var(--text-dim);margin-top:2px;" id="rn-phase-desc">Loading shift phase…</div>
-    </div>
-    <div style="font-family:var(--mono);font-size:11px;color:var(--text-dim);" id="rn-clock-large"></div>
-  </div>
-  <div id="rn-body"></div>
-</div>
 
 <!-- ══ OPENING CHECKLIST ══ -->
 <div class="view" id="view-opening">
-
-  <!-- Status bar -->
   <div class="oc-status-bar">
     <div class="oc-progress-wrap">
-      <div class="oc-progress-label">
-        <span id="oc-prog-label">Loading…</span>
-        <span id="oc-prog-pct">0%</span>
-      </div>
+      <div class="oc-progress-label"><span id="oc-prog-label">Loading…</span><span id="oc-prog-pct">0%</span></div>
       <div class="oc-progress-track"><div class="oc-progress-fill" id="oc-prog-fill" style="width:0%"></div></div>
     </div>
     <div class="oc-ready-badge not-ready" id="oc-ready-badge">NOT READY</div>
     <button class="btn btn-ghost btn-sm" onclick="ocFetchATR()" id="oc-refresh-btn">↻ Sync ATR</button>
   </div>
-
-  <!-- Gate summary cards -->
   <div class="oc-gate-summary">
     <div class="oc-gate-card"><div class="oc-gate-num green" id="oc-clear-count">0</div><div class="oc-gate-label">Clear to Open</div></div>
     <div class="oc-gate-card"><div class="oc-gate-num amber" id="oc-issues-count">0</div><div class="oc-gate-label">Issues Noted</div></div>
     <div class="oc-gate-card"><div class="oc-gate-num red" id="oc-hold-count">0</div><div class="oc-gate-label">Hold / Not Ready</div></div>
   </div>
-
-  <!-- Filter row -->
   <div class="oc-filter-row">
     <span style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">FILTER:</span>
     <button class="oc-filter-btn active" id="ocf-all" onclick="ocSetFilter('all',this)">All (11)</button>
@@ -461,19 +438,15 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div style="flex:1"></div>
     <div style="font-family:var(--mono);font-size:8px;color:var(--text-muted);" id="oc-atr-ts">ATR: not synced</div>
   </div>
-
-  <!-- Ride cards -->
   <div id="oc-ride-list"></div>
-
-  <!-- Submit bar -->
   <div class="oc-submit-bar">
     <div style="display:flex;gap:8px;">
       <button class="btn btn-teal" style="flex:1;" onclick="ocSubmitAll()">Submit Opening Log →</button>
       <button class="btn btn-ghost" onclick="ocResetAll()">Reset</button>
     </div>
   </div>
-
 </div>
+
 <!-- ══ DASHBOARD ══ -->
 <div class="view active" id="view-dashboard">
   <div class="shift-status-bar">
@@ -481,6 +454,17 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="ssb-item"><div class="ssb-label">Manager</div><div class="ssb-val" id="db-manager">—</div></div>
     <div class="ssb-item"><div class="ssb-label">RIDE Score</div><div class="ssb-val" id="db-ride-score" style="color:var(--teal)">—</div></div>
     <button class="btn btn-teal btn-sm" onclick="showView('newhandoff',document.querySelectorAll('.nav-tab')[11])">New Handoff →</button>
+  </div>
+  <!-- Right Now panel -->
+  <div style="background:var(--panel2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+      <span style="font-size:14px;">⚡</span>
+      <span style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);">Right Now</span>
+      <span class="rn-phase-badge" id="rn-phase-badge">—</span>
+      <span style="font-size:11px;color:var(--text-dim);margin-left:4px;" id="rn-phase-desc"></span>
+      <span style="font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-left:auto;" id="rn-clock-large"></span>
+    </div>
+    <div id="rn-body"></div>
   </div>
   <div class="metric-grid">
     <div class="metric-card teal"><div class="mv teal" id="db-attractions">—</div><div class="ml">Attractions Open</div></div>
@@ -1230,6 +1214,105 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     </div>
   </div>
 
+
+  <!-- TABLETOP SCENARIOS (Quarterly) -->
+  <div style="border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:10px 14px;margin-bottom:10px;background:rgba(0,212,255,.03);">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:3px;">Tabletop Exercise Scenarios</div>
+    <div style="font-size:11px;color:var(--text-dim);">Discussion-based · 60–90 min · No alarms · Tests decision-making · Log after each session</div>
+  </div>
+
+  <div class="tt-scenario-card" id="tt-1">
+    <div class="tt-scenario-hdr" onclick="ttToggle('tt-1')"><div><div class="tt-scenario-title">Scenario 1 — Multi-Casualty Incident</div><div class="tt-scenario-meta">Tour bus accident · Advanced · 90 min · 8–12 participants</div></div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">▼</div></div>
+    <div class="tt-scenario-body">
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;"><strong style="color:var(--text)">Objectives:</strong> Mass casualty triage · ICS structure · Resource coordination · Media management · Family reunification</div>
+      <div class="tt-phase">Phase 1 — Immediate Response (0–5 min)</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>55-passenger tour bus rolled onto its side in parking lot. ~45 people, includes children from church camp. Multiple injuries, some still in bus.</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>Who do you call first? Who is IC? Do you go to the scene? How do you triage? How many ambulances?</div>
+      <div class="tt-phase">Phase 2 — Expanding Incident</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>News helicopter overhead. Reporter at main gate. Social media photos. Parents of church group arriving, demanding info about their children.</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>Who talks to media? Where do families wait? What info can you share? How do you reunite families with injured kids at hospital?</div>
+      <div class="tt-phase">Phase 3 — Recovery</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>8 transported (3 critical). Scene blocks main entrance. Monday: attorneys calling, OSHA at your door.</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>Can you stay open? Who handles attorney calls? What do you tell OSHA?</div>
+      <div class="tt-log-form">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">Log This Exercise</div>
+        <div class="form-grid"><div class="ff" style="margin:0"><label>Date</label><input type="date" id="tt1-date"></div><div class="ff" style="margin:0"><label>Facilitator</label><input type="text" id="tt1-facilitator" placeholder="Name"></div></div>
+        <div class="ff"><label>Gaps Identified</label><textarea id="tt1-gaps" rows="2" placeholder="Key gaps or plan updates needed…"></textarea></div>
+        <div class="ff"><label>Action Items</label><textarea id="tt1-actions" rows="2" placeholder="What needs fixing and who owns it…"></textarea></div>
+        <button class="btn btn-teal" onclick="ttSubmitLog(1)">Submit Exercise Log →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tt-scenario-card" id="tt-2">
+    <div class="tt-scenario-hdr" onclick="ttToggle('tt-2')"><div><div class="tt-scenario-title">Scenario 2 — Active Threat</div><div class="tt-scenario-meta">Workplace violence with social media · Advanced · 90 min</div></div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">▼</div></div>
+    <div class="tt-scenario-body">
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;"><strong style="color:var(--text)">Objectives:</strong> RUN-HIDE-FIGHT · Lockdown procedures · Law enforcement coordination · Employee trauma support</div>
+      <div class="tt-phase">Phase 1 — Initial Reports</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>Security radios: guest reports sounds like gunshots near Isle of Berk. Guests running. Social media posts showing panic. No confirmed shooter or injuries yet.</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>Lock down immediately or investigate? What do you announce to guests? Who calls 911? Clear all 5 worlds or just the area?</div>
+      <div class="tt-phase">Phase 2 — Confirmed Threat</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>Police confirm active threat. Suspect now in Dark Universe. Facility-wide lockdown required. 4,500 guests, 150+ staff. Staff radioing: "what do we do?"</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>How do you shelter 4,500 guests? PA announcement script? How do ride operators handle stranded guests? Corporate calling.</div>
+      <div class="tt-phase">Phase 3 — Aftermath</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>Threat neutralized. 3 injuries (not firearm). Media wants interview. Legal calling. Staff visibly shaken. Park wants to reopen tomorrow.</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>Reopen tomorrow? Staff trauma support? Media statement? Evidence preservation?</div>
+      <div class="tt-log-form">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">Log This Exercise</div>
+        <div class="form-grid"><div class="ff" style="margin:0"><label>Date</label><input type="date" id="tt2-date"></div><div class="ff" style="margin:0"><label>Facilitator</label><input type="text" id="tt2-facilitator" placeholder="Name"></div></div>
+        <div class="ff"><label>Gaps Identified</label><textarea id="tt2-gaps" rows="2" placeholder="Key gaps or plan updates needed…"></textarea></div>
+        <div class="ff"><label>Action Items</label><textarea id="tt2-actions" rows="2" placeholder="What needs fixing and who owns it…"></textarea></div>
+        <button class="btn btn-teal" onclick="ttSubmitLog(2)">Submit Exercise Log →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tt-scenario-card" id="tt-3">
+    <div class="tt-scenario-hdr" onclick="ttToggle('tt-3')"><div><div class="tt-scenario-title">Scenario 3 — Foodborne Illness Outbreak</div><div class="tt-scenario-meta">Multiple guests report illness · Moderate · 60 min</div></div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">▼</div></div>
+    <div class="tt-scenario-body">
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;"><strong style="color:var(--text)">Objectives:</strong> Public health coordination · Food safety protocols · Investigation procedures</div>
+      <div class="tt-phase">Phase 1 — Initial Reports</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>First aid reports 6 guests with GI symptoms — all ate at same F&amp;B location 12–2 PM. By 9 PM, county health calls: 12 poison control calls from park visitors.</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>What food do you preserve? Close F&amp;B tomorrow? Employee interviews tonight? Media statement?</div>
+      <div class="tt-phase">Phase 2 — Investigation</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>Health dept arrives — wants temp logs, employee health records, food samples, cleaning logs. Local news: "Food Poisoning Outbreak." Social media blowing up.</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>Public statement? What if logs are incomplete? Other venues safe to operate?</div>
+      <div class="tt-phase">Phase 3 — Legal &amp; Regulatory</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>47 confirmed cases. 8 hospitalized. 3 lawsuits. Preliminary: Salmonella in undercooked chicken. Employee worked while symptomatic.</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>Disciplinary action? Policy changes? When do you reopen?</div>
+      <div class="tt-log-form">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">Log This Exercise</div>
+        <div class="form-grid"><div class="ff" style="margin:0"><label>Date</label><input type="date" id="tt3-date"></div><div class="ff" style="margin:0"><label>Facilitator</label><input type="text" id="tt3-facilitator" placeholder="Name"></div></div>
+        <div class="ff"><label>Gaps Identified</label><textarea id="tt3-gaps" rows="2" placeholder="Key gaps or plan updates needed…"></textarea></div>
+        <div class="ff"><label>Action Items</label><textarea id="tt3-actions" rows="2" placeholder="What needs fixing and who owns it…"></textarea></div>
+        <button class="btn btn-teal" onclick="ttSubmitLog(3)">Submit Exercise Log →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tt-scenario-card" id="tt-4">
+    <div class="tt-scenario-hdr" onclick="ttToggle('tt-4')"><div><div class="tt-scenario-title">Scenario 4 — Child Abduction Attempt</div><div class="tt-scenario-meta">Stranger attempts to leave with unaccompanied minor · High · 60 min</div></div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">▼</div></div>
+    <div class="tt-scenario-body">
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;"><strong style="color:var(--text)">Objectives:</strong> Code Yellow procedures · Law enforcement coordination · Exit control · Security camera review</div>
+      <div class="tt-phase">Phase 1 — Initial Report</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>Security stops adult male at main exit with girl (~6 yrs). Girl says quietly "I don't know him." Man says "this is my daughter."</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>Detain the adult? Call police immediately? Where do you take them? Who interviews the child? Close the exit?</div>
+      <div class="tt-phase">Phase 2 — Developing Situation</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>Man now says he's her uncle. No ID. Girl says "mommy is still in the park." Police want cameras reviewed.</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>Camera access? PA announcement for mother? Close exits? Media blackout?</div>
+      <div class="tt-phase">Phase 3 — Resolution</div>
+      <div class="tt-inject"><div class="tt-inject-label">INJECT</div>Mother found in restroom. Does NOT know the man. Man has no connection to family. Criminal charges likely.</div>
+      <div class="tt-decision"><div class="tt-decision-label">DECISION POINT</div>Your liability? Child protective services? Guest trespass/ban? Policy changes to prevent recurrence?</div>
+      <div class="tt-log-form">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">Log This Exercise</div>
+        <div class="form-grid"><div class="ff" style="margin:0"><label>Date</label><input type="date" id="tt4-date"></div><div class="ff" style="margin:0"><label>Facilitator</label><input type="text" id="tt4-facilitator" placeholder="Name"></div></div>
+        <div class="ff"><label>Gaps Identified</label><textarea id="tt4-gaps" rows="2" placeholder="Key gaps or plan updates needed…"></textarea></div>
+        <div class="ff"><label>Action Items</label><textarea id="tt4-actions" rows="2" placeholder="What needs fixing and who owns it…"></textarea></div>
+        <button class="btn btn-teal" onclick="ttSubmitLog(4)">Submit Exercise Log →</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ══ ANNUAL FORMS ══ -->
 
   <div class="form-panel" id="form-SBC">
@@ -1295,22 +1378,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="metric-card amber"><div class="mv amber" id="audit-due-7">0</div><div class="ml">Due in 7 Days</div></div>
     <div class="metric-card green"><div class="mv green" id="audit-completed">0</div><div class="ml">Completed (30d)</div></div>
   </div>
-  <div class="panel">
-    <div class="panel-hdr"><div class="panel-title">Schedule External Audit</div></div>
-    <div class="panel-body">
-      <div class="form-grid">
-        <div class="ff"><label>Audit Type</label>
-          <select id="aud-type"><option value="TPS">TPS — Third-Party Safety</option><option value="State">State Regulatory</option><option value="Insurance">Insurance Inspection</option><option value="NAARSO">NAARSO Visit</option><option value="SB">Service Bulletin Review</option></select>
-        </div>
-        <div class="ff"><label>Scheduled Date</label><input type="date" id="aud-date"></div>
-      </div>
-      <div class="form-grid">
-        <div class="ff"><label>Auditor / Inspector</label><input type="text" id="aud-auditor" placeholder="Name or firm"></div>
-        <div class="ff"><label>Scope</label><input type="text" id="aud-scope" placeholder="Facility-wide or specific"></div>
-      </div>
-      <div class="ff"><label>Notes</label><input type="text" id="aud-notes" placeholder="Access requirements, contacts…"></div>
-      <button class="btn btn-teal" onclick="saveAudit()">Schedule →</button>
-    </div>
+  <div style="background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:11px;color:var(--text-dim);line-height:1.6;">
+    Third-party audits are scheduled externally. Use <strong style="color:var(--text)">Inspections → Weekly → TPA</strong> to log an inspection after it occurs. This view shows the schedule record only.
   </div>
   <div class="panel" style="margin-bottom:0">
     <div class="tp-toolbar">
@@ -1350,6 +1419,12 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
       </div>
     </div>
   </div>
+
+  <!-- Role Cards -->
+  <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);padding-bottom:5px;border-bottom:1px solid var(--border);margin:14px 0 6px;">// Emergency Response Role Cards</div>
+  <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">Eight roles activated during any declared emergency. Tap to expand responsibilities and assign personnel. Saved to localStorage.</div>
+  <div id="role-cards-grid"></div>
+
 </div>
 
 <!-- ══ SHIFT LOG ══ -->
@@ -1375,6 +1450,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
 <!-- ══ THROUGHPUT ══ -->
 <div class="view" id="view-throughput">
+  <div style="display:flex;justify-content:flex-end;margin-bottom:10px;"><button class="btn btn-teal btn-sm" onclick="toggleTphForm()">＋ Log TPH</button></div>
+  <div id="tph-inline-form" style="display:none;"></div>
   <div class="metric-grid" style="grid-template-columns:repeat(3,1fr);">
     <div class="metric-card green"><div class="mv green" id="tpm-total">0</div><div class="ml">Total Guests</div></div>
     <div class="metric-card teal"><div class="mv teal" id="tpm-avg-tph">—</div><div class="ml">Avg TPH</div></div>
@@ -1700,10 +1777,359 @@ function load(){
 }
 function save(k,d){try{localStorage.setItem(k,JSON.stringify(d));}catch(e){}}
 
+
+// ══════════════════════════════════════════════════════════════════════════════
+// OPENING CHECKLIST ENGINE
+// ══════════════════════════════════════════════════════════════════════════════
+const AT_URL_OC='https://as360-proxy.amusementstandards.workers.dev/airtable';
+
+async function atFetch(table,params=''){
+  try{
+    const res=await fetch(`${AT_URL_OC}/${encodeURIComponent(table)}${params?'?'+params:''}`,{method:'GET',headers:{'Content-Type':'application/json'}});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    return await res.json();
+  }catch(e){console.warn('atFetch:',e.message);return null;}
+}
+
+const OC_WORLDS={
+  'Celestial Park':     {color:'#00D4FF'},
+  'Ministry of Magic':  {color:'#E040FB'},
+  'Super Nintendo World':{color:'#FF6B1A'},
+  'Isle of Berk':       {color:'#00E676'},
+  'Dark Universe':      {color:'#F43F5E'},
+};
+
+const OC_RIDE_ITEMS={
+  SR:[{id:'sr1',label:'Lap bar and restraint test — all vehicles',cat:'safety'},{id:'sr2',label:'Anti-rollback device confirmed functional',cat:'safety'},{id:'sr3',label:'E-stop and dispatch system test cycle',cat:'equip'},{id:'sr4',label:'Height measuring stick verified (48″)',cat:'safety'},{id:'sr5',label:'Load/unload platform clear — no wet surfaces',cat:'ops'},{id:'sr6',label:'Dispatch position staffed and briefed',cat:'staff'},{id:'sr7',label:'Queue lane barriers set, overflow route marked',cat:'ops'},{id:'sr8',label:'Express Pass and Single Rider lanes configured',cat:'ops'},{id:'sr9',label:'Radio comms check with OPD dispatcher',cat:'comms'}],
+  CC:[{id:'cc1',label:'All horses and chariots secured — no loose fittings',cat:'safety'},{id:'cc2',label:'Rotation mechanism test at slow speed',cat:'equip'},{id:'cc3',label:'Platform perimeter guard chains in place',cat:'safety'},{id:'cc4',label:'Load/unload position staffed',cat:'staff'},{id:'cc5',label:'Queue lane ready and accessible',cat:'ops'}],
+  HP:[{id:'hp1',label:'Vehicle restraint and lap bar test — all vehicles',cat:'safety'},{id:'hp2',label:'Height measuring stick verified (40″)',cat:'safety'},{id:'hp3',label:'Ride system self-test complete — no faults',cat:'equip'},{id:'hp4',label:'Interactive spell-casting elements active',cat:'ops'},{id:'hp5',label:'Queue 1 and Queue 2 lanes configured',cat:'ops'},{id:'hp6',label:'Both positions staffed and briefed',cat:'staff'},{id:'hp7',label:'Radio comms check with OPD dispatcher',cat:'comms'}],
+  DK:[{id:'dk1',label:'Mine cart lap bars and restraints tested',cat:'safety'},{id:'dk2',label:'Height measuring stick verified (36″)',cat:'safety'},{id:'dk3',label:'Track and propulsion system test complete',cat:'equip'},{id:'dk4',label:'Express Pass lane configured',cat:'ops'},{id:'dk5',label:'Positions staffed and briefed',cat:'staff'}],
+  MK:[{id:'mk1',label:'Kart restraints and RFID band test',cat:'safety'},{id:'mk2',label:'Height measuring stick verified (40″)',cat:'safety'},{id:'mk3',label:'AR headset check — all vehicles',cat:'equip'},{id:'mk4',label:'Ride system boot and self-test complete',cat:'equip'},{id:'mk5',label:'Both queue lanes and Express Pass configured',cat:'ops'},{id:'mk6',label:'Both positions staffed and briefed',cat:'staff'}],
+  YS:[{id:'ys1',label:'Egg vehicle lap bars tested — all cars',cat:'safety'},{id:'ys2',label:'Height measuring stick verified (34″)',cat:'safety'},{id:'ys3',label:'Ride system test cycle complete',cat:'equip'},{id:'ys4',label:'Load/unload positions staffed',cat:'staff'}],
+  DR:[{id:'dr1',label:'Over-the-shoulder restraints tested — all vehicles',cat:'safety'},{id:'dr2',label:'Height measuring stick verified (48″)',cat:'safety'},{id:'dr3',label:'Anti-rollback test complete',cat:'safety'},{id:'dr4',label:'E-stop system tested at dispatch',cat:'equip'},{id:'dr5',label:'Main, Express, and Single Rider lanes configured',cat:'ops'},{id:'dr6',label:'All 4 positions staffed and briefed',cat:'staff'},{id:'dr7',label:'Radio comms check with OPD dispatcher',cat:'comms'}],
+  HW:[{id:'hw1',label:'Glider harness and lap bar test — all vehicles',cat:'safety'},{id:'hw2',label:'Height measuring stick verified (40″)',cat:'safety'},{id:'hw3',label:'Ride system test complete',cat:'equip'},{id:'hw4',label:'Outdoor weather conditions acceptable',cat:'ops'},{id:'hw5',label:'Both positions staffed',cat:'staff'}],
+  FD:[{id:'fd1',label:'Restraint system tested — all seats',cat:'safety'},{id:'fd2',label:'Height measuring stick verified (48″)',cat:'safety'},{id:'fd3',label:'Ride spin/tilt mechanism test complete',cat:'equip'},{id:'fd4',label:'Wind speed within operating parameters (<35 mph)',cat:'safety'},{id:'fd5',label:'All positions staffed',cat:'staff'}],
+  VT:[{id:'vt1',label:'Water feature and splash zone draining properly',cat:'equip'},{id:'vt2',label:'Dock boarding area clear and non-slip surfaces dry',cat:'safety'},{id:'vt3',label:'Activity equipment inventoried and safe',cat:'safety'},{id:'vt4',label:'Staff 1 and Staff 2 positions assigned',cat:'staff'}],
+  MU:[{id:'mu1',label:'Vehicle restraints and harnesses tested — all rows',cat:'safety'},{id:'mu2',label:'Height measuring stick verified (40″)',cat:'safety'},{id:'mu3',label:'Ride system boot and self-test — no active faults',cat:'equip'},{id:'mu4',label:'Atmospheric effects confirmed active',cat:'ops'},{id:'mu5',label:'All 3 positions staffed and briefed',cat:'staff'},{id:'mu6',label:'Radio comms check with OPD dispatcher',cat:'comms'}],
+};
+
+const ATR_DISPLAY_FIELDS=[
+  {key:'Pre-Opening Status',label:'Pre-Open Status',colorFn:v=>v==='Pass'?'pass':v==='Fail'?'fail':v==='Conditional'?'warn':''},
+  {key:'Last Inspection Date',label:'Last Insp.',colorFn:()=>''},
+  {key:'Open Time',label:'Open Time',colorFn:()=>''},
+  {key:'Inspector',label:'Inspector',colorFn:()=>''},
+  {key:'Faults Logged',label:'Faults',colorFn:v=>v==='0'||v===0?'pass':parseInt(v)<=2?'warn':'fail'},
+  {key:'Fault Notes',label:'Fault Notes',colorFn:()=>'',wide:true},
+  {key:'Restraint Check',label:'Restraints',colorFn:v=>v==='Pass'?'pass':v==='Fail'?'fail':''},
+  {key:'Height Stick Check',label:'Height Stick',colorFn:v=>v==='Pass'?'pass':v==='Fail'?'fail':''},
+  {key:'E-Stop Test',label:'E-Stop',colorFn:v=>v==='Pass'?'pass':v==='Fail'?'fail':''},
+  {key:'Ride Status',label:'ATR Status',colorFn:v=>v==='Open'?'pass':v==='Hold'?'warn':v==='Down'?'fail':''},
+];
+
+let ocState={};let ocFilter='all';let ocAtrLastSync=null;let ocExpanded={};
+
+function ocInit(){
+  EU_ROT_DEFS.forEach(function(def){
+    ocState[def.id]={status:'pending',items:{},note:'',atrData:null};
+    (OC_RIDE_ITEMS[def.id]||[]).forEach(function(item){ocState[def.id].items[item.id]='unchecked';});
+  });
+}
+
+async function ocFetchATR(){
+  const btn=document.getElementById('oc-refresh-btn');
+  if(btn){btn.textContent='↻ Syncing…';btn.disabled=true;}
+  const today=new Date().toISOString().split('T')[0];
+  const params='filterByFormula='+encodeURIComponent("IS_SAME({Date},TODAY(),'day')")+'&sort%5B0%5D%5Bfield%5D=Submitted+At&sort%5B0%5D%5Bdirection%5D=desc&maxRecords=50';
+  const data=await atFetch('ATR_Sessions',params);
+  if(data&&data.records){
+    const latest={};
+    data.records.forEach(function(rec){
+      const attr=rec.fields['Attraction']||rec.fields['Ride Name']||rec.fields['Ride'];
+      if(attr&&!latest[attr])latest[attr]=rec.fields;
+    });
+    EU_ROT_DEFS.forEach(function(def){
+      const match=Object.keys(latest).find(function(k){
+        return k.toLowerCase().includes(def.name.toLowerCase().slice(0,8))||def.name.toLowerCase().includes(k.toLowerCase().slice(0,8));
+      });
+      if(match){
+        ocState[def.id].atrData=latest[match];
+        const st=latest[match]['Pre-Opening Status']||latest[match]['Ride Status'];
+        if(st==='Fail'||st==='Down')ocState[def.id].status='hold';
+        else if(st==='Conditional')ocState[def.id].status='issues';
+      }
+    });
+    ocAtrLastSync=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    const el=document.getElementById('oc-atr-ts');if(el)el.textContent='ATR synced: '+ocAtrLastSync;
+    toast('ATR data loaded — '+data.records.length+' records','ok');
+  } else {
+    ocInjectDemoATR();toast('ATR offline — demo data shown','warn');
+  }
+  if(btn){btn.textContent='↻ Sync ATR';btn.disabled=false;}
+  ocUpdateCounts();renderOpeningChecklist();
+}
+
+function ocInjectDemoATR(){
+  const demo={
+    SR:{status:'Pass',faults:0,restraints:'Pass',heightStick:'Pass',estop:'Pass',rideStatus:'Open',inspector:'R. Montoya',openTime:'08:45'},
+    CC:{status:'Pass',faults:0,restraints:'Pass',heightStick:'N/A',estop:'N/A',rideStatus:'Open',inspector:'T. Singh',openTime:'08:50'},
+    HP:{status:'Pass',faults:1,restraints:'Pass',heightStick:'Pass',estop:'Pass',rideStatus:'Open',inspector:'K. Wells',openTime:'08:55',faultNote:'Minor sensor alert — cleared'},
+    DK:{status:'Pass',faults:0,restraints:'Pass',heightStick:'Pass',estop:'Pass',rideStatus:'Open',inspector:'R. Montoya',openTime:'08:52'},
+    MK:{status:'Pass',faults:0,restraints:'Pass',heightStick:'Pass',estop:'Pass',rideStatus:'Open',inspector:'T. Singh',openTime:'08:58'},
+    YS:{status:'Pass',faults:0,restraints:'Pass',heightStick:'Pass',estop:'Pass',rideStatus:'Open',inspector:'K. Wells',openTime:'08:48'},
+    DR:{status:'Pass',faults:0,restraints:'Pass',heightStick:'Pass',estop:'Pass',rideStatus:'Open',inspector:'R. Montoya',openTime:'08:40'},
+    HW:{status:'Conditional',faults:2,restraints:'Pass',heightStick:'Pass',estop:'Pass',rideStatus:'Open',inspector:'T. Singh',openTime:'09:05',faultNote:'Vehicle 3 harness micro-switch intermittent — tagged, removed from rotation'},
+    FD:{status:'Pass',faults:0,restraints:'Pass',heightStick:'Pass',estop:'Pass',rideStatus:'Open',inspector:'K. Wells',openTime:'08:44'},
+    VT:{status:'Pass',faults:0,restraints:'N/A',heightStick:'N/A',estop:'N/A',rideStatus:'Open',inspector:'R. Montoya',openTime:'09:00'},
+    MU:{status:'Fail',faults:4,restraints:'Pass',heightStick:'Pass',estop:'Fail',rideStatus:'Hold',inspector:'T. Singh',openTime:'—',faultNote:'E-stop circuit fault on Row C — maintenance called, on hold'},
+  };
+  const today=new Date().toISOString().split('T')[0];
+  EU_ROT_DEFS.forEach(function(def){
+    const d=demo[def.id];if(!d)return;
+    ocState[def.id].atrData={'Attraction':def.name,'Date':today,'Inspector':d.inspector,'Open Time':d.openTime,'Pre-Opening Status':d.status,'Faults Logged':String(d.faults),'Fault Notes':d.faultNote||'','Restraint Check':d.restraints,'Height Stick Check':d.heightStick,'E-Stop Test':d.estop,'Ride Status':d.rideStatus};
+    if(d.status==='Fail')ocState[def.id].status='hold';
+    else if(d.status==='Conditional')ocState[def.id].status='issues';
+  });
+  ocAtrLastSync='demo';const el=document.getElementById('oc-atr-ts');if(el)el.textContent='ATR: demo mode';
+}
+
+function renderOpeningChecklist(){
+  ocUpdateCounts();
+  const listEl=document.getElementById('oc-ride-list');if(!listEl)return;
+  const worldOrder=['Celestial Park','Ministry of Magic','Super Nintendo World','Isle of Berk','Dark Universe'];
+  var out='';
+  worldOrder.forEach(function(world){
+    const rides=EU_ROT_DEFS.filter(function(d){return d.world===world;});
+    const filtered=rides.filter(function(r){return ocFilter==='all'||ocState[r.id]?.status===ocFilter;});
+    if(!filtered.length)return;
+    const wColor=(OC_WORLDS[world]||{color:'var(--text-dim)'}).color;
+    const clearN=rides.filter(function(r){return ocState[r.id]?.status==='clear';}).length;
+    out+='<div style="margin-bottom:14px;">';
+    out+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:var(--panel2);border:1px solid var(--border);">';
+    out+='<div style="width:8px;height:8px;border-radius:50%;background:'+wColor+';flex-shrink:0;"></div>';
+    out+='<div style="font-family:var(--display);font-size:13px;font-weight:700;color:'+wColor+';flex:1;">'+world+'</div>';
+    out+='<div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">'+clearN+'/'+rides.length+' cleared</div>';
+    out+='</div>';
+    filtered.forEach(function(def){out+=renderOcRideCard(def);});
+    out+='</div>';
+  });
+  listEl.innerHTML=out||'<div class="empty"><div class="empty-icon">✅</div>No rides match filter</div>';
+}
+
+function renderOcRideCard(def){
+  const state=ocState[def.id]||{status:'pending',items:{},note:'',atrData:null};
+  const items=OC_RIDE_ITEMS[def.id]||[];
+  const expanded=!!ocExpanded[def.id];
+  const checked=items.filter(function(i){return state.items[i.id]==='checked';}).length;
+  const flagged=items.filter(function(i){return state.items[i.id]==='flagged';}).length;
+  const blocked=items.filter(function(i){return state.items[i.id]==='blocked';}).length;
+  const statusChips={pending:'<span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim);border:1px solid var(--border)">PENDING</span>',clear:'<span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25)">✓ CLEAR</span>',issues:'<span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.25)">⚠ ISSUES</span>',hold:'<span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.3)">✕ HOLD</span>'};
+  const atr=state.atrData;
+  const atrChip=atr?'<span style="font-family:var(--mono);font-size:7px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--teal-dim);color:var(--teal);border:1px solid rgba(20,184,166,.25);margin-right:4px;">ATR ✓</span>':'';
+  var atrHtml='';
+  if(atr){
+    const fieldCells=ATR_DISPLAY_FIELDS.map(function(f){
+      const raw=atr[f.key];if(raw===undefined||raw===null||raw==='')return '';
+      const val=String(raw);const cls=f.colorFn(val);
+      return '<div class="atr-field'+(f.wide?'" style="grid-column:1/-1':'')+'">'+'<div class="atr-field-label">'+f.label+'</div>'+'<div class="atr-field-val '+cls+'">'+val+'</div></div>';
+    }).join('');
+    const ts=atr['Submitted At']?new Date(atr['Submitted At']).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):(atr['Open Time']||'—');
+    atrHtml='<div class="atr-data-panel"><div class="atr-data-hdr"><div class="atr-data-title">📡 ATR — Pre-Opening Record</div><div class="atr-data-ts">'+ts+'</div></div><div class="atr-fields">'+fieldCells+'</div></div>';
+  } else {
+    atrHtml='<div class="atr-data-panel"><div style="text-align:center;padding:8px;font-family:var(--mono);font-size:9px;color:var(--text-dim);">No ATR record today — <button class="btn btn-ghost btn-sm" onclick="ocFetchATR()">Sync ATR</button></div></div>';
+  }
+  const itemsHtml=items.map(function(item){
+    const ist=state.items[item.id]||'unchecked';
+    const chk={checked:'✓',flagged:'!',blocked:'✕'}[ist]||'';
+    return '<div class="oc-item '+ist+'" onclick="ocCycleItem(\''+def.id+'\',\''+item.id+'\',event)">'+'<div class="oc-item-check">'+chk+'</div>'+'<div class="oc-item-label">'+item.label+'</div>'+'<span class="oc-item-cat cat-'+item.cat+'">'+item.cat.toUpperCase()+'</span></div>';
+  }).join('');
+  const borderColor={pending:'var(--border)',clear:'rgba(16,185,129,.3)',issues:'rgba(245,158,11,.35)',hold:'rgba(244,63,94,.4)'}[state.status]||'var(--border)';
+  var body=expanded?('<div style="padding:11px;border-top:1px solid var(--border);">'+atrHtml+'<div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin:0 0 6px;">Pre-Opening Checklist — tap to cycle ✓ / ! / ✕</div><div class="oc-checklist">'+itemsHtml+'</div>'+'<textarea class="oc-note-input" id="oc-note-'+def.id+'" placeholder="Notes for this ride…" onchange="ocSaveNote(\''+def.id+'\',this.value)">'+state.note+'</textarea>'+'<div class="oc-action-row"><button class="btn btn-teal btn-sm" onclick="ocSetRideStatus(\''+def.id+'\',\'clear\')">✓ Clear</button><button class="btn btn-amber btn-sm" onclick="ocSetRideStatus(\''+def.id+'\',\'issues\')">⚠ Issues</button><button class="btn btn-red btn-sm" onclick="ocSetRideStatus(\''+def.id+'\',\'hold\')">✕ Hold</button><button class="btn btn-ghost btn-sm" onclick="ocSetRideStatus(\''+def.id+'\',\'pending\')">Reset</button></div></div>'):'';
+  return '<div style="background:var(--panel);border:1px solid '+borderColor+';border-radius:10px;overflow:hidden;margin-bottom:8px;">'
+    +'<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-bottom:1px solid var(--border);background:var(--panel2);cursor:pointer;" onclick="ocToggleCard(\''+def.id+'\')">'
+    +'<div><div style="font-family:var(--display);font-size:14px;font-weight:700;color:var(--text-bright);">'+def.name+'</div>'
+    +'<div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);margin-top:1px;">'+checked+'/'+items.length+' items'+(flagged?' · '+flagged+' flagged':'')+(blocked?' · '+blocked+' blocked':'')+'</div></div>'
+    +'<div style="display:flex;align-items:center;gap:4px;">'+atrChip+(statusChips[state.status]||'')+'<span style="font-size:10px;color:var(--text-dim);margin-left:4px;">'+(expanded?'▲':'▼')+'</span></div>'
+    +'</div>'+body+'</div>';
+}
+
+function ocToggleCard(id){ocExpanded[id]=!ocExpanded[id];renderOpeningChecklist();}
+function ocCycleItem(rideId,itemId,e){if(e)e.stopPropagation();const cycle={unchecked:'checked',checked:'flagged',flagged:'blocked',blocked:'unchecked'};const cur=ocState[rideId]?.items[itemId]||'unchecked';ocState[rideId].items[itemId]=cycle[cur];ocDerivRideStatus(rideId);ocUpdateCounts();const el=document.getElementById('oc-ride-list');if(el)renderOpeningChecklist();}
+function ocDerivRideStatus(id){const s=ocState[id];const items=OC_RIDE_ITEMS[id]||[];const bl=items.filter(function(i){return s.items[i.id]==='blocked';}).length;const fl=items.filter(function(i){return s.items[i.id]==='flagged';}).length;const ch=items.filter(function(i){return s.items[i.id]==='checked';}).length;if(bl>0)s.status='hold';else if(fl>0)s.status='issues';else if(ch===items.length&&items.length>0)s.status='clear';else s.status='pending';}
+function ocSetRideStatus(id,status){ocState[id].status=status;ocExpanded[id]=true;ocUpdateCounts();renderOpeningChecklist();toast(EU_ROT_DEFS.find(function(d){return d.id===id;})?.name+' → '+status.toUpperCase(),status==='clear'?'ok':status==='hold'?'err':'warn');}
+function ocSaveNote(id,val){if(ocState[id])ocState[id].note=val;}
+function ocSetFilter(f,btn){ocFilter=f;document.querySelectorAll('.oc-filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderOpeningChecklist();}
+function ocUpdateCounts(){
+  const all=EU_ROT_DEFS.map(function(d){return ocState[d.id];});
+  const clearN=all.filter(function(s){return s?.status==='clear';}).length;
+  const issN=all.filter(function(s){return s?.status==='issues';}).length;
+  const holdN=all.filter(function(s){return s?.status==='hold';}).length;
+  const total=EU_ROT_DEFS.length;
+  const set=function(id,v){const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('oc-clear-count',clearN);set('oc-issues-count',issN);set('oc-hold-count',holdN);
+  const pct=total>0?Math.round((clearN+issN)/total*100):0;
+  const pf=document.getElementById('oc-prog-fill');if(pf)pf.style.width=pct+'%';
+  set('oc-prog-label',clearN+' cleared · '+issN+' with issues · '+holdN+' on hold');
+  set('oc-prog-pct',pct+'%');
+  const badge=document.getElementById('oc-ready-badge');
+  if(badge){if(holdN>0){badge.textContent=holdN+' HOLD';badge.className='oc-ready-badge not-ready';}else if(clearN===total){badge.textContent='✓ ALL CLEAR';badge.className='oc-ready-badge ready';}else if(issN>0&&clearN+issN===total){badge.textContent='OPEN w/ ISSUES';badge.className='oc-ready-badge partial';}else{badge.textContent='NOT READY';badge.className='oc-ready-badge not-ready';}}
+  const nb=document.getElementById('ocBadge');
+  if(nb){if(holdN>0){nb.textContent=holdN+'!';nb.className='tab-badge red';}else if(issN>0){nb.textContent=issN;nb.className='tab-badge amber';}else if(clearN===total){nb.textContent='✓';nb.className='tab-badge green';}else{nb.textContent=clearN+'/'+total;nb.className='tab-badge neutral';}}
+}
+function ocSubmitAll(){
+  const holdN=EU_ROT_DEFS.filter(function(d){return ocState[d.id]?.status==='hold';}).length;
+  const clearN=EU_ROT_DEFS.filter(function(d){return ocState[d.id]?.status==='clear';}).length;
+  const today=new Date().toISOString().split('T')[0];
+  if(holdN>0&&!confirm(holdN+' ride(s) on hold. Submit opening log?'))return;
+  atPush('ATR_Opening_Log',{'Log ID':'OCL-'+Date.now().toString(36).toUpperCase().slice(-6),'Date':today,'Total Rides':EU_ROT_DEFS.length,'Clear':clearN,'Issues':EU_ROT_DEFS.filter(function(d){return ocState[d.id]?.status==='issues';}).length,'Hold':holdN,'ATR Sync':ocAtrLastSync||'not synced','Overall Status':holdN>0?'Hold':clearN===EU_ROT_DEFS.length?'All Clear':'Open with Issues','Submitted At':new Date().toISOString()});
+  toast('Opening log submitted','ok');
+}
+function ocResetAll(){if(!confirm('Reset all checklist items?'))return;ocInit();ocAtrLastSync=null;renderOpeningChecklist();toast('Checklist reset','ok');}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ROLE CARDS ENGINE
+// ══════════════════════════════════════════════════════════════════════════════
+const ROLE_CARDS=[
+  {id:'ic',icon:'🎖️',name:'Incident Commander',responsibilities:['Take charge of emergency scene','Establish command post','Assess situation and make decisions','Assign roles to response team','Coordinate with emergency services','Authorize resource deployment','Communicate with stakeholders','Declare all-clear when resolved'],critical:['Ensure scene safety first','Activate Emergency Action Plan','Account for all personnel','Document decisions and timing']},
+  {id:'ops',icon:'⚙️',name:'Operations Chief',responsibilities:['Coordinate all ride shutdowns','Manage guest evacuation if needed','Direct employee assignments','Monitor operational status','Coordinate with Incident Commander','Manage facility access control','Maintain operations log'],critical:['Shut down rides immediately if unsafe','Secure all equipment','Clear evacuation routes','Account for all employees']},
+  {id:'safety',icon:'🦺',name:'Safety Officer',responsibilities:['Monitor responder safety','Identify and mitigate hazards','Ensure PPE is used correctly','Stop unsafe actions immediately','Coordinate with Safety Manager','Document safety concerns','Approve scene access'],critical:['Scene safety before rescue','Authority to stop ANY unsafe action','Monitor for secondary hazards','Brief all responders on hazards']},
+  {id:'comms',icon:'📢',name:'Communications Lead',responsibilities:['Make PA announcements','Provide guest information','Coordinate internal communications','Log all significant events','Interface with media (approved only)','Update social media (approved only)','Notify key stakeholders'],critical:['Keep messages calm and clear','Log all announcements with timestamp','Only approved information to media','Regular updates every 10–15 min']},
+  {id:'medical',icon:'🩺',name:'Medical Coordinator',responsibilities:['Triage all injuries','Direct first aid provision','Call 911 for serious injuries','Coordinate with EMS','Track patients and destinations','Manage medical supplies','Document all treatments'],critical:['Scene safety before patient care','Universal precautions always','Triage: life-threatening first','Track every patient']},
+  {id:'evac',icon:'🚪',name:'Evacuation Coordinator',responsibilities:['Direct guest evacuation','Assign exit routes','Manage assembly points','Account for all guests','Assist guests with disabilities','Report headcount to IC','Manage reunification'],critical:['Remain calm — guests follow your lead','Clear directions to exits','Help those needing assistance','Accurate headcount essential']},
+  {id:'security',icon:'🔒',name:'Security Lead',responsibilities:['Secure the scene','Control access to incident area','Coordinate with law enforcement','Manage traffic flow','Preserve evidence if crime involved','Monitor surveillance systems','Document incident details'],critical:['Scene security prevents secondary incidents','Document everything','Preserve evidence — do not touch','Coordinate with law enforcement']},
+  {id:'maint',icon:'🔧',name:'Maintenance Coordinator',responsibilities:['Shut off utilities if needed','Provide technical expertise','Support ride evacuations','Assess structural damage','Coordinate equipment needs','Provide facility hazard information','Coordinate repairs'],critical:['Know utility shutoff locations','Do not restart until cleared by IC','Provide hazard info to Safety Officer','Safety over speed']},
+];
+
+let rcExpanded={};
+let rcNames={};
+function rcLoadNames(){try{const s=localStorage.getItem('as360_rc_names');if(s)rcNames=JSON.parse(s);}catch(e){}}
+function rcSaveName(id,val){rcNames[id]=val;try{localStorage.setItem('as360_rc_names',JSON.stringify(rcNames));}catch(e){}}
+
+function renderRoleCards(){
+  const el=document.getElementById('role-cards-grid');if(!el)return;
+  el.innerHTML=ROLE_CARDS.map(function(r){
+    const expanded=!!rcExpanded[r.id];
+    const borderStyle=expanded?'border-color:var(--teal);':'';
+    const chips=r.critical.slice(1).map(function(c){return '<span style="font-family:var(--mono);font-size:7px;font-weight:700;padding:2px 6px;border-radius:3px;background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.2);">&#10003; '+c+'</span>';}).join(' ');
+    var bodyHtml='';
+    if(expanded){
+      var resp=r.responsibilities.map(function(x){return '<div style="display:flex;gap:6px;font-size:11px;color:var(--text-dim);padding:3px 0;line-height:1.4;"><span style="color:var(--border2);">&middot;</span>'+x+'</div>';}).join('');
+      var crit=r.critical.map(function(x){return '<div style="display:flex;gap:6px;font-size:11px;color:var(--text);padding:4px 0;border-bottom:1px solid rgba(36,45,62,.4);"><span style="color:var(--amber);font-weight:700;">&#10003;</span>'+x+'</div>';}).join('');
+      var assignedVal=(rcNames[r.id]||'').replace(/"/g,'&quot;');
+      bodyHtml='<div style="padding:12px 14px;"><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
+        +'<div><div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:7px;">Responsibilities</div>'+resp+'</div>'
+        +'<div><div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:7px;">Critical Actions</div>'+crit
+        +'<div style="margin-top:10px;"><div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px;">Assigned To</div>'
+        +'<input type="text" id="rc-name-'+r.id+'" placeholder="Name &middot; Radio channel" style="width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;padding:7px 9px;font-family:var(--mono);font-size:11px;color:var(--text);" onchange="rcSaveName(\''+r.id+'\',this.value)" value="'+assignedVal+'">'
+        +'</div></div></div></div>';
+    }
+    return '<div style="background:var(--panel);border:1px solid var(--border);'+borderStyle+'border-radius:10px;overflow:hidden;margin-bottom:8px;">'
+      +'<div style="display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--panel2);border-bottom:1px solid var(--border);cursor:pointer;" onclick="rcToggle(\''+r.id+'\')">'
+      +'<span style="font-size:20px;flex-shrink:0;">'+r.icon+'</span>'
+      +'<div style="flex:1;"><div style="font-family:var(--display);font-size:15px;font-weight:700;color:var(--text-bright);">'+r.name+'</div>'
+      +'<div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);margin-top:1px;">'+r.critical[0]+'</div></div>'
+      +'<div style="display:flex;gap:4px;flex-wrap:wrap;flex-shrink:0;max-width:220px;">'+chips+'</div>'
+      +'<span style="font-size:10px;color:var(--text-dim);margin-left:6px;">'+(expanded?'&#9650;':'&#9660;')+'</span>'
+      +'</div>'+bodyHtml+'</div>';
+  }).join('');
+}
+function rcToggle(id){rcExpanded[id]=!rcExpanded[id];renderRoleCards();}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// TABLETOP ENGINE
+// ══════════════════════════════════════════════════════════════════════════════
+function ttToggle(id){const card=document.getElementById(id);if(card)card.classList.toggle('tt-expanded');}
+function ttSubmitLog(num){
+  const date=document.getElementById('tt'+num+'-date')?.value;
+  const fac=document.getElementById('tt'+num+'-facilitator')?.value.trim();
+  const gaps=document.getElementById('tt'+num+'-gaps')?.value.trim();
+  const acts=document.getElementById('tt'+num+'-actions')?.value.trim();
+  if(!date||!fac){toast('Date and facilitator required','err');return;}
+  const names=['','Multi-Casualty Incident','Active Threat','Foodborne Illness Outbreak','Child Abduction Attempt'];
+  atPush('EAP_TabletopLog',{'Log ID':'TT-'+num+'-'+Date.now().toString(36).toUpperCase().slice(-5),'Scenario Number':num,'Scenario Name':names[num]||'Tabletop '+num,'Date Conducted':date,'Facilitator':fac,'Gaps Identified':gaps||'None noted','Action Items':acts||'None','Submitted At':new Date().toISOString()});
+  if(gaps&&gaps.toLowerCase()!=='none noted'&&gaps.length>5){
+    const car={id:'CAR-'+Date.now().toString(36).toUpperCase().slice(-5),source:'EAP',location:'Emergency Preparedness',finding:'Tabletop #'+num+' gap: '+gaps.slice(0,120),priority:'medium',due:new Date(Date.now()+30*86400000).toISOString().split('T')[0],status:'open',createdAt:new Date().toISOString()};
+    cars.unshift(car);save(K.CAR,cars);updateBadges();
+    toast('Tabletop logged · CAR opened for gaps','ok');
+  } else {
+    toast('Tabletop exercise #'+num+' logged','ok');
+  }
+  ['date','facilitator','gaps','actions'].forEach(function(f){const el=document.getElementById('tt'+num+'-'+f);if(el)el.value='';});
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// TPH INLINE FORM TOGGLE
+// ══════════════════════════════════════════════════════════════════════════════
+function toggleTphForm(forceOpen){
+  const wrap=document.getElementById('tph-inline-form');
+  const btn=document.querySelector('[onclick="toggleTphForm()"]');
+  if(!wrap)return;
+  const isOpen=wrap.style.display!=='none'&&wrap.innerHTML.length>0;
+  if(forceOpen===true||!isOpen){
+    const src=document.getElementById('view-newthroughput');
+    if(src)wrap.innerHTML=src.querySelector('.panel').outerHTML;
+    wrap.style.display='block';
+    if(btn)btn.textContent='✕ Close';
+    wrap.scrollIntoView({behavior:'smooth',block:'start'});
+  } else {
+    wrap.style.display='none';if(btn)btn.textContent='＋ Log TPH';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// RIGHT NOW ENGINE
+// ══════════════════════════════════════════════════════════════════════════════
+function getShiftPhase(){
+  const h=new Date().getHours();
+  if(h>=6&&h<9)return{phase:'preopening',label:'PRE-OPENING',desc:'Pre-opening checklist phase',cls:'rn-phase-preopening'};
+  if(h>=9&&h<12)return{phase:'open',label:'MORNING OPEN',desc:'Morning operations',cls:'rn-phase-open'};
+  if(h>=12&&h<17)return{phase:'peak',label:'PEAK HOURS',desc:'Peak — maximum guest load',cls:'rn-phase-peak'};
+  if(h>=17&&h<20)return{phase:'open',label:'EVENING',desc:'Evening operations',cls:'rn-phase-open'};
+  return{phase:'closing',label:'CLOSING',desc:'Closing phase',cls:'rn-phase-closing'};
+}
+
+function renderRightNow(){
+  const sp=getShiftPhase();
+  const badge=document.getElementById('rn-phase-badge');
+  const desc=document.getElementById('rn-phase-desc');
+  const clk=document.getElementById('rn-clock-large');
+  if(badge){badge.textContent=sp.label;badge.className='rn-phase-badge '+sp.cls;}
+  if(desc)desc.textContent=sp.desc;
+  if(clk)clk.textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const body=document.getElementById('rn-body');if(!body)return;
+  const inspOverdue=Object.keys(INSP_DEFS||{}).filter(function(id){return getInspStatus&&getInspStatus(id).status==='overdue';});
+  const activeOOS=(oosUnits||[]).filter(function(o){return o.status==='active';}).length;
+  const openCARs=(cars||[]).filter(function(c){return c.status==='open';});
+  const critCARs=openCARs.filter(function(c){return ageDays&&ageDays(c.createdAt)>30;});
+  const rotCrits=(rotAlerts||[]).filter(function(a){return a.level==='crit';});
+  const rotWarns=(rotAlerts||[]).filter(function(a){return a.level==='warn';});
+  const cards=[];
+  if(sp.phase==='preopening'){
+    cards.push({icon:'🟢',title:'Opening Checklist',sub:'Pre-opening ride check with ATR data',cls:'ok',action:"showView('opening',document.querySelector('[onclick*=opening]'))"});
+    cards.push({icon:'🔁',title:'Assign Positions',sub:'Staff all rotation slots before open',cls:'ok',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))"});
+  }
+  if(rotCrits.length)cards.push({icon:'🔴',title:'Critical Rotations',sub:rotCrits.length+' position'+(rotCrits.length>1?'s':'')+' critically overdue',cls:'urgent',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))",badge:rotCrits.length+'!'});
+  if(rotWarns.length&&!rotCrits.length)cards.push({icon:'🟡',title:'Overdue Rotations',sub:rotWarns.length+' need rotation',cls:'due',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))",badge:rotWarns.length});
+  if(activeOOS)cards.push({icon:'⛔',title:activeOOS+' Attraction'+(activeOOS>1?'s':'')+' OOS',sub:'Active out-of-service units',cls:'urgent',action:"showView('oos',document.querySelector('[onclick*=oos]'))",badge:activeOOS});
+  if(critCARs.length)cards.push({icon:'📂',title:'CARs Need Escalation',sub:critCARs.length+' open 30+ days',cls:'urgent',action:"showView('car',document.querySelector('[onclick*=car]'))",badge:critCARs.length});
+  if(inspOverdue.length)cards.push({icon:'🔍',title:'Overdue Inspections',sub:inspOverdue.slice(0,2).map(function(id){return INSP_DEFS[id].name;}).join(', ')+(inspOverdue.length>2?'…':''),cls:'urgent',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:inspOverdue.length});
+  if(sp.phase==='peak')cards.push({icon:'📈',title:'Log Throughput',sub:'Update TPH for peak period',cls:'ok',action:"showView('throughput',document.querySelector('[onclick*=throughput]'));setTimeout(function(){toggleTphForm(true);},100)"});
+  if(sp.phase==='closing')cards.push({icon:'🔄',title:'Prepare Handoff',sub:'Start shift handoff',cls:(handoffs||[]).length===0?'due':'ok',action:"showView('newhandoff',document.querySelector('[onclick*=newhandoff]'))"});
+  cards.push({icon:'🏃',title:'Floor Ops Log',sub:'Add floor observation',cls:'ok',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))"});
+  const urgent=inspOverdue.length+critCARs.length+rotCrits.length+activeOOS;
+  const nb=document.getElementById('rnBadge');
+  if(nb){nb.style.display=urgent>0?'':'none';nb.textContent=urgent;}
+  body.innerHTML='<div class="rn-action-grid">'+cards.slice(0,9).map(function(c){
+    return '<div class="rn-action-card '+c.cls+'" onclick="'+c.action+'">'
+      +(c.badge!==undefined?'<div class="rn-card-badge '+(c.cls==='urgent'?'red':'amber')+'">'+c.badge+'</div>':'')
+      +'<div class="rn-card-icon">'+c.icon+'</div>'
+      +'<div class="rn-card-title">'+c.title+'</div>'
+      +'<div class="rn-card-sub">'+c.sub+'</div></div>';
+  }).join('')+'</div>';
+}
+
 function init(){
   load();
   initRotPositions();
-  ocInit();
   lgaSeedZones();
   flcSessionEntries=[];
   ypsSessionEntries=[];
@@ -1729,7 +2155,7 @@ function setDefaults(){
 
 function refreshAll(){
   refreshDash();renderPillars();renderOOS();renderCARs();renderAudits();renderMatrix();renderThroughput();renderHandoffs();renderShiftLogs();updateBadges();
-  renderRightNow();ocUpdateCounts();
+  renderRightNow();
 }
 
 function showView(name,tab){
@@ -1739,10 +2165,16 @@ function showView(name,tab){
   if(v)v.classList.add('active');
   if(tab)tab.classList.add('active');
   if(name==='inspections'){renderInspections();return;}
-  if(name==='rotations'){renderRotations();return;}
-  if(name==='rightnow'){renderRightNow();return;}
   if(name==='opening'){renderOpeningChecklist();return;}
-  const map={dashboard:refreshDash,pillar:renderPillars,oos:renderOOS,car:renderCARs,audit:renderAudits,matrix:renderMatrix,throughput:renderThroughput,handoff:renderHandoffs,shift:renderShiftLogs};
+  if(name==='rotations'){renderRotations();return;}
+  const map={
+    dashboard:function(){refreshDash();renderRightNow();},
+    pillar:renderPillars,oos:renderOOS,car:renderCARs,
+    audit:renderAudits,matrix:renderMatrix,
+    throughput:renderThroughput,
+    newthroughput:function(){showView('throughput',document.querySelector('[onclick*=throughput]'));setTimeout(function(){toggleTphForm(true);},100);},
+    handoff:renderHandoffs,shift:renderShiftLogs
+  };
   if(map[name])map[name]();
 }
 
@@ -2022,7 +2454,7 @@ function updateInspSummary(){
   const dueSoon=all.filter(id=>getInspStatus(id).status==='due-soon').length;
   const current=all.filter(id=>getInspStatus(id).status==='current').length;
   const ns=all.filter(id=>getInspStatus(id).status==='not-started').length;
-  const sgEl=document.getElementById('insp-summary-grid');if(!sgEl)return;sgEl.innerHTML=`
+  document.getElementById('insp-summary-grid').innerHTML=`
     <div class="metric-card red"><div class="mv red">${overdue}</div><div class="ml">Overdue</div></div>
     <div class="metric-card amber"><div class="mv amber">${dueSoon}</div><div class="ml">Due Soon</div></div>
     <div class="metric-card green"><div class="mv green">${current}</div><div class="ml">Current</div></div>
@@ -2963,7 +3395,7 @@ function renderRightNow(){
 
   // Phase-specific priority cards
   if(sp.phase==='preopening'){
-    cards.push({icon:'🟢',title:'Opening Checklist',sub:'Pre-opening ride check with ATR data',cls:'ok',action:"showView('opening',document.querySelector('[onclick*=opening]'))",badge:null});
+    cards.push({icon:'🎢',title:'Pre-Opening Inspection',sub:'Complete before gates open',cls:inspDueSoon.length?'due':'ok',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:null});
     cards.push({icon:'📏',title:'Height Stick Verification',sub:'Confirm all 9 EU sticks accurate',cls:'ok',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:null});
     cards.push({icon:'🔁',title:'Assign Positions',sub:'Staff all rotation slots before open',cls:Object.keys(rotPositions).length===0?'urgent':'ok',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))",badge:Object.keys(rotPositions).length===0?'UNASSIGNED':null});
   }
@@ -3221,7 +3653,7 @@ function refreshDash(){
   const pd=[{k:'R',n:'Readiness',c:'teal'},{k:'I',n:'Integrity',c:'red'},{k:'D',n:'Delivery',c:'green'},{k:'E',n:'Environment',c:'purple'}];
   pillMini.innerHTML=pd.map(p=>`<div style="text-align:center;padding:8px;background:var(--panel2);border-radius:8px;border:1px solid var(--border);"><div style="font-family:var(--mono);font-size:7px;letter-spacing:1px;color:var(--text-muted);margin-bottom:3px;">${p.k}</div><div style="font-family:var(--cond);font-size:22px;font-weight:800;color:var(--${p.c})">${pillarScores[p.k]!==null?pillarScores[p.k]:'—'}</div></div>`).join('');
   const overdueInsp=Object.keys(INSP_DEFS).filter(id=>getInspStatus(id).status==='overdue');
-  const inspMini=document.getElementById('db-rot-mini');if(!inspMini)return;
+  const inspMini=document.getElementById('db-rot-mini');
   if(!overdueInsp.length){inspMini.innerHTML='<div class="empty" style="padding:16px"><div class="empty-icon" style="font-size:18px">✅</div>All current</div>';}
   else{inspMini.innerHTML=overdueInsp.slice(0,4).map(id=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid rgba(36,45,62,.5);"><div style="font-size:12px;font-weight:600;color:var(--text)">${INSP_DEFS[id].name}</div><span style="font-family:var(--mono);font-size:9px;color:var(--red);font-weight:700;">OVERDUE ${getInspStatus(id).daysOverdue}d</span></div>`).join('');}
   const tpRows=document.getElementById('db-tp-rows');
@@ -3239,7 +3671,7 @@ function renderPillars(){
   document.getElementById('comp-score').textContent=comp!==null?comp:'—';
   if(comp!==null){const b=scoreBand(comp);document.getElementById('comp-band').textContent=b.l;document.getElementById('comp-band').style.color=b.c;}
   const defs=[{k:'R',n:'Readiness',full:'Readiness'},{k:'I',n:'Integrity',full:'Integrity'},{k:'D',n:'Delivery',full:'Delivery'},{k:'E',n:'Environment',full:'Environment'}];
-  const pcEl=document.getElementById('pillar-cards');if(!pcEl)return;pcEl.innerHTML=defs.map(p=>{const sc=pillarScores[p.k];return`<div class="pillar-card pillar-${p.k}"><div class="pillar-letter">${p.k} — ${p.full.toUpperCase()}</div><div class="pillar-score">${sc!==null?sc:'—'}</div><div class="pillar-name">${sc!==null?scoreBand(sc).l:'No data'}</div><div class="pillar-bar-wrap"><div class="pillar-bar-fill" style="width:${sc||0}%"></div></div></div>`;}).join('');
+  document.getElementById('pillar-cards').innerHTML=defs.map(p=>{const sc=pillarScores[p.k];return`<div class="pillar-card pillar-${p.k}"><div class="pillar-letter">${p.k} — ${p.full.toUpperCase()}</div><div class="pillar-score">${sc!==null?sc:'—'}</div><div class="pillar-name">${sc!==null?scoreBand(sc).l:'No data'}</div><div class="pillar-bar-wrap"><div class="pillar-bar-fill" style="width:${sc||0}%"></div></div></div>`;}).join('');
 }
 function previewScore(){const R=parseInt(document.getElementById('ps-R').value)||0,I=parseInt(document.getElementById('ps-I').value)||0,D=parseInt(document.getElementById('ps-D').value)||0,E=parseInt(document.getElementById('ps-E').value)||0;document.getElementById('ps-preview').textContent='→ Composite: '+Math.round(R*.30+I*.30+D*.25+E*.15);}
 function savePillarScores(){const R=parseInt(document.getElementById('ps-R').value),I=parseInt(document.getElementById('ps-I').value),D=parseInt(document.getElementById('ps-D').value),E=parseInt(document.getElementById('ps-E').value);if([R,I,D,E].some(v=>isNaN(v)||v<0||v>100)){toast('All scores 0–100','err');return;}pillarScores={R,I,D,E};save(K.PIL,pillarScores);renderPillars();refreshDash();toast('RIDE Score updated — Composite: '+calcComposite(),'ok');}
@@ -3305,7 +3737,7 @@ function renderCARs(search=''){
 // ── AUDIT ─────────────────────────────────────────────────────────────────────
 function daysUntil(d){if(!d)return null;const today=new Date();today.setHours(0,0,0,0);return Math.floor((new Date(d)-today)/86400000);}
 function getOverdueAudits(){return audits.filter(a=>a.status==='scheduled'&&daysUntil(a.date)<0);}
-function saveAudit(){
+function saveAuditOLD_DISABLED(){
   const date=document.getElementById('aud-date').value;if(!date){toast('Select date','err');return;}
   const audit={id:'AUD-'+Date.now().toString(36).toUpperCase().slice(-5),type:document.getElementById('aud-type').value,date,auditor:document.getElementById('aud-auditor').value.trim(),scope:document.getElementById('aud-scope').value.trim(),notes:document.getElementById('aud-notes').value.trim(),status:'scheduled',createdAt:new Date().toISOString()};
   audits.unshift(audit);save(K.AUD,audits);
@@ -3335,9 +3767,10 @@ function renderAudits(search=''){
 // ── MATRIX ────────────────────────────────────────────────────────────────────
 function saveMatrixContact(){const tier=document.getElementById('mc-tier').value,role=document.getElementById('mc-role').value.trim(),name=document.getElementById('mc-name').value.trim(),contact=document.getElementById('mc-contact').value.trim();if(!role||!contact){toast('Role and contact required','err');return;}matrixContacts.push({tier,role,name,contact});save(K.MTX,matrixContacts);renderMatrix();['mc-role','mc-name','mc-contact'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('matrix-add-form').style.display='none';toast('Contact added','ok');}
 function renderMatrix(){
+  renderRoleCards();
   const td=[{t:'1',l:'TIER 1',d:'Manager Resolves'},{t:'2',l:'TIER 2',d:'Supervisor / Dept Head'},{t:'3',l:'TIER 3',d:'GM / Ownership / Regulatory'}];
   const html=`<div class="panel" style="margin-bottom:0"><div id="matrix-tiers">${td.map(td=>`<div class="esc-tier tier-${td.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${td.l}</span><span class="esc-tier-label">${td.d}</span></div><div class="esc-tier-body ${td.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===td.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:1px;">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-dim);padding:8px 0;">No contacts — add via button above.</div>'}</div></div>`).join('')}</div></div>`;
-  const mtEl=document.getElementById('matrix-tiers');if(!mtEl)return;mtEl.innerHTML=td.map(t=>`<div class="esc-tier tier-${t.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${t.l}</span><span class="esc-tier-label">${t.d}</span></div><div class="esc-tier-body ${t.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===t.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-muted);padding:8px 0;">No contacts defined.</div>'}</div></div>`).join('');
+  document.getElementById('matrix-tiers').innerHTML=td.map(t=>`<div class="esc-tier tier-${t.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${t.l}</span><span class="esc-tier-label">${t.d}</span></div><div class="esc-tier-body ${t.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===t.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-muted);padding:8px 0;">No contacts defined.</div>'}</div></div>`).join('');
 }
 
 // ── SHIFT LOG ─────────────────────────────────────────────────────────────────
@@ -3368,24 +3801,6 @@ function clearHandoffForm(){['ho-date','ho-out-mgr','ho-in-mgr','ho-time','ho-cl
 function renderHandoffs(){const el=document.getElementById('handoffList');if(!handoffs.length){el.innerHTML='<div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.</div>';return;}const rm={smooth:['green','✅ Smooth'],minor:['amber','🟡 Minor'],rough:['red','🔴 Rough']};el.innerHTML=handoffs.map(ho=>{const[rc,rl]=rm[ho.rating]||['neutral',ho.rating];return`<div class="handoff-card"><div class="hc-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><div class="hc-meta"><span class="hc-date">${ho.date}</span><span class="hc-shift ${ho.shift.split(' ')[0]}-shift">${ho.shift.toUpperCase()}</span><span style="font-size:11px;color:var(--text-dim)">${ho.outMgr} → ${ho.inMgr}</span></div><div class="hc-flags">${ho.nmr&&ho.nmr!=='None'&&ho.nmr.length>2?'<span class="hc-flag red">NMR</span>':''}<span class="hc-flag ${rc}">${rl}</span></div></div><div class="hc-body"><div style="font-size:12px;color:var(--text);line-height:1.6;">${ho.safetyNotes||''}</div>${ho.finalNotes?`<div style="font-size:11px;color:var(--text-dim);margin-top:8px;">${ho.finalNotes}</div>`:''}</div></div>`;}).join('');}
 
 // ── AIRTABLE ──────────────────────────────────────────────────────────────────
-// ── AIRTABLE GET ──────────────────────────────────────────────────────────────
-async function atFetch(table, params=''){
-  const el=document.getElementById('at-sync');
-  if(el){el.style.color='var(--amber)';el.textContent='⬤ SYNCING';}
-  try{
-    const url=`${AT_URL}/${encodeURIComponent(table)}${params?'?'+params:''}`;
-    const res=await fetch(url,{method:'GET',headers:{'Content-Type':'application/json'}});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    if(el){el.style.color='var(--green)';el.textContent='⬤ SYNCED';setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},2000);}
-    return data;
-  }catch(e){
-    if(el){el.style.color='var(--red)';el.textContent='⬤ OFFLINE';setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},3000);}
-    console.warn('atFetch err:',e.message);
-    return null;
-  }
-}
-
 async function atPush(table,fields){
   const el=document.getElementById('at-sync');
   if(el){el.style.color='var(--amber)';el.textContent='⬤ SYNCING';}
@@ -3396,558 +3811,8 @@ async function atPush(table,fields){
   }catch(e){console.warn('AT err:',e.message);if(el){el.style.color='var(--red)';el.textContent='⬤ OFFLINE';setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},3000);}}
 }
 
-
-// ══════════════════════════════════════════════════════════════════════════════
-// OPENING CHECKLIST ENGINE
-// ══════════════════════════════════════════════════════════════════════════════
-
-const OC_WORLDS = {
-  'Celestial Park':    {color:'#00D4FF', dot:'#00D4FF'},
-  'Ministry of Magic': {color:'#E040FB', dot:'#E040FB'},
-  'Super Nintendo World': {color:'#FF6B1A', dot:'#FF6B1A'},
-  'Isle of Berk':      {color:'#00E676', dot:'#00E676'},
-  'Dark Universe':     {color:'#F43F5E', dot:'#F43F5E'},
-};
-
-// Per-ride checklist items. cat: safety | ops | staff | comms | equip
-const OC_RIDE_ITEMS = {
-  SR: [
-    {id:'sr1', label:'Lap bar and restraint test — all vehicles', cat:'safety'},
-    {id:'sr2', label:'Anti-rollback device confirmed functional', cat:'safety'},
-    {id:'sr3', label:'E-stop and dispatch system test cycle', cat:'equip'},
-    {id:'sr4', label:'Height measuring stick verified accurate (48″)', cat:'safety'},
-    {id:'sr5', label:'Load/unload platform clear of debris and wet surfaces', cat:'ops'},
-    {id:'sr6', label:'Dispatch position staffed and briefed', cat:'staff'},
-    {id:'sr7', label:'Queue lane barriers set, overflow route marked', cat:'ops'},
-    {id:'sr8', label:'Express Pass and Single Rider lanes configured', cat:'ops'},
-    {id:'sr9', label:'Radio comms check with OPD dispatcher', cat:'comms'},
-    {id:'sr10',label:'Pre-opening inspection log entry confirmed', cat:'ops'},
-  ],
-  CC: [
-    {id:'cc1', label:'All horses and chariots secured, no loose fittings', cat:'safety'},
-    {id:'cc2', label:'Rotation mechanism test at slow speed', cat:'equip'},
-    {id:'cc3', label:'Platform perimeter guard chains in place', cat:'safety'},
-    {id:'cc4', label:'Load/unload position staffed', cat:'staff'},
-    {id:'cc5', label:'Music and lighting functional', cat:'ops'},
-    {id:'cc6', label:'Queue lane ready and accessible', cat:'ops'},
-  ],
-  HP: [
-    {id:'hp1', label:'Vehicle restraint and lap bar test — all vehicles', cat:'safety'},
-    {id:'hp2', label:'Height measuring stick verified accurate (40″)', cat:'safety'},
-    {id:'hp3', label:'Ride system self-test complete — no faults logged', cat:'equip'},
-    {id:'hp4', label:'Interactive spell-casting elements active and calibrated', cat:'ops'},
-    {id:'hp5', label:'Queue 1 and Queue 2 lanes configured', cat:'ops'},
-    {id:'hp6', label:'Ollivanders and pre-show areas confirmed ready', cat:'ops'},
-    {id:'hp7', label:'Single Rider lane open status confirmed', cat:'ops'},
-    {id:'hp8', label:'Both positions staffed and briefed', cat:'staff'},
-    {id:'hp9', label:'Radio comms check with OPD dispatcher', cat:'comms'},
-  ],
-  DK: [
-    {id:'dk1', label:'Mine cart lap bars and over-the-shoulder restraints tested', cat:'safety'},
-    {id:'dk2', label:'Height measuring stick verified accurate (36″)', cat:'safety'},
-    {id:'dk3', label:'Track and propulsion system test cycle complete', cat:'equip'},
-    {id:'dk4', label:'Interactive elements in queue activated', cat:'ops'},
-    {id:'dk5', label:'Express Pass lane configured', cat:'ops'},
-    {id:'dk6', label:'Positions staffed and briefed', cat:'staff'},
-    {id:'dk7', label:'Radio comms check with OPD dispatcher', cat:'comms'},
-  ],
-  MK: [
-    {id:'mk1', label:'Kart restraints and RFID band test', cat:'safety'},
-    {id:'mk2', label:'Height measuring stick verified accurate (40″)', cat:'safety'},
-    {id:'mk3', label:'AR headset/windshield check — all vehicles', cat:'equip'},
-    {id:'mk4', label:'Ride system boot and self-test complete', cat:'equip'},
-    {id:'mk5', label:'Queue 1 and Queue 2 lanes configured', cat:'ops'},
-    {id:'mk6', label:'Express Pass lane open', cat:'ops'},
-    {id:'mk7', label:'Both positions staffed and briefed', cat:'staff'},
-    {id:'mk8', label:'Radio comms check with OPD dispatcher', cat:'comms'},
-  ],
-  YS: [
-    {id:'ys1', label:'Egg vehicle lap bars tested — all cars', cat:'safety'},
-    {id:'ys2', label:'Height measuring stick verified accurate (34″)', cat:'ys2'},
-    {id:'ys3', label:'Ride system test cycle complete', cat:'equip'},
-    {id:'ys4', label:'Outdoor elements checked for weather impact', cat:'ops'},
-    {id:'ys5', label:'Load/unload positions staffed', cat:'staff'},
-  ],
-  DR: [
-    {id:'dr1', label:'Over-the-shoulder restraints tested — all vehicles', cat:'safety'},
-    {id:'dr2', label:'Height measuring stick verified accurate (48″)', cat:'safety'},
-    {id:'dr3', label:'Anti-rollback test complete', cat:'safety'},
-    {id:'dr4', label:'E-stop system tested at dispatch', cat:'equip'},
-    {id:'dr5', label:'Queue lane barriers set — Main, Express, Single Rider', cat:'ops'},
-    {id:'dr6', label:'All 4 positions staffed and briefed', cat:'staff'},
-    {id:'dr7', label:'Dragon theming elements confirmed clear of queue path', cat:'ops'},
-    {id:'dr8', label:'Radio comms check with OPD dispatcher', cat:'comms'},
-  ],
-  HW: [
-    {id:'hw1', label:'Glider harness and lap bar test — all vehicles', cat:'safety'},
-    {id:'hw2', label:'Height measuring stick verified accurate (40″)', cat:'safety'},
-    {id:'hw3', label:'Ride system test complete', cat:'equip'},
-    {id:'hw4', label:'Outdoor weather conditions acceptable for operation', cat:'ops'},
-    {id:'hw5', label:'Both positions staffed', cat:'staff'},
-  ],
-  FD: [
-    {id:'fd1', label:'Restraint system tested — all seats', cat:'safety'},
-    {id:'fd2', label:'Height measuring stick verified accurate (48″)', cat:'safety'},
-    {id:'fd3', label:'Ride spin/tilt mechanism test cycle complete', cat:'equip'},
-    {id:'fd4', label:'Wind speed check — within operating parameters (<35 mph)', cat:'safety'},
-    {id:'fd5', label:'Queue lane and loading area clear', cat:'ops'},
-    {id:'fd6', label:'All positions staffed', cat:'staff'},
-    {id:'fd7', label:'Express Pass lane configured', cat:'ops'},
-  ],
-  VT: [
-    {id:'vt1', label:'Water feature and splash zone active and draining properly', cat:'equip'},
-    {id:'vt2', label:'Dock boarding area clear and non-slip surfaces dry', cat:'safety'},
-    {id:'vt3', label:'Activity equipment inventoried and safe', cat:'safety'},
-    {id:'vt4', label:'Staff 1 and Staff 2 positions assigned', cat:'staff'},
-    {id:'vt5', label:'Viking theming props clear of guest path', cat:'ops'},
-  ],
-  MU: [
-    {id:'mu1', label:'Vehicle restraints and harnesses tested — all rows', cat:'safety'},
-    {id:'mu2', label:'Height measuring stick verified accurate (40″)', cat:'safety'},
-    {id:'mu3', label:'Ride system boot and self-test — no active faults', cat:'equip'},
-    {id:'mu4', label:'Atmospheric effects (fog, lighting, sound) confirmed active', cat:'ops'},
-    {id:'mu5', label:'Queue theming clear of guest path hazards', cat:'ops'},
-    {id:'mu6', label:'All 3 positions staffed and briefed', cat:'staff'},
-    {id:'mu7', label:'Radio comms check with OPD dispatcher', cat:'comms'},
-  ],
-};
-
-// ATR fields we read from Airtable ATR_Sessions per ride
-// These are the fields AS 360 ATR stream captures pre-opening
-const ATR_DISPLAY_FIELDS = [
-  {key:'Pre-Opening Status',   label:'Pre-Open Status',  colorFn: v => v==='Pass'?'pass':v==='Fail'?'fail':v==='Conditional'?'warn':'na'},
-  {key:'Last Inspection Date', label:'Last Insp. Date',  colorFn: ()=>''},
-  {key:'Open Time',            label:'Open Time',        colorFn: ()=>''},
-  {key:'Inspector',            label:'Inspector',        colorFn: ()=>''},
-  {key:'Faults Logged',        label:'Faults',           colorFn: v => v==='0'||v===0?'pass':parseInt(v)<=2?'warn':'fail'},
-  {key:'Fault Notes',          label:'Fault Notes',      colorFn: ()=>'', wide:true},
-  {key:'Restraint Check',      label:'Restraints',       colorFn: v => v==='Pass'?'pass':v==='Fail'?'fail':'na'},
-  {key:'Height Stick Check',   label:'Height Stick',     colorFn: v => v==='Pass'?'pass':v==='Fail'?'fail':'na'},
-  {key:'E-Stop Test',          label:'E-Stop',           colorFn: v => v==='Pass'?'pass':v==='Fail'?'fail':'na'},
-  {key:'Ride Status',          label:'ATR Status',       colorFn: v => v==='Open'?'pass':v==='Hold'?'warn':v==='Down'?'fail':'na'},
-];
-
-// State
-let ocState = {};          // {[rideId]: {status:'pending'|'clear'|'issues'|'hold', items:{[itemId]: 'unchecked'|'checked'|'flagged'|'blocked'}, note:'', atrData:null}}
-let ocFilter = 'all';
-let ocAtrLastSync = null;
-let ocExpanded = {};       // {[rideId]: bool}
-
-function ocInit() {
-  EU_ROT_DEFS.forEach(def => {
-    ocState[def.id] = {
-      status: 'pending',
-      items: {},
-      note: '',
-      atrData: null,
-      atrLoading: false,
-    };
-    (OC_RIDE_ITEMS[def.id] || []).forEach(item => {
-      ocState[def.id].items[item.id] = 'unchecked';
-    });
-  });
-}
-
-// ── ATR FETCH ─────────────────────────────────────────────────────────────────
-async function ocFetchATR() {
-  const btn = document.getElementById('oc-refresh-btn');
-  if (btn) { btn.textContent = '↻ Syncing…'; btn.disabled = true; }
-
-  // Query ATR_Sessions — most recent record per attraction
-  // Filter: Date = today OR most recent pre-opening records
-  const today = new Date().toISOString().split('T')[0];
-  // filterByFormula: IS_SAME({Date}, TODAY(), 'day') — URL encoded
-  const params = encodeURIComponent("filterByFormula=IS_SAME({Date},TODAY(),'day')") + '&sort%5B0%5D%5Bfield%5D=Submitted+At&sort%5B0%5D%5Bdirection%5D=desc&maxRecords=50';
-
-  const data = await atFetch('ATR_Sessions', params);
-
-  if (data && data.records) {
-    // Map latest record per attraction name
-    const latest = {};
-    data.records.forEach(rec => {
-      const attr = rec.fields['Attraction'] || rec.fields['Ride Name'] || rec.fields['Ride'];
-      if (!attr) return;
-      if (!latest[attr]) latest[attr] = rec.fields;
-    });
-
-    // Match to EU rides by name similarity
-    EU_ROT_DEFS.forEach(def => {
-      const match = Object.keys(latest).find(k =>
-        k.toLowerCase().includes(def.name.toLowerCase().slice(0,8)) ||
-        def.name.toLowerCase().includes(k.toLowerCase().slice(0,8)) ||
-        k.toUpperCase().includes(def.id)
-      );
-      if (match) {
-        ocState[def.id].atrData = latest[match];
-        // Auto-apply ATR status to ride card status
-        const atrStatus = latest[match]['Pre-Opening Status'] || latest[match]['Ride Status'];
-        if (atrStatus === 'Fail' || atrStatus === 'Down') ocState[def.id].status = 'hold';
-        else if (atrStatus === 'Conditional') ocState[def.id].status = 'issues';
-      }
-    });
-
-    ocAtrLastSync = new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-    const el = document.getElementById('oc-atr-ts');
-    if (el) el.textContent = 'ATR synced: ' + ocAtrLastSync;
-    toast('ATR data loaded — ' + data.records.length + ' records', 'ok');
-  } else {
-    // Graceful degradation — populate with demo data so checklist is still usable
-    ocInjectDemoATR();
-    toast('ATR offline — demo data shown', 'warn');
-  }
-
-  if (btn) { btn.textContent = '↻ Sync ATR'; btn.disabled = false; }
-  ocUpdateCounts();
-  renderOpeningChecklist();
-}
-
-function ocInjectDemoATR() {
-  // Inject plausible pre-opening ATR data for demonstration when Airtable unreachable
-  const demoStatuses = {
-    SR: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'R. Montoya', openTime:'08:45'},
-    CC: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'N/A',  estop:'N/A',  rideStatus:'Open', inspector:'T. Singh',   openTime:'08:50'},
-    HP: {status:'Pass',  faults:1,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'K. Wells',   openTime:'08:55', faultNote:'Minor sensor alert — cleared, no impact on ops'},
-    DK: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'R. Montoya', openTime:'08:52'},
-    MK: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'T. Singh',   openTime:'08:58'},
-    YS: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'K. Wells',   openTime:'08:48'},
-    DR: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'R. Montoya', openTime:'08:40'},
-    HW: {status:'Conditional', faults:2, restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'T. Singh', openTime:'09:05', faultNote:'Vehicle 3 harness micro-switch intermittent — tagged, vehicle removed from rotation'},
-    FD: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'K. Wells',   openTime:'08:44'},
-    VT: {status:'Pass',  faults:0,   restraints:'N/A',  heightStick:'N/A',  estop:'N/A',  rideStatus:'Open', inspector:'R. Montoya', openTime:'09:00'},
-    MU: {status:'Fail',  faults:4,   restraints:'Pass', heightStick:'Pass', estop:'Fail', rideStatus:'Hold', inspector:'T. Singh',   openTime:'—',     faultNote:'E-stop circuit fault on Row C — maintenance called, ride on hold pending clearance'},
-  };
-
-  const today = new Date().toISOString().split('T')[0];
-  EU_ROT_DEFS.forEach(def => {
-    const d = demoStatuses[def.id];
-    if (!d) return;
-    ocState[def.id].atrData = {
-      'Attraction': def.name,
-      'Date': today,
-      'Inspector': d.inspector,
-      'Open Time': d.openTime,
-      'Pre-Opening Status': d.status,
-      'Faults Logged': String(d.faults),
-      'Fault Notes': d.faultNote || '',
-      'Restraint Check': d.restraints,
-      'Height Stick Check': d.heightStick,
-      'E-Stop Test': d.estop,
-      'Ride Status': d.rideStatus,
-    };
-    if (d.status === 'Fail') ocState[def.id].status = 'hold';
-    else if (d.status === 'Conditional') ocState[def.id].status = 'issues';
-  });
-
-  ocAtrLastSync = 'demo data';
-  const el = document.getElementById('oc-atr-ts');
-  if (el) el.textContent = 'ATR: demo mode';
-}
-
-// ── RENDER ─────────────────────────────────────────────────────────────────────
-function renderOpeningChecklist() {
-  ocUpdateCounts();
-
-  const worldOrder = ['Celestial Park','Ministry of Magic','Super Nintendo World','Isle of Berk','Dark Universe'];
-  const listEl = document.getElementById('oc-ride-list');
-  if (!listEl) return;
-
-  let html = '';
-  worldOrder.forEach(world => {
-    const rides = EU_ROT_DEFS.filter(d => d.world === world);
-    if (!rides.length) return;
-
-    const filteredRides = rides.filter(r => {
-      if (ocFilter === 'all') return true;
-      return ocState[r.id]?.status === ocFilter;
-    });
-    if (!filteredRides.length) return;
-
-    const wCfg = OC_WORLDS[world] || {color:'var(--text-dim)', dot:'var(--text-dim)'};
-    const clearInWorld = rides.filter(r => ocState[r.id]?.status === 'clear').length;
-    html += `<div class="oc-world-section">
-      <div class="oc-world-hdr">
-        <div class="oc-world-dot" style="background:${wCfg.dot}"></div>
-        <div class="oc-world-name" style="color:${wCfg.color}">${world}</div>
-        <div class="oc-world-count">${clearInWorld}/${rides.length} cleared</div>
-      </div>
-      ${filteredRides.map(def => renderOcRideCard(def)).join('')}
-    </div>`;
-  });
-
-  listEl.innerHTML = html || '<div class="empty"><div class="empty-icon">✅</div>No rides match current filter</div>';
-}
-
-function renderOcRideCard(def) {
-  const state = ocState[def.id] || {status:'pending', items:{}, note:'', atrData:null};
-  const items = OC_RIDE_ITEMS[def.id] || [];
-  const expanded = ocExpanded[def.id] || false;
-
-  const checked  = items.filter(i => state.items[i.id] === 'checked').length;
-  const flagged  = items.filter(i => state.items[i.id] === 'flagged').length;
-  const blocked  = items.filter(i => state.items[i.id] === 'blocked').length;
-  const total    = items.length;
-
-  const statusChipMap = {
-    pending: '<span class="oc-status-chip osc-pending">PENDING</span>',
-    clear:   '<span class="oc-status-chip osc-clear">✓ CLEAR</span>',
-    issues:  '<span class="oc-status-chip osc-issues">⚠ ISSUES</span>',
-    hold:    '<span class="oc-status-chip osc-hold">✕ HOLD</span>',
-  };
-
-  const atr = state.atrData;
-  const atrChip = atr ? `<span class="oc-status-chip osc-atr">ATR ✓</span>` : '';
-
-  // ATR panel HTML
-  let atrHTML = '';
-  if (atr) {
-    const fieldCells = ATR_DISPLAY_FIELDS.map(f => {
-      const raw = atr[f.key];
-      if (raw === undefined || raw === null || raw === '') return null;
-      const val = String(raw);
-      const cls = f.colorFn(val);
-      return `<div class="atr-field${f.wide ? '" style="grid-column:1/-1' : ''}">
-        <div class="atr-field-label">${f.label}</div>
-        <div class="atr-field-val ${cls}">${val || '—'}</div>
-      </div>`;
-    }).filter(Boolean).join('');
-
-    const ts = atr['Submitted At'] ? new Date(atr['Submitted At']).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) : (atr['Open Time'] || '—');
-    atrHTML = `<div class="atr-data-panel">
-      <div class="atr-data-hdr">
-        <div class="atr-data-title">📡 ATR — Pre-Opening Record</div>
-        <div class="atr-data-ts">Logged: ${ts}</div>
-      </div>
-      <div class="atr-fields">${fieldCells}</div>
-    </div>`;
-  } else {
-    atrHTML = `<div class="atr-data-panel">
-      <div class="atr-loading">No ATR record for today — <button class="btn btn-ghost btn-sm" onclick="ocFetchATR()">Sync ATR</button></div>
-    </div>`;
-  }
-
-  // Checklist items
-  const itemsHTML = items.map(item => {
-    const itemState = state.items[item.id] || 'unchecked';
-    const checkChar = {checked:'✓', flagged:'!', blocked:'✕'}[itemState] || '';
-    return `<div class="oc-item ${itemState !== 'unchecked' ? itemState : ''}" 
-      onclick="ocCycleItem('${def.id}','${item.id}',event)">
-      <div class="oc-item-check">${checkChar}</div>
-      <div style="flex:1;">
-        <div class="oc-item-label">${item.label}</div>
-      </div>
-      <span class="oc-item-cat cat-${item.cat}">${item.cat.toUpperCase()}</span>
-    </div>`;
-  }).join('');
-
-  const progressPct = total > 0 ? Math.round(checked/total*100) : 0;
-
-  return `<div class="oc-ride-card status-${state.status} ${expanded?'expanded':''}" id="oc-card-${def.id}">
-    <div class="oc-ride-hdr" onclick="ocToggleCard('${def.id}')">
-      <div>
-        <div class="oc-ride-name">${def.name}</div>
-        <div class="oc-ride-meta">${checked}/${total} items · ${flagged > 0 ? flagged+' flagged · ':''} ${blocked > 0 ? blocked+' blocked · ':''} ${progressPct}%</div>
-      </div>
-      <div class="oc-ride-status">
-        ${atrChip}
-        ${statusChipMap[state.status] || ''}
-        <div class="oc-expand-icon">▼</div>
-      </div>
-    </div>
-    <div class="oc-ride-body">
-      ${atrHTML}
-      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin:0 0 6px;">
-        Pre-Opening Checklist — tap to cycle ✓ / ! / ✕ / clear
-      </div>
-      <div class="oc-checklist">${itemsHTML}</div>
-      <textarea class="oc-note-input" id="oc-note-${def.id}" placeholder="Notes for this ride (issues, maintenance contacts, anything to flag at gates-open…)" onchange="ocSaveNote('${def.id}',this.value)">${state.note}</textarea>
-      <div class="oc-action-row">
-        <button class="btn btn-teal btn-sm" onclick="ocSetRideStatus('${def.id}','clear')">✓ Mark Clear</button>
-        <button class="btn btn-amber btn-sm" onclick="ocSetRideStatus('${def.id}','issues')">⚠ Issues Noted</button>
-        <button class="btn btn-red btn-sm" onclick="ocSetRideStatus('${def.id}','hold')">✕ Hold</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSetRideStatus('${def.id}','pending')">Reset</button>
-      </div>
-    </div>
-  </div>`;
-}
-
-// ── INTERACTIONS ──────────────────────────────────────────────────────────────
-function ocToggleCard(id) {
-  ocExpanded[id] = !ocExpanded[id];
-  renderOpeningChecklist();
-}
-
-function ocCycleItem(rideId, itemId, e) {
-  e && e.stopPropagation();
-  const cycle = {unchecked:'checked', checked:'flagged', flagged:'blocked', blocked:'unchecked'};
-  const cur = ocState[rideId]?.items[itemId] || 'unchecked';
-  ocState[rideId].items[itemId] = cycle[cur];
-  // Auto-derive ride status from items
-  ocDerivRideStatus(rideId);
-  ocUpdateCounts();
-  // Re-render just this card efficiently
-  const cardEl = document.getElementById('oc-card-' + rideId);
-  if (cardEl) {
-    const temp = document.createElement('div');
-    const def = EU_ROT_DEFS.find(d => d.id === rideId);
-    if (def) { temp.innerHTML = renderOcRideCard(def); cardEl.replaceWith(temp.firstChild); }
-  }
-}
-
-function ocDerivRideStatus(rideId) {
-  const state = ocState[rideId];
-  const items = OC_RIDE_ITEMS[rideId] || [];
-  const blocked = items.filter(i => state.items[i.id] === 'blocked').length;
-  const flagged = items.filter(i => state.items[i.id] === 'flagged').length;
-  const checked = items.filter(i => state.items[i.id] === 'checked').length;
-  const total = items.length;
-  // Only auto-derive if user hasn't manually set
-  if (state.status === 'pending' || state.status === 'clear' || state.status === 'issues') {
-    if (blocked > 0) state.status = 'hold';
-    else if (flagged > 0) state.status = 'issues';
-    else if (checked === total && total > 0) state.status = 'clear';
-    else state.status = 'pending';
-  }
-}
-
-function ocSetRideStatus(rideId, status) {
-  ocState[rideId].status = status;
-  ocExpanded[rideId] = true;
-  ocUpdateCounts();
-  renderOpeningChecklist();
-  toast(EU_ROT_DEFS.find(d=>d.id===rideId)?.name + ' → ' + status.toUpperCase(), status==='clear'?'ok':status==='hold'?'err':'warn');
-}
-
-function ocSaveNote(rideId, val) {
-  if (ocState[rideId]) ocState[rideId].note = val;
-}
-
-function ocSetFilter(f, btn) {
-  ocFilter = f;
-  document.querySelectorAll('.oc-filter-btn').forEach(b => b.classList.remove('active','active-red','active-amber'));
-  btn.classList.add(f==='issues'?'active-amber':f==='hold'?'active-red':'active');
-  renderOpeningChecklist();
-}
-
-function ocUpdateCounts() {
-  const all = EU_ROT_DEFS.map(d => ocState[d.id]);
-  const clearN  = all.filter(s => s?.status === 'clear').length;
-  const issuesN = all.filter(s => s?.status === 'issues').length;
-  const holdN   = all.filter(s => s?.status === 'hold').length;
-  const total   = EU_ROT_DEFS.length;
-
-  const el = id => document.getElementById(id);
-  if(el('oc-clear-count'))  el('oc-clear-count').textContent  = clearN;
-  if(el('oc-issues-count')) el('oc-issues-count').textContent = issuesN;
-  if(el('oc-hold-count'))   el('oc-hold-count').textContent   = holdN;
-
-  const progPct = total > 0 ? Math.round((clearN + issuesN) / total * 100) : 0;
-  if(el('oc-prog-fill'))  el('oc-prog-fill').style.width = progPct + '%';
-  if(el('oc-prog-label')) el('oc-prog-label').textContent = clearN + ' cleared · ' + issuesN + ' with issues · ' + holdN + ' on hold';
-  if(el('oc-prog-pct'))   el('oc-prog-pct').textContent = progPct + '%';
-
-  const badge = el('oc-ready-badge');
-  if (badge) {
-    if (holdN > 0) {
-      badge.textContent = holdN + ' HOLD';
-      badge.className = 'oc-ready-badge not-ready';
-    } else if (issuesN > 0 && clearN + issuesN === total) {
-      badge.textContent = 'OPEN w/ ISSUES';
-      badge.className = 'oc-ready-badge partial';
-    } else if (clearN === total) {
-      badge.textContent = '✓ ALL CLEAR';
-      badge.className = 'oc-ready-badge ready';
-    } else {
-      badge.textContent = 'NOT READY';
-      badge.className = 'oc-ready-badge not-ready';
-    }
-  }
-
-  // Update filter button counts
-  const filterAll = document.getElementById('ocf-all');
-  if (filterAll) filterAll.textContent = 'All (' + total + ')';
-  const filterPending = document.getElementById('ocf-pending');
-  const pendingN = all.filter(s=>s?.status==='pending').length;
-  if (filterPending) filterPending.textContent = 'Pending' + (pendingN?` (${pendingN})`:'');
-
-  // Nav badge
-  const nb = document.getElementById('ocBadge');
-  if (nb) {
-    if (holdN > 0) { nb.textContent = holdN+'!'; nb.className = 'tab-badge red'; }
-    else if (issuesN > 0) { nb.textContent = issuesN; nb.className = 'tab-badge amber'; }
-    else if (clearN === total) { nb.textContent = '✓'; nb.className = 'tab-badge green'; }
-    else { nb.textContent = clearN+'/'+total; nb.className = 'tab-badge neutral'; }
-  }
-}
-
-// ── SUBMIT ─────────────────────────────────────────────────────────────────────
-function ocSubmitAll() {
-  const all = EU_ROT_DEFS.map(d => ocState[d.id]);
-  const holdN = all.filter(s=>s?.status==='hold').length;
-  if (holdN > 0) {
-    const holdsNames = EU_ROT_DEFS.filter(d=>ocState[d.id]?.status==='hold').map(d=>d.name).join(', ');
-    if (!confirm(holdN + ' ride(s) on hold: ' + holdsNames + '\n\nSubmit opening log with holds recorded?')) return;
-  }
-
-  const today = new Date().toISOString().split('T')[0];
-  const now   = new Date().toISOString();
-  const clearN  = EU_ROT_DEFS.filter(d=>ocState[d.id]?.status==='clear').length;
-  const issuesN = EU_ROT_DEFS.filter(d=>ocState[d.id]?.status==='issues').length;
-
-  // Push one summary record + one per-ride record for each ride with a note or non-clear status
-  atPush('ATR_Opening_Log', {
-    'Log ID':        'OCL-' + Date.now().toString(36).toUpperCase().slice(-6),
-    'Date':          today,
-    'Submitted At':  now,
-    'Total Rides':   EU_ROT_DEFS.length,
-    'Clear':         clearN,
-    'Issues':        issuesN,
-    'Hold':          holdN,
-    'ATR Sync Time': ocAtrLastSync || 'not synced',
-    'Overall Status': holdN > 0 ? 'Hold' : issuesN > 0 ? 'Open with Issues' : 'All Clear',
-    'Detail': JSON.stringify(EU_ROT_DEFS.map(d=>({
-      id: d.id,
-      name: d.name,
-      status: ocState[d.id]?.status,
-      checked: Object.values(ocState[d.id]?.items||{}).filter(v=>v==='checked').length,
-      flagged: Object.values(ocState[d.id]?.items||{}).filter(v=>v==='flagged').length,
-      blocked: Object.values(ocState[d.id]?.items||{}).filter(v=>v==='blocked').length,
-      note: ocState[d.id]?.note || '',
-    }))),
-  });
-
-  // Push individual records for rides that need attention
-  EU_ROT_DEFS.filter(d => ocState[d.id]?.status !== 'clear' || ocState[d.id]?.note).forEach(def => {
-    const s = ocState[def.id];
-    const blocked = (OC_RIDE_ITEMS[def.id]||[]).filter(i=>s.items[i.id]==='blocked').map(i=>i.label).join('; ');
-    const flagged = (OC_RIDE_ITEMS[def.id]||[]).filter(i=>s.items[i.id]==='flagged').map(i=>i.label).join('; ');
-    atPush('ATR_Sessions', {
-      'Attraction':        def.name,
-      'Date':              today,
-      'Open Status':       s.status === 'clear' ? 'Open' : s.status === 'hold' ? 'Hold' : 'Open with Issues',
-      'Pre-Opening Status': s.status === 'clear' ? 'Pass' : s.status === 'hold' ? 'Fail' : 'Conditional',
-      'Blocked Items':     blocked || 'None',
-      'Flagged Items':     flagged || 'None',
-      'Manager Notes':     s.note || '',
-      'Submitted At':      now,
-      'Source':            'Opening Checklist — Manager Module',
-    });
-  });
-
-  toast('Opening log submitted · ' + clearN + ' clear · ' + holdN + ' hold', holdN>0?'warn':'ok');
-}
-
-function ocResetAll() {
-  if (!confirm('Reset all checklist items and statuses?')) return;
-  ocInit();
-  ocAtrLastSync = null;
-  const el = document.getElementById('oc-atr-ts');
-  if (el) el.textContent = 'ATR: not synced';
-  renderOpeningChecklist();
-  toast('Checklist reset','ok');
-}
-// ─────────────────────────────────────────────────────────────────────────────
 // ── TOAST ─────────────────────────────────────────────────────────────────────
-function toast(msg,type){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className='show'+(type==='ok'?' ok':type==='err'?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);}
+function toast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(type==='ok'?' ok':type==='err'?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);}
 
 init();
 </script>
