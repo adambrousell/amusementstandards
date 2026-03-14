@@ -64,7 +64,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);m
 .review-gate-score.high{color:var(--gold-deep);}
 .review-gate-score.mid{color:var(--amber);}
 .review-gate-score.low{color:var(--rose);}
-.review-gate-label{font-size:13px;color:var(--slate);margin-bottom:20px;}
 .review-btn{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1.5px solid var(--border2);border-radius:14px;background:#fff;cursor:pointer;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:all .2s;text-decoration:none;color:inherit;}
 .review-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-warm);border-color:var(--gold);}
 .review-btn-icon{font-size:28px;flex-shrink:0;}
@@ -365,7 +364,7 @@ function submitFeedback(skipEmail=false){
   survey.commentBest=document.getElementById('commentBest').value.trim();
   survey.commentImprov=document.getElementById('commentImprov').value.trim();
   if(!skipEmail){survey.email=document.getElementById('emailInput').value.trim();survey.firstName=document.getElementById('firstNameInput').value.trim();}
-  const hasEmail=survey.email&&survey.email.includes('@');
+  const hasEmail = !!(survey.email && survey.email.includes('@'));
   const score=survey.overall||3;
   const couponData=COUPON_BY_SCORE[score]||COUPON_BY_SCORE[3];
   const code=couponData.code+Math.random().toString(36).substr(2,6).toUpperCase();
@@ -388,7 +387,7 @@ function submitFeedback(skipEmail=false){
     'Email':             survey.email,
     'First Name':        survey.firstName,
     'Coupon Code':       survey.couponCode,
-    'Has Email':         hasEmail ? 'Yes' : 'No',
+    'Has Email':         hasEmail,
     'Score Tier':        score>=4?'Promoter':score===3?'Passive':'Detractor',
   });
 
