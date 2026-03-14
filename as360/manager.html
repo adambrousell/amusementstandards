@@ -2022,7 +2022,7 @@ function updateInspSummary(){
   const dueSoon=all.filter(id=>getInspStatus(id).status==='due-soon').length;
   const current=all.filter(id=>getInspStatus(id).status==='current').length;
   const ns=all.filter(id=>getInspStatus(id).status==='not-started').length;
-  document.getElementById('insp-summary-grid').innerHTML=`
+  const sgEl=document.getElementById('insp-summary-grid');if(!sgEl)return;sgEl.innerHTML=`
     <div class="metric-card red"><div class="mv red">${overdue}</div><div class="ml">Overdue</div></div>
     <div class="metric-card amber"><div class="mv amber">${dueSoon}</div><div class="ml">Due Soon</div></div>
     <div class="metric-card green"><div class="mv green">${current}</div><div class="ml">Current</div></div>
@@ -3192,7 +3192,7 @@ function ypsAddEntry(){
 function renderYPSEntries(){
   const el=document.getElementById('yps-entry-list');if(!el)return;
   if(!ypsSessionEntries.length){el.innerHTML='';return;}
-  const colMap={unaccompanied:'var(--amber)',lost:'var(--red)',\"age-restriction\":'var(--teal)',chaperone:'var(--blue)',behavioral:'var(--red)'};
+  const colMap={'unaccompanied':'var(--amber)','lost':'var(--red)','age-restriction':'var(--teal)','chaperone':'var(--blue)','behavioral':'var(--red)'};
   el.innerHTML=`<div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-bottom:5px;">${ypsSessionEntries.length} ENTRIES THIS SHIFT</div>`+
     ypsSessionEntries.map(e=>`
       <div style="padding:8px 10px;background:var(--panel);border:1px solid var(--border);border-radius:7px;border-left:3px solid ${colMap[e.type]||'var(--text-muted)'};margin-bottom:6px;">
@@ -3221,7 +3221,7 @@ function refreshDash(){
   const pd=[{k:'R',n:'Readiness',c:'teal'},{k:'I',n:'Integrity',c:'red'},{k:'D',n:'Delivery',c:'green'},{k:'E',n:'Environment',c:'purple'}];
   pillMini.innerHTML=pd.map(p=>`<div style="text-align:center;padding:8px;background:var(--panel2);border-radius:8px;border:1px solid var(--border);"><div style="font-family:var(--mono);font-size:7px;letter-spacing:1px;color:var(--text-muted);margin-bottom:3px;">${p.k}</div><div style="font-family:var(--cond);font-size:22px;font-weight:800;color:var(--${p.c})">${pillarScores[p.k]!==null?pillarScores[p.k]:'—'}</div></div>`).join('');
   const overdueInsp=Object.keys(INSP_DEFS).filter(id=>getInspStatus(id).status==='overdue');
-  const inspMini=document.getElementById('db-insp-mini');
+  const inspMini=document.getElementById('db-rot-mini');if(!inspMini)return;
   if(!overdueInsp.length){inspMini.innerHTML='<div class="empty" style="padding:16px"><div class="empty-icon" style="font-size:18px">✅</div>All current</div>';}
   else{inspMini.innerHTML=overdueInsp.slice(0,4).map(id=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid rgba(36,45,62,.5);"><div style="font-size:12px;font-weight:600;color:var(--text)">${INSP_DEFS[id].name}</div><span style="font-family:var(--mono);font-size:9px;color:var(--red);font-weight:700;">OVERDUE ${getInspStatus(id).daysOverdue}d</span></div>`).join('');}
   const tpRows=document.getElementById('db-tp-rows');
@@ -3239,7 +3239,7 @@ function renderPillars(){
   document.getElementById('comp-score').textContent=comp!==null?comp:'—';
   if(comp!==null){const b=scoreBand(comp);document.getElementById('comp-band').textContent=b.l;document.getElementById('comp-band').style.color=b.c;}
   const defs=[{k:'R',n:'Readiness',full:'Readiness'},{k:'I',n:'Integrity',full:'Integrity'},{k:'D',n:'Delivery',full:'Delivery'},{k:'E',n:'Environment',full:'Environment'}];
-  document.getElementById('pillar-cards').innerHTML=defs.map(p=>{const sc=pillarScores[p.k];return`<div class="pillar-card pillar-${p.k}"><div class="pillar-letter">${p.k} — ${p.full.toUpperCase()}</div><div class="pillar-score">${sc!==null?sc:'—'}</div><div class="pillar-name">${sc!==null?scoreBand(sc).l:'No data'}</div><div class="pillar-bar-wrap"><div class="pillar-bar-fill" style="width:${sc||0}%"></div></div></div>`;}).join('');
+  const pcEl=document.getElementById('pillar-cards');if(!pcEl)return;pcEl.innerHTML=defs.map(p=>{const sc=pillarScores[p.k];return`<div class="pillar-card pillar-${p.k}"><div class="pillar-letter">${p.k} — ${p.full.toUpperCase()}</div><div class="pillar-score">${sc!==null?sc:'—'}</div><div class="pillar-name">${sc!==null?scoreBand(sc).l:'No data'}</div><div class="pillar-bar-wrap"><div class="pillar-bar-fill" style="width:${sc||0}%"></div></div></div>`;}).join('');
 }
 function previewScore(){const R=parseInt(document.getElementById('ps-R').value)||0,I=parseInt(document.getElementById('ps-I').value)||0,D=parseInt(document.getElementById('ps-D').value)||0,E=parseInt(document.getElementById('ps-E').value)||0;document.getElementById('ps-preview').textContent='→ Composite: '+Math.round(R*.30+I*.30+D*.25+E*.15);}
 function savePillarScores(){const R=parseInt(document.getElementById('ps-R').value),I=parseInt(document.getElementById('ps-I').value),D=parseInt(document.getElementById('ps-D').value),E=parseInt(document.getElementById('ps-E').value);if([R,I,D,E].some(v=>isNaN(v)||v<0||v>100)){toast('All scores 0–100','err');return;}pillarScores={R,I,D,E};save(K.PIL,pillarScores);renderPillars();refreshDash();toast('RIDE Score updated — Composite: '+calcComposite(),'ok');}
@@ -3337,7 +3337,7 @@ function saveMatrixContact(){const tier=document.getElementById('mc-tier').value
 function renderMatrix(){
   const td=[{t:'1',l:'TIER 1',d:'Manager Resolves'},{t:'2',l:'TIER 2',d:'Supervisor / Dept Head'},{t:'3',l:'TIER 3',d:'GM / Ownership / Regulatory'}];
   const html=`<div class="panel" style="margin-bottom:0"><div id="matrix-tiers">${td.map(td=>`<div class="esc-tier tier-${td.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${td.l}</span><span class="esc-tier-label">${td.d}</span></div><div class="esc-tier-body ${td.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===td.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:1px;">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-dim);padding:8px 0;">No contacts — add via button above.</div>'}</div></div>`).join('')}</div></div>`;
-  document.getElementById('matrix-tiers').innerHTML=td.map(t=>`<div class="esc-tier tier-${t.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${t.l}</span><span class="esc-tier-label">${t.d}</span></div><div class="esc-tier-body ${t.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===t.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-muted);padding:8px 0;">No contacts defined.</div>'}</div></div>`).join('');
+  const mtEl=document.getElementById('matrix-tiers');if(!mtEl)return;mtEl.innerHTML=td.map(t=>`<div class="esc-tier tier-${t.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${t.l}</span><span class="esc-tier-label">${t.d}</span></div><div class="esc-tier-body ${t.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===t.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-muted);padding:8px 0;">No contacts defined.</div>'}</div></div>`).join('');
 }
 
 // ── SHIFT LOG ─────────────────────────────────────────────────────────────────
@@ -3947,9 +3947,10 @@ function ocResetAll() {
 }
 // ─────────────────────────────────────────────────────────────────────────────
 // ── TOAST ─────────────────────────────────────────────────────────────────────
-function toast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(type==='ok'?' ok':type==='err'?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);}
+function toast(msg,type){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className='show'+(type==='ok'?' ok':type==='err'?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);}
 
 init();
 </script>
+<div id="toast"></div>
 </body>
 </html>
