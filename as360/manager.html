@@ -1215,7 +1215,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   </div>
 
 
-  <!-- TABLETOP SCENARIOS (Quarterly) -->
+  <!-- TABLETOP SCENARIOS (Quarterly) — hidden until quarterly tab active -->
+  <div id="tabletop-container" style="display:none;">
   <div style="border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:10px 14px;margin-bottom:10px;background:rgba(0,212,255,.03);">
     <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:3px;">Tabletop Exercise Scenarios</div>
     <div style="font-size:11px;color:var(--text-dim);">Discussion-based · 60–90 min · No alarms · Tests decision-making · Log after each session</div>
@@ -1312,6 +1313,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
       </div>
     </div>
   </div>
+
+  </div><!-- /tabletop-container -->
 
   <!-- ══ ANNUAL FORMS ══ -->
 
@@ -2439,6 +2442,8 @@ function switchFreq(freq){
   ['weekly','monthly','quarterly','annual'].forEach(f=>{
     document.getElementById('ft-'+f).classList.toggle('fa',f===freq);
   });
+  const ttContainer=document.getElementById('tabletop-container');
+  if(ttContainer)ttContainer.style.display=freq==='quarterly'?'block':'none';
   renderInspectionCards();
 }
 
@@ -2446,6 +2451,8 @@ function renderInspections(){
   updateInspSummary();
   updateFreqBadges();
   renderInspectionCards();
+  const ttContainer=document.getElementById('tabletop-container');
+  if(ttContainer)ttContainer.style.display=currentFreq==='quarterly'?'block':'none';
 }
 
 function updateInspSummary(){
