@@ -26,7 +26,6 @@
   --font-mono:  'DM Mono', monospace;
   --font-sans:  'DM Sans', sans-serif;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
@@ -49,74 +48,30 @@ nav {
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(16px);
 }
-.nav-logo {
-  font-family: var(--font-mono);
-  font-size: 14px; font-weight: 700;
-  color: var(--gold);
-  letter-spacing: 0.02em;
-}
+.nav-logo { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--gold); letter-spacing: 0.02em; }
 .nav-links { display: flex; align-items: center; gap: 6px; }
-.nav-links a {
-  font-size: 12px; font-weight: 500;
-  color: var(--muted);
-  padding: 6px 12px;
-  border-radius: 4px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  transition: color .2s, background .2s;
-}
+.nav-links a { font-size: 12px; font-weight: 500; color: var(--muted); padding: 6px 12px; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase; transition: color .2s, background .2s; }
 .nav-links a:hover { color: #fff; background: rgba(255,255,255,.05); }
-.nav-cta {
-  background: var(--ride) !important;
-  color: #fff !important;
-  font-weight: 600 !important;
-}
+.nav-cta { background: var(--ride) !important; color: #fff !important; font-weight: 600 !important; }
 .nav-cta:hover { opacity: .85; }
 
 /* HERO */
-.hero {
-  padding: 100px 48px 80px;
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-}
+.hero { padding: 100px 48px 80px; position: relative; overflow: hidden; text-align: center; }
 .hero::before {
-  content: '';
-  position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0;
   background:
     radial-gradient(ellipse 60% 50% at 20% 60%, rgba(255,107,53,.09) 0%, transparent 60%),
     radial-gradient(ellipse 60% 50% at 80% 60%, rgba(31,184,122,.08) 0%, transparent 60%),
     radial-gradient(ellipse 40% 40% at 50% 20%, rgba(30,158,212,.07) 0%, transparent 60%);
   pointer-events: none;
 }
-.hero-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 28px;
-  display: flex; align-items: center; justify-content: center; gap: 14px;
-}
-.hero-eyebrow::before, .hero-eyebrow::after {
-  content: ''; display: block;
-  width: 40px; height: 1px;
-  background: rgba(255,255,255,.12);
-}
-.hero h1 {
-  font-family: var(--font-serif);
-  font-size: clamp(44px, 7vw, 90px);
-  color: #fff;
-  line-height: .95;
-  letter-spacing: -.02em;
-  margin-bottom: 12px;
-  position: relative;
-}
+.hero-eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); margin-bottom: 28px; display: flex; align-items: center; justify-content: center; gap: 14px; }
+.hero-eyebrow::before, .hero-eyebrow::after { content: ''; display: block; width: 40px; height: 1px; background: rgba(255,255,255,.12); }
+.hero h1 { font-family: var(--font-serif); font-size: clamp(44px, 7vw, 90px); color: #fff; line-height: .95; letter-spacing: -.02em; margin-bottom: 12px; position: relative; }
 .hero h1 em { color: var(--ride); font-style: italic; }
-.hero-sub-title {
-  font-family: var(--font-mono);
-  font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 32px;
-}
+.hero-sub-title { font-family: var(--font-mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 32px; }
+
+/* SCORE STRIP — now with anchor tags */
 .hero-score-strip {
   display: inline-flex;
   align-items: stretch;
@@ -126,138 +81,83 @@ nav {
   margin-bottom: 40px;
 }
 .hss-item {
-  padding: 14px 28px;
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 18px 32px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
   position: relative;
+  transition: background .2s, transform .2s;
+  cursor: pointer;
 }
+.hss-item:hover { filter: brightness(1.15); transform: translateY(-2px); }
 .hss-item + .hss-item { border-left: 1px solid rgba(255,255,255,.08); }
 .hss-ride   { background: rgba(255,107,53,.1); }
 .hss-splash { background: rgba(30,158,212,.1); }
 .hss-play   { background: rgba(31,184,122,.1); }
-.hss-name { font-family: var(--font-mono); font-size: 18px; font-weight: 700; }
+.hss-ride:hover   { background: rgba(255,107,53,.2); }
+.hss-splash:hover { background: rgba(30,158,212,.2); }
+.hss-play:hover   { background: rgba(31,184,122,.2); }
+.hss-name { font-family: var(--font-mono); font-size: 16px; font-weight: 700; }
 .hss-ride   .hss-name { color: var(--ride); }
 .hss-splash .hss-name { color: var(--splash); }
 .hss-play   .hss-name { color: var(--play); }
 .hss-seg { font-size: 10px; color: rgba(255,255,255,.35); font-family: var(--font-mono); letter-spacing: .05em; }
+.hss-score { font-family: var(--font-mono); font-size: 36px; font-weight: 700; color: #fff; line-height: 1; margin-top: 4px; }
+.hss-sample { font-family: var(--font-mono); font-size: 8px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.25); }
 .hss-arrow {
   display: flex; align-items: center; justify-content: center;
-  padding: 0 6px;
+  padding: 0 8px;
   background: rgba(255,255,255,.02);
   color: rgba(255,255,255,.15);
   font-size: 14px;
   border-left: 1px solid rgba(255,255,255,.08);
+  flex-shrink: 0;
 }
-.hero-desc {
-  font-size: 17px; font-weight: 300;
-  color: rgba(255,255,255,.55);
-  max-width: 580px; margin: 0 auto 40px;
-  line-height: 1.75;
-}
+
+.hero-desc { font-size: 17px; font-weight: 300; color: rgba(255,255,255,.55); max-width: 580px; margin: 0 auto 40px; line-height: 1.75; }
 .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.btn {
-  display: inline-block;
-  font-family: var(--font-sans);
-  font-weight: 600; font-size: 14px;
-  padding: 13px 28px;
-  border-radius: 4px;
-  letter-spacing: .02em;
-  transition: opacity .2s, transform .2s;
-  cursor: pointer;
-}
+.btn { display: inline-block; font-family: var(--font-sans); font-weight: 600; font-size: 14px; padding: 13px 28px; border-radius: 4px; letter-spacing: .02em; transition: opacity .2s, transform .2s; cursor: pointer; }
 .btn-primary { background: var(--ride); color: #fff; }
 .btn-ghost { background: rgba(255,255,255,.06); color: var(--text); border: 1px solid rgba(255,255,255,.12); }
 .btn:hover { opacity: .82; transform: translateY(-1px); }
 
 /* STAT BAR */
-.stat-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.stat-item {
-  padding: 28px 32px;
-  border-right: 1px solid var(--border);
-  text-align: center;
-}
+.stat-bar { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.stat-item { padding: 28px 32px; border-right: 1px solid var(--border); text-align: center; }
 .stat-item:last-child { border-right: none; }
-.stat-num {
-  font-family: var(--font-serif);
-  font-size: 44px; color: #fff;
-  line-height: 1; margin-bottom: 4px;
-}
+.stat-num { font-family: var(--font-serif); font-size: 44px; color: #fff; line-height: 1; margin-bottom: 4px; }
 .stat-num span { color: var(--ride); }
-.stat-label {
-  font-family: var(--font-mono);
-  font-size: 10px; letter-spacing: .15em;
-  text-transform: uppercase; color: var(--muted);
-}
+.stat-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
 
 /* SECTION BASE */
 section { padding: 88px 48px; }
 .max-w { max-width: 1100px; margin: 0 auto; }
-.section-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 14px;
-}
-.section-title {
-  font-family: var(--font-serif);
-  font-size: clamp(28px, 4vw, 46px);
-  color: #fff; line-height: 1.1;
-  letter-spacing: -.02em; margin-bottom: 14px;
-}
+.section-eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.section-title { font-family: var(--font-serif); font-size: clamp(28px, 4vw, 46px); color: #fff; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 14px; }
 .section-title em { color: var(--ride); font-style: italic; }
-.section-sub {
-  font-size: 15px; font-weight: 300;
-  color: var(--muted); line-height: 1.75;
-  max-width: 560px;
-}
+.section-sub { font-size: 15px; font-weight: 300; color: var(--muted); line-height: 1.75; max-width: 560px; }
 
-/* THREE SCORES SECTION */
+/* THREE SCORES */
 .scores-section { background: var(--navy2); }
-.scores-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px; margin-top: 52px;
-}
-.score-card {
-  padding: 36px 30px;
-  border: 1px solid var(--border);
-  position: relative; overflow: hidden;
-  transition: transform .25s, box-shadow .25s;
-}
+.scores-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 52px; }
+.score-card { padding: 36px 30px; border: 1px solid var(--border); position: relative; overflow: hidden; transition: transform .25s, box-shadow .25s; }
 .score-card:hover { transform: translateY(-4px); }
-.score-card-ride   { background: rgba(255,107,53,.06); border-color: rgba(255,107,53,.2); }
-.score-card-splash { background: rgba(30,158,212,.06); border-color: rgba(30,158,212,.2); }
-.score-card-play   { background: rgba(31,184,122,.06); border-color: rgba(31,184,122,.2); }
-.score-card:hover.score-card-ride   { box-shadow: 0 20px 48px rgba(255,107,53,.12); }
-.score-card:hover.score-card-splash { box-shadow: 0 20px 48px rgba(30,158,212,.12); }
-.score-card:hover.score-card-play   { box-shadow: 0 20px 48px rgba(31,184,122,.12); }
+.score-card-ride   { background: rgba(255,107,53,.06);  border-color: rgba(255,107,53,.2);  }.score-card-ride:hover   { box-shadow: 0 20px 48px rgba(255,107,53,.12); }
+.score-card-splash { background: rgba(30,158,212,.06);  border-color: rgba(30,158,212,.2);  }.score-card-splash:hover { box-shadow: 0 20px 48px rgba(30,158,212,.12); }
+.score-card-play   { background: rgba(31,184,122,.06);  border-color: rgba(31,184,122,.2);  }.score-card-play:hover   { box-shadow: 0 20px 48px rgba(31,184,122,.12); }
 .sc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
 .sc-name { font-family: var(--font-mono); font-size: 40px; font-weight: 700; line-height: 1; }
 .score-card-ride   .sc-name { color: var(--ride); }
 .score-card-splash .sc-name { color: var(--splash); }
 .score-card-play   .sc-name { color: var(--play); }
-.sc-badge {
-  font-family: var(--font-mono); font-size: 9px;
-  letter-spacing: .12em; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 3px; font-weight: 700;
-  margin-top: 6px; display: inline-block;
-}
-.score-card-ride   .sc-badge { background: rgba(255,107,53,.15); color: var(--ride);   border: 1px solid rgba(255,107,53,.3); }
-.score-card-splash .sc-badge { background: rgba(30,158,212,.15); color: var(--splash); border: 1px solid rgba(30,158,212,.3); }
-.score-card-play   .sc-badge { background: rgba(31,184,122,.15); color: var(--play);   border: 1px solid rgba(31,184,122,.3); }
+.sc-badge { font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; font-weight: 700; margin-top: 6px; display: inline-block; }
+.score-card-ride   .sc-badge { background: rgba(255,107,53,.15);  color: var(--ride);   border: 1px solid rgba(255,107,53,.3);  }
+.score-card-splash .sc-badge { background: rgba(30,158,212,.15);  color: var(--splash); border: 1px solid rgba(30,158,212,.3);  }
+.score-card-play   .sc-badge { background: rgba(31,184,122,.15);  color: var(--play);   border: 1px solid rgba(31,184,122,.3);  }
 .sc-sample { text-align: right; }
 .sc-num { font-family: var(--font-mono); font-size: 48px; font-weight: 700; color: #fff; line-height: 1; }
 .sc-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.28); margin-top: 3px; }
 .sc-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; font-weight: 300; }
 .sc-pillars { margin-bottom: 20px; }
-.sc-pillar-row {
-  display: flex; align-items: center; gap: 8px;
-  padding: 5px 0;
-  border-bottom: 1px solid rgba(255,255,255,.04);
-}
+.sc-pillar-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.04); }
 .sc-pillar-row:last-child { border-bottom: none; }
 .sc-pillar-letter { font-family: var(--font-mono); font-size: 11px; font-weight: 700; width: 12px; flex-shrink: 0; }
 .score-card-ride   .sc-pillar-letter { color: var(--ride); }
@@ -265,12 +165,7 @@ section { padding: 88px 48px; }
 .score-card-play   .sc-pillar-letter { color: var(--play); }
 .sc-pillar-name { font-family: var(--font-mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.5); }
 .sc-streams { font-family: var(--font-mono); font-size: 10px; color: rgba(255,255,255,.22); letter-spacing: .1em; margin-bottom: 20px; }
-.sc-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 13px; font-weight: 600;
-  color: rgba(255,255,255,.5);
-  transition: all .2s;
-}
+.sc-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,.5); transition: all .2s; }
 .sc-link:hover { gap: 10px; color: #fff; }
 .score-card-ride   .sc-link:hover { color: var(--ride); }
 .score-card-splash .sc-link:hover { color: var(--splash); }
@@ -281,40 +176,14 @@ section { padding: 88px 48px; }
 .pic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 52px; }
 .pic-left-text .section-sub { max-width: 100%; }
 .pic-features { list-style: none; margin-top: 28px; }
-.pic-features li {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px; color: var(--text);
-}
+.pic-features li { display: flex; align-items: flex-start; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
 .pic-features li:last-child { border-bottom: none; }
 .pic-features li::before { content: '◈'; color: var(--ride); flex-shrink: 0; margin-top: 2px; font-size: 12px; }
-.pic-visual {
-  background: linear-gradient(135deg, rgba(255,107,53,.08), rgba(30,158,212,.08) 50%, rgba(31,184,122,.08));
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 12px;
-  padding: 40px;
-}
+.pic-visual { background: linear-gradient(135deg, rgba(255,107,53,.08), rgba(30,158,212,.08) 50%, rgba(31,184,122,.08)); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 40px; }
 .pic-composite-display { text-align: center; margin-bottom: 32px; }
-.pic-composite-label {
-  font-family: var(--font-mono); font-size: 10px;
-  letter-spacing: .18em; text-transform: uppercase;
-  color: rgba(255,255,255,.3); margin-bottom: 8px;
-}
-.pic-composite-num {
-  font-family: var(--font-mono); font-size: 80px;
-  font-weight: 700; color: var(--ride); line-height: 1;
-  id: pic-num;
-}
-.pic-composite-tier {
-  font-family: var(--font-mono); font-size: 10px;
-  letter-spacing: .15em; text-transform: uppercase;
-  color: var(--play);
-  background: rgba(31,184,122,.1);
-  border: 1px solid rgba(31,184,122,.25);
-  padding: 3px 12px; border-radius: 2px;
-  display: inline-block; margin-top: 8px;
-}
+.pic-composite-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 8px; }
+.pic-composite-num { font-family: var(--font-mono); font-size: 80px; font-weight: 700; color: var(--ride); line-height: 1; }
+.pic-composite-tier { font-family: var(--font-mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--play); background: rgba(31,184,122,.1); border: 1px solid rgba(31,184,122,.25); padding: 3px 12px; border-radius: 2px; display: inline-block; margin-top: 8px; }
 .pic-bars { display: flex; flex-direction: column; gap: 10px; }
 .pic-bar-row { display: flex; align-items: center; gap: 12px; }
 .pic-bar-name { font-family: var(--font-mono); font-size: 11px; font-weight: 700; width: 52px; flex-shrink: 0; }
@@ -322,7 +191,7 @@ section { padding: 88px 48px; }
 .pic-bar-name.splash { color: var(--splash); }
 .pic-bar-name.play   { color: var(--play); }
 .pic-bar-name.pic    { color: rgba(255,255,255,.6); border-top: 1px solid rgba(255,255,255,.08); padding-top: 8px; margin-top: 4px; }
-.pic-bar-row.pic-total { margin-top: 4px; padding-top: 0; }
+.pic-bar-row.pic-total { margin-top: 4px; }
 .pic-track { flex: 1; height: 6px; background: rgba(255,255,255,.07); border-radius: 3px; overflow: hidden; }
 .pic-fill { height: 100%; border-radius: 3px; width: 0; transition: width 1.4s cubic-bezier(.25,.46,.45,.94); }
 .pic-fill-ride   { background: var(--ride); }
@@ -334,148 +203,59 @@ section { padding: 88px 48px; }
 /* HOW IT WORKS */
 .how-section { background: var(--navy2); }
 .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 52px; }
-.how-card {
-  background: rgba(255,255,255,.025);
-  border: 1px solid var(--border);
-  padding: 36px 28px;
-}
-.how-num {
-  font-family: var(--font-mono); font-size: 11px;
-  letter-spacing: .15em; color: var(--muted);
-  margin-bottom: 16px;
-}
+.how-card { background: rgba(255,255,255,.025); border: 1px solid var(--border); padding: 36px 28px; }
+.how-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em; color: var(--muted); margin-bottom: 16px; }
 .how-icon { font-size: 28px; margin-bottom: 14px; }
-.how-title {
-  font-family: var(--font-serif); font-size: 20px;
-  color: #fff; margin-bottom: 10px;
-}
+.how-title { font-family: var(--font-serif); font-size: 20px; color: #fff; margin-bottom: 10px; }
 .how-desc { font-size: 14px; color: var(--muted); line-height: 1.7; font-weight: 300; }
 
-/* STREAMS SECTION */
+/* STREAMS */
 .streams-section { background: var(--navy); }
-.streams-meta {
-  display: flex; gap: 24px; margin-top: 28px; margin-bottom: 32px; flex-wrap: wrap;
-}
-.streams-meta-item {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.4);
-}
+.streams-meta { display: flex; gap: 24px; margin-top: 28px; margin-bottom: 32px; flex-wrap: wrap; }
+.streams-meta-item { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.4); }
 .sm-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.sm-ride { background: var(--ride); }
-.sm-splash { background: var(--splash); }
-.sm-play { background: var(--play); }
-.stream-table { width: 100%; border-collapse: collapse; margin-top: 0; }
-.stream-table th {
-  font-family: var(--font-mono); font-size: 9px;
-  letter-spacing: .15em; text-transform: uppercase;
-  color: var(--muted); padding: 10px 14px;
-  text-align: left; border-bottom: 1px solid var(--border);
-}
-.stream-table td {
-  padding: 11px 14px; font-size: 12.5px;
-  border-bottom: 1px solid rgba(255,255,255,.04);
-  color: var(--text);
-}
+.sm-ride { background: var(--ride); } .sm-splash { background: var(--splash); } .sm-play { background: var(--play); }
+.stream-table { width: 100%; border-collapse: collapse; }
+.stream-table th { font-family: var(--font-mono); font-size: 9px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+.stream-table td { padding: 11px 14px; font-size: 12.5px; border-bottom: 1px solid rgba(255,255,255,.04); color: var(--text); }
 .stream-table tr:hover td { background: rgba(255,255,255,.02); }
 .stream-name-cell { font-weight: 500; }
 .stream-badge-cell { display: flex; gap: 4px; flex-wrap: wrap; }
-.sb {
-  font-family: var(--font-mono); font-size: 9px;
-  font-weight: 700; padding: 2px 7px;
-  border-radius: 2px; letter-spacing: .05em;
-}
-.sb-ride   { background: rgba(255,107,53,.18);  color: var(--ride);   border: 1px solid rgba(255,107,53,.3); }
-.sb-splash { background: rgba(30,158,212,.18);  color: var(--splash); border: 1px solid rgba(30,158,212,.3); }
-.sb-play   { background: rgba(31,184,122,.18);  color: var(--play);   border: 1px solid rgba(31,184,122,.3); }
+.sb { font-family: var(--font-mono); font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 2px; letter-spacing: .05em; }
+.sb-ride   { background: rgba(255,107,53,.18);  color: var(--ride);   border: 1px solid rgba(255,107,53,.3);  }
+.sb-splash { background: rgba(30,158,212,.18);  color: var(--splash); border: 1px solid rgba(30,158,212,.3);  }
+.sb-play   { background: rgba(31,184,122,.18);  color: var(--play);   border: 1px solid rgba(31,184,122,.3);  }
 
-/* INSURER SECTION */
+/* INSURERS */
 .insurer-section { background: var(--navy2); }
 .insurer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; margin-top: 52px; }
-.insurer-points { list-style: none; margin-top: 4px; }
-.insurer-points li {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 14px 0; border-bottom: 1px solid var(--border);
-  font-size: 14px; color: var(--text); line-height: 1.6;
-}
+.insurer-points { list-style: none; }
+.insurer-points li { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); line-height: 1.6; }
 .insurer-points li:last-child { border-bottom: none; }
 .insurer-points li::before { content: '→'; color: var(--ride); flex-shrink: 0; font-family: var(--font-mono); }
-.insurer-card {
-  background: var(--navy3);
-  border: 1px solid var(--border);
-  border-radius: 8px; overflow: hidden;
-}
-.insurer-card-header {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,.025);
-}
-.insurer-card-title {
-  font-family: var(--font-mono); font-size: 11px;
-  letter-spacing: .15em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 4px;
-}
-.insurer-card-name {
-  font-family: var(--font-serif); font-size: 20px;
-  color: #fff;
-}
-.insurer-card-body { padding: 0; }
-.insurer-dossier-row {
-  display: flex; align-items: center; gap: 14px;
-  padding: 14px 24px;
-  border-bottom: 1px solid rgba(255,255,255,.04);
-  font-size: 13px; color: var(--text);
-}
+.insurer-card { background: var(--navy3); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.insurer-card-header { padding: 20px 24px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.025); }
+.insurer-card-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.insurer-card-name { font-family: var(--font-serif); font-size: 20px; color: #fff; }
+.insurer-dossier-row { display: flex; align-items: center; gap: 14px; padding: 14px 24px; border-bottom: 1px solid rgba(255,255,255,.04); font-size: 13px; color: var(--text); }
 .insurer-dossier-row:last-child { border-bottom: none; }
 .idr-icon { font-size: 16px; flex-shrink: 0; }
 .idr-label { flex: 1; }
-.idr-status {
-  font-family: var(--font-mono); font-size: 9px;
-  letter-spacing: .12em; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 2px;
-}
-.idr-included { background: rgba(31,184,122,.15); color: var(--play); border: 1px solid rgba(31,184,122,.25); }
-.idr-pro { background: rgba(201,168,76,.12); color: var(--gold); border: 1px solid rgba(201,168,76,.25); }
+.idr-status { font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
+.idr-included { background: rgba(31,184,122,.15); color: var(--play);   border: 1px solid rgba(31,184,122,.25); }
+.idr-pro      { background: rgba(201,168,76,.12); color: var(--gold);   border: 1px solid rgba(201,168,76,.25); }
 
-/* CTA SECTION */
-.cta-section {
-  background: linear-gradient(135deg, #060f24 0%, #0a2040 50%, #060f24 100%);
-  padding: 96px 48px;
-  text-align: center;
-  position: relative; overflow: hidden;
-}
-.cta-section::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 50% 70% at 20% 50%, rgba(255,107,53,.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 70% at 80% 50%, rgba(31,184,122,.07) 0%, transparent 60%);
-  pointer-events: none;
-}
+/* CTA */
+.cta-section { background: linear-gradient(135deg, #060f24 0%, #0a2040 50%, #060f24 100%); padding: 96px 48px; text-align: center; position: relative; overflow: hidden; }
+.cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 50% 70% at 20% 50%, rgba(255,107,53,.08) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 50%, rgba(31,184,122,.07) 0%, transparent 60%); pointer-events: none; }
 .cta-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
-.cta-title {
-  font-family: var(--font-serif);
-  font-size: clamp(28px, 4vw, 48px);
-  color: #fff; line-height: 1.1;
-  letter-spacing: -.02em; margin-bottom: 14px;
-}
+.cta-title { font-family: var(--font-serif); font-size: clamp(28px, 4vw, 48px); color: #fff; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 14px; }
 .cta-title em { color: var(--ride); font-style: italic; }
-.cta-sub {
-  font-size: 16px; font-weight: 300;
-  color: rgba(255,255,255,.5);
-  line-height: 1.75; margin-bottom: 40px;
-}
+.cta-sub { font-size: 16px; font-weight: 300; color: rgba(255,255,255,.5); line-height: 1.75; margin-bottom: 40px; }
 .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-.cta-btns .btn-splash { background: var(--splash); color: #fff; }
-.cta-btns .btn-play   { background: var(--play);   color: #fff; }
 
 /* FOOTER */
-footer {
-  background: var(--navy2);
-  border-top: 1px solid var(--border);
-  padding: 32px 48px;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 16px;
-}
+footer { background: var(--navy2); border-top: 1px solid var(--border); padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
 .footer-logo { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--gold); }
 .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
 .footer-links a { font-size: 12px; color: var(--muted); transition: color .2s; }
@@ -490,6 +270,8 @@ footer {
   nav { padding: 0 20px; }
   section { padding: 60px 20px; }
   footer { padding: 28px 20px; }
+  .hss-item { padding: 14px 20px; }
+  .hss-score { font-size: 28px; }
 }
 
 /* SCROLL REVEAL */
@@ -499,7 +281,6 @@ footer {
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="https://amusementstandards.com" class="nav-logo">amusement standards.</a>
   <div class="nav-links">
@@ -511,28 +292,34 @@ footer {
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div style="position:relative;z-index:1;">
     <div class="hero-eyebrow">Amusement Standards · AS 360 Platform</div>
     <h1>One Platform.<br><em>Three Scores.</em></h1>
     <div class="hero-sub-title">The Industry's First Complete Operational Risk System</div>
 
+    <!-- SCORE STRIP — each item is now a working anchor link -->
     <div class="hero-score-strip">
-      <div class="hss-item hss-ride">
+      <a href="as360-ride-score.html" class="hss-item hss-ride">
         <div class="hss-name">RIDE</div>
         <div class="hss-seg">Dry Attractions</div>
-      </div>
+        <div class="hss-score">81</div>
+        <div class="hss-sample">Sample Score™</div>
+      </a>
       <div class="hss-arrow">↔</div>
-      <div class="hss-item hss-splash">
+      <a href="as360-splash-score.html" class="hss-item hss-splash">
         <div class="hss-name">SPLASH</div>
-        <div class="hss-seg">Aquatic & Water Parks</div>
-      </div>
+        <div class="hss-seg">Aquatic &amp; Water Parks</div>
+        <div class="hss-score">78</div>
+        <div class="hss-sample">Sample Score™</div>
+      </a>
       <div class="hss-arrow">↔</div>
-      <div class="hss-item hss-play">
+      <a href="as360-play-score.html" class="hss-item hss-play">
         <div class="hss-name">PLAY</div>
-        <div class="hss-seg">FECs & Entertainment</div>
-      </div>
+        <div class="hss-seg">FECs &amp; Entertainment</div>
+        <div class="hss-score">83</div>
+        <div class="hss-sample">Sample Score™</div>
+      </a>
     </div>
 
     <p class="hero-desc">Three continuous scoring indices built on the same methodology — each independently deployable, each exponentially more powerful when combined. When all three are active, they converge into the Park Intelligence Composite: the first whole-park risk index in the attractions industry.</p>
@@ -543,27 +330,13 @@ footer {
   </div>
 </section>
 
-<!-- STAT BAR -->
 <div class="stat-bar">
-  <div class="stat-item">
-    <div class="stat-num">3<span>×</span></div>
-    <div class="stat-label">Scoring Indices</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">37</div>
-    <div class="stat-label">Independent Data Streams</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">14</div>
-    <div class="stat-label">Scored Pillars Total</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num">1</div>
-    <div class="stat-label">Composite Park Index</div>
-  </div>
+  <div class="stat-item"><div class="stat-num">3<span>×</span></div><div class="stat-label">Scoring Indices</div></div>
+  <div class="stat-item"><div class="stat-num">37</div><div class="stat-label">Independent Data Streams</div></div>
+  <div class="stat-item"><div class="stat-num">14</div><div class="stat-label">Scored Pillars Total</div></div>
+  <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Composite Park Index</div></div>
 </div>
 
-<!-- THREE SCORES -->
 <section class="scores-section" id="scores">
   <div class="max-w">
     <div class="reveal">
@@ -572,17 +345,10 @@ footer {
       <p class="section-sub">Deploy one score for your primary operation type, or deploy all three. A dry-ride park needs RIDE. A water park needs SPLASH. A hybrid property with coasters, slides, and an FEC floor needs all three — and the Park Intelligence Composite they generate together.</p>
     </div>
     <div class="scores-grid reveal">
-
       <div class="score-card score-card-ride">
         <div class="sc-header">
-          <div>
-            <div class="sc-name">RIDE</div>
-            <div class="sc-badge">Amusement Parks · Coasters · Flats</div>
-          </div>
-          <div class="sc-sample">
-            <div class="sc-num">81</div>
-            <div class="sc-tag">Sample Score™</div>
-          </div>
+          <div><div class="sc-name">RIDE</div><div class="sc-badge">Amusement Parks · Coasters · Flats</div></div>
+          <div class="sc-sample"><div class="sc-num">81</div><div class="sc-tag">Sample Score™</div></div>
         </div>
         <div class="sc-desc">The operational risk index for dry ride environments — coasters, flats, dark rides, and midway attractions. The most established index in the trilogy with 15 independent data streams.</div>
         <div class="sc-pillars">
@@ -594,17 +360,10 @@ footer {
         <div class="sc-streams">15 data streams · 4 scored pillars</div>
         <a href="as360-ride-score.html" class="sc-link">Full RIDE Score Architecture →</a>
       </div>
-
       <div class="score-card score-card-splash">
         <div class="sc-header">
-          <div>
-            <div class="sc-name">SPLASH</div>
-            <div class="sc-badge">Water Parks · Aquatic · Swim</div>
-          </div>
-          <div class="sc-sample">
-            <div class="sc-num">78</div>
-            <div class="sc-tag">Sample Score™</div>
-          </div>
+          <div><div class="sc-name">SPLASH</div><div class="sc-badge">Water Parks · Aquatic · Swim</div></div>
+          <div class="sc-sample"><div class="sc-num">78</div><div class="sc-tag">Sample Score™</div></div>
         </div>
         <div class="sc-desc">The aquatic risk index for water parks, slide complexes, wave pools, and swim facilities. Features the industry's only quantitative Lifeguard performance scoring — the highest-fatality-risk gap in existing frameworks.</div>
         <div class="sc-pillars">
@@ -618,17 +377,10 @@ footer {
         <div class="sc-streams">12 data streams · 6 scored pillars</div>
         <a href="as360-splash-score.html" class="sc-link">Full SPLASH Score Architecture →</a>
       </div>
-
       <div class="score-card score-card-play">
         <div class="sc-header">
-          <div>
-            <div class="sc-name">PLAY</div>
-            <div class="sc-badge">FECs · Trampoline · Entertainment</div>
-          </div>
-          <div class="sc-sample">
-            <div class="sc-num">83</div>
-            <div class="sc-tag">Sample Score™</div>
-          </div>
+          <div><div class="sc-name">PLAY</div><div class="sc-badge">FECs · Trampoline · Entertainment</div></div>
+          <div class="sc-sample"><div class="sc-num">83</div><div class="sc-tag">Sample Score™</div></div>
         </div>
         <div class="sc-desc">The FEC risk index for family entertainment centers. Features the industry's only standalone Youth pillar — quantifying minor patron safeguards, height enforcement, and unaccompanied minor protocols as a scored dimension.</div>
         <div class="sc-pillars">
@@ -640,12 +392,10 @@ footer {
         <div class="sc-streams">10 data streams · 4 scored pillars</div>
         <a href="as360-play-score.html" class="sc-link">Full PLAY Score Architecture →</a>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- PARK INTELLIGENCE COMPOSITE -->
 <section class="pic-section" id="pic">
   <div class="max-w">
     <div class="pic-grid">
@@ -669,21 +419,9 @@ footer {
           <div class="pic-composite-tier">STRONG · Sample</div>
         </div>
         <div class="pic-bars">
-          <div class="pic-bar-row">
-            <div class="pic-bar-name ride">RIDE</div>
-            <div class="pic-track"><div class="pic-fill pic-fill-ride" data-w="81"></div></div>
-            <div class="pic-val" data-v="81">0</div>
-          </div>
-          <div class="pic-bar-row">
-            <div class="pic-bar-name splash">SPLASH</div>
-            <div class="pic-track"><div class="pic-fill pic-fill-splash" data-w="78"></div></div>
-            <div class="pic-val" data-v="78">0</div>
-          </div>
-          <div class="pic-bar-row">
-            <div class="pic-bar-name play">PLAY</div>
-            <div class="pic-track"><div class="pic-fill pic-fill-play" data-w="83"></div></div>
-            <div class="pic-val" data-v="83">0</div>
-          </div>
+          <div class="pic-bar-row"><div class="pic-bar-name ride">RIDE</div><div class="pic-track"><div class="pic-fill pic-fill-ride" data-w="81"></div></div><div class="pic-val" data-v="81">0</div></div>
+          <div class="pic-bar-row"><div class="pic-bar-name splash">SPLASH</div><div class="pic-track"><div class="pic-fill pic-fill-splash" data-w="78"></div></div><div class="pic-val" data-v="78">0</div></div>
+          <div class="pic-bar-row"><div class="pic-bar-name play">PLAY</div><div class="pic-track"><div class="pic-fill pic-fill-play" data-w="83"></div></div><div class="pic-val" data-v="83">0</div></div>
           <div class="pic-bar-row pic-total" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)">
             <div class="pic-bar-name pic">PIC</div>
             <div class="pic-track"><div class="pic-fill pic-fill-total" data-w="84"></div></div>
@@ -695,7 +433,6 @@ footer {
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section class="how-section">
   <div class="max-w">
     <div class="reveal">
@@ -704,29 +441,13 @@ footer {
       <p class="section-sub">AS 360 deploys across your facility. Every stream is independent — no single source controls the outcome. When streams agree, confidence is high. When they diverge, that gap is the finding.</p>
     </div>
     <div class="how-grid reveal">
-      <div class="how-card">
-        <div class="how-num">01</div>
-        <div class="how-icon">🏗️</div>
-        <div class="how-title">Deploy</div>
-        <div class="how-desc">Amusement Standards maps your full attraction inventory across all operation types and activates the appropriate data streams. Audit schedules set, automated feeds connected. No disruption to daily operations.</div>
-      </div>
-      <div class="how-card">
-        <div class="how-num">02</div>
-        <div class="how-icon">📡</div>
-        <div class="how-title">Collect</div>
-        <div class="how-desc">37 independent streams feed simultaneously — field audits, incident intelligence, guest observation, aquatic monitoring, youth patron data, and automated live feeds. No single source controls the outcome.</div>
-      </div>
-      <div class="how-card">
-        <div class="how-num">03</div>
-        <div class="how-icon">📊</div>
-        <div class="how-title">Score</div>
-        <div class="how-desc">Streams converge into pillar scores, then composite indices, then — when all three are active — the Park Intelligence Composite. Insurers receive a structured risk dossier. Operators receive a prioritized action list.</div>
-      </div>
+      <div class="how-card"><div class="how-num">01</div><div class="how-icon">🏗️</div><div class="how-title">Deploy</div><div class="how-desc">Amusement Standards maps your full attraction inventory across all operation types and activates the appropriate data streams. Audit schedules set, automated feeds connected. No disruption to daily operations.</div></div>
+      <div class="how-card"><div class="how-num">02</div><div class="how-icon">📡</div><div class="how-title">Collect</div><div class="how-desc">37 independent streams feed simultaneously — field audits, incident intelligence, guest observation, aquatic monitoring, youth patron data, and automated live feeds. No single source controls the outcome.</div></div>
+      <div class="how-card"><div class="how-num">03</div><div class="how-icon">📊</div><div class="how-title">Score</div><div class="how-desc">Streams converge into pillar scores, then composite indices, then — when all three are active — the Park Intelligence Composite. Insurers receive a structured risk dossier. Operators receive a prioritized action list.</div></div>
     </div>
   </div>
 </section>
 
-<!-- 37 STREAMS TABLE -->
 <section class="streams-section" id="streams">
   <div class="max-w">
     <div class="reveal">
@@ -737,16 +458,10 @@ footer {
     <div class="streams-meta reveal">
       <div class="streams-meta-item"><div class="sm-dot sm-ride"></div>RIDE — Dry Attractions</div>
       <div class="streams-meta-item"><div class="sm-dot sm-splash"></div>SPLASH — Aquatic</div>
-      <div class="streams-meta-item"><div class="sm-dot sm-play"></div>PLAY — FECs & Entertainment</div>
+      <div class="streams-meta-item"><div class="sm-dot sm-play"></div>PLAY — FECs &amp; Entertainment</div>
     </div>
     <table class="stream-table reveal">
-      <thead>
-        <tr>
-          <th>Data Stream</th>
-          <th>Category</th>
-          <th>Feeds</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Data Stream</th><th>Category</th><th>Feeds</th></tr></thead>
       <tbody>
         <tr><td class="stream-name-cell">In-House Safety Audit</td><td>Field Audit</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></td></tr>
         <tr><td class="stream-name-cell">Near-Miss Reporting</td><td>Incident Intelligence</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></td></tr>
@@ -758,43 +473,42 @@ footer {
         <tr><td class="stream-name-cell">Service Bulletin Compliance</td><td>Compliance</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span></td></tr>
         <tr><td class="stream-name-cell">Live Weather Feed</td><td>Environmental</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span></td></tr>
         <tr><td class="stream-name-cell">Emergency Access Inspection</td><td>Environmental</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span></td></tr>
+        <tr><td class="stream-name-cell">Infrastructure &amp; Perimeter Log</td><td>Environmental</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span></td></tr>
         <tr><td class="stream-name-cell">Mystery / Covert Audit</td><td>Field Audit</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
         <tr><td class="stream-name-cell">Management Operations Log</td><td>Operations</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
-        <tr><td class="stream-name-cell">Height & Age Enforcement Audit</td><td>Compliance</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
+        <tr><td class="stream-name-cell">Height &amp; Age Enforcement Audit</td><td>Compliance</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
         <tr><td class="stream-name-cell">In-Park Guest Feedback</td><td>Guest Intelligence</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
         <tr><td class="stream-name-cell">Post-Visit Survey</td><td>Guest Intelligence</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
         <tr><td class="stream-name-cell">Online Review Aggregation</td><td>Guest Intelligence</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
         <tr><td class="stream-name-cell">Operational Load Index</td><td>Throughput</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
-        <tr><td class="stream-name-cell">Cleanliness & Condition Audit</td><td>Environmental</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
-        <tr><td class="stream-name-cell">Signage & Compliance Audit</td><td>Compliance</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
+        <tr><td class="stream-name-cell">Cleanliness &amp; Condition Audit</td><td>Environmental</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
+        <tr><td class="stream-name-cell">Signage &amp; Compliance Audit</td><td>Compliance</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></td></tr>
         <tr><td class="stream-name-cell">Ops Dispatch Record</td><td>Operations</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span></td></tr>
         <tr><td class="stream-name-cell">Ride Operator Log</td><td>Operations</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span></td></tr>
-        <tr><td class="stream-name-cell">Queue & Wait Time Feed</td><td>Throughput</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span></td></tr>
-        <tr><td class="stream-name-cell">Infrastructure & Perimeter Log</td><td>Environmental</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span></td></tr>
+        <tr><td class="stream-name-cell">Queue &amp; Wait Time Feed</td><td>Throughput</td><td class="stream-badge-cell"><span class="sb sb-ride">RIDE</span></td></tr>
         <tr><td class="stream-name-cell">Lifeguard Zone Audit</td><td>Aquatic</td><td class="stream-badge-cell"><span class="sb sb-splash">SPLASH</span></td></tr>
         <tr><td class="stream-name-cell">Water Quality Analysis</td><td>Aquatic</td><td class="stream-badge-cell"><span class="sb sb-splash">SPLASH</span></td></tr>
         <tr><td class="stream-name-cell">Bather Load Index</td><td>Aquatic</td><td class="stream-badge-cell"><span class="sb sb-splash">SPLASH</span></td></tr>
         <tr><td class="stream-name-cell">Health Dept. Inspection History</td><td>Compliance</td><td class="stream-badge-cell"><span class="sb sb-splash">SPLASH</span></td></tr>
         <tr><td class="stream-name-cell">VGB Drain Compliance Audit</td><td>Compliance</td><td class="stream-badge-cell"><span class="sb sb-splash">SPLASH</span></td></tr>
         <tr><td class="stream-name-cell">Emergency Action Plan Review</td><td>Compliance</td><td class="stream-badge-cell"><span class="sb sb-splash">SPLASH</span></td></tr>
-        <tr><td class="stream-name-cell">Slide & Geometry Survey</td><td>Field Audit</td><td class="stream-badge-cell"><span class="sb sb-splash">SPLASH</span></td></tr>
+        <tr><td class="stream-name-cell">Slide &amp; Geometry Survey</td><td>Field Audit</td><td class="stream-badge-cell"><span class="sb sb-splash">SPLASH</span></td></tr>
         <tr><td class="stream-name-cell">Lightning Detection Protocol</td><td>Environmental</td><td class="stream-badge-cell"><span class="sb sb-splash">SPLASH</span></td></tr>
-        <tr><td class="stream-name-cell">Youth Patron Risk Log</td><td>Youth & Patron</td><td class="stream-badge-cell"><span class="sb sb-play">PLAY</span></td></tr>
-        <tr><td class="stream-name-cell">Group & Event Supervision Log</td><td>Youth & Patron</td><td class="stream-badge-cell"><span class="sb sb-play">PLAY</span></td></tr>
+        <tr><td class="stream-name-cell">Youth Patron Risk Log</td><td>Youth &amp; Patron</td><td class="stream-badge-cell"><span class="sb sb-play">PLAY</span></td></tr>
+        <tr><td class="stream-name-cell">Group &amp; Event Supervision Log</td><td>Youth &amp; Patron</td><td class="stream-badge-cell"><span class="sb sb-play">PLAY</span></td></tr>
         <tr><td class="stream-name-cell">Floor Guest Service Audit</td><td>Guest Intelligence</td><td class="stream-badge-cell"><span class="sb sb-play">PLAY</span></td></tr>
         <tr><td class="stream-name-cell">Liability Documentation Log</td><td>Compliance</td><td class="stream-badge-cell"><span class="sb sb-play">PLAY</span></td></tr>
         <tr><td class="stream-name-cell">Attraction Condition Report</td><td>Field Audit</td><td class="stream-badge-cell"><span class="sb sb-play">PLAY</span></td></tr>
-        <tr><td class="stream-name-cell">Attraction Uptime & Yield</td><td>Throughput</td><td class="stream-badge-cell"><span class="sb sb-play">PLAY</span></td></tr>
+        <tr><td class="stream-name-cell">Attraction Uptime &amp; Yield</td><td>Throughput</td><td class="stream-badge-cell"><span class="sb sb-play">PLAY</span></td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
-<!-- FOR INSURERS -->
 <section class="insurer-section" id="insurers">
   <div class="max-w">
     <div class="reveal">
-      <div class="section-eyebrow">For Specialty Lines Insurers & MGAs</div>
+      <div class="section-eyebrow">For Specialty Lines Insurers &amp; MGAs</div>
       <h2 class="section-title">Risk quantified.<br><em>Not described.</em></h2>
       <p class="section-sub">The AS 360 Platform translates attractions operational risk into a structured, auditable index — the same function FICO scores serve in credit underwriting. Insurers receive a complete risk dossier, not an anecdotal survey.</p>
     </div>
@@ -813,17 +527,14 @@ footer {
       </div>
       <div>
         <div class="insurer-card">
-          <div class="insurer-card-header">
-            <div class="insurer-card-title">Structured Risk Dossier</div>
-            <div class="insurer-card-name">What Carriers Receive</div>
-          </div>
+          <div class="insurer-card-header"><div class="insurer-card-title">Structured Risk Dossier</div><div class="insurer-card-name">What Carriers Receive</div></div>
           <div class="insurer-card-body">
             <div class="insurer-dossier-row"><div class="idr-icon">📊</div><div class="idr-label">Composite PIC score with full pillar breakdown</div><div class="idr-status idr-included">Included</div></div>
             <div class="insurer-dossier-row"><div class="idr-icon">📈</div><div class="idr-label">Month-over-month score trend line</div><div class="idr-status idr-included">Included</div></div>
-            <div class="insurer-dossier-row"><div class="idr-icon">🔍</div><div class="idr-label">Independent audit trail & convergence analysis</div><div class="idr-status idr-included">Included</div></div>
+            <div class="insurer-dossier-row"><div class="idr-icon">🔍</div><div class="idr-label">Independent audit trail &amp; convergence analysis</div><div class="idr-status idr-included">Included</div></div>
             <div class="insurer-dossier-row"><div class="idr-icon">⚠️</div><div class="idr-label">Prioritized corrective action list</div><div class="idr-status idr-included">Included</div></div>
-            <div class="insurer-dossier-row"><div class="idr-icon">🗂️</div><div class="idr-label">Facility benchmarking & percentile ranking</div><div class="idr-status idr-included">Included</div></div>
-            <div class="insurer-dossier-row"><div class="idr-icon">🏊</div><div class="idr-label">VGB & lifeguard compliance status</div><div class="idr-status idr-included">SPLASH</div></div>
+            <div class="insurer-dossier-row"><div class="idr-icon">🗂️</div><div class="idr-label">Facility benchmarking &amp; percentile ranking</div><div class="idr-status idr-included">Included</div></div>
+            <div class="insurer-dossier-row"><div class="idr-icon">🏊</div><div class="idr-label">VGB &amp; lifeguard compliance status</div><div class="idr-status idr-included">SPLASH</div></div>
             <div class="insurer-dossier-row"><div class="idr-icon">🧒</div><div class="idr-label">Youth patron risk pillar score</div><div class="idr-status idr-included">PLAY</div></div>
             <div class="insurer-dossier-row"><div class="idr-icon">🏢</div><div class="idr-label">Portfolio dashboard for multi-location operators</div><div class="idr-status idr-pro">Enterprise</div></div>
           </div>
@@ -833,7 +544,6 @@ footer {
   </div>
 </section>
 
-<!-- CTA -->
 <section class="cta-section" id="contact">
   <div class="cta-inner">
     <div class="section-eyebrow" style="color:rgba(255,255,255,.3);justify-content:center;display:flex;align-items:center;gap:14px;margin-bottom:20px">
@@ -852,7 +562,6 @@ footer {
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-logo">amusement standards.</div>
   <div class="footer-links">
@@ -867,13 +576,11 @@ footer {
 </footer>
 
 <script>
-// ── SCROLL REVEAL ──────────────────────────────────────────────────
 const revealObs = new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
 
-// ── PIC COUNTER + BARS ─────────────────────────────────────────────
 (function(){
   const picSection = document.getElementById('pic');
   if(!picSection) return;
@@ -881,12 +588,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
   const obs = new IntersectionObserver(entries=>{
     if(!entries[0].isIntersecting || fired) return;
     fired = true;
-
-    // Animate bars
-    document.querySelectorAll('.pic-fill').forEach(el=>{
-      el.style.width = el.dataset.w + '%';
-    });
-    // Animate values
+    document.querySelectorAll('.pic-fill').forEach(el=>{ el.style.width = el.dataset.w + '%'; });
     document.querySelectorAll('.pic-val').forEach(el=>{
       const target = parseInt(el.dataset.v);
       let c = 0;
@@ -896,21 +598,15 @@ document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
         if(c >= target) clearInterval(iv);
       }, 22);
     });
-    // Big PIC number
     const picNum = document.getElementById('pic-num');
     if(picNum){
       let c = 0;
-      const iv = setInterval(()=>{
-        c = Math.min(84, c+2);
-        picNum.textContent = c;
-        if(c>=84) clearInterval(iv);
-      }, 18);
+      const iv = setInterval(()=>{ c = Math.min(84, c+2); picNum.textContent = c; if(c>=84) clearInterval(iv); }, 18);
     }
     obs.disconnect();
   }, { threshold: 0.3 });
   obs.observe(picSection);
 })();
 </script>
-
 </body>
 </html>
