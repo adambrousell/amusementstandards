@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AS 360 RIDE Score™ — System Architecture</title>
+<title>AS 360 Platform — System Architecture · RIDE · SPLASH · PLAY</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -18,11 +18,8 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:100%;overflow-x:hidden;}
 body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-height:100vh;}
-
-/* HERO */
 .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:80px 24px 60px;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(0,212,208,.07) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 20% 70%,rgba(212,175,55,.04) 0%,transparent 50%),radial-gradient(ellipse 50% 40% at 80% 20%,rgba(46,111,255,.04) 0%,transparent 50%),var(--bg);}
-.hero-bg{display:none;}
-.hero-grid{display:none;}
+.hero-bg{display:none;}.hero-grid{display:none;}
 .hero-content{position:relative;z-index:2;text-align:center;max-width:820px;}
 .hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--teal);margin-bottom:18px;opacity:0;animation:fadeUp .6s .2s ease forwards;}
 .hero-title{font-family:var(--display);font-size:clamp(56px,9vw,110px);line-height:.95;color:var(--text-bright);margin-bottom:6px;opacity:0;animation:fadeUp .7s .35s ease forwards;}
@@ -39,8 +36,6 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .score-ring-hero .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .score-ring-hero .score-num{font-family:var(--display);font-size:56px;color:var(--text-bright);line-height:1;}
 .score-ring-hero .score-label{font-family:var(--mono);font-size:9px;color:var(--teal);letter-spacing:2px;margin-top:2px;}
-
-/* STATS BAR */
 .stats-bar{padding:60px 24px;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);}
 .stats-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:0;}
 @media(min-width:600px){.stats-inner{grid-template-columns:repeat(4,1fr);}}
@@ -48,88 +43,34 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .stat-item:last-child{border-right:none;}
 .stat-num{font-family:var(--display);font-size:52px;color:var(--teal);line-height:1;}
 .stat-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--text);margin-top:6px;}
-
-/* FLOW SECTION */
 .flow-section{background:rgba(0,0,0,.3);border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);padding:80px 24px;}
 .flow-wrap{max-width:1400px;margin:0 auto;}
 .flow-label{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--teal);margin-bottom:12px;text-align:center;}
 .flow-title{font-family:var(--display);font-size:clamp(32px,5vw,60px);text-align:center;color:var(--text-bright);margin-bottom:8px;}
 .flow-desc{font-size:15px;color:var(--text);text-align:center;max-width:560px;margin:0 auto 56px;line-height:1.65;}
-
-/* ── DIAGRAM: flex column layout ── */
-.diagram-wrap{
-  position:relative;
-  width:100%;
-  max-width:1400px;
-  margin:0 auto;
-}
-/* The SVG for edges sits behind everything */
-#edgeSvg{
-  position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;overflow:visible;z-index:0;
-}
+.diagram-wrap{position:relative;width:100%;max-width:1400px;margin:0 auto;}
+#edgeSvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0;}
 #edgeSvg path{stroke-dasharray:5 4;animation:dashFlow 1.4s linear infinite;}
 @keyframes dashFlow{to{stroke-dashoffset:-18;}}
-
-/* Three rows: streams-top | pillars | streams-bottom */
-.diagram-rows{
-  position:relative;z-index:1;
-  display:flex;flex-direction:column;gap:0;
-}
-.row-streams-top,
-.row-streams-bot{
-  display:flex;justify-content:space-around;align-items:center;
-  padding:0 20px;
-}
-.row-pillars{
-  display:flex;justify-content:space-around;align-items:center;
-  padding:24px 60px;
-  position:relative;
-}
-/* Center node sits in the middle of the pillar row */
-.pillar-group{
-  display:flex;flex-direction:column;align-items:center;gap:12px;
-}
-.center-node-wrap{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-}
-
-/* NODE BASE */
-.node{
-  cursor:pointer;transition:transform .18s;
-  display:inline-flex;
-}
+.diagram-rows{position:relative;z-index:1;display:flex;flex-direction:column;gap:0;}
+.row-streams-top,.row-streams-bot{display:flex;justify-content:space-around;align-items:center;padding:0 20px;}
+.row-pillars{display:flex;justify-content:space-around;align-items:center;padding:24px 60px;position:relative;}
+.pillar-group{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.center-node-wrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);}
+.node{cursor:pointer;transition:transform .18s;display:inline-flex;}
 .node:hover{transform:scale(1.08);}
-.node-inner{
-  border-radius:10px;border:1.5px solid;padding:9px 12px;
-  backdrop-filter:blur(8px);transition:box-shadow .2s;
-  text-align:center;
-  box-shadow:0 3px 16px rgba(0,0,0,.45);
-  white-space:nowrap;
-}
+.node-inner{border-radius:10px;border:1.5px solid;padding:9px 12px;backdrop-filter:blur(8px);transition:box-shadow .2s;text-align:center;box-shadow:0 3px 16px rgba(0,0,0,.45);white-space:nowrap;}
 .node:hover .node-inner{box-shadow:0 8px 32px rgba(0,0,0,.65);}
 .node-icon{font-size:16px;margin-bottom:3px;line-height:1;}
 .node-code{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;margin-bottom:2px;font-weight:700;}
 .node-name{font-size:10px;font-weight:600;line-height:1.25;color:var(--text-bright);}
-
-/* CENTER */
 .node-center .node-inner{padding:14px 18px;border-color:var(--gold);background:rgba(212,175,55,.09);min-width:130px;}
 .center-score{font-family:var(--display);font-size:48px;color:var(--gold);line-height:1;margin:2px 0;}
 .center-label{font-family:var(--mono);font-size:8px;color:var(--gold);letter-spacing:2px;}
 .center-sub{font-size:10px;color:rgba(255,255,255,.35);margin-top:3px;}
-
-/* PILLAR */
-.node-pillar .node-inner{
-  padding:10px 14px;min-width:100px;
-}
+.node-pillar .node-inner{padding:10px 14px;min-width:100px;}
 .pillar-letter{font-family:var(--display);font-size:26px;line-height:1;margin:2px 0;}
-
-/* STREAM */
-.node-stream .node-inner{
-  min-width:88px;max-width:110px;
-}
-
-/* TOOLTIP */
+.node-stream .node-inner{min-width:88px;max-width:110px;}
 .tooltip{position:fixed;z-index:1000;pointer-events:none;background:#0D1422;border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 16px;max-width:240px;opacity:0;transition:opacity .15s;box-shadow:0 8px 32px rgba(0,0,0,.6);}
 .tooltip.show{opacity:1;}
 .tt-big-letter{font-family:var(--display);font-size:52px;line-height:1;margin-bottom:6px;display:none;}
@@ -139,8 +80,6 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .tt-pillars{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
 .tt-pill{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:4px;letter-spacing:.5px;font-weight:700;}
 .tt-link{font-family:var(--mono);font-size:10px;color:var(--teal);display:block;}
-
-/* PILLARS STRIP */
 .pillars-strip{padding:80px 24px;}
 .pillars-inner{max-width:1200px;margin:0 auto;}
 .sec-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
@@ -151,10 +90,8 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 @media(min-width:800px){.pillar-grid{grid-template-columns:repeat(4,1fr);}}
 .pillar-card{background:rgba(255,255,255,.03);border:1px solid var(--dim);border-radius:14px;padding:28px 22px;transition:all .2s;position:relative;overflow:hidden;}
 .pillar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
-.pc-r::before{background:var(--blue);}
-.pc-i::before{background:var(--green);}
-.pc-d::before{background:var(--orange);}
-.pc-e::before{background:var(--purple);}
+.pc-r::before{background:var(--blue);}.pc-i::before{background:var(--green);}
+.pc-d::before{background:var(--orange);}.pc-e::before{background:var(--purple);}
 .pillar-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-3px);}
 .pc-letter{font-family:var(--display);font-size:64px;line-height:1;margin-bottom:6px;opacity:.9;}
 .pc-r .pc-letter{color:var(--blue);}.pc-i .pc-letter{color:var(--green);}
@@ -164,8 +101,6 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .pc-streams{display:flex;flex-direction:column;gap:5px;}
 .pc-stream-item{font-family:var(--mono);font-size:10px;padding:5px 10px;background:rgba(255,255,255,.04);border-radius:5px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:7px;}
 .pc-stream-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
-
-/* MODULES */
 .modules-section{padding:80px 24px;background:rgba(0,0,0,.25);border-top:1px solid var(--dim);}
 .modules-inner{max-width:1200px;margin:0 auto;}
 .module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px;padding:16px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;}
@@ -190,14 +125,10 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .m-tag{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.35);}
 .m-arrow{font-size:13px;color:rgba(255,255,255,.2);transition:color .15s;}
 .module-card:hover .m-arrow{color:var(--teal);}
-
-/* MODULE GROUP LABELS */
 .module-group-label{display:flex;align-items:center;gap:14px;margin:36px 0 14px;}
 .mgl-text{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);white-space:nowrap;font-weight:700;}
 .mgl-line{flex:1;height:1px;background:rgba(0,212,208,.15);}
 .mgl-sub{font-size:11px;color:rgba(255,255,255,.25);white-space:nowrap;font-style:italic;}
-
-/* CTA */
 .cta-section{padding:100px 24px;text-align:center;}
 .cta-inner{max-width:640px;margin:0 auto;}
 .cta-title{font-family:var(--display);font-size:clamp(40px,7vw,80px);color:var(--text-bright);line-height:.95;margin-bottom:20px;}
@@ -205,7 +136,34 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .cta-body{font-size:17px;line-height:1.7;color:var(--text);margin-bottom:36px;}
 .cta-note{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.2);margin-top:20px;letter-spacing:.5px;}
 
-/* FOOTER */
+/* DELIVERABLE CALLOUT BANNER */
+.deliverable-banner{
+  margin:48px 0 0;
+  padding:24px 32px;
+  background:rgba(212,175,55,.06);
+  border:1px solid rgba(212,175,55,.2);
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+}
+.deliverable-banner-left{}
+.deliverable-banner-label{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.deliverable-banner-title{font-family:var(--display);font-size:22px;color:var(--text-bright);letter-spacing:.5px;margin-bottom:4px;}
+.deliverable-banner-desc{font-size:13px;color:var(--text);line-height:1.5;}
+.deliverable-banner-btn{
+  padding:12px 28px;
+  background:rgba(212,175,55,.12);
+  border:1.5px solid rgba(212,175,55,.4);
+  border-radius:8px;
+  font-family:var(--display);
+  font-size:17px;letter-spacing:1px;
+  color:var(--gold);
+  text-decoration:none;
+  white-space:nowrap;
+  transition:all .2s;
+  flex-shrink:0;
+}
+.deliverable-banner-btn:hover{background:rgba(212,175,55,.2);border-color:var(--gold);}
+
 .site-footer{border-top:1px solid var(--dim);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .sf-brand{font-family:var(--display);font-size:20px;color:var(--text);letter-spacing:1px;}
 .sf-brand span{color:var(--teal);}
@@ -213,15 +171,10 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .sf-links a{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3);text-decoration:none;letter-spacing:1px;transition:color .15s;}
 .sf-links a:hover{color:var(--teal);}
 .sf-copy{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.15);}
-
-/* AUTO-FEED BADGE */
 .m-auto-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:2px 8px;border-radius:3px;background:rgba(0,212,208,.08);border:1px solid rgba(0,212,208,.2);color:var(--teal);margin-bottom:4px;}
 .m-auto-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:autoPulse 1.8s ease-in-out infinite;}
 @keyframes autoPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
-.mc-auto::after{background:var(--teal);}
-.mc-auto .m-code{color:var(--teal);}
-
-/* OLI CONVERGENCE SECTION */
+.mc-auto::after{background:var(--teal);}.mc-auto .m-code{color:var(--teal);}
 .oli-section{padding:80px 24px;background:rgba(0,0,0,.3);border-top:1px solid var(--dim);}
 .oli-inner{max-width:1200px;margin:0 auto;}
 .oli-intro{display:grid;grid-template-columns:1fr;gap:40px;margin-bottom:56px;}
@@ -232,20 +185,16 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .oli-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .oli-ring-num{font-family:var(--display);font-size:30px;color:var(--text-bright);line-height:1;}
 .oli-ring-lbl{font-family:var(--mono);font-size:7px;color:var(--teal);letter-spacing:1.5px;}
-.oli-score-right{}
 .oli-score-title{font-family:var(--display);font-size:22px;color:var(--text-bright);letter-spacing:.5px;margin-bottom:4px;}
 .oli-score-sub{font-family:var(--mono);font-size:9px;color:var(--teal);letter-spacing:1.5px;margin-bottom:8px;}
 .oli-score-desc{font-size:13px;color:var(--text);line-height:1.6;}
 .oli-pillar-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
 .oli-ptag{font-family:var(--mono);font-size:9px;padding:3px 9px;border-radius:4px;font-weight:700;}
-
-/* OLI INPUT STREAM GRID */
 .oli-streams-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:16px;}
 .oli-stream-grid{display:grid;grid-template-columns:1fr;gap:10px;}
 @media(min-width:600px){.oli-stream-grid{grid-template-columns:repeat(2,1fr);}}
 @media(min-width:1000px){.oli-stream-grid{grid-template-columns:repeat(3,1fr);}}
 .oli-stream-card{background:rgba(255,255,255,.025);border:1px solid var(--dim);border-radius:10px;padding:16px;display:flex;gap:14px;align-items:flex-start;transition:all .18s;position:relative;overflow:hidden;}
-.oli-stream-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
 .oli-stream-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4);}
 .osc-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
 .osc-body{flex:1;}
@@ -259,8 +208,6 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .osc-weight-bar{flex:1;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
 .osc-weight-fill{height:100%;border-radius:2px;transition:width .4s ease;}
 .osc-weight-pct{font-family:var(--mono);font-size:9px;font-weight:700;white-space:nowrap;}
-
-/* OLI CONFIDENCE METER */
 .oli-confidence{margin-top:48px;padding:28px 32px;background:rgba(0,212,208,.04);border:1px solid rgba(0,212,208,.12);border-radius:14px;}
 .oli-conf-title{font-family:var(--display);font-size:22px;color:var(--text-bright);margin-bottom:4px;}
 .oli-conf-sub{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:24px;max-width:620px;}
@@ -272,56 +219,57 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 .conf-bar-fill{height:100%;border-radius:3px;}
 .conf-bar-val{font-family:var(--mono);font-size:9px;font-weight:700;min-width:32px;text-align:right;}
 
-/* INLINE PILLARS STRIP */
-.inline-pillars{
-  display:flex;align-items:stretch;justify-content:center;
-  gap:0;margin:0 auto 48px;
-  max-width:900px;
-  background:rgba(255,255,255,.02);
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:12px;overflow:hidden;
-}
-.ip-item{
-  flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:4px;
-}
-.ip-divider{width:1px;background:rgba(255,255,255,.07);flex-shrink:0;}
-.ip-letter{
-  font-family:var(--display);font-size:32px;line-height:1;margin-bottom:2px;
-}
-.ip-r .ip-letter{color:var(--blue);}
-.ip-i .ip-letter{color:var(--green);}
-.ip-d .ip-letter{color:var(--orange);}
-.ip-e .ip-letter{color:var(--purple);}
-.ip-name{font-family:var(--display);font-size:13px;letter-spacing:1px;color:var(--text-bright);margin-bottom:4px;}
-.ip-desc{font-size:11px;color:var(--text);line-height:1.5;font-weight:300;}
-
-/* PILLAR LETTER HOVER */
-.node-pillar:hover .pillar-letter-main{font-size:42px !important;margin-bottom:2px !important;}
-.node-pillar:hover .node-code{opacity:.7;}
+/* Score badges */
+.score-badges{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px;}
+.sb{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.05em;}
+.sb-ride{background:rgba(255,107,53,.15);color:#FF6B35;border:1px solid rgba(255,107,53,.3);}
+.sb-splash{background:rgba(30,158,212,.15);color:#1e9ed4;border:1px solid rgba(30,158,212,.3);}
+.sb-play{background:rgba(31,184,122,.15);color:#1fb87a;border:1px solid rgba(31,184,122,.3);}
+/* Stub cards */
+.module-card-stub{opacity:.6;cursor:default;}
+.stub-badge{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;margin-bottom:4px;display:inline-block;}
+.mc-splash::after{background:#1e9ed4;}.mc-splash .m-code{color:#1e9ed4;}
+.mc-play::after{background:#1fb87a;}.mc-play .m-code{color:#1fb87a;}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 @keyframes ringDraw{from{stroke-dashoffset:440;}to{stroke-dashoffset:80;}}
 .ring-anim{animation:ringDraw 1.8s 1s ease forwards;}
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
-/* Safety net — if observer never fires, content is still visible after 1.5s */
 @keyframes revealFallback{to{opacity:1;transform:translateY(0);}}
 .reveal{animation:revealFallback 0s 1.5s forwards;}
 </style>
 </head>
 <body>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div><div class="hero-grid"></div>
   <div class="hero-content">
     <div class="hero-eyebrow">AMUSEMENT STANDARDS · AS 360 PLATFORM</div>
-    <div class="hero-title">RIDE<br><span>SCORE™</span></div>
-    <div class="hero-sub-title">The Operational Risk Index</div>
-    <div class="hero-desc">15 independent data streams. Four scored pillars. One composite index that quantifies your operational risk the way FICO scores creditworthiness — built for amusement parks, water parks, FECs, and ride manufacturers.</div>
+    <div class="hero-title">THREE SCORES.<br><span>ONE PLATFORM.</span></div>
+    <div class="hero-sub-title">Total Risk Intelligence</div>
+    <div class="hero-desc">37 independent data streams. 14 scored pillars across three risk indices. RIDE Score for dry attractions, SPLASH Score for aquatic venues, PLAY Score for FECs — each deployable independently, exponentially more powerful together.</div>
+    <div style="display:flex;align-items:stretch;gap:0;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.1);margin:0 auto 28px;max-width:560px;opacity:0;animation:fadeUp .7s .5s ease forwards;">
+      <a href="as360-ride-score.html" style="flex:1;padding:14px 16px;background:rgba(255,107,53,.1);border-right:1px solid rgba(255,255,255,.07);text-decoration:none;">
+        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:#FF6B35;letter-spacing:.06em;">RIDE</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.3;margin-top:3px;">Dry Attractions</div>
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(255,107,53,.6);margin-top:6px;">15 streams · 4 pillars</div>
+      </a>
+      <a href="as360-splash-score.html" style="flex:1;padding:14px 16px;background:rgba(30,158,212,.1);border-right:1px solid rgba(255,255,255,.07);text-decoration:none;">
+        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:#1e9ed4;letter-spacing:.06em;">SPLASH</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.3;margin-top:3px;">Aquatic &amp; Water Parks</div>
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(30,158,212,.6);margin-top:6px;">12 streams · 6 pillars</div>
+      </a>
+      <a href="as360-play-score.html" style="flex:1;padding:14px 16px;background:rgba(31,184,122,.1);text-decoration:none;">
+        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:#1fb87a;letter-spacing:.06em;">PLAY</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.3;margin-top:3px;">FECs &amp; Entertainment</div>
+        <div style="font-family:var(--mono);font-size:10px;color:rgba(31,184,122,.6);margin-top:6px;">10 streams · 4 pillars</div>
+      </a>
+    </div>
     <div class="hero-cta">
       <a href="#diagram" class="btn-primary">Explore the System</a>
       <a href="https://amusementstandards.com/as360-ride-score.html" class="btn-secondary">See How It Works</a>
+      <a href="deliverable-sample.html" class="btn-secondary" style="border-color:rgba(212,175,55,.5);color:var(--gold);background:rgba(212,175,55,.08);">📄 Sample Deliverable</a>
     </div>
     <div class="score-ring-hero">
       <svg viewBox="0 0 160 160">
@@ -340,23 +288,20 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
   </div>
 </section>
 
-<!-- STATS BAR -->
 <div class="stats-bar reveal">
   <div class="stats-inner">
-    <div class="stat-item"><div class="stat-num">15</div><div class="stat-label">Data Streams</div></div>
-    <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Scored Pillars</div></div>
-    <div class="stat-item"><div class="stat-num">360°</div><div class="stat-label">Coverage</div></div>
-    <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Composite Index</div></div>
+    <div class="stat-item"><div class="stat-num">37</div><div class="stat-label">Data Streams</div></div>
+    <div class="stat-item"><div class="stat-num">14</div><div class="stat-label">Scored Pillars</div></div>
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Score Indices</div></div>
+    <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Composite PIC</div></div>
   </div>
 </div>
 
-<!-- DIAGRAM -->
 <section class="flow-section" id="diagram">
   <div class="flow-wrap">
     <div class="flow-label reveal">SYSTEM ARCHITECTURE</div>
     <div class="flow-title reveal">How the streams converge</div>
-    <div class="flow-desc reveal">The RIDE Score is built from 16 independent data streams across four categories: <strong style="color:var(--text-bright)">audit data</strong> (in-house GSA, mystery shopper, safety inspections), <strong style="color:var(--text-bright)">incident & compliance data</strong> (near-miss reports, incident records, corrective action closure rate), <strong style="color:var(--text-bright)">guest intelligence</strong> (QR feedback, post-visit surveys, online reviews), and <strong style="color:var(--text-bright)">operational data</strong> (dispatch logs, at-ride records, queue times, weather). No single stream controls a pillar — when sources agree, confidence is high. When they diverge, that gap is the finding. Hover any node to learn more. Click to open its form.</div>
-
+    <div class="flow-desc reveal">The RIDE Score is built from 15 independent data streams across four categories: <strong style="color:var(--text-bright)">audit data</strong> (in-house GSA, mystery shopper, safety inspections), <strong style="color:var(--text-bright)">incident & compliance data</strong> (near-miss reports, incident records, corrective action closure rate), <strong style="color:var(--text-bright)">guest intelligence</strong> (QR feedback, post-visit surveys, online reviews), and <strong style="color:var(--text-bright)">operational data</strong> (dispatch logs, at-ride records, queue times, weather). No single stream controls a pillar — when sources agree, confidence is high. When they diverge, that gap is the finding. Hover any node to learn more. Click to open its form.</div>
     <div class="diagram-wrap" id="diagramWrap">
       <svg id="edgeSvg"></svg>
       <div class="diagram-rows" id="diagramRows"></div>
@@ -364,41 +309,75 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
   </div>
 </section>
 
-<!-- MODULES -->
 <section class="modules-section">
   <div class="modules-inner">
     <div class="sec-eyebrow reveal">ALL MODULES & FORMS</div>
     <div class="sec-title reveal">Every stream. <span>One click.</span></div>
     <div class="sec-body reveal">15 data streams organized by how the data enters the system — from your operators on the floor, your management team, independent auditors deployed by AS, your guests in real time, and automated live feeds that require no staff input at all.</div>
 
-    <!-- GROUP 1: Operator Documentation -->
-    <div class="module-group-label reveal">
+    <!-- Deliverable callout -->
+    <div class="deliverable-banner reveal">
+      <div class="deliverable-banner-left">
+        <div class="deliverable-banner-label">AS 360 · RIDE Score™ · Insurer Dossier</div>
+        <div class="deliverable-banner-title">What does the output look like?</div>
+        <div class="deliverable-banner-desc">See a sample structured risk dossier — the format delivered to specialty lines carriers and ownership groups.</div>
+      </div>
+      <a href="deliverable-sample.html" class="deliverable-banner-btn">📄 View Sample Deliverable →</a>
+    </div>
+
+    <div class="module-group-label reveal" style="margin-top:36px;">
       <span class="mgl-text">Operator Documentation</span>
       <span class="mgl-line"></span>
-      <span class="mgl-sub">Completed by your team, on shift, at the point of activity</span>
+      <span class="mgl-sub">Filled by your team, on shift, at the point of activity</span>
     </div>
     <div class="module-grid reveal">
       <a href="manager.html" class="module-card mc-teal">
+        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></div>
         <div class="m-icon">👔</div><div class="m-code">MGR</div>
         <div class="m-name">Manager Module</div>
-        <div class="m-desc">Shift open/close, escalation log, staffing overrides, corrective action tracking, audit schedule, CACR dashboard, aging buckets, and certification tracker.</div>
+        <div class="m-desc">Shift open/close, escalation log, staffing overrides, corrective action tracking, CACR dashboard, aging buckets, certification tracker.</div>
         <div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div>
       </a>
       <a href="ops-dispatch.html" class="module-card mc-blue">
+        <div class="score-badges"><span class="sb sb-ride">RIDE</span></div>
         <div class="m-icon">📡</div><div class="m-code">OPD</div>
         <div class="m-name">Ops Dispatcher</div>
         <div class="m-desc">Ride status board, operator-to-unit assignments, rotation compliance, radio log book.</div>
         <div class="m-footer"><span class="m-tag">R · D</span><span class="m-arrow">→</span></div>
       </a>
       <a href="operator-log.html" class="module-card mc-orange">
+        <div class="score-badges"><span class="sb sb-ride">RIDE</span></div>
         <div class="m-icon">🎡</div><div class="m-code">ATR</div>
         <div class="m-name">At-Ride / Operator Log</div>
-        <div class="m-desc">Opening checklist, dynamic operator log with reminders to rotate positions, throughput linked to ops dispatch, units in service tracker.</div>
+        <div class="m-desc">Opening checklist, operator log with rotation reminders, throughput linked to dispatch, units in service tracker.</div>
         <div class="m-footer"><span class="m-tag">R · I · D</span><span class="m-arrow">→</span></div>
       </a>
+      <div class="module-card mc-splash module-card-stub">
+        <div class="stub-badge" style="background:rgba(30,158,212,.1);color:#1e9ed4;border:1px solid rgba(30,158,212,.25);">COMING SOON</div>
+        <div class="score-badges"><span class="sb sb-splash">SPLASH</span></div>
+        <div class="m-icon">🏊</div><div class="m-code">LGD</div>
+        <div class="m-name">Lifeguard Zone Log</div>
+        <div class="m-desc">Zone coverage log, rotation adherence, scanning compliance, fatigue tracking, certification currency. Directly feeds the Lifeguard pillar — the gap no other index quantifies.</div>
+        <div class="m-footer"><span class="m-tag">L · S</span></div>
+      </div>
+      <div class="module-card mc-play module-card-stub">
+        <div class="stub-badge" style="background:rgba(31,184,122,.1);color:#1fb87a;border:1px solid rgba(31,184,122,.25);">COMING SOON</div>
+        <div class="score-badges"><span class="sb sb-play">PLAY</span></div>
+        <div class="m-icon">🏎️</div><div class="m-code">FLR</div>
+        <div class="m-name">FEC Floor Operations Log</div>
+        <div class="m-desc">Attraction uptime, throughput yield, staff assignments, floor observations, and operational load for FEC environments. Feeds Performance and Attraction pillars.</div>
+        <div class="m-footer"><span class="m-tag">P · A</span></div>
+      </div>
+      <div class="module-card mc-play module-card-stub">
+        <div class="stub-badge" style="background:rgba(31,184,122,.1);color:#1fb87a;border:1px solid rgba(31,184,122,.25);">COMING SOON</div>
+        <div class="score-badges"><span class="sb sb-play">PLAY</span></div>
+        <div class="m-icon">🧒</div><div class="m-code">YPL</div>
+        <div class="m-name">Youth Patron Log</div>
+        <div class="m-desc">Height enforcement, unaccompanied minor tracking, birthday/group supervision ratios, child-specific incident flags. Feeds the Youth pillar — industry first.</div>
+        <div class="m-footer"><span class="m-tag">Y</span></div>
+      </div>
     </div>
 
-    <!-- GROUP 2: In-House Audits & Compliance -->
     <div class="module-group-label reveal">
       <span class="mgl-text">In-House Audits & Compliance</span>
       <span class="mgl-line"></span>
@@ -431,7 +410,6 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
       </a>
     </div>
 
-    <!-- GROUP 3: Third-Party & Independent Audits -->
     <div class="module-group-label reveal">
       <span class="mgl-text">Third-Party & Independent Audits</span>
       <span class="mgl-line"></span>
@@ -452,40 +430,75 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
       </a>
     </div>
 
-    <!-- GROUP 4: Guest Intelligence -->
     <div class="module-group-label reveal">
       <span class="mgl-text">Guest Intelligence</span>
       <span class="mgl-line"></span>
-      <span class="mgl-sub">Captured via QR code in-park and triggered email survey post-visit</span>
+      <span class="mgl-sub">QR-captured in-park and triggered post-visit email survey</span>
     </div>
     <div class="module-grid reveal">
       <a href="guest-feedback.html" class="module-card mc-gold">
+        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></div>
         <div class="m-icon">📱</div><div class="m-code">QR</div>
         <div class="m-name">Guest Feedback (QR)</div>
-        <div class="m-desc">In-park QR-triggered feedback capture. Real-time guest sentiment feeding Delivery and Environment pillars.</div>
+        <div class="m-desc">In-park QR-triggered real-time guest sentiment. Exit ramp and attraction-level feedback feeding Delivery and Environment pillars.</div>
         <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div>
       </a>
       <a href="post-visit.html" class="module-card mc-gold">
+        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-play">PLAY</span></div>
         <div class="m-icon">✉️</div><div class="m-code">EXS</div>
         <div class="m-name">Post-Visit Survey</div>
-        <div class="m-desc">Triggered email survey capturing reflective sentiment and loyalty data after the guest experience concludes.</div>
+        <div class="m-desc">Triggered email survey capturing reflective sentiment and loyalty data. Lagging signal with higher trust weight than in-park capture.</div>
         <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div>
       </a>
+      <div class="module-card mc-splash module-card-stub">
+        <div class="stub-badge" style="background:rgba(30,158,212,.1);color:#1e9ed4;border:1px solid rgba(30,158,212,.25);">COMING SOON</div>
+        <div class="score-badges"><span class="sb sb-splash">SPLASH</span></div>
+        <div class="m-icon">📱</div><div class="m-code">AQF</div>
+        <div class="m-name">Aquatic Guest Feedback (QR)</div>
+        <div class="m-desc">Aquatic-tuned QR form covering water quality perception, lifeguard interactions, slide experience, and safety. Placed at wave pool, lazy river, and slide landings.</div>
+        <div class="m-footer"><span class="m-tag">S · A</span></div>
+      </div>
       <a href="nmr.html" class="module-card mc-red">
+        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div>
         <div class="m-icon">⚠️</div><div class="m-code">NMR</div>
-        <div class="m-name">Near-Miss Report</div>
-        <div class="m-desc">Guests can submit a near-miss flag directly — same triage pipeline as staff submissions. Adjusts scores immediately on submission.</div>
+        <div class="m-name">Near-Miss Report (Guest)</div>
+        <div class="m-desc">Guests submit a near-miss flag directly — same triage pipeline as staff. QR-accessible from safety banner at all locations across all three scores.</div>
         <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
       </a>
-      <div class="module-card mc-gold" style="cursor:default;">
-        <div class="m-icon">⭐</div><div class="m-code">OLR</div>
-        <div class="m-name">Online Review Intelligence</div>
-        <div class="m-desc">Aggregated sentiment from Google, TripAdvisor, and Yelp — auto-ingested via review monitoring API. Feeds Delivery and Environment with external guest perception data.</div>
-        <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow" style="color:rgba(212,175,55,.3)">⚡</span></div>
+    </div>
+
+    <div class="module-group-label reveal">
+      <span class="mgl-text">Aquatic Monitoring</span>
+      <span class="mgl-line"></span>
+      <span class="mgl-sub">SPLASH Score — water chemistry, bather load, and environmental safety</span>
+    </div>
+    <div class="module-grid reveal">
+      <div class="module-card mc-splash module-card-stub">
+        <div class="stub-badge" style="background:rgba(30,158,212,.1);color:#1e9ed4;border:1px solid rgba(30,158,212,.25);">COMING SOON</div>
+        <div class="score-badges"><span class="sb sb-splash">SPLASH</span></div>
+        <div class="m-icon">🧪</div><div class="m-code">WQA</div>
+        <div class="m-name">Water Quality Log</div>
+        <div class="m-desc">pH, chlorine, alkalinity, cyanuric acid, and temperature captured on schedule. Trend history is the primary RWI risk signal for the Aquatic pillar.</div>
+        <div class="m-footer"><span class="m-tag">A · H</span></div>
+      </div>
+      <div class="module-card mc-splash module-card-stub">
+        <div class="stub-badge" style="background:rgba(30,158,212,.1);color:#1e9ed4;border:1px solid rgba(30,158,212,.25);">COMING SOON</div>
+        <div class="score-badges"><span class="sb sb-splash">SPLASH</span></div>
+        <div class="m-icon">👥</div><div class="m-code">BLI</div>
+        <div class="m-name">Bather Load Index</div>
+        <div class="m-desc">Bather count per zone vs. posted capacity limits. High bather load correlates with water quality degradation and lifeguard coverage strain — cross-pillar signal.</div>
+        <div class="m-footer"><span class="m-tag">A · L</span></div>
+      </div>
+      <div class="module-card mc-splash module-card-stub">
+        <div class="stub-badge" style="background:rgba(30,158,212,.1);color:#1e9ed4;border:1px solid rgba(30,158,212,.25);">COMING SOON</div>
+        <div class="score-badges"><span class="sb sb-play">PLAY</span></div>
+        <div class="m-icon">🎂</div><div class="m-code">GEL</div>
+        <div class="m-name">Group &amp; Event Supervision Log</div>
+        <div class="m-desc">Birthday and group event check-in, supervision ratio verification, wristband assignment, incident flag by group. Feeds the Youth pillar for child-patron environments.</div>
+        <div class="m-footer"><span class="m-tag">Y · L</span></div>
       </div>
     </div>
 
-    <!-- GROUP 5: Auto-Feed Modules -->
     <div class="module-group-label reveal">
       <span class="mgl-text">Auto-Feed Modules</span>
       <span class="mgl-line"></span>
@@ -510,7 +523,7 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
         <div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div>
         <div class="m-icon">⭐</div><div class="m-code">OLR</div>
         <div class="m-name">Online Review Intelligence</div>
-        <div class="m-desc">Automated ingestion of Google, TripAdvisor, and Yelp reviews via review monitoring API. Runs sentiment analysis and keyword extraction. Cross-validates in-park guest intelligence streams (QR, EXS).</div>
+        <div class="m-desc">Automated ingestion of Google, TripAdvisor, and Yelp reviews via review monitoring API. Runs sentiment analysis and keyword extraction. Cross-validates in-park guest intelligence streams.</div>
         <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow" style="color:rgba(0,212,208,.3)">⚡</span></div>
       </div>
       <div class="module-card mc-auto" style="cursor:default;">
@@ -521,339 +534,34 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
         <div class="m-footer"><span class="m-tag">R · D</span><span class="m-arrow" style="color:rgba(0,212,208,.3)">⚡</span></div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- OLI CONVERGENCE SECTION -->
-<section class="oli-section">
-  <div class="oli-inner">
-    <div class="sec-eyebrow reveal">OPERATIONAL LOAD INDEX</div>
-    <div class="sec-title reveal">How every stream<br>feeds <span>OLI</span></div>
-    <div class="sec-body reveal" style="margin-bottom:48px;">OLI is not a form you fill out. It's a calculated output — a synthesized read of operational stress drawn from every human audit, live dispatch signal, and automated data feed in the AS 360 system. When OLI is high, the operation is under load. When sources diverge from it, that gap is the finding.</div>
-
-    <div class="oli-intro">
-      <!-- OLI score ring -->
-      <div class="oli-score-display reveal">
-        <div class="oli-ring">
-          <svg viewBox="0 0 90 90">
-            <circle cx="45" cy="45" r="38" fill="none" stroke="rgba(0,212,208,.08)" stroke-width="7"/>
-            <circle cx="45" cy="45" r="38" fill="none" stroke="url(#oliGrad)" stroke-width="7"
-              stroke-linecap="round" stroke-dasharray="239" stroke-dashoffset="57"
-              transform="rotate(-90 45 45)"/>
-            <defs>
-              <linearGradient id="oliGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#005F5E"/><stop offset="100%" stop-color="#00D4D0"/>
-              </linearGradient>
-            </defs>
-          </svg>
-          <div class="oli-ring-inner">
-            <div class="oli-ring-num">76</div>
-            <div class="oli-ring-lbl">OLI</div>
-          </div>
-        </div>
-        <div class="oli-score-right">
-          <div class="oli-score-title">Operational Load Index</div>
-          <div class="oli-score-sub">OLI · COMPUTED STREAM · AS 360</div>
-          <div class="oli-score-desc">A single index representing total operational stress. High OLI with strong audits = well-managed load. High OLI with weak audits = hidden risk. Divergence between OLI and pillar scores triggers a Convergence Alert.</div>
-          <div class="oli-pillar-tags">
-            <span class="oli-ptag" style="background:rgba(46,111,255,.12);border:1px solid rgba(46,111,255,.3);color:#2E6FFF;">R — Readiness</span>
-            <span class="oli-ptag" style="background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.3);color:#FF6B35;">D — Delivery</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Confidence commentary -->
-      <div class="reveal">
-        <div class="oli-confidence" style="margin-top:0;">
-          <div class="oli-conf-title">Convergence Confidence</div>
-          <div class="oli-conf-sub">OLI's confidence score rises as more independent streams corroborate the same load reading. Single-source agreement yields low confidence. When 6+ streams converge on the same signal, OLI achieves high confidence and feeds the composite RIDE Score at full weight.</div>
-          <div class="oli-conf-bars">
-            <div class="conf-bar-item">
-              <div class="conf-bar-label">Operator Data (OPD+ATR)</div>
-              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:88%;background:#2E6FFF;"></div></div>
-              <div class="conf-bar-val" style="color:#2E6FFF;">88%</div>
-            </div>
-            <div class="conf-bar-item">
-              <div class="conf-bar-label">Audit Agreement</div>
-              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:74%;background:#00D68F;"></div></div>
-              <div class="conf-bar-val" style="color:#00D68F;">74%</div>
-            </div>
-            <div class="conf-bar-item">
-              <div class="conf-bar-label">Guest Signal</div>
-              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:61%;background:#FF6B35;"></div></div>
-              <div class="conf-bar-val" style="color:#FF6B35;">61%</div>
-            </div>
-            <div class="conf-bar-item">
-              <div class="conf-bar-label">Auto-Feed Alignment</div>
-              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:95%;background:#00D4D0;"></div></div>
-              <div class="conf-bar-val" style="color:#00D4D0;">95%</div>
-            </div>
-            <div class="conf-bar-item">
-              <div class="conf-bar-label">Mgr / CA Correlation</div>
-              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:82%;background:#D4AF37;"></div></div>
-              <div class="conf-bar-val" style="color:#D4AF37;">82%</div>
-            </div>
-            <div class="conf-bar-item">
-              <div class="conf-bar-label">Overall OLI Confidence</div>
-              <div class="conf-bar-track"><div class="conf-bar-fill" style="width:80%;background:var(--teal);"></div></div>
-              <div class="conf-bar-val" style="color:var(--teal);">80%</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Per-stream contribution cards -->
-    <div class="oli-streams-label reveal">// Input Stream Contributions to OLI</div>
-    <div class="oli-stream-grid">
-
-      <div class="oli-stream-card reveal" style="--c:#FFB800;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#FFB800;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">📝</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#FFB800;">iGSA</span>
-            <span class="osc-name">In-House GSA</span>
-            <span class="osc-contribution" style="color:#FFB800;border-color:rgba(255,184,0,.25);background:rgba(255,184,0,.06);">DIRECT · HIGH WEIGHT</span>
-          </div>
-          <div class="osc-desc">In-house guest service scores reflect internal operational load — line speeds, staffing density, and service capacity directly correlate to OLI. Repeated low scores without a matching NMR or CA entry flags a documentation gap.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:72%;background:#FFB800;"></div></div>
-            <span class="osc-weight-pct" style="color:#FFB800;">72%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#8B5CF6;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#8B5CF6;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">🕵️</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#8B5CF6;">mGSA</span>
-            <span class="osc-name">Mystery Shopper GSA</span>
-            <span class="osc-contribution" style="color:#8B5CF6;border-color:rgba(139,92,246,.25);background:rgba(139,92,246,.06);">DIRECT · HIGH WEIGHT</span>
-          </div>
-          <div class="osc-desc">The divergence between mGSA and iGSA scores is itself an OLI signal. A wide gap suggests operators behave differently when unobserved — a direct indicator of operational stress or normalized non-compliance.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:78%;background:#8B5CF6;"></div></div>
-            <span class="osc-weight-pct" style="color:#8B5CF6;">78%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#00D68F;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#00D68F;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">🏢</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#00D68F;">IHS</span>
-            <span class="osc-name">In-House Safety Audit</span>
-            <span class="osc-contribution" style="color:#00D68F;border-color:rgba(0,214,143,.25);background:rgba(0,214,143,.06);">DIRECT · MEDIUM WEIGHT</span>
-          </div>
-          <div class="osc-desc">Pre-opening deficiencies and deferred maintenance items captured in IHS contribute to OLI as unresolved operational burden. Each open item without a CA reference is a load signal.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:58%;background:#00D68F;"></div></div>
-            <span class="osc-weight-pct" style="color:#00D68F;">58%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#00D4D0;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#00D4D0;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">🔍</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#00D4D0;">TPS</span>
-            <span class="osc-name">Third-Party Safety</span>
-            <span class="osc-contribution" style="color:#00D4D0;border-color:rgba(0,212,208,.25);background:rgba(0,212,208,.06);">DIRECT · MEDIUM WEIGHT</span>
-          </div>
-          <div class="osc-desc">Independent ASTM-aligned findings that contradict IHS self-assessment significantly elevate OLI. Persistent TPS findings with no corresponding CA closure are a top-tier OLI driver.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:62%;background:#00D4D0;"></div></div>
-            <span class="osc-weight-pct" style="color:#00D4D0;">62%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#FF3B5C;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#FF3B5C;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">⚠️</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#FF3B5C;">NMR</span>
-            <span class="osc-name">Near-Miss Report</span>
-            <span class="osc-contribution" style="color:#FF3B5C;border-color:rgba(255,59,92,.25);background:rgba(255,59,92,.06);">SPIKE · IMMEDIATE IMPACT</span>
-          </div>
-          <div class="osc-desc">Each NMR submission creates an immediate OLI spike proportional to severity and proximity to prior events. Cluster analysis — multiple NMRs in a short window — triggers a Convergence Alert independently of pillar scores.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:90%;background:#FF3B5C;"></div></div>
-            <span class="osc-weight-pct" style="color:#FF3B5C;">90%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#FF3B5C;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#FF3B5C;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">🚨</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#FF3B5C;">IRL</span>
-            <span class="osc-name">Ride Incident Report</span>
-            <span class="osc-contribution" style="color:#FF3B5C;border-color:rgba(255,59,92,.25);background:rgba(255,59,92,.06);">SPIKE · IMMEDIATE IMPACT</span>
-          </div>
-          <div class="osc-desc">A completed incident report is the strongest single-event OLI signal in the system. IRL submissions anchor a temporal reference point — all surrounding stream data within a defined window is weighted against the incident.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:95%;background:#FF3B5C;"></div></div>
-            <span class="osc-weight-pct" style="color:#FF3B5C;">95%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#00D4D0;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#00D4D0;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">👔</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#00D4D0;">MGR</span>
-            <span class="osc-name">Manager Module</span>
-            <span class="osc-contribution" style="color:#00D4D0;border-color:rgba(0,212,208,.25);background:rgba(0,212,208,.06);">DIRECT · HIGH WEIGHT</span>
-          </div>
-          <div class="osc-desc">Staffing overrides, open CA buckets, and unscheduled escalation events all register as active operational load. The CA closure rate (CACR) is the most persistent MGR-sourced OLI signal — aging open items compound weight over time.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:82%;background:#00D4D0;"></div></div>
-            <span class="osc-weight-pct" style="color:#00D4D0;">82%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#2E6FFF;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#2E6FFF;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">📡</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#2E6FFF;">OPD</span>
-            <span class="osc-name">Ops Dispatcher</span>
-            <span class="osc-contribution" style="color:#2E6FFF;border-color:rgba(46,111,255,.25);background:rgba(46,111,255,.06);">DIRECT · MEDIUM WEIGHT</span>
-          </div>
-          <div class="osc-desc">Ride hold frequency, unscheduled downtime, rotation overdue counts, and coverage gaps all feed OLI as real-time load signals. A shift with high hold activity against normal NMR volume is a nuanced OLI flag.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:65%;background:#2E6FFF;"></div></div>
-            <span class="osc-weight-pct" style="color:#2E6FFF;">65%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#FF6B35;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#FF6B35;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">🎡</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#FF6B35;">ATR</span>
-            <span class="osc-name">At-Ride / Operator Log</span>
-            <span class="osc-contribution" style="color:#FF6B35;border-color:rgba(255,107,53,.25);background:rgba(255,107,53,.06);">DIRECT · MEDIUM WEIGHT</span>
-          </div>
-          <div class="osc-desc">Opening checklist failures, anomaly flags, and cycle throughput shortfalls all contribute. OLI cross-references ATR throughput against QTX wait time data — when the two diverge significantly, it identifies a staffing-vs-demand mismatch.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:68%;background:#FF6B35;"></div></div>
-            <span class="osc-weight-pct" style="color:#FF6B35;">68%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#00D4D0;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#00D4D0;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">⏱</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#00D4D0;">QTX</span>
-            <span class="osc-name">Queue & Wait Time</span>
-            <span class="osc-contribution" style="color:#00D4D0;border-color:rgba(0,212,208,.25);background:rgba(0,212,208,.06);">AUTO · CONTINUOUS</span>
-          </div>
-          <div class="osc-desc">Wait times above threshold directly signal demand-side load — the operation is not meeting throughput requirements. QTX is the primary auto-feed contributor to OLI, updating continuously and acting as the real-time operational pulse.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:85%;background:#00D4D0;"></div></div>
-            <span class="osc-weight-pct" style="color:#00D4D0;">85%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#D4AF37;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#D4AF37;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">📱</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#D4AF37;">QR / EXS</span>
-            <span class="osc-name">Guest Feedback Streams</span>
-            <span class="osc-contribution" style="color:#D4AF37;border-color:rgba(212,175,55,.25);background:rgba(212,175,55,.06);">INDIRECT · LAGGING SIGNAL</span>
-          </div>
-          <div class="osc-desc">Guest feedback is an indirect, lagging OLI signal — it captures the felt experience of operational load after the fact. QR provides same-day data; EXS provides post-visit reflection. Together they validate or contradict the real-time OLI reading.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:44%;background:#D4AF37;"></div></div>
-            <span class="osc-weight-pct" style="color:#D4AF37;">44%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="oli-stream-card reveal" style="--c:#D4AF37;">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:#D4AF37;border-radius:2px 0 0 2px;"></div>
-        <div class="osc-icon">⭐</div>
-        <div class="osc-body">
-          <div class="osc-top">
-            <span class="osc-code" style="color:#D4AF37;">OLR</span>
-            <span class="osc-name">Online Review Intelligence</span>
-            <span class="osc-contribution" style="color:#D4AF37;border-color:rgba(212,175,55,.25);background:rgba(212,175,55,.06);">INDIRECT · LAGGING SIGNAL</span>
-          </div>
-          <div class="osc-desc">Online reviews represent the longest-lag signal in OLI — they capture cumulative public perception of operational quality. A deteriorating OLR trend that predates NMR or IRL activity is an early warning indicator that internal reporting culture may be lagging reality.</div>
-          <div class="osc-weight-row">
-            <span class="osc-weight-label">OLI WEIGHT</span>
-            <div class="osc-weight-bar"><div class="osc-weight-fill" style="width:38%;background:#D4AF37;"></div></div>
-            <span class="osc-weight-pct" style="color:#D4AF37;">38%</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
 <section class="cta-section">
   <div class="cta-inner">
     <div class="cta-title reveal">Ready to score<br>your <span>operation?</span></div>
     <div class="cta-body reveal">Amusement Standards deploys AS 360 across your facility and delivers a composite RIDE Score that your insurers, operators, and ownership can act on. Specialty lines insurers receive a structured risk dossier — not an anecdotal report.</div>
     <div class="hero-cta reveal">
       <a href="https://amusementstandards.com/as360-ride-score.html" class="btn-primary">See How It Works</a>
-      <a href="/cdn-cgi/l/email-protection#b8d9dcd9d5f8d9d5cdcbddd5ddd6cccbccd9d6dcd9cadccb96dbd7d5" class="btn-secondary">Contact Amusement Standards</a>
+      <a href="deliverable-sample.html" class="btn-secondary" style="border-color:rgba(212,175,55,.5);color:var(--gold);background:rgba(212,175,55,.08);">📄 Sample Deliverable</a>
+      <a href="/cdn-cgi/l/email-protection#345550555974555941475159515a404740555a50554650471a575b59" class="btn-secondary">Contact Amusement Standards</a>
     </div>
-    <div class="cta-note reveal">amusementstandards.com · AS 360 RIDE Score™ is proprietary methodology</div>
+    <div class="cta-note reveal">amusementstandards.com · RIDE Score™ · SPLASH Score™ · PLAY Score™ are proprietary methodology</div>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="site-footer">
   <div class="sf-brand">Amusement <span>Standards</span></div>
   <div class="sf-links">
     <a href="https://amusementstandards.com/as360-ride-score.html">Live Demo</a>
     <a href="manager.html">Manager Module</a>
     <a href="ride-incident.html">Incident Report</a>
-    <a href="/cdn-cgi/l/email-protection#573633363a17363a2224323a3239232423363933362533247934383a">Contact</a>
+    <a href="deliverable-sample.html" style="color:rgba(212,175,55,.5);">Sample Deliverable</a>
+    <a href="/cdn-cgi/l/email-protection#076663666a47666a7274626a6269737473666963667563742964686a">Contact</a>
   </div>
-  <div class="sf-copy">AS 360 RIDE Score™ · Proprietary</div>
+  <div class="sf-copy">AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · Proprietary</div>
 </footer>
 
-<!-- TOOLTIP -->
 <div class="tooltip" id="tooltip">
   <div class="tt-big-letter" id="tt-big-letter"></div>
   <div class="tt-code" id="tt-code"></div>
@@ -864,296 +572,155 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* SCROLL REVEAL */
 const reveals = document.querySelectorAll('.reveal');
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);} });
 },{threshold:0, rootMargin:'0px 0px -40px 0px'});
 reveals.forEach(el=>ro.observe(el));
 
-/* PILLAR / NODE COLORS */
 const PC = { R:'#2E6FFF', I:'#00D68F', D:'#FF6B35', E:'#8B5CF6' };
 const NC = { teal:'#00D4D0',blue:'#2E6FFF',green:'#00D68F',amber:'#FFB800',red:'#FF3B5C',purple:'#8B5CF6',orange:'#FF6B35',gold:'#D4AF37' };
 
-/*
-  EXACT connections from pillar cards:
-  R: iGSA mGSA IHS TPS NMR QTX OLI CAR MGR OPD ATR
-  I: iGSA mGSA IHS TPS NMR CAR ATR
-  D: iGSA mGSA QR  EXS OLR QTX OLI CAR MGR OPD ATR
-  E: iGSA mGSA TPS QR  EXS OLR WX
-*/
 const STREAM_PILLARS = {
-  igsa: ['R','I','D','E'],
-  mgsa: ['R','I','D','E'],
-  ihs:  ['R','I'],
-  tps:  ['R','I','E'],
-  nmr:  ['R','I'],
-  irl:  ['R','I'],
-  qtx:  ['R','D'],
-  oli:  ['R','D'],
-  mgr:  ['R','I','D','E'],
-  opd:  ['R','D'],
-  atr:  ['R','I','D'],
-  qr:   ['D','E'],
-  exs:  ['D','E'],
-  olr:  ['D','E'],
-  wx:   ['E'],
+  igsa:['R','I','D','E'],mgsa:['R','I','D','E'],ihs:['R','I'],tps:['R','I','E'],
+  nmr:['R','I'],irl:['R','I'],qtx:['R','D'],oli:['R','D'],
+  mgr:['R','I','D','E'],opd:['R','D'],atr:['R','I','D'],
+  qr:['D','E'],exs:['D','E'],olr:['D','E'],wx:['E'],
 };
 
-/* Stream defs in display order */
 const STREAMS = [
-  // top row — left to right (8 streams)
-  {id:'igsa', code:'iGSA', name:'In-House GSA',     icon:'📝', color:'amber',  file:'inhouse-gsa.html',        row:'top', desc:'Rotating management guest services audit. Feeds all four pillars.'},
-  {id:'mgsa', code:'mGSA', name:'Mystery Shopper',  icon:'🕵️', color:'purple', file:'third-party-gsa.html',    row:'top', desc:'AS-deployed covert auditor. iGSA divergence is the primary finding.'},
-  {id:'ihs',  code:'IHS',  name:'In-House Safety',  icon:'🏢', color:'green',  file:'inhouse-safety.html',     row:'top', desc:'Internal safety inspection against SOPs, pre-opening checklists.'},
-  {id:'tps',  code:'TPS',  name:'3rd-Party Safety', icon:'🔍', color:'teal',   file:'third-party-safety.html', row:'top', desc:'AS-conducted ASTM-aligned compliance inspection.'},
-  {id:'nmr',  code:'NMR',  name:'Near-Miss',        icon:'⚠️', color:'red',    file:'nmr.html',                row:'top', desc:'Structured triage flag. Adjusts R and I scores immediately.'},
-  {id:'irl',  code:'IRL',  name:'Incident Report',  icon:'🚨', color:'red',    file:'ride-incident.html', row:'top', desc:'Full 7-section legal incident record.'},
-  {id:'mgr',  code:'MGR',  name:'Manager Module',   icon:'👔', color:'teal',   file:'manager.html',            row:'top', desc:'Shift open/close, escalation log, staffing overrides, CA lifecycle, CACR dashboard, audit schedule.'},
-  // bottom row — left to right (8 streams)
-  {id:'opd',  code:'OPD',  name:'Ops Dispatch',     icon:'📡', color:'blue',   file:'ops-dispatch.html',       row:'bot', desc:'Operator assignments, rotation compliance, coverage gaps.'},
-  {id:'atr',  code:'ATR',  name:'At-Ride Log',      icon:'🎡', color:'orange', file:'operator-log.html',       row:'bot', desc:'Opening checklist, cycle counts, restraint checks, anomalies.'},
-  {id:'qtx',  code:'QTX',  name:'Queue & Wait',     icon:'⏱', color:'teal',   file:'',          row:'bot', noLink:true, desc:'Live queue and wait times. Feeds Readiness and Delivery.'},
-  {id:'oli',  code:'OLI',  name:'Op. Load Obs.',    icon:'📊', color:'teal',   file:'',          row:'bot', noLink:true, desc:'Field observation cross-validating dispatch vs. operational reality.'},
-  {id:'qr',   code:'QR',   name:'Guest Feedback',   icon:'📱', color:'gold',   file:'guest-feedback.html', row:'bot', desc:'In-park QR real-time guest sentiment. Feeds Delivery and Environment.'},
-  {id:'exs',  code:'EXS',  name:'Post-Visit Survey',icon:'✉️', color:'gold',   file:'post-visit.html',     row:'bot', desc:'Reflective post-visit email feedback. Feeds Delivery and Environment.'},
-  {id:'olr',  code:'OLR',  name:'Online Reviews',   icon:'⭐', color:'gold',   file:'',          row:'bot', noLink:true, desc:'Google, Yelp, TripAdvisor intelligence. Delivery and Environment.'},
-  {id:'wx',   code:'WX',   name:'Weather Data',     icon:'🌤', color:'blue',   file:'',          row:'bot', noLink:true, desc:'Live Open-Meteo feed. Adjusts Environment scoring.'},
+  {id:'igsa',code:'iGSA',name:'In-House GSA',    icon:'📝',color:'amber', file:'inhouse-gsa.html',     row:'top',desc:'Rotating management guest services audit. Feeds all four pillars.'},
+  {id:'mgsa',code:'mGSA',name:'Mystery Shopper', icon:'🕵️',color:'purple',file:'third-party-gsa.html', row:'top',desc:'AS-deployed covert auditor. iGSA divergence is the primary finding.'},
+  {id:'ihs', code:'IHS', name:'In-House Safety', icon:'🏢',color:'green', file:'inhouse-safety.html',  row:'top',desc:'Internal safety inspection against SOPs, pre-opening checklists.'},
+  {id:'tps', code:'TPS', name:'3rd-Party Safety',icon:'🔍',color:'teal',  file:'third-party-safety.html',row:'top',desc:'AS-conducted ASTM-aligned compliance inspection.'},
+  {id:'nmr', code:'NMR', name:'Near-Miss',       icon:'⚠️',color:'red',   file:'nmr.html',             row:'top',desc:'Structured triage flag. Adjusts R and I scores immediately.'},
+  {id:'irl', code:'IRL', name:'Incident Report', icon:'🚨',color:'red',   file:'ride-incident.html',   row:'top',desc:'Full 7-section legal incident record.'},
+  {id:'mgr', code:'MGR', name:'Manager Module',  icon:'👔',color:'teal',  file:'manager.html',         row:'top',desc:'Shift open/close, escalation log, staffing overrides, CA lifecycle, CACR dashboard.'},
+  {id:'opd', code:'OPD', name:'Ops Dispatch',    icon:'📡',color:'blue',  file:'ops-dispatch.html',    row:'bot',desc:'Operator assignments, rotation compliance, coverage gaps.'},
+  {id:'atr', code:'ATR', name:'At-Ride Log',     icon:'🎡',color:'orange',file:'operator-log.html',    row:'bot',desc:'Opening checklist, cycle counts, restraint checks, anomalies.'},
+  {id:'qtx', code:'QTX', name:'Queue & Wait',    icon:'⏱',color:'teal',  file:'',row:'bot',noLink:true,desc:'Live queue and wait times. Feeds Readiness and Delivery.'},
+  {id:'oli', code:'OLI', name:'Op. Load Obs.',   icon:'📊',color:'teal',  file:'',row:'bot',noLink:true,desc:'Field observation cross-validating dispatch vs. operational reality.'},
+  {id:'qr',  code:'QR',  name:'Guest Feedback',  icon:'📱',color:'gold',  file:'guest-feedback.html', row:'bot',desc:'In-park QR real-time guest sentiment. Feeds Delivery and Environment.'},
+  {id:'exs', code:'EXS', name:'Post-Visit Survey',icon:'✉️',color:'gold', file:'post-visit.html',      row:'bot',desc:'Reflective post-visit email feedback. Feeds Delivery and Environment.'},
+  {id:'olr', code:'OLR', name:'Online Reviews',  icon:'⭐',color:'gold',  file:'',row:'bot',noLink:true,desc:'Google, Yelp, TripAdvisor intelligence. Delivery and Environment.'},
+  {id:'wx',  code:'WX',  name:'Weather Data',    icon:'🌤',color:'blue',  file:'',row:'bot',noLink:true,desc:'Live Open-Meteo feed. Adjusts Environment scoring.'},
 ];
 
 const PILLARS = [
-  {id:'R', name:'Readiness',   color:'blue',   score:84},
-  {id:'I', name:'Integrity',   color:'green',  score:79},
-  {id:'D', name:'Delivery',    color:'orange', score:81},
-  {id:'E', name:'Environment', color:'purple', score:76},
+  {id:'R',name:'Readiness',  color:'blue',  score:84},
+  {id:'I',name:'Integrity',  color:'green', score:79},
+  {id:'D',name:'Delivery',   color:'orange',score:81},
+  {id:'E',name:'Environment',color:'purple',score:76},
 ];
 
-/* ── BUILD DIAGRAM ── */
 function buildDiagram(){
   const rowsEl = document.getElementById('diagramRows');
   rowsEl.innerHTML = '';
-
-  // ROW 1 — top streams
   const topStreams = STREAMS.filter(s=>s.row==='top');
   const rowTop = document.createElement('div');
   rowTop.className = 'row-streams-top';
   rowTop.style.cssText = 'padding:24px 0 80px;gap:8px;flex-wrap:wrap;justify-content:center;';
-  topStreams.forEach(s=>{
-    rowTop.appendChild(makeStreamNode(s));
-  });
+  topStreams.forEach(s=>rowTop.appendChild(makeStreamNode(s)));
   rowsEl.appendChild(rowTop);
 
-  // ROW 2 — pillars + center
   const rowPillars = document.createElement('div');
   rowPillars.className = 'row-pillars';
   rowPillars.style.cssText = 'padding:12px 24px;gap:16px;justify-content:center;align-items:center;';
-
-  // R pillar
   rowPillars.appendChild(makePillarNode(PILLARS[0]));
-  // I pillar
   rowPillars.appendChild(makePillarNode(PILLARS[1]));
-  // CENTER
   const centerEl = document.createElement('div');
-  centerEl.className = 'node node-center';
-  centerEl.id = 'dn-ride';
-  centerEl.style.cursor = 'default';
-  centerEl.innerHTML = `<div class="node-inner" style="border-color:var(--gold);background:rgba(212,175,55,.09);">
-    <div style="font-size:11px;opacity:.5;margin-bottom:2px;color:var(--gold)">◈</div>
-    <div class="center-score" style="color:var(--gold);font-size:48px;">81</div>
-    <div class="center-label" style="color:var(--gold)">RIDE SCORE™</div>
-    <div class="center-sub">AS 360 Composite</div>
-  </div>`;
-  centerEl.addEventListener('mouseenter', ev=>showTooltip(ev,{code:'AS 360',name:'RIDE Score™',desc:'Composite operational risk index — 0 to 100. Aggregates all four pillar scores.',pillars:[],color:'gold',noLink:true}));
-  centerEl.addEventListener('mouseleave', hideTooltip);
-  centerEl.addEventListener('mousemove', moveTooltip);
+  centerEl.className = 'node node-center';centerEl.id = 'dn-ride';centerEl.style.cursor='default';
+  centerEl.innerHTML = `<div class="node-inner" style="border-color:var(--gold);background:rgba(212,175,55,.09);"><div style="font-size:11px;opacity:.5;margin-bottom:2px;color:var(--gold)">◈</div><div class="center-score" style="color:var(--gold);font-size:48px;">81</div><div class="center-label" style="color:var(--gold)">RIDE SCORE™</div><div class="center-sub">AS 360 Composite</div></div>`;
+  centerEl.addEventListener('mouseenter',ev=>showTooltip(ev,{code:'AS 360',name:'RIDE Score™',desc:'Composite operational risk index — 0 to 100.',pillars:[],color:'gold',noLink:true}));
+  centerEl.addEventListener('mouseleave',hideTooltip);centerEl.addEventListener('mousemove',moveTooltip);
   rowPillars.appendChild(centerEl);
-  // D pillar
   rowPillars.appendChild(makePillarNode(PILLARS[2]));
-  // E pillar
   rowPillars.appendChild(makePillarNode(PILLARS[3]));
   rowsEl.appendChild(rowPillars);
 
-  // ROW 3 — bottom streams
   const botStreams = STREAMS.filter(s=>s.row==='bot');
   const rowBot = document.createElement('div');
   rowBot.className = 'row-streams-bot';
   rowBot.style.cssText = 'padding:80px 0 24px;gap:8px;flex-wrap:wrap;justify-content:center;';
-  botStreams.forEach(s=>{
-    rowBot.appendChild(makeStreamNode(s));
-  });
+  botStreams.forEach(s=>rowBot.appendChild(makeStreamNode(s)));
   rowsEl.appendChild(rowBot);
-
-  // After render, draw edges
   requestAnimationFrame(()=>requestAnimationFrame(drawEdges));
 }
 
 function makeStreamNode(s){
-  const col = NC[s.color] || '#00D4D0';
+  const col = NC[s.color]||'#00D4D0';
   const el = document.createElement('div');
-  el.className = 'node node-stream';
-  el.id = 'dn-'+s.id;
-  el.innerHTML = `<div class="node-inner" style="border-color:${col}40;background:${col}0D;">
-    <div class="node-icon">${s.icon}</div>
-    <div class="node-code" style="color:${col}">${s.code}</div>
-    <div class="node-name">${s.name}</div>
-  </div>`;
-  el.addEventListener('mouseenter', ev=>showTooltip(ev,{...s, pillars: STREAM_PILLARS[s.id]||[]}));
-  el.addEventListener('mouseleave', hideTooltip);
-  el.addEventListener('mousemove', moveTooltip);
-  if(s.file && !s.noLink){
-    el.addEventListener('click', ()=>window.location.href=s.file);
-  } else {
-    el.style.cursor = 'default';
-  }
+  el.className='node node-stream';el.id='dn-'+s.id;
+  el.innerHTML=`<div class="node-inner" style="border-color:${col}40;background:${col}0D;"><div class="node-icon">${s.icon}</div><div class="node-code" style="color:${col}">${s.code}</div><div class="node-name">${s.name}</div></div>`;
+  el.addEventListener('mouseenter',ev=>showTooltip(ev,{...s,pillars:STREAM_PILLARS[s.id]||[]}));
+  el.addEventListener('mouseleave',hideTooltip);el.addEventListener('mousemove',moveTooltip);
+  if(s.file&&!s.noLink) el.addEventListener('click',()=>window.location.href=s.file);
+  else el.style.cursor='default';
   return el;
 }
 
 function makePillarNode(p){
-  const col = NC[p.color];
-  const el = document.createElement('div');
-  el.className = 'node node-pillar';
-  el.id = 'dn-'+p.id;
-  el.style.cursor = 'default';
-  // Mini SVG arc for score
-  const r = 22, circ = 2*Math.PI*r;
-  const fill = circ - (circ * p.score / 100);
-  el.innerHTML = `<div class="node-inner pillar-inner" style="border-color:${col}50;background:${col}12;min-width:110px;text-align:center;padding:12px 16px;">
-    <div class="pillar-letter-main" style="font-family:var(--display);color:${col};line-height:1;margin-bottom:4px;font-size:30px;transition:font-size .15s ease,margin .15s ease;">${p.id}</div>
-    <div class="node-code" style="color:${col};font-size:9px;letter-spacing:2px;margin-bottom:8px;">${p.name}</div>
-    <div style="position:relative;width:54px;height:54px;margin:0 auto;">
-      <svg width="54" height="54" viewBox="0 0 54 54" style="transform:rotate(-90deg)">
-        <circle cx="27" cy="27" r="${r}" fill="none" stroke="${col}20" stroke-width="4"/>
-        <circle cx="27" cy="27" r="${r}" fill="none" stroke="${col}" stroke-width="4"
-          stroke-linecap="round"
-          stroke-dasharray="${circ.toFixed(1)}"
-          stroke-dashoffset="${fill.toFixed(1)}"/>
-      </svg>
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-        <div style="font-family:var(--display);font-size:20px;color:${col};line-height:1">${p.score}</div>
-      </div>
-    </div>
-  </div>`;
-  const pDesc = {
-    R:'Operational preparedness — staffing, dispatch, pre-opening inspections. Are your people, equipment, and protocols in position before gates open?',
-    I:'Physical plant and procedural compliance — equipment, restraints, service bulletins. Is the hardware and documentation maintaining standard?',
-    D:'Guest experience execution — GSA scores, feedback streams, queue performance. What is the guest actually receiving vs. what the operation is designed to deliver?',
-    E:'Conditions — weather, cleanliness, emergency access, ADA, crowd density. Is the physical environment safe and comfortable?'
-  };
-  const letterEl = el.querySelector('.pillar-letter-main');
-  el.addEventListener('mouseenter', ev=>{
-    showTooltip(ev,{code:'PILLAR · '+p.id,name:p.name,desc:pDesc[p.id],pillars:[p.id],color:p.color,noLink:true});
-    letterEl.style.setProperty('font-size','46px','important');
-    letterEl.style.setProperty('margin-bottom','8px','important');
-  });
-  el.addEventListener('mouseleave', ()=>{
-    hideTooltip();
-    letterEl.style.setProperty('font-size','30px','important');
-    letterEl.style.setProperty('margin-bottom','4px','important');
-  });
-  el.addEventListener('mousemove', moveTooltip);
+  const col=NC[p.color];
+  const r=22,circ=2*Math.PI*r,fill=circ-(circ*p.score/100);
+  const el=document.createElement('div');
+  el.className='node node-pillar';el.id='dn-'+p.id;el.style.cursor='default';
+  el.innerHTML=`<div class="node-inner pillar-inner" style="border-color:${col}50;background:${col}12;min-width:110px;text-align:center;padding:12px 16px;"><div class="pillar-letter-main" style="font-family:var(--display);color:${col};line-height:1;margin-bottom:4px;font-size:30px;transition:font-size .15s ease,margin .15s ease;">${p.id}</div><div class="node-code" style="color:${col};font-size:9px;letter-spacing:2px;margin-bottom:8px;">${p.name}</div><div style="position:relative;width:54px;height:54px;margin:0 auto;"><svg width="54" height="54" viewBox="0 0 54 54" style="transform:rotate(-90deg)"><circle cx="27" cy="27" r="${r}" fill="none" stroke="${col}20" stroke-width="4"/><circle cx="27" cy="27" r="${r}" fill="none" stroke="${col}" stroke-width="4" stroke-linecap="round" stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${fill.toFixed(1)}"/></svg><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="font-family:var(--display);font-size:20px;color:${col};line-height:1">${p.score}</div></div></div></div>`;
+  const pDesc={R:'Operational preparedness — staffing, dispatch, pre-opening inspections.',I:'Physical plant and procedural compliance — equipment, restraints, service bulletins.',D:'Guest experience execution — GSA scores, feedback streams, queue performance.',E:'Conditions — weather, cleanliness, emergency access, ADA, crowd density.'};
+  const letterEl=el.querySelector('.pillar-letter-main');
+  el.addEventListener('mouseenter',ev=>{showTooltip(ev,{code:'PILLAR · '+p.id,name:p.name,desc:pDesc[p.id],pillars:[p.id],color:p.color,noLink:true});letterEl.style.setProperty('font-size','46px','important');letterEl.style.setProperty('margin-bottom','8px','important');});
+  el.addEventListener('mouseleave',()=>{hideTooltip();letterEl.style.setProperty('font-size','30px','important');letterEl.style.setProperty('margin-bottom','4px','important');});
+  el.addEventListener('mousemove',moveTooltip);
   return el;
 }
 
-/* ── DRAW EDGES ── */
 function getCenterOfEl(id){
-  const el = document.getElementById('dn-'+id);
-  const wrap = document.getElementById('diagramWrap');
+  const el=document.getElementById('dn-'+id);const wrap=document.getElementById('diagramWrap');
   if(!el||!wrap) return null;
-  const er = el.getBoundingClientRect();
-  const wr = wrap.getBoundingClientRect();
-  return {
-    x: er.left - wr.left + er.width/2,
-    y: er.top  - wr.top  + er.height/2,
-  };
+  const er=el.getBoundingClientRect(),wr=wrap.getBoundingClientRect();
+  return{x:er.left-wr.left+er.width/2,y:er.top-wr.top+er.height/2};
 }
 
 function drawEdges(){
-  const svg = document.getElementById('edgeSvg');
-  const wrap = document.getElementById('diagramWrap');
-  const W = wrap.offsetWidth;
-  const H = wrap.offsetHeight;
-  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  svg.style.width = W+'px';
-  svg.style.height = H+'px';
-  svg.innerHTML = '';
-
-  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
-  svg.appendChild(defs);
-
-  // Edges: stream → each of its pillars → center
-  // Also: pillar → center
-
-  // Pillar → center edges
+  const svg=document.getElementById('edgeSvg'),wrap=document.getElementById('diagramWrap');
+  const W=wrap.offsetWidth,H=wrap.offsetHeight;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.width=W+'px';svg.style.height=H+'px';svg.innerHTML='';
   PILLARS.forEach(p=>{
-    const from = getCenterOfEl(p.id);
-    const to   = getCenterOfEl('ride');
-    if(!from||!to) return;
-    drawPath(svg, from, to, PC[p.id], 2, 0.55);
+    const from=getCenterOfEl(p.id),to=getCenterOfEl('ride');
+    if(from&&to) drawPath(svg,from,to,PC[p.id],2,0.55);
   });
-
-  // Stream → pillar edges
   STREAMS.forEach(s=>{
-    const from = getCenterOfEl(s.id);
-    if(!from) return;
-    const pillars = STREAM_PILLARS[s.id]||[];
-    pillars.forEach(pid=>{
-      const to = getCenterOfEl(pid);
-      if(!to) return;
-      const col = PC[pid];
-      drawPath(svg, from, to, col, 1.2, 0.2);
+    const from=getCenterOfEl(s.id);if(!from) return;
+    (STREAM_PILLARS[s.id]||[]).forEach(pid=>{
+      const to=getCenterOfEl(pid);if(to) drawPath(svg,from,to,PC[pid],1.2,0.2);
     });
   });
 }
 
-function drawPath(svg, from, to, color, width, opacity){
-  const dx = to.x - from.x;
-  const dy = to.y - from.y;
-  // Gentle S-curve
-  const c1x = from.x + dx*0.1;
-  const c1y = from.y + dy*0.4;
-  const c2x = from.x + dx*0.9;
-  const c2y = from.y + dy*0.6;
-  const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-  path.setAttribute('d',`M${from.x},${from.y} C${c1x},${c1y} ${c2x},${c2y} ${to.x},${to.y}`);
-  path.setAttribute('fill','none');
-  path.setAttribute('stroke',color);
-  path.setAttribute('stroke-width',String(width));
-  path.setAttribute('opacity',String(opacity));
-  path.style.animationDuration = (1.0+Math.random()*0.8).toFixed(2)+'s';
+function drawPath(svg,from,to,color,width,opacity){
+  const dx=to.x-from.x,dy=to.y-from.y;
+  const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+  path.setAttribute('d',`M${from.x},${from.y} C${from.x+dx*.1},${from.y+dy*.4} ${from.x+dx*.9},${from.y+dy*.6} ${to.x},${to.y}`);
+  path.setAttribute('fill','none');path.setAttribute('stroke',color);
+  path.setAttribute('stroke-width',String(width));path.setAttribute('opacity',String(opacity));
+  path.style.animationDuration=(1.0+Math.random()*.8).toFixed(2)+'s';
   svg.appendChild(path);
 }
 
-/* TOOLTIP */
 let ttTimeout;
 function showTooltip(ev,n){
   clearTimeout(ttTimeout);
-  const tt=document.getElementById('tooltip');
-  const col=NC[n.color]||'#00D4D0';
+  const tt=document.getElementById('tooltip'),col=NC[n.color]||'#00D4D0';
   const bigLetter=document.getElementById('tt-big-letter');
-  if(n.pillars&&n.pillars.length===1&&n.noLink){
-    bigLetter.textContent=n.pillars[0];
-    bigLetter.style.color=col;
-    bigLetter.style.display='block';
-    document.getElementById('tt-pillars').style.display='none';
-  } else {
-    bigLetter.style.display='none';
-    document.getElementById('tt-pillars').style.display='flex';
-  }
-  document.getElementById('tt-code').textContent=n.code;
-  document.getElementById('tt-code').style.color=col;
-  document.getElementById('tt-name').textContent=n.name;
-  document.getElementById('tt-desc').textContent=n.desc;
+  if(n.pillars&&n.pillars.length===1&&n.noLink){bigLetter.textContent=n.pillars[0];bigLetter.style.color=col;bigLetter.style.display='block';document.getElementById('tt-pillars').style.display='none';}
+  else{bigLetter.style.display='none';document.getElementById('tt-pillars').style.display='flex';}
+  document.getElementById('tt-code').textContent=n.code;document.getElementById('tt-code').style.color=col;
+  document.getElementById('tt-name').textContent=n.name;document.getElementById('tt-desc').textContent=n.desc;
   const pe=document.getElementById('tt-pillars');
-  if(n.pillars&&n.pillars.length){
-    pe.innerHTML=n.pillars.map(p=>`<span class="tt-pill" style="background:${PC[p]}18;color:${PC[p]};border:1px solid ${PC[p]}40">${p}</span>`).join('');
-  } else {
-    pe.innerHTML=`<span class="tt-pill" style="background:rgba(0,212,208,.12);color:#00D4D0;border:1px solid rgba(0,212,208,.3)">COMPOSITE</span>`;
-  }
+  if(n.pillars&&n.pillars.length){pe.innerHTML=n.pillars.map(p=>`<span class="tt-pill" style="background:${PC[p]}18;color:${PC[p]};border:1px solid ${PC[p]}40">${p}</span>`).join('');}
+  else{pe.innerHTML=`<span class="tt-pill" style="background:rgba(0,212,208,.12);color:#00D4D0;border:1px solid rgba(0,212,208,.3)">COMPOSITE</span>`;}
   const lk=document.getElementById('tt-link');
-  if(n.noLink){lk.style.display='none';}
-  else{lk.style.display='block';lk.href=n.file||'#';lk.style.color=col;}
-  tt.classList.add('show');
-  moveTooltip(ev);
+  if(n.noLink){lk.style.display='none';}else{lk.style.display='block';lk.href=n.file||'#';lk.style.color=col;}
+  tt.classList.add('show');moveTooltip(ev);
 }
 function hideTooltip(){ttTimeout=setTimeout(()=>document.getElementById('tooltip').classList.remove('show'),120);}
 function moveTooltip(ev){
@@ -1165,11 +732,4 @@ function moveTooltip(ev){
 }
 
 buildDiagram();
-window.addEventListener('resize',()=>{clearTimeout(window._rt);window._rt=setTimeout(()=>{buildDiagram();},160);});
-document.querySelector('a[href="#diagram"]')?.addEventListener('click',e=>{
-  e.preventDefault();
-  document.getElementById('diagram').scrollIntoView({behavior:'smooth'});
-});
-</script>
-</body>
-</html>
+window.addEventListener('resize',()=>{clearTimeout(window._rt);window._rt=setTimeout(buildDiag
