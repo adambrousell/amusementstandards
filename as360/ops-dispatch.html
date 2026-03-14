@@ -243,6 +243,26 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
 .code-drop-insert{padding:0 10px;height:34px;background:var(--panel3);border:1px solid var(--border2);border-radius:5px;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-dim);cursor:pointer;white-space:nowrap;transition:all .12s;flex-shrink:0;}
 .code-drop-insert:hover{border-color:var(--cyan);color:var(--cyan);}
 .code-drop-insert.inserted{border-color:var(--green);color:var(--green);background:var(--green-dim);}
+
+/* EMERGENCY ROLES PANEL */
+.roles-panel{background:var(--surface);border-top:1px solid var(--border);flex-shrink:0;}
+.roles-panel-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;cursor:pointer;border-bottom:1px solid transparent;}
+.roles-panel-hdr:hover{background:var(--cyan-glow);}
+.roles-panel-hdr.open{border-bottom-color:var(--border);}
+.rph-title{font-family:var(--display);font-size:13px;font-weight:700;color:var(--text-bright);}
+.rph-meta{font-family:var(--mono);font-size:8px;color:var(--text-dim);}
+.rph-status{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;}
+.roles-panel-body{display:none;padding:8px;max-height:260px;overflow-y:auto;}
+.roles-panel-hdr.open+.roles-panel-body{display:block;}
+.role-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;border:1px solid var(--border);background:var(--panel);margin-bottom:4px;}
+.role-row.unassigned{border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.04);}
+.role-icon{font-size:14px;flex-shrink:0;}
+.role-name{font-family:var(--mono);font-size:9px;color:var(--text-dim);min-width:80px;flex-shrink:0;}
+.role-person{font-size:12px;font-weight:600;flex:1;}
+.role-person.assigned{color:var(--text-bright);}
+.role-person.unassigned{color:var(--amber);font-style:italic;font-weight:400;}
+.roles-sync-btn{padding:3px 8px;border:1px solid var(--border2);border-radius:4px;background:transparent;font-family:var(--mono);font-size:8px;color:var(--text-dim);cursor:pointer;min-height:28px;transition:all .12s;}
+.roles-sync-btn:hover{border-color:var(--cyan);color:var(--cyan);}
 .radio-send-row{display:flex;gap:4px;}
 .radio-send-btn{flex:1;height:32px;background:linear-gradient(135deg,var(--cyan),#0090CC);border:none;border-radius:5px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.5px;color:#000;cursor:pointer;}
 .radio-inc-btn{padding:0 10px;height:32px;background:var(--red-dim);border:1px solid rgba(244,63,94,.35);border-radius:5px;font-family:var(--mono);font-size:10px;color:var(--red);cursor:pointer;white-space:nowrap;}
@@ -365,6 +385,25 @@ body{font-family:var(--ui);color:var(--text);display:flex;flex-direction:column;
       </div>
     </div>
     <div class="radio-log" id="radioLog"><div class="empty"><div class="empty-icon">📻</div>No entries yet</div></div>
+
+    <!-- Emergency Role Roster -->
+    <div class="roles-panel" id="rolesPanel">
+      <div class="roles-panel-hdr" id="rolesPanelHdr" onclick="toggleRolesPanel()">
+        <div>
+          <div class="rph-title">🚨 Emergency Roles</div>
+          <div class="rph-meta" id="roles-sync-ts">Not synced — tap ↻ to load from manager module</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="rph-status" id="roles-status-chip" style="background:var(--panel3);color:var(--text-dim);border:1px solid var(--border);">NOT LOADED</span>
+          <button class="roles-sync-btn" onclick="syncRoleRoster(event)">↻ Sync</button>
+          <span style="font-size:9px;color:var(--text-dim);" id="roles-chevron">▲</span>
+        </div>
+      </div>
+      <div class="roles-panel-body" id="rolesPanelBody">
+        <div class="empty" style="padding:12px;"><div class="empty-icon" style="font-size:18px">🚨</div>Tap ↻ Sync to load roster from manager module</div>
+      </div>
+    </div>
+
     <div class="radio-input-area">
       <div class="radio-compose">
         <div class="radio-compose-row">
@@ -518,7 +557,7 @@ async function atPost(table,fields){
     if(si){si.style.background='#22C55E';si.title='Synced';setTimeout(()=>{si.style.background='#4A5568';},2000);}
   }catch(e){
     if(si){si.style.background='#F43F5E';si.title='Sync error';setTimeout(()=>{si.style.background='#4A5568';},4000);}
-    console.warn('[OPD] Sync failed:',e.message);
+    console.debug('[OPD] Sync failed:',e.message);
   }
 }
 
@@ -594,6 +633,7 @@ function startDispatch(){
   logRadio('ALL','Dispatch shift started · '+name+' ('+badge+') · '+dispatcher.shift+' shift','info','comm');
   pushSession('Open');
   toast('Shift started · '+dispatcher.shift,'ok');
+  setTimeout(syncRoleRoster, 1500); // auto-load role roster
 }
 
 function tickClock(){
@@ -1133,6 +1173,152 @@ function showTab(tab,el){
   else if(tab==='score')renderScoreTab();
   else if(tab==='codes')renderCodes();
 }
+
+
+// ── EMERGENCY ROLE ROSTER ─────────────────────────────────────────────────────
+const AT_PROXY_OPD = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+let roleRosterData = null;
+let rolesPanelOpen = false;
+
+const ROLE_DEFS_OPD = [
+  {id:'ic',      icon:'🎖️', name:'Incident Commander'},
+  {id:'ops',     icon:'⚙️',  name:'Operations Chief'},
+  {id:'safety',  icon:'🦺',  name:'Safety Officer'},
+  {id:'comms',   icon:'📢',  name:'Communications Lead'},
+  {id:'medical', icon:'🩺',  name:'Medical Coordinator'},
+  {id:'evac',    icon:'🚪',  name:'Evacuation Coordinator'},
+  {id:'security',icon:'🔒',  name:'Security Lead'},
+  {id:'maint',   icon:'🔧',  name:'Maintenance Coordinator'},
+];
+
+function toggleRolesPanel(){
+  rolesPanelOpen = !rolesPanelOpen;
+  const hdr  = document.getElementById('rolesPanelHdr');
+  const body = document.getElementById('rolesPanelBody');
+  const chev = document.getElementById('roles-chevron');
+  if(hdr)  hdr.classList.toggle('open', rolesPanelOpen);
+  if(body) body.style.display = rolesPanelOpen ? 'block' : 'none';
+  if(chev) chev.textContent = rolesPanelOpen ? '▼' : '▲';
+}
+
+async function syncRoleRoster(e){
+  if(e) e.stopPropagation();
+  const syncBtn = document.querySelector('.roles-sync-btn');
+  if(syncBtn){ syncBtn.textContent = '↻ Syncing…'; syncBtn.disabled = true; }
+
+  // Primary: read from localStorage — the manager module writes here on every push
+  // Key: 'as360_rc_names' (individual assignments) + 'as360_rc_session' (session ID)
+  let loaded = false;
+  try{
+    const names = JSON.parse(localStorage.getItem('as360_rc_names') || '{}');
+    const sessionId = localStorage.getItem('as360_rc_session') || null;
+    const hasAny = Object.keys(names).length > 0 && Object.values(names).some(v => v && v.trim());
+
+    if(hasAny){
+      // Build the fields object the same shape as Airtable record
+      const ROLE_NAME_MAP = {
+        ic:'Incident Commander', ops:'Operations Chief', safety:'Safety Officer',
+        comms:'Communications Lead', medical:'Medical Coordinator',
+        evac:'Evacuation Coordinator', security:'Security Lead', maint:'Maintenance Coordinator'
+      };
+      const fields = {'Session ID': sessionId || 'local', 'Confirmed By': 'Manager Module', 'Facility': 'Epic Universe', 'Shift': '—'};
+      Object.entries(ROLE_NAME_MAP).forEach(([id, roleName]) => {
+        fields[roleName] = names[id] || 'UNASSIGNED';
+      });
+      // Try to get shift/confirmed-by from shared OPD radio log context
+      const shift = dispatcher.shift || '—';
+      fields['Shift'] = shift;
+
+      roleRosterData = fields;
+      renderRoleRoster();
+
+      const ts = document.getElementById('roles-sync-ts');
+      if(ts) ts.textContent = 'Synced from manager localStorage · session ' + (sessionId || 'n/a');
+      if(!rolesPanelOpen) toggleRolesPanel();
+      loaded = true;
+    }
+  } catch(lsErr){
+    console.debug('[OPD] localStorage roster read failed:', lsErr.message);
+  }
+
+  // Secondary: try Airtable GET via proxy (may 405 if proxy is POST-only — fail silently)
+  if(!loaded){
+    try{
+      const url = AT_PROXY_OPD + '/' + encodeURIComponent('EAP_RoleAssignments')
+        + '?sort%5B0%5D%5Bfield%5D=Confirmed+At&sort%5B0%5D%5Bdirection%5D=desc&maxRecords=1';
+      const res = await fetch(url, {method:'GET', headers:{'Content-Type':'application/json'}});
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if(data.records && data.records.length > 0){
+        roleRosterData = data.records[0].fields;
+        renderRoleRoster();
+        const confirmedAt = roleRosterData['Confirmed At']
+          ? new Date(roleRosterData['Confirmed At']).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
+          : '—';
+        const ts = document.getElementById('roles-sync-ts');
+        if(ts) ts.textContent = 'Confirmed: ' + confirmedAt + ' · ' + (roleRosterData['Shift']||'—');
+        if(!rolesPanelOpen) toggleRolesPanel();
+        loaded = true;
+      }
+    } catch(atErr){
+      // Proxy doesn't support GET — silent, expected behaviour
+      console.debug('[OPD] Airtable roster GET not available (proxy POST-only):', atErr.message);
+    }
+  }
+
+  if(!loaded){
+    renderRoleRosterEmpty();
+    // Only show toast on manual sync, not auto-sync on shift start
+    if(e) toast('No roster confirmed yet — manager must push from Escalation tab','warn');
+  } else if(e){
+    toast('Role roster loaded','ok');
+  }
+
+  if(syncBtn){ syncBtn.textContent = '↻ Sync'; syncBtn.disabled = false; }
+}
+
+function renderRoleRoster(){
+  const body = document.getElementById('rolesPanelBody');
+  const chip = document.getElementById('roles-status-chip');
+  if(!body || !roleRosterData) return;
+
+  const fields = roleRosterData;
+  const assigned = ROLE_DEFS_OPD.filter(r => fields[r.name] && fields[r.name] !== 'UNASSIGNED').length;
+  const unassigned = ROLE_DEFS_OPD.length - assigned;
+
+  if(chip){
+    if(unassigned === 0){
+      chip.textContent = '✓ COMPLETE';
+      chip.style.cssText = 'font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25);';
+    } else {
+      chip.textContent = unassigned + ' UNASSIGNED';
+      chip.style.cssText = 'font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.3);';
+    }
+  }
+
+  body.innerHTML = ROLE_DEFS_OPD.map(r => {
+    const person = fields[r.name] || '';
+    const isAssigned = person && person !== 'UNASSIGNED';
+    return '<div class="role-row ' + (isAssigned ? '' : 'unassigned') + '">'
+      + '<span class="role-icon">' + r.icon + '</span>'
+      + '<span class="role-name">' + r.name + '</span>'
+      + '<span class="role-person ' + (isAssigned ? 'assigned' : 'unassigned') + '">' + (isAssigned ? person : 'Unassigned') + '</span>'
+      + '</div>';
+  }).join('') + '<div style="font-family:var(--mono);font-size:8px;color:var(--text-muted);padding:6px 4px 2px;">'
+    + 'Session: ' + (fields['Session ID']||'—') + ' · Confirmed by: ' + (fields['Confirmed By']||'—') + '</div>';
+}
+
+function renderRoleRosterEmpty(){
+  const body = document.getElementById('rolesPanelBody');
+  const chip = document.getElementById('roles-status-chip');
+  if(chip){ chip.textContent = 'AWAITING'; chip.style.cssText = 'font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;background:var(--panel3);color:var(--text-dim);border:1px solid var(--border);'; }
+  if(body) body.innerHTML = '<div style="text-align:center;padding:12px;font-family:var(--mono);font-size:10px;color:var(--text-muted);">Manager has not confirmed role assignments yet.<br>Waiting for push from Manager Module → Escalation tab.</div>';
+}
+
+// Auto-sync every 2 minutes when dispatcher is active (silent — no event arg = no toast)
+setInterval(function(){
+  if(dispatcher.name) syncRoleRoster(null);
+}, 120000);
 
 // ── DEMO SEED ─────────────────────────────────────────────────────────────────
 function seedDemo(){
