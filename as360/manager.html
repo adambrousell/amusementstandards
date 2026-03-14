@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Manager Module · AS 360</title>
+<title>Manager Module · Epic Universe · AS 360</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -322,11 +322,11 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:10px;">
     <div class="tb-logo">
-      <div class="tb-logo-mark">MGR</div>
-      <div class="tb-brand">Manager Module</div>
+      <div class="tb-logo-mark">EU</div>
+      <div class="tb-brand">Epic Universe</div>
     </div>
     <div class="tb-divider"></div>
-    <div class="tb-sub" style="display:none;font-size:9px;" id="at-sync">⬤ AIRTABLE</div>
+    <div class="tb-sub">AS 360 · MGR MODULE · ORLANDO</div>
   </div>
   <div class="topbar-right">
     <div id="at-sync" style="font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:.5px;">⬤ AIRTABLE</div>
@@ -450,10 +450,11 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <div class="ff"><label>Attraction</label>
           <select id="oos-attraction">
             <option value="">— Select —</option>
-            <optgroup label="Coasters"><option>Wooden Rollercoaster 1</option><option>Steel Coaster</option><option>Family Coaster</option></optgroup>
-            <optgroup label="Flat Rides"><option>Ferris Wheel</option><option>Carousel</option><option>Scrambler</option><option>Drop Tower</option></optgroup>
-            <optgroup label="Water"><option>Waterslide A</option><option>Waterslide B</option><option>Wave Pool</option><option>Lazy River</option></optgroup>
-            <optgroup label="Kiddie"><option>Kiddie Coaster</option><option>Kiddie Cars</option></optgroup>
+            <optgroup label="🌌 Celestial Park"><option>Stardust Racers</option><option>Constellation Carousel</option></optgroup>
+            <optgroup label="⚡ Ministry of Magic"><option>Harry Potter and the Battle at the Ministry</option></optgroup>
+            <optgroup label="🍄 Super Nintendo World"><option>Donkey Kong Country: Mine-Cart Madness</option><option>Mario Kart: Bowser's Challenge</option><option>Yoshi's Adventure</option></optgroup>
+            <optgroup label="🐉 Isle of Berk"><option>Dragon Racer's Rally</option><option>Hiccup's Wing Gliders</option><option>Fyre Drill</option><option>Viking Training Camp</option></optgroup>
+            <optgroup label="🧟 Dark Universe"><option>Monsters Unchained: The Curse of the Werewolf</option></optgroup>
           </select>
         </div>
         <div class="ff"><label>Reason</label>
@@ -541,21 +542,63 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     </div>
     <div class="form-panel-body">
       <div class="form-progress"><div class="form-progress-fill" id="prog-CCA" style="width:0%"></div></div>
-      <div class="form-grid">
-        <div class="ff"><label>Date</label><input type="date" id="cca-date"></div>
-        <div class="ff"><label>Shift</label><select id="cca-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select></div>
+
+      <!-- Session header — filled once -->
+      <div style="background:var(--panel3);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;">Audit Session</div>
+        <div class="form-grid">
+          <div class="ff" style="margin:0"><label>Date</label><input type="date" id="cca-date"></div>
+          <div class="ff" style="margin:0"><label>Shift</label><select id="cca-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select></div>
+        </div>
+        <div class="ff" style="margin-top:8px;margin-bottom:0"><label>Manager / Inspector</label><input type="text" id="cca-manager" placeholder="Name"></div>
       </div>
-      <div class="ff"><label>Manager / Inspector</label><input type="text" id="cca-manager" placeholder="Name"></div>
-      <div class="checklist-group">
-        <div class="cg-title">Zone Ratings — Pass · Flag · Fail · N/A</div>
-        <div id="cca-zones"></div>
+
+      <!-- Completed locations log -->
+      <div id="cca-completed-log" style="display:none;margin-bottom:12px;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green);margin-bottom:6px;">Locations Completed This Session</div>
+        <div id="cca-completed-list" style="display:flex;flex-direction:column;gap:4px;"></div>
       </div>
-      <div class="ff"><label>Overall Condition</label>
-        <select id="cca-overall"><option value="">— Select —</option><option value="excellent">Excellent — No issues</option><option value="good">Good — Minor items noted</option><option value="fair">Fair — Multiple concerns</option><option value="poor">Poor — Immediate action needed</option></select>
+
+      <!-- Current location card -->
+      <div style="background:var(--panel3);border:1px solid var(--teal);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">Current Location</div>
+        <div class="form-grid">
+          <div class="ff" style="margin:0"><label>Location Type</label>
+            <select id="cca-loc-type" onchange="buildCCAChecklist()">
+              <option value="">— Select type —</option>
+              <option value="celestial">🌌 Celestial Park</option>
+              <option value="ministry">⚡ Ministry of Magic</option>
+              <option value="nintendo">🍄 Super Nintendo World</option>
+              <option value="berk">🐉 Isle of Berk</option>
+              <option value="darkuniverse">🧟 Dark Universe</option>
+              <option value="fb">🍔 Food & Beverage</option>
+              <option value="restroom">🚻 Restroom</option>
+              <option value="entrance">🎟 Entrance / Security</option>
+              <option value="retail">🛍 Retail / Merchandise</option>
+            </select>
+          </div>
+          <div class="ff" style="margin:0"><label>Specific Location Name</label><input type="text" id="cca-loc-name" placeholder="e.g. Stardust Racers Queue"></div>
+        </div>
       </div>
-      <div class="ff"><label>Notes / Corrective Actions Needed</label><textarea id="cca-notes" rows="2" placeholder="Any specific issues noted, actions taken or needed…"></textarea></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn btn-teal" onclick="submitInspection('CCA')">Submit Audit →</button>
+
+      <!-- Dynamic checklist for current location -->
+      <div id="cca-checklist-wrap" style="display:none;">
+        <div class="checklist-group">
+          <div class="cg-title" id="cca-checklist-title">Checklist — Pass · Flag · Fail · N/A</div>
+          <div id="cca-zones"></div>
+        </div>
+        <div class="ff"><label>Location Condition</label>
+          <select id="cca-overall"><option value="">— Select —</option><option value="excellent">Excellent — No issues</option><option value="good">Good — Minor items noted</option><option value="fair">Fair — Multiple concerns</option><option value="poor">Poor — Immediate action needed</option></select>
+        </div>
+        <div class="ff"><label>Notes for This Location</label><textarea id="cca-notes" rows="2" placeholder="Specific issues, photos taken, corrective actions needed…"></textarea></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
+          <button class="btn btn-teal" onclick="ccaAddLocation()">✓ Log Location &amp; Continue →</button>
+          <button class="btn btn-ghost" onclick="ccaClearLocation()">Clear</button>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:12px;margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-green" onclick="submitInspection('CCA')">Finish Audit &amp; Submit All →</button>
         <button class="btn btn-ghost" onclick="closeForm('CCA')">Cancel</button>
       </div>
     </div>
@@ -563,7 +606,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
   <div class="form-panel" id="form-HAE">
     <div class="form-panel-hdr">
-      <div class="form-panel-title">Height & Age Enforcement Audit</div>
+      <div class="form-panel-title">Height &amp; Age Enforcement Audit</div>
       <button class="btn btn-ghost btn-sm" onclick="closeForm('HAE')">✕ Close</button>
     </div>
     <div class="form-panel-body">
@@ -573,16 +616,27 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <div class="ff"><label>Shift</label><select id="hae-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select></div>
       </div>
       <div class="ff"><label>Manager / Inspector</label><input type="text" id="hae-manager" placeholder="Name"></div>
+
+      <!-- Part 1: Behavioral compliance -->
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:12px 0 8px;">Part 1 — Staff &amp; Station Compliance</div>
       <div class="checklist-group">
-        <div class="cg-title">Height Check Station Compliance</div>
+        <div class="cg-title">Pass · Fail · N/A</div>
         <div id="hae-stations"></div>
       </div>
       <div class="form-grid">
         <div class="ff"><label>Guests Observed</label><input type="number" id="hae-observed" placeholder="Total guests checked" min="0"></div>
         <div class="ff"><label>Violations Found</label><input type="number" id="hae-violations" placeholder="0" min="0" value="0"></div>
       </div>
-      <div class="ff"><label>Ride with Most Height Issues (if any)</label><input type="text" id="hae-problem-ride" placeholder="Attraction name or None"></div>
-      <div class="ff"><label>Notes / Actions Taken</label><textarea id="hae-notes" rows="2" placeholder="Any violations, staff coaching performed, escalations…"></textarea></div>
+
+      <!-- Part 2: Tape measure verification -->
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--amber);margin:14px 0 6px;">Part 2 — Height Stick Tape Measure Verification</div>
+      <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;line-height:1.6;">Height sticks wear down at the base over time. Verify each stick with a hand tape measure and record the actual measured height. Flag anything beyond ±¼ inch (0.25″) variance.</div>
+
+      <div id="hae-measure-rows" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;"></div>
+      <button class="btn btn-ghost btn-sm" onclick="haeAddMeasureRow()" style="margin-bottom:12px;">＋ Add Height Stick</button>
+
+      <div class="ff"><label>Height Sticks Requiring Replacement / Remarking</label><input type="text" id="hae-sticks-replace" placeholder="e.g. Dragon Racer's Rally 48″ stick, Fyre Drill 48″ stick — or None"></div>
+      <div class="ff"><label>Notes / Actions Taken</label><textarea id="hae-notes" rows="2" placeholder="Violations, staff coaching performed, sticks replaced, escalations…"></textarea></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button class="btn btn-teal" onclick="submitInspection('HAE')">Submit Audit →</button>
         <button class="btn btn-ghost" onclick="closeForm('HAE')">Cancel</button>
@@ -597,30 +651,37 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     </div>
     <div class="form-panel-body">
       <div class="form-progress"><div class="form-progress-fill" id="prog-WQA" style="width:0%"></div></div>
+
       <div class="form-grid">
         <div class="ff"><label>Date</label><input type="date" id="wqa-date"></div>
         <div class="ff"><label>Time Tested</label><input type="time" id="wqa-time"></div>
       </div>
       <div class="ff"><label>Inspector / Operator</label><input type="text" id="wqa-inspector" placeholder="Name"></div>
-      <div class="checklist-group">
-        <div class="cg-title">Pool / Zone Results</div>
-        <div id="wqa-pools"></div>
+
+      <!-- per-zone chemical cards rendered by JS -->
+      <div id="wqa-zone-cards"></div>
+
+      <!-- PUMP & TURNOVER CALCULATOR -->
+      <div style="background:var(--panel3);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;">Pump & Water Turnover</div>
+        <div class="form-grid">
+          <div class="ff"><label>Observed Flow Rate (GPM)</label><input type="number" id="wqa-gpm" placeholder="e.g. 450" min="0" step="1" oninput="calcTurnover()"></div>
+          <div class="ff"><label>Pump Speed (% or RPM)</label><input type="number" id="wqa-pump-speed" placeholder="e.g. 85 or 1750" min="0" step="1"></div>
+        </div>
+        <div class="form-grid">
+          <div class="ff"><label>Total Pool Volume (gal)</label><input type="number" id="wqa-pool-volume" placeholder="e.g. 250000" min="0" step="1000" oninput="calcTurnover()"></div>
+          <div class="ff" style="display:flex;flex-direction:column;justify-content:flex-end;">
+            <label>Calculated Turnover Rate</label>
+            <div id="wqa-turnover-display" style="padding:10px 12px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);font-size:14px;font-weight:700;color:var(--text-dim);min-height:44px;display:flex;align-items:center;">— hrs</div>
+          </div>
+        </div>
+        <div id="wqa-turnover-note" style="font-size:11px;color:var(--text-dim);margin-top:4px;"></div>
       </div>
-      <div class="form-grid">
-        <div class="ff"><label>Free Chlorine (ppm)</label><input type="number" id="wqa-chlorine" placeholder="Target: 1.0–3.0" step="0.1" min="0"></div>
-        <div class="ff"><label>pH Level</label><input type="number" id="wqa-ph" placeholder="Target: 7.2–7.8" step="0.1" min="0"></div>
-      </div>
-      <div class="form-grid">
-        <div class="ff"><label>Combined Chlorine (ppm)</label><input type="number" id="wqa-combined" placeholder="Target: &lt;0.2" step="0.1" min="0"></div>
-        <div class="ff"><label>Water Temp (°F)</label><input type="number" id="wqa-temp" placeholder="e.g. 82" min="0"></div>
-      </div>
-      <div class="ff"><label>Turbidity</label>
-        <select id="wqa-turbidity"><option value="">— Select —</option><option value="clear">Clear — Drain visible at 6ft</option><option value="hazy">Slightly Hazy — Drain visible</option><option value="cloudy">Cloudy — Drain not visible — ACTION REQUIRED</option></select>
-      </div>
+
       <div class="ff"><label>Overall Status</label>
-        <select id="wqa-status"><option value="pass">Pass — All within range</option><option value="marginal">Marginal — Corrective action taken</option><option value="fail">Fail — Pool closed for treatment</option></select>
+        <select id="wqa-status"><option value="pass">Pass — All zones within range</option><option value="marginal">Marginal — Corrective action taken</option><option value="fail">Fail — Zone(s) closed for treatment</option></select>
       </div>
-      <div class="ff"><label>Action Taken / Notes</label><textarea id="wqa-notes" rows="2" placeholder="Chemical additions, corrections, closures…"></textarea></div>
+      <div class="ff"><label>Chemical Additions / Actions Taken</label><textarea id="wqa-notes" rows="2" placeholder="Chlorine added, pH corrected, zone closed, etc…"></textarea></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button class="btn btn-teal" onclick="submitInspection('WQA')">Submit Results →</button>
         <button class="btn btn-ghost" onclick="closeForm('WQA')">Cancel</button>
@@ -799,9 +860,11 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
       <div class="ff"><label>Attraction</label>
         <select id="tp-attraction">
           <option value="">— Select —</option>
-          <optgroup label="Coasters"><option>Wooden Rollercoaster 1</option><option>Steel Coaster</option><option>Family Coaster</option></optgroup>
-          <optgroup label="Flat Rides"><option>Ferris Wheel</option><option>Carousel</option><option>Scrambler</option><option>Drop Tower</option></optgroup>
-          <optgroup label="Water"><option>Waterslide A</option><option>Waterslide B</option><option>Wave Pool</option><option>Lazy River</option></optgroup>
+          <optgroup label="🌌 Celestial Park"><option>Stardust Racers</option><option>Constellation Carousel</option></optgroup>
+          <optgroup label="⚡ Ministry of Magic"><option>Harry Potter and the Battle at the Ministry</option></optgroup>
+          <optgroup label="🍄 Super Nintendo World"><option>Donkey Kong Country: Mine-Cart Madness</option><option>Mario Kart: Bowser's Challenge</option><option>Yoshi's Adventure</option></optgroup>
+          <optgroup label="🐉 Isle of Berk"><option>Dragon Racer's Rally</option><option>Hiccup's Wing Gliders</option><option>Fyre Drill</option><option>Viking Training Camp</option></optgroup>
+          <optgroup label="🧟 Dark Universe"><option>Monsters Unchained: The Curse of the Werewolf</option></optgroup>
         </select>
       </div>
       <div class="form-grid">
@@ -882,9 +945,121 @@ const INSP_DEFS={
   SGS:{id:'SGS',name:'Slide & Geometry Survey',table:'SGS_Log',cadence:365,scores:['s'],freq:'annual'},
 };
 
-const CCA_ZONES=['Entrance & Ticketing Area','Queue Lines & Waiting Areas','Ride Platforms & Load/Unload','Midway & Pathways','Food & Beverage Areas','Restrooms','Employee Areas','Parking & Perimeter'];
-const HAE_STATIONS=['Entrance Height Boards — Visible and accurate','Staff actively measuring questionable guests','No "eyeballing" — measuring stick used','Height check at ride secondary check (if applicable)','Staff positioned correctly at stations','Age restriction signs posted and visible','Wristband/re-entry height check system functional'];
-const WQA_POOL_ZONES=['Main Pool','Kiddie Pool','Lazy River','Wave Pool','Waterslide Runout'];
+// CCA — per-location-type checklist items (Epic Universe)
+const CCA_CHECKLISTS={
+  celestial:[
+    'Stardust Racers queue lane — no litter, clean railings',
+    'Stardust Racers platform and load/unload zone clear',
+    'Constellation Carousel platform surface clean',
+    'Astronomica water play area drains clear, surface clean',
+    'Central fountain plaza — no debris, seating clean',
+    'Celestial Park midway walkways — no litter or hazards',
+    'Trash receptacles not overflowing',
+    'Wayfinding signage clean and fully legible',
+    'Landscaping maintained — no overgrowth or litter in planters',
+  ],
+  ministry:[
+    'Harry Potter Battle at Ministry queue — floors and walls clean',
+    'Ministry exterior facade and entry arch — no debris',
+    'Hogsmeade Paris streets clean — no litter',
+    'Spell-casting locations clean, interactive elements functional',
+    'Ollivanders / retail areas clean and organized',
+    'Restrooms in this world — clean and stocked (if applicable)',
+    'Trash receptacles not overflowing',
+    'Character/theming elements — signage and props in good condition',
+  ],
+  nintendo:[
+    'Mine-Cart Madness queue lane — no litter, rails clean',
+    'Mine-Cart Madness platform and load zone clear',
+    'Mario Kart Bowser\'s Challenge queue and pre-show area clean',
+    'Yoshi\'s Adventure queue and boarding area clean',
+    'Super Nintendo World midway — no litter, surfaces clean',
+    'Question blocks and interactive elements functional and clean',
+    'F&B and retail areas in this world — clean and organized',
+    'Trash receptacles not overflowing',
+    'Signage and theming elements in good condition',
+  ],
+  berk:[
+    'Dragon Racer\'s Rally queue lane — floors and railings clean',
+    'Dragon Racer\'s Rally platform and boarding zone clear',
+    'Hiccup\'s Wing Gliders queue and launch area clean',
+    'Fyre Drill queue and ride area clean',
+    'Viking Training Camp boat dock and boarding area clean',
+    'Isle of Berk village pathways — no litter or hazards',
+    'Dragon\'s Edge play area — clean, no sharp debris',
+    'Trash receptacles not overflowing',
+    'Theming elements — barrels, crates, signage in good condition',
+  ],
+  darkuniverse:[
+    'Monsters Unchained queue — floors, walls, theming elements clean',
+    'Monsters Unchained platform and load zone clear',
+    'Dark Universe village pathways — no litter',
+    'Monster makeup / character areas — clean surroundings',
+    'F&B and retail in this world — clean and organized',
+    'Trash receptacles not overflowing',
+    'Atmospheric theming props in good condition — no broken pieces',
+    'Scare zone / theming elements safe and not obstructing pathways',
+  ],
+  fb:[
+    'Serving counter clean and sanitized',
+    'Floor and mats clean, no food debris',
+    'Equipment exterior clean and grease-free',
+    'Trash and recycling not overflowing',
+    'Condiment / napkin station clean and stocked',
+    'Handwashing station accessible and soap stocked',
+    'Menu boards clean and legible',
+    'Outdoor seating / tables wiped down',
+    'Grease traps / drains clear (if visible)',
+  ],
+  restroom:[
+    'Stalls clean, no debris or graffiti',
+    'Toilets / urinals clean and fully functional',
+    'Sinks and counters clean and dry',
+    'Floors clean, dry, no standing water',
+    'Toilet paper stocked in all stalls',
+    'Paper towels / hand dryers functional',
+    'Soap dispensers full',
+    'Trash cans not overflowing',
+    'Odor acceptable — no chemical or sewage odor',
+    'Baby changing station clean (if applicable)',
+    'Accessible stall fully functional',
+  ],
+  entrance:[
+    'Entry plaza and Chronos arch area clean',
+    'Security checkpoint lanes clean and organized',
+    'Ticket scanning area free of debris',
+    'Height requirement sign clean and fully legible',
+    'Bag check area clean and organized',
+    'Guest Services area clean',
+    'Exterior curb and drop-off zone — no litter buildup',
+    'Accessible pathways clear',
+  ],
+  retail:[
+    'Sales floor clean — no litter or displaced merchandise',
+    'Display fixtures dust-free and organized',
+    'Checkout counter clean',
+    'Floor clear — no tripping hazards',
+    'Fitting rooms clean (if applicable)',
+    'Trash receptacles not overflowing',
+    'Window displays clean and intact',
+    'Signage / pricing clean and legible',
+  ],
+};
+
+const CCA_TYPE_LABELS={celestial:'Celestial Park',ministry:'Ministry of Magic',nintendo:'Super Nintendo World',berk:'Isle of Berk',darkuniverse:'Dark Universe',fb:'Food & Beverage',restroom:'Restroom',entrance:'Entrance / Security',retail:'Retail / Merchandise'};
+
+// session state for CCA multi-location
+let ccaSessionLocations=[];
+
+const HAE_STATIONS=[
+  'Entrance height boards clearly visible to approaching guests',
+  'Staff actively measuring — not eyeballing — any borderline guest',
+  'Measuring stick used consistently, not just wristband color check',
+  'Height check at ride platform secondary check (if applicable)',
+  'Staff positioned correctly — not obstructing flow but checking all',
+  'Age / height restriction signs posted, clean, and legible',
+  'Wristband / re-entry height check system functional',
+];
 
 const DEFAULT_MATRIX=[
   {tier:'1',role:'Maintenance Supervisor',name:'[Name]',contact:'Radio Ch. 3 · ext. 201'},
@@ -1066,7 +1241,7 @@ function openForm(id){
   panel.scrollIntoView({behavior:'smooth',block:'start'});
   if(id==='CCA')buildCCAZones();
   if(id==='HAE')buildHAEStations();
-  if(id==='WQA')buildWQAPools();
+  if(id==='WQA')buildWQAZones();
 }
 
 function closeForm(id){
@@ -1075,15 +1250,20 @@ function closeForm(id){
 }
 
 function buildChecklistItems(){
-  buildCCAZones();buildHAEStations();buildWQAPools();
+  buildCCAZones();buildHAEStations();buildWQAZones();
 }
 
-function buildCCAZones(){
+function buildCCAChecklist(){
+  const type=document.getElementById('cca-loc-type')?.value;
+  const wrap=document.getElementById('cca-checklist-wrap');
   const el=document.getElementById('cca-zones');
-  if(!el)return;
-  el.innerHTML=CCA_ZONES.map((z,i)=>`
+  const title=document.getElementById('cca-checklist-title');
+  if(!type||!el||!wrap){if(wrap)wrap.style.display='none';return;}
+  const items=CCA_CHECKLISTS[type]||[];
+  title.textContent=(CCA_TYPE_LABELS[type]||type)+' Checklist — Pass · Flag · Fail · N/A';
+  el.innerHTML=items.map((item,i)=>`
     <div class="cg-row">
-      <div class="cg-label">${z}</div>
+      <div class="cg-label">${item}</div>
       <div class="cg-options">
         <div class="cg-opt" data-form="CCA" data-idx="${i}" data-val="pass" onclick="selectOpt(this,'pass')">PASS</div>
         <div class="cg-opt" data-form="CCA" data-idx="${i}" data-val="flag" onclick="selectOpt(this,'flag')">FLAG</div>
@@ -1091,7 +1271,90 @@ function buildCCAZones(){
         <div class="cg-opt" data-form="CCA" data-idx="${i}" data-val="na" onclick="selectOpt(this,'na')">N/A</div>
       </div>
     </div>`).join('');
+  wrap.style.display='block';
+  // clear prior selection state
+  items.forEach((_,i)=>delete optState[`CCA-${i}`]);
+  document.getElementById('cca-overall').value='';
+  document.getElementById('cca-notes').value='';
+  updateCCAProgress();
 }
+
+function ccaAddLocation(){
+  const type=document.getElementById('cca-loc-type')?.value;
+  const name=document.getElementById('cca-loc-name')?.value.trim();
+  const overall=document.getElementById('cca-overall')?.value;
+  if(!type){toast('Select a location type','err');return;}
+  if(!name){toast('Enter location name','err');return;}
+  const items=CCA_CHECKLISTS[type]||[];
+  const results={};
+  items.forEach((item,i)=>{results[item]=optState[`CCA-${i}`]||'not-rated';});
+  const fails=Object.values(results).filter(v=>v==='fail').length;
+  const flags=Object.values(results).filter(v=>v==='flag').length;
+  const entry={type,name,overall,results,fails,flags,notes:document.getElementById('cca-notes')?.value.trim()||'',ts:new Date().toISOString()};
+  ccaSessionLocations.push(entry);
+  updateCCACompletedLog();
+  ccaClearLocation();
+  toast(`${name} logged ✓`,'ok');
+}
+
+function ccaClearLocation(){
+  document.getElementById('cca-loc-type').value='';
+  document.getElementById('cca-loc-name').value='';
+  document.getElementById('cca-checklist-wrap').style.display='none';
+  const el=document.getElementById('cca-zones');if(el)el.innerHTML='';
+  Object.keys(optState).filter(k=>k.startsWith('CCA-')).forEach(k=>delete optState[k]);
+}
+
+function updateCCACompletedLog(){
+  const log=document.getElementById('cca-completed-log');
+  const list=document.getElementById('cca-completed-list');
+  if(!log||!list)return;
+  log.style.display=ccaSessionLocations.length?'block':'none';
+  list.innerHTML=ccaSessionLocations.map((loc,i)=>{
+    const statusColor=loc.fails>0?'var(--red)':loc.flags>0?'var(--amber)':'var(--green)';
+    const statusText=loc.fails>0?`${loc.fails} FAIL`:loc.flags>0?`${loc.flags} FLAG`:'PASS';
+    return`<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--panel);border:1px solid var(--border);border-radius:6px;">
+      <div><span style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-right:6px;">${CCA_TYPE_LABELS[loc.type]||loc.type}</span><span style="font-size:12px;font-weight:600;color:var(--text)">${loc.name}</span></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-family:var(--mono);font-size:9px;font-weight:700;color:${statusColor};">${statusText}</span>
+        <button class="btn-icon" style="font-size:11px;" onclick="ccaRemoveLocation(${i})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+  // update progress bar: locations done / target of ~6
+  const pct=Math.min(100,Math.round(ccaSessionLocations.length/6*100));
+  const bar=document.getElementById('prog-CCA');if(bar)bar.style.width=pct+'%';
+}
+
+function ccaRemoveLocation(i){
+  ccaSessionLocations.splice(i,1);
+  updateCCACompletedLog();
+}
+
+function updateCCAProgress(){
+  const type=document.getElementById('cca-loc-type')?.value;
+  if(!type)return;
+  const items=CCA_CHECKLISTS[type]||[];
+  const answered=items.filter((_,i)=>optState[`CCA-${i}`]).length;
+  const pct=items.length?Math.round(answered/items.length*100):0;
+  const bar=document.getElementById('prog-CCA');if(bar)bar.style.width=pct+'%';
+}
+
+// keep buildCCAZones as no-op so buildChecklistItems doesn't break
+function buildCCAZones(){}
+
+// Epic Universe rides with height requirements — [name, required inches]
+const EU_HEIGHT_RIDES=[
+  ['Stardust Racers',48],
+  ['Dragon Racer\'s Rally',48],
+  ['Fyre Drill',48],
+  ['Harry Potter and the Battle at the Ministry',40],
+  ['Mario Kart: Bowser\'s Challenge',40],
+  ['Monsters Unchained: The Curse of the Werewolf',40],
+  ['Hiccup\'s Wing Gliders',40],
+  ['Donkey Kong Country: Mine-Cart Madness',36],
+  ['Yoshi\'s Adventure',34],
+];
 
 function buildHAEStations(){
   const el=document.getElementById('hae-stations');
@@ -1105,21 +1368,197 @@ function buildHAEStations(){
         <div class="cg-opt" data-form="HAE" data-idx="${i}" data-val="na" onclick="selectOpt(this,'na')">N/A</div>
       </div>
     </div>`).join('');
+  // Pre-seed tape measure rows for all EU rides with height requirements
+  const mr=document.getElementById('hae-measure-rows');
+  if(!mr)return;
+  mr.innerHTML='';
+  haeMeasureCount=0;
+  EU_HEIGHT_RIDES.forEach(([name,req])=>{
+    haeMeasureCount++;
+    const n=haeMeasureCount;
+    const row=document.createElement('div');
+    row.id=`hae-mrow-${n}`;
+    row.style.cssText='background:var(--panel3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;';
+    row.innerHTML=`
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">STICK #${n}</div>
+        <button class="btn-icon" style="font-size:11px;" onclick="document.getElementById('hae-mrow-${n}').remove()">✕</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 80px 80px 80px;gap:8px;align-items:end;">
+        <div class="ff" style="margin:0"><label>Ride / Attraction</label><input type="text" id="hae-ride-${n}" value="${name}"></div>
+        <div class="ff" style="margin:0"><label>Required (in.)</label><input type="number" id="hae-req-${n}" value="${req}" min="24" max="96" step="1" oninput="calcHaeVariance(${n})"></div>
+        <div class="ff" style="margin:0"><label>Measured (in.)</label><input type="number" id="hae-meas-${n}" placeholder="${req}.0" min="20" max="100" step="0.1" oninput="calcHaeVariance(${n})"></div>
+        <div class="ff" style="margin:0"><label>Variance</label>
+          <div id="hae-var-${n}" style="padding:10px 8px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text-dim);min-height:44px;display:flex;align-items:center;justify-content:center;">—</div>
+        </div>
+      </div>
+      <div id="hae-var-note-${n}" style="font-size:10px;margin-top:5px;"></div>`;
+    mr.appendChild(row);
+  });
 }
 
-function buildWQAPools(){
-  const el=document.getElementById('wqa-pools');
+let haeMeasureCount=0;
+function haeAddMeasureRow(){
+  haeMeasureCount++;
+  const n=haeMeasureCount;
+  const row=document.createElement('div');
+  row.id=`hae-mrow-${n}`;
+  row.style.cssText='background:var(--panel3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;';
+  row.innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">STICK #${n}</div>
+      <button class="btn-icon" style="font-size:11px;" onclick="document.getElementById('hae-mrow-${n}').remove()">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 80px 80px 80px;gap:8px;align-items:end;">
+      <div class="ff" style="margin:0"><label>Ride / Attraction</label><input type="text" id="hae-ride-${n}" placeholder="e.g. Stardust Racers"></div>
+      <div class="ff" style="margin:0"><label>Required (in.)</label><input type="number" id="hae-req-${n}" placeholder="48" min="24" max="96" step="1" oninput="calcHaeVariance(${n})"></div>
+      <div class="ff" style="margin:0"><label>Measured (in.)</label><input type="number" id="hae-meas-${n}" placeholder="47.8" min="20" max="100" step="0.1" oninput="calcHaeVariance(${n})"></div>
+      <div class="ff" style="margin:0"><label>Variance</label>
+        <div id="hae-var-${n}" style="padding:10px 8px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text-dim);min-height:44px;display:flex;align-items:center;justify-content:center;">—</div>
+      </div>
+    </div>
+    <div id="hae-var-note-${n}" style="font-size:10px;margin-top:5px;"></div>`;
+  document.getElementById('hae-measure-rows').appendChild(row);
+}
+
+function calcHaeVariance(n){
+  const req=parseFloat(document.getElementById(`hae-req-${n}`)?.value);
+  const meas=parseFloat(document.getElementById(`hae-meas-${n}`)?.value);
+  const varEl=document.getElementById(`hae-var-${n}`);
+  const noteEl=document.getElementById(`hae-var-note-${n}`);
+  if(!varEl)return;
+  if(isNaN(req)||isNaN(meas)){varEl.textContent='—';varEl.style.color='var(--text-dim)';if(noteEl)noteEl.textContent='';return;}
+  const diff=Math.round((meas-req)*10)/10;
+  const absDiff=Math.abs(diff);
+  const sign=diff>0?'+':'';
+  let color,note;
+  if(absDiff<=0.25){color='var(--green)';note='✓ Within tolerance (±¼″)';}
+  else if(absDiff<=0.5){color='var(--amber)';note='⚠ Marginal — monitor closely, consider remarking';}
+  else{color='var(--red)';note=`✗ Out of tolerance — stick must be replaced or remarked before next opening`;}
+  varEl.textContent=sign+diff+'″';
+  varEl.style.color=color;
+  if(noteEl){noteEl.textContent=note;noteEl.style.color=color;}
+  haeUpdateProgress();
+}
+
+function haeUpdateProgress(){
+  const rows=document.querySelectorAll('[id^="hae-mrow-"]');
+  let filled=0;
+  rows.forEach(row=>{
+    const n=row.id.split('-')[2];
+    if(document.getElementById(`hae-ride-${n}`)?.value&&document.getElementById(`hae-meas-${n}`)?.value)filled++;
+  });
+  // combine behavioral checklist + tape rows for progress
+  const behavAnswered=HAE_STATIONS.filter((_,i)=>optState[`HAE-${i}`]).length;
+  const total=HAE_STATIONS.length+rows.length;
+  const pct=total?Math.round((behavAnswered+filled)/total*100):0;
+  const bar=document.getElementById('prog-HAE');if(bar)bar.style.width=pct+'%';
+}
+
+// WQA zones — Epic Universe does not have a water park; these represent
+// any on-site water features (decorative fountains, cooling misters, etc.)
+// Update if aquatic facilities are added to scope.
+const WQA_ZONES=[
+  ['Main Fountain Basin — Celestial Park',5000],
+  ['Astronomica Water Play Area',8000],
+  ['Viking Training Camp Splash Zone',12000],
+  ['Back-of-House Cooling Station',2000],
+  ['Secondary Water Feature (if applicable)',3000],
+];
+
+// range helpers — returns css color var for a reading
+function chemColor(type,val){
+  if(val===''||val===null||isNaN(val))return'var(--text-dim)';
+  const v=parseFloat(val);
+  if(type==='cl')return v>=1.0&&v<=3.0?'var(--green)':v>=0.5&&v<1.0||v>3.0&&v<=5.0?'var(--amber)':'var(--red)';
+  if(type==='ph')return v>=7.2&&v<=7.8?'var(--green)':v>=7.0&&v<7.2||v>7.8&&v<=8.0?'var(--amber)':'var(--red)';
+  if(type==='alk')return v>=80&&v<=120?'var(--green)':v>=60&&v<80||v>120&&v<=150?'var(--amber)':'var(--red)';
+  if(type==='ccl')return v<0.2?'var(--green)':v<0.5?'var(--amber)':'var(--red)';
+  return'var(--text-dim)';
+}
+
+function buildWQAZones(){
+  const el=document.getElementById('wqa-zone-cards');
   if(!el)return;
-  el.innerHTML=WQA_POOL_ZONES.map((z,i)=>`
-    <div class="cg-row">
-      <div class="cg-label">${z}</div>
-      <div class="cg-options">
-        <div class="cg-opt" data-form="WQA" data-idx="${i}" data-val="pass" onclick="selectOpt(this,'pass')">IN RANGE</div>
-        <div class="cg-opt" data-form="WQA" data-idx="${i}" data-val="flag" onclick="selectOpt(this,'flag')">MARGINAL</div>
-        <div class="cg-opt" data-form="WQA" data-idx="${i}" data-val="fail" onclick="selectOpt(this,'fail')">CLOSED</div>
-        <div class="cg-opt" data-form="WQA" data-idx="${i}" data-val="na" onclick="selectOpt(this,'na')">N/A</div>
+  el.innerHTML=WQA_ZONES.map(([zone,vol],i)=>`
+    <div style="background:var(--panel3);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-family:var(--cond);font-size:13px;font-weight:700;color:var(--text-bright)">${zone}</div>
+        <div style="display:flex;gap:5px;">
+          <div class="cg-opt" id="wqa-stat-${i}-pass" data-form="WQA" data-idx="${i}" data-val="pass" onclick="selectOpt(this,'pass')">PASS</div>
+          <div class="cg-opt" id="wqa-stat-${i}-flag" data-form="WQA" data-idx="${i}" data-val="flag" onclick="selectOpt(this,'flag')">MARGINAL</div>
+          <div class="cg-opt" id="wqa-stat-${i}-fail" data-form="WQA" data-idx="${i}" data-val="fail" onclick="selectOpt(this,'fail')">CLOSED</div>
+          <div class="cg-opt" id="wqa-stat-${i}-na"   data-form="WQA" data-idx="${i}" data-val="na"   onclick="selectOpt(this,'na')">N/A</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="ff" style="margin:0">
+          <label>Free Cl (ppm)<span style="font-size:9px;color:var(--text-muted);margin-left:4px;">1.0–3.0</span></label>
+          <input type="number" id="wqa-cl-${i}" placeholder="ppm" step="0.1" min="0" max="20"
+            oninput="this.style.color=chemColor('cl',this.value);wqaProgress()">
+        </div>
+        <div class="ff" style="margin:0">
+          <label>pH<span style="font-size:9px;color:var(--text-muted);margin-left:4px;">7.2–7.8</span></label>
+          <input type="number" id="wqa-ph-${i}" placeholder="pH" step="0.1" min="0" max="14"
+            oninput="this.style.color=chemColor('ph',this.value);wqaProgress()">
+        </div>
+        <div class="ff" style="margin:0">
+          <label>Alkalinity (ppm)<span style="font-size:9px;color:var(--text-muted);margin-left:4px;">80–120</span></label>
+          <input type="number" id="wqa-alk-${i}" placeholder="ppm" step="1" min="0" max="500"
+            oninput="this.style.color=chemColor('alk',this.value);wqaProgress()">
+        </div>
+        <div class="ff" style="margin:0">
+          <label>Temp (°F)</label>
+          <input type="number" id="wqa-temp-${i}" placeholder="°F" step="0.5" min="40" max="110">
+        </div>
+        <div class="ff" style="margin:0">
+          <label>Combined Cl (ppm)<span style="font-size:9px;color:var(--text-muted);margin-left:4px;">&lt;0.2</span></label>
+          <input type="number" id="wqa-ccl-${i}" placeholder="ppm" step="0.1" min="0" max="5"
+            oninput="this.style.color=chemColor('ccl',this.value);wqaProgress()">
+        </div>
+        <div class="ff" style="margin:0">
+          <label>Turbidity</label>
+          <select id="wqa-turb-${i}">
+            <option value="">— Select —</option>
+            <option value="clear">Clear — drain visible at 6ft</option>
+            <option value="hazy">Hazy — drain visible</option>
+            <option value="cloudy">Cloudy — drain NOT visible ⚠</option>
+          </select>
+        </div>
       </div>
     </div>`).join('');
+}
+
+function wqaProgress(){
+  const total=WQA_ZONES.length*4;// cl, ph, alk, ccl
+  let filled=0;
+  WQA_ZONES.forEach((_,i)=>{
+    if(document.getElementById(`wqa-cl-${i}`)?.value)filled++;
+    if(document.getElementById(`wqa-ph-${i}`)?.value)filled++;
+    if(document.getElementById(`wqa-alk-${i}`)?.value)filled++;
+    if(document.getElementById(`wqa-ccl-${i}`)?.value)filled++;
+  });
+  const bar=document.getElementById('prog-WQA');
+  if(bar)bar.style.width=Math.round(filled/total*100)+'%';
+}
+
+function calcTurnover(){
+  const gpm=parseFloat(document.getElementById('wqa-gpm')?.value)||0;
+  const vol=parseFloat(document.getElementById('wqa-pool-volume')?.value)||0;
+  const disp=document.getElementById('wqa-turnover-display');
+  const note=document.getElementById('wqa-turnover-note');
+  if(!gpm||!vol||!disp){if(disp)disp.textContent='— hrs';if(note)note.textContent='';return;}
+  const hrs=vol/(gpm*60);
+  const hrsRounded=Math.round(hrs*10)/10;
+  const color=hrs<=6?'var(--green)':hrs<=8?'var(--amber)':'var(--red)';
+  disp.textContent=hrsRounded+' hrs';
+  disp.style.color=color;
+  if(note){
+    if(hrs<=6)note.textContent='✓ Within standard — turnover ≤6 hrs (NPC/state requirement)';
+    else if(hrs<=8)note.textContent='⚠ Marginal — turnover exceeding 6 hrs. Check pump, filter, flow.';
+    else note.textContent='✗ Inadequate — turnover >8 hrs. Immediate pump/filter inspection required.';
+    note.style.color=color;
+  }
 }
 
 const optState={};
@@ -1130,12 +1569,15 @@ function selectOpt(el,val){
   const siblings=el.parentElement.querySelectorAll('.cg-opt');
   siblings.forEach(s=>{s.className='cg-opt';});
   el.classList.add(`sel-${val}`);
-  updateFormProgress(form);
+  if(form==='CCA')updateCCAProgress();
+  else if(form==='HAE')haeUpdateProgress();
+  else updateFormProgress(form);
 }
 
 function updateFormProgress(form){
+  if(form==='WQA'){wqaProgress();return;}
   const def=INSP_DEFS[form];if(!def)return;
-  const lists={CCA:CCA_ZONES,HAE:HAE_STATIONS,WQA:WQA_POOL_ZONES}[form];
+  const lists={HAE:HAE_STATIONS}[form];
   if(!lists)return;
   const answered=lists.filter((_,i)=>optState[`${form}-${i}`]).length;
   const pct=Math.round(answered/lists.length*100);
@@ -1152,21 +1594,90 @@ function submitInspection(id){
   if(id==='CCA'){
     const mgr=document.getElementById('cca-manager').value.trim();
     if(!mgr){toast('Enter manager name','err');return;}
-    const zoneResults={};
-    CCA_ZONES.forEach((_,i)=>{zoneResults[CCA_ZONES[i]]=optState[`CCA-${i}`]||'not-rated';});
-    fields={'Date':document.getElementById('cca-date').value,'Shift':document.getElementById('cca-shift').value,'Manager':mgr,'Overall Condition':document.getElementById('cca-overall').value,'Notes':document.getElementById('cca-notes').value,'Zone Results':JSON.stringify(zoneResults),'Fails':Object.values(zoneResults).filter(v=>v==='fail').length,'Flags':Object.values(zoneResults).filter(v=>v==='flag').length,'Submitted At':new Date().toISOString()};
+    if(!ccaSessionLocations.length){toast('Log at least one location before submitting','err');return;}
+    const totalFails=ccaSessionLocations.reduce((s,l)=>s+l.fails,0);
+    const totalFlags=ccaSessionLocations.reduce((s,l)=>s+l.flags,0);
+    fields={
+      'Date':document.getElementById('cca-date').value,
+      'Shift':document.getElementById('cca-shift').value,
+      'Manager':mgr,
+      'Locations Audited':ccaSessionLocations.length,
+      'Total Fails':totalFails,
+      'Total Flags':totalFlags,
+      'Location Results':JSON.stringify(ccaSessionLocations.map(l=>({type:l.type,name:l.name,overall:l.overall,fails:l.fails,flags:l.flags,notes:l.notes}))),
+      'Submitted At':new Date().toISOString()
+    };
   } else if(id==='HAE'){
     const mgr=document.getElementById('hae-manager').value.trim();
     if(!mgr){toast('Enter manager name','err');return;}
     const stResults={};
     HAE_STATIONS.forEach((_,i)=>{stResults[`Station ${i+1}`]=optState[`HAE-${i}`]||'not-rated';});
-    fields={'Date':document.getElementById('hae-date').value,'Shift':document.getElementById('hae-shift').value,'Manager':mgr,'Guests Observed':parseInt(document.getElementById('hae-observed').value)||0,'Violations':parseInt(document.getElementById('hae-violations').value)||0,'Problem Ride':document.getElementById('hae-problem-ride').value,'Notes':document.getElementById('hae-notes').value,'Station Results':JSON.stringify(stResults),'Fails':Object.values(stResults).filter(v=>v==='fail').length,'Submitted At':new Date().toISOString()};
+    // collect tape measure rows
+    const measureRows=[];
+    document.querySelectorAll('[id^="hae-mrow-"]').forEach(row=>{
+      const n=row.id.split('-')[2];
+      const ride=document.getElementById(`hae-ride-${n}`)?.value.trim();
+      const req=parseFloat(document.getElementById(`hae-req-${n}`)?.value);
+      const meas=parseFloat(document.getElementById(`hae-meas-${n}`)?.value);
+      if(ride&&!isNaN(req)&&!isNaN(meas)){
+        const variance=Math.round((meas-req)*10)/10;
+        const status=Math.abs(variance)<=0.25?'pass':Math.abs(variance)<=0.5?'marginal':'fail';
+        measureRows.push({ride,required:req,measured:meas,variance,status});
+      }
+    });
+    const stickFails=measureRows.filter(r=>r.status==='fail').length;
+    const stickMarginal=measureRows.filter(r=>r.status==='marginal').length;
+    fields={
+      'Date':document.getElementById('hae-date').value,
+      'Shift':document.getElementById('hae-shift').value,
+      'Manager':mgr,
+      'Guests Observed':parseInt(document.getElementById('hae-observed').value)||0,
+      'Violations':parseInt(document.getElementById('hae-violations').value)||0,
+      'Station Results':JSON.stringify(stResults),
+      'Behavioral Fails':Object.values(stResults).filter(v=>v==='fail').length,
+      'Height Stick Readings':JSON.stringify(measureRows),
+      'Sticks Out of Tolerance':stickFails,
+      'Sticks Marginal':stickMarginal,
+      'Sticks Requiring Replacement':document.getElementById('hae-sticks-replace').value.trim(),
+      'Notes':document.getElementById('hae-notes').value,
+      'Submitted At':new Date().toISOString()
+    };
   } else if(id==='WQA'){
     const inspector=document.getElementById('wqa-inspector').value.trim();
     if(!inspector){toast('Enter inspector name','err');return;}
-    const poolResults={};
-    WQA_POOL_ZONES.forEach((_,i)=>{poolResults[WQA_POOL_ZONES[i]]=optState[`WQA-${i}`]||'not-rated';});
-    fields={'Date':document.getElementById('wqa-date').value,'Time':document.getElementById('wqa-time').value,'Inspector':inspector,'Free Chlorine (ppm)':parseFloat(document.getElementById('wqa-chlorine').value)||0,'pH':parseFloat(document.getElementById('wqa-ph').value)||0,'Combined Chlorine (ppm)':parseFloat(document.getElementById('wqa-combined').value)||0,'Water Temp F':parseFloat(document.getElementById('wqa-temp').value)||0,'Turbidity':document.getElementById('wqa-turbidity').value,'Status':document.getElementById('wqa-status').value,'Notes':document.getElementById('wqa-notes').value,'Pool Results':JSON.stringify(poolResults),'Submitted At':new Date().toISOString()};
+    const zoneData={};
+    let anyFail=false,anyMarginal=false;
+    WQA_ZONES.forEach(([zone],i)=>{
+      const cl=parseFloat(document.getElementById(`wqa-cl-${i}`)?.value)||null;
+      const ph=parseFloat(document.getElementById(`wqa-ph-${i}`)?.value)||null;
+      const alk=parseFloat(document.getElementById(`wqa-alk-${i}`)?.value)||null;
+      const ccl=parseFloat(document.getElementById(`wqa-ccl-${i}`)?.value)||null;
+      const temp=parseFloat(document.getElementById(`wqa-temp-${i}`)?.value)||null;
+      const turb=document.getElementById(`wqa-turb-${i}`)?.value||'';
+      const status=optState[`WQA-${i}`]||'not-rated';
+      if(status==='fail')anyFail=true;
+      if(status==='flag')anyMarginal=true;
+      zoneData[zone]={freeCl:cl,pH:ph,alkalinity:alk,combinedCl:ccl,tempF:temp,turbidity:turb,status};
+    });
+    const gpm=parseFloat(document.getElementById('wqa-gpm')?.value)||null;
+    const pumpSpeed=parseFloat(document.getElementById('wqa-pump-speed')?.value)||null;
+    const poolVol=parseFloat(document.getElementById('wqa-pool-volume')?.value)||null;
+    const turnover=gpm&&poolVol?Math.round(poolVol/(gpm*60)*10)/10:null;
+    fields={
+      'Date':document.getElementById('wqa-date').value,
+      'Time':document.getElementById('wqa-time').value,
+      'Inspector':inspector,
+      'Flow Rate GPM':gpm,
+      'Pump Speed':pumpSpeed,
+      'Pool Volume Gal':poolVol,
+      'Turnover Rate Hrs':turnover,
+      'Overall Status':document.getElementById('wqa-status').value,
+      'Notes':document.getElementById('wqa-notes').value,
+      'Zone Results':JSON.stringify(zoneData),
+      'Zones Failed':Object.values(zoneData).filter(z=>z.status==='fail').length,
+      'Zones Marginal':Object.values(zoneData).filter(z=>z.status==='flag').length,
+      'Submitted At':new Date().toISOString()
+    };
   } else if(id==='TPA'){
     const inspector=document.getElementById('tpa-inspector').value.trim();
     if(!inspector){toast('Enter inspector name','err');return;}
@@ -1184,8 +1695,28 @@ function submitInspection(id){
 }
 
 function clearFormState(id){
-  const lists={CCA:CCA_ZONES,HAE:HAE_STATIONS,WQA:WQA_POOL_ZONES};
-  if(lists[id])lists[id].forEach((_,i)=>delete optState[`${id}-${i}`]);
+  if(id==='CCA'){
+    ccaSessionLocations=[];
+    Object.keys(optState).filter(k=>k.startsWith('CCA-')).forEach(k=>delete optState[k]);
+    ccaClearLocation();
+    updateCCACompletedLog();
+  }
+  if(id==='HAE'){
+    HAE_STATIONS.forEach((_,i)=>delete optState[`HAE-${i}`]);
+    haeMeasureCount=0;
+    buildHAEStations();
+    const sr=document.getElementById('hae-sticks-replace');if(sr)sr.value='';
+  }
+  if(id==='WQA'){
+    WQA_ZONES.forEach((_,i)=>{
+      delete optState[`WQA-${i}`];
+      ['cl','ph','alk','ccl','temp'].forEach(f=>{const e=document.getElementById(`wqa-${f}-${i}`);if(e){e.value='';e.style.color='';}});
+      const t=document.getElementById(`wqa-turb-${i}`);if(t)t.value='';
+    });
+    ['wqa-gpm','wqa-pump-speed','wqa-pool-volume'].forEach(fid=>{const e=document.getElementById(fid);if(e)e.value='';});
+    const d=document.getElementById('wqa-turnover-display');if(d){d.textContent='— hrs';d.style.color='';}
+    const n=document.getElementById('wqa-turnover-note');if(n)n.textContent='';
+  }
   const bar=document.getElementById(`prog-${id}`);
   if(bar)bar.style.width='0%';
   const panel=document.getElementById('form-'+id);
