@@ -310,8 +310,65 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 #toast.ok{background:var(--green-dim);border-color:rgba(16,185,129,.4);color:var(--green);}
 #toast.err{background:var(--red-dim);border-color:rgba(244,63,94,.4);color:var(--red);}
 
-.empty{text-align:center;padding:32px 16px;color:var(--text-muted);}
-.empty-icon{font-size:28px;margin-bottom:8px;}
+/* ── ROTATION SYSTEM ── */
+.rot-alert-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.rot-alert-pill{display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:5px;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.5px;cursor:default;}
+.rat-crit{background:var(--red-dim);border:1px solid rgba(244,63,94,.35);color:var(--red);}
+.rat-warn{background:var(--amber-dim);border:1px solid rgba(245,158,11,.3);color:var(--amber);}
+.rat-ok{background:var(--green-dim);border:1px solid rgba(16,185,129,.25);color:var(--green);}
+.rat-dot{width:6px;height:6px;border-radius:50%;}
+.rat-crit .rat-dot{background:var(--red);animation:rotBlink .7s infinite;}
+.rat-warn .rat-dot{background:var(--amber);animation:rotBlink 1.2s infinite;}
+.rat-ok .rat-dot{background:var(--green);}
+@keyframes rotBlink{0%,100%{opacity:1}50%{opacity:.15}}
+.rot-alert-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;margin-bottom:8px;background:var(--panel);}
+.rot-alert-card.crit{border:1px solid rgba(244,63,94,.4);background:rgba(244,63,94,.04);animation:critPulse 1.8s infinite;}
+.rot-alert-card.warn{border:1px solid rgba(245,158,11,.3);}
+@keyframes critPulse{0%,100%{background:rgba(244,63,94,.04)}50%{background:rgba(244,63,94,.02)}}
+.rac-icon{font-size:16px;flex-shrink:0;}
+.rac-body{flex:1;}
+.rac-title{font-family:var(--mono);font-size:10px;font-weight:700;}
+.rac-title.crit{color:var(--red);}.rac-title.warn{color:var(--amber);}
+.rac-sub{font-size:11px;color:var(--text-dim);margin-top:1px;}
+.rac-time{font-family:var(--mono);font-size:12px;font-weight:700;}
+.rac-time.crit{color:var(--red);}.rac-time.warn{color:var(--amber);}
+.rac-ack{padding:5px 11px;border:1px solid var(--border2);border-radius:4px;background:transparent;font-family:var(--mono);font-size:9px;color:var(--text-dim);cursor:pointer;flex-shrink:0;min-height:36px;}
+.rac-ack:hover{border-color:var(--teal);color:var(--teal);}
+.rot-board{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+@media(min-width:600px){.rot-board{grid-template-columns:repeat(3,1fr);}}
+.rot-tile{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.rot-tile.has-crit{border-color:rgba(244,63,94,.45);}
+.rot-tile.has-warn{border-color:rgba(245,158,11,.35);}
+.rt-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;background:var(--panel2);border-bottom:1px solid var(--border);}
+.rt-name{font-family:var(--cond);font-size:13px;font-weight:700;color:var(--text-bright);}
+.rt-world{font-family:var(--mono);font-size:8px;color:var(--text-dim);}
+.rt-status{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;}
+.rts-open{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25);}
+.rts-warn{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
+.rts-crit{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.25);}
+.rts-off{background:var(--panel3);color:var(--text-muted);}
+.rt-positions{padding:8px 11px;display:flex;flex-direction:column;gap:3px;}
+.rt-pos{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:5px;background:var(--panel2);cursor:pointer;transition:background .12s;}
+.rt-pos:hover{background:var(--panel3);}
+.rt-pos-name{font-family:var(--mono);font-size:9px;color:var(--text-dim);flex:0 0 auto;min-width:95px;}
+.rt-pos-op{font-size:11px;font-weight:500;flex:1;color:var(--text-dim);font-style:italic;}
+.rt-pos-op.filled{color:var(--text-bright);font-style:normal;}
+.rt-pos-time{font-family:var(--mono);font-size:10px;font-weight:700;flex-shrink:0;}
+.rpt-ok{color:var(--green);}.rpt-warn{color:var(--amber);}.rpt-crit{color:var(--red);}.rpt-none{color:var(--text-muted);}
+.rt-pos-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+/* Position assignment modal */
+.pos-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:400;align-items:flex-end;justify-content:center;padding-bottom:0;}
+.pos-modal-overlay.show{display:flex;}
+.pos-modal{background:var(--panel);border:1px solid var(--border2);border-radius:14px 14px 0 0;width:100%;max-width:480px;padding:18px;}
+.pos-modal-title{font-family:var(--cond);font-size:17px;font-weight:700;color:var(--text-bright);margin-bottom:2px;}
+.pos-modal-sub{font-family:var(--mono);font-size:9px;color:var(--teal);margin-bottom:14px;}
+.tb-rot-crit{display:none;align-items:center;gap:5px;padding:4px 10px;border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;background:var(--red-dim);border:1px solid rgba(244,63,94,.3);color:var(--red);}
+.tb-rot-warn{display:none;align-items:center;gap:5px;padding:4px 10px;border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;background:var(--amber-dim);border:1px solid rgba(245,158,11,.3);color:var(--amber);}
+.tb-rdot{width:6px;height:6px;border-radius:50%;}
+.tb-rot-crit .tb-rdot{background:var(--red);animation:rotBlink .7s infinite;}
+.tb-rot-warn .tb-rdot{background:var(--amber);}
+.tab-badge.crit{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.25);}
+
 
 /* INSPECTION SUMMARY HEADER */
 .insp-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
@@ -329,16 +386,21 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="tb-sub">AS 360 · MGR MODULE · ORLANDO</div>
   </div>
   <div class="topbar-right">
+    <div class="tb-rot-crit" id="tb-rot-crit"><div class="tb-rdot"></div><span id="tb-crit-count">0</span> CRIT ROT</div>
+    <div class="tb-rot-warn" id="tb-rot-warn"><div class="tb-rdot" style="background:var(--amber)"></div><span id="tb-warn-count">0</span> OVERDUE ROT</div>
     <div id="at-sync" style="font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:.5px;">⬤ AIRTABLE</div>
     <div class="tb-clock" id="clock">--:--</div>
   </div>
 </div>
 
 <div class="nav-tabs">
+  <div class="nav-tab" id="rightnow-tab" onclick="showView('rightnow',this)">⚡ Right Now <span class="tab-badge red" id="rnBadge" style="display:none">!</span></div>
+  <div class="nav-tab" onclick="showView('opening',this)">🟢 Opening <span class="tab-badge neutral" id="ocBadge">—</span></div>
   <div class="nav-tab active" onclick="showView('dashboard',this)">📊 Dashboard</div>
   <div class="nav-tab" onclick="showView('pillar',this)">🎯 RIDE Score</div>
   <div class="nav-tab" onclick="showView('oos',this)">⛔ OOS <span class="tab-badge red" id="oosBadge">0</span></div>
   <div class="nav-tab" onclick="showView('car',this)">📂 CARs <span class="tab-badge neutral" id="carBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('rotations',this)">🔁 Rotations <span class="tab-badge neutral" id="rotBadge">0</span></div>
   <div class="nav-tab insp-tab" onclick="showView('inspections',this)">🔍 Inspections <span class="tab-badge red" id="inspBadge">0</span></div>
   <div class="nav-tab" onclick="showView('audit',this)">📅 3rd-Party <span class="tab-badge neutral" id="auditBadge">0</span></div>
   <div class="nav-tab" onclick="showView('matrix',this)">📞 Escalation</div>
@@ -352,6 +414,66 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
 <div class="main">
 
+<!-- ══ RIGHT NOW ══ -->
+<div class="view" id="view-rightnow">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+    <div>
+      <div style="font-family:var(--cond);font-size:18px;font-weight:700;color:var(--text-bright);">Right Now
+        <span class="rn-phase-badge" id="rn-phase-badge">—</span>
+      </div>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:2px;" id="rn-phase-desc">Loading shift phase…</div>
+    </div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--text-dim);" id="rn-clock-large"></div>
+  </div>
+  <div id="rn-body"></div>
+</div>
+
+<!-- ══ OPENING CHECKLIST ══ -->
+<div class="view" id="view-opening">
+
+  <!-- Status bar -->
+  <div class="oc-status-bar">
+    <div class="oc-progress-wrap">
+      <div class="oc-progress-label">
+        <span id="oc-prog-label">Loading…</span>
+        <span id="oc-prog-pct">0%</span>
+      </div>
+      <div class="oc-progress-track"><div class="oc-progress-fill" id="oc-prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="oc-ready-badge not-ready" id="oc-ready-badge">NOT READY</div>
+    <button class="btn btn-ghost btn-sm" onclick="ocFetchATR()" id="oc-refresh-btn">↻ Sync ATR</button>
+  </div>
+
+  <!-- Gate summary cards -->
+  <div class="oc-gate-summary">
+    <div class="oc-gate-card"><div class="oc-gate-num green" id="oc-clear-count">0</div><div class="oc-gate-label">Clear to Open</div></div>
+    <div class="oc-gate-card"><div class="oc-gate-num amber" id="oc-issues-count">0</div><div class="oc-gate-label">Issues Noted</div></div>
+    <div class="oc-gate-card"><div class="oc-gate-num red" id="oc-hold-count">0</div><div class="oc-gate-label">Hold / Not Ready</div></div>
+  </div>
+
+  <!-- Filter row -->
+  <div class="oc-filter-row">
+    <span style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">FILTER:</span>
+    <button class="oc-filter-btn active" id="ocf-all" onclick="ocSetFilter('all',this)">All (11)</button>
+    <button class="oc-filter-btn" id="ocf-pending" onclick="ocSetFilter('pending',this)">Pending</button>
+    <button class="oc-filter-btn" id="ocf-issues" onclick="ocSetFilter('issues',this)">Issues</button>
+    <button class="oc-filter-btn" id="ocf-clear" onclick="ocSetFilter('clear',this)">Cleared</button>
+    <div style="flex:1"></div>
+    <div style="font-family:var(--mono);font-size:8px;color:var(--text-muted);" id="oc-atr-ts">ATR: not synced</div>
+  </div>
+
+  <!-- Ride cards -->
+  <div id="oc-ride-list"></div>
+
+  <!-- Submit bar -->
+  <div class="oc-submit-bar">
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-teal" style="flex:1;" onclick="ocSubmitAll()">Submit Opening Log →</button>
+      <button class="btn btn-ghost" onclick="ocResetAll()">Reset</button>
+    </div>
+  </div>
+
+</div>
 <!-- ══ DASHBOARD ══ -->
 <div class="view active" id="view-dashboard">
   <div class="shift-status-bar">
@@ -364,7 +486,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="metric-card teal"><div class="mv teal" id="db-attractions">—</div><div class="ml">Attractions Open</div></div>
     <div class="metric-card red"><div class="mv red" id="db-oos">0</div><div class="ml">Out of Service</div></div>
     <div class="metric-card amber"><div class="mv amber" id="db-car-open">0</div><div class="ml">Open CARs</div></div>
-    <div class="metric-card red"><div class="mv red" id="db-insp-overdue">0</div><div class="ml">Inspections Overdue</div></div>
+    <div class="metric-card red"><div class="mv red" id="db-rot-crit">0</div><div class="ml">Critical Rotations</div></div>
+    <div class="metric-card amber"><div class="mv amber" id="db-insp-overdue">0</div><div class="ml">Inspections Overdue</div></div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
     <div class="panel" style="margin-bottom:0">
@@ -376,10 +499,10 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     </div>
     <div class="panel" style="margin-bottom:0">
       <div class="panel-hdr">
-        <div class="panel-title">Overdue Inspections</div>
-        <button class="btn btn-ghost btn-sm" onclick="showView('inspections',document.querySelectorAll('.nav-tab')[4])">All →</button>
+        <div class="panel-title">Rotation Alerts</div>
+        <button class="btn btn-ghost btn-sm" onclick="showView('rotations',document.querySelector('[onclick*=rotations]'))">All →</button>
       </div>
-      <div id="db-insp-mini"></div>
+      <div id="db-rot-mini"></div>
     </div>
   </div>
   <div class="panel">
@@ -483,7 +606,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
 <!-- ══ CAR AGING ══ -->
 <div class="view" id="view-car">
-  <div class="car-aging-grid">
+  <div class="car-escalation-banner" id="car-esc-banner" style="display:none;"><div><div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--red);margin-bottom:3px;">ESCALATION REQUIRED</div><div class="car-esc-text">CARs below have exceeded 30 days without closure. These require manager escalation — review and either close or push to supervisor.</div></div><div class="car-esc-count" id="car-esc-count">0</div></div>
+<div class="car-aging-grid">
     <div class="aging-bucket fresh" onclick="carFilter='fresh';renderCARs()"><div class="aging-count" id="car-fresh">0</div><div class="aging-label">0–7 Days</div></div>
     <div class="aging-bucket watch" onclick="carFilter='watch';renderCARs()"><div class="aging-count" id="car-watch">0</div><div class="aging-label">8–14 Days</div></div>
     <div class="aging-bucket stale" onclick="carFilter='stale';renderCARs()"><div class="aging-count" id="car-stale">0</div><div class="aging-label">15–30 Days</div></div>
@@ -552,6 +676,14 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         </div>
         <div class="ff" style="margin-top:8px;margin-bottom:0"><label>Manager / Inspector</label><input type="text" id="cca-manager" placeholder="Name"></div>
       </div>
+      <div class="ff">
+        <label>Photos / Evidence</label>
+        <label class="photo-capture-btn" for="cca-photos">
+          📷 <span id="cca-photo-label">Tap to attach photos (camera or library)</span>
+          <span class="photo-count-badge" id="cca-photo-count" style="display:none;">0 photos</span>
+        </label>
+        <input type="file" id="cca-photos" accept="image/*" multiple capture="environment" style="display:none;" onchange="updatePhotoCount('cca',this)">
+      </div>
 
       <!-- Completed locations log -->
       <div id="cca-completed-log" style="display:none;margin-bottom:12px;">
@@ -616,6 +748,14 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <div class="ff"><label>Shift</label><select id="hae-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select></div>
       </div>
       <div class="ff"><label>Manager / Inspector</label><input type="text" id="hae-manager" placeholder="Name"></div>
+      <div class="ff">
+        <label>Photos / Evidence</label>
+        <label class="photo-capture-btn" for="hae-photos">
+          📷 <span id="hae-photo-label">Attach photos of height sticks or violations</span>
+          <span class="photo-count-badge" id="hae-photo-count" style="display:none;">0 photos</span>
+        </label>
+        <input type="file" id="hae-photos" accept="image/*" multiple capture="environment" style="display:none;" onchange="updatePhotoCount('hae',this)">
+      </div>
 
       <!-- Part 1: Behavioral compliance -->
       <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:12px 0 8px;">Part 1 — Staff &amp; Station Compliance</div>
@@ -657,6 +797,14 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <div class="ff"><label>Time Tested</label><input type="time" id="wqa-time"></div>
       </div>
       <div class="ff"><label>Inspector / Operator</label><input type="text" id="wqa-inspector" placeholder="Name"></div>
+      <div class="ff">
+        <label>Photos / Evidence</label>
+        <label class="photo-capture-btn" for="wqa-photos">
+          📷 <span id="wqa-photo-label">Attach test strip or equipment photos</span>
+          <span class="photo-count-badge" id="wqa-photo-count" style="display:none;">0 photos</span>
+        </label>
+        <input type="file" id="wqa-photos" accept="image/*" multiple capture="environment" style="display:none;" onchange="updatePhotoCount('wqa',this)">
+      </div>
 
       <!-- per-zone chemical cards rendered by JS -->
       <div id="wqa-zone-cards"></div>
@@ -713,6 +861,14 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
       </div>
       <div class="ff"><label>Finding Summary</label><textarea id="tpa-summary" rows="3" placeholder="Key findings, recommendations, items flagged for follow-up…"></textarea></div>
       <div class="ff"><label>Report Reference #</label><input type="text" id="tpa-report-ref" placeholder="Inspector's report ID or file reference"></div>
+      <div class="ff">
+        <label>Photos / Report Documents</label>
+        <label class="photo-capture-btn" for="tpa-photos">
+          📷 <span id="tpa-photo-label">Attach inspection report pages or site photos</span>
+          <span class="photo-count-badge" id="tpa-photo-count" style="display:none;">0 files</span>
+        </label>
+        <input type="file" id="tpa-photos" accept="image/*,application/pdf" multiple style="display:none;" onchange="updatePhotoCount('tpa',this)">
+      </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;">
         <button class="btn btn-teal" onclick="submitInspection('TPA')">Log Inspection →</button>
         <button class="btn btn-ghost" onclick="closeForm('TPA')">Cancel</button>
@@ -834,8 +990,151 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
   <!-- ══ QUARTERLY FORMS ══ -->
 
+  <!-- ══ LGA — LIFEGUARD ZONE AUDIT (full rebuild) ══ -->
+  <div class="form-panel" id="form-LGA">
+    <div class="form-panel-hdr"><div class="form-panel-title">Lifeguard Zone Audit</div><button class="btn btn-ghost btn-sm" onclick="closeForm('LGA')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-LGA" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="lga-date"></div>
+        <div class="ff"><label>Audit Time</label><input type="time" id="lga-time"></div>
+      </div>
+      <div class="ff"><label>Auditor</label><input type="text" id="lga-auditor" placeholder="Name"></div>
+
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:12px 0 8px;">Zone Coverage — Who Is In Each Zone Right Now</div>
+      <div id="lga-zone-cards"></div>
+
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:12px 0 8px;">Bottom Visibility Checks</div>
+      <div class="checklist-group">
+        <div class="cg-title">Pass = drain visible from surface · Fail = cloudy / obstructed → CLOSE ZONE</div>
+        <div id="lga-visibility-items"></div>
+      </div>
+
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:12px 0 8px;">Rescue Equipment — All Zones</div>
+      <div class="checklist-group">
+        <div class="cg-title">Pass · Fail · N/A per item</div>
+        <div id="lga-rescue-items"></div>
+      </div>
+
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:12px 0 8px;">Bather Load per Zone</div>
+      <div id="lga-bather-rows"></div>
+
+      <div class="ff"><label>Overall Status</label>
+        <select id="lga-status"><option value="pass">Pass — All zones compliant</option><option value="marginal">Marginal — Issues noted, corrected</option><option value="fail">Fail — Zone(s) closed</option></select>
+      </div>
+      <div class="ff"><label>Actions Taken / Notes</label><textarea id="lga-notes" rows="2" placeholder="Guard repositioning, zone closures, equipment replaced, coaching…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('LGA')">Submit Audit →</button><button class="btn btn-ghost" onclick="closeForm('LGA')">Cancel</button></div>
+    </div>
+  </div>
+
+  <!-- ══ FLC — FEC FLOOR OPERATIONS LOG ══ -->
+  <div class="form-panel" id="form-FLC">
+    <div class="form-panel-hdr"><div class="form-panel-title">Floor Operations Log</div><button class="btn btn-ghost btn-sm" onclick="closeForm('FLC')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-FLC" style="width:0%"></div></div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="flc-date"></div>
+        <div class="ff"><label>Shift</label><select id="flc-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select></div>
+      </div>
+      <div class="ff"><label>Floor Supervisor</label><input type="text" id="flc-supervisor" placeholder="Name"></div>
+
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:12px 0 8px;">Log Entry — Add as many as needed this shift</div>
+      <div class="form-grid" style="margin-bottom:8px;">
+        <div class="ff" style="margin:0"><label>Entry Type</label>
+          <select id="flc-entry-type">
+            <option value="incident">Patron Incident</option>
+            <option value="downtime">Attraction Downtime</option>
+            <option value="staffing">Staffing Change</option>
+            <option value="routine">Routine Note</option>
+          </select>
+        </div>
+        <div class="ff" style="margin:0"><label>Location / Attraction</label>
+          <input type="text" id="flc-entry-loc" placeholder="Zone or machine name">
+        </div>
+      </div>
+      <div class="ff"><label>Entry Description</label>
+        <textarea id="flc-entry-text" rows="2" placeholder="Describe the event, action taken, or observation…"></textarea>
+      </div>
+      <button class="btn btn-ghost" style="width:100%;margin-bottom:12px;" onclick="flcAddEntry()">＋ Add to Log</button>
+
+      <div id="flc-entry-list" style="margin-bottom:12px;"></div>
+
+      <div style="background:var(--panel3);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--amber);margin-bottom:8px;">Machine Down — Quick Log</div>
+        <div class="form-grid">
+          <div class="ff" style="margin:0"><label>Machine / Attraction ID</label><input type="text" id="flc-machine-id" placeholder="e.g. AR-042 or Yoshi kiosk 3"></div>
+          <div class="ff" style="margin:0"><label>Issue Type</label>
+            <select id="flc-machine-issue">
+              <option value="payout-jam">Payout / Ticket Jam</option>
+              <option value="screen">Screen / Display Malfunction</option>
+              <option value="card-reader">Card Reader Error</option>
+              <option value="power">Power / Reset Needed</option>
+              <option value="mechanical">Mechanical — Maintenance Needed</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid" style="margin-top:8px;">
+          <div class="ff" style="margin:0"><label>Action Taken</label>
+            <select id="flc-machine-action">
+              <option value="resolved">Resolved on-site</option>
+              <option value="escalated">Escalated to maintenance</option>
+              <option value="wo-opened">Work Order opened</option>
+              <option value="taken-oos">Taken out of service</option>
+            </select>
+          </div>
+          <div class="ff" style="margin:0;display:flex;flex-direction:column;justify-content:flex-end;">
+            <button class="btn btn-amber" onclick="flcAddMachineDown()">Log Machine Down →</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:0 0 8px;">End-of-Shift Staffing & Coverage</div>
+      <div class="form-grid">
+        <div class="ff"><label>Floor Staff on Duty</label><input type="number" id="flc-staff-count" placeholder="0" min="0"></div>
+        <div class="ff"><label>Zones with Coverage Gaps</label><input type="text" id="flc-coverage-gaps" placeholder="Zone names or None"></div>
+      </div>
+      <div class="ff"><label>Shift Summary Notes</label><textarea id="flc-summary" rows="2" placeholder="Overall floor condition, guest flow, anything for incoming supervisor…"></textarea></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('FLC')">Submit Log →</button><button class="btn btn-ghost" onclick="closeForm('FLC')">Cancel</button></div>
+    </div>
+  </div>
+
+  <!-- ══ YPS — YOUTH PATRON SHIFT LOG (quick per-shift) ══ -->
+  <div class="form-panel" id="form-YPS">
+    <div class="form-panel-hdr"><div class="form-panel-title">Youth Patron Shift Log</div><button class="btn btn-ghost btn-sm" onclick="closeForm('YPS')">✕</button></div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-YPS" style="width:0%"></div></div>
+      <div style="font-size:12px;color:var(--text-dim);background:var(--panel2);padding:10px 12px;border-radius:7px;border-left:3px solid var(--teal);margin-bottom:12px;">Quick per-shift incident log. 5 fields. Takes under a minute. Log every youth patron risk event as it happens.</div>
+      <div class="form-grid">
+        <div class="ff"><label>Date</label><input type="date" id="yps-date"></div>
+        <div class="ff"><label>Shift</label><select id="yps-shift"><option value="open">Open</option><option value="mid">Mid</option><option value="close">Close</option></select></div>
+      </div>
+      <div class="ff"><label>Logged By</label><input type="text" id="yps-logger" placeholder="Name"></div>
+
+      <div id="yps-entry-list" style="margin-bottom:10px;"></div>
+
+      <div style="background:var(--panel3);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;">Add Entry</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;" id="yps-type-btns">
+          <button type="button" class="yps-type-btn" onclick="ypsSelectType(this,'unaccompanied')"><div class="yps-type-icon">👤</div>Unaccompanied Minor</button>
+          <button type="button" class="yps-type-btn" onclick="ypsSelectType(this,'lost')"><div class="yps-type-icon">🔍</div>Lost Child</button>
+          <button type="button" class="yps-type-btn" onclick="ypsSelectType(this,'age-restriction')"><div class="yps-type-icon">📏</div>Age Restriction Challenge</button>
+          <button type="button" class="yps-type-btn" onclick="ypsSelectType(this,'chaperone')"><div class="yps-type-icon">👥</div>Chaperone Ratio Concern</button>
+          <button type="button" class="yps-type-btn" onclick="ypsSelectType(this,'behavioral')"><div class="yps-type-icon">⚠️</div>Behavioral — Minor Involved</button>
+        </div>
+        <input type="hidden" id="yps-entry-type" value="">
+        <div class="ff"><label>Attraction / Zone</label><input type="text" id="yps-entry-loc" placeholder="Where did this occur?"></div>
+        <div class="ff"><label>Brief Description & Action Taken</label><textarea id="yps-entry-desc" rows="2" placeholder="What happened, what you did…"></textarea></div>
+        <button class="btn btn-teal" style="width:100%;" onclick="ypsAddEntry()">＋ Log Entry</button>
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('YPS')">Submit Shift Log →</button><button class="btn btn-ghost" onclick="closeForm('YPS')">Cancel</button></div>
+    </div>
+  </div>
+
+  <!-- ══ YPR — YOUTH PATRON QUARTERLY AUDIT (enhanced) ══ -->
   <div class="form-panel" id="form-YPR">
-    <div class="form-panel-hdr"><div class="form-panel-title">Youth Patron Risk Log</div><button class="btn btn-ghost btn-sm" onclick="closeForm('YPR')">✕</button></div>
+    <div class="form-panel-hdr"><div class="form-panel-title">Youth Patron Risk — Quarterly Audit</div><button class="btn btn-ghost btn-sm" onclick="closeForm('YPR')">✕</button></div>
     <div class="form-panel-body">
       <div class="form-progress"><div class="form-progress-fill" id="prog-YPR" style="width:0%"></div></div>
       <div class="form-grid">
@@ -846,11 +1145,49 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <div class="cg-title">Youth Risk Controls — Pass · Flag · Fail · N/A</div>
         <div id="ypr-items"></div>
       </div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:12px 0 8px;">Supervision Ratio Snapshot (at time of audit)</div>
+      <div class="form-grid">
+        <div class="ff"><label>Unaccompanied Minors Observed</label><input type="number" id="ypr-unaccomp" placeholder="0" min="0" value="0"></div>
+        <div class="ff"><label>Highest-Risk Zone</label><input type="text" id="ypr-risk-zone" placeholder="e.g. Dragon's Edge, Stardust queue"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Est. Adult-to-Minor Ratio in Risk Zone</label>
+          <select id="ypr-ratio">
+            <option value="1:1">1:1 or better</option>
+            <option value="1:2">~1:2</option>
+            <option value="1:5">~1:5</option>
+            <option value="1:10+">1:10 or worse — concern</option>
+            <option value="no-minors">No minors present</option>
+          </select>
+        </div>
+        <div class="ff"><label>Supervision Policy Posted at Entrance?</label>
+          <select id="ypr-policy-posted">
+            <option value="yes">Yes — clearly visible</option>
+            <option value="partial">Partially — needs improvement</option>
+            <option value="no">No — not visible from main entrance</option>
+          </select>
+        </div>
+      </div>
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin:12px 0 8px;">Lost Child Protocol Drill — This Quarter</div>
+      <div class="form-grid">
+        <div class="ff"><label>Drill Conducted This Quarter?</label>
+          <select id="ypr-drill-done">
+            <option value="yes">Yes</option>
+            <option value="no">No — overdue</option>
+            <option value="pending">Scheduled — not yet completed</option>
+          </select>
+        </div>
+        <div class="ff"><label>Drill Date (if yes)</label><input type="date" id="ypr-drill-date"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Participants in Drill</label><input type="text" id="ypr-drill-participants" placeholder="Roles / names"></div>
+        <div class="ff"><label>Response Time Achieved</label><input type="text" id="ypr-drill-time" placeholder="e.g. 4 min 30 sec"></div>
+      </div>
       <div class="form-grid">
         <div class="ff"><label>Youth Incidents This Quarter</label><input type="number" id="ypr-incidents" placeholder="0" min="0" value="0"></div>
         <div class="ff"><label>Near-Misses Involving Minors</label><input type="number" id="ypr-nearmiss" placeholder="0" min="0" value="0"></div>
       </div>
-      <div class="ff"><label>High-Risk Areas / Observations</label><textarea id="ypr-notes" rows="2" placeholder="Specific youth risk patterns, zones of concern, actions taken…"></textarea></div>
+      <div class="ff"><label>High-Risk Areas / Observations</label><textarea id="ypr-notes" rows="2" placeholder="Patterns, zones of concern, recommended protocol changes…"></textarea></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-teal" onclick="submitInspection('YPR')">Submit →</button><button class="btn btn-ghost" onclick="closeForm('YPR')">Cancel</button></div>
     </div>
   </div>
@@ -1102,37 +1439,99 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   <div class="panel">
     <div class="panel-hdr"><div><div class="panel-title">Shift Handoff Document</div><div class="panel-sub">Complete at shift transition</div></div></div>
     <div class="panel-body">
-      <div class="sec-label">// Shift Info</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-bottom:14px;background:var(--panel2);padding:10px 12px;border-radius:7px;border-left:3px solid var(--teal);">Five required fields. Everything else is optional — expand additional detail if needed.</div>
+
+      <div class="sec-label">// Required — 5 fields</div>
       <div class="form-grid">
-        <div class="ff"><label>Date</label><input type="date" id="ho-date"></div>
-        <div class="ff"><label>Shift</label><select id="ho-shift"><option value="open">Open → Mid</option><option value="mid">Mid → Close</option><option value="close">Close → Open</option></select></div>
+        <div class="ff"><label>Outgoing Manager ✱</label><input type="text" id="ho-out-mgr" placeholder="Your name"></div>
+        <div class="ff"><label>Incoming Manager ✱</label><input type="text" id="ho-in-mgr" placeholder="Their name"></div>
       </div>
       <div class="form-grid">
-        <div class="ff"><label>Outgoing Manager</label><input type="text" id="ho-out-mgr" placeholder="Name"></div>
-        <div class="ff"><label>Incoming Manager</label><input type="text" id="ho-in-mgr" placeholder="Name"></div>
+        <div class="ff"><label>Date ✱</label><input type="date" id="ho-date"></div>
+        <div class="ff"><label>Shift ✱</label><select id="ho-shift"><option value="open">Open → Mid</option><option value="mid">Mid → Close</option><option value="close">Close → Open</option></select></div>
       </div>
-      <div class="form-grid">
-        <div class="ff"><label>Time</label><input type="time" id="ho-time"></div>
-        <div class="ff"><label>Rating</label><select id="ho-rating"><option value="smooth">✅ Smooth</option><option value="minor">🟡 Minor Issues</option><option value="rough">🔴 Rough</option></select></div>
+      <div class="ff"><label>Shift Rating ✱</label>
+        <div style="display:flex;gap:8px;">
+          <button type="button" id="ho-rating-smooth" class="btn btn-ghost" style="flex:1;min-height:50px;font-size:16px;" onclick="setHoRating('smooth',this)">✅ Smooth</button>
+          <button type="button" id="ho-rating-minor" class="btn btn-ghost" style="flex:1;min-height:50px;font-size:16px;" onclick="setHoRating('minor',this)">🟡 Minor</button>
+          <button type="button" id="ho-rating-rough" class="btn btn-ghost" style="flex:1;min-height:50px;font-size:16px;" onclick="setHoRating('rough',this)">🔴 Rough</button>
+        </div>
+        <input type="hidden" id="ho-rating" value="smooth">
       </div>
-      <div class="sec-label" style="margin-top:8px">// Operations</div>
-      <div class="form-grid">
-        <div class="ff"><label>Attractions Open</label><input type="number" id="ho-open-count" placeholder="0" min="0"></div>
-        <div class="ff"><label>Down Units</label><input type="text" id="ho-closed-attrs" placeholder="Names or None"></div>
+
+      <!-- Optional detail accordion -->
+      <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
+        <button type="button" class="btn btn-ghost btn-sm" style="width:100%;margin-bottom:10px;" onclick="toggleHandoffDetail()">＋ Add Optional Detail ▾</button>
+        <div id="ho-detail-panel" style="display:none;">
+          <div class="form-grid">
+            <div class="ff"><label>Attractions Open</label><input type="number" id="ho-open-count" placeholder="0" min="0"></div>
+            <div class="ff"><label>Down Units</label><input type="text" id="ho-closed-attrs" placeholder="Names or None"></div>
+          </div>
+          <div class="ff"><label>NMRs Filed This Shift</label><input type="text" id="ho-nmr" placeholder="IDs or None"></div>
+          <div class="ff"><label>Safety Notes for Incoming</label><textarea id="ho-safety-notes" rows="2" placeholder="Incidents, equipment concerns, patterns to watch…"></textarea></div>
+          <div class="ff"><label>Anything Else Incoming Should Know</label><textarea id="ho-final-notes" rows="2" placeholder="VIP groups, weather, open CARs needing attention…"></textarea></div>
+          <div class="ff"><label>Handoff Time</label><input type="time" id="ho-time"></div>
+        </div>
       </div>
-      <div class="ff"><label>Safety Notes for Incoming</label><textarea id="ho-safety-notes" rows="2" placeholder="NMRs, incidents, equipment concerns…"></textarea></div>
-      <div class="ff"><label>NMRs Filed</label><input type="text" id="ho-nmr" placeholder="IDs or None"></div>
-      <div class="ff"><label>Final Notes</label><textarea id="ho-final-notes" rows="2" placeholder="Anything else incoming should know…"></textarea></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--border);">
-        <button class="btn btn-green" onclick="saveHandoff()">Submit Handoff →</button>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--border);">
+        <button class="btn btn-green" style="flex:1;" onclick="saveHandoff()">Submit Handoff →</button>
         <button class="btn btn-ghost" onclick="clearHandoffForm()">Clear</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ══ ROTATIONS ══ -->
+<div class="view" id="view-rotations">
+
+  <div class="rot-alert-bar" id="rot-alert-bar">
+    <div class="rot-alert-pill rat-ok"><div class="rat-dot"></div>All positions current</div>
+  </div>
+
+  <div id="rot-alert-list" style="margin-bottom:14px;"></div>
+
+  <div class="sec-label">// Position Staffing — All Worlds · Tap position to assign or rotate</div>
+  <div class="rot-board" id="rot-board"></div>
+
+  <div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px;">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;">Rotation Thresholds</div>
+    <div class="form-grid">
+      <div class="ff">
+        <label>Warn at (minutes)</label>
+        <input type="number" id="rot-warn-threshold" value="45" min="10" max="120" step="5"
+          oninput="ROT_WARN=parseInt(this.value)||45;checkRotations();">
+      </div>
+      <div class="ff">
+        <label>Critical at (minutes)</label>
+        <input type="number" id="rot-crit-threshold" value="60" min="20" max="180" step="5"
+          oninput="ROT_CRIT=parseInt(this.value)||60;checkRotations();">
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text-dim);line-height:1.6;">
+      Warn threshold triggers amber alert and OPD radio log push. Critical threshold triggers red alert, badge in topbar, and shared entry in <code style="font-family:var(--mono);font-size:10px;color:var(--teal);">OPD_RadioLog</code> — visible to the dispatcher in real time.
+    </div>
+  </div>
+
 </div>
-<div id="toast"></div>
+
+<!-- POSITION ASSIGNMENT MODAL (bottom sheet) -->
+<div class="pos-modal-overlay" id="posModalOverlay" onclick="closePosModal()">
+  <div class="pos-modal" onclick="event.stopPropagation()">
+    <div class="pos-modal-title" id="pos-modal-title">Assign Position</div>
+    <div class="pos-modal-sub" id="pos-modal-sub">—</div>
+    <div class="form-grid">
+      <div class="ff"><label>Operator Name</label><input type="text" id="pos-op-name" placeholder="Full name"></div>
+      <div class="ff"><label>Badge / Employee ID</label><input type="text" id="pos-op-badge" placeholder="Badge ID"></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-teal" style="flex:1;" onclick="assignPosition()">Assign & Start Timer →</button>
+      <button class="btn btn-ghost" onclick="clearPosition()">Clear Position</button>
+      <button class="btn btn-ghost" onclick="closePosModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 
 <script>
 const AT_URL='https://as360-proxy.amusementstandards.workers.dev/airtable';
@@ -1141,10 +1540,14 @@ let throughputs=[],handoffs=[],shiftLogs=[],oosUnits=[],cars=[],audits=[],matrix
 let carFilter='all',currentFreq='weekly',activeForms={};
 
 const INSP_DEFS={
+  // Weekly
   CCA:{id:'CCA',name:'Cleanliness & Condition',table:'CCA_Log',cadence:7,scores:['r','s','p'],freq:'weekly'},
   HAE:{id:'HAE',name:'Height & Age Enforcement',table:'HAE_Log',cadence:7,scores:['r','s','p'],freq:'weekly'},
   WQA:{id:'WQA',name:'Water Quality Analysis',table:'WQA_Log',cadence:7,scores:['s'],freq:'weekly'},
   TPA:{id:'TPA',name:'3rd-Party Safety Inspection',table:'TPA_Submissions',cadence:7,scores:['r','s','p'],freq:'weekly'},
+  FLC:{id:'FLC',name:'FEC Floor Operations Log',table:'FLC_Log',cadence:7,scores:['p'],freq:'weekly'},
+  YPS:{id:'YPS',name:'Youth Patron Shift Log',table:'YPS_Log',cadence:7,scores:['p'],freq:'weekly'},
+  // Monthly
   SOA:{id:'SOA',name:'SOP Adherence Observation',table:'SOA_Log',cadence:30,scores:['r','s'],freq:'monthly'},
   SAC:{id:'SAC',name:'Signage & Compliance Audit',table:'SAC_Log',cadence:30,scores:['r','p'],freq:'monthly'},
   EAI:{id:'EAI',name:'Emergency Access Inspection',table:'EAI_Log',cadence:30,scores:['r','s'],freq:'monthly'},
@@ -1152,10 +1555,12 @@ const INSP_DEFS={
   OLI:{id:'OLI',name:'Operational Load Index',table:'OLI_Log',cadence:30,scores:['r','p'],freq:'monthly'},
   LGA:{id:'LGA',name:'Lifeguard Zone Audit',table:'LGA_Log',cadence:30,scores:['s'],freq:'monthly'},
   BAL:{id:'BAL',name:'Bather Load Index',table:'BAL_Log',cadence:30,scores:['s'],freq:'monthly'},
+  // Quarterly
   VGB:{id:'VGB',name:'VGB Drain Compliance',table:'VGB_Log',cadence:90,scores:['s'],freq:'quarterly'},
-  YPR:{id:'YPR',name:'Youth Patron Risk Log',table:'YPR_Log',cadence:90,scores:['p'],freq:'quarterly'},
+  YPR:{id:'YPR',name:'Youth Patron Risk Log (Quarterly)',table:'YPR_Log',cadence:90,scores:['p'],freq:'quarterly'},
   GES:{id:'GES',name:'Group & Event Supervision',table:'GES_Log',cadence:90,scores:['p'],freq:'quarterly'},
   ACR:{id:'ACR',name:'Attraction Condition Report',table:'ACR_Log',cadence:90,scores:['p'],freq:'quarterly'},
+  // Annual
   SBC:{id:'SBC',name:'Service Bulletin Compliance',table:'SBC_Log',cadence:365,scores:['r','s'],freq:'annual'},
   EAP:{id:'EAP',name:'Emergency Action Plan Review',table:'EAP_Log',cadence:365,scores:['s'],freq:'annual'},
   SGS:{id:'SGS',name:'Slide & Geometry Survey',table:'SGS_Log',cadence:365,scores:['s'],freq:'annual'},
@@ -1297,10 +1702,17 @@ function save(k,d){try{localStorage.setItem(k,JSON.stringify(d));}catch(e){}}
 
 function init(){
   load();
+  initRotPositions();
+  ocInit();
+  lgaSeedZones();
+  flcSessionEntries=[];
+  ypsSessionEntries=[];
   if(!matrixContacts.length)matrixContacts=[...DEFAULT_MATRIX];
   buildChecklistItems();
   setDefaults();
   refreshAll();
+  checkRotations();
+  setInterval(checkRotations,15000);
   setInterval(()=>document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),1000);
   document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
 }
@@ -1309,14 +1721,15 @@ function setDefaults(){
   const today=new Date().toISOString().split('T')[0];
   const now=new Date().toTimeString().slice(0,5);
   ['sl-date','tp-date','ho-date','aud-date','car-due',
-   'cca-date','hae-date','wqa-date','tpa-date',
-   'soa-date','sac-date','eai-date','ipl-date','oli-date',
+   'cca-date','hae-date','wqa-date','tpa-date','flc-date','yps-date',
+   'soa-date','sac-date','eai-date','ipl-date','oli-date','lga-date',
    'ypr-date','ges-date','acr-date','sbc-date','eap-date'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=today;});
   ['sl-start','ho-time','wqa-time'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=now;});
 }
 
 function refreshAll(){
   refreshDash();renderPillars();renderOOS();renderCARs();renderAudits();renderMatrix();renderThroughput();renderHandoffs();renderShiftLogs();updateBadges();
+  renderRightNow();ocUpdateCounts();
 }
 
 function showView(name,tab){
@@ -1326,6 +1739,9 @@ function showView(name,tab){
   if(v)v.classList.add('active');
   if(tab)tab.classList.add('active');
   if(name==='inspections'){renderInspections();return;}
+  if(name==='rotations'){renderRotations();return;}
+  if(name==='rightnow'){renderRightNow();return;}
+  if(name==='opening'){renderOpeningChecklist();return;}
   const map={dashboard:refreshDash,pillar:renderPillars,oos:renderOOS,car:renderCARs,audit:renderAudits,matrix:renderMatrix,throughput:renderThroughput,handoff:renderHandoffs,shift:renderShiftLogs};
   if(map[name])map[name]();
 }
@@ -1341,6 +1757,234 @@ function updateBadges(){
   const inspOverdue=getInspOverdue();
   const ib=document.getElementById('inspBadge');ib.textContent=inspOverdue;ib.className='tab-badge '+(inspOverdue?'red':'neutral');
   document.getElementById('db-insp-overdue').textContent=inspOverdue;
+  updateRotBadges();
+}
+
+// ── ROTATION ENGINE ────────────────────────────────────────────────────────────
+let ROT_WARN=45,ROT_CRIT=60;
+let rotPositions={};
+let rotAlerts=[];
+let activePosModal=null;
+
+const EU_ROT_DEFS=[
+  {id:'SR',name:'Stardust Racers',world:'Celestial Park',positions:['Load / Dispatch','Unload','Queue — Main','Greeter / Height Check']},
+  {id:'CC',name:'Constellation Carousel',world:'Celestial Park',positions:['Load / Unload']},
+  {id:'HP',name:'Harry Potter — Battle at Ministry',world:'Ministry of Magic',positions:['Load / Dispatch','Unload','Queue 1','Queue 2']},
+  {id:'DK',name:'Mine-Cart Madness',world:'Super Nintendo World',positions:['Load / Dispatch','Unload','Queue']},
+  {id:'MK',name:"Mario Kart: Bowser's Challenge",world:'Super Nintendo World',positions:['Load / Dispatch','Unload','Queue 1','Queue 2']},
+  {id:'YS',name:"Yoshi's Adventure",world:'Super Nintendo World',positions:['Load / Dispatch','Unload']},
+  {id:'DR',name:"Dragon Racer's Rally",world:'Isle of Berk',positions:['Load / Dispatch','Unload','Queue','Greeter / Height Check']},
+  {id:'HW',name:"Hiccup's Wing Gliders",world:'Isle of Berk',positions:['Load / Dispatch','Unload']},
+  {id:'FD',name:'Fyre Drill',world:'Isle of Berk',positions:['Load / Dispatch','Unload','Queue']},
+  {id:'VT',name:'Viking Training Camp',world:'Isle of Berk',positions:['Staff 1','Staff 2']},
+  {id:'MU',name:'Monsters Unchained: The Curse of the Werewolf',world:'Dark Universe',positions:['Load / Dispatch','Unload','Queue']},
+];
+
+function posKey(rideId,pos){return rideId+'__'+pos.replace(/[^a-zA-Z0-9]/g,'_');}
+
+function initRotPositions(){
+  try{const s=localStorage.getItem('as360_rot');if(s)rotPositions=JSON.parse(s);}catch(e){}
+}
+function saveRotPositions(){try{localStorage.setItem('as360_rot',JSON.stringify(rotPositions));}catch(e){}}
+
+function checkRotations(){
+  rotAlerts=[];
+  EU_ROT_DEFS.forEach(def=>{
+    def.positions.forEach(pos=>{
+      const key=posKey(def.id,pos);
+      const data=rotPositions[key];
+      if(!data?.since)return;
+      const mins=Math.floor((Date.now()-data.since)/60000);
+      if(mins<ROT_WARN)return;
+      const level=mins>=ROT_CRIT?'crit':'warn';
+      rotAlerts.push({rideId:def.id,rideName:def.name,world:def.world,pos,op:data.op,mins,level,key});
+      // Push to shared OPD_RadioLog when first crossing CRIT threshold
+      if(level==='crit'&&mins>=ROT_CRIT&&mins<ROT_CRIT+1){
+        atPush('OPD_RadioLog',{
+          'Log ID':'MGR-CRIT-'+key+'-'+Date.now().toString(36).slice(-4).toUpperCase(),
+          'Dispatcher Name':'Manager Module — Epic Universe',
+          'Dispatcher Badge':'MGR-EU',
+          'Shift':'Auto',
+          'Date':new Date().toISOString().split('T')[0],
+          'Timestamp':new Date().toISOString(),
+          'Ride ID':def.id,
+          'Ride Name':def.name,
+          'Message':'⚠ CRITICAL ROTATION — '+def.name+' / '+pos+' · '+data.op+' at '+mins+' min — manager ACK required',
+          'Priority':'high',
+          'Time':new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
+        });
+      }
+    });
+  });
+  updateRotBadges();
+  renderDashRotMini();
+  if(document.getElementById('view-rotations')?.classList.contains('active'))renderRotations();
+}
+
+function updateRotBadges(){
+  const crits=rotAlerts.filter(a=>a.level==='crit').length;
+  const warns=rotAlerts.filter(a=>a.level==='warn').length;
+  const total=rotAlerts.length;
+  const rb=document.getElementById('rotBadge');
+  if(rb){rb.textContent=total;rb.className='tab-badge '+(crits?'crit':warns?'amber':'neutral');}
+  const tc=document.getElementById('tb-rot-crit');const tw=document.getElementById('tb-rot-warn');
+  if(tc){tc.style.display=crits?'flex':'none';const cc=document.getElementById('tb-crit-count');if(cc)cc.textContent=crits;}
+  if(tw){tw.style.display=(warns&&!crits)?'flex':'none';const wc=document.getElementById('tb-warn-count');if(wc)wc.textContent=warns;}
+  const dc=document.getElementById('db-rot-crit');if(dc)dc.textContent=crits||total||0;
+}
+
+function renderDashRotMini(){
+  const el=document.getElementById('db-rot-mini');if(!el)return;
+  if(!rotAlerts.length){
+    el.innerHTML='<div class="empty" style="padding:16px"><div class="empty-icon" style="font-size:18px">✅</div>All positions current</div>';return;
+  }
+  el.innerHTML=rotAlerts.slice(0,5).map(a=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid rgba(36,45,62,.5);">
+      <div>
+        <div style="font-size:11px;font-weight:600;color:var(--text)">${a.rideName}</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:1px;">${a.pos} · ${a.op}</div>
+      </div>
+      <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:${a.level==='crit'?'var(--red)':'var(--amber)'};">${a.mins}m</span>
+    </div>`).join('');
+}
+
+function renderRotations(){
+  const crits=rotAlerts.filter(a=>a.level==='crit');
+  const warns=rotAlerts.filter(a=>a.level==='warn');
+  const bar=document.getElementById('rot-alert-bar');
+  if(bar){
+    if(!rotAlerts.length){
+      bar.innerHTML='<div class="rot-alert-pill rat-ok"><div class="rat-dot"></div>All positions current — no overdue rotations</div>';
+    } else {
+      bar.innerHTML='';
+      if(crits.length)bar.innerHTML+=`<div class="rot-alert-pill rat-crit"><div class="rat-dot"></div>${crits.length} CRITICAL — ACK required</div>`;
+      if(warns.length)bar.innerHTML+=`<div class="rot-alert-pill rat-warn"><div class="rat-dot"></div>${warns.length} OVERDUE — rotation needed</div>`;
+    }
+  }
+  const list=document.getElementById('rot-alert-list');
+  if(list){
+    list.innerHTML=[...rotAlerts].sort((a,b)=>b.mins-a.mins).map(a=>`
+      <div class="rot-alert-card ${a.level}">
+        <div class="rac-icon">${a.level==='crit'?'🔴':'🟡'}</div>
+        <div class="rac-body">
+          <div class="rac-title ${a.level}">${a.rideName} — ${a.pos}</div>
+          <div class="rac-sub">${a.op} · ${a.world}</div>
+        </div>
+        <div class="rac-time ${a.level}">${a.mins}m</div>
+        <button class="rac-ack" onclick="ackRotation('${a.key}')">ACK →</button>
+      </div>`).join('');
+  }
+  const board=document.getElementById('rot-board');if(!board)return;
+  board.innerHTML=EU_ROT_DEFS.map(def=>{
+    const defAlerts=rotAlerts.filter(a=>a.rideId===def.id);
+    const hasCrit=defAlerts.some(a=>a.level==='crit');
+    const hasWarn=defAlerts.some(a=>a.level==='warn');
+    const statusClass=hasCrit?'rts-crit':hasWarn?'rts-warn':'rts-open';
+    const statusText=hasCrit?'CRIT':hasWarn?'WARN':'OK';
+    const posRows=def.positions.map(pos=>{
+      const key=posKey(def.id,pos);
+      const data=rotPositions[key];
+      const mins=data?.since?Math.floor((Date.now()-data.since)/60000):null;
+      const timeClass=mins===null?'rpt-none':mins<ROT_WARN?'rpt-ok':mins<ROT_CRIT?'rpt-warn':'rpt-crit';
+      const dotColor=mins===null?'var(--text-muted)':mins<ROT_WARN?'var(--green)':mins<ROT_CRIT?'var(--amber)':'var(--red)';
+      // encode pos for onclick
+      const posEnc=pos.replace(/'/g,'\\x27').replace(/"/g,'\\x22');
+      return`<div class="rt-pos" onclick="openPosModal('${def.id}','${posEnc}')">
+        <div class="rt-pos-dot" style="background:${dotColor}"></div>
+        <div class="rt-pos-name">${pos}</div>
+        <div class="rt-pos-op ${data?.op?'filled':''}">${data?.op||'Unassigned'}</div>
+        <div class="rt-pos-time ${timeClass}">${mins!==null?mins+'m':'—'}</div>
+      </div>`;
+    }).join('');
+    return`<div class="rot-tile ${hasCrit?'has-crit':hasWarn?'has-warn':''}">
+      <div class="rt-hdr">
+        <div><div class="rt-name">${def.name}</div><div class="rt-world">${def.world}</div></div>
+        <div class="${statusClass} rt-status">${statusText}</div>
+      </div>
+      <div class="rt-positions">${posRows}</div>
+    </div>`;
+  }).join('');
+}
+
+function openPosModal(rideId,pos){
+  activePosModal={rideId,pos};
+  const def=EU_ROT_DEFS.find(d=>d.id===rideId);
+  const key=posKey(rideId,pos);
+  const data=rotPositions[key];
+  document.getElementById('pos-modal-title').textContent=pos;
+  document.getElementById('pos-modal-sub').textContent=(def?.name||rideId)+' · '+(def?.world||'');
+  document.getElementById('pos-op-name').value=data?.op||'';
+  document.getElementById('pos-op-badge').value=data?.badge||'';
+  document.getElementById('posModalOverlay').classList.add('show');
+  setTimeout(()=>document.getElementById('pos-op-name').focus(),120);
+}
+
+function closePosModal(){
+  document.getElementById('posModalOverlay').classList.remove('show');
+  activePosModal=null;
+}
+
+function assignPosition(){
+  if(!activePosModal)return;
+  const name=document.getElementById('pos-op-name').value.trim();
+  const badge=document.getElementById('pos-op-badge').value.trim();
+  if(!name){toast('Enter operator name','err');return;}
+  const {rideId,pos}=activePosModal;
+  const key=posKey(rideId,pos);
+  const def=EU_ROT_DEFS.find(d=>d.id===rideId);
+  const prev=rotPositions[key];
+  if(prev?.op&&prev.op!==name){
+    const mins=prev.since?Math.floor((Date.now()-prev.since)/60000):0;
+    atPush('OPD_RadioLog',{
+      'Log ID':'MGR-ROT-'+key.slice(0,12)+'-'+Date.now().toString(36).slice(-4).toUpperCase(),
+      'Dispatcher Name':'Manager Module — Epic Universe',
+      'Dispatcher Badge':'MGR-EU',
+      'Shift':'Rotation',
+      'Date':new Date().toISOString().split('T')[0],
+      'Timestamp':new Date().toISOString(),
+      'Ride ID':rideId,
+      'Ride Name':def?.name||rideId,
+      'Message':'ROTATION · '+(def?.name||rideId)+' / '+pos+' · '+prev.op+' ('+mins+'m) → '+name+(badge?' ['+badge+']':''),
+      'Priority':mins>=ROT_CRIT?'high':mins>=ROT_WARN?'med':'normal',
+      'Time':new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
+    });
+  }
+  rotPositions[key]={op:name,badge,since:Date.now()};
+  saveRotPositions();
+  closePosModal();
+  checkRotations();
+  toast(name+' → '+pos,'ok');
+}
+
+function clearPosition(){
+  if(!activePosModal)return;
+  const key=posKey(activePosModal.rideId,activePosModal.pos);
+  delete rotPositions[key];
+  saveRotPositions();
+  closePosModal();
+  checkRotations();
+  toast('Position cleared','ok');
+}
+
+function ackRotation(key){
+  const alert=rotAlerts.find(a=>a.key===key);if(!alert)return;
+  if(rotPositions[key])rotPositions[key].since=Date.now();
+  saveRotPositions();
+  atPush('OPD_RadioLog',{
+    'Log ID':'MGR-ACK-'+key.slice(0,12)+'-'+Date.now().toString(36).slice(-4).toUpperCase(),
+    'Dispatcher Name':'Manager Module — Epic Universe',
+    'Dispatcher Badge':'MGR-EU',
+    'Shift':'ACK',
+    'Date':new Date().toISOString().split('T')[0],
+    'Timestamp':new Date().toISOString(),
+    'Ride ID':alert.rideId,
+    'Ride Name':alert.rideName,
+    'Message':'ROTATION ACK · '+alert.rideName+' / '+alert.pos+' · '+alert.op+' at '+alert.mins+'m — timer reset',
+    'Priority':'med',
+    'Time':new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),
+  });
+  checkRotations();
+  toast('ACK logged · pushed to OPD radio log','ok');
 }
 
 // ── INSPECTION ENGINE ──────────────────────────────────────────────────────────
@@ -1398,8 +2042,8 @@ function updateFreqBadges(){
 
 function renderInspectionCards(){
   const freqIds=Object.keys(INSP_DEFS).filter(id=>INSP_DEFS[id].freq===currentFreq);
-  const hasForm=['CCA','HAE','WQA','TPA','SOA','SAC','EAI','IPL','OLI','YPR','GES','ACR','SBC','EAP'];
-  const naForms={LGA:true,BAL:true,VGB:true,SGS:true};// no aquatics at Epic Universe
+  const hasForm=['CCA','HAE','WQA','TPA','FLC','YPS','SOA','SAC','EAI','IPL','OLI','LGA','YPR','GES','ACR','SBC','EAP'];
+  const naForms={BAL:true,VGB:true,SGS:true};// no deep aquatics at Epic Universe
   const grid=document.getElementById('insp-card-grid');
   const cs=document.getElementById('insp-coming-soon');
   const naIds=freqIds.filter(id=>naForms[id]);
@@ -1455,6 +2099,9 @@ function openForm(id){
   if(id==='CCA')buildCCAZones();
   if(id==='HAE')buildHAEStations();
   if(id==='WQA')buildWQAZones();
+  if(id==='LGA'){lgaSeedZones();buildSimpleChecklist('lga-visibility-items','LGA_VIS',LGA_VISIBILITY_ITEMS,true);buildSimpleChecklist('lga-rescue-items','LGA_RES',LGA_RESCUE_ITEMS,true);}
+  if(id==='FLC'){document.getElementById('flc-entry-list').innerHTML='';flcSessionEntries=[];}
+  if(id==='YPS'){document.getElementById('yps-entry-list').innerHTML='';ypsSessionEntries=[];}  
 }
 
 function closeForm(id){
@@ -1464,6 +2111,8 @@ function closeForm(id){
 
 function buildChecklistItems(){
   buildCCAZones();buildHAEStations();buildWQAZones();
+  buildSimpleChecklist('lga-visibility-items','LGA_VIS',LGA_VISIBILITY_ITEMS,true);
+  buildSimpleChecklist('lga-rescue-items','LGA_RES',LGA_RESCUE_ITEMS,true);
   buildSimpleChecklist('soa-items','SOA',SOA_ITEMS);
   buildSimpleChecklist('sac-items','SAC',SAC_ITEMS);
   buildSimpleChecklist('eai-items','EAI',EAI_ITEMS,true);
@@ -2208,6 +2857,29 @@ function submitInspection(id){
     if(!reviewer){toast('Enter reviewer name','err');return;}
     const results={};EAP_ITEMS.forEach((_,i)=>{results[i]=optState[`EAP-${i}`]||'not-rated';});
     fields={'Date':document.getElementById('eap-date').value,'Reviewer':reviewer,'Results':JSON.stringify(results),'Last Drill Date':document.getElementById('eap-lastdrill').value,'Next Drill Scheduled':document.getElementById('eap-nextdrill').value,'Sections Needing Update':document.getElementById('eap-updates').value,'Notes':document.getElementById('eap-notes').value,'Fails':Object.values(results).filter(v=>v==='fail').length,'Submitted At':new Date().toISOString()};
+  } else if(id==='LGA'){
+    const auditor=document.getElementById('lga-auditor').value.trim();
+    if(!auditor){toast('Enter auditor name','err');return;}
+    const zoneData=LGA_ZONES.map((z,i)=>({zone:z.name,guard:document.getElementById(`lga-guard-${i}`)?.value||'',since:document.getElementById(`lga-guard-since-${i}`)?.value||'',minsOnPost:parseInt(document.getElementById(`lga-guard-mins-${i}`)?.value)||0,status:optState[`LGA_ZONE-${i}`]||'not-rated',batherLoad:optState[`LGA_BATHER-${i}`]||'not-recorded'}));
+    const visResults={};LGA_VISIBILITY_ITEMS.forEach((_,i)=>{visResults[i]=optState[`LGA_VIS-${i}`]||'not-rated';});
+    const resResults={};LGA_RESCUE_ITEMS.forEach((_,i)=>{resResults[i]=optState[`LGA_RES-${i}`]||'not-rated';});
+    fields={'Date':document.getElementById('lga-date').value,'Audit Time':document.getElementById('lga-time').value,'Auditor':auditor,'Zone Coverage':JSON.stringify(zoneData),'Bottom Visibility':JSON.stringify(visResults),'Rescue Equipment':JSON.stringify(resResults),'Visibility Fails':Object.values(visResults).filter(v=>v==='fail').length,'Rescue Fails':Object.values(resResults).filter(v=>v==='fail').length,'Overall Status':document.getElementById('lga-status').value,'Notes':document.getElementById('lga-notes').value,'Submitted At':new Date().toISOString()};
+  } else if(id==='FLC'){
+    const supervisor=document.getElementById('flc-supervisor').value.trim();
+    if(!supervisor){toast('Enter supervisor name','err');return;}
+    fields={'Date':document.getElementById('flc-date').value,'Shift':document.getElementById('flc-shift').value,'Supervisor':supervisor,'Total Entries':flcSessionEntries.length,'Incident Count':flcSessionEntries.filter(e=>e.type==='incident').length,'Downtime Count':flcSessionEntries.filter(e=>e.type==='downtime').length,'Machine Downs':JSON.stringify(flcMachineDowns),'Log Entries':JSON.stringify(flcSessionEntries),'Staff Count':parseInt(document.getElementById('flc-staff-count').value)||0,'Coverage Gaps':document.getElementById('flc-coverage-gaps').value,'Summary':document.getElementById('flc-summary').value,'Submitted At':new Date().toISOString()};
+    flcSessionEntries=[];flcMachineDowns=[];
+  } else if(id==='YPS'){
+    const logger=document.getElementById('yps-logger').value.trim();
+    if(!logger){toast('Enter your name','err');return;}
+    if(!ypsSessionEntries.length){toast('Add at least one entry before submitting','err');return;}
+    fields={'Date':document.getElementById('yps-date').value,'Shift':document.getElementById('yps-shift').value,'Logged By':logger,'Total Events':ypsSessionEntries.length,'Unaccompanied Minors':ypsSessionEntries.filter(e=>e.type==='unaccompanied').length,'Lost Child Events':ypsSessionEntries.filter(e=>e.type==='lost').length,'Age Restriction Challenges':ypsSessionEntries.filter(e=>e.type==='age-restriction').length,'Chaperone Concerns':ypsSessionEntries.filter(e=>e.type==='chaperone').length,'Behavioral Incidents':ypsSessionEntries.filter(e=>e.type==='behavioral').length,'Entries':JSON.stringify(ypsSessionEntries),'Submitted At':new Date().toISOString()};
+    ypsSessionEntries=[];
+  } else if(id==='YPR'){
+    const reviewer=document.getElementById('ypr-reviewer').value.trim();
+    if(!reviewer){toast('Enter reviewer name','err');return;}
+    const results={};YPR_ITEMS.forEach((_,i)=>{results[i]=optState[`YPR-${i}`]||'not-rated';});
+    fields={'Date':document.getElementById('ypr-date').value,'Reviewer':reviewer,'Results':JSON.stringify(results),'Unaccompanied Minors Observed':parseInt(document.getElementById('ypr-unaccomp').value)||0,'Highest Risk Zone':document.getElementById('ypr-risk-zone').value,'Adult to Minor Ratio':document.getElementById('ypr-ratio').value,'Policy Posted':document.getElementById('ypr-policy-posted').value,'Drill Conducted':document.getElementById('ypr-drill-done').value,'Drill Date':document.getElementById('ypr-drill-date').value,'Drill Participants':document.getElementById('ypr-drill-participants').value,'Drill Response Time':document.getElementById('ypr-drill-time').value,'Youth Incidents':parseInt(document.getElementById('ypr-incidents').value)||0,'Near-Misses Involving Minors':parseInt(document.getElementById('ypr-nearmiss').value)||0,'Notes':document.getElementById('ypr-notes').value,'Fails':Object.values(results).filter(v=>v==='fail').length,'Submitted At':new Date().toISOString()};
   }
 
   inspections[id]={lastDate:today,lastFields:fields};
@@ -2221,7 +2893,7 @@ function submitInspection(id){
 }
 
 function clearFormState(id){
-  const simpleForms={SOA:SOA_ITEMS,SAC:SAC_ITEMS,EAI:EAI_ITEMS,IPL:IPL_ITEMS,YPR:YPR_ITEMS,GES:GES_ITEMS,EAP:EAP_ITEMS};
+  const simpleForms={SOA:SOA_ITEMS,SAC:SAC_ITEMS,EAI:EAI_ITEMS,IPL:IPL_ITEMS,GES:GES_ITEMS,EAP:EAP_ITEMS};
   if(simpleForms[id])simpleForms[id].forEach((_,i)=>delete optState[`${id}-${i}`]);
   if(id==='CCA'){
     ccaSessionLocations=[];
@@ -2244,11 +2916,294 @@ function clearFormState(id){
     const n=document.getElementById('wqa-turnover-note');if(n)n.textContent='';
   }
   if(id==='OLI'){oliRowCount=0;oliSeedRows();}
+  if(id==='LGA'){LGA_ZONES.forEach((_,i)=>{['LGA_ZONE','LGA_BATHER'].forEach(f=>delete optState[`${f}-${i}`]);});LGA_VISIBILITY_ITEMS.forEach((_,i)=>delete optState[`LGA_VIS-${i}`]);LGA_RESCUE_ITEMS.forEach((_,i)=>delete optState[`LGA_RES-${i}`]);lgaSeedZones();}
+  if(id==='FLC'){flcSessionEntries=[];flcMachineDowns=[];renderFLCEntries();}
+  if(id==='YPS'){ypsSessionEntries=[];renderYPSEntries();}
+  if(id==='YPR'){YPR_ITEMS.forEach((_,i)=>delete optState[`YPR-${i}`]);}
   if(id==='ACR'){acrRowCount=0;acrSeedRows();}
   if(id==='SBC'){sbcRowCount=0;sbcSeedRows();}
   const bar=document.getElementById(`prog-${id}`);if(bar)bar.style.width='0%';
   const panel=document.getElementById('form-'+id);
   if(panel){panel.querySelectorAll('.cg-opt').forEach(o=>{o.className='cg-opt';});}
+}
+
+// ── RIGHT NOW ENGINE ─────────────────────────────────────────────────────────
+function getShiftPhase(){
+  const h=new Date().getHours();
+  if(h>=6&&h<9)return{phase:'preopening',label:'PRE-OPENING',desc:'Pre-opening checklist phase — complete before gates open',cls:'rn-phase-preopening'};
+  if(h>=9&&h<12)return{phase:'open',label:'MORNING OPEN',desc:'Morning operations — staff checks, first rotation window',cls:'rn-phase-open'};
+  if(h>=12&&h<17)return{phase:'peak',label:'PEAK OPERATIONS',desc:'Peak hours — maximum guest load, heightened monitoring',cls:'rn-phase-peak'};
+  if(h>=17&&h<20)return{phase:'open',label:'EVENING',desc:'Evening operations — crowd tapering, start prep for close',cls:'rn-phase-open'};
+  return{phase:'closing',label:'CLOSING',desc:'Closing phase — final checks, handoff prep, shutdown procedures',cls:'rn-phase-closing'};
+}
+
+function renderRightNow(){
+  const sp=getShiftPhase();
+  const badge=document.getElementById('rn-phase-badge');
+  const desc=document.getElementById('rn-phase-desc');
+  const clock=document.getElementById('rn-clock-large');
+  if(badge){badge.textContent=sp.label;badge.className='rn-phase-badge '+sp.cls;}
+  if(desc)desc.textContent=sp.desc;
+  if(clock)clock.textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+
+  const inspOverdue=Object.keys(INSP_DEFS).filter(id=>getInspStatus(id).status==='overdue');
+  const inspDueSoon=Object.keys(INSP_DEFS).filter(id=>getInspStatus(id).status==='due-soon');
+  const activeOOS=oosUnits.filter(o=>o.status==='active').length;
+  const openCARs=cars.filter(c=>c.status==='open');
+  const critCARs=openCARs.filter(c=>ageDays(c.createdAt)>30);
+  const rotCrits=rotAlerts.filter(a=>a.level==='crit');
+  const rotWarns=rotAlerts.filter(a=>a.level==='warn');
+
+  // Update Right Now badge on tab
+  const urgent=inspOverdue.length+critCARs.length+rotCrits.length+activeOOS;
+  const rnBadge=document.getElementById('rnBadge');
+  if(rnBadge){rnBadge.style.display=urgent>0?'':'none';rnBadge.textContent=urgent;}
+
+  const cards=[];
+
+  // Phase-specific priority cards
+  if(sp.phase==='preopening'){
+    cards.push({icon:'🟢',title:'Opening Checklist',sub:'Pre-opening ride check with ATR data',cls:'ok',action:"showView('opening',document.querySelector('[onclick*=opening]'))",badge:null});
+    cards.push({icon:'📏',title:'Height Stick Verification',sub:'Confirm all 9 EU sticks accurate',cls:'ok',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:null});
+    cards.push({icon:'🔁',title:'Assign Positions',sub:'Staff all rotation slots before open',cls:Object.keys(rotPositions).length===0?'urgent':'ok',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))",badge:Object.keys(rotPositions).length===0?'UNASSIGNED':null});
+  }
+
+  // Always-present urgent items
+  if(rotCrits.length){
+    cards.push({icon:'🔴',title:'Critical Rotations',sub:rotCrits.length+' position'+(rotCrits.length>1?'s':'')+' critically overdue',cls:'urgent',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))",badge:rotCrits.length+'!'});
+  }
+  if(rotWarns.length&&!rotCrits.length){
+    cards.push({icon:'🟡',title:'Overdue Rotations',sub:rotWarns.length+' position'+(rotWarns.length>1?'s':'')+' need rotation',cls:'due',action:"showView('rotations',document.querySelector('[onclick*=rotations]'))",badge:rotWarns.length});
+  }
+  if(activeOOS){
+    cards.push({icon:'⛔',title:activeOOS+' Attraction'+(activeOOS>1?'s':'')+' OOS',sub:'Active out-of-service units',cls:'urgent',action:"showView('oos',document.querySelector('[onclick*=oos]'))",badge:activeOOS});
+  }
+  if(critCARs.length){
+    cards.push({icon:'📂',title:'CARs Requiring Escalation',sub:critCARs.length+' corrective action'+(critCARs.length>1?'s':'')+' over 30 days',cls:'urgent',action:"showView('car',document.querySelector('[onclick*=car]'))",badge:critCARs.length+'d+'});
+  }
+  if(inspOverdue.length){
+    cards.push({icon:'🔍',title:'Overdue Inspections',sub:inspOverdue.map(id=>INSP_DEFS[id].name).slice(0,2).join(', ')+(inspOverdue.length>2?'…':''),cls:'urgent',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:inspOverdue.length});
+  }
+  if(inspDueSoon.length&&!inspOverdue.length){
+    cards.push({icon:'📅',title:'Inspections Due Soon',sub:inspDueSoon.length+' coming up within 3 days',cls:'due',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:inspDueSoon.length});
+  }
+
+  // Phase-specific next actions
+  if(sp.phase==='peak'){
+    cards.push({icon:'👤',title:'Log Youth Patron Event',sub:'Quick shift log entry',cls:'ok',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:null});
+    cards.push({icon:'📈',title:'Log Throughput',sub:'Update TPH for peak period',cls:'ok',action:"showView('newthroughput',document.querySelector('[onclick*=newthroughput]'))",badge:null});
+  }
+  if(sp.phase==='closing'){
+    cards.push({icon:'🔄',title:'Prepare Handoff Doc',sub:'Start shift handoff',cls:handoffs.length===0?'due':'ok',action:"showView('newhandoff',document.querySelector('[onclick*=newhandoff]'))",badge:handoffs.length===0?'PENDING':null});
+    cards.push({icon:'📋',title:'Close Shift Log',sub:'Record closing conditions',cls:'ok',action:"showView('shift',document.querySelector('[onclick*=shift]'))",badge:null});
+  }
+
+  // Always useful
+  cards.push({icon:'📻',title:'Log NMR',sub:'Near-miss or incident report',cls:'ok',action:"window.location.href='nmr.html'",badge:null});
+  cards.push({icon:'🏃',title:'Floor Ops Log',sub:'Add floor observation entry',cls:'ok',action:"showView('inspections',document.querySelector('[onclick*=inspections]'))",badge:null});
+
+  const body=document.getElementById('rn-body');
+  if(!body)return;
+  body.innerHTML=`
+    <div class="rn-section-hdr">// Priority actions for this shift phase</div>
+    <div class="rn-action-grid">
+      ${cards.slice(0,9).map(c=>`
+        <div class="rn-action-card ${c.cls}" onclick="${c.action}">
+          ${c.badge!==null?`<div class="rn-card-badge ${c.cls==='urgent'?'red':'amber'}">${c.badge}</div>`:''}
+          <div class="rn-card-icon">${c.icon}</div>
+          <div class="rn-card-title">${c.title}</div>
+          <div class="rn-card-sub">${c.sub}</div>
+        </div>`).join('')}
+    </div>
+    <div class="rn-section-hdr" style="margin-top:14px;">// Active status</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+      <div class="metric-card ${rotCrits.length?'red':rotWarns.length?'amber':'green'}"><div class="mv ${rotCrits.length?'red':rotWarns.length?'amber':'green'}">${rotAlerts.length}</div><div class="ml">Rotation Alerts</div></div>
+      <div class="metric-card ${activeOOS?'red':'teal'}"><div class="mv ${activeOOS?'red':'teal'}">${activeOOS}</div><div class="ml">OOS Units</div></div>
+      <div class="metric-card ${critCARs.length?'red':openCARs.length?'amber':'green'}"><div class="mv ${critCARs.length?'red':openCARs.length?'amber':'green'}">${openCARs.length}</div><div class="ml">Open CARs</div></div>
+    </div>`;
+}
+
+// ── HANDOFF HELPERS ─────────────────────────────────────────────────────────────
+let hoRating='smooth';
+function setHoRating(val,btn){
+  hoRating=val;
+  document.getElementById('ho-rating').value=val;
+  document.querySelectorAll('#ho-rating-smooth,#ho-rating-minor,#ho-rating-rough').forEach(b=>{
+    b.className='btn btn-ghost';
+  });
+  if(val==='smooth')btn.className='btn btn-green';
+  else if(val==='minor')btn.className='btn btn-amber';
+  else btn.className='btn btn-red';
+}
+function toggleHandoffDetail(){
+  const p=document.getElementById('ho-detail-panel');
+  if(p)p.style.display=p.style.display==='none'?'block':'none';
+}
+
+// ── PHOTO CAPTURE HELPER ─────────────────────────────────────────────────────────
+function updatePhotoCount(prefix,input){
+  const count=input.files.length;
+  const badge=document.getElementById(prefix+'-photo-count');
+  const label=document.getElementById(prefix+'-photo-label');
+  if(badge){badge.style.display=count?'':'none';badge.textContent=count+' photo'+(count>1?'s':'');}
+  if(label)label.textContent=count?count+' photo'+(count>1?'s':'')+' attached — tap to change':'Tap to attach photos (camera or library)';
+}
+
+// ── CAR ESCALATION UPDATE ────────────────────────────────────────────────────────
+function updateCarEscalation(){
+  const critCARs=cars.filter(c=>c.status==='open'&&ageDays(c.createdAt)>30).length;
+  const banner=document.getElementById('car-esc-banner');
+  const count=document.getElementById('car-esc-count');
+  if(banner)banner.style.display=critCARs?'flex':'none';
+  if(count)count.textContent=critCARs;
+}
+
+// ── LGA — LIFEGUARD ZONE AUDIT ENGINE ────────────────────────────────────────────
+const LGA_ZONES=[
+  {id:'astronomica',name:'Astronomica Water Play Area',capacity:150},
+  {id:'viking',name:'Viking Training Camp Dock',capacity:60},
+  {id:'fountain',name:'Celestial Park Fountain Basin',capacity:null},
+  {id:'secondary',name:'Secondary Water Feature',capacity:null},
+];
+
+const LGA_VISIBILITY_ITEMS=[
+  'Astronomica — bottom/drain visible from surface',
+  'Viking Training Camp — water depth markings visible and accurate',
+  'Celestial Park fountain — no debris obstructing drains',
+  'Secondary water feature — drain visible and unobstructed',
+];
+
+const LGA_RESCUE_ITEMS=[
+  'Reaching poles (1 per active zone) — present and undamaged',
+  'Ring buoys — present at each water attraction',
+  'First aid kit — accessible within 60 seconds of each zone',
+  'AED — accessible within 90 seconds of each zone',
+  'Whistle — each assigned staff member has one',
+  'Rescue tube — present if lifeguard-specific zone',
+  'Emergency contact card — posted at each zone',
+  'Non-slip surfaces — clear of standing water and debris',
+];
+
+function lgaSeedZones(){
+  const el=document.getElementById('lga-zone-cards');if(!el)return;
+  el.innerHTML=LGA_ZONES.map((z,i)=>`
+    <div class="lga-zone-card">
+      <div class="lga-zone-hdr">
+        <div class="lga-zone-name">${z.name}</div>
+        ${z.capacity?`<div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Cap: ${z.capacity}</div>`:''}
+      </div>
+      <div class="lga-guard-row">
+        <div class="ff" style="margin:0"><label>Guard / Staff Assigned</label><input type="text" id="lga-guard-${i}" placeholder="Name or Unassigned"></div>
+        <div class="ff" style="margin:0"><label>In Zone Since</label><input type="time" id="lga-guard-since-${i}"></div>
+        <div class="ff" style="margin:0"><label>Time On Post (min)</label><input type="number" id="lga-guard-mins-${i}" placeholder="0" min="0" style="color:var(--teal);font-weight:700;"></div>
+      </div>
+      <div class="lga-sub">Zone Status</div>
+      <div style="display:flex;gap:6px;">
+        <div class="cg-opt" data-form="LGA_ZONE" data-idx="${i}" data-val="active" onclick="selectOpt(this,'active')">ACTIVE</div>
+        <div class="cg-opt" data-form="LGA_ZONE" data-idx="${i}" data-val="closed" onclick="selectOpt(this,'closed')">CLOSED</div>
+        <div class="cg-opt" data-form="LGA_ZONE" data-idx="${i}" data-val="na" onclick="selectOpt(this,'na')">N/A</div>
+      </div>
+      <div class="lga-sub">Bather Load</div>
+      <div style="display:flex;gap:6px;">
+        <div class="cg-opt" data-form="LGA_BATHER" data-idx="${i}" data-val="0-25" onclick="selectOpt(this,'0-25')">0–25</div>
+        <div class="cg-opt" data-form="LGA_BATHER" data-idx="${i}" data-val="25-50" onclick="selectOpt(this,'25-50')">25–50</div>
+        <div class="cg-opt" data-form="LGA_BATHER" data-idx="${i}" data-val="50-100" onclick="selectOpt(this,'50-100')">50–100</div>
+        <div class="cg-opt" data-form="LGA_BATHER" data-idx="${i}" data-val="100+" onclick="selectOpt(this,'100+')">100+</div>
+        <div class="cg-opt" data-form="LGA_BATHER" data-idx="${i}" data-val="na" onclick="selectOpt(this,'na')">N/A</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── FLC — FEC FLOOR OPS LOG ENGINE ───────────────────────────────────────────────
+let flcSessionEntries=[];
+let flcMachineDowns=[];
+
+function flcAddEntry(){
+  const type=document.getElementById('flc-entry-type').value;
+  const loc=document.getElementById('flc-entry-loc').value.trim();
+  const text=document.getElementById('flc-entry-text').value.trim();
+  if(!text){toast('Enter entry description','err');return;}
+  const entry={type,loc,text,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),ts:Date.now()};
+  flcSessionEntries.unshift(entry);
+  document.getElementById('flc-entry-text').value='';
+  document.getElementById('flc-entry-loc').value='';
+  renderFLCEntries();
+  toast('Entry added','ok');
+}
+
+function flcAddMachineDown(){
+  const id=document.getElementById('flc-machine-id').value.trim();
+  const issue=document.getElementById('flc-machine-issue').value;
+  const action=document.getElementById('flc-machine-action').value;
+  if(!id){toast('Enter machine ID','err');return;}
+  flcMachineDowns.push({id,issue,action,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})});
+  flcSessionEntries.unshift({type:'downtime',loc:id,text:'Machine down: '+issue.replace(/-/g,' ')+' — '+action.replace(/-/g,' '),time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),ts:Date.now()});
+  document.getElementById('flc-machine-id').value='';
+  renderFLCEntries();
+  toast('Machine down logged','ok');
+}
+
+function renderFLCEntries(){
+  const el=document.getElementById('flc-entry-list');if(!el)return;
+  if(!flcSessionEntries.length){el.innerHTML='';return;}
+  const typeMap={incident:'incident',downtime:'downtime',staffing:'staffing',routine:'routine'};
+  const typeLabel={incident:'INCIDENT',downtime:'DOWNTIME',staffing:'STAFFING',routine:'ROUTINE'};
+  el.innerHTML=`<div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-bottom:5px;">THIS SESSION — ${flcSessionEntries.length} ENTRIES</div>`+
+    flcSessionEntries.map((e,i)=>`
+      <div class="flc-entry ${typeMap[e.type]||'routine'}">
+        <div class="flc-entry-top">
+          <span class="flc-entry-type flc-type-${e.type||'routine'}">${typeLabel[e.type]||'ROUTINE'}${e.loc?' · '+e.loc:''}</span>
+          <span class="flc-entry-time">${e.time}</span>
+        </div>
+        <div class="flc-entry-msg">${e.text}</div>
+      </div>`).join('');
+  // Update progress
+  const pct=Math.min(100,Math.round(flcSessionEntries.length/5*100));
+  const bar=document.getElementById('prog-FLC');if(bar)bar.style.width=pct+'%';
+}
+
+// ── YPS — YOUTH PATRON SHIFT LOG ENGINE ──────────────────────────────────────────
+let ypsSessionEntries=[];
+let ypsSelectedType='';
+
+function ypsSelectType(btn,type){
+  ypsSelectedType=type;
+  document.getElementById('yps-entry-type').value=type;
+  document.querySelectorAll('.yps-type-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function ypsAddEntry(){
+  const type=ypsSelectedType||document.getElementById('yps-entry-type').value;
+  const loc=document.getElementById('yps-entry-loc').value.trim();
+  const desc=document.getElementById('yps-entry-desc').value.trim();
+  if(!type){toast('Select incident type','err');return;}
+  if(!desc){toast('Enter description','err');return;}
+  const typeLabels={unaccompanied:'Unaccompanied Minor',lost:'Lost Child','age-restriction':'Age Restriction Challenge',chaperone:'Chaperone Ratio Concern',behavioral:'Behavioral — Minor Involved'};
+  ypsSessionEntries.unshift({type,label:typeLabels[type]||type,loc,desc,time:new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),ts:Date.now()});
+  document.getElementById('yps-entry-desc').value='';
+  document.getElementById('yps-entry-loc').value='';
+  ypsSelectedType='';
+  document.querySelectorAll('.yps-type-btn').forEach(b=>b.classList.remove('sel'));
+  renderYPSEntries();
+  toast('Entry logged','ok');
+}
+
+function renderYPSEntries(){
+  const el=document.getElementById('yps-entry-list');if(!el)return;
+  if(!ypsSessionEntries.length){el.innerHTML='';return;}
+  const colMap={unaccompanied:'var(--amber)',lost:'var(--red)',\"age-restriction\":'var(--teal)',chaperone:'var(--blue)',behavioral:'var(--red)'};
+  el.innerHTML=`<div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-bottom:5px;">${ypsSessionEntries.length} ENTRIES THIS SHIFT</div>`+
+    ypsSessionEntries.map(e=>`
+      <div style="padding:8px 10px;background:var(--panel);border:1px solid var(--border);border-radius:7px;border-left:3px solid ${colMap[e.type]||'var(--text-muted)'};margin-bottom:6px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+          <span style="font-family:var(--mono);font-size:8px;font-weight:700;color:${colMap[e.type]||'var(--text-dim)'};">${e.label}${e.loc?' · '+e.loc:''}</span>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">${e.time}</span>
+        </div>
+        <div style="font-size:12px;color:var(--text);">${e.desc}</div>
+      </div>`).join('');
+  const pct=Math.min(100,Math.round(ypsSessionEntries.length/3*100));
+  const bar=document.getElementById('prog-YPS');if(bar)bar.style.width=pct+'%';
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────────────────────
@@ -2330,6 +3285,7 @@ function saveCAR(){
 }
 function closeCAR(id){const c=cars.find(c=>c.id===id);if(c){c.status='closed';c.closedAt=new Date().toISOString();}save(K.CAR,cars);renderCARs();updateBadges();refreshDash();toast('CAR closed','ok');}
 function renderCARs(search=''){
+  updateCarEscalation();
   const sf=document.getElementById('car-status-filter')?.value||'open';
   let rows=[...cars];
   if(sf==='open')rows=rows.filter(c=>c.status==='open');
@@ -2412,6 +3368,24 @@ function clearHandoffForm(){['ho-date','ho-out-mgr','ho-in-mgr','ho-time','ho-cl
 function renderHandoffs(){const el=document.getElementById('handoffList');if(!handoffs.length){el.innerHTML='<div class="empty"><div class="empty-icon">🔄</div>No handoffs recorded yet.</div>';return;}const rm={smooth:['green','✅ Smooth'],minor:['amber','🟡 Minor'],rough:['red','🔴 Rough']};el.innerHTML=handoffs.map(ho=>{const[rc,rl]=rm[ho.rating]||['neutral',ho.rating];return`<div class="handoff-card"><div class="hc-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><div class="hc-meta"><span class="hc-date">${ho.date}</span><span class="hc-shift ${ho.shift.split(' ')[0]}-shift">${ho.shift.toUpperCase()}</span><span style="font-size:11px;color:var(--text-dim)">${ho.outMgr} → ${ho.inMgr}</span></div><div class="hc-flags">${ho.nmr&&ho.nmr!=='None'&&ho.nmr.length>2?'<span class="hc-flag red">NMR</span>':''}<span class="hc-flag ${rc}">${rl}</span></div></div><div class="hc-body"><div style="font-size:12px;color:var(--text);line-height:1.6;">${ho.safetyNotes||''}</div>${ho.finalNotes?`<div style="font-size:11px;color:var(--text-dim);margin-top:8px;">${ho.finalNotes}</div>`:''}</div></div>`;}).join('');}
 
 // ── AIRTABLE ──────────────────────────────────────────────────────────────────
+// ── AIRTABLE GET ──────────────────────────────────────────────────────────────
+async function atFetch(table, params=''){
+  const el=document.getElementById('at-sync');
+  if(el){el.style.color='var(--amber)';el.textContent='⬤ SYNCING';}
+  try{
+    const url=`${AT_URL}/${encodeURIComponent(table)}${params?'?'+params:''}`;
+    const res=await fetch(url,{method:'GET',headers:{'Content-Type':'application/json'}});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    if(el){el.style.color='var(--green)';el.textContent='⬤ SYNCED';setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},2000);}
+    return data;
+  }catch(e){
+    if(el){el.style.color='var(--red)';el.textContent='⬤ OFFLINE';setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},3000);}
+    console.warn('atFetch err:',e.message);
+    return null;
+  }
+}
+
 async function atPush(table,fields){
   const el=document.getElementById('at-sync');
   if(el){el.style.color='var(--amber)';el.textContent='⬤ SYNCING';}
@@ -2422,6 +3396,556 @@ async function atPush(table,fields){
   }catch(e){console.warn('AT err:',e.message);if(el){el.style.color='var(--red)';el.textContent='⬤ OFFLINE';setTimeout(()=>{if(el){el.style.color='var(--text-muted)';el.textContent='⬤ AIRTABLE';}},3000);}}
 }
 
+
+// ══════════════════════════════════════════════════════════════════════════════
+// OPENING CHECKLIST ENGINE
+// ══════════════════════════════════════════════════════════════════════════════
+
+const OC_WORLDS = {
+  'Celestial Park':    {color:'#00D4FF', dot:'#00D4FF'},
+  'Ministry of Magic': {color:'#E040FB', dot:'#E040FB'},
+  'Super Nintendo World': {color:'#FF6B1A', dot:'#FF6B1A'},
+  'Isle of Berk':      {color:'#00E676', dot:'#00E676'},
+  'Dark Universe':     {color:'#F43F5E', dot:'#F43F5E'},
+};
+
+// Per-ride checklist items. cat: safety | ops | staff | comms | equip
+const OC_RIDE_ITEMS = {
+  SR: [
+    {id:'sr1', label:'Lap bar and restraint test — all vehicles', cat:'safety'},
+    {id:'sr2', label:'Anti-rollback device confirmed functional', cat:'safety'},
+    {id:'sr3', label:'E-stop and dispatch system test cycle', cat:'equip'},
+    {id:'sr4', label:'Height measuring stick verified accurate (48″)', cat:'safety'},
+    {id:'sr5', label:'Load/unload platform clear of debris and wet surfaces', cat:'ops'},
+    {id:'sr6', label:'Dispatch position staffed and briefed', cat:'staff'},
+    {id:'sr7', label:'Queue lane barriers set, overflow route marked', cat:'ops'},
+    {id:'sr8', label:'Express Pass and Single Rider lanes configured', cat:'ops'},
+    {id:'sr9', label:'Radio comms check with OPD dispatcher', cat:'comms'},
+    {id:'sr10',label:'Pre-opening inspection log entry confirmed', cat:'ops'},
+  ],
+  CC: [
+    {id:'cc1', label:'All horses and chariots secured, no loose fittings', cat:'safety'},
+    {id:'cc2', label:'Rotation mechanism test at slow speed', cat:'equip'},
+    {id:'cc3', label:'Platform perimeter guard chains in place', cat:'safety'},
+    {id:'cc4', label:'Load/unload position staffed', cat:'staff'},
+    {id:'cc5', label:'Music and lighting functional', cat:'ops'},
+    {id:'cc6', label:'Queue lane ready and accessible', cat:'ops'},
+  ],
+  HP: [
+    {id:'hp1', label:'Vehicle restraint and lap bar test — all vehicles', cat:'safety'},
+    {id:'hp2', label:'Height measuring stick verified accurate (40″)', cat:'safety'},
+    {id:'hp3', label:'Ride system self-test complete — no faults logged', cat:'equip'},
+    {id:'hp4', label:'Interactive spell-casting elements active and calibrated', cat:'ops'},
+    {id:'hp5', label:'Queue 1 and Queue 2 lanes configured', cat:'ops'},
+    {id:'hp6', label:'Ollivanders and pre-show areas confirmed ready', cat:'ops'},
+    {id:'hp7', label:'Single Rider lane open status confirmed', cat:'ops'},
+    {id:'hp8', label:'Both positions staffed and briefed', cat:'staff'},
+    {id:'hp9', label:'Radio comms check with OPD dispatcher', cat:'comms'},
+  ],
+  DK: [
+    {id:'dk1', label:'Mine cart lap bars and over-the-shoulder restraints tested', cat:'safety'},
+    {id:'dk2', label:'Height measuring stick verified accurate (36″)', cat:'safety'},
+    {id:'dk3', label:'Track and propulsion system test cycle complete', cat:'equip'},
+    {id:'dk4', label:'Interactive elements in queue activated', cat:'ops'},
+    {id:'dk5', label:'Express Pass lane configured', cat:'ops'},
+    {id:'dk6', label:'Positions staffed and briefed', cat:'staff'},
+    {id:'dk7', label:'Radio comms check with OPD dispatcher', cat:'comms'},
+  ],
+  MK: [
+    {id:'mk1', label:'Kart restraints and RFID band test', cat:'safety'},
+    {id:'mk2', label:'Height measuring stick verified accurate (40″)', cat:'safety'},
+    {id:'mk3', label:'AR headset/windshield check — all vehicles', cat:'equip'},
+    {id:'mk4', label:'Ride system boot and self-test complete', cat:'equip'},
+    {id:'mk5', label:'Queue 1 and Queue 2 lanes configured', cat:'ops'},
+    {id:'mk6', label:'Express Pass lane open', cat:'ops'},
+    {id:'mk7', label:'Both positions staffed and briefed', cat:'staff'},
+    {id:'mk8', label:'Radio comms check with OPD dispatcher', cat:'comms'},
+  ],
+  YS: [
+    {id:'ys1', label:'Egg vehicle lap bars tested — all cars', cat:'safety'},
+    {id:'ys2', label:'Height measuring stick verified accurate (34″)', cat:'ys2'},
+    {id:'ys3', label:'Ride system test cycle complete', cat:'equip'},
+    {id:'ys4', label:'Outdoor elements checked for weather impact', cat:'ops'},
+    {id:'ys5', label:'Load/unload positions staffed', cat:'staff'},
+  ],
+  DR: [
+    {id:'dr1', label:'Over-the-shoulder restraints tested — all vehicles', cat:'safety'},
+    {id:'dr2', label:'Height measuring stick verified accurate (48″)', cat:'safety'},
+    {id:'dr3', label:'Anti-rollback test complete', cat:'safety'},
+    {id:'dr4', label:'E-stop system tested at dispatch', cat:'equip'},
+    {id:'dr5', label:'Queue lane barriers set — Main, Express, Single Rider', cat:'ops'},
+    {id:'dr6', label:'All 4 positions staffed and briefed', cat:'staff'},
+    {id:'dr7', label:'Dragon theming elements confirmed clear of queue path', cat:'ops'},
+    {id:'dr8', label:'Radio comms check with OPD dispatcher', cat:'comms'},
+  ],
+  HW: [
+    {id:'hw1', label:'Glider harness and lap bar test — all vehicles', cat:'safety'},
+    {id:'hw2', label:'Height measuring stick verified accurate (40″)', cat:'safety'},
+    {id:'hw3', label:'Ride system test complete', cat:'equip'},
+    {id:'hw4', label:'Outdoor weather conditions acceptable for operation', cat:'ops'},
+    {id:'hw5', label:'Both positions staffed', cat:'staff'},
+  ],
+  FD: [
+    {id:'fd1', label:'Restraint system tested — all seats', cat:'safety'},
+    {id:'fd2', label:'Height measuring stick verified accurate (48″)', cat:'safety'},
+    {id:'fd3', label:'Ride spin/tilt mechanism test cycle complete', cat:'equip'},
+    {id:'fd4', label:'Wind speed check — within operating parameters (<35 mph)', cat:'safety'},
+    {id:'fd5', label:'Queue lane and loading area clear', cat:'ops'},
+    {id:'fd6', label:'All positions staffed', cat:'staff'},
+    {id:'fd7', label:'Express Pass lane configured', cat:'ops'},
+  ],
+  VT: [
+    {id:'vt1', label:'Water feature and splash zone active and draining properly', cat:'equip'},
+    {id:'vt2', label:'Dock boarding area clear and non-slip surfaces dry', cat:'safety'},
+    {id:'vt3', label:'Activity equipment inventoried and safe', cat:'safety'},
+    {id:'vt4', label:'Staff 1 and Staff 2 positions assigned', cat:'staff'},
+    {id:'vt5', label:'Viking theming props clear of guest path', cat:'ops'},
+  ],
+  MU: [
+    {id:'mu1', label:'Vehicle restraints and harnesses tested — all rows', cat:'safety'},
+    {id:'mu2', label:'Height measuring stick verified accurate (40″)', cat:'safety'},
+    {id:'mu3', label:'Ride system boot and self-test — no active faults', cat:'equip'},
+    {id:'mu4', label:'Atmospheric effects (fog, lighting, sound) confirmed active', cat:'ops'},
+    {id:'mu5', label:'Queue theming clear of guest path hazards', cat:'ops'},
+    {id:'mu6', label:'All 3 positions staffed and briefed', cat:'staff'},
+    {id:'mu7', label:'Radio comms check with OPD dispatcher', cat:'comms'},
+  ],
+};
+
+// ATR fields we read from Airtable ATR_Sessions per ride
+// These are the fields AS 360 ATR stream captures pre-opening
+const ATR_DISPLAY_FIELDS = [
+  {key:'Pre-Opening Status',   label:'Pre-Open Status',  colorFn: v => v==='Pass'?'pass':v==='Fail'?'fail':v==='Conditional'?'warn':'na'},
+  {key:'Last Inspection Date', label:'Last Insp. Date',  colorFn: ()=>''},
+  {key:'Open Time',            label:'Open Time',        colorFn: ()=>''},
+  {key:'Inspector',            label:'Inspector',        colorFn: ()=>''},
+  {key:'Faults Logged',        label:'Faults',           colorFn: v => v==='0'||v===0?'pass':parseInt(v)<=2?'warn':'fail'},
+  {key:'Fault Notes',          label:'Fault Notes',      colorFn: ()=>'', wide:true},
+  {key:'Restraint Check',      label:'Restraints',       colorFn: v => v==='Pass'?'pass':v==='Fail'?'fail':'na'},
+  {key:'Height Stick Check',   label:'Height Stick',     colorFn: v => v==='Pass'?'pass':v==='Fail'?'fail':'na'},
+  {key:'E-Stop Test',          label:'E-Stop',           colorFn: v => v==='Pass'?'pass':v==='Fail'?'fail':'na'},
+  {key:'Ride Status',          label:'ATR Status',       colorFn: v => v==='Open'?'pass':v==='Hold'?'warn':v==='Down'?'fail':'na'},
+];
+
+// State
+let ocState = {};          // {[rideId]: {status:'pending'|'clear'|'issues'|'hold', items:{[itemId]: 'unchecked'|'checked'|'flagged'|'blocked'}, note:'', atrData:null}}
+let ocFilter = 'all';
+let ocAtrLastSync = null;
+let ocExpanded = {};       // {[rideId]: bool}
+
+function ocInit() {
+  EU_ROT_DEFS.forEach(def => {
+    ocState[def.id] = {
+      status: 'pending',
+      items: {},
+      note: '',
+      atrData: null,
+      atrLoading: false,
+    };
+    (OC_RIDE_ITEMS[def.id] || []).forEach(item => {
+      ocState[def.id].items[item.id] = 'unchecked';
+    });
+  });
+}
+
+// ── ATR FETCH ─────────────────────────────────────────────────────────────────
+async function ocFetchATR() {
+  const btn = document.getElementById('oc-refresh-btn');
+  if (btn) { btn.textContent = '↻ Syncing…'; btn.disabled = true; }
+
+  // Query ATR_Sessions — most recent record per attraction
+  // Filter: Date = today OR most recent pre-opening records
+  const today = new Date().toISOString().split('T')[0];
+  // filterByFormula: IS_SAME({Date}, TODAY(), 'day') — URL encoded
+  const params = encodeURIComponent("filterByFormula=IS_SAME({Date},TODAY(),'day')") + '&sort%5B0%5D%5Bfield%5D=Submitted+At&sort%5B0%5D%5Bdirection%5D=desc&maxRecords=50';
+
+  const data = await atFetch('ATR_Sessions', params);
+
+  if (data && data.records) {
+    // Map latest record per attraction name
+    const latest = {};
+    data.records.forEach(rec => {
+      const attr = rec.fields['Attraction'] || rec.fields['Ride Name'] || rec.fields['Ride'];
+      if (!attr) return;
+      if (!latest[attr]) latest[attr] = rec.fields;
+    });
+
+    // Match to EU rides by name similarity
+    EU_ROT_DEFS.forEach(def => {
+      const match = Object.keys(latest).find(k =>
+        k.toLowerCase().includes(def.name.toLowerCase().slice(0,8)) ||
+        def.name.toLowerCase().includes(k.toLowerCase().slice(0,8)) ||
+        k.toUpperCase().includes(def.id)
+      );
+      if (match) {
+        ocState[def.id].atrData = latest[match];
+        // Auto-apply ATR status to ride card status
+        const atrStatus = latest[match]['Pre-Opening Status'] || latest[match]['Ride Status'];
+        if (atrStatus === 'Fail' || atrStatus === 'Down') ocState[def.id].status = 'hold';
+        else if (atrStatus === 'Conditional') ocState[def.id].status = 'issues';
+      }
+    });
+
+    ocAtrLastSync = new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+    const el = document.getElementById('oc-atr-ts');
+    if (el) el.textContent = 'ATR synced: ' + ocAtrLastSync;
+    toast('ATR data loaded — ' + data.records.length + ' records', 'ok');
+  } else {
+    // Graceful degradation — populate with demo data so checklist is still usable
+    ocInjectDemoATR();
+    toast('ATR offline — demo data shown', 'warn');
+  }
+
+  if (btn) { btn.textContent = '↻ Sync ATR'; btn.disabled = false; }
+  ocUpdateCounts();
+  renderOpeningChecklist();
+}
+
+function ocInjectDemoATR() {
+  // Inject plausible pre-opening ATR data for demonstration when Airtable unreachable
+  const demoStatuses = {
+    SR: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'R. Montoya', openTime:'08:45'},
+    CC: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'N/A',  estop:'N/A',  rideStatus:'Open', inspector:'T. Singh',   openTime:'08:50'},
+    HP: {status:'Pass',  faults:1,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'K. Wells',   openTime:'08:55', faultNote:'Minor sensor alert — cleared, no impact on ops'},
+    DK: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'R. Montoya', openTime:'08:52'},
+    MK: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'T. Singh',   openTime:'08:58'},
+    YS: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'K. Wells',   openTime:'08:48'},
+    DR: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'R. Montoya', openTime:'08:40'},
+    HW: {status:'Conditional', faults:2, restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'T. Singh', openTime:'09:05', faultNote:'Vehicle 3 harness micro-switch intermittent — tagged, vehicle removed from rotation'},
+    FD: {status:'Pass',  faults:0,   restraints:'Pass', heightStick:'Pass', estop:'Pass', rideStatus:'Open', inspector:'K. Wells',   openTime:'08:44'},
+    VT: {status:'Pass',  faults:0,   restraints:'N/A',  heightStick:'N/A',  estop:'N/A',  rideStatus:'Open', inspector:'R. Montoya', openTime:'09:00'},
+    MU: {status:'Fail',  faults:4,   restraints:'Pass', heightStick:'Pass', estop:'Fail', rideStatus:'Hold', inspector:'T. Singh',   openTime:'—',     faultNote:'E-stop circuit fault on Row C — maintenance called, ride on hold pending clearance'},
+  };
+
+  const today = new Date().toISOString().split('T')[0];
+  EU_ROT_DEFS.forEach(def => {
+    const d = demoStatuses[def.id];
+    if (!d) return;
+    ocState[def.id].atrData = {
+      'Attraction': def.name,
+      'Date': today,
+      'Inspector': d.inspector,
+      'Open Time': d.openTime,
+      'Pre-Opening Status': d.status,
+      'Faults Logged': String(d.faults),
+      'Fault Notes': d.faultNote || '',
+      'Restraint Check': d.restraints,
+      'Height Stick Check': d.heightStick,
+      'E-Stop Test': d.estop,
+      'Ride Status': d.rideStatus,
+    };
+    if (d.status === 'Fail') ocState[def.id].status = 'hold';
+    else if (d.status === 'Conditional') ocState[def.id].status = 'issues';
+  });
+
+  ocAtrLastSync = 'demo data';
+  const el = document.getElementById('oc-atr-ts');
+  if (el) el.textContent = 'ATR: demo mode';
+}
+
+// ── RENDER ─────────────────────────────────────────────────────────────────────
+function renderOpeningChecklist() {
+  ocUpdateCounts();
+
+  const worldOrder = ['Celestial Park','Ministry of Magic','Super Nintendo World','Isle of Berk','Dark Universe'];
+  const listEl = document.getElementById('oc-ride-list');
+  if (!listEl) return;
+
+  let html = '';
+  worldOrder.forEach(world => {
+    const rides = EU_ROT_DEFS.filter(d => d.world === world);
+    if (!rides.length) return;
+
+    const filteredRides = rides.filter(r => {
+      if (ocFilter === 'all') return true;
+      return ocState[r.id]?.status === ocFilter;
+    });
+    if (!filteredRides.length) return;
+
+    const wCfg = OC_WORLDS[world] || {color:'var(--text-dim)', dot:'var(--text-dim)'};
+    const clearInWorld = rides.filter(r => ocState[r.id]?.status === 'clear').length;
+    html += `<div class="oc-world-section">
+      <div class="oc-world-hdr">
+        <div class="oc-world-dot" style="background:${wCfg.dot}"></div>
+        <div class="oc-world-name" style="color:${wCfg.color}">${world}</div>
+        <div class="oc-world-count">${clearInWorld}/${rides.length} cleared</div>
+      </div>
+      ${filteredRides.map(def => renderOcRideCard(def)).join('')}
+    </div>`;
+  });
+
+  listEl.innerHTML = html || '<div class="empty"><div class="empty-icon">✅</div>No rides match current filter</div>';
+}
+
+function renderOcRideCard(def) {
+  const state = ocState[def.id] || {status:'pending', items:{}, note:'', atrData:null};
+  const items = OC_RIDE_ITEMS[def.id] || [];
+  const expanded = ocExpanded[def.id] || false;
+
+  const checked  = items.filter(i => state.items[i.id] === 'checked').length;
+  const flagged  = items.filter(i => state.items[i.id] === 'flagged').length;
+  const blocked  = items.filter(i => state.items[i.id] === 'blocked').length;
+  const total    = items.length;
+
+  const statusChipMap = {
+    pending: '<span class="oc-status-chip osc-pending">PENDING</span>',
+    clear:   '<span class="oc-status-chip osc-clear">✓ CLEAR</span>',
+    issues:  '<span class="oc-status-chip osc-issues">⚠ ISSUES</span>',
+    hold:    '<span class="oc-status-chip osc-hold">✕ HOLD</span>',
+  };
+
+  const atr = state.atrData;
+  const atrChip = atr ? `<span class="oc-status-chip osc-atr">ATR ✓</span>` : '';
+
+  // ATR panel HTML
+  let atrHTML = '';
+  if (atr) {
+    const fieldCells = ATR_DISPLAY_FIELDS.map(f => {
+      const raw = atr[f.key];
+      if (raw === undefined || raw === null || raw === '') return null;
+      const val = String(raw);
+      const cls = f.colorFn(val);
+      return `<div class="atr-field${f.wide ? '" style="grid-column:1/-1' : ''}">
+        <div class="atr-field-label">${f.label}</div>
+        <div class="atr-field-val ${cls}">${val || '—'}</div>
+      </div>`;
+    }).filter(Boolean).join('');
+
+    const ts = atr['Submitted At'] ? new Date(atr['Submitted At']).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) : (atr['Open Time'] || '—');
+    atrHTML = `<div class="atr-data-panel">
+      <div class="atr-data-hdr">
+        <div class="atr-data-title">📡 ATR — Pre-Opening Record</div>
+        <div class="atr-data-ts">Logged: ${ts}</div>
+      </div>
+      <div class="atr-fields">${fieldCells}</div>
+    </div>`;
+  } else {
+    atrHTML = `<div class="atr-data-panel">
+      <div class="atr-loading">No ATR record for today — <button class="btn btn-ghost btn-sm" onclick="ocFetchATR()">Sync ATR</button></div>
+    </div>`;
+  }
+
+  // Checklist items
+  const itemsHTML = items.map(item => {
+    const itemState = state.items[item.id] || 'unchecked';
+    const checkChar = {checked:'✓', flagged:'!', blocked:'✕'}[itemState] || '';
+    return `<div class="oc-item ${itemState !== 'unchecked' ? itemState : ''}" 
+      onclick="ocCycleItem('${def.id}','${item.id}',event)">
+      <div class="oc-item-check">${checkChar}</div>
+      <div style="flex:1;">
+        <div class="oc-item-label">${item.label}</div>
+      </div>
+      <span class="oc-item-cat cat-${item.cat}">${item.cat.toUpperCase()}</span>
+    </div>`;
+  }).join('');
+
+  const progressPct = total > 0 ? Math.round(checked/total*100) : 0;
+
+  return `<div class="oc-ride-card status-${state.status} ${expanded?'expanded':''}" id="oc-card-${def.id}">
+    <div class="oc-ride-hdr" onclick="ocToggleCard('${def.id}')">
+      <div>
+        <div class="oc-ride-name">${def.name}</div>
+        <div class="oc-ride-meta">${checked}/${total} items · ${flagged > 0 ? flagged+' flagged · ':''} ${blocked > 0 ? blocked+' blocked · ':''} ${progressPct}%</div>
+      </div>
+      <div class="oc-ride-status">
+        ${atrChip}
+        ${statusChipMap[state.status] || ''}
+        <div class="oc-expand-icon">▼</div>
+      </div>
+    </div>
+    <div class="oc-ride-body">
+      ${atrHTML}
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin:0 0 6px;">
+        Pre-Opening Checklist — tap to cycle ✓ / ! / ✕ / clear
+      </div>
+      <div class="oc-checklist">${itemsHTML}</div>
+      <textarea class="oc-note-input" id="oc-note-${def.id}" placeholder="Notes for this ride (issues, maintenance contacts, anything to flag at gates-open…)" onchange="ocSaveNote('${def.id}',this.value)">${state.note}</textarea>
+      <div class="oc-action-row">
+        <button class="btn btn-teal btn-sm" onclick="ocSetRideStatus('${def.id}','clear')">✓ Mark Clear</button>
+        <button class="btn btn-amber btn-sm" onclick="ocSetRideStatus('${def.id}','issues')">⚠ Issues Noted</button>
+        <button class="btn btn-red btn-sm" onclick="ocSetRideStatus('${def.id}','hold')">✕ Hold</button>
+        <button class="btn btn-ghost btn-sm" onclick="ocSetRideStatus('${def.id}','pending')">Reset</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── INTERACTIONS ──────────────────────────────────────────────────────────────
+function ocToggleCard(id) {
+  ocExpanded[id] = !ocExpanded[id];
+  renderOpeningChecklist();
+}
+
+function ocCycleItem(rideId, itemId, e) {
+  e && e.stopPropagation();
+  const cycle = {unchecked:'checked', checked:'flagged', flagged:'blocked', blocked:'unchecked'};
+  const cur = ocState[rideId]?.items[itemId] || 'unchecked';
+  ocState[rideId].items[itemId] = cycle[cur];
+  // Auto-derive ride status from items
+  ocDerivRideStatus(rideId);
+  ocUpdateCounts();
+  // Re-render just this card efficiently
+  const cardEl = document.getElementById('oc-card-' + rideId);
+  if (cardEl) {
+    const temp = document.createElement('div');
+    const def = EU_ROT_DEFS.find(d => d.id === rideId);
+    if (def) { temp.innerHTML = renderOcRideCard(def); cardEl.replaceWith(temp.firstChild); }
+  }
+}
+
+function ocDerivRideStatus(rideId) {
+  const state = ocState[rideId];
+  const items = OC_RIDE_ITEMS[rideId] || [];
+  const blocked = items.filter(i => state.items[i.id] === 'blocked').length;
+  const flagged = items.filter(i => state.items[i.id] === 'flagged').length;
+  const checked = items.filter(i => state.items[i.id] === 'checked').length;
+  const total = items.length;
+  // Only auto-derive if user hasn't manually set
+  if (state.status === 'pending' || state.status === 'clear' || state.status === 'issues') {
+    if (blocked > 0) state.status = 'hold';
+    else if (flagged > 0) state.status = 'issues';
+    else if (checked === total && total > 0) state.status = 'clear';
+    else state.status = 'pending';
+  }
+}
+
+function ocSetRideStatus(rideId, status) {
+  ocState[rideId].status = status;
+  ocExpanded[rideId] = true;
+  ocUpdateCounts();
+  renderOpeningChecklist();
+  toast(EU_ROT_DEFS.find(d=>d.id===rideId)?.name + ' → ' + status.toUpperCase(), status==='clear'?'ok':status==='hold'?'err':'warn');
+}
+
+function ocSaveNote(rideId, val) {
+  if (ocState[rideId]) ocState[rideId].note = val;
+}
+
+function ocSetFilter(f, btn) {
+  ocFilter = f;
+  document.querySelectorAll('.oc-filter-btn').forEach(b => b.classList.remove('active','active-red','active-amber'));
+  btn.classList.add(f==='issues'?'active-amber':f==='hold'?'active-red':'active');
+  renderOpeningChecklist();
+}
+
+function ocUpdateCounts() {
+  const all = EU_ROT_DEFS.map(d => ocState[d.id]);
+  const clearN  = all.filter(s => s?.status === 'clear').length;
+  const issuesN = all.filter(s => s?.status === 'issues').length;
+  const holdN   = all.filter(s => s?.status === 'hold').length;
+  const total   = EU_ROT_DEFS.length;
+
+  const el = id => document.getElementById(id);
+  if(el('oc-clear-count'))  el('oc-clear-count').textContent  = clearN;
+  if(el('oc-issues-count')) el('oc-issues-count').textContent = issuesN;
+  if(el('oc-hold-count'))   el('oc-hold-count').textContent   = holdN;
+
+  const progPct = total > 0 ? Math.round((clearN + issuesN) / total * 100) : 0;
+  if(el('oc-prog-fill'))  el('oc-prog-fill').style.width = progPct + '%';
+  if(el('oc-prog-label')) el('oc-prog-label').textContent = clearN + ' cleared · ' + issuesN + ' with issues · ' + holdN + ' on hold';
+  if(el('oc-prog-pct'))   el('oc-prog-pct').textContent = progPct + '%';
+
+  const badge = el('oc-ready-badge');
+  if (badge) {
+    if (holdN > 0) {
+      badge.textContent = holdN + ' HOLD';
+      badge.className = 'oc-ready-badge not-ready';
+    } else if (issuesN > 0 && clearN + issuesN === total) {
+      badge.textContent = 'OPEN w/ ISSUES';
+      badge.className = 'oc-ready-badge partial';
+    } else if (clearN === total) {
+      badge.textContent = '✓ ALL CLEAR';
+      badge.className = 'oc-ready-badge ready';
+    } else {
+      badge.textContent = 'NOT READY';
+      badge.className = 'oc-ready-badge not-ready';
+    }
+  }
+
+  // Update filter button counts
+  const filterAll = document.getElementById('ocf-all');
+  if (filterAll) filterAll.textContent = 'All (' + total + ')';
+  const filterPending = document.getElementById('ocf-pending');
+  const pendingN = all.filter(s=>s?.status==='pending').length;
+  if (filterPending) filterPending.textContent = 'Pending' + (pendingN?` (${pendingN})`:'');
+
+  // Nav badge
+  const nb = document.getElementById('ocBadge');
+  if (nb) {
+    if (holdN > 0) { nb.textContent = holdN+'!'; nb.className = 'tab-badge red'; }
+    else if (issuesN > 0) { nb.textContent = issuesN; nb.className = 'tab-badge amber'; }
+    else if (clearN === total) { nb.textContent = '✓'; nb.className = 'tab-badge green'; }
+    else { nb.textContent = clearN+'/'+total; nb.className = 'tab-badge neutral'; }
+  }
+}
+
+// ── SUBMIT ─────────────────────────────────────────────────────────────────────
+function ocSubmitAll() {
+  const all = EU_ROT_DEFS.map(d => ocState[d.id]);
+  const holdN = all.filter(s=>s?.status==='hold').length;
+  if (holdN > 0) {
+    const holdsNames = EU_ROT_DEFS.filter(d=>ocState[d.id]?.status==='hold').map(d=>d.name).join(', ');
+    if (!confirm(holdN + ' ride(s) on hold: ' + holdsNames + '\n\nSubmit opening log with holds recorded?')) return;
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  const now   = new Date().toISOString();
+  const clearN  = EU_ROT_DEFS.filter(d=>ocState[d.id]?.status==='clear').length;
+  const issuesN = EU_ROT_DEFS.filter(d=>ocState[d.id]?.status==='issues').length;
+
+  // Push one summary record + one per-ride record for each ride with a note or non-clear status
+  atPush('ATR_Opening_Log', {
+    'Log ID':        'OCL-' + Date.now().toString(36).toUpperCase().slice(-6),
+    'Date':          today,
+    'Submitted At':  now,
+    'Total Rides':   EU_ROT_DEFS.length,
+    'Clear':         clearN,
+    'Issues':        issuesN,
+    'Hold':          holdN,
+    'ATR Sync Time': ocAtrLastSync || 'not synced',
+    'Overall Status': holdN > 0 ? 'Hold' : issuesN > 0 ? 'Open with Issues' : 'All Clear',
+    'Detail': JSON.stringify(EU_ROT_DEFS.map(d=>({
+      id: d.id,
+      name: d.name,
+      status: ocState[d.id]?.status,
+      checked: Object.values(ocState[d.id]?.items||{}).filter(v=>v==='checked').length,
+      flagged: Object.values(ocState[d.id]?.items||{}).filter(v=>v==='flagged').length,
+      blocked: Object.values(ocState[d.id]?.items||{}).filter(v=>v==='blocked').length,
+      note: ocState[d.id]?.note || '',
+    }))),
+  });
+
+  // Push individual records for rides that need attention
+  EU_ROT_DEFS.filter(d => ocState[d.id]?.status !== 'clear' || ocState[d.id]?.note).forEach(def => {
+    const s = ocState[def.id];
+    const blocked = (OC_RIDE_ITEMS[def.id]||[]).filter(i=>s.items[i.id]==='blocked').map(i=>i.label).join('; ');
+    const flagged = (OC_RIDE_ITEMS[def.id]||[]).filter(i=>s.items[i.id]==='flagged').map(i=>i.label).join('; ');
+    atPush('ATR_Sessions', {
+      'Attraction':        def.name,
+      'Date':              today,
+      'Open Status':       s.status === 'clear' ? 'Open' : s.status === 'hold' ? 'Hold' : 'Open with Issues',
+      'Pre-Opening Status': s.status === 'clear' ? 'Pass' : s.status === 'hold' ? 'Fail' : 'Conditional',
+      'Blocked Items':     blocked || 'None',
+      'Flagged Items':     flagged || 'None',
+      'Manager Notes':     s.note || '',
+      'Submitted At':      now,
+      'Source':            'Opening Checklist — Manager Module',
+    });
+  });
+
+  toast('Opening log submitted · ' + clearN + ' clear · ' + holdN + ' hold', holdN>0?'warn':'ok');
+}
+
+function ocResetAll() {
+  if (!confirm('Reset all checklist items and statuses?')) return;
+  ocInit();
+  ocAtrLastSync = null;
+  const el = document.getElementById('oc-atr-ts');
+  if (el) el.textContent = 'ATR: not synced';
+  renderOpeningChecklist();
+  toast('Checklist reset','ok');
+}
+// ─────────────────────────────────────────────────────────────────────────────
 // ── TOAST ─────────────────────────────────────────────────────────────────────
 function toast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(type==='ok'?' ok':type==='err'?' err':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);}
 
