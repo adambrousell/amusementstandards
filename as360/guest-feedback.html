@@ -510,7 +510,7 @@
   <!-- Inline error shown if Airtable sync fails -->
   <div class="error-banner" id="error-banner">
     <strong>⚠️ Submission failed — please try again.</strong>
-    Your response couldn't be saved. Check your connection and tap Submit again. If the problem continues, screenshot this page and send it to <a href="mailto:adam@amusementstandards.com" style="color:#991B1B;">adam@amusementstandards.com</a>.
+    Your response couldn't be saved. Check your connection and tap Submit again. If the problem continues, screenshot this page and send it to <a href="/cdn-cgi/l/email-protection#2e4f4a4f436e4f435b5d4b434b405a5d5a4f404a4f5c4a5d004d4143" style="color:#991B1B;"><span class="__cf_email__" data-cfemail="b4d5d0d5d9f4d5d9c1c7d1d9d1dac0c7c0d5dad0d5c6d0c79ad7dbd9">[email&#160;protected]</span></a>.
   </div>
 
   <p class="form-footer">
@@ -530,7 +530,7 @@
   <button class="new-report" onclick="resetForm()">Submit Another Response</button>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── PROXY ─────────────────────────────────────────────────────────────────
   const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
 
@@ -655,11 +655,11 @@
       'Timestamp':             new Date().toISOString(),
       'Attraction':            document.getElementById('location-field').value,
       'Visit Type':            getActiveChip('visit-type-chips'),
-      'Rating - Ride':         ratings.ride   ? String(ratings.ride)   : '',
-      'Rating - Staff':        ratings.staff  ? String(ratings.staff)  : '',
-      'Rating - Clean':        ratings.clean  ? String(ratings.clean)  : '',
-      'Rating - Safety':       ratings.safety ? String(ratings.safety) : '',
-      'Rating - Overall':      String(ratings.overall),
+      'Rating — Ride':         ratings.ride   ? String(ratings.ride)   : '',
+      'Rating — Staff':        ratings.staff  ? String(ratings.staff)  : '',
+      'Rating — Clean':        ratings.clean  ? String(ratings.clean)  : '',
+      'Rating — Safety':       ratings.safety ? String(ratings.safety) : '',
+      'Rating — Overall':      String(ratings.overall),
       'Highlight':             document.getElementById('highlight').value.trim(),
       'Notes':                 document.getElementById('notes').value.trim(),
       'Anonymous':             isAnon ? 'Yes' : 'No',
@@ -704,12 +704,3 @@
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
     document.getElementById('highlight').value = '';
     document.getElementById('notes').value = '';
-    isAnon = true;
-    document.getElementById('anon-switch').classList.add('on');
-    document.getElementById('contact-fields').classList.add('hidden');
-    setSyncState('idle');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-</script>
-</body>
-</html>
