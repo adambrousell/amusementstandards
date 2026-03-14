@@ -401,7 +401,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   <div class="nav-tab" onclick="showView('car',this)">📂 Corrective Actions <span class="tab-badge neutral" id="carBadge">0</span></div>
   <div class="nav-tab" onclick="showView('rotations',this)">🔁 Rotations <span class="tab-badge neutral" id="rotBadge">0</span></div>
   <div class="nav-tab insp-tab" onclick="showView('inspections',this)">🔍 Inspections <span class="tab-badge red" id="inspBadge">0</span></div>
-  <div class="nav-tab" onclick="showView('audit',this)">📋 Audits <span class="tab-badge neutral" id="auditBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('schedule',this)">📅 Schedule</div>
   <div class="nav-tab" onclick="showView('matrix',this)">📞 Escalation</div>
   <div class="nav-divider"></div>
   <div class="nav-tab" onclick="showView('throughput',this)">📈 Throughput</div>
@@ -1475,26 +1475,38 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
 </div>
 
-<!-- ══ 3RD-PARTY AUDIT SCHEDULE ══ -->
-<div class="view" id="view-audit">
-  <div class="metric-grid" style="grid-template-columns:repeat(3,1fr);">
-    <div class="metric-card red"><div class="mv red" id="audit-overdue">0</div><div class="ml">Overdue</div></div>
-    <div class="metric-card amber"><div class="mv amber" id="audit-due-7">0</div><div class="ml">Due in 7 Days</div></div>
-    <div class="metric-card green"><div class="mv green" id="audit-completed">0</div><div class="ml">Completed (30d)</div></div>
-  </div>
-  <div style="background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:11px;color:var(--text-dim);line-height:1.6;">
-    Third-party audits are scheduled externally and tracked here as the record of completed inspections. This view is read-only.
-  </div>
-  <div class="panel" style="margin-bottom:0">
-    <div class="tp-toolbar">
-      <input class="tp-search" type="text" placeholder="Search…" oninput="renderAudits(this.value)">
-      <select style="padding:8px 10px;background:var(--panel3);border:1px solid var(--border2);border-radius:7px;font-family:var(--mono);font-size:11px;color:var(--text);min-height:40px;" id="aud-filter" onchange="renderAudits()">
-        <option value="upcoming">Upcoming</option><option value="overdue">Overdue</option><option value="completed">Completed</option><option value="all">All</option>
-      </select>
+<!-- ══ INSPECTION SCHEDULE ══ -->
+<div class="view" id="view-schedule">
+
+  <!-- Facility Staff Directory -->
+  <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);padding-bottom:5px;border-bottom:1px solid var(--border);margin-bottom:10px;">// Facility Management Directory</div>
+  <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;line-height:1.5;">Names defined here populate the assignment dropdowns on Emergency Response Role Cards and are shared with the OPD Dispatcher.</div>
+  <div class="panel" style="margin-bottom:14px;">
+    <div class="panel-hdr">
+      <div class="panel-title">Management Roster — 8 Positions</div>
+      <button class="btn btn-teal btn-sm" onclick="staffSave()">Save Roster →</button>
     </div>
-    <div class="audit-table-hdr"><span>Type / Scope</span><span>Auditor</span><span>Date</span><span>Status</span></div>
-    <div id="auditTableBody"><div class="empty"><div class="empty-icon">📅</div>No audits scheduled.</div></div>
+    <div class="panel-body" id="staff-dir-grid">
+      <!-- rendered by renderStaffDir() -->
+    </div>
   </div>
+
+  <!-- Inspection Schedule -->
+  <div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);padding-bottom:5px;border-bottom:1px solid var(--border);margin:14px 0 10px;">// Inspection &amp; Audit Schedule</div>
+  <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+    <button class="oc-filter-btn active" id="sched-f-all"    onclick="schedSetFilter('all',this)">All</button>
+    <button class="oc-filter-btn" id="sched-f-overdue"       onclick="schedSetFilter('overdue',this)">Overdue</button>
+    <button class="oc-filter-btn" id="sched-f-due-soon"      onclick="schedSetFilter('due-soon',this)">Due Soon</button>
+    <button class="oc-filter-btn" id="sched-f-current"       onclick="schedSetFilter('current',this)">Current</button>
+    <div style="flex:1"></div>
+    <button class="oc-filter-btn" id="sched-f-weekly"        onclick="schedSetFilter('weekly',this)">Weekly</button>
+    <button class="oc-filter-btn" id="sched-f-monthly"       onclick="schedSetFilter('monthly',this)">Monthly</button>
+    <button class="oc-filter-btn" id="sched-f-quarterly"     onclick="schedSetFilter('quarterly',this)">Quarterly</button>
+    <button class="oc-filter-btn" id="sched-f-annual"        onclick="schedSetFilter('annual',this)">Annual</button>
+  </div>
+
+  <div id="sched-grid"></div>
+
 </div>
 
 <!-- ══ ESCALATION MATRIX ══ -->
@@ -2133,12 +2145,16 @@ function renderRoleCards(){
     if(expanded){
       var resp=r.responsibilities.map(function(x){return '<div style="display:flex;gap:6px;font-size:11px;color:var(--text-dim);padding:3px 0;line-height:1.4;"><span style="color:var(--border2);">&middot;</span>'+x+'</div>';}).join('');
       var crit=r.critical.map(function(x){return '<div style="display:flex;gap:6px;font-size:11px;color:var(--text);padding:4px 0;border-bottom:1px solid rgba(36,45,62,.4);"><span style="color:var(--amber);font-weight:700;">&#10003;</span>'+x+'</div>';}).join('');
-      var assignedVal=(rcNames[r.id]||'').replace(/"/g,'&quot;');
+      var assignedVal=(rcNames[r.id]||'');
+      var staffNames=getStaffNameList();
+      var nameOpts='<option value="">— Unassigned —</option>'
+        +staffNames.map(function(n){return '<option value="'+n.value+'"'+(n.value===assignedVal?' selected':'')+'>'+n.label+'</option>';}).join('');
+      if(assignedVal&&!staffNames.some(function(n){return n.value===assignedVal;}))nameOpts='<option value="'+assignedVal+'" selected>'+assignedVal+' (manual)</option>'+nameOpts;
       bodyHtml='<div style="padding:12px 14px;"><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'
         +'<div><div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:7px;">Responsibilities</div>'+resp+'</div>'
         +'<div><div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:7px;">Critical Actions</div>'+crit
         +'<div style="margin-top:10px;"><div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px;">Assigned To</div>'
-        +'<input type="text" id="rc-name-'+r.id+'" placeholder="Name &middot; Radio channel" style="width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;padding:7px 9px;font-family:var(--mono);font-size:11px;color:var(--text);" onchange="rcSaveName(\''+r.id+'\',this.value)" value="'+assignedVal+'">'
+        +'<select id="rc-name-'+r.id+'" style="width:100%;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;padding:7px 9px;font-family:var(--mono);font-size:11px;color:var(--text);" onchange="rcSaveName(\''+r.id+'\',this.value)">'+nameOpts+'</select>'
         +'</div></div></div></div>';
     }
     return '<div style="background:var(--panel);border:1px solid var(--border);'+borderStyle+'border-radius:10px;overflow:hidden;margin-bottom:8px;">'
@@ -3867,44 +3883,7 @@ function renderCARs(search=''){
 
 // ── AUDIT ─────────────────────────────────────────────────────────────────────
 function daysUntil(d){if(!d)return null;const today=new Date();today.setHours(0,0,0,0);return Math.floor((new Date(d)-today)/86400000);}
-function getOverdueAudits(){return audits.filter(a=>a.status==='scheduled'&&daysUntil(a.date)<0);}
-function saveAuditOLD_DISABLED(){
-  const date=document.getElementById('aud-date').value;if(!date){toast('Select date','err');return;}
-  const audit={id:'AUD-'+Date.now().toString(36).toUpperCase().slice(-5),type:document.getElementById('aud-type').value,date,auditor:document.getElementById('aud-auditor').value.trim(),scope:document.getElementById('aud-scope').value.trim(),notes:document.getElementById('aud-notes').value.trim(),status:'scheduled',createdAt:new Date().toISOString()};
-  audits.unshift(audit);save(K.AUD,audits);
-  atPush('Audit_Schedule',{'Audit ID':audit.id,'Type':audit.type,'Scheduled Date':audit.date,'Auditor':audit.auditor,'Scope':audit.scope,'Notes':audit.notes,'Status':'Scheduled','Created At':audit.createdAt});
-  renderAudits();updateBadges();toast('Audit scheduled','ok');
-}
-function completeAudit(id){const a=audits.find(a=>a.id===id);if(a){a.status='completed';a.completedAt=new Date().toISOString();}save(K.AUD,audits);renderAudits();updateBadges();toast('Audit complete','ok');}
-function renderAudits(search=''){
-  const filter=document.getElementById('aud-filter')?.value||'upcoming';
-  let rows=[...audits];
-  if(filter==='upcoming')rows=rows.filter(a=>a.status==='scheduled'&&daysUntil(a.date)>=0);
-  else if(filter==='overdue')rows=rows.filter(a=>a.status==='scheduled'&&daysUntil(a.date)<0);
-  else if(filter==='completed')rows=rows.filter(a=>a.status==='completed');
-  if(search){const q=search.toLowerCase();rows=rows.filter(a=>a.type.toLowerCase().includes(q)||(a.auditor||'').toLowerCase().includes(q));}
-  rows.sort((a,b)=>new Date(a.date)-new Date(b.date));
-  const overdue=getOverdueAudits().length;
-  const due7=audits.filter(a=>a.status==='scheduled'&&daysUntil(a.date)>=0&&daysUntil(a.date)<=7).length;
-  const comp30=audits.filter(a=>a.status==='completed'&&ageDays(a.completedAt)<=30).length;
-  document.getElementById('audit-overdue').textContent=overdue;
-  document.getElementById('audit-due-7').textContent=due7;
-  document.getElementById('audit-completed').textContent=comp30;
-  const body=document.getElementById('auditTableBody');
-  if(!rows.length){body.innerHTML='<div class="empty"><div class="empty-icon">📅</div>No audits matching filter.</div>';return;}
-  body.innerHTML=rows.map(a=>{const du=daysUntil(a.date);const od=du!==null&&du<0&&a.status==='scheduled';const ds=du!==null&&du<=3&&du>=0&&a.status==='scheduled';const statusPill=a.status==='completed'?'<span class="pill pill-closed">DONE</span>':od?'<span class="pill pill-open">OVERDUE</span>':ds?'<span class="pill pill-warn">DUE SOON</span>':'<span class="pill pill-info">SCHEDULED</span>';return`<div class="audit-row"><div><div style="font-size:12px;font-weight:600;color:var(--teal)">${a.type}</div><div style="font-size:10px;color:var(--text-dim);margin-top:1px;">${a.scope||'Facility-wide'}</div></div><div style="font-size:11px;color:var(--text-dim)">${a.auditor||'—'}</div><div style="font-family:var(--mono);font-size:10px;color:${od?'var(--red)':ds?'var(--amber)':'var(--text-dim)'}">${a.date}${od?' ('+Math.abs(du)+'d late)':''}</div><div style="display:flex;gap:4px;align-items:center;">${statusPill}${a.status==='scheduled'?`<button class="btn btn-green btn-sm" onclick="completeAudit('${a.id}')">Done</button>`:''}</div></div>`;}).join('');
-}
-
-// ── MATRIX ────────────────────────────────────────────────────────────────────
-function saveMatrixContact(){const tier=document.getElementById('mc-tier').value,role=document.getElementById('mc-role').value.trim(),name=document.getElementById('mc-name').value.trim(),contact=document.getElementById('mc-contact').value.trim();if(!role||!contact){toast('Role and contact required','err');return;}matrixContacts.push({tier,role,name,contact});save(K.MTX,matrixContacts);renderMatrix();['mc-role','mc-name','mc-contact'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('matrix-add-form').style.display='none';toast('Contact added','ok');}
-function renderMatrix(){
-  renderRoleCards();
-  rcUpdateStatusBadge();
-  const td=[{t:'1',l:'TIER 1',d:'Manager Resolves'},{t:'2',l:'TIER 2',d:'Supervisor / Dept Head'},{t:'3',l:'TIER 3',d:'GM / Ownership / Regulatory'}];
-  const html=`<div class="panel" style="margin-bottom:0"><div id="matrix-tiers">${td.map(td=>`<div class="esc-tier tier-${td.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${td.l}</span><span class="esc-tier-label">${td.d}</span></div><div class="esc-tier-body ${td.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===td.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:1px;">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-dim);padding:8px 0;">No contacts — add via button above.</div>'}</div></div>`).join('')}</div></div>`;
-  document.getElementById('matrix-tiers').innerHTML=td.map(t=>`<div class="esc-tier tier-${t.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${t.l}</span><span class="esc-tier-label">${t.d}</span></div><div class="esc-tier-body ${t.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===t.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-muted);padding:8px 0;">No contacts defined.</div>'}</div></div>`).join('');
-}
-
+function getOverdueAudits(){return [];}function completeAudit(id){}
 // ── SHIFT LOG ─────────────────────────────────────────────────────────────────
 function saveShiftLog(){const manager=document.getElementById('sl-manager').value.trim();if(!manager){toast('Enter manager name','err');return;}const log={id:'SL-'+Date.now().toString(36).toUpperCase().slice(-5),date:document.getElementById('sl-date').value,shift:document.getElementById('sl-shift').value,manager,start:document.getElementById('sl-start').value,staffing:document.getElementById('sl-staffing').value.trim(),conditions:document.getElementById('sl-conditions').value.trim(),createdAt:new Date().toISOString()};shiftLogs.unshift(log);save(K.SL,shiftLogs);renderShiftLogs();refreshDash();toast('Shift log saved','ok');}
 function renderShiftLogs(){const el=document.getElementById('shiftLogList');if(!shiftLogs.length){el.innerHTML='<div class="empty"><div class="empty-icon">📋</div>No shift logs yet.</div>';return;}el.innerHTML=shiftLogs.slice(0,15).map(sl=>`<div style="padding:10px 14px;border-bottom:1px solid rgba(36,45,62,.5);"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px;"><span style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright)">${sl.date}</span><span class="hc-shift ${sl.shift}-shift">${sl.shift.toUpperCase()}</span><span style="font-size:11px;color:var(--text-dim)">${sl.manager} · ${sl.start}</span></div>${sl.conditions?`<div style="font-size:11px;color:var(--text-dim);">${sl.conditions}</div>`:''}</div>`).join('');}
@@ -4047,7 +4026,7 @@ async function rcConfirmAssignments(){
 }
 
 function refreshAll(){
-  refreshDash();renderPillars();renderOOS();renderCARs();renderAudits();renderMatrix();renderThroughput();renderHandoffs();renderShiftLogs();updateBadges();
+  refreshDash();renderPillars();renderOOS();renderCARs();renderMatrix();renderThroughput();renderHandoffs();renderShiftLogs();updateBadges();
   renderRightNow();
 }
 function setDefaults(){
@@ -4065,8 +4044,7 @@ function updateBadges(){
   const ob=document.getElementById('oosBadge');if(ob){ob.textContent=activeOOS;ob.className='tab-badge '+(activeOOS?'red':'neutral');}
   const openCARs=cars.filter(c=>c.status==='open').length;
   const cb=document.getElementById('carBadge');if(cb){cb.textContent=openCARs;cb.className='tab-badge '+(openCARs?'amber':'neutral');}
-  const overdue=getOverdueAudits().length;
-  const ab=document.getElementById('auditBadge');if(ab){ab.textContent=overdue;ab.className='tab-badge '+(overdue?'red':'neutral');}
+  const overdue=(getOverdueAudits()||[]).length;
   const inspOverdue=getInspOverdue();
   const ib=document.getElementById('inspBadge');if(ib){ib.textContent=inspOverdue;ib.className='tab-badge '+(inspOverdue?'red':'neutral');}
   const dioel=document.getElementById('db-insp-overdue');if(dioel)dioel.textContent=inspOverdue;
@@ -4084,7 +4062,7 @@ function showView(name,tab){
   const map={
     dashboard:function(){refreshDash();renderRightNow();},
     pillar:renderPillars,oos:renderOOS,car:renderCARs,
-    audit:renderAudits,matrix:renderMatrix,
+    schedule:function(){renderStaffDir();renderSchedule();},matrix:renderMatrix,
     throughput:renderThroughput,
     newthroughput:function(){showView('throughput',document.querySelector('[onclick*=throughput]'));setTimeout(function(){toggleTphForm(true);},100);},
     handoff:renderHandoffs,shift:renderShiftLogs
@@ -4092,11 +4070,252 @@ function showView(name,tab){
   if(map[name])map[name]();
 }
 
+
+// ══════════════════════════════════════════════════════════════════════════════
+// FACILITY STAFF DIRECTORY
+// ══════════════════════════════════════════════════════════════════════════════
+const STAFF_POSITIONS = [
+  {id:'gm',      title:'General Manager',         abbr:'GM'},
+  {id:'ops',     title:'Operations Manager',       abbr:'OPS'},
+  {id:'safety',  title:'Safety Manager',           abbr:'SAF'},
+  {id:'maint',   title:'Maintenance Manager',      abbr:'MNT'},
+  {id:'security',title:'Security Manager',         abbr:'SEC'},
+  {id:'fb',      title:'Food & Beverage Manager',  abbr:'F&B'},
+  {id:'guest',   title:'Guest Services Manager',   abbr:'GST'},
+  {id:'hr',      title:'HR / People Manager',      abbr:'HR'},
+];
+
+const STAFF_STORE = 'as360_staff_dir';
+let staffDir = {}; // {id: {name, phone, radio}}
+
+function staffLoad(){
+  try{const s=localStorage.getItem(STAFF_STORE);if(s)staffDir=JSON.parse(s);}catch(e){}
+}
+function staffSave(){
+  STAFF_POSITIONS.forEach(function(p){
+    const nameEl  = document.getElementById('staff-name-'+p.id);
+    const phoneEl = document.getElementById('staff-phone-'+p.id);
+    const radioEl = document.getElementById('staff-radio-'+p.id);
+    staffDir[p.id] = {
+      name:  nameEl  ? nameEl.value.trim()  : (staffDir[p.id]?.name||''),
+      phone: phoneEl ? phoneEl.value.trim() : (staffDir[p.id]?.phone||''),
+      radio: radioEl ? radioEl.value.trim() : (staffDir[p.id]?.radio||''),
+    };
+  });
+  try{localStorage.setItem(STAFF_STORE, JSON.stringify(staffDir));}catch(e){}
+  // Refresh role card dropdowns with new names
+  renderRoleCards();
+  // Push to Airtable staff directory table
+  const fields = {'Updated At': new Date().toISOString(), 'Facility': 'Epic Universe'};
+  STAFF_POSITIONS.forEach(function(p){
+    fields[p.title + ' Name']  = staffDir[p.id]?.name  || '';
+    fields[p.title + ' Phone'] = staffDir[p.id]?.phone || '';
+    fields[p.title + ' Radio'] = staffDir[p.id]?.radio || '';
+  });
+  atPush('Staff_Directory', fields);
+  toast('Roster saved & synced to OPD', 'ok');
+}
+
+function renderStaffDir(){
+  const el = document.getElementById('staff-dir-grid');
+  if(!el) return;
+  el.innerHTML = STAFF_POSITIONS.map(function(p){
+    const d = staffDir[p.id] || {};
+    return '<div style="display:grid;grid-template-columns:120px 1fr 130px 100px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">'
+      +'<div>'
+      +'<div style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--teal);">'+p.abbr+'</div>'
+      +'<div style="font-size:12px;font-weight:600;color:var(--text);line-height:1.3;">'+p.title+'</div>'
+      +'</div>'
+      +'<input type="text" id="staff-name-'+p.id+'" value="'+(d.name||'')+'" placeholder="Full name" style="background:var(--panel3);border:1px solid var(--border2);border-radius:5px;padding:7px 9px;font-family:var(--mono);font-size:11px;color:var(--text);width:100%;" onchange="staffQuickSave(\''+p.id+'\',this.value,\'name\')">'
+      +'<input type="text" id="staff-phone-'+p.id+'" value="'+(d.phone||'')+'" placeholder="Phone / ext." style="background:var(--panel3);border:1px solid var(--border2);border-radius:5px;padding:7px 9px;font-family:var(--mono);font-size:11px;color:var(--text);width:100%;" onchange="staffQuickSave(\''+p.id+'\',this.value,\'phone\')">'
+      +'<input type="text" id="staff-radio-'+p.id+'" value="'+(d.radio||'')+'" placeholder="Radio ch." style="background:var(--panel3);border:1px solid var(--border2);border-radius:5px;padding:7px 9px;font-family:var(--mono);font-size:11px;color:var(--text);width:100%;" onchange="staffQuickSave(\''+p.id+'\',this.value,\'radio\')">'
+      +'</div>';
+  }).join('');
+}
+
+function staffQuickSave(id, val, field){
+  if(!staffDir[id]) staffDir[id] = {name:'',phone:'',radio:''};
+  staffDir[id][field] = val;
+  try{localStorage.setItem(STAFF_STORE, JSON.stringify(staffDir));}catch(e){}
+  renderRoleCards(); // refresh dropdowns live
+}
+
+function getStaffNameList(){
+  // Returns array of {value, label} for dropdown use
+  const names = [];
+  STAFF_POSITIONS.forEach(function(p){
+    const name = staffDir[p.id]?.name || '';
+    if(name) names.push({value: name, label: name + ' — ' + p.title});
+  });
+  return names;
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// INSPECTION SCHEDULE ENGINE
+// ══════════════════════════════════════════════════════════════════════════════
+const SCHED_STORE = 'as360_sched';
+let schedData = {}; // {id: {plannedDate, assignedTo, notes}}
+let schedFilter = 'all';
+
+function schedLoad(){
+  try{const s=localStorage.getItem(SCHED_STORE);if(s)schedData=JSON.parse(s);}catch(e){}
+}
+function schedSave(){
+  try{localStorage.setItem(SCHED_STORE, JSON.stringify(schedData));}catch(e){}
+}
+
+function schedSetFilter(f, btn){
+  schedFilter = f;
+  document.querySelectorAll('.oc-filter-btn[id^="sched-f-"]').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderSchedule();
+}
+
+const FREQ_ORDER = {weekly:0, monthly:1, quarterly:2, annual:3};
+const FREQ_LABEL = {weekly:'Weekly', monthly:'Monthly', quarterly:'Quarterly', annual:'Annual'};
+const FREQ_COLOR = {weekly:'var(--teal)', monthly:'var(--blue)', quarterly:'var(--amber)', annual:'var(--purple)'};
+
+function renderSchedule(){
+  const el = document.getElementById('sched-grid');
+  if(!el) return;
+
+  // Build rows - one per INSP_DEF
+  const freqFilters = ['weekly','monthly','quarterly','annual'];
+  const statusFilters = ['overdue','due-soon','current'];
+
+  let defs = Object.values(INSP_DEFS);
+  // Sort by freq then by name
+  defs.sort(function(a,b){
+    return (FREQ_ORDER[a.freq]||0) - (FREQ_ORDER[b.freq]||0) || a.name.localeCompare(b.name);
+  });
+
+  // Apply filter
+  if(freqFilters.includes(schedFilter)){
+    defs = defs.filter(function(d){return d.freq === schedFilter;});
+  } else if(statusFilters.includes(schedFilter)){
+    defs = defs.filter(function(d){return getInspStatus(d.id).status === schedFilter;});
+  }
+
+  if(!defs.length){
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📅</div>No inspections match filter</div>';
+    return;
+  }
+
+  const staffNames = getStaffNameList();
+  const nameOpts = '<option value="">— Unassigned —</option>'
+    + staffNames.map(function(n){return '<option value="'+n.value+'">'+n.label+'</option>';}).join('');
+
+  const naForms = {BAL:true, VGB:true, SGS:true};
+
+  // Group by frequency
+  const groups = {};
+  defs.forEach(function(d){
+    if(!groups[d.freq]) groups[d.freq] = [];
+    groups[d.freq].push(d);
+  });
+
+  let out = '';
+  const freqsToShow = Object.keys(groups).sort(function(a,b){return (FREQ_ORDER[a]||0)-(FREQ_ORDER[b]||0);});
+
+  freqsToShow.forEach(function(freq){
+    out += '<div style="font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:'+FREQ_COLOR[freq]+';padding:8px 0 5px;border-bottom:1px solid var(--border);margin-bottom:8px;">'
+      + FREQ_LABEL[freq] + ' — ' + groups[freq].length + ' inspections'
+      + '</div>';
+
+    groups[freq].forEach(function(def){
+      const st  = getInspStatus(def.id);
+      const sd  = schedData[def.id] || {};
+      const isNA = naForms[def.id];
+      const today = new Date().toISOString().split('T')[0];
+
+      const statusColors = {
+        overdue:     {bg:'var(--red-dim)',    color:'var(--red)',    border:'rgba(244,63,94,.3)',   label:'OVERDUE'},
+        'due-soon':  {bg:'var(--amber-dim)',  color:'var(--amber)',  border:'rgba(245,158,11,.3)', label:'DUE SOON'},
+        current:     {bg:'var(--green-dim)',  color:'var(--green)',  border:'rgba(16,185,129,.25)','label':'CURRENT'},
+        'not-started':{bg:'var(--panel3)',    color:'var(--text-dim)',border:'var(--border)',       label:'NOT STARTED'},
+      };
+      const sc = isNA
+        ? {bg:'var(--panel3)', color:'var(--text-muted)', border:'var(--border)', label:'N/A'}
+        : (statusColors[st.status] || statusColors['not-started']);
+
+      const lastFmt = st.lastDate
+        ? new Date(st.lastDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'})
+        : 'Never';
+      const nextDue = st.lastDate
+        ? new Date(new Date(st.lastDate).getTime() + def.cadence*86400000).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'})
+        : '—';
+      const overdueTxt = st.status==='overdue' ? ' · '+st.daysOverdue+'d overdue' : st.status==='due-soon' ? ' · '+st.daysUntil+'d' : '';
+
+      const scoreChips = def.scores.map(function(sc){return '<span class="sb sb-'+sc+'">'+sc.toUpperCase()+'</span>';}).join('');
+
+      // Planned date field
+      const plannedFld = '<input type="date" id="sched-plan-'+def.id+'" value="'+(sd.plannedDate||'')+'" '
+        +'style="background:var(--panel3);border:1px solid var(--border2);border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:10px;color:var(--text);width:100%;" '
+        +'onchange="schedUpdate(\''+def.id+'\',\'plannedDate\',this.value)">';
+
+      // Assigned to dropdown
+      const assignedFld = '<select id="sched-assign-'+def.id+'" '
+        +'style="background:var(--panel3);border:1px solid var(--border2);border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:10px;color:var(--text);width:100%;" '
+        +'onchange="schedUpdate(\''+def.id+'\',\'assignedTo\',this.value)">'
+        + nameOpts.replace('value="'+(sd.assignedTo||''), 'selected value="'+(sd.assignedTo||''))
+        +'</select>';
+
+      out += '<div style="background:var(--panel);border:1px solid '+sc.border+';border-radius:8px;padding:10px 12px;margin-bottom:6px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;">'
+        +'<div>'
+          +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap;">'
+            +'<div style="font-family:var(--display);font-size:13px;font-weight:700;color:var(--text-bright);">'+def.name+'</div>'
+            +'<span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;background:'+sc.bg+';color:'+sc.color+';border:1px solid '+sc.border+';">'+sc.label+overdueTxt+'</span>'
+            +scoreChips
+          +'</div>'
+          +'<div style="display:grid;grid-template-columns:auto auto 1fr 1fr;gap:6px;align-items:center;flex-wrap:wrap;">'
+            +'<div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Last: <span style="color:var(--text)">'+lastFmt+'</span></div>'
+            +'<div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Due: <span style="color:'+(st.status==='overdue'?'var(--red)':st.status==='due-soon'?'var(--amber)':'var(--text)')+'">'+nextDue+'</span></div>'
+            +(isNA ? '<div></div><div></div>' : '<div>'+plannedFld+'</div><div>'+assignedFld+'</div>')
+          +'</div>'
+        +'</div>'
+        +'<div style="text-align:right;">'
+          +(isNA ? '<span style="font-family:var(--mono);font-size:9px;color:var(--text-muted);">N/A — EU</span>'
+            : '<button class="btn btn-teal btn-sm" onclick="schedGoToForm(\''+def.id+'\')">Open Form →</button>')
+        +'</div>'
+        +'</div>';
+    });
+  });
+
+  el.innerHTML = out;
+}
+
+function schedUpdate(id, field, val){
+  if(!schedData[id]) schedData[id] = {};
+  schedData[id][field] = val;
+  schedSave();
+}
+
+function schedGoToForm(id){
+  showView('inspections', document.querySelector('[onclick*=inspections]'));
+  // Switch to correct frequency tab
+  const freq = INSP_DEFS[id]?.freq;
+  if(freq){
+    const btn = document.getElementById('ft-'+freq);
+    if(btn) switchFreq(freq);
+    setTimeout(function(){openForm(id);}, 100);
+  }
+}
+
+function renderMatrix(){
+  renderRoleCards();
+  const td=[{t:'1',l:'TIER 1',d:'Manager Resolves'},{t:'2',l:'TIER 2',d:'Supervisor / Dept Head'},{t:'3',l:'TIER 3',d:'GM / Ownership / Regulatory'}];
+  const html=`<div class="panel" style="margin-bottom:0"><div id="matrix-tiers">${td.map(td=>`<div class="esc-tier tier-${td.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${td.l}</span><span class="esc-tier-label">${td.d}</span></div><div class="esc-tier-body ${td.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===td.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:1px;">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-dim);padding:8px 0;">No contacts — add via button above.</div>'}</div></div>`).join('')}</div></div>`;
+  document.getElementById('matrix-tiers').innerHTML=td.map(t=>`<div class="esc-tier tier-${t.t}"><div class="esc-tier-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><span class="esc-tier-badge">${t.l}</span><span class="esc-tier-label">${t.d}</span></div><div class="esc-tier-body ${t.t==='1'?'open':''}">${matrixContacts.filter(c=>c.tier===t.t).map(c=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div><div style="font-size:13px;color:var(--text);font-weight:600">${c.name||c.role}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim)">${c.name?c.role:''}</div></div><div style="font-size:11px;color:var(--text-dim)">${c.contact}</div></div>`).join('')||'<div style="font-size:12px;color:var(--text-muted);padding:8px 0;">No contacts defined.</div>'}</div></div>`).join('');
+}
+function saveMatrixContact(){const tier=document.getElementById('mc-tier').value,role=document.getElementById('mc-role').value.trim(),name=document.getElementById('mc-name').value.trim(),contact=document.getElementById('mc-contact').value.trim();if(!role||!contact){toast('Role and contact required','err');return;}matrixContacts.push({tier,role,name,contact});save(K.MTX,matrixContacts);renderMatrix();['mc-role','mc-name','mc-contact'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('matrix-add-form').style.display='none';toast('Contact added','ok');}
+
 function init(){
   load();
   initRotPositions();
   ocInit();
   rcLoadNames();
+  staffLoad();
+  schedLoad();
   lgaSeedZones();
   flcSessionEntries=[];
   ypsSessionEntries=[];
