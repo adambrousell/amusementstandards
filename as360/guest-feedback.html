@@ -50,17 +50,6 @@
     color: var(--amber);
     font-weight: 700;
   }
-  .topbar .badge-pill {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 1px;
-    color: var(--slate-light);
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 4px 10px;
-    border-radius: 20px;
-  }
-  /* sync indicator */
   .sync-dot {
     font-family: 'Space Mono', monospace;
     font-size: 10px;
@@ -314,6 +303,21 @@
   .submit-btn:active { transform: translateY(0); }
   .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
+  /* Error banner shown inline if sync fails */
+  .error-banner {
+    display: none;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: var(--red-light);
+    border: 1.5px solid var(--red);
+    border-radius: 10px;
+    font-size: 13px;
+    color: #991B1B;
+    line-height: 1.5;
+  }
+  .error-banner.show { display: block; }
+  .error-banner strong { display: block; margin-bottom: 4px; }
+
   @keyframes fadeIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
   .success-screen {
     display: none;
@@ -503,6 +507,12 @@
   <hr style="border:none;border-top:1px solid var(--border);margin:8px 0 20px;">
   <button class="submit-btn" id="submitBtn" onclick="submitFeedback()">Submit Feedback →</button>
 
+  <!-- Inline error shown if Airtable sync fails -->
+  <div class="error-banner" id="error-banner">
+    <strong>⚠️ Submission failed — please try again.</strong>
+    Your response couldn't be saved. Check your connection and tap Submit again. If the problem continues, screenshot this page and send it to <a href="mailto:adam@amusementstandards.com" style="color:#991B1B;">adam@amusementstandards.com</a>.
+  </div>
+
   <p class="form-footer">
     Powered by <strong>Amusement Standards · AS 360</strong> &nbsp;·&nbsp; Guest Feedback (QR Capture) &nbsp;·&nbsp;
     <a href="nmr.html" style="color:var(--slate-light);">Report a safety concern</a>
@@ -511,7 +521,7 @@
 </div>
 </div><!-- /form-view -->
 
-<!-- SUCCESS SCREEN -->
+<!-- SUCCESS SCREEN — only shown after confirmed Airtable write -->
 <div class="success-screen" id="success-screen">
   <div class="success-icon">🌟</div>
   <h2>Thank You!</h2>
@@ -524,6 +534,7 @@
   // ── PROXY ─────────────────────────────────────────────────────────────────
   const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
 
+  // Returns true on success, false on failure
   async function pushGFB(fields) {
     setSyncState('syncing');
     try {
@@ -534,13 +545,17 @@
       });
       if (res.ok) {
         setSyncState('synced');
+        return true;
       } else {
-        console.warn('Proxy sync failed', res.status);
+        const body = await res.text();
+        console.warn('Proxy sync failed', res.status, body);
         setSyncState('error');
+        return false;
       }
     } catch (e) {
       console.warn('Proxy error:', e.message);
       setSyncState('error');
+      return false;
     }
   }
 
@@ -550,12 +565,11 @@
     dot.className = 'sync-dot ' + state;
     if (state === 'syncing') txt.textContent = 'SYNCING…';
     else if (state === 'synced') txt.textContent = 'SYNCED ✓';
-    else if (state === 'error') txt.textContent = 'SYNC ERROR';
+    else if (state === 'error')  txt.textContent = 'SYNC ERROR';
     else txt.textContent = 'AS 360 · GFB';
   }
 
   // ── Live clock ────────────────────────────────────────────────────────────
-  let submitTimestamp = null;
   function tickClock() {
     const t = new Date();
     const el = document.getElementById('datetime-display');
@@ -625,46 +639,55 @@
     }
 
     const btn = document.getElementById('submitBtn');
+    const errorBanner = document.getElementById('error-banner');
     btn.disabled = true;
     btn.textContent = 'Submitting…';
+    errorBanner.classList.remove('show');
 
     const year = new Date().getFullYear();
     const refId = 'GFB-' + year + '-' + String(Math.floor(Math.random()*9000)+1000);
-    submitTimestamp = new Date().toISOString();
 
+    // Field names use regular hyphens to match Airtable column names exactly
     const fields = {
-      'Reference ID':        refId,
-      'Timestamp':           submitTimestamp,
-      'Attraction':          document.getElementById('location-field').value,
-      'Visit Type':          getActiveChip('visit-type-chips'),
-      'Rating — Ride':       ratings.ride   ? String(ratings.ride)   : '',
-      'Rating — Staff':      ratings.staff  ? String(ratings.staff)  : '',
-      'Rating — Clean':      ratings.clean  ? String(ratings.clean)  : '',
-      'Rating — Safety':     ratings.safety ? String(ratings.safety) : '',
-      'Rating — Overall':    String(ratings.overall),
-      'Highlight':           document.getElementById('highlight').value.trim(),
-      'Notes':               document.getElementById('notes').value.trim(),
-      'Anonymous':           isAnon ? 'Yes' : 'No',
-      'Guest Name':          isAnon ? '' : (document.getElementById('guest-name').value.trim()),
-      'Guest Email':         isAnon ? '' : (document.getElementById('guest-email').value.trim()),
-      'Follow-Up Requested': isAnon ? '' : getActiveChip('followup-chips'),
+      'Reference ID':          refId,
+      'Timestamp':             new Date().toISOString(),
+      'Attraction':            document.getElementById('location-field').value,
+      'Visit Type':            getActiveChip('visit-type-chips'),
+      'Rating - Ride':         ratings.ride   ? String(ratings.ride)   : '',
+      'Rating - Staff':        ratings.staff  ? String(ratings.staff)  : '',
+      'Rating - Clean':        ratings.clean  ? String(ratings.clean)  : '',
+      'Rating - Safety':       ratings.safety ? String(ratings.safety) : '',
+      'Rating - Overall':      String(ratings.overall),
+      'Highlight':             document.getElementById('highlight').value.trim(),
+      'Notes':                 document.getElementById('notes').value.trim(),
+      'Anonymous':             isAnon ? 'Yes' : 'No',
+      'Guest Name':            isAnon ? '' : (document.getElementById('guest-name').value.trim()),
+      'Guest Email':           isAnon ? '' : (document.getElementById('guest-email').value.trim()),
+      'Follow-Up Requested':   isAnon ? '' : getActiveChip('followup-chips'),
     };
 
-    // Push to Airtable via proxy (non-blocking — success screen shows immediately)
-    pushGFB(fields);
-
-    document.getElementById('ref-number').textContent = refId;
-    document.getElementById('form-view').style.display = 'none';
-    document.getElementById('success-screen').classList.add('show');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Await confirmed sync before showing success
+    const ok = await pushGFB(fields);
 
     btn.disabled = false;
     btn.textContent = 'Submit Feedback →';
+
+    if (ok) {
+      document.getElementById('ref-number').textContent = refId;
+      document.getElementById('form-view').style.display = 'none';
+      document.getElementById('success-screen').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      // Stay on form, show inline error
+      errorBanner.classList.add('show');
+      errorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   }
 
   function resetForm() {
     document.getElementById('form-view').style.display = 'block';
     document.getElementById('success-screen').classList.remove('show');
+    document.getElementById('error-banner').classList.remove('show');
     Object.keys(ratings).forEach(k => { ratings[k] = 0; });
     document.querySelectorAll('.star').forEach(s => { s.classList.remove('lit'); s.style.color = ''; });
     document.querySelectorAll('.star-row').forEach(r => r.classList.remove('rated'));
