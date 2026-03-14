@@ -1319,6 +1319,148 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     </div>
   </div>
 
+  <!-- ══ HDI — HEALTH DEPT. INSPECTION HISTORY ══ -->
+  <div class="form-panel" id="form-HDI">
+    <div class="form-panel-hdr">
+      <div class="form-panel-title">Health Dept. Inspection History</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeForm('HDI')">✕</button>
+    </div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-HDI" style="width:0%"></div></div>
+      <div style="background:var(--panel2);border:1px solid var(--border2);border-radius:7px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:var(--text-dim);line-height:1.6;">
+        Log each Health Department inspection when it occurs. These records feed the SPLASH Score Integrity pillar and are required for regulatory audit defense.
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Inspection Date</label><input type="date" id="hdi-date"></div>
+        <div class="ff"><label>Inspecting Agency</label><input type="text" id="hdi-agency" placeholder="e.g. Orange County Health Services"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Inspector Name</label><input type="text" id="hdi-inspector" placeholder="Inspector's name"></div>
+        <div class="ff"><label>Inspector Badge / ID</label><input type="text" id="hdi-inspector-id" placeholder="Optional"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Area / Scope Inspected</label>
+          <select id="hdi-scope">
+            <option value="food-service">Food Service — All Venues</option>
+            <option value="food-specific">Food Service — Specific Location</option>
+            <option value="aquatic">Aquatic / Water Attractions</option>
+            <option value="facility-wide">Facility-Wide</option>
+            <option value="follow-up">Follow-Up Inspection</option>
+            <option value="complaint-driven">Complaint-Driven</option>
+          </select>
+        </div>
+        <div class="ff"><label>Specific Location (if applicable)</label>
+          <input type="text" id="hdi-location" placeholder="e.g. Hogsmeade food cart, main kitchen">
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Outcome</label>
+          <select id="hdi-outcome">
+            <option value="pass">Pass — No violations</option>
+            <option value="pass-minor">Pass with Minor Violations</option>
+            <option value="conditional">Conditional — Corrective action required</option>
+            <option value="fail">Fail / Closure Order</option>
+            <option value="re-inspection-scheduled">Re-inspection Scheduled</option>
+          </select>
+        </div>
+        <div class="ff"><label>Violations Cited</label>
+          <input type="number" id="hdi-violations" placeholder="0" min="0" value="0">
+        </div>
+      </div>
+      <div class="ff"><label>Violation Descriptions</label>
+        <textarea id="hdi-violations-desc" rows="3" placeholder="List each violation cited, code number if available, and corrective action required…"></textarea>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Corrective Actions Completed By</label><input type="date" id="hdi-corrective-by"></div>
+        <div class="ff"><label>Re-Inspection Date (if required)</label><input type="date" id="hdi-reinspect-date"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Report / Citation Reference #</label><input type="text" id="hdi-report-ref" placeholder="Agency report or citation number"></div>
+        <div class="ff"><label>Score (if issued, 0–100)</label><input type="number" id="hdi-score" placeholder="e.g. 94" min="0" max="100"></div>
+      </div>
+      <div class="ff"><label>Logged By</label><input type="text" id="hdi-logged-by" placeholder="Manager name"></div>
+      <div class="ff"><label>Internal Notes</label>
+        <textarea id="hdi-notes" rows="2" placeholder="Follow-up actions taken, staff notified, corrective timeline, documentation filed…"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-teal" onclick="submitInspection('HDI')">Submit Record →</button>
+        <button class="btn btn-ghost" onclick="closeForm('HDI')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ LBL — LIABILITY DOCUMENTATION LOG ══ -->
+  <div class="form-panel" id="form-LBL">
+    <div class="form-panel-hdr">
+      <div class="form-panel-title">Liability Documentation Log</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeForm('LBL')">✕</button>
+    </div>
+    <div class="form-panel-body">
+      <div class="form-progress"><div class="form-progress-fill" id="prog-LBL" style="width:0%"></div></div>
+      <div style="background:var(--panel2);border:1px solid var(--border2);border-radius:7px;padding:9px 12px;margin-bottom:12px;font-size:11px;color:var(--text-dim);line-height:1.6;">
+        Track all liability-relevant documentation — waivers, incident release forms, insurance certificates, legal correspondence, and preservation holds. Feeds the PLAY Score Liability pillar.
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Document Date</label><input type="date" id="lbl-date"></div>
+        <div class="ff"><label>Document Type</label>
+          <select id="lbl-type">
+            <option value="waiver">Guest Waiver / Release Form</option>
+            <option value="incident-release">Post-Incident Release</option>
+            <option value="insurance-cert">Insurance Certificate</option>
+            <option value="legal-correspondence">Legal Correspondence</option>
+            <option value="preservation-hold">Evidence / Preservation Hold</option>
+            <option value="demand-letter">Demand Letter Received</option>
+            <option value="settlement">Settlement Agreement</option>
+            <option value="court-filing">Court Filing</option>
+            <option value="regulatory">Regulatory Notice / Fine</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Related Incident / Reference</label><input type="text" id="lbl-incident-ref" placeholder="Incident date, NMR ID, or case number"></div>
+        <div class="ff"><label>Attraction / Area Involved</label><input type="text" id="lbl-attraction" placeholder="Ride name, zone, or facility-wide"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Party Involved</label><input type="text" id="lbl-party" placeholder="Guest name, attorney, agency (omit sensitive PII)"></div>
+        <div class="ff"><label>Status</label>
+          <select id="lbl-status">
+            <option value="active">Active — Under Review</option>
+            <option value="closed">Closed — No Further Action</option>
+            <option value="pending-legal">Pending Legal Response</option>
+            <option value="settled">Settled</option>
+            <option value="litigation">Active Litigation</option>
+            <option value="archived">Archived</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Document Stored In</label>
+          <select id="lbl-storage">
+            <option value="legal-file">Legal File Cabinet</option>
+            <option value="digital-drive">Secure Digital Drive</option>
+            <option value="risk-manager">Risk Manager Office</option>
+            <option value="attorney">Attorney File</option>
+            <option value="insurance">Insurance Portal</option>
+          </select>
+        </div>
+        <div class="ff"><label>File / Reference #</label><input type="text" id="lbl-file-ref" placeholder="Internal file number or case reference"></div>
+      </div>
+      <div class="form-grid">
+        <div class="ff"><label>Retention Deadline</label><input type="date" id="lbl-retention"></div>
+        <div class="ff"><label>Assigned To / Owner</label><input type="text" id="lbl-owner" placeholder="Risk Manager, GM, Legal…"></div>
+      </div>
+      <div class="ff"><label>Description / Notes</label>
+        <textarea id="lbl-notes" rows="3" placeholder="Describe the document, its significance, any action required, and deadline for response or review…"></textarea>
+      </div>
+      <div class="ff"><label>Logged By</label><input type="text" id="lbl-logged-by" placeholder="Manager name"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-teal" onclick="submitInspection('LBL')">Submit Record →</button>
+        <button class="btn btn-ghost" onclick="closeForm('LBL')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <!-- N/A for Epic Universe (no aquatic facilities) -->
   <div id="insp-coming-soon" style="display:none;">
     <div class="panel">
@@ -1615,6 +1757,9 @@ const INSP_DEFS={
   SBC:{id:'SBC',name:'Service Bulletin Compliance',table:'SBC_Log',cadence:365,scores:['r','s'],freq:'annual'},
   EAP:{id:'EAP',name:'Emergency Action Plan Review',table:'EAP_Log',cadence:365,scores:['s'],freq:'annual'},
   SGS:{id:'SGS',name:'Slide & Geometry Survey',table:'SGS_Log',cadence:365,scores:['s'],freq:'annual'},
+  // Record logs — not cadence-driven inspections, but tracked as annual reviews
+  HDI:{id:'HDI',name:'Health Dept. Inspection History',table:'HDI_Log',cadence:365,scores:['s'],freq:'annual'},
+  LBL:{id:'LBL',name:'Liability Documentation Log',table:'LBL_Log',cadence:365,scores:['p'],freq:'annual'},
 };
 
 // CCA — per-location-type checklist items (Epic Universe)
@@ -2348,7 +2493,7 @@ function updateFreqBadges(){
 
 function renderInspectionCards(){
   const freqIds=Object.keys(INSP_DEFS).filter(id=>INSP_DEFS[id].freq===currentFreq);
-  const hasForm=['CCA','HAE','WQA','FLC','YPS','SOA','SAC','EAI','IPL','OLI','LGA','YPR','GES','ACR','SBC','EAP'];
+  const hasForm=['CCA','HAE','WQA','FLC','YPS','SOA','SAC','EAI','IPL','OLI','LGA','YPR','GES','ACR','SBC','EAP','HDI','LBL'];
   const naForms={BAL:true,VGB:true,SGS:true};// no deep aquatics at Epic Universe
   const grid=document.getElementById('insp-card-grid');
   const cs=document.getElementById('insp-coming-soon');
@@ -3120,6 +3265,61 @@ function submitInspection(id){
       if(name)rideData.push({name,design,actual,util:design&&actual?Math.round(actual/design*100):null});
     });
     fields={'Date':document.getElementById('oli-date').value,'Shift':document.getElementById('oli-shift').value,'Manager':mgr,'Crowd Level':parseInt(document.getElementById('oli-crowd').value)||null,'Avg Wait Min':parseInt(document.getElementById('oli-avg-wait').value)||null,'Ride Data':JSON.stringify(rideData),'Notes':document.getElementById('oli-notes').value,'Submitted At':new Date().toISOString()};
+  } else if(id==='HDI'){
+    const loggedBy=document.getElementById('hdi-logged-by').value.trim();
+    const agency=document.getElementById('hdi-agency').value.trim();
+    if(!agency){toast('Enter inspecting agency','err');return;}
+    if(!loggedBy){toast('Enter your name in Logged By','err');return;}
+    const violations=parseInt(document.getElementById('hdi-violations').value)||0;
+    const outcome=document.getElementById('hdi-outcome').value;
+    // Auto-open a CAR if violations cited or outcome is conditional/fail
+    if(violations>0||outcome==='conditional'||outcome==='fail'){
+      const car={id:'CAR-'+Date.now().toString(36).toUpperCase().slice(-5),source:'HDI',location:'Health Dept. Inspection',finding:'Health inspection: '+outcome+' · '+violations+' violation(s) — '+agency,priority:outcome==='fail'?'high':'medium',due:new Date(Date.now()+(outcome==='fail'?7:30)*86400000).toISOString().split('T')[0],status:'open',createdAt:new Date().toISOString()};
+      cars.unshift(car);save(K.CAR,cars);
+    }
+    fields={
+      'Date':document.getElementById('hdi-date').value,
+      'Agency':agency,
+      'Inspector':document.getElementById('hdi-inspector').value.trim(),
+      'Inspector ID':document.getElementById('hdi-inspector-id').value.trim(),
+      'Scope':document.getElementById('hdi-scope').value,
+      'Location':document.getElementById('hdi-location').value.trim(),
+      'Outcome':outcome,
+      'Violations Cited':violations,
+      'Violation Descriptions':document.getElementById('hdi-violations-desc').value.trim(),
+      'Corrective Actions By':document.getElementById('hdi-corrective-by').value,
+      'Re-Inspection Date':document.getElementById('hdi-reinspect-date').value,
+      'Report Reference':document.getElementById('hdi-report-ref').value.trim(),
+      'Score':parseInt(document.getElementById('hdi-score').value)||null,
+      'Logged By':loggedBy,
+      'Notes':document.getElementById('hdi-notes').value.trim(),
+      'Submitted At':new Date().toISOString(),
+    };
+  } else if(id==='LBL'){
+    const loggedBy=document.getElementById('lbl-logged-by').value.trim();
+    if(!loggedBy){toast('Enter your name in Logged By','err');return;}
+    const docType=document.getElementById('lbl-type').value;
+    const status=document.getElementById('lbl-status').value;
+    // Auto-open a CAR for demand letters and litigation
+    if(docType==='demand-letter'||docType==='litigation'||docType==='court-filing'){
+      const car={id:'CAR-'+Date.now().toString(36).toUpperCase().slice(-5),source:'LBL',location:document.getElementById('lbl-attraction').value.trim()||'Facility',finding:'Liability document: '+docType+' · '+document.getElementById('lbl-party').value.trim(),priority:'high',due:new Date(Date.now()+7*86400000).toISOString().split('T')[0],status:'open',createdAt:new Date().toISOString()};
+      cars.unshift(car);save(K.CAR,cars);
+    }
+    fields={
+      'Date':document.getElementById('lbl-date').value,
+      'Document Type':docType,
+      'Incident Reference':document.getElementById('lbl-incident-ref').value.trim(),
+      'Attraction / Area':document.getElementById('lbl-attraction').value.trim(),
+      'Party Involved':document.getElementById('lbl-party').value.trim(),
+      'Status':status,
+      'Storage Location':document.getElementById('lbl-storage').value,
+      'File Reference':document.getElementById('lbl-file-ref').value.trim(),
+      'Retention Deadline':document.getElementById('lbl-retention').value,
+      'Assigned To':document.getElementById('lbl-owner').value.trim(),
+      'Notes':document.getElementById('lbl-notes').value.trim(),
+      'Logged By':loggedBy,
+      'Submitted At':new Date().toISOString(),
+    };
   } else if(id==='YPR'){
     const reviewer=document.getElementById('ypr-reviewer').value.trim();
     if(!reviewer){toast('Enter reviewer name','err');return;}
@@ -3178,6 +3378,61 @@ function submitInspection(id){
     if(!ypsSessionEntries.length){toast('Add at least one entry before submitting','err');return;}
     fields={'Date':document.getElementById('yps-date').value,'Shift':document.getElementById('yps-shift').value,'Logged By':logger,'Total Events':ypsSessionEntries.length,'Unaccompanied Minors':ypsSessionEntries.filter(e=>e.type==='unaccompanied').length,'Lost Child Events':ypsSessionEntries.filter(e=>e.type==='lost').length,'Age Restriction Challenges':ypsSessionEntries.filter(e=>e.type==='age-restriction').length,'Chaperone Concerns':ypsSessionEntries.filter(e=>e.type==='chaperone').length,'Behavioral Incidents':ypsSessionEntries.filter(e=>e.type==='behavioral').length,'Entries':JSON.stringify(ypsSessionEntries),'Submitted At':new Date().toISOString()};
     ypsSessionEntries=[];
+  } else if(id==='HDI'){
+    const loggedBy=document.getElementById('hdi-logged-by').value.trim();
+    const agency=document.getElementById('hdi-agency').value.trim();
+    if(!agency){toast('Enter inspecting agency','err');return;}
+    if(!loggedBy){toast('Enter your name in Logged By','err');return;}
+    const violations=parseInt(document.getElementById('hdi-violations').value)||0;
+    const outcome=document.getElementById('hdi-outcome').value;
+    // Auto-open a CAR if violations cited or outcome is conditional/fail
+    if(violations>0||outcome==='conditional'||outcome==='fail'){
+      const car={id:'CAR-'+Date.now().toString(36).toUpperCase().slice(-5),source:'HDI',location:'Health Dept. Inspection',finding:'Health inspection: '+outcome+' · '+violations+' violation(s) — '+agency,priority:outcome==='fail'?'high':'medium',due:new Date(Date.now()+(outcome==='fail'?7:30)*86400000).toISOString().split('T')[0],status:'open',createdAt:new Date().toISOString()};
+      cars.unshift(car);save(K.CAR,cars);
+    }
+    fields={
+      'Date':document.getElementById('hdi-date').value,
+      'Agency':agency,
+      'Inspector':document.getElementById('hdi-inspector').value.trim(),
+      'Inspector ID':document.getElementById('hdi-inspector-id').value.trim(),
+      'Scope':document.getElementById('hdi-scope').value,
+      'Location':document.getElementById('hdi-location').value.trim(),
+      'Outcome':outcome,
+      'Violations Cited':violations,
+      'Violation Descriptions':document.getElementById('hdi-violations-desc').value.trim(),
+      'Corrective Actions By':document.getElementById('hdi-corrective-by').value,
+      'Re-Inspection Date':document.getElementById('hdi-reinspect-date').value,
+      'Report Reference':document.getElementById('hdi-report-ref').value.trim(),
+      'Score':parseInt(document.getElementById('hdi-score').value)||null,
+      'Logged By':loggedBy,
+      'Notes':document.getElementById('hdi-notes').value.trim(),
+      'Submitted At':new Date().toISOString(),
+    };
+  } else if(id==='LBL'){
+    const loggedBy=document.getElementById('lbl-logged-by').value.trim();
+    if(!loggedBy){toast('Enter your name in Logged By','err');return;}
+    const docType=document.getElementById('lbl-type').value;
+    const status=document.getElementById('lbl-status').value;
+    // Auto-open a CAR for demand letters and litigation
+    if(docType==='demand-letter'||docType==='litigation'||docType==='court-filing'){
+      const car={id:'CAR-'+Date.now().toString(36).toUpperCase().slice(-5),source:'LBL',location:document.getElementById('lbl-attraction').value.trim()||'Facility',finding:'Liability document: '+docType+' · '+document.getElementById('lbl-party').value.trim(),priority:'high',due:new Date(Date.now()+7*86400000).toISOString().split('T')[0],status:'open',createdAt:new Date().toISOString()};
+      cars.unshift(car);save(K.CAR,cars);
+    }
+    fields={
+      'Date':document.getElementById('lbl-date').value,
+      'Document Type':docType,
+      'Incident Reference':document.getElementById('lbl-incident-ref').value.trim(),
+      'Attraction / Area':document.getElementById('lbl-attraction').value.trim(),
+      'Party Involved':document.getElementById('lbl-party').value.trim(),
+      'Status':status,
+      'Storage Location':document.getElementById('lbl-storage').value,
+      'File Reference':document.getElementById('lbl-file-ref').value.trim(),
+      'Retention Deadline':document.getElementById('lbl-retention').value,
+      'Assigned To':document.getElementById('lbl-owner').value.trim(),
+      'Notes':document.getElementById('lbl-notes').value.trim(),
+      'Logged By':loggedBy,
+      'Submitted At':new Date().toISOString(),
+    };
   } else if(id==='YPR'){
     const reviewer=document.getElementById('ypr-reviewer').value.trim();
     if(!reviewer){toast('Enter reviewer name','err');return;}
