@@ -6,298 +6,109 @@
 <title>How was your visit? · Amusement Standards</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --cream:#FFFBF2;
-  --warm-white:#FFF8EC;
-  --gold:#E8A020;
-  --gold-deep:#C47F0A;
-  --gold-light:#FEF3C7;
-  --gold-pale:#FFFAED;
-  --amber:#F59E0B;
-  --sunset:#F97316;
-  --rose:#FB7185;
-  --teal:#0D9488;
-  --navy:#1E293B;
-  --navy-soft:#334155;
-  --slate:#64748B;
-  --slate-light:#94A3B8;
-  --border:#F0E4C8;
-  --border2:#E8D5A8;
-  --green:#059669;
-  --green-light:#D1FAE5;
-  --red:#DC2626;
-  --shadow-warm:0 4px 24px rgba(232,160,32,.12),0 1px 4px rgba(30,41,59,.06);
-  --shadow-lg:0 12px 48px rgba(232,160,32,.16),0 4px 16px rgba(30,41,59,.08);
-}
-
+:root{--cream:#FFFBF2;--warm-white:#FFF8EC;--gold:#E8A020;--gold-deep:#C47F0A;--gold-light:#FEF3C7;--gold-pale:#FFFAED;--amber:#F59E0B;--sunset:#F97316;--rose:#FB7185;--teal:#0D9488;--navy:#1E293B;--navy-soft:#334155;--slate:#64748B;--slate-light:#94A3B8;--border:#F0E4C8;--border2:#E8D5A8;--green:#059669;--green-light:#D1FAE5;--red:#DC2626;--shadow-warm:0 4px 24px rgba(232,160,32,.12),0 1px 4px rgba(30,41,59,.06);--shadow-lg:0 12px 48px rgba(232,160,32,.16),0 4px 16px rgba(30,41,59,.08);}
 *{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-  font-family:'Nunito',sans-serif;
-  background:var(--cream);
-  color:var(--navy);
-  min-height:100vh;
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(248,186,62,.15) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(249,115,22,.06) 0%, transparent 50%);
-}
-
-.hero{
-  background:linear-gradient(160deg, #1E293B 0%, #2D3A52 40%, #3B2B1A 100%);
-  padding:36px 20px 48px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 60% at 50% 110%, rgba(232,160,32,.25) 0%, transparent 60%);
-  pointer-events:none;
-}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;background-image:radial-gradient(ellipse 80% 50% at 50% -10%, rgba(248,186,62,.15) 0%, transparent 60%),radial-gradient(ellipse 60% 40% at 100% 100%, rgba(249,115,22,.06) 0%, transparent 50%);}
+.hero{background:linear-gradient(160deg, #1E293B 0%, #2D3A52 40%, #3B2B1A 100%);padding:36px 20px 48px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 110%, rgba(232,160,32,.25) 0%, transparent 60%);pointer-events:none;}
 .hero-sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
 .sparkle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--gold);opacity:0;animation:twinkle var(--dur,3s) var(--delay,0s) ease-in-out infinite;}
 @keyframes twinkle{0%,100%{opacity:0;transform:scale(0)}50%{opacity:.8;transform:scale(1)}}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.3);
-  color:#FDE68A;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  padding:5px 14px;border-radius:20px;margin-bottom:18px;
-}
-.hero-title{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(28px,7vw,42px);font-weight:800;
-  color:#fff;line-height:1.1;margin-bottom:10px;
-  text-shadow:0 2px 20px rgba(0,0,0,.3);
-}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(232,160,32,.15);border:1px solid rgba(232,160,32,.3);color:#FDE68A;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:18px;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(28px,7vw,42px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:10px;text-shadow:0 2px 20px rgba(0,0,0,.3);}
 .hero-title em{color:#FDE68A;font-style:italic;}
 .hero-sub{font-size:14px;color:rgba(255,255,255,.65);line-height:1.6;max-width:340px;margin:0 auto;}
-.hero-park{
-  display:inline-block;margin-top:18px;
-  font-size:13px;font-weight:700;color:rgba(255,255,255,.5);
-  letter-spacing:.5px;
-}
-.hero-park span{
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
-  padding:4px 14px;border-radius:20px;
-}
-
-/* SYNC DOT */
-#sync-dot{
-  position:fixed;top:12px;right:12px;
-  width:8px;height:8px;border-radius:50%;
-  background:#4A5568;z-index:999;
-  transition:background .3s;
-  box-shadow:0 0 0 2px rgba(255,255,255,.15);
-}
-
+.hero-park{display:inline-block;margin-top:18px;font-size:13px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:.5px;}
+.hero-park span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:4px 14px;border-radius:20px;}
+#sync-dot{position:fixed;top:12px;right:12px;width:8px;height:8px;border-radius:50%;background:#4A5568;z-index:999;transition:background .3s;box-shadow:0 0 0 2px rgba(255,255,255,.15);}
 .wrapper{max-width:480px;margin:0 auto;padding:0 16px 60px;}
-
-.progress-dots{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  padding:20px 0 4px;
-}
-.pdot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--border2);transition:all .3s;
-}
+.progress-dots{display:flex;align-items:center;justify-content:center;gap:8px;padding:20px 0 4px;}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:all .3s;}
 .pdot.active{background:var(--gold);width:24px;border-radius:4px;box-shadow:0 0 8px rgba(232,160,32,.4);}
 .pdot.done{background:var(--gold-deep);}
-
-.card{
-  background:#fff;border:1px solid var(--border);border-radius:20px;
-  padding:24px 20px;margin-top:20px;
-  box-shadow:var(--shadow-warm);
-  animation:slideUp .4s ease;
-}
+.card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:24px 20px;margin-top:20px;box-shadow:var(--shadow-warm);animation:slideUp .4s ease;}
 @keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .card-icon{font-size:32px;margin-bottom:12px;display:block;}
 .card-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.2;}
 .card-sub{font-size:13px;color:var(--slate);line-height:1.5;margin-bottom:20px;}
 .card-sub strong{color:var(--navy);}
-
 .big-stars{display:flex;gap:10px;justify-content:center;padding:8px 0 20px;}
-.big-star{
-  font-size:48px;cursor:pointer;
-  filter:grayscale(1) opacity(.25);
-  transition:filter .15s, transform .15s;
-  user-select:none;
-}
-.big-star.lit{filter:none;drop-shadow(0 2px 8px rgba(245,158,11,.5));}
+.big-star{font-size:48px;cursor:pointer;filter:grayscale(1) opacity(.25);transition:filter .15s,transform .15s;user-select:none;}
+.big-star.lit{filter:none;}
 .big-star:hover{transform:scale(1.15);}
-.star-label{
-  text-align:center;font-size:13px;font-weight:700;color:var(--slate);
-  height:20px;transition:all .2s;margin-bottom:16px;
-}
+.star-label{text-align:center;font-size:13px;font-weight:700;color:var(--slate);height:20px;transition:all .2s;margin-bottom:16px;}
 .star-label.show{color:var(--gold-deep);}
-
-.cat-row{
-  display:flex;align-items:center;gap:10px;
-  padding:11px 0;border-bottom:1px solid var(--border);
-}
+.cat-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);}
 .cat-row:last-child{border-bottom:none;}
 .cat-emoji{font-size:20px;flex-shrink:0;width:28px;text-align:center;}
 .cat-label{flex:1;font-size:13px;font-weight:600;color:var(--navy-soft);}
 .cat-stars{display:flex;gap:3px;}
-.cat-star{font-size:22px;cursor:pointer;color:#E2D5C0;transition:color .1s, transform .1s;user-select:none;}
+.cat-star{font-size:22px;cursor:pointer;color:#E2D5C0;transition:color .1s,transform .1s;user-select:none;}
 .cat-star.lit{color:var(--amber);}
 .cat-star:hover{transform:scale(1.1);}
-
 .field{margin-bottom:16px;}
-.field label{
-  display:block;font-size:11px;font-weight:800;letter-spacing:1px;
-  text-transform:uppercase;color:var(--slate);margin-bottom:7px;
-}
-.field textarea,.field input{
-  width:100%;padding:12px 14px;
-  background:var(--gold-pale);border:1.5px solid var(--border2);border-radius:12px;
-  font-family:'Nunito',sans-serif;font-size:14px;color:var(--navy);
-  resize:vertical;line-height:1.5;
-  transition:border-color .15s, box-shadow .15s;
-}
+.field label{display:block;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--slate);margin-bottom:7px;}
+.field textarea,.field input{width:100%;padding:12px 14px;background:var(--gold-pale);border:1.5px solid var(--border2);border-radius:12px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--navy);resize:vertical;line-height:1.5;transition:border-color .15s,box-shadow .15s;}
 .field textarea{min-height:80px;}
-.field textarea:focus,.field input:focus{
-  outline:none;border-color:var(--gold);
-  box-shadow:0 0 0 3px rgba(232,160,32,.12);
-  background:#fff;
-}
+.field textarea:focus,.field input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,160,32,.12);background:#fff;}
 .field textarea::placeholder,.field input::placeholder{color:var(--slate-light);}
 .char-count{font-size:10px;color:var(--slate-light);text-align:right;margin-top:3px;}
-
-.highlight-row{
-  display:flex;align-items:center;justify-content:space-between;gap:8px;
-  padding:10px 14px;background:var(--gold-pale);border:1.5px solid var(--border2);
-  border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all .15s;
-}
+.highlight-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;background:var(--gold-pale);border:1.5px solid var(--border2);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all .15s;}
 .highlight-row:hover{border-color:var(--gold);background:var(--gold-light);}
 .highlight-row.sel{border-color:var(--gold-deep);background:var(--gold-light);}
 .highlight-row .hr-label{font-size:13px;font-weight:600;color:var(--navy-soft);}
-.highlight-row .hr-check{
-  width:20px;height:20px;border-radius:50%;
-  border:2px solid var(--border2);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;transition:all .12px;
-}
+.highlight-row .hr-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .12s;}
 .highlight-row.sel .hr-check{background:var(--gold-deep);border-color:var(--gold-deep);color:#fff;}
-
-.review-gate{text-align:center;padding:4px 0 12px;}
-.review-gate-score{
-  font-family:'Playfair Display',serif;
-  font-size:52px;font-weight:800;line-height:1;
-  margin-bottom:4px;
-}
+.review-gate{text-align:center;padding:4px 0 16px;}
+.review-gate-score{font-family:'Playfair Display',serif;font-size:52px;font-weight:800;line-height:1;margin-bottom:4px;}
 .review-gate-score.high{color:var(--gold-deep);}
 .review-gate-score.mid{color:var(--amber);}
 .review-gate-score.low{color:var(--rose);}
 .review-gate-label{font-size:13px;color:var(--slate);margin-bottom:20px;}
-.review-btn{
-  display:flex;align-items:center;gap:12px;
-  padding:14px 18px;border:1.5px solid var(--border2);border-radius:14px;
-  background:#fff;cursor:pointer;margin-bottom:10px;
-  box-shadow:0 2px 8px rgba(0,0,0,.04);
-  transition:all .2s;text-decoration:none;color:inherit;
-}
+.review-btn{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1.5px solid var(--border2);border-radius:14px;background:#fff;cursor:pointer;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:all .2s;text-decoration:none;color:inherit;}
 .review-btn:hover{transform:translateY(-2px);box-shadow:var(--shadow-warm);border-color:var(--gold);}
 .review-btn-icon{font-size:28px;flex-shrink:0;}
 .review-btn-text strong{display:block;font-size:14px;font-weight:800;color:var(--navy);}
 .review-btn-text span{font-size:12px;color:var(--slate);}
 .review-btn-arrow{margin-left:auto;color:var(--slate-light);font-size:18px;}
-.internal-route{
-  background:var(--gold-pale);border:1.5px solid var(--border2);border-radius:14px;
-  padding:16px;text-align:center;
-}
+.internal-route{background:var(--gold-pale);border:1.5px solid var(--border2);border-radius:14px;padding:16px;text-align:center;}
 .internal-route .ir-emoji{font-size:36px;margin-bottom:8px;display:block;}
 .internal-route p{font-size:13px;color:var(--slate);line-height:1.5;}
 .internal-route strong{color:var(--navy);}
-
-.coupon-wrap{position:relative;margin-top:4px;}
-.coupon{
-  background:linear-gradient(135deg,var(--navy) 0%,#2D3A52 100%);
-  border-radius:20px;padding:24px 20px;overflow:hidden;
-  position:relative;box-shadow:var(--shadow-lg);
-}
-.coupon::before{
-  content:'';position:absolute;
-  top:-40px;right:-40px;width:180px;height:180px;
-  border-radius:50%;background:rgba(232,160,32,.08);
-  pointer-events:none;
-}
-.coupon::after{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,.015) 20px,rgba(255,255,255,.015) 21px);
-  pointer-events:none;
-}
+.coupon{background:linear-gradient(135deg,var(--navy) 0%,#2D3A52 100%);border-radius:20px;padding:24px 20px;overflow:hidden;position:relative;box-shadow:var(--shadow-lg);}
+.coupon::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(232,160,32,.08);pointer-events:none;}
+.coupon::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,.015) 20px,rgba(255,255,255,.015) 21px);pointer-events:none;}
 .coupon-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;position:relative;z-index:1;}
 .coupon-brand{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);}
 .coupon-type{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.25);padding:3px 10px;border-radius:20px;}
-.coupon-amount{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(42px,12vw,58px);font-weight:800;
-  color:#fff;line-height:1;margin-bottom:4px;
-  position:relative;z-index:1;
-}
+.coupon-amount{font-family:'Playfair Display',serif;font-size:clamp(42px,12vw,58px);font-weight:800;color:#fff;line-height:1;margin-bottom:4px;position:relative;z-index:1;}
 .coupon-amount span{font-size:22px;vertical-align:super;margin-right:2px;color:#FDE68A;}
 .coupon-title{font-size:14px;font-weight:700;color:rgba(255,255,255,.7);margin-bottom:16px;position:relative;z-index:1;}
-.coupon-divider{
-  border:none;border-top:2px dashed rgba(255,255,255,.12);
-  margin:0 0 16px;position:relative;z-index:1;
-}
+.coupon-divider{border:none;border-top:2px dashed rgba(255,255,255,.12);margin:0 0 16px;position:relative;z-index:1;}
 .coupon-details{display:flex;flex-direction:column;gap:5px;position:relative;z-index:1;}
 .coupon-detail{font-size:11px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px;}
 .coupon-detail::before{content:'·';color:var(--gold);}
-.coupon-code-row{
-  margin-top:18px;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.15);
-  border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;
-  position:relative;z-index:1;
-}
+.coupon-code-row{margin-top:18px;background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.15);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;}
 .coupon-code{font-family:monospace;font-size:16px;font-weight:700;letter-spacing:3px;color:#FDE68A;}
-.coupon-copy{
-  font-size:11px;font-weight:700;color:rgba(255,255,255,.4);cursor:pointer;
-  border:1px solid rgba(255,255,255,.1);padding:4px 10px;border-radius:6px;
-  transition:all .15s;
-}
+.coupon-copy{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);cursor:pointer;border:1px solid rgba(255,255,255,.1);padding:4px 10px;border-radius:6px;transition:all .15s;}
 .coupon-copy:hover{border-color:var(--gold);color:var(--gold);}
 .coupon-copy.copied{color:var(--green);border-color:var(--green);}
-
-.share-row{display:flex;gap:8px;margin-top:10px;}
-.share-btn{
-  flex:1;padding:12px 8px;border:1.5px solid var(--border2);border-radius:12px;
-  background:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;
-  color:var(--navy-soft);cursor:pointer;text-align:center;transition:all .15s;
-}
+.share-row{display:flex;gap:8px;margin-top:14px;}
+.share-btn{flex:1;padding:12px 8px;border:1.5px solid var(--border2);border-radius:12px;background:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:var(--navy-soft);cursor:pointer;text-align:center;transition:all .15s;}
 .share-btn:hover{border-color:var(--gold);color:var(--gold-deep);background:var(--gold-pale);}
-
-.btn-primary{
-  width:100%;padding:15px;border:none;border-radius:14px;
-  background:linear-gradient(135deg,var(--gold),var(--gold-deep));
-  color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;
-  cursor:pointer;letter-spacing:.2px;
-  box-shadow:0 4px 16px rgba(232,160,32,.35);
-  transition:all .15s;margin-top:8px;
-}
+.btn-primary{width:100%;padding:15px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:.2px;box-shadow:0 4px 16px rgba(232,160,32,.35);transition:all .15s;margin-top:8px;}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(232,160,32,.45);}
-.btn-ghost{
-  width:100%;padding:12px;border:1.5px solid var(--border2);border-radius:12px;
-  background:transparent;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;
-  color:var(--slate);cursor:pointer;margin-top:6px;transition:all .15s;
-}
+.btn-ghost{width:100%;padding:12px;border:1.5px solid var(--border2);border-radius:12px;background:transparent;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--slate);cursor:pointer;margin-top:6px;transition:all .15s;}
 .btn-ghost:hover{border-color:var(--slate);color:var(--navy);}
 .skip-link{display:block;text-align:center;font-size:12px;color:var(--slate-light);cursor:pointer;margin-top:14px;text-decoration:underline;}
-
 .success-screen{text-align:center;padding:40px 0 20px;animation:slideUp .5s ease;}
 .success-emoji{font-size:72px;margin-bottom:16px;display:block;animation:bounce .6s ease .2s both;}
 @keyframes bounce{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
 .success-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:800;color:var(--navy);margin-bottom:8px;}
 .success-sub{font-size:14px;color:var(--slate);line-height:1.6;max-width:320px;margin:0 auto 24px;}
-
-#toast{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);
-  background:var(--navy);color:#fff;
-  padding:10px 20px;border-radius:10px;
-  font-size:13px;font-weight:700;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;
-}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:700;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 #toast.ok{background:var(--green);color:#fff;}
-
 @media(max-width:400px){.big-star{font-size:40px;}.big-stars{gap:6px;}}
 </style>
 </head>
@@ -305,7 +116,6 @@ body{
 
 <div id="sync-dot" title="Airtable sync"></div>
 
-<!-- HERO -->
 <div class="hero">
   <div class="hero-sparkles" id="sparkles"></div>
   <div class="hero-badge">✨ Thank you for visiting</div>
@@ -317,7 +127,6 @@ body{
 <div class="wrapper">
   <div class="progress-dots" id="progressDots"></div>
 
-  <!-- STEP 1 · OVERALL RATING -->
   <div id="step1" class="step">
     <div class="card">
       <span class="card-icon">⭐</span>
@@ -335,7 +144,6 @@ body{
     </div>
   </div>
 
-  <!-- STEP 2 · CATEGORY RATINGS -->
   <div id="step2" class="step" style="display:none;">
     <div class="card">
       <span class="card-icon">🎡</span>
@@ -353,7 +161,6 @@ body{
     </div>
   </div>
 
-  <!-- STEP 3 · HIGHLIGHTS & COMMENTS -->
   <div id="step3" class="step" style="display:none;">
     <div class="card">
       <span class="card-icon">💬</span>
@@ -364,7 +171,7 @@ body{
         <textarea id="commentBest" placeholder="What made today great? A ride, a staff member, something unexpected…" maxlength="400" oninput="updateChar(this,'charBest')"></textarea>
         <div class="char-count" id="charBest">0 / 400</div>
       </div>
-      <div class="field" id="improvField">
+      <div class="field">
         <label>Anything we could do better?</label>
         <textarea id="commentImprov" placeholder="Be honest — we read every response and take action on feedback…" maxlength="400" oninput="updateChar(this,'charImprov')"></textarea>
         <div class="char-count" id="charImprov">0 / 400</div>
@@ -385,12 +192,10 @@ body{
     </div>
   </div>
 
-  <!-- STEP 4 · REVIEW ROUTING -->
   <div id="step4" class="step" style="display:none;">
     <div class="card" id="reviewCard"></div>
   </div>
 
-  <!-- STEP 5 · CONTACT (OPTIONAL) -->
   <div id="step5" class="step" style="display:none;">
     <div class="card">
       <span class="card-icon">🎁</span>
@@ -409,7 +214,6 @@ body{
     </div>
   </div>
 
-  <!-- STEP 6 · THANK YOU + COUPON -->
   <div id="step6" class="step" style="display:none;">
     <div class="success-screen">
       <span class="success-emoji" id="successEmoji">🎉</span>
@@ -418,10 +222,7 @@ body{
     </div>
     <div id="couponWrap" style="display:none;">
       <div class="coupon">
-        <div class="coupon-top">
-          <div class="coupon-brand">Amusement Standards</div>
-          <div class="coupon-type">Bounce-Back Offer</div>
-        </div>
+        <div class="coupon-top"><div class="coupon-brand">Amusement Standards</div><div class="coupon-type">Bounce-Back Offer</div></div>
         <div class="coupon-amount"><span>$</span><span id="couponAmt">5</span></div>
         <div class="coupon-title" id="couponTitle">Off Your Next Visit</div>
         <hr class="coupon-divider">
@@ -435,17 +236,14 @@ body{
           <div class="coupon-copy" id="copyBtn" onclick="copyCoupon()">Copy</div>
         </div>
       </div>
-      <div class="share-row" style="margin-top:14px;">
+      <div class="share-row">
         <button class="share-btn" onclick="shareNative()">📤 Share</button>
         <button class="share-btn" onclick="saveToWallet()">📅 Add to Calendar</button>
       </div>
     </div>
     <div id="noEmailThanks" style="display:none;">
       <div class="coupon" style="margin-top:0;">
-        <div class="coupon-top">
-          <div class="coupon-brand">Amusement Standards</div>
-          <div class="coupon-type">Show at Booth</div>
-        </div>
+        <div class="coupon-top"><div class="coupon-brand">Amusement Standards</div><div class="coupon-type">Show at Booth</div></div>
         <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:6px;position:relative;z-index:1;">Present this code at the ticket booth</div>
         <div class="coupon-code-row" style="margin-top:0;">
           <div class="coupon-code" id="noEmailCode" style="font-size:22px;letter-spacing:4px;">—</div>
@@ -460,11 +258,10 @@ body{
     </div>
   </div>
 
-</div><!-- /wrapper -->
+</div>
 <div id="toast"></div>
 
 <script>
-// ── PROXY CONFIG ───────────────────────────────────────────────────────────
 const AT_PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
 
 async function pushPVE(fields) {
@@ -472,310 +269,156 @@ async function pushPVE(fields) {
   if (si) { si.style.background = '#F59E0B'; si.title = 'Syncing…'; }
   try {
     const res = await fetch(AT_PROXY + '/PVE_Submissions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fields }),
     });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    if (si) {
-      si.style.background = '#22C55E'; si.title = 'Synced';
-      setTimeout(() => { si.style.background = '#4A5568'; }, 3000);
+    if (!res.ok) {
+      const body = await res.text();
+      console.warn('[PVE]', res.status, body);
+      if (si) {
+        Object.assign(si.style, {background:'#F43F5E',width:'auto',height:'auto',borderRadius:'6px',padding:'4px 8px',fontSize:'10px',color:'#fff',fontFamily:'monospace',maxWidth:'300px',whiteSpace:'normal',lineHeight:'1.3',right:'8px',top:'8px'});
+        si.textContent = res.status + ': ' + body.slice(0, 150);
+        si.title = body;
+      }
+      return;
     }
+    if (si) { si.style.background = '#22C55E'; si.title = 'Synced ✓'; setTimeout(()=>{si.style.background='#4A5568';},3000); }
   } catch(e) {
-    if (si) {
-      si.style.background = '#F43F5E'; si.title = 'Sync error';
-      setTimeout(() => { si.style.background = '#4A5568'; }, 5000);
-    }
+    if (si) { si.style.background = '#F43F5E'; si.title = 'Sync error: ' + e.message; }
     console.warn('[PVE] Sync failed:', e.message);
   }
 }
 
-// ── STATE ──────────────────────────────────────────────────────────────────
 const CAT_KEYS = ['rides','staff','clean','food','value'];
 const STAR_LABELS = ['','Poor experience','Below expectations','Pretty good!','Really enjoyed it!','Outstanding! 🎉'];
 const COUPON_BY_SCORE = {
-  5: {amt:'10', title:'Off Your Next Visit — Thank You!', detail:'Our top guests get the best deals', code:'STAR5-'},
-  4: {amt:'7',  title:'Off Your Next Visit',              detail:'Come back soon for more fun',     code:'VIP4-'},
-  3: {amt:'5',  title:'Off Your Next Visit',              detail:'We hope to see you again soon',   code:'VISIT-'},
-  2: {amt:'5',  title:'We Want to Make It Right',         detail:'We\'re sorry it wasn\'t perfect', code:'CARE-'},
-  1: {amt:'5',  title:'Give Us Another Chance',           detail:'We\'re committed to doing better',code:'CARE-'},
+  5:{amt:'10',title:'Off Your Next Visit — Thank You!',detail:'Our top guests get the best deals',code:'STAR5-'},
+  4:{amt:'7', title:'Off Your Next Visit',             detail:'Come back soon for more fun',    code:'VIP4-'},
+  3:{amt:'5', title:'Off Your Next Visit',             detail:'We hope to see you again soon',  code:'VISIT-'},
+  2:{amt:'5', title:'We Want to Make It Right',        detail:"We're sorry it wasn't perfect",  code:'CARE-'},
+  1:{amt:'5', title:'Give Us Another Chance',          detail:"We're committed to doing better",code:'CARE-'},
 };
 
 let survey = {
-  sessionId: 'PVE-'+Date.now(),
-  overall: 0,
-  cats: {},
-  commentBest: '',
-  commentImprov: '',
-  highlights: [],
-  reviewRouted: null,
-  email: '',
-  firstName: '',
-  couponCode: '',
-  timestamp: new Date().toISOString(),
+  sessionId: 'PVE-'+Date.now(), overall:0, cats:{},
+  commentBest:'', commentImprov:'', highlights:[], reviewRouted:null,
+  email:'', firstName:'', couponCode:'',
+  timestamp:(()=>{const d=new Date();const p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());})(),
 };
 let currentStep = 1;
-const TOTAL_STEPS = 5;
 
-// ── INIT ───────────────────────────────────────────────────────────────────
 (function(){
-  const wrap = document.getElementById('sparkles');
-  for(let i=0;i<20;i++){
-    const s=document.createElement('div');
-    s.className='sparkle';
-    s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${2+Math.random()*3}s;--delay:${Math.random()*4}s;`;
-    wrap.appendChild(s);
-  }
+  const wrap=document.getElementById('sparkles');
+  for(let i=0;i<20;i++){const s=document.createElement('div');s.className='sparkle';s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${2+Math.random()*3}s;--delay:${Math.random()*4}s;`;wrap.appendChild(s);}
 })();
 
 CAT_KEYS.forEach(k=>{
-  const el=document.getElementById('cat-'+k);
-  if(!el) return;
+  const el=document.getElementById('cat-'+k);if(!el)return;
   el.innerHTML=[1,2,3,4,5].map(i=>`<span class="cat-star" data-key="${k}" data-val="${i}" onclick="setCat('${k}',${i})">★</span>`).join('');
 });
 
 renderDots();
+const params=new URLSearchParams(window.location.search);
+if(params.get('park')) document.getElementById('parkName').textContent=decodeURIComponent(params.get('park'));
 
-const params = new URLSearchParams(window.location.search);
-if(params.get('park')) document.getElementById('parkName').textContent = decodeURIComponent(params.get('park'));
-
-// ── PROGRESS ───────────────────────────────────────────────────────────────
 function renderDots(){
-  const wrap=document.getElementById('progressDots');
-  wrap.innerHTML=[1,2,3,4,5].map(i=>
-    `<div class="pdot ${i===currentStep?'active':i<currentStep?'done':''}"></div>`
-  ).join('');
+  document.getElementById('progressDots').innerHTML=[1,2,3,4,5].map(i=>`<div class="pdot ${i===currentStep?'active':i<currentStep?'done':''}"></div>`).join('');
 }
-
-// ── STEP NAV ───────────────────────────────────────────────────────────────
 function goStep(n){
   document.getElementById('step'+currentStep).style.display='none';
   currentStep=n;
-  const el=document.getElementById('step'+n);
-  el.style.display='block';
+  const el=document.getElementById('step'+n);el.style.display='block';
   el.scrollIntoView({behavior:'smooth',block:'start'});
-  renderDots();
-  if(n===4) buildReviewStep();
+  renderDots();if(n===4)buildReviewStep();
 }
-
-// ── OVERALL STARS ─────────────────────────────────────────────────────────
 function setOverall(val){
   survey.overall=val;
-  document.querySelectorAll('.big-star').forEach(s=>{
-    const v=parseInt(s.dataset.val);
-    s.classList.toggle('lit',v<=val);
-  });
-  const lbl=document.getElementById('starLabel');
-  lbl.textContent=STAR_LABELS[val];
-  lbl.className='star-label show';
-  const btn=document.getElementById('btnStep1');
-  btn.disabled=false;btn.style.opacity='1';
-  if(val>=4) lbl.style.color='var(--gold-deep)';
-  else if(val===3) lbl.style.color='var(--amber)';
-  else lbl.style.color='var(--rose)';
+  document.querySelectorAll('.big-star').forEach(s=>{s.classList.toggle('lit',parseInt(s.dataset.val)<=val);});
+  const lbl=document.getElementById('starLabel');lbl.textContent=STAR_LABELS[val];lbl.className='star-label show';
+  const btn=document.getElementById('btnStep1');btn.disabled=false;btn.style.opacity='1';
+  lbl.style.color=val>=4?'var(--gold-deep)':val===3?'var(--amber)':'var(--rose)';
 }
-
-// ── CATEGORY STARS ────────────────────────────────────────────────────────
 function setCat(key,val){
   survey.cats[key]=val;
-  document.querySelectorAll(`.cat-star[data-key="${key}"]`).forEach(s=>{
-    s.classList.toggle('lit',parseInt(s.dataset.val)<=val);
-  });
+  document.querySelectorAll(`.cat-star[data-key="${key}"]`).forEach(s=>{s.classList.toggle('lit',parseInt(s.dataset.val)<=val);});
 }
-
-// ── HIGHLIGHTS ────────────────────────────────────────────────────────────
 function toggleHighlight(el,val){
-  el.classList.toggle('sel');
-  el.querySelector('.hr-check').textContent = el.classList.contains('sel')?'✓':'';
-  if(el.classList.contains('sel')){
-    if(!survey.highlights.includes(val)) survey.highlights.push(val);
-  } else {
-    survey.highlights=survey.highlights.filter(v=>v!==val);
-  }
+  el.classList.toggle('sel');el.querySelector('.hr-check').textContent=el.classList.contains('sel')?'✓':'';
+  if(el.classList.contains('sel')){if(!survey.highlights.includes(val))survey.highlights.push(val);}
+  else survey.highlights=survey.highlights.filter(v=>v!==val);
 }
-
-// ── CHAR COUNT ────────────────────────────────────────────────────────────
-function updateChar(el,countId){
-  document.getElementById(countId).textContent=el.value.length+' / '+el.maxLength;
-}
-
-// ── REVIEW ROUTING ────────────────────────────────────────────────────────
+function updateChar(el,countId){document.getElementById(countId).textContent=el.value.length+' / '+el.maxLength;}
 function buildReviewStep(){
-  const score=survey.overall||3;
-  const card=document.getElementById('reviewCard');
-  const isHappy = score>=4;
-  const scoreClass = score>=4?'high':score===3?'mid':'low';
-  const scoreWord = score===5?'Outstanding':score===4?'Great':score===3?'Good':score===2?'Fair':'Poor';
-
+  const score=survey.overall||3;const card=document.getElementById('reviewCard');
+  const isHappy=score>=4;const scoreClass=score>=4?'high':score===3?'mid':'low';
+  const scoreWord=score===5?'Outstanding':score===4?'Great':score===3?'Good':score===2?'Fair':'Poor';
   if(isHappy){
-    card.innerHTML=`
-      <span class="card-icon">🌟</span>
-      <div class="card-title">We're so glad you had a great time!</div>
-      <div class="card-sub">Would you mind sharing your experience? Reviews help families discover us and mean the world to our team.</div>
-      <div class="review-gate" style="padding:0 0 16px;">
-        <div class="review-gate-score ${scoreClass}">${scoreWord}</div>
-        <div class="review-gate-label">${score} out of 5 stars</div>
-      </div>
-      <a class="review-btn" href="https://search.google.com/local/writereview" target="_blank" onclick="logReviewRoute('google')">
-        <span class="review-btn-icon">🔍</span>
-        <span class="review-btn-text"><strong>Leave a Google Review</strong><span>Quick and easy · Helps us the most</span></span>
-        <span class="review-btn-arrow">›</span>
-      </a>
-      <a class="review-btn" href="https://www.tripadvisor.com" target="_blank" onclick="logReviewRoute('tripadvisor')">
-        <span class="review-btn-icon">🦉</span>
-        <span class="review-btn-text"><strong>Review on TripAdvisor</strong><span>Great for helping out-of-town visitors</span></span>
-        <span class="review-btn-arrow">›</span>
-      </a>
-      <button class="btn-ghost" onclick="goStep(5)" style="margin-top:6px;">Skip — continue to my reward →</button>
-    `;
+    card.innerHTML=`<span class="card-icon">🌟</span><div class="card-title">We're so glad you had a great time!</div><div class="card-sub">Would you mind sharing your experience? Reviews help families discover us and mean the world to our team.</div><div class="review-gate"><div class="review-gate-score ${scoreClass}">${scoreWord}</div><div class="review-gate-label">${score} out of 5 stars</div></div><a class="review-btn" href="https://search.google.com/local/writereview" target="_blank" onclick="logReviewRoute('google')"><span class="review-btn-icon">🔍</span><span class="review-btn-text"><strong>Leave a Google Review</strong><span>Quick and easy · Helps us the most</span></span><span class="review-btn-arrow">›</span></a><a class="review-btn" href="https://www.tripadvisor.com" target="_blank" onclick="logReviewRoute('tripadvisor')"><span class="review-btn-icon">🦉</span><span class="review-btn-text"><strong>Review on TripAdvisor</strong><span>Great for helping out-of-town visitors</span></span><span class="review-btn-arrow">›</span></a><button class="btn-ghost" onclick="goStep(5)" style="margin-top:6px;">Skip — continue to my reward →</button>`;
   } else {
-    card.innerHTML=`
-      <span class="card-icon">💛</span>
-      <div class="card-title">Thank you for being honest with us.</div>
-      <div class="card-sub">We're sorry your visit didn't meet expectations. Your feedback goes directly to our operations team — real people who will act on it.</div>
-      <div class="review-gate" style="padding:0 0 16px;">
-        <div class="review-gate-score ${scoreClass}">${scoreWord}</div>
-        <div class="review-gate-label">${score} out of 5 stars</div>
-      </div>
-      <div class="internal-route">
-        <span class="ir-emoji">📋</span>
-        <p><strong>Your feedback has been flagged for management review.</strong><br>A member of our team may reach out if you provide your email on the next screen.</p>
-      </div>
-      <button class="btn-primary" onclick="goStep(5)" style="margin-top:16px;">Continue →</button>
-    `;
+    card.innerHTML=`<span class="card-icon">💛</span><div class="card-title">Thank you for being honest with us.</div><div class="card-sub">We're sorry your visit didn't meet expectations. Your feedback goes directly to our operations team — real people who will act on it.</div><div class="review-gate"><div class="review-gate-score ${scoreClass}">${scoreWord}</div><div class="review-gate-label">${score} out of 5 stars</div></div><div class="internal-route"><span class="ir-emoji">📋</span><p><strong>Your feedback has been flagged for management review.</strong><br>A member of our team may reach out if you provide your email on the next screen.</p></div><button class="btn-primary" onclick="goStep(5)" style="margin-top:16px;">Continue →</button>`;
     survey.reviewRouted='internal';
   }
 }
+function logReviewRoute(platform){survey.reviewRouted=platform;setTimeout(()=>goStep(5),300);}
 
-function logReviewRoute(platform){
-  survey.reviewRouted=platform;
-  setTimeout(()=>goStep(5),300);
-}
-
-// ── SUBMIT ────────────────────────────────────────────────────────────────
 function submitFeedback(skipEmail=false){
-  survey.commentBest = document.getElementById('commentBest').value.trim();
-  survey.commentImprov = document.getElementById('commentImprov').value.trim();
+  survey.commentBest=document.getElementById('commentBest').value.trim();
+  survey.commentImprov=document.getElementById('commentImprov').value.trim();
+  if(!skipEmail){survey.email=document.getElementById('emailInput').value.trim();survey.firstName=document.getElementById('firstNameInput').value.trim();}
+  const hasEmail=survey.email&&survey.email.includes('@');
+  const score=survey.overall||3;
+  const couponData=COUPON_BY_SCORE[score]||COUPON_BY_SCORE[3];
+  const code=couponData.code+Math.random().toString(36).substr(2,6).toUpperCase();
+  survey.couponCode=code;
 
-  if(!skipEmail){
-    survey.email = document.getElementById('emailInput').value.trim();
-    survey.firstName = document.getElementById('firstNameInput').value.trim();
-  }
-
-  const hasEmail = survey.email && survey.email.includes('@');
-  const score = survey.overall||3;
-  const couponData = COUPON_BY_SCORE[score]||COUPON_BY_SCORE[3];
-  const code = couponData.code + Math.random().toString(36).substr(2,6).toUpperCase();
-  survey.couponCode = code;
-
-  // ── PROXY: push to Airtable (non-blocking) ──
   pushPVE({
-    'Session ID':         survey.sessionId,
-    'Timestamp':          survey.timestamp,
-    'Park':               document.getElementById('parkName').textContent,
-    'Overall Rating':     String(survey.overall),
-    'Rating — Rides':     survey.cats.rides ? String(survey.cats.rides) : '',
-    'Rating — Staff':     survey.cats.staff ? String(survey.cats.staff) : '',
-    'Rating — Clean':     survey.cats.clean ? String(survey.cats.clean) : '',
-    'Rating — Food':      survey.cats.food  ? String(survey.cats.food)  : '',
-    'Rating — Value':     survey.cats.value ? String(survey.cats.value) : '',
-    'Comment — Best':     survey.commentBest,
-    'Comment — Improve':  survey.commentImprov,
-    'Highlights':         survey.highlights.join(' | '),
-    'Review Routed':      survey.reviewRouted || '',
-    'Email':              survey.email,
-    'First Name':         survey.firstName,
-    'Coupon Code':        survey.couponCode,
-    'Has Email':          hasEmail ? 'Yes' : 'No',
-    'Score Tier':         score >= 4 ? 'Promoter' : score === 3 ? 'Passive' : 'Detractor',
+    'Session ID':        survey.sessionId,
+    'Timestamp':         survey.timestamp,
+    'Park':              document.getElementById('parkName').textContent,
+    'Overall Rating':    survey.overall || null,
+    'Rating — Rides':    survey.cats.rides || null,
+    'Rating — Staff':    survey.cats.staff || null,
+    'Rating — Clean':    survey.cats.clean || null,
+    'Rating — Food':     survey.cats.food  || null,
+    'Rating — Value':    survey.cats.value || null,
+    'Comment — Best':    survey.commentBest,
+    'Comment — Improve': survey.commentImprov,
+    'Highlights':        survey.highlights.join(' | '),
+    'Review Routed':     survey.reviewRouted || '',
+    'Email':             survey.email,
+    'First Name':        survey.firstName,
+    'Coupon Code':       survey.couponCode,
+    'Has Email':         hasEmail,
+    'Score Tier':        score>=4?'Promoter':score===3?'Passive':'Detractor',
   });
 
-  // Success screen
-  const firstName = survey.firstName ? ', '+survey.firstName : '';
-  const successEmoji = score>=4?'🎉':score===3?'😊':'💛';
-  const successTitle = score>=4?`Thanks${firstName}!`:score===3?`Thanks for the feedback!`:`We hear you${firstName}.`;
-  const successSub = score>=4
-    ? `Your feedback has been recorded and means so much to our team. Your bounce-back offer is below — we can't wait to see you again!`
-    : `Your feedback goes directly to our management team. We're committed to making your next visit better.${hasEmail?' Watch your inbox.':''}`;
-
-  document.getElementById('successEmoji').textContent = successEmoji;
-  document.getElementById('successTitle').textContent = successTitle;
-  document.getElementById('successSub').textContent = successSub;
+  const firstName=survey.firstName?', '+survey.firstName:'';
+  document.getElementById('successEmoji').textContent=score>=4?'🎉':score===3?'😊':'💛';
+  document.getElementById('successTitle').textContent=score>=4?`Thanks${firstName}!`:score===3?'Thanks for the feedback!':`We hear you${firstName}.`;
+  document.getElementById('successSub').textContent=score>=4?'Your feedback has been recorded and means so much to our team. Your bounce-back offer is below — we can\'t wait to see you again!':`Your feedback goes directly to our management team. We're committed to making your next visit better.${hasEmail?' Watch your inbox.':''}`;
 
   if(hasEmail){
-    document.getElementById('couponAmt').textContent = couponData.amt;
-    document.getElementById('couponTitle').textContent = couponData.title;
-    document.getElementById('couponDetail1').textContent = couponData.detail;
-    document.getElementById('couponCode').textContent = code;
+    document.getElementById('couponAmt').textContent=couponData.amt;
+    document.getElementById('couponTitle').textContent=couponData.title;
+    document.getElementById('couponDetail1').textContent=couponData.detail;
+    document.getElementById('couponCode').textContent=code;
     document.getElementById('couponWrap').style.display='block';
     document.getElementById('noEmailThanks').style.display='none';
   } else {
-    const boothCode = 'SURVEY-'+Math.random().toString(36).substr(2,5).toUpperCase();
-    survey.couponCode = boothCode;
-    document.getElementById('noEmailCode').textContent = boothCode;
+    const boothCode='SURVEY-'+Math.random().toString(36).substr(2,5).toUpperCase();
+    survey.couponCode=boothCode;
+    document.getElementById('noEmailCode').textContent=boothCode;
     document.getElementById('couponWrap').style.display='none';
     document.getElementById('noEmailThanks').style.display='block';
   }
-
   goStep(6);
 }
 
-// ── COUPON INTERACTIONS ────────────────────────────────────────────────────
-function copyCoupon(){
-  const code = document.getElementById('couponCode').textContent;
-  navigator.clipboard.writeText(code).then(()=>{
-    const btn=document.getElementById('copyBtn');
-    btn.textContent='Copied!'; btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
-  }).catch(()=>toast('Code: '+code));
-}
-
-function copyNoEmailCode(){
-  const code = document.getElementById('noEmailCode').textContent;
-  navigator.clipboard.writeText(code).then(()=>{
-    const btn=document.getElementById('noEmailCopyBtn');
-    btn.textContent='Copied!'; btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
-  }).catch(()=>toast('Code: '+code));
-}
-
-function shareNative(){
-  const code=document.getElementById('couponCode').textContent;
-  if(navigator.share){
-    navigator.share({
-      title:'My visit discount',
-      text:`I just got a discount from my park visit! Use code ${code} for your next visit.`,
-    }).catch(()=>{});
-  } else {
-    toast('Code copied: '+code);
-    navigator.clipboard.writeText(code).catch(()=>{});
-  }
-}
-
-function saveToWallet(){
-  const exp=new Date(); exp.setDate(exp.getDate()+60);
-  const code=document.getElementById('couponCode').textContent;
-  const ical=[
-    'BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT',
-    'SUMMARY:Park Discount Code '+code,
-    'DTSTART;VALUE=DATE:'+exp.toISOString().slice(0,10).replace(/-/g,''),
-    'DTEND;VALUE=DATE:'+exp.toISOString().slice(0,10).replace(/-/g,''),
-    'DESCRIPTION:Use code '+code+' at the ticket booth for your discount.',
-    'END:VEVENT','END:VCALENDAR'
-  ].join('\r\n');
-  const blob=new Blob([ical],{type:'text/calendar'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='park-coupon.ics';a.click();
-  URL.revokeObjectURL(url);
-  toast('Calendar event downloaded ✓','ok');
-}
-
-// ── TOAST ──────────────────────────────────────────────────────────────────
-function toast(msg,type){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='show'+(type==='ok'?' ok':'');
-  clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);
-}
+function copyCoupon(){const code=document.getElementById('couponCode').textContent;navigator.clipboard.writeText(code).then(()=>{const btn=document.getElementById('copyBtn');btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);}).catch(()=>toast('Code: '+code));}
+function copyNoEmailCode(){const code=document.getElementById('noEmailCode').textContent;navigator.clipboard.writeText(code).then(()=>{const btn=document.getElementById('noEmailCopyBtn');btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);}).catch(()=>toast('Code: '+code));}
+function shareNative(){const code=document.getElementById('couponCode').textContent;if(navigator.share){navigator.share({title:'My visit discount',text:`I just got a discount! Use code ${code} for your next visit.`}).catch(()=>{});}else{toast('Code copied: '+code);navigator.clipboard.writeText(code).catch(()=>{});}}
+function saveToWallet(){const exp=new Date();exp.setDate(exp.getDate()+60);const code=document.getElementById('couponCode').textContent;const ical=['BEGIN:VCALENDAR','VERSION:2.0','BEGIN:VEVENT','SUMMARY:Park Discount Code '+code,'DTSTART;VALUE=DATE:'+exp.toISOString().slice(0,10).replace(/-/g,''),'DTEND;VALUE=DATE:'+exp.toISOString().slice(0,10).replace(/-/g,''),'DESCRIPTION:Use code '+code+' at the ticket booth.','END:VEVENT','END:VCALENDAR'].join('\r\n');const blob=new Blob([ical],{type:'text/calendar'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='park-coupon.ics';a.click();URL.revokeObjectURL(url);toast('Calendar event downloaded ✓','ok');}
+function toast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='show'+(type==='ok'?' ok':'');clearTimeout(t._t);t._t=setTimeout(()=>t.className='',2800);}
 </script>
 </body>
 </html>
