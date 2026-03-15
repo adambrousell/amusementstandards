@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 Platform Methodology — RIDE · SPLASH · PLAY</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0B0E14;--card:#151B28;--border:rgba(255,255,255,.06);--text:#C8CDD8;--dim:#6B7280;--white:#F0F2F5;
+    --ride:#FF6B35;--splash:#1E9ED4;--play:#1FB87A;--accent:#3B82F6;
+    --green:#10B981;--amber:#F59E0B;--orange:#F97316;--red:#EF4444;--purple:#8B5CF6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .noise{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+  section{padding:56px 0;border-bottom:1px solid var(--border)}section:last-of-type{border-bottom:none}
+  h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2.4rem,5vw,3.6rem);color:var(--white);line-height:1.15;margin-bottom:16px}
+  h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:1.7rem;color:var(--white);margin-bottom:12px}
+  h3{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:24px}
+  p+p{margin-top:12px}strong{color:var(--white)}
+  header{padding:80px 0 48px;text-align:center;border-bottom:1px solid var(--border)}
+  .badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.15);padding:6px 18px;border-radius:100px;margin-bottom:28px}
+  h1 em{font-style:italic;color:var(--accent)}
+  .subtitle{font-size:17px;color:var(--dim);max-width:640px;margin:0 auto}
+  .score-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:36px 0 0}
+  .ss-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 20px;text-align:center;position:relative;overflow:hidden;transition:border-color .3s}.ss-card:hover{border-color:rgba(255,255,255,.1)}
+  .ss-glow{position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:100px;height:100px;border-radius:50%;filter:blur(50px);opacity:.12;pointer-events:none}
+  .ss-card:nth-child(1) .ss-glow{background:var(--ride)}.ss-card:nth-child(2) .ss-glow{background:var(--splash)}.ss-card:nth-child(3) .ss-glow{background:var(--play)}
+  .ss-name{font-family:'Instrument Serif',serif;font-size:2rem;margin-bottom:4px}
+  .ss-card:nth-child(1) .ss-name{color:var(--ride)}.ss-card:nth-child(2) .ss-name{color:var(--splash)}.ss-card:nth-child(3) .ss-name{color:var(--play)}
+  .ss-scope{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+  .ss-stat{font-size:13px;color:var(--text);margin-top:10px}.ss-stat span{color:var(--white);font-weight:700}
+  .pillar-row{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin:6px 0 0}
+  .pill{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:3px 10px;border-radius:4px}
+  .pill-r{color:var(--ride);background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.15)}
+  .pill-s{color:var(--splash);background:rgba(30,158,212,.1);border:1px solid rgba(30,158,212,.15)}
+  .pill-p{color:var(--play);background:rgba(31,184,122,.1);border:1px solid rgba(31,184,122,.15)}
+  .acronym-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0}
+  .acr{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 14px;text-align:center}
+  .acr .ltr{font-family:'Instrument Serif',serif;font-size:2.6rem;line-height:1;margin-bottom:6px}
+  .acr:nth-child(1) .ltr{color:var(--green)}.acr:nth-child(2) .ltr{color:var(--accent)}.acr:nth-child(3) .ltr{color:var(--amber)}.acr:nth-child(4) .ltr{color:var(--purple)}
+  .acr .nm{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}.acr .ds{font-size:12px;color:var(--dim);line-height:1.45}
+  .pillar-grid-6{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:24px 0}
+  .pillar-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0}
+  .pg-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 12px;text-align:center}
+  .pg-card .pg-ltr{font-family:'Instrument Serif',serif;font-size:2.2rem;line-height:1;margin-bottom:6px}
+  .pg-card .pg-nm{font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px}
+  .pg-card .pg-ds{font-size:11.5px;color:var(--dim);line-height:1.4}
+  .splash-ltr{color:var(--splash)}.play-ltr{color:var(--play)}
+  table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+  th{text-align:left;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);padding:10px 12px;border-bottom:1px solid var(--border)}
+  td{padding:12px;border-bottom:1px solid var(--border);vertical-align:top}tr:last-child td{border-bottom:none}
+  .sn{color:var(--white);font-weight:500}.wt{font-weight:700;color:var(--accent);text-align:right;white-space:nowrap}
+  .bands{display:flex;gap:2px;margin:28px 0 12px;border-radius:10px;overflow:hidden}
+  .band{flex:1;padding:18px 8px;text-align:center;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff}
+  .band .rng{display:block;font-weight:400;font-size:18px;letter-spacing:0;text-transform:none;margin-top:4px;opacity:.9}
+  .band:nth-child(1){background:var(--green)}.band:nth-child(2){background:var(--accent)}.band:nth-child(3){background:var(--amber);color:#1a1a1a}.band:nth-child(4){background:var(--orange)}.band:nth-child(5){background:var(--red)}
+  .oli-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:24px 0}
+  .oli{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-size:13px}
+  .oli .pct{color:var(--accent);font-weight:700;font-size:14px}
+  .feeds{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+  .feed{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+  .feed .ico{font-size:24px;margin-bottom:10px}.feed .fnm{font-weight:700;color:var(--white);font-size:15px;margin-bottom:6px}.feed .fmeta{font-size:12.5px;color:var(--dim);line-height:1.5}
+  .pic-visual{display:flex;align-items:center;justify-content:center;gap:16px;margin:32px 0;flex-wrap:wrap}
+  .pic-box{width:120px;height:120px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:15px;border:2px solid}
+  .pic-box.r{color:var(--ride);border-color:rgba(255,107,53,.3);background:rgba(255,107,53,.06)}
+  .pic-box.s{color:var(--splash);border-color:rgba(30,158,212,.3);background:rgba(30,158,212,.06)}
+  .pic-box.p{color:var(--play);border-color:rgba(31,184,122,.3);background:rgba(31,184,122,.06)}
+  .pic-box .bx-s{font-size:11px;font-weight:400;color:var(--dim);margin-top:4px}
+  .pic-sym{font-family:'Instrument Serif',serif;font-size:2rem;color:var(--dim)}
+  .pic-eq{font-family:'Instrument Serif',serif;font-size:2rem;color:var(--white)}
+  .pic-result{width:150px;height:120px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--white);border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04)}
+  .pic-result .bx-s{font-size:11px;font-weight:400;color:var(--dim);margin-top:4px}
+  .xpoll{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
+  .xp{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+  .xp-route{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:700;font-size:13px}
+  .xp-arrow{color:var(--dim)}.xp-desc{font-size:12.5px;color:var(--dim);line-height:1.5}
+  .tag-r{color:var(--ride)}.tag-s{color:var(--splash)}.tag-p{color:var(--play)}
+  footer{padding:40px 0;text-align:center;font-size:12.5px;color:var(--dim)}footer strong{color:var(--text)}
+  @media(max-width:700px){
+    .score-strip{grid-template-columns:1fr}.acronym-grid,.pillar-grid-6{grid-template-columns:repeat(2,1fr)}
+    .pillar-grid-4{grid-template-columns:repeat(2,1fr)}.oli-grid,.feeds,.xpoll{grid-template-columns:1fr}
+    .bands{flex-direction:column}.band{display:flex;justify-content:space-between;align-items:center;padding:12px 16px}.band .rng{margin:0}
+    .pic-visual{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="wrap">
+
+<header>
+  <div class="badge">Methodology · 10,000-ft View</div>
+  <h1>The <em>AS 360</em> Platform</h1>
+  <p class="subtitle">Three continuous operational risk indices — one unified intelligence layer covering every guest-facing zone of your operation.</p>
+  <div class="score-strip">
+    <div class="ss-card"><div class="ss-glow"></div><div class="ss-name">RIDE</div><div class="ss-scope">Amusement Parks · Coasters</div><div class="pillar-row"><span class="pill pill-r">R</span><span class="pill pill-r">I</span><span class="pill pill-r">D</span><span class="pill pill-r">E</span></div><div class="ss-stat"><span>15</span> streams · <span>4</span> pillars</div></div>
+    <div class="ss-card"><div class="ss-glow"></div><div class="ss-name">SPLASH</div><div class="ss-scope">Water Parks · Aquatic Venues</div><div class="pillar-row"><span class="pill pill-s">S</span><span class="pill pill-s">P</span><span class="pill pill-s">L</span><span class="pill pill-s">A</span><span class="pill pill-s">S</span><span class="pill pill-s">H</span></div><div class="ss-stat"><span>12</span> streams · <span>6</span> pillars</div></div>
+    <div class="ss-card"><div class="ss-glow"></div><div class="ss-name">PLAY</div><div class="ss-scope">FECs · Entertainment Centers</div><div class="pillar-row"><span class="pill pill-p">P</span><span class="pill pill-p">L</span><span class="pill pill-p">A</span><span class="pill pill-p">Y</span></div><div class="ss-stat"><span>10</span> streams · <span>4</span> pillars</div></div>
+  </div>
+</header>
+
+<section>
+  <h3>The Concept</h3>
+  <h2>What is the AS 360 Platform?</h2>
+  <p>AS 360 is the risk intelligence infrastructure for the U.S. attractions industry — the FICO score for operational safety. It delivers three independent, continuous composite indices, each purpose-built for a distinct venue type. Every score normalizes to 0–100 and is constructed from the same foundational methodology: multiple independent data streams, weighted by actuarial signal strength, converging into a single defensible number.</p>
+  <p>When all three scores are active at the same facility, they converge into the <strong>Park Intelligence Composite (PIC)</strong> — the industry's first whole-park risk index.</p>
+</section>
+
+<section>
+  <h3 style="color:var(--ride)">RIDE Score™ — Dry Attractions</h3>
+  <h2>Readiness · Integrity · Delivery · Environment</h2>
+  <p>The most established index in the trilogy. RIDE Score quantifies the operational risk posture of amusement rides and dry attractions through 15 data streams mapped to four scored pillars.</p>
+  <div class="acronym-grid">
+    <div class="acr"><div class="ltr">R</div><div class="nm">Readiness</div><div class="ds">Staff preparedness, training, rotation compliance, fatigue risk</div></div>
+    <div class="acr"><div class="ltr">I</div><div class="nm">Integrity</div><div class="ds">Mechanical soundness, maintenance protocol, inspection health</div></div>
+    <div class="acr"><div class="ltr">D</div><div class="nm">Delivery</div><div class="ds">Guest-facing execution — dispatch, queue flow, courtesy, knowledge</div></div>
+    <div class="acr"><div class="ltr">E</div><div class="nm">Environment</div><div class="ds">Weather, crowd load, facility state, external conditions</div></div>
+  </div>
+  <p>Six weighted data streams roll up into the headline RIDE Score composite:</p>
+  <table>
+    <thead><tr><th>Stream</th><th>Measures</th><th style="text-align:right">Weight</th></tr></thead>
+    <tbody>
+      <tr><td class="sn">GSA Composite</td><td>Field audits — 7 sections: observation, queue, staffing, courtesy, knowledge, human context, uniform &amp; show</td><td class="wt">40%</td></tr>
+      <tr><td class="sn">Guest Feedback (GFB)</td><td>Multi-dimensional guest ratings — overall, safety, ride, staff, cleanliness</td><td class="wt">15%</td></tr>
+      <tr><td class="sn">Near-Miss Reports (NMR)</td><td>Near-miss event rate per audit cycle — penalty-based decay</td><td class="wt">15%</td></tr>
+      <tr><td class="sn">Incident Reports (IRL)</td><td>Incident rate, severity weighting, protocol compliance score</td><td class="wt">15%</td></tr>
+      <tr><td class="sn">Corrective Actions (CAR)</td><td>Open-item closure rate and resolution velocity</td><td class="wt">10%</td></tr>
+      <tr><td class="sn">Out-of-Service (OOS)</td><td>OOS event frequency relative to audit activity</td><td class="wt">5%</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h3 style="color:var(--splash)">SPLASH Score™ — Aquatic Venues</h3>
+  <h2>Safety · Protocol · Lifeguard · Aquatic · Structure · Hazard</h2>
+  <p>The first continuous aquatic risk index built for the attractions industry. SPLASH covers the highest-fatality-risk environment in the space — and the one most underserved by existing frameworks.</p>
+  <div class="pillar-grid-6">
+    <div class="pg-card"><div class="pg-ltr splash-ltr">S</div><div class="pg-nm">Safety</div><div class="pg-ds">EAP currency, first-aid readiness, emergency drills</div></div>
+    <div class="pg-card"><div class="pg-ltr splash-ltr">P</div><div class="pg-nm">Protocol</div><div class="pg-ds">VGB compliance, health dept inspection, regulatory</div></div>
+    <div class="pg-card"><div class="pg-ltr splash-ltr">L</div><div class="pg-nm">Lifeguard</div><div class="pg-ds">Zone scanning, certification, rotation, fatigue</div></div>
+    <div class="pg-card"><div class="pg-ltr splash-ltr">A</div><div class="pg-nm">Aquatic</div><div class="pg-ds">Water chemistry trends, RWI risk indicators</div></div>
+    <div class="pg-card"><div class="pg-ltr splash-ltr">S</div><div class="pg-nm">Structure</div><div class="pg-ds">Slide integrity, wave pool ops, attraction condition</div></div>
+    <div class="pg-card"><div class="pg-ltr splash-ltr">H</div><div class="pg-nm">Hazard</div><div class="pg-ds">Weather impact, lightning protocol, environmental risk</div></div>
+  </div>
+  <p>Key differentiators: the <strong>Lifeguard pillar</strong> is the only quantitative lifeguard performance scoring in the industry — zone compliance, scanning behavior, rotation adherence, and fatigue indicators. <strong>Water chemistry trend history</strong> serves as a lagging indicator for recreational water illness risk. <strong>VGB drain entrapment compliance</strong> functions as a regulatory and carrier hard-stop signal.</p>
+</section>
+
+<section>
+  <h3 style="color:var(--play)">PLAY Score™ — FECs &amp; Entertainment</h3>
+  <h2>Performance · Liability · Attraction · Youth</h2>
+  <p>The FEC risk index for family entertainment centers, trampoline parks, and mixed-use entertainment venues. PLAY addresses the unique risk profile of child-dominant environments through 10 data streams — including the industry's only standalone Youth pillar.</p>
+  <div class="pillar-grid-4">
+    <div class="pg-card"><div class="pg-ltr play-ltr">P</div><div class="pg-nm">Performance</div><div class="pg-ds">Throughput, floor ops, staffing coverage, uptime yield</div></div>
+    <div class="pg-card"><div class="pg-ltr play-ltr">L</div><div class="pg-nm">Liability</div><div class="pg-ds">Documentation quality, waiver compliance, litigation-readiness</div></div>
+    <div class="pg-card"><div class="pg-ltr play-ltr">A</div><div class="pg-nm">Attraction</div><div class="pg-ds">Mixed-use condition, machine maintenance, incident patterns</div></div>
+    <div class="pg-card"><div class="pg-ltr play-ltr">Y</div><div class="pg-nm">Youth</div><div class="pg-ds">Height enforcement, unaccompanied minors, birthday supervision, child incidents</div></div>
+  </div>
+  <p>The <strong>Youth pillar</strong> scores height and age enforcement protocols, unaccompanied minor policies, birthday group supervision ratios, and child-specific incident patterns as a standalone scored dimension. No other risk index in the industry quantifies minor patron risk separately — and no other factor drives FEC liability exposure more directly.</p>
+</section>
+
+<section>
+  <h3>When All Three Scores Are Active</h3>
+  <h2>Park Intelligence Composite</h2>
+  <p>The PIC is generated when RIDE, SPLASH, and PLAY are all deployed at the same facility — a weighted, cross-validated composite covering every guest-facing zone. The single number that tells insurers, ownership, and regulators the whole story.</p>
+  <div class="pic-visual">
+    <div class="pic-box r">RIDE<span class="bx-s">15 streams</span></div>
+    <div class="pic-sym">+</div>
+    <div class="pic-box s">SPLASH<span class="bx-s">12 streams</span></div>
+    <div class="pic-sym">+</div>
+    <div class="pic-box p">PLAY<span class="bx-s">10 streams</span></div>
+    <div class="pic-eq">=</div>
+    <div class="pic-result">PIC<span class="bx-s">37 streams · whole park</span></div>
+  </div>
+  <p>37 independent data streams. No single source controls the outcome. When streams agree, confidence is high. When they diverge, that gap <em>is</em> the finding.</p>
+</section>
+
+<section>
+  <h3>Cross-Score Intelligence</h3>
+  <h2>How the scores inform each other</h2>
+  <p>In hybrid parks, each score contributes unique intelligence that calibrates the others.</p>
+  <div class="xpoll">
+    <div class="xp"><div class="xp-route"><span class="tag-r">RIDE</span><span class="xp-arrow">→</span><span class="tag-p">PLAY</span></div><div class="xp-desc">Dispatch compliance trends from RIDE calibrate the Attraction pillar baseline in PLAY — weak dispatch culture on coasters almost always shows the same pattern on go-karts.</div></div>
+    <div class="xp"><div class="xp-route"><span class="tag-s">SPLASH</span><span class="xp-arrow">→</span><span class="tag-r">RIDE</span></div><div class="xp-desc">SPLASH's EAP currency and first-aid readiness surface into RIDE's Readiness pillar — a park that drills its aquatic EAP is more prepared for ride emergencies too.</div></div>
+    <div class="xp"><div class="xp-route"><span class="tag-p">PLAY</span><span class="xp-arrow">→</span><span class="tag-s">SPLASH</span></div><div class="xp-desc">PLAY's Youth pillar data — unaccompanied minor protocols, age enforcement — informs SPLASH's Lifeguard pillar weighting where the aquatic zone is a primary child-patron environment.</div></div>
+  </div>
+</section>
+
+<section>
+  <h3>Real-Time Layer</h3>
+  <h2>OLI Composite — Operational Load Index</h2>
+  <p>While the headline scores capture aggregate risk posture, the <strong>OLI Composite Live</strong> measures operational stress in near-real-time by blending 12 weighted signals. It answers: <em>"How stressed is this operation right now?"</em></p>
+  <div class="oli-grid">
+    <div class="oli"><span>GSA Composite</span><span class="pct">12%</span></div>
+    <div class="oli"><span>mGSA Composite</span><span class="pct">8%</span></div>
+    <div class="oli"><span>Wait Variance</span><span class="pct">4%</span></div>
+    <div class="oli"><span>Inspection Health (IHS)</span><span class="pct">8%</span></div>
+    <div class="oli"><span>Incident Rate (IRL)</span><span class="pct">15%</span></div>
+    <div class="oli"><span>Near-Miss Rate (NMR)</span><span class="pct">10%</span></div>
+    <div class="oli"><span>OPD Session Score</span><span class="pct">8%</span></div>
+    <div class="oli"><span>Fatigue Risk (ATR)</span><span class="pct">7%</span></div>
+    <div class="oli"><span>Mgr Handoff (MGR)</span><span class="pct">6%</span></div>
+    <div class="oli"><span>CAR Health</span><span class="pct">4%</span></div>
+    <div class="oli"><span>Queue Demand (QTX)</span><span class="pct">12%</span></div>
+    <div class="oli"><span>Weather Impact (WX)</span><span class="pct">6%</span></div>
+  </div>
+</section>
+
+<section>
+  <h3>Environmental Intelligence</h3>
+  <h2>Live API Feeds</h2>
+  <p>Three external data streams provide continuous environmental context that static audits cannot capture.</p>
+  <div class="feeds">
+    <div class="feed"><div class="ico">⏱</div><div class="fnm">QTX — Queue Telemetry</div><div class="fmeta">ThemeParks.wiki (primary) + Queue-Times (fallback). Refreshes every 5–15 min. Demand-load signal feeds OLI.</div></div>
+    <div class="feed"><div class="ico">🌦</div><div class="fnm">WX — Weather</div><div class="fmeta">Open-Meteo API. Temperature, precip, wind, lightning. Penalty-tiered scoring triggers ride-hold protocol flags.</div></div>
+    <div class="feed"><div class="ico">⭐</div><div class="fnm">REV — Review Intelligence</div><div class="fmeta">Google, TripAdvisor, Yelp aggregation with sentiment analysis. Safety-keyword extraction surfaces actuarial signals.</div></div>
+  </div>
+</section>
+
+<section>
+  <h3>Rating Scale</h3>
+  <h2>Score Bands</h2>
+  <p>All three scores and the PIC map to the same five-band rating scale — translating the composite into actionable risk language for operators and insurers.</p>
+  <div class="bands">
+    <div class="band">Excellent<span class="rng">90–100</span></div>
+    <div class="band">Good<span class="rng">75–89</span></div>
+    <div class="band">Fair<span class="rng">60–74</span></div>
+    <div class="band">Poor<span class="rng">45–59</span></div>
+    <div class="band">Critical<span class="rng">0–44</span></div>
+  </div>
+</section>
+
+<section>
+  <h3>Scoring Math</h3>
+  <h2>How scores are normalized</h2>
+  <p>All raw inputs across RIDE, SPLASH, and PLAY are converted to a 0–100 scale using one of three normalization methods:</p>
+  <p><strong>Likert (1–5) fields</strong> use (score − 1) ÷ 4 × 100. Individual items carry explicit weights reflecting safety criticality — emergency contact knowledge is weighted 3× while nearest-ATM knowledge is weighted 1×.</p>
+  <p><strong>Binary (YES/NO) fields</strong> use a pass rate: YES ÷ (YES + NO) × 100. N/A responses are excluded from the denominator.</p>
+  <p><strong>Rate-based streams</strong> (NMR, IRL, OOS) use a penalty-decay model: 100 minus the event rate multiplied by a severity scalar. IRL adds a secondary severity-weighted penalty from the 1–5 severity scale.</p>
+</section>
+
+<section>
+  <h3>Platform</h3>
+  <h2>Technical Infrastructure</h2>
+  <p>Data is collected via web-based field tools (iGSA, mGSA, Operator Log, Operations Dispatcher) that write to Airtable. Power BI connects via the Airtable Web API connector and processes all scoring through 384+ DAX measures organized across 27 sections. Three external API feeds (QTX, WX, REV) provide environmental context. The architecture is designed for zero manual data entry between collection and dashboard — every score computes live from source data.</p>
+</section>
+
+</div>
+<footer><div class="wrap"><strong>Amusement Standards</strong> · AS 360 Platform · RIDE · SPLASH · PLAY<br>v25 · 384+ measures · 37 streams · 14 scored pillars<br>Proprietary methodology — full weighting tables and stream traceability available under NDA.</div></footer>
+</body>
+</html>
