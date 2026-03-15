@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 Benchmarking — Amusement Standards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#08090C;--surface:#10121A;--border:rgba(255,255,255,.06);
+  --t1:#E8E6E1;--t2:#9B9890;--t3:#5C5A53;
+  --blue:#3B82F6;--teal:#14B8A6;--amber:#F59E0B;--coral:#EF6B4A;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t1);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}
+
+.page{max-width:800px;margin:0 auto;padding:3rem 1.5rem 4rem}
+
+/* ── NAV ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 0 2.5rem}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-box{width:24px;height:24px;background:linear-gradient(135deg,var(--blue),var(--teal));border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;letter-spacing:-.5px}
+.logo span{font-size:13px;font-weight:600;letter-spacing:-.2px}
+.logo span em{font-style:normal;color:var(--t3);font-weight:400}
+nav a{font-size:12px;color:var(--t3);text-decoration:none;border:1px solid var(--border);padding:4px 10px;border-radius:5px;transition:all .2s}
+nav a:hover{color:var(--t2);border-color:rgba(255,255,255,.12)}
+
+/* ── HERO ── */
+h1{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4.5vw,2.6rem);font-weight:700;line-height:1.15;letter-spacing:-1.2px;margin-bottom:.75rem}
+h1 em{font-style:italic;background:linear-gradient(135deg,var(--blue),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{font-size:15px;color:var(--t2);line-height:1.7;max-width:600px;margin-bottom:2.5rem}
+
+/* ── STATS ROW ── */
+.stats{display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:3rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border)}
+.stat-val{font-family:'Fraunces',serif;font-size:26px;font-weight:700;letter-spacing:-1px}
+.stat-lbl{font-size:11px;color:var(--t3);margin-top:1px}
+
+/* ── FLOW ── */
+.flow{display:flex;flex-direction:column;gap:0;margin-bottom:3rem}
+.flow-row{display:grid;grid-template-columns:48px 1fr;gap:0;align-items:stretch}
+.flow-line{display:flex;flex-direction:column;align-items:center}
+.flow-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.flow-stem{flex:1;width:1px;background:var(--border)}
+.flow-row:last-child .flow-stem{display:none}
+.flow-content{padding:0 0 2rem}
+.flow-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
+.flow-title{font-size:16px;font-weight:600;letter-spacing:-.2px;margin-bottom:4px}
+.flow-desc{font-size:13px;color:var(--t2);line-height:1.6}
+.flow-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.flow-tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:.2px;background:rgba(255,255,255,.04);color:var(--t3);border:1px solid var(--border)}
+
+/* ── PILLARS ── */
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:3rem}
+.pillar{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.1rem;text-align:center;transition:transform .2s}
+.pillar:hover{transform:translateY(-2px)}
+.pillar-letter{font-family:'Fraunces',serif;font-size:28px;font-weight:700;line-height:1}
+.pillar-name{font-size:12px;font-weight:600;margin-top:4px;letter-spacing:-.1px}
+.pillar-desc{font-size:11px;color:var(--t3);margin-top:4px;line-height:1.45}
+
+/* ── BOTTOM LINE ── */
+.bottomline{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center}
+.bottomline p{font-size:15px;color:var(--t2);line-height:1.7;max-width:560px;margin:0 auto}
+.bottomline strong{color:var(--t1)}
+
+/* ── FOOTER ── */
+footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:11px;color:var(--t3)}
+footer a{color:var(--t3);text-decoration:none}
+
+@media(max-width:600px){
+  .pillars{grid-template-columns:repeat(2,1fr)}
+  .stats{gap:1.25rem}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<nav>
+  <div class="logo">
+    <div class="logo-box">AS</div>
+    <span>Amusement Standards <em>/ AS 360</em></span>
+  </div>
+  <a href="benchmarking_architecture.html">Full architecture &rarr;</a>
+</nav>
+
+<h1>One score. <em>Every data source.</em></h1>
+<p class="subtitle">RIDE Score&trade; benchmarks any amusement operator against the entire U.S. safety record &mdash; 10 independent data sources, 40+ years, unified into a single composite risk index.</p>
+
+<div class="stats">
+  <div><div class="stat-val">10</div><div class="stat-lbl">Data sources</div></div>
+  <div><div class="stat-val">47K+</div><div class="stat-lbl">Incident records</div></div>
+  <div><div class="stat-val">1984&ndash;2024</div><div class="stat-lbl">Coverage</div></div>
+  <div><div class="stat-val">1 : 15.5M</div><div class="stat-lbl">Industry injury rate</div></div>
+</div>
+
+<!-- FLOW: 3 layers -->
+<div class="flow">
+
+  <div class="flow-row">
+    <div class="flow-line"><div class="flow-dot" style="background:var(--teal)"></div><div class="flow-stem"></div></div>
+    <div class="flow-content">
+      <div class="flow-label" style="color:var(--teal)">Layer 1 &mdash; Collect</div>
+      <div class="flow-title">10 public data sources, continuously harvested</div>
+      <div class="flow-desc">Hospital ER surveillance, regulatory accident records, manufacturer service bulletins, product recalls, consumer complaints, occupational injury reports, and annual industry surveys. Every public dataset that touches amusement safety in the U.S.</div>
+      <div class="flow-tags">
+        <span class="flow-tag">CPSC NEISS</span>
+        <span class="flow-tag">Saferparks</span>
+        <span class="flow-tag">CARES Bulletins</span>
+        <span class="flow-tag">IAAPA / NSC</span>
+        <span class="flow-tag">OSHA SIR</span>
+        <span class="flow-tag">CPSC Recalls</span>
+        <span class="flow-tag">SaferProducts.gov</span>
+        <span class="flow-tag">CoasterForce</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-line"><div class="flow-dot" style="background:var(--amber)"></div><div class="flow-stem"></div></div>
+    <div class="flow-content">
+      <div class="flow-label" style="color:var(--amber)">Layer 2 &mdash; Harmonize</div>
+      <div class="flow-title">Normalize into a unified risk taxonomy</div>
+      <div class="flow-desc">A crosswalk table maps every source's fields to the AS 360 standard &mdash; device category, manufacturer, cause code, severity, state, date. Different data formats from different decades and jurisdictions, resolved into one queryable benchmark baseline.</div>
+    </div>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-line"><div class="flow-dot" style="background:var(--blue)"></div></div>
+    <div class="flow-content">
+      <div class="flow-label" style="color:var(--blue)">Layer 3 &mdash; Score</div>
+      <div class="flow-title">Benchmark against RIDE Score&trade; pillars</div>
+      <div class="flow-desc">Each operator's live data from GSA checklists, queue feeds, and weather APIs is measured against the industry baseline. Output: a percentile rank across four pillars. "This operator is performing at the 78th percentile for amusement parks with this device mix."</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PILLARS -->
+<div class="pillars">
+  <div class="pillar">
+    <div class="pillar-letter" style="color:var(--blue)">R</div>
+    <div class="pillar-name">Readiness</div>
+    <div class="pillar-desc">Staffing, training, occupational safety</div>
+  </div>
+  <div class="pillar">
+    <div class="pillar-letter" style="color:var(--amber)">I</div>
+    <div class="pillar-name">Integrity</div>
+    <div class="pillar-desc">Mechanical rates, recalls, bulletins</div>
+  </div>
+  <div class="pillar">
+    <div class="pillar-letter" style="color:var(--coral)">D</div>
+    <div class="pillar-name">Delivery</div>
+    <div class="pillar-desc">Guest incidents, complaints, severity</div>
+  </div>
+  <div class="pillar">
+    <div class="pillar-letter" style="color:var(--teal)">E</div>
+    <div class="pillar-name">Environment</div>
+    <div class="pillar-desc">Seasonality, weather, regulatory context</div>
+  </div>
+</div>
+
+<!-- BOTTOM LINE -->
+<div class="bottomline">
+  <p>RIDE Score is to amusement safety what <strong>FICO is to credit</strong> &mdash; a composite index that tells insurers, operators, and manufacturers where a venue stands relative to the industry, not just relative to itself.</p>
+</div>
+
+<footer>
+  <span>&copy; 2026 Amusement Standards LLC</span>
+  <a href="https://amusementstandards.com">amusementstandards.com</a>
+</footer>
+
+</div>
+</body>
+</html>
