@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 Benchmarking Architecture — Amusement Standards</title>
+<meta name="description" content="Technical architecture for RIDE Score™ industry benchmarking — integrating Saferparks, CPSC NEISS, IAAPA/NSC, OSHA IMIS, CARES bulletins, and more into a unified risk intelligence baseline.">
+<meta property="og:title" content="AS 360 Benchmarking Architecture — Amusement Standards">
+<meta property="og:description" content="How RIDE Score™ benchmarks operator performance against 10 industry data sources spanning 40+ years of amusement safety data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0A0C10;
+  --bg-card: #111318;
+  --bg-card-hover: #181B22;
+  --bg-surface: #1A1D25;
+  --bg-elevated: #22262F;
+  --border: rgba(255,255,255,0.06);
+  --border-accent: rgba(255,255,255,0.12);
+  --text-primary: #E8E6E1;
+  --text-secondary: #9B9890;
+  --text-tertiary: #6B6860;
+  --accent-blue: #3B82F6;
+  --accent-blue-dim: rgba(59,130,246,0.15);
+  --accent-teal: #14B8A6;
+  --accent-teal-dim: rgba(20,184,166,0.12);
+  --accent-amber: #F59E0B;
+  --accent-amber-dim: rgba(245,158,11,0.12);
+  --accent-coral: #EF6B4A;
+  --accent-coral-dim: rgba(239,107,74,0.12);
+  --accent-purple: #8B5CF6;
+  --accent-purple-dim: rgba(139,92,246,0.12);
+  --accent-green: #22C55E;
+  --accent-green-dim: rgba(34,197,94,0.12);
+  --accent-red: #EF4444;
+  --accent-red-dim: rgba(239,68,68,0.12);
+  --accent-pink: #EC4899;
+  --accent-pink-dim: rgba(236,72,153,0.12);
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Fraunces', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NOISE TEXTURE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+}
+
+a { color: var(--accent-blue); text-decoration: none; transition: color 0.2s; }
+a:hover { color: #60A5FA; }
+
+/* ─── HEADER ─── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10,12,16,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+.logo-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-mark {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+.logo-text {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+.logo-text span { color: var(--text-tertiary); font-weight: 400; }
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.header-nav a {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.header-nav a:hover { color: var(--text-primary); }
+.header-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--accent-teal);
+  background: var(--accent-teal-dim);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ─── HERO ─── */
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 5rem 2rem 3rem;
+  position: relative;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent-teal);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--accent-teal);
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -1.5px;
+  color: var(--text-primary);
+  max-width: 780px;
+  margin-bottom: 1.25rem;
+}
+.hero h1 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-subtitle {
+  font-size: 17px;
+  color: var(--text-secondary);
+  max-width: 620px;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+.hero-stats {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+}
+.hero-stat-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+}
+.hero-stat-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* ─── SECTION LAYOUT ─── */
+.content-area {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+section { margin-bottom: 4rem; }
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.75rem;
+}
+
+.section-desc {
+  color: var(--text-secondary);
+  font-size: 15px;
+  max-width: 680px;
+  margin-bottom: 2rem;
+  line-height: 1.75;
+}
+
+/* ─── DATA SOURCE CARDS ─── */
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+}
+
+.source-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.source-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-accent);
+  transform: translateY(-2px);
+}
+.source-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+.source-card[data-color="blue"]::before { background: var(--accent-blue); }
+.source-card[data-color="teal"]::before { background: var(--accent-teal); }
+.source-card[data-color="amber"]::before { background: var(--accent-amber); }
+.source-card[data-color="coral"]::before { background: var(--accent-coral); }
+.source-card[data-color="purple"]::before { background: var(--accent-purple); }
+.source-card[data-color="green"]::before { background: var(--accent-green); }
+.source-card[data-color="red"]::before { background: var(--accent-red); }
+.source-card[data-color="pink"]::before { background: var(--accent-pink); }
+
+.source-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.source-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.source-card[data-color="blue"] .source-icon { background: var(--accent-blue-dim); color: var(--accent-blue); }
+.source-card[data-color="teal"] .source-icon { background: var(--accent-teal-dim); color: var(--accent-teal); }
+.source-card[data-color="amber"] .source-icon { background: var(--accent-amber-dim); color: var(--accent-amber); }
+.source-card[data-color="coral"] .source-icon { background: var(--accent-coral-dim); color: var(--accent-coral); }
+.source-card[data-color="purple"] .source-icon { background: var(--accent-purple-dim); color: var(--accent-purple); }
+.source-card[data-color="green"] .source-icon { background: var(--accent-green-dim); color: var(--accent-green); }
+.source-card[data-color="red"] .source-icon { background: var(--accent-red-dim); color: var(--accent-red); }
+.source-card[data-color="pink"] .source-icon { background: var(--accent-pink-dim); color: var(--accent-pink); }
+
+.source-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  padding: 3px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.badge-live { background: var(--accent-green-dim); color: var(--accent-green); }
+.badge-static { background: var(--accent-amber-dim); color: var(--accent-amber); }
+.badge-gated { background: var(--accent-purple-dim); color: var(--accent-purple); }
+.badge-scrape { background: var(--accent-coral-dim); color: var(--accent-coral); }
+
+.source-name {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+.source-org {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: 0.75rem;
+}
+.source-desc {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+.source-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.meta-item {
+  display: flex;
+  flex-direction: column;
+}
+.meta-label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.meta-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-top: 1px;
+}
+
+/* ─── ARCHITECTURE DIAGRAM (SVG) ─── */
+.architecture-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem;
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+.architecture-wrap h3 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.architecture-wrap p {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+}
+.arch-svg { width: 100%; max-width: 1100px; margin: 0 auto; display: block; }
+
+/* ─── PILLAR MAPPING TABLE ─── */
+.pillar-table-wrap {
+  overflow-x: auto;
+  margin-top: 1.5rem;
+}
+.pillar-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+.pillar-table thead th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-accent);
+  background: var(--bg-surface);
+  position: sticky;
+  top: 0;
+}
+.pillar-table thead th:first-child { border-radius: var(--radius) 0 0 0; }
+.pillar-table thead th:last-child { border-radius: 0 var(--radius) 0 0; }
+
+.pillar-table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text-secondary);
+}
+.pillar-table tbody tr:hover td {
+  background: var(--bg-card-hover);
+}
+.pillar-table tbody td:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.pillar-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 2px;
+}
+.pillar-dot-r { background: var(--accent-blue); }
+.pillar-dot-i { background: var(--accent-amber); }
+.pillar-dot-d { background: var(--accent-coral); }
+.pillar-dot-e { background: var(--accent-teal); }
+.pillar-indicator {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* ─── DAX MEASURES ─── */
+.dax-block {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 12px;
+}
+.dax-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.dax-name {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent-blue);
+}
+.dax-pillar {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.dax-pillar-r { background: var(--accent-blue-dim); color: var(--accent-blue); }
+.dax-pillar-i { background: var(--accent-amber-dim); color: var(--accent-amber); }
+.dax-pillar-d { background: var(--accent-coral-dim); color: var(--accent-coral); }
+.dax-pillar-e { background: var(--accent-teal-dim); color: var(--accent-teal); }
+.dax-pillar-all { background: var(--accent-purple-dim); color: var(--accent-purple); }
+
+.dax-code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.dax-code .kw { color: var(--accent-blue); }
+.dax-code .fn { color: var(--accent-teal); }
+.dax-code .str { color: var(--accent-amber); }
+.dax-code .num { color: var(--accent-coral); }
+.dax-code .cm { color: var(--text-tertiary); font-style: italic; }
+
+.dax-desc {
+  font-size: 12.5px;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+/* ─── TIMELINE / PIPELINE ─── */
+.pipeline-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.pipeline-step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  position: relative;
+}
+.pipeline-step-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--bg-elevated);
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  line-height: 1;
+}
+.pipeline-step-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.pipeline-step-desc {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.pipeline-step-detail {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+/* ─── FIELD MAPPING ─── */
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+.field-row {
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border-radius: 6px;
+  padding: 8px 12px;
+  gap: 8px;
+  font-size: 12.5px;
+}
+.field-from {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-teal);
+  background: var(--accent-teal-dim);
+  padding: 2px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.field-arrow { color: var(--text-tertiary); font-size: 11px; flex-shrink: 0; }
+.field-to {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-blue);
+  background: var(--accent-blue-dim);
+  padding: 2px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.field-note {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/* ─── CAVEATS ─── */
+.caveat-box {
+  background: var(--accent-amber-dim);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-top: 2rem;
+}
+.caveat-box h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-amber);
+  margin-bottom: 6px;
+}
+.caveat-box p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ─── FOOTER ─── */
+.site-footer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-left {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+.footer-right {
+  display: flex;
+  gap: 16px;
+}
+.footer-right a {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+.footer-right a:hover { color: var(--text-secondary); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .hero { padding: 3rem 1.25rem 2rem; }
+  .content-area { padding: 0 1.25rem 3rem; }
+  .source-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 1.5rem; }
+  .header-nav { display: none; }
+  .architecture-wrap { padding: 1.25rem; }
+  .pipeline-steps { grid-template-columns: 1fr; }
+  .source-meta { grid-template-columns: 1fr; }
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+  animation: fadeUp 0.5s ease both;
+}
+.source-card:nth-child(1) { animation-delay: 0.05s; }
+.source-card:nth-child(2) { animation-delay: 0.1s; }
+.source-card:nth-child(3) { animation-delay: 0.15s; }
+.source-card:nth-child(4) { animation-delay: 0.2s; }
+.source-card:nth-child(5) { animation-delay: 0.25s; }
+.source-card:nth-child(6) { animation-delay: 0.3s; }
+.source-card:nth-child(7) { animation-delay: 0.35s; }
+.source-card:nth-child(8) { animation-delay: 0.4s; }
+.source-card:nth-child(9) { animation-delay: 0.45s; }
+.source-card:nth-child(10) { animation-delay: 0.5s; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo-mark">AS</div>
+      <div class="logo-text">Amusement Standards <span>/ AS 360</span></div>
+    </div>
+    <nav class="header-nav">
+      <a href="#sources">Data Sources</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#mapping">Pillar Mapping</a>
+      <a href="#measures">DAX Measures</a>
+      <a href="#pipeline">Pipeline</a>
+      <span class="header-badge">Internal Architecture Doc</span>
+    </nav>
+  </div>
+</header>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<div class="hero">
+  <div class="hero-eyebrow">AS 360 Benchmarking Architecture</div>
+  <h1>Industry-wide risk intelligence from <em>every available source</em></h1>
+  <p class="hero-subtitle">
+    RIDE Score&trade; benchmarks operator performance against a unified baseline constructed from 10 independent data sources spanning 40+ years of U.S. amusement safety data &mdash; regulatory records, hospital surveillance, product recalls, consumer complaints, service bulletins, occupational injuries, and annual industry surveys.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-value">10</div>
+      <div class="hero-stat-label">Data sources integrated</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">~47K+</div>
+      <div class="hero-stat-label">Incident records (historical)</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">1984&ndash;2024</div>
+      <div class="hero-stat-label">Coverage window</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">4 &times; 4</div>
+      <div class="hero-stat-label">Pillars &times; data layers</div>
+    </div>
+  </div>
+</div>
+
+<div class="content-area">
+
+<!-- ═══════════════════ DATA SOURCES ═══════════════════ -->
+<section id="sources">
+  <div class="section-label">01 &mdash; Data Sources</div>
+  <h2 class="section-title">The complete source inventory</h2>
+  <p class="section-desc">
+    Each source is classified by data freshness, automation method, and which RIDE Score pillars it feeds. Together they form the most comprehensive amusement safety dataset ever assembled for operator benchmarking.
+  </p>
+
+  <div class="source-grid">
+
+    <!-- 1. CPSC NEISS -->
+    <div class="source-card animate-in" data-color="blue">
+      <div class="source-header">
+        <div class="source-icon">&#9764;</div>
+        <div class="source-badges">
+          <span class="badge badge-live">Live</span>
+          <span class="badge" style="background:var(--accent-blue-dim);color:var(--accent-blue);">API</span>
+        </div>
+      </div>
+      <div class="source-name">CPSC NEISS</div>
+      <div class="source-org">U.S. Consumer Product Safety Commission</div>
+      <div class="source-desc">
+        National Electronic Injury Surveillance System. Probability-weighted ER injury estimates from ~100 hospitals. Product codes 1293 (amusement devices), 3295 (water slides), 3259 (go-karts). The only continuously updated public source for amusement ride injuries in the U.S. 20 years rolling data available online.
+      </div>
+      <div class="source-meta">
+        <div class="meta-item">
+          <span class="meta-label">Coverage</span>
+          <span class="meta-value">2005&ndash;2024</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Refresh</span>
+          <span class="meta-value">Annual (April)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Records</span>
+          <span class="meta-value">~750/yr (weighted to ~22K nat'l)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Pillars</span>
+          <span class="meta-value"><span class="pillar-dot pillar-dot-d"></span> D &nbsp;<span class="pillar-dot pillar-dot-e"></span> E</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Saferparks 2017 -->
+    <div class="source-card animate-in" data-color="teal">
+      <div class="source-header">
+        <div class="source-icon">&#9881;</div>
+        <div class="source-badges">
+          <span class="badge badge-static">Static</span>
+          <span class="badge" style="background:var(--accent-teal-dim);color:var(--accent-teal);">CSV</span>
+        </div>
+      </div>
+      <div class="source-name">Saferparks 2017 Dataset</div>
+      <div class="source-org">RidesDatabase.org (now owned by AIMS)</div>
+      <div class="source-desc">
+        ~8,300 accident reports from 2017 public records requests to state/federal agencies. Richest field set: bus_type, device_category, manufacturer, mechanical flag, category, acc_state, num_injured, acc_date, gender, age. Data collection may resume under AIMS.
+      </div>
+      <div class="source-meta">
+        <div class="meta-item">
+          <span class="meta-label">Coverage</span>
+          <span class="meta-value">2010&ndash;2017</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Refresh</span>
+          <span class="meta-value">Frozen (AIMS TBD)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Records</span>
+          <span class="meta-value">~8,300</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Pillars</span>
+          <span class="meta-value"><span class="pillar-dot pillar-dot-r"></span> R &nbsp;<span class="pillar-dot pillar-dot-i"></span> I &nbsp;<span class="pillar-dot pillar-dot-d"></span> D &nbsp;<span class="pillar-dot pillar-dot-e"></span> E</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Saferparks Legacy -->
+    <div class="source-card animate-in" data-color="teal">
+      <div class="source-header">
+        <div class="source-icon">&#128218;</div>
+        <div class="source-badges">
+          <span class="badge badge-static">Static</span>
+          <span class="badge" style="background:var(--accent-teal-dim);color:var(--accent-teal);">CSV</span>
+        </div>
+      </div>
+      <div class="source-name">Saferparks Legacy Dataset</div>
+      <div class="source-org">RidesDatabase.org (now owned by AIMS)</div>
+      <div class="source-desc">
+        ~15,000 accident reports from earlier records requests (2000, 2002, 2004, 2006, 2007). Same field structure as 2017 set. Dates range from 1986&ndash;2009, bulk clustered in 1999&ndash;2007. Enables long-run trend analysis for device categories and manufacturers.
+      </div>
+      <div class="source-meta">
+        <div class="meta-item">
+          <span class="meta-label">Coverage</span>
+          <span class="meta-value">1986&ndash;2009</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Refresh</span>
+          <span class="meta-value">Frozen</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Records</span>
+          <span class="meta-value">~15,000</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Pillars</span>
+          <span class="meta-value"><span class="pillar-dot pillar-dot-r"></span> R &nbsp;<span class="pillar-dot pillar-dot-i"></span> I &nbsp;<span class="pillar-dot pillar-dot-d"></span> D &nbsp;<span class="pillar-dot pillar-dot-e"></span> E</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Saferparks NEISS -->
+    <div class="source-card animate-in" data-color="green">
+      <div class="source-header">
+        <div class="source-icon">&#127973;</div>
+        <div class="source-badges">
+          <span class="badge badge-static">Static</span>
+        </div>
+      </div>
+      <div class="source-name">Saferparks NEISS Extract</div>
+      <div class="source-org">Saferparks via CPSC</div>
+      <div class="source-desc">
+        Pre-processed NEISS hospital ER data for 2013&ndash;2017, filtered to amusement-relevant product codes and categorized by device type. Bridges the gap between raw NEISS data and the Saferparks taxonomy. Includes Saferparks' own Tableau analysis.
+      </div>
+      <div class="source-meta">
+        <div class="meta-item">
+          <span class="meta-label">Coverage</span>
+          <span class="meta-value">2013&ndash;2017</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Refresh</span>
+          <span class="meta-value">Frozen</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Records</span>
+          <span class="meta-value">~1.33 MB CSV</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Pillars</span>
+          <span class="meta-value"><span class="pillar-dot pillar-dot-d"></span> D &nbsp;<span class="pillar-dot pillar-dot-e"></span> E</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. CARES Bulletins -->
+    <div class="source-card animate-in" data-color="amber">
+      <div class="source-header">
+        <div class="source-icon">&#9888;</div>
+        <div class="source-badges">
+          <span class="badge badge-scrape">Scrape</span>
+          <span class="badge" style="background:var(--accent-amber-dim);color:var(--accent-amber);">JS</span>
+        </div>
+      </div>
+      <div class="source-name">CARES Service Bulletins</div>
+      <div class="source-org">Council of Amusement &amp; Recreational Equipment Safety / RidesDatabase</div>
+      <div class="source-desc">
+        Archived manufacturer service bulletins with ride/device mappings. Links specific OEMs to safety actions, restraint modifications, height requirement changes. JS-rendered site requires Puppeteer/Playwright scrape. Directly feeds Integrity pillar &mdash; operator compliance with open bulletins is a RIDE Score input.
+      </div>
+      <div class="source-meta">
+        <div class="meta-item">
+          <span class="meta-label">Coverage</span>
+          <span class="meta-value">Historical (semi-current)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Refresh</span>
+          <span class="meta-value">Monthly scrape</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Records</span>
+          <span class="meta-value">100+ bulletins</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Pillars</span>
+          <span class="meta-value"><span class="pillar-dot pillar-dot-i"></span> I</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. IAAPA/NSC -->
+    <div class="source-card animate-in" data-color="purple">
+      <div class="source-header">
+        <div class="source-icon">&#127919;</div>
+        <div class="source-badges">
+          <span class="badge badge-gated">Member</span>
+          <span class="badge" style="background:var(--accent-purple-dim);color:var(--accent-purple);">PDF</span>
+        </div>
+      </div>
+      <div class="source-name">IAAPA / NSC Ride Safety Report</div>
+      <div class="source-org">International Assoc. of Amusement Parks &amp; Attractions + National Safety Council</div>
+      <div class="source-desc">
+        Annual fixed-site ride safety survey &mdash; the only source providing injury stats specific to fixed-site amusement parks. 2023 survey covered 208 parks, 64% of total North American attendance. Includes water slide safety report. Establishes the 1-in-15.5M serious injury rate benchmark. Member-gated.
+      </div>
+      <div class="source-meta">
+        <div class="meta-item">
+          <span class="meta-label">Coverage</span>
+          <span class="meta-value">2003&ndash;present (annual)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Refresh</span>
+          <span class="meta-value">Annual (IAAPA Expo)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Records</span>
+          <span class="meta-value">Aggregate stats (not raw)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Pillars</span>
+          <span class="meta-value"><span class="pillar-dot pillar-dot-d"></span> D &nbsp;<span class="pillar-dot pillar-dot-e"></span> E</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. OSHA IMIS -->
+    <div class="source-card animate-in" data-color="red">
+      <div class="source-header">
+        <div class="source-icon">&#9937;</div>
+        <div class="source-badges">
+          <span class="badge badge-live">Live</span>
+          <span class="badge badge-scrape">Scrape</span>
+        </div>
+      </div>
+      <div class="source-name">OSHA IMIS / SIR Database</div>
+      <div class="source-org">Occupational Safety &amp; Health Administration</div>
+      <div class="source-desc">
+        Occupational accident investigation database searchable by keyword. Contains abstracts from OSHA-170 forms dating to 1984. Covers employee-side incidents at amusement venues &mdash; a separate dimension from patron injuries. The SIR (Severe Injury Reports) dataset is bulk-downloadable. Signals staffing, training, and safety culture deficiencies.
+      </div>
+      <div class="source-meta">
+        <div class="meta-item">
+          <span class="meta-label">Coverage</span>
+          <span class="meta-value">1984&ndash;present</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Refresh</span>
+          <span class="meta-value">Daily (rolling)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Records</span>
+          <span class="meta-value">~100+ amusement-related</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Pillars</span>
+          <span class="meta-value"><span class="pillar-dot pillar-dot-r"></span> R</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. CoasterForce / Media -->
+    <div class="source-card animate-in" data-color="pink">
+      <div class="source-header">
+        <div class="source-icon">&#128240;</div>
+        <div class="source-badges">
+          <span class="badge badge-scrape">Scrape</span>
+          <span class="badge" style="background:var(--accent-pink-dim);color:var(--accent-pink);">Unstructured</span>
+        </div>
+      </div>
+      <div class="source-name">CoasterForce / Media Incident Tracker</div>
+      <div class="source-org">CoasterForce + Coasterpedia + global media</div>
+      <div class="source-desc">
+        Crowdsourced chronological index of theme park and amusement ride incidents worldwide, sourced from media reports. Fills the 2018&ndash;present gap where Saferparks data collection stopped. Unstructured but valuable for recency. Includes the Woodcock 2019 global incidence study methodology (182 events, 38 countries).
+      </div>
+      <div class="source-meta">
+        <div class="meta-item">
+          <span class="meta-label">Coverage</span>
+          <span class="meta-value">2000&ndash;present (global)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Refresh</span>
+          <span class="meta-value">Rolling (days)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Records</span>
+          <span class="meta-value">Unstructured, 100s</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Pillars</span>
+          <span class="meta-value"><span class="pillar-dot pillar-dot-d"></span> D &nbsp;<span class="pillar-dot pillar-dot-i"></span> I</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. CPSC Recalls API -->
+    <div class="source-card animate-in" data-color="blue">
+      <div class="source-header">
+        <div class="source-icon">&#9888;</div>
+        <div class="source-badges">
+          <span class="badge badge-live">Live</span>
+          <span class="badge" style="background:var(--accent-blue-dim);color:var(--accent-blue);">REST API</span>
+        </div>
+      </div>
+      <div class="source-name">CPSC Recalls API</div>
+      <div class="source-org">U.S. Consumer Product Safety Commission</div>
+      <div class="source-desc">
+        REST API returning decades of consumer product recall data in JSON/XML. Filter for amusement-related recalls by product type. Captures manufacturer-level recall actions (e.g. Chance Rides YO-YO recall covering 85 rides nationwide). Names specific manufacturers and hazard descriptions &mdash; the only source that flags active product recalls against an operator's fleet.
+      </div>
+      <div class="source-meta">
+        <div class="meta-item">
+          <span class="meta-label">Coverage</span>
+          <span class="meta-value">1970s&ndash;present</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Refresh</span>
+          <span class="meta-value">Live (API)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Records</span>
+          <span class="meta-value">Sparse but high-severity</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Pillars</span>
+          <span class="meta-value"><span class="pillar-dot pillar-dot-i"></span> I</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. SaferProducts.gov -->
+    <div class="source-card animate-in" data-color="green">
+      <div class="source-header">
+        <div class="source-icon">&#128227;</div>
+        <div class="source-badges">
+          <span class="badge badge-live">Live</span>
+          <span class="badge" style="background:var(--accent-green-dim);color:var(--accent-green);">OData API</span>
+        </div>
+      </div>
+      <div class="source-name">SaferProducts.gov</div>
+      <div class="source-org">CPSC &mdash; Public Consumer Complaint Database</div>
+      <div class="source-desc">
+        Consumer-submitted harm reports with OData API and bulk download. Captures incidents that never reached an ER (and therefore never appear in NEISS). Names specific manufacturers and products. Lower signal-to-noise than NEISS but catches a different slice of incidents &mdash; patron complaints, near-misses, and minor injuries that fell below hospital thresholds.
+      </div>
+      <div class="source-meta">
+        <div class="meta-item">
+          <span class="meta-label">Coverage</span>
+          <span class="meta-value">2011&ndash;present</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Refresh</span>
+          <span class="meta-value">Rolling (days)</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Records</span>
+          <span class="meta-value">Bulk download + API</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Pillars</span>
+          <span class="meta-value"><span class="pillar-dot pillar-dot-d"></span> D &nbsp;<span class="pillar-dot pillar-dot-i"></span> I</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /source-grid -->
+</section>
+
+<!-- ═══════════════════ ARCHITECTURE DIAGRAM ═══════════════════ -->
+<section id="architecture">
+  <div class="section-label">02 &mdash; Architecture</div>
+  <h2 class="section-title">Data flow: sources &rarr; ETL &rarr; RIDE Score benchmarks</h2>
+  <p class="section-desc">
+    All sources converge through a crosswalk/harmonization layer in Airtable, then feed into the Power BI AS 360 model as benchmark reference tables alongside live operator data from the GSA checklists, queue feeds, and weather APIs.
+  </p>
+
+  <div class="architecture-wrap">
+    <svg class="arch-svg" viewBox="0 0 1100 600" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M2 2L8 5L2 8" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/>
+        </marker>
+      </defs>
+      <style>
+        .svgtext { font-family: 'DM Sans', sans-serif; fill: #E8E6E1; }
+        .svgtextm { font-family: 'JetBrains Mono', monospace; fill: #9B9890; font-size: 9px; }
+        .svgtexts { font-family: 'DM Sans', sans-serif; fill: #6B6860; font-size: 10px; }
+        .svgbox { rx: 8; fill: #181B22; stroke: rgba(255,255,255,0.08); stroke-width: 1; }
+        .svgarr { stroke: rgba(255,255,255,0.15); stroke-width: 1; marker-end: url(#arrowB); fill: none; }
+      </style>
+
+      <!-- COLUMN 1: Data Sources (10 sources, compressed spacing) -->
+      <text class="svgtextm" x="20" y="20" font-size="9" fill="#14B8A6" letter-spacing="1">DATA SOURCES</text>
+      
+      <rect class="svgbox" x="10" y="35" width="180" height="32"/>
+      <text class="svgtext" x="100" y="55" text-anchor="middle" font-size="11" font-weight="600">CPSC NEISS</text>
+      
+      <rect class="svgbox" x="10" y="73" width="180" height="32"/>
+      <text class="svgtext" x="100" y="93" text-anchor="middle" font-size="11" font-weight="600">Saferparks 2017</text>
+      
+      <rect class="svgbox" x="10" y="111" width="180" height="32"/>
+      <text class="svgtext" x="100" y="131" text-anchor="middle" font-size="11" font-weight="600">Saferparks Legacy</text>
+      
+      <rect class="svgbox" x="10" y="149" width="180" height="32"/>
+      <text class="svgtext" x="100" y="169" text-anchor="middle" font-size="11" font-weight="600">SP NEISS Extract</text>
+      
+      <rect class="svgbox" x="10" y="187" width="180" height="32"/>
+      <text class="svgtext" x="100" y="207" text-anchor="middle" font-size="11" font-weight="600">CARES Bulletins</text>
+      
+      <rect class="svgbox" x="10" y="225" width="180" height="32"/>
+      <text class="svgtext" x="100" y="245" text-anchor="middle" font-size="11" font-weight="600">IAAPA / NSC Report</text>
+      
+      <rect class="svgbox" x="10" y="263" width="180" height="32"/>
+      <text class="svgtext" x="100" y="283" text-anchor="middle" font-size="11" font-weight="600">OSHA IMIS / SIR</text>
+      
+      <rect class="svgbox" x="10" y="301" width="180" height="32"/>
+      <text class="svgtext" x="100" y="321" text-anchor="middle" font-size="11" font-weight="600">CoasterForce / Media</text>
+
+      <rect class="svgbox" x="10" y="339" width="180" height="32" style="stroke: rgba(59,130,246,0.25);"/>
+      <text class="svgtext" x="100" y="359" text-anchor="middle" font-size="11" font-weight="600" fill="#3B82F6">CPSC Recalls API</text>
+
+      <rect class="svgbox" x="10" y="377" width="180" height="32" style="stroke: rgba(34,197,94,0.25);"/>
+      <text class="svgtext" x="100" y="397" text-anchor="middle" font-size="11" font-weight="600" fill="#22C55E">SaferProducts.gov</text>
+
+      <!-- Arrows: Sources → ETL -->
+      <line class="svgarr" x1="190" y1="51" x2="248" y2="110"/>
+      <line class="svgarr" x1="190" y1="89" x2="248" y2="140"/>
+      <line class="svgarr" x1="190" y1="127" x2="248" y2="170"/>
+      <line class="svgarr" x1="190" y1="165" x2="248" y2="200"/>
+      <line class="svgarr" x1="190" y1="203" x2="248" y2="230"/>
+      <line class="svgarr" x1="190" y1="241" x2="248" y2="250"/>
+      <line class="svgarr" x1="190" y1="279" x2="248" y2="270"/>
+      <line class="svgarr" x1="190" y1="317" x2="248" y2="290"/>
+      <line class="svgarr" x1="190" y1="355" x2="248" y2="330" style="stroke: rgba(59,130,246,0.25);"/>
+      <line class="svgarr" x1="190" y1="393" x2="248" y2="360" style="stroke: rgba(34,197,94,0.25);"/>
+
+      <!-- COLUMN 2: ETL / Crosswalk (expanded for 8 tables) -->
+      <text class="svgtextm" x="260" y="20" font-size="9" fill="#F59E0B" letter-spacing="1">HARMONIZATION</text>
+      
+      <rect x="250" y="35" width="190" height="370" rx="12" fill="rgba(245,158,11,0.06)" stroke="rgba(245,158,11,0.15)" stroke-width="1"/>
+      <text class="svgtext" x="345" y="58" text-anchor="middle" font-size="12" font-weight="600">Airtable ETL</text>
+      <text class="svgtexts" x="345" y="76" text-anchor="middle">SP_Benchmark base</text>
+      
+      <rect class="svgbox" x="268" y="90" width="154" height="26" rx="5"/>
+      <text class="svgtextm" x="345" y="107" text-anchor="middle">SP_Crosswalk</text>
+      
+      <rect class="svgbox" x="268" y="122" width="154" height="26" rx="5"/>
+      <text class="svgtextm" x="345" y="139" text-anchor="middle">SP_Accidents_2017</text>
+      
+      <rect class="svgbox" x="268" y="154" width="154" height="26" rx="5"/>
+      <text class="svgtextm" x="345" y="171" text-anchor="middle">SP_Accidents_Legacy</text>
+      
+      <rect class="svgbox" x="268" y="186" width="154" height="26" rx="5"/>
+      <text class="svgtextm" x="345" y="203" text-anchor="middle">SP_NEISS_Current</text>
+      
+      <rect class="svgbox" x="268" y="218" width="154" height="26" rx="5"/>
+      <text class="svgtextm" x="345" y="235" text-anchor="middle">SP_CARES_Bulletins</text>
+      
+      <rect class="svgbox" x="268" y="250" width="154" height="26" rx="5"/>
+      <text class="svgtextm" x="345" y="267" text-anchor="middle">SP_OSHA_SIR</text>
+
+      <rect class="svgbox" x="268" y="282" width="154" height="26" rx="5" style="stroke: rgba(59,130,246,0.25);"/>
+      <text class="svgtextm" x="345" y="299" text-anchor="middle" fill="#3B82F6">SP_CPSC_Recalls</text>
+
+      <rect class="svgbox" x="268" y="314" width="154" height="26" rx="5" style="stroke: rgba(34,197,94,0.25);"/>
+      <text class="svgtextm" x="345" y="331" text-anchor="middle" fill="#22C55E">SP_SaferProducts</text>
+
+      <!-- Arrow ETL → Power BI -->
+      <line class="svgarr" x1="440" y1="220" x2="498" y2="220" stroke="rgba(245,158,11,0.3)"/>
+
+      <!-- COLUMN 3: Power BI Model -->
+      <text class="svgtextm" x="510" y="20" font-size="9" fill="#3B82F6" letter-spacing="1">POWER BI MODEL</text>
+      
+      <rect x="500" y="35" width="220" height="370" rx="12" fill="rgba(59,130,246,0.06)" stroke="rgba(59,130,246,0.15)" stroke-width="1"/>
+      <text class="svgtext" x="610" y="58" text-anchor="middle" font-size="12" font-weight="600">AS 360 v18</text>
+      <text class="svgtexts" x="610" y="76" text-anchor="middle">384+ measures, 28 sections</text>
+
+      <rect class="svgbox" x="518" y="90" width="184" height="26" rx="5"/>
+      <text class="svgtextm" x="610" y="107" text-anchor="middle" fill="#3B82F6">S28: Industry Benchmarks</text>
+      
+      <rect class="svgbox" x="518" y="122" width="184" height="26" rx="5"/>
+      <text class="svgtextm" x="610" y="139" text-anchor="middle">mGSA_Submissions</text>
+      
+      <rect class="svgbox" x="518" y="154" width="184" height="26" rx="5"/>
+      <text class="svgtextm" x="610" y="171" text-anchor="middle">QTX_Feed / WX_Feed</text>
+      
+      <rect class="svgbox" x="518" y="186" width="184" height="26" rx="5"/>
+      <text class="svgtextm" x="610" y="203" text-anchor="middle">REV_Feed</text>
+      
+      <rect class="svgbox" x="518" y="218" width="184" height="26" rx="5"/>
+      <text class="svgtextm" x="610" y="235" text-anchor="middle">Calendar</text>
+      
+      <rect class="svgbox" x="518" y="250" width="184" height="26" rx="5"/>
+      <text class="svgtextm" x="610" y="267" text-anchor="middle">RIDE_Score_v2</text>
+
+      <!-- Arrow PBI → Outputs -->
+      <line class="svgarr" x1="720" y1="220" x2="778" y2="140" stroke="rgba(139,92,246,0.3)"/>
+      <line class="svgarr" x1="720" y1="220" x2="778" y2="220" stroke="rgba(139,92,246,0.3)"/>
+      <line class="svgarr" x1="720" y1="220" x2="778" y2="300" stroke="rgba(139,92,246,0.3)"/>
+
+      <!-- COLUMN 4: Outputs -->
+      <text class="svgtextm" x="790" y="20" font-size="9" fill="#8B5CF6" letter-spacing="1">BENCHMARK OUTPUTS</text>
+
+      <rect x="780" y="100" width="300" height="60" rx="10" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
+      <text class="svgtext" x="930" y="124" text-anchor="middle" font-size="11" font-weight="600">Operator Benchmark Report</text>
+      <text class="svgtexts" x="930" y="144" text-anchor="middle">RIDE Score vs. industry baseline by segment</text>
+
+      <rect x="780" y="180" width="300" height="60" rx="10" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
+      <text class="svgtext" x="930" y="204" text-anchor="middle" font-size="11" font-weight="600">Phase 3 Insurance Dashboard</text>
+      <text class="svgtexts" x="930" y="224" text-anchor="middle">PHLY / Alive Risk / American Specialty</text>
+
+      <rect x="780" y="260" width="300" height="60" rx="10" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
+      <text class="svgtext" x="930" y="284" text-anchor="middle" font-size="11" font-weight="600">Manufacturer Risk Profiles</text>
+      <text class="svgtexts" x="930" y="304" text-anchor="middle">OEM recall + mechanical rate + bulletins</text>
+
+      <!-- Bottom: RIDE Pillars Legend -->
+      <rect x="10" y="465" width="1080" height="120" rx="12" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <text class="svgtextm" x="30" y="488" font-size="9" fill="#9B9890" letter-spacing="1">RIDE SCORE PILLARS</text>
+
+      <circle cx="50" cy="520" r="24" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.3)" stroke-width="1"/>
+      <text class="svgtext" x="50" y="523" text-anchor="middle" font-size="16" font-weight="700" fill="#3B82F6">R</text>
+      <text class="svgtexts" x="50" y="558" text-anchor="middle">Readiness</text>
+
+      <circle cx="160" cy="520" r="24" fill="rgba(245,158,11,0.12)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+      <text class="svgtext" x="160" y="523" text-anchor="middle" font-size="16" font-weight="700" fill="#F59E0B">I</text>
+      <text class="svgtexts" x="160" y="558" text-anchor="middle">Integrity</text>
+
+      <circle cx="270" cy="520" r="24" fill="rgba(239,107,74,0.12)" stroke="rgba(239,107,74,0.3)" stroke-width="1"/>
+      <text class="svgtext" x="270" y="523" text-anchor="middle" font-size="16" font-weight="700" fill="#EF6B4A">D</text>
+      <text class="svgtexts" x="270" y="558" text-anchor="middle">Delivery</text>
+
+      <circle cx="380" cy="520" r="24" fill="rgba(20,184,166,0.12)" stroke="rgba(20,184,166,0.3)" stroke-width="1"/>
+      <text class="svgtext" x="380" y="523" text-anchor="middle" font-size="16" font-weight="700" fill="#14B8A6">E</text>
+      <text class="svgtexts" x="380" y="558" text-anchor="middle">Environment</text>
+
+      <!-- Pillar descriptions -->
+      <text class="svgtexts" x="470" y="508">R &mdash; Staffing levels, training gaps, OSHA occupational incident rates</text>
+      <text class="svgtexts" x="470" y="526">I &mdash; Mechanical failure rates, SB compliance, recalls, manufacturer risk</text>
+      <text class="svgtexts" x="470" y="544">D &mdash; Guest incident rates, consumer complaints, injury severity</text>
+      <text class="svgtexts" x="470" y="562">E &mdash; Seasonal patterns, weather-adjusted risk, state regulatory context</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══════════════════ PILLAR MAPPING ═══════════════════ -->
+<section id="mapping">
+  <div class="section-label">03 &mdash; Pillar Mapping</div>
+  <h2 class="section-title">Source &rarr; pillar traceability matrix</h2>
+  <p class="section-desc">
+    Every data source maps to one or more RIDE Score pillars. This matrix shows what each source contributes to the composite benchmark, and the specific fields that flow into each pillar's calculation.
+  </p>
+
+  <div class="pillar-table-wrap">
+    <table class="pillar-table">
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>R &mdash; Readiness</th>
+          <th>I &mdash; Integrity</th>
+          <th>D &mdash; Delivery</th>
+          <th>E &mdash; Environment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>CPSC NEISS</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>National injury estimates by product code; severity (hospitalization rate)</td>
+          <td>Seasonal distribution; age/sex demographics</td>
+        </tr>
+        <tr>
+          <td>Saferparks 2017</td>
+          <td>Operator-reported descriptions; staffing context in narratives</td>
+          <td><code>mechanical</code> flag; <code>manufacturer</code> failure rates</td>
+          <td><code>num_injured</code>; <code>category</code> (cause); <code>device_category</code> incident rates</td>
+          <td><code>acc_date</code> seasonality; <code>acc_state</code> regulatory context</td>
+        </tr>
+        <tr>
+          <td>Saferparks Legacy</td>
+          <td>Long-run trend in operator-caused incidents</td>
+          <td>Historical mechanical rate by OEM; 20-year device reliability curves</td>
+          <td>Historical incident baselines by <code>bus_type</code></td>
+          <td>Multi-decade seasonality validation</td>
+        </tr>
+        <tr>
+          <td>SP NEISS Extract</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>ER-treated injury patterns by device type</td>
+          <td>Injury distribution by month, age cohort</td>
+        </tr>
+        <tr>
+          <td>CARES Bulletins</td>
+          <td>&mdash;</td>
+          <td>Open bulletin count per OEM/device; restraint modifications; compliance status</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+        </tr>
+        <tr>
+          <td>IAAPA / NSC</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>1-in-15.5M injury rate benchmark; injuries per million attendance</td>
+          <td>Year-over-year trend; regional participation rates</td>
+        </tr>
+        <tr>
+          <td>OSHA IMIS / SIR</td>
+          <td>Employee fatality/injury rate at amusement SIC codes; investigation abstracts</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+        </tr>
+        <tr>
+          <td>CoasterForce / Media</td>
+          <td>&mdash;</td>
+          <td>Recent malfunction reports (2018&ndash;present)</td>
+          <td>Recent incident counts by ride type (global)</td>
+          <td>&mdash;</td>
+        </tr>
+        <tr>
+          <td>CPSC Recalls API</td>
+          <td>&mdash;</td>
+          <td>Active recall status per manufacturer/ride model; hazard descriptions; recall scope (unit count)</td>
+          <td>&mdash;</td>
+          <td>&mdash;</td>
+        </tr>
+        <tr>
+          <td>SaferProducts.gov</td>
+          <td>&mdash;</td>
+          <td>Consumer-reported manufacturer defects; product-specific complaints</td>
+          <td>Sub-ER-threshold incidents; patron complaints; near-miss reports</td>
+          <td>&mdash;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════ FIELD CROSSWALK ═══════════════════ -->
+<section>
+  <div class="section-label">04 &mdash; Crosswalk</div>
+  <h2 class="section-title">Saferparks field &rarr; AS 360 taxonomy mapping</h2>
+  <p class="section-desc">
+    The <code>SP_Crosswalk</code> table in Airtable normalizes Saferparks' inconsistent field values to the AS 360 standard taxonomy, enabling DAX joins across all benchmark tables.
+  </p>
+
+  <div class="field-grid">
+    <div class="field-row">
+      <span class="field-from">device_category</span>
+      <span class="field-arrow">&rarr;</span>
+      <span class="field-to">AS360_RideType</span>
+      <span class="field-note">7 categories</span>
+    </div>
+    <div class="field-row">
+      <span class="field-from">bus_type</span>
+      <span class="field-arrow">&rarr;</span>
+      <span class="field-to">AS360_OperatorSegment</span>
+      <span class="field-note">17 park types</span>
+    </div>
+    <div class="field-row">
+      <span class="field-from">manufacturer</span>
+      <span class="field-arrow">&rarr;</span>
+      <span class="field-to">AS360_OEM_Code</span>
+      <span class="field-note">Fuzzy match</span>
+    </div>
+    <div class="field-row">
+      <span class="field-from">industry_sector</span>
+      <span class="field-arrow">&rarr;</span>
+      <span class="field-to">AS360_IndustrySector</span>
+      <span class="field-note">Filter key</span>
+    </div>
+    <div class="field-row">
+      <span class="field-from">category</span>
+      <span class="field-arrow">&rarr;</span>
+      <span class="field-to">AS360_CauseCode</span>
+      <span class="field-note">NLP cleanup</span>
+    </div>
+    <div class="field-row">
+      <span class="field-from">acc_state</span>
+      <span class="field-arrow">&rarr;</span>
+      <span class="field-to">AS360_StateCode</span>
+      <span class="field-note">Direct map</span>
+    </div>
+    <div class="field-row">
+      <span class="field-from">mechanical</span>
+      <span class="field-arrow">&rarr;</span>
+      <span class="field-to">AS360_MechFlag</span>
+      <span class="field-note">Binary 0/1</span>
+    </div>
+    <div class="field-row">
+      <span class="field-from">acc_date</span>
+      <span class="field-arrow">&rarr;</span>
+      <span class="field-to">AS360_Calendar[Date]</span>
+      <span class="field-note">Date parse</span>
+    </div>
+    <div class="field-row">
+      <span class="field-from">num_injured</span>
+      <span class="field-arrow">&rarr;</span>
+      <span class="field-to">AS360_InjuryCount</span>
+      <span class="field-note">Integer</span>
+    </div>
+    <div class="field-row">
+      <span class="field-from">age / gender</span>
+      <span class="field-arrow">&rarr;</span>
+      <span class="field-to">AS360_Demographics</span>
+      <span class="field-note">Youngest patron</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ DAX MEASURES ═══════════════════ -->
+<section id="measures">
+  <div class="section-label">05 &mdash; DAX Measures</div>
+  <h2 class="section-title">Section 28: Industry Benchmarks (skeleton)</h2>
+  <p class="section-desc">
+    New DAX measure block for the AS 360 Power BI model. These measures reference the <code>SP_Benchmark</code> tables connected via Airtable Web API connector and joined through the <code>SP_Crosswalk</code> dimension.
+  </p>
+
+  <div class="dax-block">
+    <div class="dax-header">
+      <span class="dax-name">[Benchmark_IncidentRate_ByCategory]</span>
+      <span class="dax-pillar dax-pillar-d">D &mdash; Delivery</span>
+    </div>
+    <div class="dax-code"><span class="cm">// Industry incident rate per device category per year</span>
+<span class="fn">DIVIDE</span>(
+  <span class="fn">CALCULATE</span>( <span class="fn">COUNTROWS</span>( SP_Accidents ),
+    <span class="fn">USERELATIONSHIP</span>( SP_Accidents[device_category], SP_Crosswalk[SP_DeviceCategory] )
+  ),
+  <span class="fn">DISTINCTCOUNT</span>( SP_Accidents[acc_year] ),
+  <span class="num">0</span>
+)</div>
+    <div class="dax-desc">Annualized incident count for the operator's device category segment. Denominator uses distinct years in the dataset to normalize for uneven collection periods.</div>
+  </div>
+
+  <div class="dax-block">
+    <div class="dax-header">
+      <span class="dax-name">[Benchmark_MechanicalRate_ByOEM]</span>
+      <span class="dax-pillar dax-pillar-i">I &mdash; Integrity</span>
+    </div>
+    <div class="dax-code"><span class="cm">// Mechanical failure rate per manufacturer</span>
+<span class="fn">DIVIDE</span>(
+  <span class="fn">CALCULATE</span>( <span class="fn">COUNTROWS</span>( SP_Accidents ),
+    SP_Accidents[mechanical] = <span class="num">1</span>
+  ),
+  <span class="fn">COUNTROWS</span>( SP_Accidents ),
+  <span class="num">0</span>
+)</div>
+    <div class="dax-desc">Proportion of incidents attributed to mechanical causes for a given manufacturer, sliced by OEM via SP_Crosswalk. Compare to operator's ride fleet to flag high-mechanical-risk OEMs.</div>
+  </div>
+
+  <div class="dax-block">
+    <div class="dax-header">
+      <span class="dax-name">[Benchmark_SeasonalityIndex]</span>
+      <span class="dax-pillar dax-pillar-e">E &mdash; Environment</span>
+    </div>
+    <div class="dax-code"><span class="cm">// Monthly incident distribution (normalized to annual average = 1.0)</span>
+<span class="fn">DIVIDE</span>(
+  <span class="fn">COUNTROWS</span>( SP_Accidents ),
+  <span class="fn">DIVIDE</span>(
+    <span class="fn">CALCULATE</span>( <span class="fn">COUNTROWS</span>( SP_Accidents ), <span class="fn">ALL</span>( Calendar[Month] ) ),
+    <span class="num">12</span>
+  ),
+  <span class="num">1</span>
+)</div>
+    <div class="dax-desc">Ratio of current month's incidents to the annual monthly average. Values &gt;1.0 indicate above-average risk months (expect June&ndash;August peaks ~1.8&ndash;2.2x baseline).</div>
+  </div>
+
+  <div class="dax-block">
+    <div class="dax-header">
+      <span class="dax-name">[RIDE_vs_Benchmark_Percentile]</span>
+      <span class="dax-pillar dax-pillar-all">All Pillars</span>
+    </div>
+    <div class="dax-code"><span class="cm">// Operator's RIDE Score percentile vs. industry benchmark distribution</span>
+<span class="kw">VAR</span> _OperatorScore = [RIDE_Score_Composite]
+<span class="kw">VAR</span> _BenchmarkMedian = [Benchmark_IncidentRate_ByCategory]
+<span class="kw">VAR</span> _BenchmarkStdDev = [Benchmark_StdDev_ByCategory]
+<span class="kw">RETURN</span>
+  <span class="fn">NORM.DIST</span>( _OperatorScore, _BenchmarkMedian, _BenchmarkStdDev, <span class="num">TRUE</span> )</div>
+    <div class="dax-desc">Positions the operator's composite RIDE Score on a normal distribution fitted to the benchmark segment. Output: percentile rank (0&ndash;1). "This operator is performing at the 78th percentile for amusement parks with this device mix."</div>
+  </div>
+
+  <div class="dax-block">
+    <div class="dax-header">
+      <span class="dax-name">[Benchmark_StateRiskIndex]</span>
+      <span class="dax-pillar dax-pillar-e">E &mdash; Environment</span>
+    </div>
+    <div class="dax-code"><span class="cm">// Incident density by state, normalized per 100K population</span>
+<span class="fn">DIVIDE</span>(
+  <span class="fn">COUNTROWS</span>( SP_Accidents ),
+  <span class="fn">RELATED</span>( StatePop[Population] ) / <span class="num">100000</span>,
+  <span class="num">0</span>
+)</div>
+    <div class="dax-desc">Adjusts raw state incident counts for population. Cross-references RidesDatabase 50-state regulatory agency data to weight by inspection regime strength.</div>
+  </div>
+
+  <div class="dax-block">
+    <div class="dax-header">
+      <span class="dax-name">[Benchmark_OSHA_ReadinessFlag]</span>
+      <span class="dax-pillar dax-pillar-r">R &mdash; Readiness</span>
+    </div>
+    <div class="dax-code"><span class="cm">// Binary flag: operator's SIC code appears in OSHA SIR within 3 years</span>
+<span class="kw">VAR</span> _OpSIC = <span class="fn">SELECTEDVALUE</span>( Operator[SIC_Code] )
+<span class="kw">VAR</span> _Recent = <span class="fn">CALCULATE</span>(
+  <span class="fn">COUNTROWS</span>( SP_OSHA_SIR ),
+  SP_OSHA_SIR[SIC] = _OpSIC,
+  SP_OSHA_SIR[Date] >= <span class="fn">TODAY</span>() - <span class="num">1095</span>
+)
+<span class="kw">RETURN</span> <span class="kw">IF</span>( _Recent > <span class="num">0</span>, <span class="num">1</span>, <span class="num">0</span> )</div>
+    <div class="dax-desc">Checks if the operator's industry classification has recent OSHA severe injury reports. Triggers a Readiness pillar deduction when the operator's SIC code cluster shows elevated occupational risk.</div>
+  </div>
+
+  <div class="dax-block">
+    <div class="dax-header">
+      <span class="dax-name">[Benchmark_ActiveRecalls_ByOEM]</span>
+      <span class="dax-pillar dax-pillar-i">I &mdash; Integrity</span>
+    </div>
+    <div class="dax-code"><span class="cm">// Count of active CPSC recalls for manufacturers in operator's fleet</span>
+<span class="kw">VAR</span> _FleetOEMs = <span class="fn">VALUES</span>( OperatorFleet[Manufacturer] )
+<span class="kw">RETURN</span>
+  <span class="fn">CALCULATE</span>(
+    <span class="fn">COUNTROWS</span>( SP_CPSC_Recalls ),
+    SP_CPSC_Recalls[Manufacturer] <span class="kw">IN</span> _FleetOEMs
+  )</div>
+    <div class="dax-desc">Counts active product recalls from CPSC that match manufacturers in the operator's ride fleet. Any non-zero value is a high-severity Integrity flag — the manufacturer has a federal recall outstanding on a product type the operator may be running.</div>
+  </div>
+
+  <div class="dax-block">
+    <div class="dax-header">
+      <span class="dax-name">[Benchmark_ConsumerComplaints_ByOEM]</span>
+      <span class="dax-pillar dax-pillar-d">D &mdash; Delivery</span>
+    </div>
+    <div class="dax-code"><span class="cm">// Consumer complaint volume from SaferProducts.gov per manufacturer</span>
+<span class="fn">CALCULATE</span>(
+  <span class="fn">COUNTROWS</span>( SP_SaferProducts ),
+  <span class="fn">USERELATIONSHIP</span>( SP_SaferProducts[Manufacturer], SP_Crosswalk[SP_Manufacturer] ),
+  SP_SaferProducts[DateReceived] >= <span class="fn">TODAY</span>() - <span class="num">1825</span> <span class="cm">// 5-year window</span>
+)</div>
+    <div class="dax-desc">Volume of consumer harm reports filed against manufacturers in the operator's fleet over a 5-year rolling window. Captures sub-ER incidents and near-misses that NEISS doesn't see. High complaint volume per OEM signals elevated Delivery risk for operators running that equipment.</div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PIPELINE ═══════════════════ -->
+<section id="pipeline">
+  <div class="section-label">06 &mdash; Implementation Pipeline</div>
+  <h2 class="section-title">Build sequence</h2>
+  <p class="section-desc">
+    Phased implementation from static ingest through automated refresh. Priority ordered by data value and automation feasibility.
+  </p>
+
+  <div class="pipeline-steps">
+    <div class="pipeline-step">
+      <div class="pipeline-step-num">01</div>
+      <div class="pipeline-step-title">Static ingest</div>
+      <div class="pipeline-step-desc">Download Saferparks CSVs (2017 + Legacy + NEISS extract) from ridesdatabase.org. Load into Airtable <code>SP_Benchmark</code> base.</div>
+      <div class="pipeline-step-detail">One-time &bull; ~24K records &bull; 3 tables</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-num">02</div>
+      <div class="pipeline-step-title">Build crosswalk</div>
+      <div class="pipeline-step-desc">Create <code>SP_Crosswalk</code> table mapping Saferparks values to AS 360 taxonomy. Fuzzy match manufacturers. NLP-classify cause categories.</div>
+      <div class="pipeline-step-detail">Manual + scripted &bull; ~200 unique mappings</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-num">03</div>
+      <div class="pipeline-step-title">NEISS live feed</div>
+      <div class="pipeline-step-desc">Query CPSC NEISS for product codes 1293, 3295, 3259. Download annual datasets (2018&ndash;2024) to fill the post-Saferparks gap. Set annual refresh calendar.</div>
+      <div class="pipeline-step-detail">Annual &bull; Query Builder + CSV &bull; ~6 years fill</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-num">04</div>
+      <div class="pipeline-step-title">Power BI connect</div>
+      <div class="pipeline-step-desc">Connect <code>SP_Benchmark</code> to AS 360 Power BI model via Airtable Web API connector. Build Section 28 DAX measures. Wire to Calendar table.</div>
+      <div class="pipeline-step-detail">Same connector pattern as mGSA_Submissions</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-num">05</div>
+      <div class="pipeline-step-title">CARES scraper</div>
+      <div class="pipeline-step-desc">Puppeteer/Playwright script to extract manufacturer &rarr; bulletin mappings from ridesdatabase.org/cares/bulletins/. Load to <code>SP_CARES_Bulletins</code>.</div>
+      <div class="pipeline-step-detail">GitHub Action &bull; Monthly cadence</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-num">06</div>
+      <div class="pipeline-step-title">OSHA SIR ingest</div>
+      <div class="pipeline-step-desc">Download OSHA Severe Injury Reports dataset. Filter to amusement SIC codes (7996, 7941). Load to <code>SP_OSHA_SIR</code> table. Set quarterly refresh.</div>
+      <div class="pipeline-step-detail">Bulk CSV &bull; Quarterly &bull; SIR Dashboard</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-num">07</div>
+      <div class="pipeline-step-title">CPSC Recalls API</div>
+      <div class="pipeline-step-desc">Query CPSC Recalls REST API filtered for amusement-related product types. Load to <code>SP_CPSC_Recalls</code> with manufacturer, hazard, recall date, unit count. Cross-reference against operator fleet manufacturers.</div>
+      <div class="pipeline-step-detail">REST API &bull; JSON &bull; Monthly poll</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-num">08</div>
+      <div class="pipeline-step-title">SaferProducts.gov</div>
+      <div class="pipeline-step-desc">Bulk download or OData API query for consumer harm reports matching amusement product categories. Load to <code>SP_SaferProducts</code>. Filter noise, extract manufacturer names and incident descriptions.</div>
+      <div class="pipeline-step-detail">OData API &bull; Bulk download &bull; Quarterly</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-num">09</div>
+      <div class="pipeline-step-title">IAAPA/NSC access</div>
+      <div class="pipeline-step-desc">Obtain IAAPA membership access to annual Fixed-Site Ride Safety Report. Extract aggregate benchmarks (injuries/million attendance). Manual PDF parse annually.</div>
+      <div class="pipeline-step-detail">Member-gated &bull; Annual &bull; Aggregate only</div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-step-num">10</div>
+      <div class="pipeline-step-title">Phase 3 dashboard</div>
+      <div class="pipeline-step-desc">Build insurance carrier-facing benchmark view. "This operator is at the Nth percentile for their segment." Wire RIDE_vs_Benchmark_Percentile to carrier report template.</div>
+      <div class="pipeline-step-detail">PHLY &bull; Alive Risk &bull; American Specialty</div>
+    </div>
+  </div>
+
+  <div class="caveat-box">
+    <h4>&#9888; Data integrity caveats</h4>
+    <p>
+      Saferparks explicitly notes this data "cannot be ethically used to compare or contrast the safety of different rides, parks, carnivals, or states" due to non-uniform reporting criteria across jurisdictions and time periods. CPSC NEISS data covers mobile (carnival) rides under CPSC jurisdiction but fixed-site parks are excluded from CPSC's regulatory authority. The IAAPA/NSC report is the only source covering fixed-site parks specifically.
+      <br><br>
+      AS 360 positions all benchmark data as <strong>directional industry context</strong>, not definitive safety rankings &mdash; the same approach credit scoring uses. RIDE Score measures an operator's <em>relative position</em> within an imperfect but comprehensive distribution, not their absolute safety record.
+    </p>
+  </div>
+</section>
+
+</div><!-- /content-area -->
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="site-footer">
+  <div class="footer-left">
+    &copy; 2026 Amusement Standards LLC &mdash; RIDE Score&trade; is a trademark of Amusement Standards. Internal architecture document. Not for distribution.
+  </div>
+  <div class="footer-right">
+    <a href="https://amusementstandards.com">amusementstandards.com</a>
+    <a href="mailto:adam@amusementstandards.com">Contact</a>
+  </div>
+</footer>
+
+<script>
+// Intersection Observer for scroll-triggered animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.source-card, .dax-block, .pipeline-step').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('.header-nav a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+
+</body>
+</html>
