@@ -6,179 +6,28 @@
 <title>AS 360 — Park Operations Platform · Amusement Standards</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#06080D;
-  --teal:#00D4D0;--teal2:#00A8A5;
-  --gold:#D4AF37;--gold2:#B8960C;
-  --red:#FF3B5C;--blue:#2E6FFF;--green:#00D68F;
-  --amber:#FFB800;--purple:#8B5CF6;--orange:#FF6B35;
-  --text:#94A3B8;--text-bright:#E2EAF4;--dim:#1E293B;
-  --mono:'JetBrains Mono',monospace;--display:'Bebas Neue',sans-serif;--body:'DM Sans',sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{width:100%;overflow-x:hidden;}
-body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-height:100vh;}
-
-/* ── HERO ── */
-.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:80px 24px 60px;
-  background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(0,212,208,.07) 0%,transparent 60%),
-  radial-gradient(ellipse 40% 40% at 20% 70%,rgba(212,175,55,.04) 0%,transparent 50%),
-  radial-gradient(ellipse 50% 40% at 80% 20%,rgba(46,111,255,.04) 0%,transparent 50%),var(--bg);}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:860px;}
-.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--teal);margin-bottom:18px;opacity:0;animation:fadeUp .6s .2s ease forwards;}
-.hero-title{font-family:var(--display);font-size:clamp(52px,8.5vw,106px);line-height:.92;color:var(--text-bright);margin-bottom:10px;opacity:0;animation:fadeUp .7s .35s ease forwards;}
-.hero-title span{color:var(--teal);}
-.hero-sub{font-family:var(--display);font-size:clamp(24px,3.5vw,44px);color:var(--gold);letter-spacing:2px;margin-bottom:24px;opacity:0;animation:fadeUp .7s .45s ease forwards;}
-.hero-desc{font-size:17px;line-height:1.7;color:var(--text);max-width:620px;margin:0 auto 36px;opacity:0;animation:fadeUp .7s .55s ease forwards;}
-.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .65s ease forwards;}
-.btn-primary{padding:14px 32px;background:linear-gradient(135deg,var(--teal),var(--teal2));border:none;border-radius:8px;font-family:var(--display);font-size:18px;letter-spacing:1px;color:#06080D;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 4px 24px rgba(0,212,208,.25);}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(0,212,208,.4);}
-.btn-secondary{padding:14px 28px;border:1.5px solid rgba(148,163,184,.25);border-radius:8px;font-family:var(--display);font-size:18px;letter-spacing:1px;color:var(--text);cursor:pointer;text-decoration:none;transition:all .2s;background:rgba(255,255,255,.03);}
-.btn-secondary:hover{border-color:var(--teal);color:var(--teal);background:rgba(0,212,208,.06);}
-.btn-gold{border-color:rgba(212,175,55,.4);color:var(--gold);background:rgba(212,175,55,.06);}
-.btn-gold:hover{border-color:var(--gold);background:rgba(212,175,55,.12);color:var(--gold);}
-
-/* ── STATS BAR ── */
-.stats-bar{padding:56px 24px;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);}
-.stats-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:0;}
-@media(min-width:700px){.stats-inner{grid-template-columns:repeat(6,1fr);}}
-.stat-item{text-align:center;padding:16px 8px;border-right:1px solid var(--dim);}
-.stat-item:last-child{border-right:none;}
-.stat-num{font-family:var(--display);font-size:44px;color:var(--teal);line-height:1;}
-.stat-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--text);margin-top:5px;}
-
-/* ── SECTION UTILITIES ── */
-.sec{padding:80px 24px;}
-.sec-dark{background:rgba(0,0,0,.3);border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);}
-.sec-inner{max-width:1200px;margin:0 auto;}
-.sec-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
-.sec-title{font-family:var(--display);font-size:clamp(36px,5vw,64px);color:var(--text-bright);line-height:1;margin-bottom:16px;}
-.sec-title span{color:var(--teal);}
-.sec-title .gold{color:var(--gold);}
-.sec-body{font-size:16px;line-height:1.75;color:var(--text);max-width:640px;}
-
-/* ── CORE MODULES TRIAD ── */
-.triad{display:grid;grid-template-columns:1fr;gap:20px;margin-top:48px;}
-@media(min-width:800px){.triad{grid-template-columns:repeat(3,1fr);}}
-.triad-card{background:rgba(255,255,255,.03);border:1px solid var(--dim);border-radius:16px;padding:32px 28px;position:relative;overflow:hidden;transition:all .2s;}
-.triad-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
-.triad-card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.5);}
-.tc-mgr::before{background:var(--teal);}.tc-opd::before{background:var(--blue);}.tc-atr::before{background:var(--orange);}
-.tc-icon{font-size:36px;margin-bottom:12px;}
-.tc-code{font-family:var(--mono);font-size:11px;letter-spacing:2px;font-weight:700;margin-bottom:4px;}
-.tc-mgr .tc-code{color:var(--teal);}.tc-opd .tc-code{color:var(--blue);}.tc-atr .tc-code{color:var(--orange);}
-.tc-name{font-family:var(--display);font-size:28px;color:var(--text-bright);letter-spacing:.5px;margin-bottom:12px;}
-.tc-desc{font-size:14px;color:var(--text);line-height:1.65;margin-bottom:20px;}
-.tc-features{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}
-.tc-feat{font-size:12px;color:rgba(255,255,255,.5);padding:6px 12px;background:rgba(255,255,255,.03);border-radius:6px;display:flex;align-items:center;gap:8px;}
-.tc-feat-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
-.tc-link{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-decoration:none;transition:color .15s;}
-.tc-mgr .tc-link{color:var(--teal);}.tc-opd .tc-link{color:var(--blue);}.tc-atr .tc-link{color:var(--orange);}
-.tc-link:hover{text-decoration:underline;}
-
-/* ── MODULE GRID (inspections, forms, etc.) ── */
-.module-group-label{display:flex;align-items:center;gap:14px;margin:40px 0 14px;}
-.mgl-text{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);white-space:nowrap;font-weight:700;}
-.mgl-line{flex:1;height:1px;background:rgba(0,212,208,.15);}
-.mgl-sub{font-size:11px;color:rgba(255,255,255,.25);white-space:nowrap;font-style:italic;}
-.mgl-count{font-family:var(--mono);font-size:10px;color:var(--teal);background:rgba(0,212,208,.1);border:1px solid rgba(0,212,208,.2);padding:2px 8px;border-radius:4px;white-space:nowrap;}
-.module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px;}
-@media(min-width:600px){.module-grid{grid-template-columns:repeat(3,1fr);}}
-@media(min-width:900px){.module-grid{grid-template-columns:repeat(4,1fr);}}
-.module-card{background:rgba(255,255,255,.03);border:1px solid var(--dim);border-radius:12px;padding:18px 15px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:6px;transition:all .18s;position:relative;overflow:hidden;}
-.module-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .18s;}
-.module-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,0,0,.4);}
-.module-card:hover::after{opacity:1;}
-.mc-teal::after{background:var(--teal);}.mc-blue::after{background:var(--blue);}
-.mc-green::after{background:var(--green);}.mc-amber::after{background:var(--amber);}
-.mc-red::after{background:var(--red);}.mc-purple::after{background:var(--purple);}
-.mc-orange::after{background:var(--orange);}.mc-gold::after{background:var(--gold);}
-.mc-auto::after{background:var(--teal);}.mc-auto .m-code{color:var(--teal);}
-.m-icon{font-size:22px;}.m-code{font-family:var(--mono);font-size:9px;letter-spacing:2px;font-weight:700;}
-.mc-teal .m-code{color:var(--teal);}.mc-blue .m-code{color:var(--blue);}
-.mc-green .m-code{color:var(--green);}.mc-amber .m-code{color:var(--amber);}
-.mc-red .m-code{color:var(--red);}.mc-purple .m-code{color:var(--purple);}
-.mc-orange .m-code{color:var(--orange);}.mc-gold .m-code{color:var(--gold);}
-.m-name{font-size:13px;font-weight:600;color:var(--text-bright);line-height:1.25;}
-.m-desc{font-size:11px;color:var(--text);line-height:1.5;flex:1;}
-.m-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
-.m-tag{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.35);}
-.m-arrow{font-size:13px;color:rgba(255,255,255,.2);transition:color .15s;}
-.module-card:hover .m-arrow{color:var(--teal);}
-.m-auto-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:2px 8px;border-radius:3px;background:rgba(0,212,208,.08);border:1px solid rgba(0,212,208,.2);color:var(--teal);margin-bottom:2px;}
-.m-auto-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:autoPulse 1.8s ease-in-out infinite;}
-@keyframes autoPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
-.m-mgr-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:.8px;padding:2px 7px;border-radius:3px;background:rgba(0,212,208,.06);border:1px solid rgba(0,212,208,.15);color:rgba(0,212,208,.6);margin-bottom:2px;}
-
-/* ── SCORE BADGES ── */
-.score-badges{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:3px;}
-.sb{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.05em;}
-.sb-ride{background:rgba(255,107,53,.15);color:#FF6B35;border:1px solid rgba(255,107,53,.3);}
-.sb-splash{background:rgba(30,158,212,.15);color:#1e9ed4;border:1px solid rgba(30,158,212,.3);}
-.sb-play{background:rgba(31,184,122,.15);color:#1fb87a;border:1px solid rgba(31,184,122,.3);}
-
-/* ── RIDE SCORE OUTPUT SECTION ── */
-.score-output{display:grid;grid-template-columns:1fr;gap:32px;margin-top:48px;}
-@media(min-width:800px){.score-output{grid-template-columns:auto 1fr;}}
-.score-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:32px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:16px;}
-.score-ring{position:relative;width:140px;height:140px;}
-.score-ring svg{width:100%;height:100%;}
-.score-ring .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.score-ring .score-num{font-family:var(--display);font-size:52px;color:var(--gold);line-height:1;}
-.score-ring .score-label{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:2px;margin-top:2px;}
-.pillar-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
-.pillar-chip{padding:8px 14px;border-radius:8px;text-align:center;min-width:80px;}
-.pillar-chip-letter{font-family:var(--display);font-size:24px;line-height:1;}
-.pillar-chip-name{font-family:var(--mono);font-size:8px;letter-spacing:1px;margin-top:2px;}
-.pillar-chip-score{font-family:var(--display);font-size:18px;margin-top:4px;}
-.score-explanation{display:flex;flex-direction:column;justify-content:center;gap:16px;}
-.se-title{font-family:var(--display);font-size:clamp(28px,4vw,44px);color:var(--text-bright);line-height:1;}
-.se-title span{color:var(--gold);}
-.se-body{font-size:15px;color:var(--text);line-height:1.7;max-width:520px;}
-.se-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;}
-.se-link{font-family:var(--mono);font-size:11px;padding:8px 16px;border:1px solid rgba(212,175,55,.3);border-radius:6px;color:var(--gold);text-decoration:none;transition:all .15s;}
-.se-link:hover{border-color:var(--gold);background:rgba(212,175,55,.1);}
-
-/* ── DELIVERABLE BANNER ── */
-.deliverable-banner{margin:48px 0 0;padding:24px 32px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:14px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}
-.deliverable-banner-label{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
-.deliverable-banner-title{font-family:var(--display);font-size:22px;color:var(--text-bright);letter-spacing:.5px;margin-bottom:4px;}
-.deliverable-banner-desc{font-size:13px;color:var(--text);line-height:1.5;}
-.deliverable-banner-btn{padding:12px 28px;background:rgba(212,175,55,.12);border:1.5px solid rgba(212,175,55,.4);border-radius:8px;font-family:var(--display);font-size:17px;letter-spacing:1px;color:var(--gold);text-decoration:none;white-space:nowrap;transition:all .2s;flex-shrink:0;}
-.deliverable-banner-btn:hover{background:rgba(212,175,55,.2);border-color:var(--gold);}
-
-/* ── CTA ── */
-.cta-section{padding:100px 24px;text-align:center;}
-.cta-inner{max-width:640px;margin:0 auto;}
-.cta-title{font-family:var(--display);font-size:clamp(40px,7vw,80px);color:var(--text-bright);line-height:.95;margin-bottom:20px;}
-.cta-title span{color:var(--teal);}
-.cta-body{font-size:17px;line-height:1.7;color:var(--text);margin-bottom:36px;}
-.cta-note{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.2);margin-top:20px;letter-spacing:.5px;}
-
-/* ── FOOTER ── */
-.site-footer{border-top:1px solid var(--dim);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.sf-brand{font-family:var(--display);font-size:20px;color:var(--text);letter-spacing:1px;}
-.sf-brand span{color:var(--teal);}
-.sf-links{display:flex;gap:20px;flex-wrap:wrap;}
-.sf-links a{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3);text-decoration:none;letter-spacing:1px;transition:color .15s;}
-.sf-links a:hover{color:var(--teal);}
-.sf-copy{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.15);}
-
-/* ── ANIMATION ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
-@keyframes ringDraw{from{stroke-dashoffset:440;}to{stroke-dashoffset:80;}}
-.ring-anim{animation:ringDraw 1.8s 1s ease forwards;}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
-@keyframes revealFallback{to{opacity:1;transform:translateY(0);}}
-.reveal{animation:revealFallback 0s 1.5s forwards;}
+:root{--bg:#06080D;--teal:#00D4D0;--teal2:#00A8A5;--gold:#D4AF37;--gold2:#B8960C;--red:#FF3B5C;--blue:#2E6FFF;--green:#00D68F;--amber:#FFB800;--purple:#8B5CF6;--orange:#FF6B35;--text:#94A3B8;--text-bright:#E2EAF4;--dim:#1E293B;--mono:'JetBrains Mono',monospace;--display:'Bebas Neue',sans-serif;--body:'DM Sans',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;overflow-x:hidden;}body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-height:100vh;}
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:80px 24px 60px;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(0,212,208,.07) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 20% 70%,rgba(212,175,55,.04) 0%,transparent 50%),radial-gradient(ellipse 50% 40% at 80% 20%,rgba(46,111,255,.04) 0%,transparent 50%),var(--bg);}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:860px;}.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--teal);margin-bottom:18px;opacity:0;animation:fadeUp .6s .2s ease forwards;}.hero-title{font-family:var(--display);font-size:clamp(52px,8.5vw,106px);line-height:.92;color:var(--text-bright);margin-bottom:10px;opacity:0;animation:fadeUp .7s .35s ease forwards;}.hero-title span{color:var(--teal);}.hero-sub{font-family:var(--display);font-size:clamp(24px,3.5vw,44px);color:var(--gold);letter-spacing:2px;margin-bottom:24px;opacity:0;animation:fadeUp .7s .45s ease forwards;}.hero-desc{font-size:17px;line-height:1.7;color:var(--text);max-width:620px;margin:0 auto 36px;opacity:0;animation:fadeUp .7s .55s ease forwards;}.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .65s ease forwards;}
+.btn-primary{padding:14px 32px;background:linear-gradient(135deg,var(--teal),var(--teal2));border:none;border-radius:8px;font-family:var(--display);font-size:18px;letter-spacing:1px;color:#06080D;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 4px 24px rgba(0,212,208,.25);}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(0,212,208,.4);}
+.btn-secondary{padding:14px 28px;border:1.5px solid rgba(148,163,184,.25);border-radius:8px;font-family:var(--display);font-size:18px;letter-spacing:1px;color:var(--text);cursor:pointer;text-decoration:none;transition:all .2s;background:rgba(255,255,255,.03);}.btn-secondary:hover{border-color:var(--teal);color:var(--teal);background:rgba(0,212,208,.06);}
+.btn-gold{border-color:rgba(212,175,55,.4);color:var(--gold);background:rgba(212,175,55,.06);}.btn-gold:hover{border-color:var(--gold);background:rgba(212,175,55,.12);color:var(--gold);}
+.btn-insurer{border-color:rgba(46,117,182,.4);color:#5BA3D9;background:rgba(46,117,182,.06);}.btn-insurer:hover{border-color:#5BA3D9;background:rgba(46,117,182,.12);color:#5BA3D9;}
+.stats-bar{padding:56px 24px;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);}.stats-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:0;}@media(min-width:700px){.stats-inner{grid-template-columns:repeat(6,1fr);}}.stat-item{text-align:center;padding:16px 8px;border-right:1px solid var(--dim);}.stat-item:last-child{border-right:none;}.stat-num{font-family:var(--display);font-size:44px;color:var(--teal);line-height:1;}.stat-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--text);margin-top:5px;}
+.sec{padding:80px 24px;}.sec-dark{background:rgba(0,0,0,.3);border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);}.sec-inner{max-width:1200px;margin:0 auto;}.sec-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}.sec-title{font-family:var(--display);font-size:clamp(36px,5vw,64px);color:var(--text-bright);line-height:1;margin-bottom:16px;}.sec-title span{color:var(--teal);}.sec-title .gold{color:var(--gold);}.sec-body{font-size:16px;line-height:1.75;color:var(--text);max-width:640px;}
+.triad{display:grid;grid-template-columns:1fr;gap:20px;margin-top:48px;}@media(min-width:800px){.triad{grid-template-columns:repeat(3,1fr);}}.triad-card{background:rgba(255,255,255,.03);border:1px solid var(--dim);border-radius:16px;padding:32px 28px;position:relative;overflow:hidden;transition:all .2s;}.triad-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}.triad-card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.5);}.tc-mgr::before{background:var(--teal);}.tc-opd::before{background:var(--blue);}.tc-atr::before{background:var(--orange);}.tc-icon{font-size:36px;margin-bottom:12px;}.tc-code{font-family:var(--mono);font-size:11px;letter-spacing:2px;font-weight:700;margin-bottom:4px;}.tc-mgr .tc-code{color:var(--teal);}.tc-opd .tc-code{color:var(--blue);}.tc-atr .tc-code{color:var(--orange);}.tc-name{font-family:var(--display);font-size:28px;color:var(--text-bright);letter-spacing:.5px;margin-bottom:12px;}.tc-desc{font-size:14px;color:var(--text);line-height:1.65;margin-bottom:20px;}.tc-features{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}.tc-feat{font-size:12px;color:rgba(255,255,255,.5);padding:6px 12px;background:rgba(255,255,255,.03);border-radius:6px;display:flex;align-items:center;gap:8px;}.tc-feat-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}.tc-link{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-decoration:none;transition:color .15s;}.tc-mgr .tc-link{color:var(--teal);}.tc-opd .tc-link{color:var(--blue);}.tc-atr .tc-link{color:var(--orange);}.tc-link:hover{text-decoration:underline;}
+.module-group-label{display:flex;align-items:center;gap:14px;margin:40px 0 14px;}.mgl-text{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);white-space:nowrap;font-weight:700;}.mgl-line{flex:1;height:1px;background:rgba(0,212,208,.15);}.mgl-count{font-family:var(--mono);font-size:10px;color:var(--teal);background:rgba(0,212,208,.1);border:1px solid rgba(0,212,208,.2);padding:2px 8px;border-radius:4px;white-space:nowrap;}
+.module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px;}@media(min-width:600px){.module-grid{grid-template-columns:repeat(3,1fr);}}@media(min-width:900px){.module-grid{grid-template-columns:repeat(4,1fr);}}.module-card{background:rgba(255,255,255,.03);border:1px solid var(--dim);border-radius:12px;padding:18px 15px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:6px;transition:all .18s;position:relative;overflow:hidden;}.module-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .18s;}.module-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,0,0,.4);}.module-card:hover::after{opacity:1;}.mc-teal::after{background:var(--teal);}.mc-blue::after{background:var(--blue);}.mc-green::after{background:var(--green);}.mc-amber::after{background:var(--amber);}.mc-red::after{background:var(--red);}.mc-purple::after{background:var(--purple);}.mc-orange::after{background:var(--orange);}.mc-gold::after{background:var(--gold);}.mc-auto::after{background:var(--teal);}.mc-auto .m-code{color:var(--teal);}.m-icon{font-size:22px;}.m-code{font-family:var(--mono);font-size:9px;letter-spacing:2px;font-weight:700;}.mc-teal .m-code{color:var(--teal);}.mc-blue .m-code{color:var(--blue);}.mc-green .m-code{color:var(--green);}.mc-amber .m-code{color:var(--amber);}.mc-red .m-code{color:var(--red);}.mc-purple .m-code{color:var(--purple);}.mc-orange .m-code{color:var(--orange);}.mc-gold .m-code{color:var(--gold);}.m-name{font-size:13px;font-weight:600;color:var(--text-bright);line-height:1.25;}.m-desc{font-size:11px;color:var(--text);line-height:1.5;flex:1;}.m-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}.m-tag{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.35);}.m-arrow{font-size:13px;color:rgba(255,255,255,.2);transition:color .15s;}.module-card:hover .m-arrow{color:var(--teal);}.m-auto-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:2px 8px;border-radius:3px;background:rgba(0,212,208,.08);border:1px solid rgba(0,212,208,.2);color:var(--teal);margin-bottom:2px;}.m-auto-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:autoPulse 1.8s ease-in-out infinite;}@keyframes autoPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}.m-mgr-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:.8px;padding:2px 7px;border-radius:3px;background:rgba(0,212,208,.06);border:1px solid rgba(0,212,208,.15);color:rgba(0,212,208,.6);margin-bottom:2px;}
+.score-badges{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:3px;}.sb{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.05em;}.sb-ride{background:rgba(255,107,53,.15);color:#FF6B35;border:1px solid rgba(255,107,53,.3);}.sb-splash{background:rgba(30,158,212,.15);color:#1e9ed4;border:1px solid rgba(30,158,212,.3);}.sb-play{background:rgba(31,184,122,.15);color:#1fb87a;border:1px solid rgba(31,184,122,.3);}
+.score-output{display:grid;grid-template-columns:1fr;gap:32px;margin-top:48px;}@media(min-width:800px){.score-output{grid-template-columns:auto 1fr;}}.score-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:32px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:16px;}.score-ring{position:relative;width:140px;height:140px;}.score-ring svg{width:100%;height:100%;}.score-ring .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}.score-ring .score-num{font-family:var(--display);font-size:52px;color:var(--gold);line-height:1;}.score-ring .score-label{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:2px;margin-top:2px;}.pillar-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}.pillar-chip{padding:8px 14px;border-radius:8px;text-align:center;min-width:80px;}.pillar-chip-letter{font-family:var(--display);font-size:24px;line-height:1;}.pillar-chip-name{font-family:var(--mono);font-size:8px;letter-spacing:1px;margin-top:2px;}.pillar-chip-score{font-family:var(--display);font-size:18px;margin-top:4px;}.score-explanation{display:flex;flex-direction:column;justify-content:center;gap:16px;}.se-title{font-family:var(--display);font-size:clamp(28px,4vw,44px);color:var(--text-bright);line-height:1;}.se-title span{color:var(--gold);}.se-body{font-size:15px;color:var(--text);line-height:1.7;max-width:520px;}.se-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;}.se-link{font-family:var(--mono);font-size:11px;padding:8px 16px;border:1px solid rgba(212,175,55,.3);border-radius:6px;color:var(--gold);text-decoration:none;transition:all .15s;}.se-link:hover{border-color:var(--gold);background:rgba(212,175,55,.1);}.se-link-insurer{border-color:rgba(46,117,182,.3);color:#5BA3D9;}.se-link-insurer:hover{border-color:#5BA3D9;background:rgba(46,117,182,.1);}
+.deliverable-banner{margin:48px 0 0;padding:24px 32px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:14px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}.deliverable-banner-label{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}.deliverable-banner-title{font-family:var(--display);font-size:22px;color:var(--text-bright);letter-spacing:.5px;margin-bottom:4px;}.deliverable-banner-desc{font-size:13px;color:var(--text);line-height:1.5;}.deliverable-banner-btn{padding:12px 28px;background:rgba(212,175,55,.12);border:1.5px solid rgba(212,175,55,.4);border-radius:8px;font-family:var(--display);font-size:17px;letter-spacing:1px;color:var(--gold);text-decoration:none;white-space:nowrap;transition:all .2s;flex-shrink:0;}.deliverable-banner-btn:hover{background:rgba(212,175,55,.2);border-color:var(--gold);}
+.cta-section{padding:100px 24px;text-align:center;}.cta-inner{max-width:640px;margin:0 auto;}.cta-title{font-family:var(--display);font-size:clamp(40px,7vw,80px);color:var(--text-bright);line-height:.95;margin-bottom:20px;}.cta-title span{color:var(--teal);}.cta-body{font-size:17px;line-height:1.7;color:var(--text);margin-bottom:36px;}.cta-note{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.2);margin-top:20px;letter-spacing:.5px;}
+.site-footer{border-top:1px solid var(--dim);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}.sf-brand{font-family:var(--display);font-size:20px;color:var(--text);letter-spacing:1px;}.sf-brand span{color:var(--teal);}.sf-links{display:flex;gap:20px;flex-wrap:wrap;}.sf-links a{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3);text-decoration:none;letter-spacing:1px;transition:color .15s;}.sf-links a:hover{color:var(--teal);}.sf-copy{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.15);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}@keyframes ringDraw{from{stroke-dashoffset:440;}to{stroke-dashoffset:80;}}.ring-anim{animation:ringDraw 1.8s 1s ease forwards;}.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;}.reveal.visible{opacity:1;transform:translateY(0);}@keyframes revealFallback{to{opacity:1;transform:translateY(0);}}.reveal{animation:revealFallback 0s 1.5s forwards;}
 </style>
 </head>
 <body>
-
-<!-- ════════════════════════════════════════════════ -->
-<!-- HERO                                            -->
-<!-- ════════════════════════════════════════════════ -->
 <section class="hero">
   <div class="hero-content">
     <div class="hero-eyebrow">AMUSEMENT STANDARDS · AS 360 PLATFORM</div>
@@ -191,491 +40,115 @@ body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-h
       <a href="https://amusementstandards.com/as360/methodology.html" class="btn-secondary">Methodology</a>
       <a href="https://amusementstandards.com/as360/benchmarking.html" class="btn-secondary">Benchmarking</a>
       <a href="deliverable-sample.html" class="btn-secondary btn-gold">📄 Sample Deliverable</a>
+      <a href="deliverable-insurer.html" class="btn-secondary btn-insurer">🏦 Insurer Dashboard</a>
     </div>
   </div>
 </section>
-
-<!-- ════════════════════════════════════════════════ -->
-<!-- STATS BAR                                       -->
-<!-- ════════════════════════════════════════════════ -->
-<div class="stats-bar reveal">
-  <div class="stats-inner">
-    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Core Modules</div></div>
-    <div class="stat-item"><div class="stat-num">19</div><div class="stat-label">Inspections & Audits</div></div>
-    <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">Tabletop Exercises</div></div>
-    <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">QR Guest Feedback</div></div>
-    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Auto-Feeds</div></div>
-    <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Composite Score</div></div>
-  </div>
+<div class="stats-bar reveal"><div class="stats-inner"><div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Core Modules</div></div><div class="stat-item"><div class="stat-num">19</div><div class="stat-label">Inspections & Audits</div></div><div class="stat-item"><div class="stat-num">12</div><div class="stat-label">Tabletop Exercises</div></div><div class="stat-item"><div class="stat-num">4</div><div class="stat-label">QR Guest Feedback</div></div><div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Auto-Feeds</div></div><div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Composite Score</div></div></div></div>
+<section class="sec sec-dark" id="core"><div class="sec-inner"><div class="sec-eyebrow reveal">THE THREE CORE MODULES</div><div class="sec-title reveal">Run the park. <span>Not paperwork.</span></div><div class="sec-body reveal">Three interconnected operational modules that your management, dispatch, and ride operations teams use every shift. Real-time data flows between them — when an operator opens a ride in ATR, the Manager's clear-to-open board updates. When a rotation goes critical, OPD gets the alert. When EAP roles are assigned in Manager, they push live to the Dispatcher.</div>
+<div class="triad reveal">
+<div class="triad-card tc-mgr"><div class="tc-icon">👔</div><div class="tc-code">MGR</div><div class="tc-name">Manager Module</div><div class="tc-desc">The command center. Runs your entire shift from open to close — and houses 19 inspection and audit forms in its Inspections tab.</div><div class="tc-features"><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Dashboard — live park status, OOS count, open CARs, critical rotations</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>RIDE Score — composite with four pillar breakdown</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Out-of-Service tracking — mechanical, staffing, weather, inspection</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Corrective Action pipeline — CAR creation, aging buckets, escalation</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Inspections tab — 19 audit and inspection forms</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Shift & Handoff — shift logs, handoff documents</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Throughput logging — per-attraction guests, TPH, capacity %</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Rotation management — warn/critical thresholds, timer-driven alerts</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Escalation Contact Matrix — tiered contact directory</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Emergency Response Role Cards — assign at shift start, push to OPD</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Management Roster — populates all assignment dropdowns</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Inspection & Audit Schedule — weekly/monthly/quarterly/annual calendar</div></div><a href="https://amusementstandards.com/as360/manager.html" class="tc-link">Open Manager Module →</a></div>
+<div class="triad-card tc-opd"><div class="tc-icon">📡</div><div class="tc-code">OPD</div><div class="tc-name">Ops Dispatcher</div><div class="tc-desc">Real-time ride status board and operator assignment hub. The dispatcher's live view of everything happening on the floor.</div><div class="tc-features"><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>Ride status board — open, down, hold, delayed per unit</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>Operator-to-unit assignments — who is where, right now</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>Rotation compliance — timer-driven with alerts from MGR</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>Radio log book — timestamped communication record</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>EAP role assignments — received live from Manager module</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>Coverage gap alerts — understaffed positions flagged</div></div><a href="https://amusementstandards.com/as360/ops-dispatch.html" class="tc-link">Open Dispatcher →</a></div>
+<div class="triad-card tc-atr"><div class="tc-icon">🎡</div><div class="tc-code">ATR</div><div class="tc-name">At-Ride / Operator Log</div><div class="tc-desc">The ride operator's daily tool. Opening checklist, cycle logging, anomaly flags — synced live to Manager and Dispatcher.</div><div class="tc-features"><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Opening checklist — pre-open inspection per ride</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Operator shift log — rotation reminders, cycle counts</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Throughput linked to dispatch — guest counts, TPH</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Units in service tracker — syncs to MGR clear-to-open board</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Restraint check logging — per-cycle documentation</div><div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Anomaly flags — immediate escalation to Manager</div></div><a href="https://amusementstandards.com/as360/operator-log.html" class="tc-link">Open Operator Log →</a></div>
+</div></div></section>
+<section class="sec" id="modules"><div class="sec-inner"><div class="sec-eyebrow reveal">FULL PLATFORM SUITE</div><div class="sec-title reveal">Every form. Every feed. <span>All built.</span></div><div class="sec-body reveal">Three core modules, 19 inspection forms inside Manager (including 12 tabletop exercise scenarios), four standalone reporting forms, four QR code guest feedback touchpoints, two third-party audit tools, and three automated data feeds. Nothing is conceptual — every item below is built and functional.</div>
+<div class="deliverable-banner reveal"><div><div class="deliverable-banner-label">AS 360 · RIDE Score™ · Insurer Dossier</div><div class="deliverable-banner-title">What does the output look like?</div><div class="deliverable-banner-desc">See a sample structured risk dossier — the format delivered to specialty lines carriers and ownership groups.</div></div><a href="deliverable-sample.html" class="deliverable-banner-btn">📄 View Sample →</a></div>
+<div class="module-group-label reveal"><span class="mgl-text">Manager Module → Inspections Tab</span><span class="mgl-line"></span><span class="mgl-count">19 FORMS</span></div>
+<div class="module-grid reveal">
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🧹</div><div class="m-code">CCA</div><div class="m-name">Cleanliness & Condition Audit</div><div class="m-desc">Location-by-location facility condition scoring with photo evidence across all areas.</div><div class="m-footer"><span class="m-tag">I · E</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📏</div><div class="m-code">HAE</div><div class="m-name">Height & Age Enforcement Audit</div><div class="m-desc">Staff compliance, violation counts, height stick tape-measure verification with ±¼″ variance flagging.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🧪</div><div class="m-code">WQA</div><div class="m-name">Water Quality Analysis</div><div class="m-desc">pH, chlorine, alkalinity, temperature, pump turnover calculation, test strip photo evidence.</div><div class="m-footer"><span class="m-tag">A · H</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📋</div><div class="m-code">SOP</div><div class="m-name">SOP Adherence Observation</div><div class="m-desc">Direct observation of SOP compliance per area with gap documentation and coaching log.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🪧</div><div class="m-code">SGN</div><div class="m-name">Signage & Compliance Audit</div><div class="m-desc">Safety, height, and regulatory signage verification. Missing/damaged signs flagged.</div><div class="m-footer"><span class="m-tag">I · E</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🚪</div><div class="m-code">EAI</div><div class="m-name">Emergency Access Inspection</div><div class="m-desc">All emergency routes checked. Status from clear to critical blockage with CAR generation.</div><div class="m-footer"><span class="m-tag">R · E</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏗</div><div class="m-code">INF</div><div class="m-name">Infrastructure & Perimeter Log</div><div class="m-desc">Fencing, barriers, walkways, lighting, drainage. Condition scoring with work order generation.</div><div class="m-footer"><span class="m-tag">I · E</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📊</div><div class="m-code">OLI</div><div class="m-name">Operational Load Index</div><div class="m-desc">Actual vs. design capacity per attraction, peak crowd level, park-wide queue averages.</div><div class="m-footer"><span class="m-tag">R · D</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏊</div><div class="m-code">LGD</div><div class="m-name">Lifeguard Zone Audit</div><div class="m-desc">Zone coverage, bottom visibility checks, rescue equipment, bather load per zone.</div><div class="m-footer"><span class="m-tag">L · S · A</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏎️</div><div class="m-code">FLR</div><div class="m-name">Floor Operations Log</div><div class="m-desc">FEC shift log — patron incidents, attraction downtime, machine-down quick log, staffing coverage.</div><div class="m-footer"><span class="m-tag">P · A</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🧒</div><div class="m-code">YPL</div><div class="m-name">Youth Patron Shift Log</div><div class="m-desc">Per-shift incident log — unaccompanied minors, lost children, age challenges, behavioral flags.</div><div class="m-footer"><span class="m-tag">Y</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📊</div><div class="m-code">YPQ</div><div class="m-name">Youth Patron Quarterly Audit</div><div class="m-desc">Supervision ratios, risk zone identification, lost child drill verification, quarterly incident summary.</div><div class="m-footer"><span class="m-tag">Y</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🎂</div><div class="m-code">GEL</div><div class="m-name">Group & Event Supervision Log</div><div class="m-desc">Birthday/group check-in, supervision ratio verification, wristband assignment, incident flags.</div><div class="m-footer"><span class="m-tag">Y · L</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🎢</div><div class="m-code">ACR</div><div class="m-name">Attraction Condition Report</div><div class="m-desc">Fleet-wide ride condition assessment. Rides flagged for engineering review, work orders initiated.</div><div class="m-footer"><span class="m-tag">I</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📬</div><div class="m-code">SBC</div><div class="m-name">Service Bulletin Compliance</div><div class="m-desc">Manufacturer bulletin tracking — reviewed, pending, overdue, non-compliant counts.</div><div class="m-footer"><span class="m-tag">I · R</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🚨</div><div class="m-code">EAP</div><div class="m-name">Emergency Action Plan Review</div><div class="m-desc">EAP checklist — last drill, next drill scheduled, sections requiring update.</div><div class="m-footer"><span class="m-tag">R · E</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏥</div><div class="m-code">HDI</div><div class="m-name">Health Dept. Inspection History</div><div class="m-desc">Full inspection record — agency, outcome, violations, corrective actions, re-inspection dates.</div><div class="m-footer"><span class="m-tag">I</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">⚖️</div><div class="m-code">LDL</div><div class="m-name">Liability Documentation Log</div><div class="m-desc">Waivers, releases, insurance certificates, legal correspondence, preservation holds.</div><div class="m-footer"><span class="m-tag">L</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🗺</div><div class="m-code">TTX</div><div class="m-name">Tabletop Exercise Scenarios</div><div class="m-desc">12 phased discussion-based scenarios — multi-casualty, active threat, foodborne illness, child abduction, and more. Facilitator-logged.</div><div class="m-footer"><span class="m-tag">R · E</span><span class="m-arrow">→</span></div></a>
 </div>
-
-<!-- ════════════════════════════════════════════════ -->
-<!-- THE THREE CORE MODULES                          -->
-<!-- ════════════════════════════════════════════════ -->
-<section class="sec sec-dark" id="core">
-  <div class="sec-inner">
-    <div class="sec-eyebrow reveal">THE THREE CORE MODULES</div>
-    <div class="sec-title reveal">Run the park. <span>Not paperwork.</span></div>
-    <div class="sec-body reveal">Three interconnected operational modules that your management, dispatch, and ride operations teams use every shift. Real-time data flows between them — when an operator opens a ride in ATR, the Manager's clear-to-open board updates. When a rotation goes critical, OPD gets the alert. When EAP roles are assigned in Manager, they push live to the Dispatcher.</div>
-    <div class="triad reveal">
-      <div class="triad-card tc-mgr">
-        <div class="tc-icon">👔</div>
-        <div class="tc-code">MGR</div>
-        <div class="tc-name">Manager Module</div>
-        <div class="tc-desc">The command center. Runs your entire shift from open to close — and houses 19 inspection and audit forms in its Inspections tab.</div>
-        <div class="tc-features">
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Dashboard — live park status, OOS count, open CARs, critical rotations</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>RIDE Score — composite with four pillar breakdown</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Out-of-Service tracking — mechanical, staffing, weather, inspection</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Corrective Action pipeline — CAR creation, aging buckets, escalation</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Inspections tab — 19 audit and inspection forms</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Shift & Handoff — shift logs, handoff documents</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Throughput logging — per-attraction guests, TPH, capacity %</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Rotation management — warn/critical thresholds, timer-driven alerts</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Escalation Contact Matrix — tiered contact directory</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Emergency Response Role Cards — assign at shift start, push to OPD</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Management Roster — populates all assignment dropdowns</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Inspection & Audit Schedule — weekly/monthly/quarterly/annual calendar</div>
-        </div>
-        <a href="https://amusementstandards.com/as360/manager.html" class="tc-link">Open Manager Module →</a>
-      </div>
-      <div class="triad-card tc-opd">
-        <div class="tc-icon">📡</div>
-        <div class="tc-code">OPD</div>
-        <div class="tc-name">Ops Dispatcher</div>
-        <div class="tc-desc">Real-time ride status board and operator assignment hub. The dispatcher's live view of everything happening on the floor.</div>
-        <div class="tc-features">
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>Ride status board — open, down, hold, delayed per unit</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>Operator-to-unit assignments — who is where, right now</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>Rotation compliance — timer-driven with alerts from MGR</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>Radio log book — timestamped communication record</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>EAP role assignments — received live from Manager module</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--blue)"></span>Coverage gap alerts — understaffed positions flagged</div>
-        </div>
-        <a href="https://amusementstandards.com/as360/ops-dispatch.html" class="tc-link">Open Dispatcher →</a>
-      </div>
-      <div class="triad-card tc-atr">
-        <div class="tc-icon">🎡</div>
-        <div class="tc-code">ATR</div>
-        <div class="tc-name">At-Ride / Operator Log</div>
-        <div class="tc-desc">The ride operator's daily tool. Opening checklist, cycle logging, anomaly flags — synced live to Manager and Dispatcher.</div>
-        <div class="tc-features">
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Opening checklist — pre-open inspection per ride</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Operator shift log — rotation reminders, cycle counts</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Throughput linked to dispatch — guest counts, TPH</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Units in service tracker — syncs to MGR clear-to-open board</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Restraint check logging — per-cycle documentation</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Anomaly flags — immediate escalation to Manager</div>
-        </div>
-        <a href="https://amusementstandards.com/as360/operator-log.html" class="tc-link">Open Operator Log →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════ -->
-<!-- FULL SUITE — ALL MODULES AND FORMS              -->
-<!-- ════════════════════════════════════════════════ -->
-<section class="sec" id="modules">
-  <div class="sec-inner">
-    <div class="sec-eyebrow reveal">FULL PLATFORM SUITE</div>
-    <div class="sec-title reveal">Every form. Every feed. <span>All built.</span></div>
-    <div class="sec-body reveal">Three core modules, 19 inspection forms inside Manager (including 12 tabletop exercise scenarios), four standalone reporting forms, four QR code guest feedback touchpoints, two third-party audit tools, and three automated data feeds. Nothing is conceptual — every item below is built and functional.</div>
-
-    <!-- Deliverable banner -->
-    <div class="deliverable-banner reveal">
-      <div>
-        <div class="deliverable-banner-label">AS 360 · RIDE Score™ · Insurer Dossier</div>
-        <div class="deliverable-banner-title">What does the output look like?</div>
-        <div class="deliverable-banner-desc">See a sample structured risk dossier — the format delivered to specialty lines carriers and ownership groups.</div>
-      </div>
-      <a href="deliverable-sample.html" class="deliverable-banner-btn">📄 View Sample →</a>
-    </div>
-
-    <!-- ── 19 INSPECTIONS INSIDE MANAGER ── -->
-    <div class="module-group-label reveal">
-      <span class="mgl-text">Manager Module → Inspections Tab</span>
-      <span class="mgl-line"></span>
-      <span class="mgl-count">19 FORMS</span>
-    </div>
-    <div class="module-grid reveal">
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🧹</div><div class="m-code">CCA</div>
-        <div class="m-name">Cleanliness & Condition Audit</div>
-        <div class="m-desc">Location-by-location facility condition scoring with photo evidence across all areas.</div>
-        <div class="m-footer"><span class="m-tag">I · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">📏</div><div class="m-code">HAE</div>
-        <div class="m-name">Height & Age Enforcement Audit</div>
-        <div class="m-desc">Staff compliance, violation counts, height stick tape-measure verification with ±¼″ variance flagging.</div>
-        <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🧪</div><div class="m-code">WQA</div>
-        <div class="m-name">Water Quality Analysis</div>
-        <div class="m-desc">pH, chlorine, alkalinity, temperature, pump turnover calculation, test strip photo evidence.</div>
-        <div class="m-footer"><span class="m-tag">A · H</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">📋</div><div class="m-code">SOP</div>
-        <div class="m-name">SOP Adherence Observation</div>
-        <div class="m-desc">Direct observation of SOP compliance per area with gap documentation and coaching log.</div>
-        <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🪧</div><div class="m-code">SGN</div>
-        <div class="m-name">Signage & Compliance Audit</div>
-        <div class="m-desc">Safety, height, and regulatory signage verification. Missing/damaged signs flagged.</div>
-        <div class="m-footer"><span class="m-tag">I · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🚪</div><div class="m-code">EAI</div>
-        <div class="m-name">Emergency Access Inspection</div>
-        <div class="m-desc">All emergency routes checked. Status from clear to critical blockage with CAR generation.</div>
-        <div class="m-footer"><span class="m-tag">R · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🏗</div><div class="m-code">INF</div>
-        <div class="m-name">Infrastructure & Perimeter Log</div>
-        <div class="m-desc">Fencing, barriers, walkways, lighting, drainage. Condition scoring with work order generation.</div>
-        <div class="m-footer"><span class="m-tag">I · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">📊</div><div class="m-code">OLI</div>
-        <div class="m-name">Operational Load Index</div>
-        <div class="m-desc">Actual vs. design capacity per attraction, peak crowd level, park-wide queue averages.</div>
-        <div class="m-footer"><span class="m-tag">R · D</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🏊</div><div class="m-code">LGD</div>
-        <div class="m-name">Lifeguard Zone Audit</div>
-        <div class="m-desc">Zone coverage, bottom visibility checks, rescue equipment, bather load per zone.</div>
-        <div class="m-footer"><span class="m-tag">L · S · A</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🏎️</div><div class="m-code">FLR</div>
-        <div class="m-name">Floor Operations Log</div>
-        <div class="m-desc">FEC shift log — patron incidents, attraction downtime, machine-down quick log, staffing coverage.</div>
-        <div class="m-footer"><span class="m-tag">P · A</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🧒</div><div class="m-code">YPL</div>
-        <div class="m-name">Youth Patron Shift Log</div>
-        <div class="m-desc">Per-shift incident log — unaccompanied minors, lost children, age challenges, behavioral flags.</div>
-        <div class="m-footer"><span class="m-tag">Y</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">📊</div><div class="m-code">YPQ</div>
-        <div class="m-name">Youth Patron Quarterly Audit</div>
-        <div class="m-desc">Supervision ratios, risk zone identification, lost child drill verification, quarterly incident summary.</div>
-        <div class="m-footer"><span class="m-tag">Y</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🎂</div><div class="m-code">GEL</div>
-        <div class="m-name">Group & Event Supervision Log</div>
-        <div class="m-desc">Birthday/group check-in, supervision ratio verification, wristband assignment, incident flags.</div>
-        <div class="m-footer"><span class="m-tag">Y · L</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🎢</div><div class="m-code">ACR</div>
-        <div class="m-name">Attraction Condition Report</div>
-        <div class="m-desc">Fleet-wide ride condition assessment. Rides flagged for engineering review, work orders initiated.</div>
-        <div class="m-footer"><span class="m-tag">I</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">📬</div><div class="m-code">SBC</div>
-        <div class="m-name">Service Bulletin Compliance</div>
-        <div class="m-desc">Manufacturer bulletin tracking — reviewed, pending, overdue, non-compliant counts.</div>
-        <div class="m-footer"><span class="m-tag">I · R</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🚨</div><div class="m-code">EAP</div>
-        <div class="m-name">Emergency Action Plan Review</div>
-        <div class="m-desc">EAP checklist — last drill, next drill scheduled, sections requiring update.</div>
-        <div class="m-footer"><span class="m-tag">R · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🏥</div><div class="m-code">HDI</div>
-        <div class="m-name">Health Dept. Inspection History</div>
-        <div class="m-desc">Full inspection record — agency, outcome, violations, corrective actions, re-inspection dates.</div>
-        <div class="m-footer"><span class="m-tag">I</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">⚖️</div><div class="m-code">LDL</div>
-        <div class="m-name">Liability Documentation Log</div>
-        <div class="m-desc">Waivers, releases, insurance certificates, legal correspondence, preservation holds.</div>
-        <div class="m-footer"><span class="m-tag">L</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/manager.html" class="module-card mc-teal">
-        <div class="m-mgr-badge">MGR → INSPECTIONS</div>
-        <div class="m-icon">🗺</div><div class="m-code">TTX</div>
-        <div class="m-name">Tabletop Exercise Scenarios</div>
-        <div class="m-desc">12 phased discussion-based scenarios — multi-casualty, active threat, foodborne illness, child abduction, and more. Facilitator-logged.</div>
-        <div class="m-footer"><span class="m-tag">R · E</span><span class="m-arrow">→</span></div>
-      </a>
-    </div>
-
-    <!-- ── QR CODE GUEST FEEDBACK ── -->
-    <div class="module-group-label reveal">
-      <span class="mgl-text">QR Code Guest Feedback</span>
-      <span class="mgl-line"></span>
-      <span class="mgl-count">4 QR FORMS</span>
-    </div>
-    <div class="module-grid reveal">
-      <a href="https://amusementstandards.com/as360/guest-feedback-ride.html" class="module-card mc-gold">
-        <div class="score-badges"><span class="sb sb-ride">RIDE</span></div>
-        <div class="m-icon">🎢</div><div class="m-code">QR-RIDE</div>
-        <div class="m-name">Ride Exit Feedback</div>
-        <div class="m-desc">QR code at ride exit ramps captures guest sentiment immediately after the experience — wait time, staff interaction, ride condition, safety perception.</div>
-        <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/guest-feedback-ride.html" class="module-card mc-gold">
-        <div class="score-badges"><span class="sb sb-splash">SPLASH</span></div>
-        <div class="m-icon">🏊</div><div class="m-code">QR-SPLASH</div>
-        <div class="m-name">Aquatic Zone Feedback</div>
-        <div class="m-desc">QR at wave pools, lazy rivers, and slide landings. Captures water quality perception, lifeguard interactions, slide experience, and safety.</div>
-        <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/guest-feedback-ride.html" class="module-card mc-gold">
-        <div class="score-badges"><span class="sb sb-play">PLAY</span></div>
-        <div class="m-icon">🕹️</div><div class="m-code">QR-PLAY</div>
-        <div class="m-name">FEC Play Area Feedback</div>
-        <div class="m-desc">QR at FEC attraction exits and play zones. Captures cleanliness, staff presence, equipment condition, and overall experience.</div>
-        <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/nmr.html" class="module-card mc-red">
-        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div>
-        <div class="m-icon">⚠️</div><div class="m-code">QR-NMR</div>
-        <div class="m-name">Guest Near-Miss Flag</div>
-        <div class="m-desc">QR-accessible near-miss report for guests — same triage pipeline as staff. Deployed on safety banners at all locations across all three scores.</div>
-        <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
-      </a>
-    </div>
-
-    <!-- ── STANDALONE REPORTING FORMS ── -->
-    <div class="module-group-label reveal">
-      <span class="mgl-text">Standalone Reporting Forms</span>
-      <span class="mgl-line"></span>
-      <span class="mgl-count">4 FORMS</span>
-    </div>
-    <div class="module-grid reveal">
-      <a href="https://amusementstandards.com/as360/inhouse-gsa.html" class="module-card mc-amber">
-        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div>
-        <div class="m-icon">📝</div><div class="m-code">iGSA</div>
-        <div class="m-name">In-House GSA</div>
-        <div class="m-desc">Rotating management guest services audit — scheduled, distributed execution for convergence validity.</div>
-        <div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/inhouse-safety.html" class="module-card mc-green">
-        <div class="score-badges"><span class="sb sb-ride">RIDE</span></div>
-        <div class="m-icon">🏢</div><div class="m-code">IHS</div>
-        <div class="m-name">In-House Safety Audit</div>
-        <div class="m-desc">Internal inspection against SOPs, pre-opening checklists, maintenance logs, equipment standards.</div>
-        <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/nmr.html" class="module-card mc-red">
-        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div>
-        <div class="m-icon">⚠️</div><div class="m-code">NMR</div>
-        <div class="m-name">Near-Miss Report</div>
-        <div class="m-desc">Structured triage flag — staff or guest submitted. Adjusts R and I scores immediately. Auto-escalates to corrective action.</div>
-        <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/ride-incident-report.html" class="module-card mc-red">
-        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div>
-        <div class="m-icon">🚨</div><div class="m-code">IRL</div>
-        <div class="m-name">Ride Incident Report</div>
-        <div class="m-desc">Full 7-section legal incident record — guest, injury, sequence, response, notifications, witnesses, certification.</div>
-        <div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div>
-      </a>
-    </div>
-
-    <!-- ── THIRD-PARTY AUDITS ── -->
-    <div class="module-group-label reveal">
-      <span class="mgl-text">Third-Party & Independent Audits</span>
-      <span class="mgl-line"></span>
-      <span class="mgl-count">2 FORMS</span>
-    </div>
-    <div class="module-grid reveal">
-      <a href="https://amusementstandards.com/as360/third-party-gsa.html" class="module-card mc-purple">
-        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div>
-        <div class="m-icon">🕵️</div><div class="m-code">mGSA</div>
-        <div class="m-name">Mystery Shopper GSA</div>
-        <div class="m-desc">AS-deployed covert auditor scoring from queue entry through exit ramp. iGSA divergence is the key finding.</div>
-        <div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div>
-      </a>
-      <a href="https://amusementstandards.com/as360/third-party-safety.html" class="module-card mc-teal">
-        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span></div>
-        <div class="m-icon">🔍</div><div class="m-code">TPS</div>
-        <div class="m-name">Third-Party Safety</div>
-        <div class="m-desc">AS-conducted ASTM-aligned compliance inspection from an independent auditor perspective.</div>
-        <div class="m-footer"><span class="m-tag">R · I · E</span><span class="m-arrow">→</span></div>
-      </a>
-    </div>
-
-    <!-- ── POST-VISIT INTELLIGENCE ── -->
-    <div class="module-group-label reveal">
-      <span class="mgl-text">Post-Visit Intelligence</span>
-      <span class="mgl-line"></span>
-      <span class="mgl-count">1 STREAM</span>
-    </div>
-    <div class="module-grid reveal">
-      <a href="https://amusementstandards.com/as360/post-visit.html" class="module-card mc-gold">
-        <div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div>
-        <div class="m-icon">✉️</div><div class="m-code">EXS</div>
-        <div class="m-name">Post-Visit Survey</div>
-        <div class="m-desc">Triggered email survey — reflective sentiment and loyalty data. Higher trust weight than in-park capture. Lagging signal that cross-validates QR feedback.</div>
-        <div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div>
-      </a>
-    </div>
-
-    <!-- ── AUTO-FEEDS ── -->
-    <div class="module-group-label reveal">
-      <span class="mgl-text">Automated Data Feeds</span>
-      <span class="mgl-line"></span>
-      <span class="mgl-count">3 FEEDS</span>
-    </div>
-    <div class="module-grid reveal">
-      <div class="module-card mc-auto" style="cursor:default;">
-        <div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div>
-        <div class="m-icon">🌤</div><div class="m-code">WX</div>
-        <div class="m-name">Weather Data</div>
-        <div class="m-desc">Open-Meteo API — temperature, precipitation, wind speed, lightning alerts. Adjusts Environment pillar, triggers ride-hold flags in OPD.</div>
-        <div class="m-footer"><span class="m-tag">E</span><span style="font-size:13px;color:rgba(0,212,208,.3)">⚡</span></div>
-      </div>
-      <div class="module-card mc-auto" style="cursor:default;">
-        <div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div>
-        <div class="m-icon">⏱</div><div class="m-code">QTX</div>
-        <div class="m-name">Queue & Wait Time</div>
-        <div class="m-desc">Live queue length and wait times via sensor, clicker, or POS. Feeds Readiness and Delivery.</div>
-        <div class="m-footer"><span class="m-tag">R · D</span><span style="font-size:13px;color:rgba(0,212,208,.3)">⚡</span></div>
-      </div>
-      <div class="module-card mc-auto" style="cursor:default;">
-        <div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div>
-        <div class="m-icon">⭐</div><div class="m-code">OLR</div>
-        <div class="m-name">Online Review Intelligence</div>
-        <div class="m-desc">Google, TripAdvisor, Yelp ingestion with sentiment analysis and keyword extraction.</div>
-        <div class="m-footer"><span class="m-tag">D · E</span><span style="font-size:13px;color:rgba(0,212,208,.3)">⚡</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════ -->
-<!-- RIDE SCORE — THE OUTPUT                         -->
-<!-- ════════════════════════════════════════════════ -->
-<section class="sec sec-dark">
-  <div class="sec-inner">
-    <div class="sec-eyebrow reveal">THE OUTPUT</div>
-    <div class="sec-title reveal">Everything above produces <span class="gold">one number.</span></div>
-    <div class="score-output reveal">
-      <div class="score-ring-wrap">
-        <div class="score-ring">
-          <svg viewBox="0 0 160 160">
-            <circle cx="80" cy="80" r="70" fill="none" stroke="rgba(212,175,55,.1)" stroke-width="10"/>
-            <circle cx="80" cy="80" r="70" fill="none" stroke="url(#scoreGrad)" stroke-width="10"
-              stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440"
-              transform="rotate(-90 80 80)" class="ring-anim"/>
-            <defs><linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#B8960C"/><stop offset="100%" stop-color="#D4AF37"/></linearGradient></defs>
-          </svg>
-          <div class="inner"><div class="score-num">81</div><div class="score-label">STRONG</div></div>
-        </div>
-        <div class="pillar-row">
-          <div class="pillar-chip" style="background:rgba(46,111,255,.1);border:1px solid rgba(46,111,255,.2);border-radius:8px;">
-            <div class="pillar-chip-letter" style="color:var(--blue)">R</div>
-            <div class="pillar-chip-name" style="color:rgba(46,111,255,.6)">READY</div>
-            <div class="pillar-chip-score" style="color:var(--blue)">84</div>
-          </div>
-          <div class="pillar-chip" style="background:rgba(0,214,143,.1);border:1px solid rgba(0,214,143,.2);border-radius:8px;">
-            <div class="pillar-chip-letter" style="color:var(--green)">I</div>
-            <div class="pillar-chip-name" style="color:rgba(0,214,143,.6)">INTEG</div>
-            <div class="pillar-chip-score" style="color:var(--green)">79</div>
-          </div>
-          <div class="pillar-chip" style="background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2);border-radius:8px;">
-            <div class="pillar-chip-letter" style="color:var(--orange)">D</div>
-            <div class="pillar-chip-name" style="color:rgba(255,107,53,.6)">DELIV</div>
-            <div class="pillar-chip-score" style="color:var(--orange)">81</div>
-          </div>
-          <div class="pillar-chip" style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:8px;">
-            <div class="pillar-chip-letter" style="color:var(--purple)">E</div>
-            <div class="pillar-chip-name" style="color:rgba(139,92,246,.6)">ENVIR</div>
-            <div class="pillar-chip-score" style="color:var(--purple)">76</div>
-          </div>
-        </div>
-      </div>
-      <div class="score-explanation">
-        <div class="se-title">RIDE <span>Score™</span></div>
-        <div class="se-body">Every module, form, inspection, guest feedback stream, and automated feed on this page converges into four pillar scores — Readiness, Integrity, Delivery, Environment — which aggregate into a single composite RIDE Score. Insurers receive a structured risk dossier. Operators receive a prioritized action list. No single stream controls the outcome — when sources agree, confidence is high. When they diverge, that gap is the finding.</div>
-        <div class="se-links">
-          <a href="https://amusementstandards.com/as360-ride-score.html" class="se-link">How Scoring Works →</a>
-          <a href="https://amusementstandards.com/as360/methodology.html" class="se-link">Methodology →</a>
-          <a href="https://amusementstandards.com/as360/benchmarking.html" class="se-link">Benchmarking →</a>
-          <a href="deliverable-sample.html" class="se-link">Sample Deliverable →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════ -->
-<!-- CTA                                             -->
-<!-- ════════════════════════════════════════════════ -->
-<section class="cta-section">
-  <div class="cta-inner">
-    <div class="cta-title reveal">Ready to run<br>your park on <span>AS 360?</span></div>
-    <div class="cta-body reveal">Full-suite park management — Manager, Dispatcher, Operator Log, 19 inspections, incident reporting, guest intelligence, and automated data feeds — deployed across your facility. Every data point feeds a composite RIDE Score your insurers, operators, and ownership can act on.</div>
-    <div class="hero-cta reveal">
-      <a href="https://amusementstandards.com/as360/manager.html" class="btn-primary">Open Manager Module</a>
-      <a href="https://amusementstandards.com/as360-ride-score.html" class="btn-secondary">See How Scoring Works</a>
-      <a href="deliverable-sample.html" class="btn-secondary btn-gold">📄 Sample Deliverable</a>
-      <a href="https://amusementstandards.com/as360/methodology.html" class="btn-secondary">Methodology</a>
-      <a href="https://amusementstandards.com/as360/benchmarking.html" class="btn-secondary">Benchmarking</a>
-      <a href="mailto:adam@amusementstandards.com" class="btn-secondary">Contact Amusement Standards</a>
-    </div>
-    <div class="cta-note reveal">amusementstandards.com · AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · Proprietary</div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════ -->
-<!-- FOOTER                                          -->
-<!-- ════════════════════════════════════════════════ -->
-<footer class="site-footer">
-  <div class="sf-brand">Amusement <span>Standards</span></div>
-  <div class="sf-links">
-    <a href="https://amusementstandards.com/as360/manager.html">Manager Module</a>
-    <a href="https://amusementstandards.com/as360-ride-score.html">RIDE Score</a>
-    <a href="deliverable-sample.html" style="color:rgba(212,175,55,.5);">Sample Deliverable</a>
-    <a href="https://amusementstandards.com/as360/methodology.html">Methodology</a>
-    <a href="https://amusementstandards.com/as360/benchmarking.html">Benchmarking</a>
-    <a href="mailto:adam@amusementstandards.com">Contact</a>
-  </div>
-  <div class="sf-copy">AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · Proprietary</div>
-</footer>
-
+<div class="module-group-label reveal"><span class="mgl-text">QR Code Guest Feedback</span><span class="mgl-line"></span><span class="mgl-count">4 QR FORMS</span></div>
+<div class="module-grid reveal">
+<a href="https://amusementstandards.com/as360/guest-feedback-ride.html" class="module-card mc-gold"><div class="score-badges"><span class="sb sb-ride">RIDE</span></div><div class="m-icon">🎢</div><div class="m-code">QR-RIDE</div><div class="m-name">Ride Exit Feedback</div><div class="m-desc">QR code at ride exit ramps captures guest sentiment immediately after the experience — wait time, staff interaction, ride condition, safety perception.</div><div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/guest-feedback-ride.html" class="module-card mc-gold"><div class="score-badges"><span class="sb sb-splash">SPLASH</span></div><div class="m-icon">🏊</div><div class="m-code">QR-SPLASH</div><div class="m-name">Aquatic Zone Feedback</div><div class="m-desc">QR at wave pools, lazy rivers, and slide landings. Captures water quality perception, lifeguard interactions, slide experience, and safety.</div><div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/guest-feedback-ride.html" class="module-card mc-gold"><div class="score-badges"><span class="sb sb-play">PLAY</span></div><div class="m-icon">🕹️</div><div class="m-code">QR-PLAY</div><div class="m-name">FEC Play Area Feedback</div><div class="m-desc">QR at FEC attraction exits and play zones. Captures cleanliness, staff presence, equipment condition, and overall experience.</div><div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/nmr.html" class="module-card mc-red"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">⚠️</div><div class="m-code">QR-NMR</div><div class="m-name">Guest Near-Miss Flag</div><div class="m-desc">QR-accessible near-miss report for guests — same triage pipeline as staff. Deployed on safety banners at all locations across all three scores.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
+</div>
+<div class="module-group-label reveal"><span class="mgl-text">Standalone Reporting Forms</span><span class="mgl-line"></span><span class="mgl-count">4 FORMS</span></div>
+<div class="module-grid reveal">
+<a href="https://amusementstandards.com/as360/inhouse-gsa.html" class="module-card mc-amber"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">📝</div><div class="m-code">iGSA</div><div class="m-name">In-House GSA</div><div class="m-desc">Rotating management guest services audit — scheduled, distributed execution for convergence validity.</div><div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/inhouse-safety.html" class="module-card mc-green"><div class="score-badges"><span class="sb sb-ride">RIDE</span></div><div class="m-icon">🏢</div><div class="m-code">IHS</div><div class="m-name">In-House Safety Audit</div><div class="m-desc">Internal inspection against SOPs, pre-opening checklists, maintenance logs, equipment standards.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/nmr.html" class="module-card mc-red"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">⚠️</div><div class="m-code">NMR</div><div class="m-name">Near-Miss Report</div><div class="m-desc">Structured triage flag — staff or guest submitted. Adjusts R and I scores immediately. Auto-escalates to corrective action.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/ride-incident-report.html" class="module-card mc-red"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">🚨</div><div class="m-code">IRL</div><div class="m-name">Ride Incident Report</div><div class="m-desc">Full 7-section legal incident record — guest, injury, sequence, response, notifications, witnesses, certification.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
+</div>
+<div class="module-group-label reveal"><span class="mgl-text">Third-Party & Independent Audits</span><span class="mgl-line"></span><span class="mgl-count">2 FORMS</span></div>
+<div class="module-grid reveal">
+<a href="https://amusementstandards.com/as360/third-party-gsa.html" class="module-card mc-purple"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">🕵️</div><div class="m-code">mGSA</div><div class="m-name">Mystery Shopper GSA</div><div class="m-desc">AS-deployed covert auditor scoring from queue entry through exit ramp. iGSA divergence is the key finding.</div><div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div></a>
+<a href="https://amusementstandards.com/as360/third-party-safety.html" class="module-card mc-teal"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span></div><div class="m-icon">🔍</div><div class="m-code">TPS</div><div class="m-name">Third-Party Safety</div><div class="m-desc">AS-conducted ASTM-aligned compliance inspection from an independent auditor perspective.</div><div class="m-footer"><span class="m-tag">R · I · E</span><span class="m-arrow">→</span></div></a>
+</div>
+<div class="module-group-label reveal"><span class="mgl-text">Post-Visit Intelligence</span><span class="mgl-line"></span><span class="mgl-count">1 STREAM</span></div>
+<div class="module-grid reveal">
+<a href="https://amusementstandards.com/as360/post-visit.html" class="module-card mc-gold"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">✉️</div><div class="m-code">EXS</div><div class="m-name">Post-Visit Survey</div><div class="m-desc">Triggered email survey — reflective sentiment and loyalty data. Higher trust weight than in-park capture. Lagging signal that cross-validates QR feedback.</div><div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div></a>
+</div>
+<div class="module-group-label reveal"><span class="mgl-text">Automated Data Feeds</span><span class="mgl-line"></span><span class="mgl-count">3 FEEDS</span></div>
+<div class="module-grid reveal">
+<div class="module-card mc-auto" style="cursor:default;"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">🌤</div><div class="m-code">WX</div><div class="m-name">Weather Data</div><div class="m-desc">Open-Meteo API — temperature, precipitation, wind speed, lightning alerts. Adjusts Environment pillar, triggers ride-hold flags in OPD.</div><div class="m-footer"><span class="m-tag">E</span><span style="font-size:13px;color:rgba(0,212,208,.3)">⚡</span></div></div>
+<div class="module-card mc-auto" style="cursor:default;"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">⏱</div><div class="m-code">QTX</div><div class="m-name">Queue & Wait Time</div><div class="m-desc">Live queue length and wait times via sensor, clicker, or POS. Feeds Readiness and Delivery.</div><div class="m-footer"><span class="m-tag">R · D</span><span style="font-size:13px;color:rgba(0,212,208,.3)">⚡</span></div></div>
+<div class="module-card mc-auto" style="cursor:default;"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">⭐</div><div class="m-code">OLR</div><div class="m-name">Online Review Intelligence</div><div class="m-desc">Google, TripAdvisor, Yelp ingestion with sentiment analysis and keyword extraction.</div><div class="m-footer"><span class="m-tag">D · E</span><span style="font-size:13px;color:rgba(0,212,208,.3)">⚡</span></div></div>
+</div>
+</div></section>
+<section class="sec sec-dark"><div class="sec-inner"><div class="sec-eyebrow reveal">THE OUTPUT</div><div class="sec-title reveal">Everything above produces <span class="gold">one number.</span></div>
+<div class="score-output reveal">
+<div class="score-ring-wrap"><div class="score-ring"><svg viewBox="0 0 160 160"><circle cx="80" cy="80" r="70" fill="none" stroke="rgba(212,175,55,.1)" stroke-width="10"/><circle cx="80" cy="80" r="70" fill="none" stroke="url(#scoreGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440" transform="rotate(-90 80 80)" class="ring-anim"/><defs><linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#B8960C"/><stop offset="100%" stop-color="#D4AF37"/></linearGradient></defs></svg><div class="inner"><div class="score-num">81</div><div class="score-label">STRONG</div></div></div>
+<div class="pillar-row">
+<div class="pillar-chip" style="background:rgba(46,111,255,.1);border:1px solid rgba(46,111,255,.2);border-radius:8px;"><div class="pillar-chip-letter" style="color:var(--blue)">R</div><div class="pillar-chip-name" style="color:rgba(46,111,255,.6)">READY</div><div class="pillar-chip-score" style="color:var(--blue)">84</div></div>
+<div class="pillar-chip" style="background:rgba(0,214,143,.1);border:1px solid rgba(0,214,143,.2);border-radius:8px;"><div class="pillar-chip-letter" style="color:var(--green)">I</div><div class="pillar-chip-name" style="color:rgba(0,214,143,.6)">INTEG</div><div class="pillar-chip-score" style="color:var(--green)">79</div></div>
+<div class="pillar-chip" style="background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2);border-radius:8px;"><div class="pillar-chip-letter" style="color:var(--orange)">D</div><div class="pillar-chip-name" style="color:rgba(255,107,53,.6)">DELIV</div><div class="pillar-chip-score" style="color:var(--orange)">81</div></div>
+<div class="pillar-chip" style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:8px;"><div class="pillar-chip-letter" style="color:var(--purple)">E</div><div class="pillar-chip-name" style="color:rgba(139,92,246,.6)">ENVIR</div><div class="pillar-chip-score" style="color:var(--purple)">76</div></div>
+</div></div>
+<div class="score-explanation"><div class="se-title">RIDE <span>Score™</span></div><div class="se-body">Every module, form, inspection, guest feedback stream, and automated feed on this page converges into four pillar scores — Readiness, Integrity, Delivery, Environment — which aggregate into a single composite RIDE Score. Insurers receive a structured risk dossier. Operators receive a prioritized action list. No single stream controls the outcome — when sources agree, confidence is high. When they diverge, that gap is the finding.</div>
+<div class="se-links">
+<a href="https://amusementstandards.com/as360-ride-score.html" class="se-link">How Scoring Works →</a>
+<a href="https://amusementstandards.com/as360/methodology.html" class="se-link">Methodology →</a>
+<a href="https://amusementstandards.com/as360/benchmarking.html" class="se-link">Benchmarking →</a>
+<a href="deliverable-sample.html" class="se-link">Sample Deliverable →</a>
+<a href="deliverable-insurer.html" class="se-link se-link-insurer">Insurer Dashboard →</a>
+</div></div></div></div></section>
+<section class="cta-section"><div class="cta-inner">
+<div class="cta-title reveal">Ready to run<br>your park on <span>AS 360?</span></div>
+<div class="cta-body reveal">Full-suite park management — Manager, Dispatcher, Operator Log, 19 inspections, incident reporting, guest intelligence, and automated data feeds — deployed across your facility. Every data point feeds a composite RIDE Score your insurers, operators, and ownership can act on.</div>
+<div class="hero-cta reveal">
+<a href="https://amusementstandards.com/as360/manager.html" class="btn-primary">Open Manager Module</a>
+<a href="https://amusementstandards.com/as360-ride-score.html" class="btn-secondary">See How Scoring Works</a>
+<a href="deliverable-sample.html" class="btn-secondary btn-gold">📄 Sample Deliverable</a>
+<a href="deliverable-insurer.html" class="btn-secondary btn-insurer">🏦 Insurer Dashboard</a>
+<a href="https://amusementstandards.com/as360/methodology.html" class="btn-secondary">Methodology</a>
+<a href="https://amusementstandards.com/as360/benchmarking.html" class="btn-secondary">Benchmarking</a>
+<a href="mailto:adam@amusementstandards.com" class="btn-secondary">Contact Amusement Standards</a>
+</div>
+<div class="cta-note reveal">amusementstandards.com · AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · Proprietary</div>
+</div></section>
+<footer class="site-footer"><div class="sf-brand">Amusement <span>Standards</span></div>
+<div class="sf-links">
+<a href="https://amusementstandards.com/as360/manager.html">Manager Module</a>
+<a href="https://amusementstandards.com/as360-ride-score.html">RIDE Score</a>
+<a href="deliverable-sample.html" style="color:rgba(212,175,55,.5);">Sample Deliverable</a>
+<a href="deliverable-insurer.html" style="color:rgba(46,117,182,.5);">Insurer Dashboard</a>
+<a href="https://amusementstandards.com/as360/methodology.html">Methodology</a>
+<a href="https://amusementstandards.com/as360/benchmarking.html">Benchmarking</a>
+<a href="mailto:adam@amusementstandards.com">Contact</a>
+</div>
+<div class="sf-copy">AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · Proprietary</div></footer>
 <script>
-const reveals = document.querySelectorAll('.reveal');
-const ro = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);} });
-},{threshold:0, rootMargin:'0px 0px -40px 0px'});
-reveals.forEach(el=>ro.observe(el));
+const reveals=document.querySelectorAll('.reveal');const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:0,rootMargin:'0px 0px -40px 0px'});reveals.forEach(el=>ro.observe(el));
 </script>
 </body>
 </html>
