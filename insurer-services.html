@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Insurers — AS 360 Risk Intelligence · Amusement Standards</title>
+<meta name="description" content="Continuous operational risk scoring for amusement, water park, and FEC underwriting. AS 360 delivers three scored indices — RIDE, SPLASH, PLAY — across 37 data streams. Pre-bind assessments from $500.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06080D;--teal:#00D4D0;--teal2:#00A8A5;--gold:#D4AF37;--blue:#2E75B6;--blue2:#4A90D9;--red:#FF3B5C;--green:#00D68F;--text:#94A3B8;--text-bright:#E2EAF4;--dim:#1E293B;--mono:'JetBrains Mono',monospace;--display:'Bebas Neue',sans-serif;--body:'DM Sans',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;overflow-x:hidden;}body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-height:100vh;}
+
+.hero{position:relative;padding:100px 24px 72px;text-align:center;background:radial-gradient(ellipse 50% 40% at 50% 20%,rgba(46,117,182,.1) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 80% 60%,rgba(0,212,208,.04) 0%,transparent 50%),var(--bg);}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--blue2);margin-bottom:14px;opacity:0;animation:fadeUp .6s .2s ease forwards;}
+.hero-title{font-family:var(--display);font-size:clamp(44px,7.5vw,88px);line-height:.92;color:var(--text-bright);margin-bottom:12px;opacity:0;animation:fadeUp .7s .3s ease forwards;}.hero-title span{color:var(--blue2);}
+.hero-sub{font-size:17px;line-height:1.7;color:var(--text);max-width:620px;margin:0 auto 32px;opacity:0;animation:fadeUp .7s .4s ease forwards;}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .5s ease forwards;}
+.btn{padding:14px 28px;border-radius:8px;font-family:var(--display);font-size:18px;letter-spacing:1px;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-block;}
+.btn-blue{background:var(--blue);color:white;border:none;box-shadow:0 4px 20px rgba(46,117,182,.3);}.btn-blue:hover{background:var(--blue2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(46,117,182,.4);}
+.btn-outline{border:1.5px solid rgba(148,163,184,.2);color:var(--text);background:rgba(255,255,255,.03);}.btn-outline:hover{border-color:var(--blue2);color:var(--blue2);background:rgba(46,117,182,.06);}
+
+.stat-bar{padding:44px 24px;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);}
+.stat-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
+.stat-item{text-align:center;padding:12px;border-right:1px solid var(--dim);}.stat-item:last-child{border-right:none;}
+.stat-num{font-family:var(--display);font-size:44px;color:var(--blue2);line-height:1;}
+.stat-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--text);margin-top:4px;}
+
+.sec{padding:72px 24px;}.sec-dark{background:rgba(0,0,0,.3);border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);}
+.sec-inner{max-width:960px;margin:0 auto;}
+.sec-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--blue2);margin-bottom:10px;}
+.sec-title{font-family:var(--display);font-size:clamp(30px,4.5vw,52px);color:var(--text-bright);line-height:1;margin-bottom:14px;}.sec-title span{color:var(--blue2);}
+.sec-body{font-size:15px;line-height:1.75;color:var(--text);max-width:620px;margin-bottom:28px;}
+
+/* problem/solution */
+.ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}@media(max-width:700px){.ps-grid{grid-template-columns:1fr;}}
+.ps-card{padding:24px 22px;border-radius:12px;border:1px solid var(--dim);background:rgba(255,255,255,.02);}
+.ps-label{font-family:var(--mono);font-size:9px;letter-spacing:2px;margin-bottom:8px;font-weight:700;}
+.ps-label.prob{color:var(--red);}.ps-label.sol{color:var(--green);}
+.ps-title{font-family:var(--display);font-size:22px;color:var(--text-bright);margin-bottom:8px;}
+.ps-list{list-style:none;padding:0;}
+.ps-list li{font-size:12px;color:var(--text);line-height:1.6;padding:4px 0 4px 14px;position:relative;}
+.ps-list li::before{content:'';width:4px;height:4px;border-radius:50%;position:absolute;left:0;top:10px;}
+.ps-list.prob-list li::before{background:var(--red);opacity:.5;}
+.ps-list.sol-list li::before{background:var(--green);opacity:.7;}
+
+/* three scores */
+.scores-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px;}@media(max-width:700px){.scores-row{grid-template-columns:1fr;}}
+.score-card{padding:22px 18px;border-radius:12px;border:1px solid var(--dim);background:rgba(255,255,255,.02);text-align:center;}
+.sc-name{font-family:var(--display);font-size:26px;margin-bottom:2px;}
+.sc-desc{font-size:11px;color:var(--text);margin-bottom:8px;line-height:1.5;}
+.sc-meta{font-family:var(--mono);font-size:9px;color:var(--text);opacity:.5;margin-bottom:8px;}
+.sc-pillars{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;}
+.sp{font-family:var(--mono);font-size:8px;padding:3px 7px;border-radius:4px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.35);letter-spacing:.3px;}
+.sc-ride .sc-name{color:#FF6B35;}.sc-ride{border-color:rgba(255,107,53,.15);}
+.sc-splash .sc-name{color:#1e9ed4;}.sc-splash{border-color:rgba(30,158,212,.15);}
+.sc-play .sc-name{color:#1fb87a;}.sc-play{border-color:rgba(31,184,122,.15);}
+
+/* sample certificate */
+.cert-preview{margin-top:32px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;}
+@media(max-width:700px){.cert-preview{grid-template-columns:1fr;text-align:center;}}
+.cert-mock{width:200px;background:rgba(255,255,255,.04);border:1px solid var(--dim);border-radius:10px;padding:20px 16px;text-align:center;}
+.cert-mock-eyebrow{font-family:var(--mono);font-size:7px;letter-spacing:1.5px;color:var(--blue2);margin-bottom:6px;}
+.cert-mock-title{font-family:var(--display);font-size:15px;color:var(--text-bright);margin-bottom:10px;}
+.cert-mock-score{font-family:var(--display);font-size:42px;color:var(--gold);line-height:1;}
+.cert-mock-band{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:10px;}
+.cert-mock-scores{display:flex;gap:8px;justify-content:center;}
+.cert-mock-s{font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 6px;border-radius:3px;}
+.cms-r{color:#FF6B35;background:rgba(255,107,53,.1);}.cms-s{color:#1e9ed4;background:rgba(30,158,212,.1);}.cms-p{color:#1fb87a;background:rgba(31,184,122,.1);}
+.cert-mock-foot{font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.2);margin-top:8px;}
+.cert-text h3{font-family:var(--display);font-size:28px;color:var(--text-bright);margin-bottom:8px;}
+.cert-text h3 span{color:var(--gold);}
+.cert-text p{font-size:14px;color:var(--text);line-height:1.7;margin-bottom:12px;}
+.cert-text .cert-link{font-family:var(--mono);font-size:11px;color:var(--blue2);text-decoration:none;letter-spacing:.5px;}.cert-text .cert-link:hover{text-decoration:underline;}
+
+/* value prop */
+.vp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}@media(max-width:700px){.vp-grid{grid-template-columns:1fr;}}
+.vp-card{padding:22px 20px;border-radius:12px;border:1px solid var(--dim);background:rgba(255,255,255,.02);}
+.vp-icon{font-size:20px;margin-bottom:8px;}
+.vp-name{font-size:14px;font-weight:700;color:var(--text-bright);margin-bottom:6px;}
+.vp-desc{font-size:12px;color:var(--text);line-height:1.6;}
+
+/* engagement */
+.engage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}@media(max-width:700px){.engage-grid{grid-template-columns:1fr;}}
+.engage-card{padding:26px 22px;border-radius:12px;border:1px solid var(--dim);background:rgba(255,255,255,.02);transition:all .2s;}
+.engage-card:hover{border-color:rgba(46,117,182,.3);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4);}
+.engage-price{font-family:var(--display);font-size:30px;color:var(--blue2);margin-bottom:2px;}
+.engage-name{font-size:14px;font-weight:700;color:var(--text-bright);margin-bottom:6px;}
+.engage-desc{font-size:12px;color:var(--text);line-height:1.6;margin-bottom:12px;}
+.engage-features{display:flex;flex-direction:column;gap:4px;}
+.engage-feat{font-size:11px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:6px;}
+.engage-feat::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--blue2);flex-shrink:0;}
+.engage-link{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--blue2);text-decoration:none;letter-spacing:.5px;}.engage-link:hover{text-decoration:underline;}
+
+/* analogs */
+.analog-strip{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
+.analog-item{padding:14px 20px;border:1px solid var(--dim);border-radius:8px;text-align:center;min-width:140px;background:rgba(255,255,255,.02);}
+.analog-line{font-family:var(--mono);font-size:8px;color:var(--text);letter-spacing:1px;margin-bottom:2px;}
+.analog-name{font-size:13px;font-weight:700;color:var(--text-bright);}
+.analog-desc{font-size:10px;color:var(--text);margin-top:1px;}
+
+.cta-section{padding:72px 24px;text-align:center;}
+.cta-inner{max-width:580px;margin:0 auto;}
+.cta-title{font-family:var(--display);font-size:clamp(32px,5.5vw,60px);color:var(--text-bright);line-height:.95;margin-bottom:14px;}.cta-title span{color:var(--blue2);}
+.cta-body{font-size:15px;color:var(--text);line-height:1.7;margin-bottom:24px;}
+.cta-contact{font-family:var(--mono);font-size:11px;color:var(--text);margin-top:16px;}.cta-contact a{color:var(--blue2);text-decoration:none;}.cta-contact a:hover{text-decoration:underline;}
+
+.site-footer{border-top:1px solid var(--dim);padding:24px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.sf-brand{font-family:var(--display);font-size:18px;color:var(--text);letter-spacing:1px;}.sf-brand span{color:var(--teal);}
+.sf-links{display:flex;gap:16px;flex-wrap:wrap;}.sf-links a{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.25);text-decoration:none;letter-spacing:1px;transition:color .15s;}.sf-links a:hover{color:var(--blue2);}
+.sf-copy{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.12);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;}.reveal.visible{opacity:1;transform:translateY(0);}@keyframes revealFallback{to{opacity:1;transform:translateY(0);}}.reveal{animation:revealFallback 0s 1.5s forwards;}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-eyebrow">AMUSEMENT STANDARDS · FOR SPECIALTY LINES INSURERS, MGAs & REINSURERS</div>
+  <div class="hero-title">CLOSING THE <span>RISK INTELLIGENCE GAP</span><br>IN AMUSEMENT UNDERWRITING</div>
+  <div class="hero-sub">The U.S. attractions industry generates over $35 billion in annual revenue. The specialty lines insurers who underwrite it still rely on annual applications and loss runs. AS 360 changes that — continuous operational scoring across 37 data streams, delivered as a single composite risk rating.</div>
+  <div class="hero-cta">
+    <a href="insurer-intake.html" class="btn btn-blue">Request a Pre-Bind Assessment</a>
+    <a href="deliverable-insurer.html" class="btn btn-outline">Insurer Dashboard</a>
+    <a href="benchmarking.html" class="btn btn-outline">Benchmarking</a>
+  </div>
+</section>
+
+<!-- ═══ STAT BAR ═══ -->
+<div class="stat-bar reveal">
+  <div class="stat-inner">
+    <div class="stat-item"><div class="stat-num">37</div><div class="stat-label">Independent Data Streams</div></div>
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Scored Indices</div></div>
+    <div class="stat-item"><div class="stat-num">14</div><div class="stat-label">Scored Pillars</div></div>
+    <div class="stat-item"><div class="stat-num">48hr</div><div class="stat-label">Assessment Turnaround</div></div>
+  </div>
+</div>
+
+<!-- ═══ THE BLIND SPOT ═══ -->
+<section class="sec sec-dark">
+  <div class="sec-inner">
+    <div class="sec-eyebrow reveal">THE UNDERWRITING BLIND SPOT</div>
+    <div class="sec-title reveal">The operator knows their daily reality. <span>You see an annual application.</span></div>
+    <div class="ps-grid reveal">
+      <div class="ps-card">
+        <div class="ps-label prob">WHAT UNDERWRITERS CURRENTLY SEE</div>
+        <div class="ps-title">Lagging Indicators</div>
+        <ul class="ps-list prob-list">
+          <li>Annual application with self-reported financial and operational data</li>
+          <li>Loss-run history spanning 3–5 years</li>
+          <li>Periodic loss control site visits — typically annual or biennial</li>
+          <li>ASTM F24 compliance certifications and state inspection records</li>
+          <li>Third-party ride inspection reports</li>
+        </ul>
+      </div>
+      <div class="ps-card" style="border-color:rgba(0,214,143,.15);">
+        <div class="ps-label sol">WHAT AS 360 SHOWS YOU</div>
+        <div class="ps-title">Leading Indicators</div>
+        <ul class="ps-list sol-list">
+          <li>Real-time staffing levels relative to operational load</li>
+          <li>Daily and weekly inspection completion rates and findings</li>
+          <li>Weather-adjusted operational decisions and capacity management</li>
+          <li>Queue stress patterns that correlate with incident frequency</li>
+          <li>Maintenance cycle adherence vs. manufacturer-recommended intervals</li>
+          <li>Near-miss and minor incident trends before they escalate to claims</li>
+          <li>Staff training currency and certification expiration patterns</li>
+          <li>Service bulletin compliance timelines</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THE COST ═══ -->
+<section class="sec">
+  <div class="sec-inner">
+    <div class="sec-eyebrow reveal">THE COST OF THE BLIND SPOT</div>
+    <div class="sec-title reveal">Three consequences <span>for your book.</span></div>
+    <div class="vp-grid reveal">
+      <div class="vp-card">
+        <div class="vp-icon">🎯</div>
+        <div class="vp-name">Adverse Selection</div>
+        <div class="vp-desc">Without continuous risk visibility, you cannot distinguish between a well-run facility with strong operational discipline and a poorly run facility with a clean loss history that has simply been lucky. The next claim is always a surprise.</div>
+      </div>
+      <div class="vp-card">
+        <div class="vp-icon">💰</div>
+        <div class="vp-name">Mispriced Risk</div>
+        <div class="vp-desc">When all facilities of similar size and attraction mix receive comparable pricing, the best operators subsidize the worst. Premium adequacy depends on risk differentiation that current tools cannot provide.</div>
+      </div>
+      <div class="vp-card">
+        <div class="vp-icon">🔄</div>
+        <div class="vp-name">Reactive Loss Control</div>
+        <div class="vp-desc">Traditional loss control identifies issues after a site visit and recommends corrections that may or may not be implemented. There is no mechanism for continuous monitoring or early-warning detection.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THREE SCORES ═══ -->
+<section class="sec sec-dark">
+  <div class="sec-inner">
+    <div class="sec-eyebrow reveal">THE AS 360 PLATFORM</div>
+    <div class="sec-title reveal">Three scored indices. <span>One composite.</span></div>
+    <div class="sec-body reveal">Each score is assembled from independent data streams feeding weighted pillars. No single source controls the outcome. When streams agree, confidence is high. When they diverge, the divergence itself is the finding.</div>
+    <div class="scores-row reveal">
+      <div class="score-card sc-ride">
+        <div class="sc-name">RIDE</div>
+        <div class="sc-desc">Dry attractions, coasters, flat rides, dark rides, kiddie rides</div>
+        <div class="sc-meta">15 STREAMS · 4 PILLARS</div>
+        <div class="sc-pillars"><span class="sp">READINESS</span><span class="sp">INTEGRITY</span><span class="sp">DELIVERY</span><span class="sp">ENVIRONMENT</span></div>
+      </div>
+      <div class="score-card sc-splash">
+        <div class="sc-name">SPLASH</div>
+        <div class="sc-desc">Water parks, slide complexes, wave pools, aquatic facilities</div>
+        <div class="sc-meta">12 STREAMS · 6 PILLARS</div>
+        <div class="sc-pillars"><span class="sp">SAFETY</span><span class="sp">PROTOCOL</span><span class="sp">LIFEGUARD</span><span class="sp">AQUATIC</span><span class="sp">STRUCTURE</span><span class="sp">HAZARD</span></div>
+      </div>
+      <div class="score-card sc-play">
+        <div class="sc-name">PLAY</div>
+        <div class="sc-desc">FECs, trampoline parks, go-karts, arcades, entertainment centers</div>
+        <div class="sc-meta">10 STREAMS · 4 PILLARS</div>
+        <div class="sc-pillars"><span class="sp">OPERATIONS</span><span class="sp">SAFETY</span><span class="sp">MAINTENANCE</span><span class="sp">GUEST EXP</span></div>
+      </div>
+    </div>
+
+    <!-- Certificate Preview -->
+    <div class="cert-preview reveal">
+      <div class="cert-mock">
+        <div class="cert-mock-eyebrow">AS 360 FACILITY SCORE</div>
+        <div class="cert-mock-title">Score Certificate</div>
+        <div class="cert-mock-score">78</div>
+        <div class="cert-mock-band">STRONG</div>
+        <div class="cert-mock-scores">
+          <span class="cert-mock-s cms-r">R:81</span>
+          <span class="cert-mock-s cms-s">S:74</span>
+          <span class="cert-mock-s cms-p">P:78</span>
+        </div>
+        <div class="cert-mock-foot">37 of 37 streams · 14 pillars<br>Valid 90 days from issue</div>
+      </div>
+      <div class="cert-text">
+        <h3>The <span>Deliverable</span></h3>
+        <p>Every assessment produces an AS 360 Facility Score Certificate — a one-page, dated, verifiable document showing composite and per-score-type results with pillar breakdowns. Designed to attach directly to an underwriting file alongside applications, loss runs, and inspection reports.</p>
+        <p>For deeper analysis, assessments include a narrative risk summary covering key findings, pillar-level strengths and concerns, data gaps, underwriting considerations, and pre-bind recommendations.</p>
+        <a href="deliverable-insurer.html" class="cert-link">See full Insurer Dashboard →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VALUE AT THREE LEVELS ═══ -->
+<section class="sec">
+  <div class="sec-inner">
+    <div class="sec-eyebrow reveal">VALUE AT THREE LEVELS</div>
+    <div class="sec-title reveal">Underwriting. Loss control. <span>Portfolio.</span></div>
+    <div class="vp-grid reveal">
+      <div class="vp-card">
+        <div class="vp-icon">📋</div>
+        <div class="vp-name">Better Risk Selection</div>
+        <div class="vp-desc">Pre-bind risk assessment supplements the application with a scored, data-backed risk signal. Objective basis for tiered pricing, renewal evaluation with trend analysis, and data-backed declination support.</div>
+      </div>
+      <div class="vp-card">
+        <div class="vp-icon">📡</div>
+        <div class="vp-name">Continuous Loss Control</div>
+        <div class="vp-desc">Transform loss control from a periodic event to a continuous data feed. Real-time score monitoring, automated alerts when facilities drop below threshold, and targeted intervention on the risks showing deterioration.</div>
+      </div>
+      <div class="vp-card">
+        <div class="vp-icon">📊</div>
+        <div class="vp-name">Book-Level Intelligence</div>
+        <div class="vp-desc">Aggregate risk heat maps across your insured book by geography, venue type, and attraction mix. Correlation analysis as the dataset matures. Reinsurance treaty support with a quantitative risk quality metric.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ENGAGEMENT MODELS ═══ -->
+<section class="sec sec-dark">
+  <div class="sec-inner">
+    <div class="sec-eyebrow reveal">ENGAGEMENT MODELS</div>
+    <div class="sec-title reveal">Start with one facility. <span>Scale to your book.</span></div>
+    <div class="engage-grid reveal">
+      <div class="engage-card">
+        <div class="engage-price">$500</div>
+        <div class="engage-name">Pre-Bind Assessment</div>
+        <div class="engage-desc">Submit a new or renewal facility. Scored risk summary returned in 48 hours. Per-facility, no commitment.</div>
+        <div class="engage-features">
+          <div class="engage-feat">Facility Score Certificate</div>
+          <div class="engage-feat">Narrative risk summary (7 sections)</div>
+          <div class="engage-feat">Pillar-level breakdown per score type</div>
+          <div class="engage-feat">Key findings & pre-bind recommendations</div>
+          <div class="engage-feat">Desktop+Virtual ($1,500) and On-Site ($3,000) tiers available</div>
+        </div>
+        <a href="insurer-intake.html" class="engage-link">Submit a Facility →</a>
+      </div>
+      <div class="engage-card" style="border-color:rgba(46,117,182,.2);">
+        <div class="engage-price">Annual</div>
+        <div class="engage-name">Portfolio Monitoring</div>
+        <div class="engage-desc">Score your entire insured book. Quarterly updates, automated alerts, trend dashboards. Annual license fee.</div>
+        <div class="engage-features">
+          <div class="engage-feat">Score all facilities in book</div>
+          <div class="engage-feat">Insurer Dashboard with live data</div>
+          <div class="engage-feat">Automated score-drop & SB compliance alerts</div>
+          <div class="engage-feat">Quarterly trend reports by score type</div>
+          <div class="engage-feat">Reinsurance treaty risk quality metrics</div>
+        </div>
+        <a href="deliverable-insurer.html" class="engage-link">See the Dashboard →</a>
+      </div>
+      <div class="engage-card">
+        <div class="engage-price">Custom</div>
+        <div class="engage-name">Loss Control Partnership</div>
+        <div class="engage-desc">AS 360 scoring bundled with consulting, audit, and inspection services as your outsourced amusement loss control arm.</div>
+        <div class="engage-features">
+          <div class="engage-feat">On-site inspections by AS consultants</div>
+          <div class="engage-feat">Service bulletin compliance monitoring</div>
+          <div class="engage-feat">Incident investigation & documentation</div>
+          <div class="engage-feat">Score improvement programs for insureds</div>
+          <div class="engage-feat">API data integration available</div>
+        </div>
+        <a href="mailto:risk@amusementstandards.com" class="engage-link">Contact for Details →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MARKET VALIDATION ═══ -->
+<section class="sec">
+  <div class="sec-inner" style="text-align:center;">
+    <div class="sec-eyebrow reveal">THE MODEL IS PROVEN</div>
+    <div class="sec-title reveal">Active insurance is becoming <span>the standard.</span></div>
+    <div class="sec-body reveal" style="margin:0 auto 20px;text-align:center;">Continuous risk monitoring integrated with insurance is not theoretical. It has produced measurable results in every specialty line that has adopted it. AS 360 applies the same structural logic to amusement general liability.</div>
+    <div class="analog-strip reveal">
+      <div class="analog-item"><div class="analog-line">AUTO</div><div class="analog-name">Telematics</div><div class="analog-desc">Progressive, Root</div></div>
+      <div class="analog-item"><div class="analog-line">CYBER</div><div class="analog-name">Continuous Scanning</div><div class="analog-desc">Coalition</div></div>
+      <div class="analog-item"><div class="analog-line">WORKERS' COMP</div><div class="analog-name">Computer Vision</div><div class="analog-desc">CompScience</div></div>
+      <div class="analog-item" style="border-color:rgba(46,117,182,.3);"><div class="analog-line" style="color:var(--blue2);">AMUSEMENT GL</div><div class="analog-name" style="color:var(--blue2);">AS 360</div><div class="analog-desc">Amusement Standards</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-title reveal">See the risk <span>before the claim.</span></div>
+    <div class="cta-body reveal">Start with one facility. Submit a pre-bind assessment request and receive a Facility Score Certificate with narrative risk summary in 48 hours. No contracts, no integration required, no minimum commitment.</div>
+    <div class="hero-cta reveal">
+      <a href="insurer-intake.html" class="btn btn-blue">Request an Assessment</a>
+      <a href="deliverable-insurer.html" class="btn btn-outline">Insurer Dashboard</a>
+      <a href="benchmarking.html" class="btn btn-outline">Benchmarking</a>
+      <a href="mailto:risk@amusementstandards.com" class="btn btn-outline">Contact Us</a>
+    </div>
+    <div class="cta-contact reveal">risk@amusementstandards.com · <a href="https://amusementstandards.com">amusementstandards.com</a></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="sf-brand">Amusement <span>Standards</span></div>
+  <div class="sf-links">
+    <a href="https://amusementstandards.com/as360-ride-score.html">RIDE Score</a>
+    <a href="https://amusementstandards.com/as360-splash-score.html">SPLASH Score</a>
+    <a href="https://amusementstandards.com/as360-play-score.html">PLAY Score</a>
+    <a href="insurer-intake.html" style="color:rgba(46,117,182,.4);">Pre-Bind Assessment</a>
+    <a href="deliverable-insurer.html" style="color:rgba(46,117,182,.4);">Insurer Dashboard</a>
+    <a href="benchmarking.html">Benchmarking</a>
+    <a href="mailto:risk@amusementstandards.com">Contact</a>
+  </div>
+  <div class="sf-copy">AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · Proprietary · © 2026 Amusement Standards</div>
+</footer>
+
+<script>const reveals=document.querySelectorAll('.reveal');const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:0,rootMargin:'0px 0px -40px 0px'});reveals.forEach(el=>ro.observe(el));</script>
+</body>
+</html>
