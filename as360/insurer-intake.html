@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 Pre-Bind Risk Assessment — Intake Form · Amusement Standards</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B2A4A;
+  --accent: #2E75B6;
+  --accent-light: #4A90D9;
+  --accent-glow: rgba(46,117,182,.08);
+  --ride: #D97B2B;
+  --splash: #1E8FC4;
+  --play: #1A9E6E;
+  --red: #C0392B;
+  --green: #27864A;
+  --grid-line: rgba(46,117,182,.07);
+  --grid-accent: rgba(46,117,182,.12);
+  --bg: #FCFCFD;
+  --card: #FFFFFF;
+  --card-border: #E2E8F0;
+  --text: #334155;
+  --text-dim: #64748B;
+  --text-muted: #94A3B8;
+  --mono: 'IBM Plex Mono', monospace;
+  --body: 'IBM Plex Sans', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body {
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  /* Grid paper effect */
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(var(--grid-accent) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-accent) 1px, transparent 1px);
+  background-size:
+    20px 20px,
+    20px 20px,
+    100px 100px,
+    100px 100px;
+  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+}
+
+.page { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+/* ── Topbar ── */
+.topbar {
+  background: var(--navy);
+  padding: 0 24px;
+  margin-bottom: 40px;
+}
+.topbar-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+}
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topbar-logo {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-light);
+  letter-spacing: 2px;
+}
+.topbar-sep { width: 1px; height: 20px; background: rgba(255,255,255,.12); }
+.topbar-title { font-size: 13px; color: rgba(255,255,255,.5); font-weight: 400; }
+.topbar-links { display: flex; gap: 16px; }
+.topbar-links a {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .5px;
+  color: rgba(255,255,255,.35);
+  text-decoration: none;
+  transition: color .15s;
+}
+.topbar-links a:hover { color: rgba(255,255,255,.7); }
+.topbar-links a.tl-ride { color: var(--ride); }
+.topbar-links a.tl-splash { color: var(--splash); }
+.topbar-links a.tl-play { color: var(--play); }
+
+/* ── Header ── */
+.header {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 36px 40px;
+  margin-bottom: 28px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+.header-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.header-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.header-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.65;
+  max-width: 600px;
+}
+
+/* ── Tier Selection ── */
+.tier-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+.tier {
+  background: var(--card);
+  border: 1.5px solid var(--card-border);
+  border-radius: 10px;
+  padding: 22px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+}
+.tier:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(46,117,182,.08); }
+.tier.selected { border-color: var(--accent); background: var(--accent-glow); box-shadow: 0 2px 16px rgba(46,117,182,.12); }
+.tier-name { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.tier-price { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.tier-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
+.tier-check {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: transparent;
+  transition: all .2s;
+}
+.tier.selected .tier-check { border-color: var(--accent); background: var(--accent); color: white; }
+
+/* ── Card Sections ── */
+.form-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 28px 32px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #EEF2F7;
+}
+.section-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+  background: var(--accent);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: .2px;
+}
+
+/* ── Fields ── */
+.field { margin-bottom: 16px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 5px;
+  letter-spacing: .2px;
+}
+label .req { color: var(--red); margin-left: 2px; font-weight: 700; }
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #D8DFE8;
+  border-radius: 6px;
+  background: #FAFBFC;
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 13px;
+  transition: all .15s;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(46,117,182,.08);
+}
+input::placeholder, textarea::placeholder { color: #B8C4D0; }
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%2394A3B8' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-color: #FAFBFC;
+}
+textarea { resize: vertical; min-height: 72px; }
+.hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+/* ── Checkboxes ── */
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.cb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid #D8DFE8;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+  font-size: 12px;
+  color: var(--text-dim);
+  background: #FAFBFC;
+}
+.cb:hover { border-color: var(--accent); }
+.cb input { display: none; }
+.cb.checked { border-color: var(--accent); background: var(--accent-glow); color: var(--accent); font-weight: 600; }
+.cb-dot {
+  width: 10px; height: 10px;
+  border-radius: 3px;
+  border: 1.5px solid #D8DFE8;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.cb.checked .cb-dot { border-color: var(--accent); background: var(--accent); }
+
+/* ── Score Type Select ── */
+.score-select { display: flex; gap: 10px; flex-wrap: wrap; }
+.ss {
+  padding: 12px 20px;
+  border: 1.5px solid #D8DFE8;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all .15s;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  background: #FAFBFC;
+  flex: 1;
+  text-align: center;
+  min-width: 200px;
+}
+.ss:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.ss input { display: none; }
+.ss-ride { color: var(--ride); }
+.ss-ride.checked { border-color: var(--ride); background: rgba(217,123,43,.06); box-shadow: 0 2px 12px rgba(217,123,43,.08); }
+.ss-splash { color: var(--splash); }
+.ss-splash.checked { border-color: var(--splash); background: rgba(30,143,196,.06); box-shadow: 0 2px 12px rgba(30,143,196,.08); }
+.ss-play { color: var(--play); }
+.ss-play.checked { border-color: var(--play); background: rgba(26,158,110,.06); box-shadow: 0 2px 12px rgba(26,158,110,.08); }
+
+/* ── Info Banner ── */
+.info-banner {
+  background: var(--card);
+  border: 1px solid #C8D8E8;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.info-banner-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.info-banner-text { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+.info-banner-text strong { color: var(--navy); font-weight: 600; }
+
+/* ── Submit ── */
+.submit-area { text-align: center; padding: 24px 0 0; }
+.submit-btn {
+  padding: 14px 52px;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--body);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  color: white;
+  cursor: pointer;
+  transition: all .2s;
+  box-shadow: 0 2px 12px rgba(46,117,182,.2);
+}
+.submit-btn:hover { background: #2565A0; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(46,117,182,.3); }
+.submit-note { font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-top: 12px; letter-spacing: .3px; }
+
+/* ── Upload ── */
+.upload-zone {
+  padding: 28px;
+  border: 1.5px dashed #C8D4DF;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .15s;
+  background: #FAFBFC;
+}
+.upload-zone:hover { border-color: var(--accent); background: var(--accent-glow); }
+.upload-icon { font-size: 22px; margin-bottom: 6px; }
+.upload-text { font-size: 13px; color: var(--text-dim); }
+.upload-hint { font-size: 10px; color: var(--text-muted); margin-top: 3px; }
+
+/* ── Footer ── */
+.footer-strip {
+  text-align: center;
+  padding: 36px 0 0;
+  margin-top: 12px;
+}
+.footer-brand { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.footer-copy { font-family: var(--mono); font-size: 9px; color: var(--text-muted); letter-spacing: .3px; }
+
+@media (max-width: 640px) {
+  .field-row, .field-row-3, .tier-strip { grid-template-columns: 1fr; }
+  .score-select { flex-direction: column; }
+  .ss { min-width: unset; }
+  .form-card { padding: 20px 18px; }
+  .header { padding: 28px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-brand">
+      <span class="topbar-logo">AMUSEMENT STANDARDS</span>
+      <span class="topbar-sep"></span>
+      <span class="topbar-title">AS 360 Pre-Bind Assessment</span>
+    </div>
+    <div class="topbar-links">
+      <a href="https://amusementstandards.com/as360-ride-score.html" class="tl-ride">RIDE</a>
+      <a href="https://amusementstandards.com/as360-splash-score.html" class="tl-splash">SPLASH</a>
+      <a href="https://amusementstandards.com/as360-play-score.html" class="tl-play">PLAY</a>
+      <a href="https://amusementstandards.com">Home</a>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-eyebrow">AS 360 · PRE-BIND RISK ASSESSMENT</div>
+  <div class="header-title">Facility Scoring Request</div>
+  <div class="header-sub">Submit a facility for AS 360 operational risk scoring. We return a Facility Score Certificate and narrative risk summary within 48 hours of receiving complete information. All data is treated as confidential.</div>
+</div>
+
+<!-- Tier Selection -->
+<div class="tier-strip">
+  <div class="tier selected" onclick="selectTier(this)">
+    <div class="tier-check">✓</div>
+    <div class="tier-name">Desktop Assessment</div>
+    <div class="tier-price">$500</div>
+    <div class="tier-desc">Public data + operator questionnaire. Scored risk summary delivered within 48 hours.</div>
+  </div>
+  <div class="tier" onclick="selectTier(this)">
+    <div class="tier-check">✓</div>
+    <div class="tier-name">Desktop + Virtual</div>
+    <div class="tier-price">$1,500</div>
+    <div class="tier-desc">Desktop assessment + 60-min virtual walkthrough with operator. Enhanced pillar detail.</div>
+  </div>
+  <div class="tier" onclick="selectTier(this)">
+    <div class="tier-check">✓</div>
+    <div class="tier-name">Full On-Site</div>
+    <div class="tier-price">$3,000</div>
+    <div class="tier-desc">Desktop + on-site inspection by AS consultant. Full pillar scoring with photo documentation.</div>
+  </div>
+</div>
+
+<!-- Section 1: Submitter -->
+<div class="form-card">
+  <div class="section-header"><div class="section-num">1</div><div class="section-title">Submitter Information</div></div>
+  <div class="field-row">
+    <div class="field"><label>Submitter Name <span class="req">*</span></label><input type="text" placeholder="Full name"></div>
+    <div class="field"><label>Company <span class="req">*</span></label><input type="text" placeholder="Organization name"></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><label>Role / Title</label><input type="text" placeholder="e.g., Director of Amusement Underwriting"></div>
+    <div class="field"><label>Email <span class="req">*</span></label><input type="email" placeholder="email@company.com"></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><label>Phone</label><input type="tel" placeholder="(xxx) xxx-xxxx"></div>
+    <div class="field">
+      <label>Submitter Type <span class="req">*</span></label>
+      <select><option value="">Select type...</option><option>MGA / MGU</option><option>Carrier</option><option>Retail Broker</option><option>Wholesale Broker</option><option>Reinsurer</option><option>Operator (Self-Submit)</option></select>
+    </div>
+  </div>
+</div>
+
+<!-- Section 2: Facility -->
+<div class="form-card">
+  <div class="section-header"><div class="section-num">2</div><div class="section-title">Facility Information</div></div>
+  <div class="field"><label>Facility Name <span class="req">*</span></label><input type="text" placeholder="Legal operating name of the facility"></div>
+  <div class="field-row">
+    <div class="field"><label>Street Address <span class="req">*</span></label><input type="text" placeholder="Street address"></div>
+    <div class="field"><label>City, State, ZIP <span class="req">*</span></label><input type="text" placeholder="City, ST 00000"></div>
+  </div>
+  <div class="field-row-3">
+    <div class="field">
+      <label>Facility Type <span class="req">*</span></label>
+      <select><option value="">Select type...</option><option>Family Entertainment Center (FEC)</option><option>Amusement Park</option><option>Water Park</option><option>Combined Park + Water</option><option>Combined Park + FEC</option><option>Combined Water + FEC</option><option>Full Combined (Park + Water + FEC)</option><option>Trampoline Park</option><option>Go-Kart Facility</option><option>Miniature Golf / Standalone</option><option>Other</option></select>
+    </div>
+    <div class="field"><label>Year Opened</label><input type="text" placeholder="YYYY"></div>
+    <div class="field">
+      <label>Operating Season</label>
+      <select><option value="">Select...</option><option>Year-Round</option><option>Seasonal (Spring–Fall)</option><option>Seasonal (Summer Only)</option><option>Weekends Only</option></select>
+    </div>
+  </div>
+  <div class="field-row">
+    <div class="field"><label>Estimated Annual Attendance</label><input type="text" placeholder="e.g., 150,000"></div>
+    <div class="field"><label>Gross Annual Revenue <span class="req">*</span></label><input type="text" placeholder="e.g., $2,400,000"></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><label>Total Employees (Peak Season)</label><input type="text" placeholder="e.g., 85"></div>
+    <div class="field"><label>Facility Size (sq ft or acres)</label><input type="text" placeholder="e.g., 45,000 sq ft / 3.2 acres"></div>
+  </div>
+</div>
+
+<!-- Section 3: Score Types -->
+<div class="form-card">
+  <div class="section-header"><div class="section-num">3</div><div class="section-title">Requested Score Types</div></div>
+  <p style="font-size:13px;color:var(--text-dim);margin-bottom:14px;line-height:1.55;">Select all score types applicable to this facility. Multi-score facilities receive a composite Facility Score in addition to individual scores.</p>
+  <div class="score-select">
+    <label class="ss ss-ride" onclick="toggleSS(this)"><input type="checkbox">RIDE — Dry Attractions, Coasters, Flat Rides</label>
+    <label class="ss ss-splash" onclick="toggleSS(this)"><input type="checkbox">SPLASH — Water Parks, Aquatic Facilities</label>
+    <label class="ss ss-play checked" onclick="toggleSS(this)"><input type="checkbox" checked>PLAY — FECs, Trampoline, Entertainment</label>
+  </div>
+</div>
+
+<!-- Section 4: Attractions -->
+<div class="form-card">
+  <div class="section-header"><div class="section-num">4</div><div class="section-title">Attraction Inventory</div></div>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;line-height:1.5;">List all major attractions by category. For large inventories, attach a separate document below.</p>
+  <div class="field"><label>Mechanical Rides (coasters, flat rides, dark rides, kiddie rides)</label><textarea placeholder="e.g., 1x Wild Mouse coaster, 3x flat rides (Scrambler, Tilt-a-Whirl, Ferris Wheel), 4x kiddie rides"></textarea></div>
+  <div class="field"><label>Go-Kart Tracks</label><textarea placeholder="e.g., 1x outdoor track (24 karts, electric), 1x junior track (12 karts)" rows="2"></textarea></div>
+  <div class="field"><label>Water Attractions (slides, wave pools, lazy rivers, splash pads)</label><textarea placeholder="e.g., 3x body slides, 1x tube slide, 1x wave pool (cap. 300), 1x lazy river" rows="2"></textarea></div>
+  <div class="field"><label>FEC / Indoor Attractions (arcade, laser tag, bowling, trampoline, climbing)</label><textarea placeholder="e.g., 120-game arcade, 2-level laser tag, 8-lane bowling, 40-pad trampoline court, 3x climbing walls"></textarea></div>
+  <div class="field"><label>Other Attractions</label><textarea placeholder="e.g., miniature golf (2 courses), batting cages (6), zip line, rope course, escape rooms (3)" rows="2"></textarea></div>
+  <div class="field-row">
+    <div class="field"><label>Total Attraction Count</label><input type="text" placeholder="e.g., 32"></div>
+    <div class="field"><label>Attractions with Height Requirements</label><input type="text" placeholder="e.g., 8"></div>
+  </div>
+</div>
+
+<!-- Section 5: Loss History -->
+<div class="form-card">
+  <div class="section-header"><div class="section-num">5</div><div class="section-title">Loss History & Current Coverage</div></div>
+  <div class="field-row-3">
+    <div class="field"><label>Current GL Carrier</label><input type="text" placeholder="e.g., HDI Global / Alive Risk"></div>
+    <div class="field"><label>Current Annual GL Premium</label><input type="text" placeholder="e.g., $38,000"></div>
+    <div class="field"><label>Policy Expiration <span class="req">*</span></label><input type="date"></div>
+  </div>
+  <div class="field"><label>Loss Run Summary (3–5 years)</label><textarea placeholder="Provide total incurred, open claims count, and largest single loss. If attaching loss runs as a file, note 'see attachment.'"></textarea></div>
+  <div class="field-row">
+    <div class="field"><label>Total Claims (Last 3 Years)</label><input type="text" placeholder="e.g., 7"></div>
+    <div class="field"><label>Total Incurred (Last 3 Years)</label><input type="text" placeholder="e.g., $124,000"></div>
+  </div>
+  <div class="field"><label>Largest Single Loss (Amount & Description)</label><input type="text" placeholder="e.g., $45,000 — patron fall from elevated go-kart section, 2024"></div>
+</div>
+
+<!-- Section 6: Operations & Safety -->
+<div class="form-card">
+  <div class="section-header"><div class="section-num">6</div><div class="section-title">Operations & Safety Profile</div></div>
+  <div class="field-row">
+    <div class="field"><label>Third-Party Ride Inspections <span class="req">*</span></label><select><option value="">Select...</option><option>Annual — state inspector</option><option>Annual — NAARSO-certified</option><option>Annual — manufacturer rep</option><option>Multiple per year</option><option>None / Not required</option></select></div>
+    <div class="field"><label>Staff Safety Training</label><select><option value="">Select...</option><option>Formal program with documentation</option><option>Informal / on-the-job</option><option>Third-party provider</option><option>NAARSO / AIMS certified trainers on staff</option><option>None</option></select></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><label>Written Emergency Action Plan</label><select><option value="">Select...</option><option>Yes — reviewed annually</option><option>Yes — not reviewed recently</option><option>In development</option><option>No</option></select></div>
+    <div class="field"><label>Last EAP Drill Date</label><input type="text" placeholder="e.g., March 2025"></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><label>Daily Opening Inspections</label><select><option value="">Select...</option><option>Yes — documented with checklists</option><option>Yes — verbal / informal</option><option>Inconsistent</option><option>No</option></select></div>
+    <div class="field"><label>Incident Reporting System</label><select><option value="">Select...</option><option>Digital system with tracking</option><option>Paper forms filed</option><option>Informal / verbal</option><option>None</option></select></div>
+  </div>
+  <div class="field"><label>Industry Certifications (select all that apply)</label>
+    <div class="checkbox-group">
+      <label class="cb" onclick="toggleCb(this)"><input type="checkbox"><span class="cb-dot"></span>NAARSO Level I+</label>
+      <label class="cb" onclick="toggleCb(this)"><input type="checkbox"><span class="cb-dot"></span>AIMS</label>
+      <label class="cb" onclick="toggleCb(this)"><input type="checkbox"><span class="cb-dot"></span>ASTM F24 Member</label>
+      <label class="cb" onclick="toggleCb(this)"><input type="checkbox"><span class="cb-dot"></span>CPO (Aquatics)</label>
+      <label class="cb" onclick="toggleCb(this)"><input type="checkbox"><span class="cb-dot"></span>IAAPA Member</label>
+      <label class="cb" onclick="toggleCb(this)"><input type="checkbox"><span class="cb-dot"></span>State Licensed</label>
+    </div>
+  </div>
+  <div class="field"><label>Open Service Bulletins / Manufacturer Notices</label><textarea placeholder="List any unresolved manufacturer service bulletins, safety notices, or recall actions." rows="2"></textarea></div>
+</div>
+
+<!-- Section 7: Aquatics -->
+<div class="form-card">
+  <div class="section-header"><div class="section-num">7</div><div class="section-title">Aquatics — SPLASH Score Facilities Only</div></div>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">Complete this section only if SPLASH Score is requested above.</p>
+  <div class="field-row-3">
+    <div class="field"><label>Lifeguards on Staff (Peak)</label><input type="text" placeholder="e.g., 18"></div>
+    <div class="field"><label>Certification Provider</label><input type="text" placeholder="e.g., Ellis & Associates"></div>
+    <div class="field"><label>Last Lifeguard Audit</label><input type="text" placeholder="e.g., May 2025"></div>
+  </div>
+  <div class="field-row">
+    <div class="field"><label>Water Testing Frequency</label><select><option value="">Select...</option><option>Every 2 hours or more</option><option>Every 4 hours</option><option>Daily</option><option>As needed</option></select></div>
+    <div class="field"><label>Most Recent Health Dept. Result</label><select><option value="">Select...</option><option>Passed — no violations</option><option>Passed — minor violations corrected</option><option>Conditional pass</option><option>Failed — corrective action taken</option><option>No inspection on record</option></select></div>
+  </div>
+</div>
+
+<!-- Section 8: Additional -->
+<div class="form-card">
+  <div class="section-header"><div class="section-num">8</div><div class="section-title">Additional Context & Attachments</div></div>
+  <div class="field"><label>Additional Information</label><textarea placeholder="Recent capital improvements, ownership changes, expansion plans, known risk factors, prior coverage declinations, or anything else the underwriter should know." rows="4"></textarea></div>
+  <div class="field"><label>Attachments</label>
+    <div class="upload-zone" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='#C8D4DF'">
+      <div class="upload-icon">📎</div>
+      <div class="upload-text">Drop files here or click to upload</div>
+      <div class="upload-hint">Loss runs, photos, inspection reports, site maps, applications — PDF, DOCX, JPG, PNG</div>
+    </div>
+  </div>
+</div>
+
+<!-- Info Banner -->
+<div class="info-banner">
+  <div class="info-banner-icon">📋</div>
+  <div class="info-banner-text"><strong>What happens next:</strong> Our team reviews the submission, pulls available public data (online reviews, weather exposure, regulatory records), and begins scoring. Desktop assessments are returned within 48 hours. Virtual and On-Site tiers are scheduled within 5 business days. The deliverable includes an AS 360 Facility Score Certificate and a narrative risk summary report.</div>
+</div>
+
+<!-- Submit -->
+<div class="submit-area">
+  <button class="submit-btn" onclick="alert('In production, this submits to Airtable via API.\n\nFor now: email completed information to\nrisk@amusementstandards.com')">Submit Assessment Request</button>
+  <div class="submit-note">Or email completed information to risk@amusementstandards.com · (732) 555-0147</div>
+</div>
+
+<!-- Footer -->
+<div class="footer-strip">
+  <div class="footer-brand">Amusement Standards</div>
+  <div class="footer-copy">AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · Pre-Bind Risk Assessment · Confidential</div>
+</div>
+
+</div>
+
+<script>
+function selectTier(el){document.querySelectorAll('.tier').forEach(t=>t.classList.remove('selected'));el.classList.add('selected');}
+function toggleSS(el){el.classList.toggle('checked');}
+function toggleCb(el){el.classList.toggle('checked');}
+</script>
+</body>
+</html>
