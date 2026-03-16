@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 — Insurer Dashboard Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --navy-light: #243458;
+    --navy-mid: #2A3D66;
+    --accent: #2E75B6;
+    --accent-glow: rgba(46,117,182,0.15);
+    --ride: #E8A838;
+    --splash: #1E9ED4;
+    --play: #1FB87A;
+    --red: #D94040;
+    --orange: #E8A838;
+    --green: #2D8F4E;
+    --bg: #0F1923;
+    --card: #172331;
+    --card-border: rgba(255,255,255,0.06);
+    --text: #E8ECF0;
+    --text-dim: #7A8BA0;
+    --text-muted: #4A5A6A;
+    --divider: rgba(255,255,255,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.5; min-height: 100vh; }
+
+  /* ── Topbar ── */
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 28px; height: 56px; background: var(--navy); border-bottom: 1px solid var(--card-border); }
+  .topbar-brand { display: flex; align-items: center; gap: 10px; }
+  .topbar-logo { font-weight: 700; font-size: 13px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; }
+  .topbar-sep { width: 1px; height: 24px; background: var(--divider); }
+  .topbar-title { font-size: 14px; color: var(--text-dim); font-weight: 400; }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .topbar-carrier { font-size: 12px; color: var(--text-muted); }
+  .topbar-carrier strong { color: var(--text-dim); font-weight: 500; }
+  .topbar-badge { background: var(--accent-glow); border: 1px solid rgba(46,117,182,0.3); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--accent); font-weight: 600; }
+
+  /* ── Layout ── */
+  .dashboard { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 56px); }
+
+  /* ── Sidebar ── */
+  .sidebar { background: var(--navy); border-right: 1px solid var(--card-border); padding: 20px 0; }
+  .sidebar-section { padding: 0 16px; margin-bottom: 24px; }
+  .sidebar-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; padding: 0 8px; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: background 0.15s; font-size: 13px; color: var(--text-dim); }
+  .sidebar-item:hover { background: rgba(255,255,255,0.04); }
+  .sidebar-item.active { background: var(--accent-glow); color: var(--accent); font-weight: 600; }
+  .sidebar-icon { width: 18px; text-align: center; font-size: 14px; }
+  .sidebar-count { margin-left: auto; font-size: 11px; font-family: 'DM Mono', monospace; background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 10px; color: var(--text-muted); }
+  .sidebar-divider { height: 1px; background: var(--divider); margin: 16px 16px; }
+
+  /* ── Main ── */
+  .main { padding: 24px 28px; overflow-y: auto; }
+  .main-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .main-header h1 { font-size: 20px; font-weight: 700; color: var(--text); }
+  .main-header-actions { display: flex; gap: 8px; }
+  .btn { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; transition: all 0.15s; }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: #3585C6; }
+  .btn-ghost { background: transparent; border: 1px solid var(--card-border); color: var(--text-dim); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── KPI Strip ── */
+  .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 18px 20px; }
+  .kpi-label { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+  .kpi-value { font-size: 28px; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--text); line-height: 1; }
+  .kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+  .kpi-value.green { color: var(--green); }
+  .kpi-value.orange { color: var(--orange); }
+  .kpi-value.red { color: var(--red); }
+  .kpi-trend { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 600; margin-left: 8px; }
+  .kpi-trend.up { color: var(--green); }
+  .kpi-trend.down { color: var(--red); }
+
+  /* ── Cards ── */
+  .card { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+  .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .card-title { font-size: 14px; font-weight: 700; color: var(--text); }
+  .card-badge { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; }
+
+  /* ── Facility Table ── */
+  .facility-table { width: 100%; border-collapse: collapse; }
+  .facility-table th { text-align: left; font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; padding: 8px 12px; border-bottom: 1px solid var(--divider); }
+  .facility-table td { padding: 12px; border-bottom: 1px solid var(--divider); font-size: 13px; }
+  .facility-table tr:hover { background: rgba(255,255,255,0.02); }
+  .facility-name { font-weight: 600; color: var(--text); }
+  .facility-location { font-size: 11px; color: var(--text-muted); }
+  .facility-type { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+  .type-ride { background: rgba(232,168,56,0.15); color: var(--ride); }
+  .type-splash { background: rgba(30,158,212,0.15); color: var(--splash); }
+  .type-play { background: rgba(31,184,122,0.15); color: var(--play); }
+
+  .score-cell { font-family: 'DM Mono', monospace; font-weight: 700; font-size: 16px; }
+  .score-breakdown { display: flex; gap: 6px; margin-top: 4px; }
+  .score-mini { font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 600; opacity: 0.85; }
+  .score-types { display: flex; gap: 4px; flex-wrap: wrap; }
+  .score-excellent { color: var(--green); }
+  .score-strong { color: var(--green); }
+  .score-adequate { color: var(--orange); }
+  .score-atrisk { color: var(--red); }
+
+  .trend-indicator { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-family: 'DM Mono', monospace; font-weight: 500; }
+  .trend-up { color: var(--green); }
+  .trend-down { color: var(--red); }
+  .trend-flat { color: var(--text-muted); }
+
+  .trend-group { display: flex; flex-direction: column; gap: 3px; }
+  .trend-composite { font-size: 13px; font-family: 'DM Mono', monospace; font-weight: 700; margin-bottom: 2px; }
+  .trend-sub { display: flex; align-items: center; gap: 4px; }
+  .trend-sub-label { font-size: 9px; font-family: 'DM Mono', monospace; font-weight: 700; width: 12px; }
+  .trend-sub-val { font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 500; }
+
+  .pillar-mini { display: flex; gap: 3px; align-items: flex-end; height: 24px; }
+  .pillar-bar { width: 8px; border-radius: 2px; background: var(--accent); opacity: 0.3; }
+  .pillar-bar.high { opacity: 1; background: var(--green); }
+  .pillar-bar.mid { opacity: 0.8; background: var(--orange); }
+  .pillar-bar.low { opacity: 1; background: var(--red); }
+
+  .pillar-group { display: flex; flex-direction: column; gap: 5px; }
+  .pillar-row { display: flex; align-items: center; gap: 6px; }
+  .pillar-row-label { font-size: 9px; font-family: 'DM Mono', monospace; font-weight: 700; width: 14px; text-align: center; flex-shrink: 0; }
+  .pillar-row-bars { display: flex; gap: 2px; align-items: flex-end; height: 14px; }
+  .pillar-row-bars .pbar { width: 6px; border-radius: 1.5px; }
+  .pbar.high { background: var(--green); }
+  .pbar.mid { background: var(--orange); }
+  .pbar.low { background: var(--red); }
+
+  .flag-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+  .flag-ok { background: rgba(45,143,78,0.12); color: var(--green); }
+  .flag-warn { background: rgba(232,168,56,0.12); color: var(--orange); }
+  .flag-alert { background: rgba(217,64,64,0.12); color: var(--red); }
+
+  /* ── Two column layout ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* ── Alert List ── */
+  .alert-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--divider); }
+  .alert-item:last-child { border-bottom: none; }
+  .alert-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .alert-dot.red { background: var(--red); }
+  .alert-dot.orange { background: var(--orange); }
+  .alert-dot.blue { background: var(--accent); }
+  .alert-text { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+  .alert-text strong { color: var(--text); font-weight: 600; }
+  .alert-time { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── Score Distribution ── */
+  .dist-row { display: flex; align-items: center; gap: 12px; padding: 6px 0; }
+  .dist-label { font-size: 11px; color: var(--text-dim); width: 70px; }
+  .dist-bar-bg { flex: 1; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.04); overflow: hidden; }
+  .dist-bar { height: 100%; border-radius: 4px; }
+  .dist-count { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text-muted); width: 28px; text-align: right; }
+
+  /* ── Mockup Label ── */
+  .mockup-banner { background: linear-gradient(90deg, var(--accent), #4A90D9); text-align: center; padding: 8px; font-size: 11px; font-weight: 700; color: white; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── View Panels ── */
+  .view-panel { display: none; }
+  .view-panel.active { display: block; }
+</style>
+</head>
+<body>
+
+<div class="mockup-banner">AS 360 Insurer Dashboard — Product Mockup — Amusement Standards</div>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">AS 360</div>
+    <div class="topbar-sep"></div>
+    <div class="topbar-title">Insurer Portal</div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-carrier">Logged in as <strong>Alive Risk — Amusement Program</strong></div>
+    <div class="topbar-badge">Live Monitoring</div>
+  </div>
+</div>
+
+<div class="dashboard">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Portfolio</div>
+      <div class="sidebar-item active" data-view="overview" onclick="switchView(this)">
+        <span class="sidebar-icon">■</span> Book Overview
+      </div>
+      <div class="sidebar-item" data-view="facilities" onclick="switchView(this)">
+        <span class="sidebar-icon">○</span> Facilities <span class="sidebar-count">47</span>
+      </div>
+      <div class="sidebar-item" data-view="alerts" onclick="switchView(this)">
+        <span class="sidebar-icon">▲</span> Alerts <span class="sidebar-count" style="background:rgba(217,64,64,0.15);color:var(--red);">3</span>
+      </div>
+      <div class="sidebar-item" data-view="trends" onclick="switchView(this)">
+        <span class="sidebar-icon">↓</span> Score Trends
+      </div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Scores</div>
+      <div class="sidebar-item" data-view="ride" onclick="switchView(this)">
+        <span class="sidebar-icon" style="color:var(--ride);">●</span> RIDE Score <span class="sidebar-count">18</span>
+      </div>
+      <div class="sidebar-item" data-view="splash" onclick="switchView(this)">
+        <span class="sidebar-icon" style="color:var(--splash);">●</span> SPLASH Score <span class="sidebar-count">12</span>
+      </div>
+      <div class="sidebar-item" data-view="play" onclick="switchView(this)">
+        <span class="sidebar-icon" style="color:var(--play);">●</span> PLAY Score <span class="sidebar-count">17</span>
+      </div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Tools</div>
+      <div class="sidebar-item" data-view="assessment" onclick="switchView(this)">
+        <span class="sidebar-icon">⊕</span> New Assessment
+      </div>
+      <div class="sidebar-item" data-view="export" onclick="switchView(this)">
+        <span class="sidebar-icon">⇩</span> Export Reports
+      </div>
+      <div class="sidebar-item" data-view="settings" onclick="switchView(this)">
+        <span class="sidebar-icon">⚙</span> Settings
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <!-- ═══ VIEW: OVERVIEW ═══ -->
+    <div class="view-panel active" id="view-overview">
+    <div class="main-header">
+      <h1>Portfolio Overview</h1>
+      <div class="main-header-actions">
+        <button class="btn btn-ghost">Export PDF</button>
+        <button class="btn btn-primary">+ New Assessment</button>
+      </div>
+    </div>
+
+    <!-- KPI Strip -->
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <div class="kpi-label">Scored Facilities</div>
+        <div class="kpi-value">47</div>
+        <div class="kpi-sub">Across 14 states <span class="kpi-trend up">↑ +3 this quarter</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg. Composite Score</div>
+        <div class="kpi-value green">76.4</div>
+        <div class="kpi-sub">Book average <span class="kpi-trend up">↑ +2.1 vs. Q4</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Facilities Below 60</div>
+        <div class="kpi-value red">3</div>
+        <div class="kpi-sub">Critical threshold <span class="kpi-trend down">↑ +1 since last month</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Active Alerts</div>
+        <div class="kpi-value orange">7</div>
+        <div class="kpi-sub">3 score drops, 2 SB, 2 inspection</div>
+      </div>
+    </div>
+
+    <!-- Facility Table -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Insured Facilities — Ranked by Score</div>
+        <div class="card-badge" style="background:var(--accent-glow);color:var(--accent);">Live Data</div>
+      </div>
+      <table class="facility-table">
+        <thead>
+          <tr>
+            <th>Facility</th>
+            <th>Score Type</th>
+            <th>Composite</th>
+            <th>Trend (90d)</th>
+            <th>Pillars</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Lakewood: Full-service park with all 3 scores -->
+          <tr>
+            <td>
+              <div class="facility-name">Lakewood Family Fun Park</div>
+              <div class="facility-location">Lakewood, NJ</div>
+            </td>
+            <td>
+              <div class="score-types">
+                <span class="facility-type type-ride">RIDE</span>
+                <span class="facility-type type-splash">SPLASH</span>
+                <span class="facility-type type-play">PLAY</span>
+              </div>
+            </td>
+            <td>
+              <div class="score-cell score-excellent">91</div>
+              <div class="score-breakdown">
+                <span class="score-mini" style="color:var(--ride);">R:88</span>
+                <span class="score-mini" style="color:var(--splash);">S:92</span>
+                <span class="score-mini" style="color:var(--play);">P:93</span>
+              </div>
+            </td>
+            <td>
+              <div class="trend-group">
+                <div class="trend-composite trend-up">↑ +4</div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--ride);">R</span><span class="trend-sub-val trend-up">↑ +3</span></div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--splash);">S</span><span class="trend-sub-val trend-up">↑ +5</span></div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--play);">P</span><span class="trend-sub-val trend-up">↑ +4</span></div>
+              </div>
+            </td>
+            <td>
+              <div class="pillar-group">
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--ride);">R</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar high" style="height:13px" title="Readiness 90"></div>
+                    <div class="pbar high" style="height:12px" title="Integrity 85"></div>
+                    <div class="pbar high" style="height:12px" title="Delivery 87"></div>
+                    <div class="pbar high" style="height:13px" title="Environment 89"></div>
+                  </div>
+                </div>
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--splash);">S</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar high" style="height:14px" title="Safety 94"></div>
+                    <div class="pbar high" style="height:13px" title="Protocol 91"></div>
+                    <div class="pbar high" style="height:13px" title="Lifeguard 90"></div>
+                    <div class="pbar high" style="height:13px" title="Aquatic 92"></div>
+                    <div class="pbar high" style="height:12px" title="Structure 88"></div>
+                    <div class="pbar high" style="height:14px" title="Hazard 93"></div>
+                  </div>
+                </div>
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--play);">P</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar high" style="height:14px" title="Operations 94"></div>
+                    <div class="pbar high" style="height:13px" title="Safety 91"></div>
+                    <div class="pbar high" style="height:13px" title="Maintenance 92"></div>
+                    <div class="pbar high" style="height:14px" title="Guest Exp 95"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          <tr>
+            <td>
+              <div class="facility-name">Thunderbolt Amusement Park</div>
+              <div class="facility-location">Wildwood, NJ</div>
+            </td>
+            <td>
+              <div class="score-types">
+                <span class="facility-type type-ride">RIDE</span>
+                <span class="facility-type type-splash">SPLASH</span>
+              </div>
+            </td>
+            <td>
+              <div class="score-cell score-strong">84</div>
+              <div class="score-breakdown">
+                <span class="score-mini" style="color:var(--ride);">R:86</span>
+                <span class="score-mini" style="color:var(--splash);">S:81</span>
+              </div>
+            </td>
+            <td>
+              <div class="trend-group">
+                <div class="trend-composite trend-up">↑ +2</div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--ride);">R</span><span class="trend-sub-val trend-up">↑ +3</span></div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--splash);">S</span><span class="trend-sub-val trend-up">↑ +1</span></div>
+              </div>
+            </td>
+            <td>
+              <div class="pillar-group">
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--ride);">R</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar high" style="height:13px" title="Readiness 88"></div>
+                    <div class="pbar mid" style="height:10px" title="Integrity 78"></div>
+                    <div class="pbar high" style="height:12px" title="Delivery 86"></div>
+                    <div class="pbar high" style="height:13px" title="Environment 90"></div>
+                  </div>
+                </div>
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--splash);">S</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar high" style="height:12px" title="Safety 84"></div>
+                    <div class="pbar high" style="height:11px" title="Protocol 82"></div>
+                    <div class="pbar mid" style="height:10px" title="Lifeguard 76"></div>
+                    <div class="pbar high" style="height:12px" title="Aquatic 83"></div>
+                    <div class="pbar high" style="height:11px" title="Structure 80"></div>
+                    <div class="pbar high" style="height:11px" title="Hazard 81"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><span class="flag-badge flag-ok">✓ Clear</span></td>
+          </tr>
+          <!-- Adventure World: FEC with water attractions — PLAY + SPLASH -->
+          <tr>
+            <td>
+              <div class="facility-name">Adventure World Family Fun Center</div>
+              <div class="facility-location">Seaside Heights, NJ</div>
+            </td>
+            <td>
+              <div class="score-types">
+                <span class="facility-type type-splash">SPLASH</span>
+                <span class="facility-type type-play">PLAY</span>
+              </div>
+            </td>
+            <td>
+              <div class="score-cell score-adequate">78</div>
+              <div class="score-breakdown">
+                <span class="score-mini" style="color:var(--splash);">S:74</span>
+                <span class="score-mini" style="color:var(--play);">P:81</span>
+              </div>
+            </td>
+            <td>
+              <div class="trend-group">
+                <div class="trend-composite trend-flat">→ 0</div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--splash);">S</span><span class="trend-sub-val trend-down">↓ -2</span></div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--play);">P</span><span class="trend-sub-val trend-up">↑ +2</span></div>
+              </div>
+            </td>
+            <td>
+              <div class="pillar-group">
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--splash);">S</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar mid" style="height:11px" title="Safety 78"></div>
+                    <div class="pbar mid" style="height:10px" title="Protocol 72"></div>
+                    <div class="pbar low" style="height:8px" title="Lifeguard 64"></div>
+                    <div class="pbar mid" style="height:11px" title="Aquatic 79"></div>
+                    <div class="pbar mid" style="height:10px" title="Structure 74"></div>
+                    <div class="pbar mid" style="height:10px" title="Hazard 73"></div>
+                  </div>
+                </div>
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--play);">P</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar high" style="height:12px" title="Operations 84"></div>
+                    <div class="pbar mid" style="height:10px" title="Safety 76"></div>
+                    <div class="pbar high" style="height:11px" title="Maintenance 81"></div>
+                    <div class="pbar high" style="height:12px" title="Guest Exp 83"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><span class="flag-badge flag-warn">⚠ 1 SB pending</span></td>
+          </tr>
+          <!-- Tidal Wave: Water park only — SPLASH -->
+          <tr>
+            <td>
+              <div class="facility-name">Tidal Wave Water Park</div>
+              <div class="facility-location">Toms River, NJ</div>
+            </td>
+            <td>
+              <div class="score-types">
+                <span class="facility-type type-splash">SPLASH</span>
+              </div>
+            </td>
+            <td>
+              <div class="score-cell score-adequate">72</div>
+              <div class="score-breakdown">
+                <span class="score-mini" style="color:var(--splash);">S:72</span>
+              </div>
+            </td>
+            <td>
+              <div class="trend-group">
+                <div class="trend-composite trend-down">↓ -5</div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--splash);">S</span><span class="trend-sub-val trend-down">↓ -5</span></div>
+              </div>
+            </td>
+            <td>
+              <div class="pillar-group">
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--splash);">S</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar mid" style="height:11px" title="Safety 76"></div>
+                    <div class="pbar mid" style="height:10px" title="Protocol 74"></div>
+                    <div class="pbar low" style="height:7px" title="Lifeguard 58"></div>
+                    <div class="pbar mid" style="height:11px" title="Aquatic 78"></div>
+                    <div class="pbar mid" style="height:10px" title="Structure 75"></div>
+                    <div class="pbar mid" style="height:10px" title="Hazard 72"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><span class="flag-badge flag-warn">⚠ Lifeguard pillar</span></td>
+          </tr>
+          <!-- Galaxy: FEC only — PLAY -->
+          <tr>
+            <td>
+              <div class="facility-name">Galaxy Go-Karts &amp; Arcade</div>
+              <div class="facility-location">Point Pleasant, NJ</div>
+            </td>
+            <td>
+              <div class="score-types">
+                <span class="facility-type type-play">PLAY</span>
+              </div>
+            </td>
+            <td>
+              <div class="score-cell score-adequate">68</div>
+              <div class="score-breakdown">
+                <span class="score-mini" style="color:var(--play);">P:68</span>
+              </div>
+            </td>
+            <td>
+              <div class="trend-group">
+                <div class="trend-composite trend-down">↓ -8</div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--play);">P</span><span class="trend-sub-val trend-down">↓ -8</span></div>
+              </div>
+            </td>
+            <td>
+              <div class="pillar-group">
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--play);">P</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar mid" style="height:10px" title="Operations 72"></div>
+                    <div class="pbar low" style="height:7px" title="Safety 56"></div>
+                    <div class="pbar mid" style="height:10px" title="Maintenance 74"></div>
+                    <div class="pbar mid" style="height:10px" title="Guest Exp 71"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><span class="flag-badge flag-alert">✖ Score drop alert</span></td>
+          </tr>
+          <!-- Coaster Kingdom: Park with rides + FEC area — RIDE + PLAY -->
+          <tr>
+            <td>
+              <div class="facility-name">Coaster Kingdom</div>
+              <div class="facility-location">Jackson, NJ</div>
+            </td>
+            <td>
+              <div class="score-types">
+                <span class="facility-type type-ride">RIDE</span>
+                <span class="facility-type type-play">PLAY</span>
+              </div>
+            </td>
+            <td>
+              <div class="score-cell score-atrisk">54</div>
+              <div class="score-breakdown">
+                <span class="score-mini" style="color:var(--ride);">R:48</span>
+                <span class="score-mini" style="color:var(--play);">P:61</span>
+              </div>
+            </td>
+            <td>
+              <div class="trend-group">
+                <div class="trend-composite trend-down">↓ -12</div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--ride);">R</span><span class="trend-sub-val trend-down">↓ -15</span></div>
+                <div class="trend-sub"><span class="trend-sub-label" style="color:var(--play);">P</span><span class="trend-sub-val trend-down">↓ -8</span></div>
+              </div>
+            </td>
+            <td>
+              <div class="pillar-group">
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--ride);">R</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar low" style="height:6px" title="Readiness 44"></div>
+                    <div class="pbar low" style="height:6px" title="Integrity 42"></div>
+                    <div class="pbar low" style="height:8px" title="Delivery 54"></div>
+                    <div class="pbar low" style="height:7px" title="Environment 50"></div>
+                  </div>
+                </div>
+                <div class="pillar-row">
+                  <span class="pillar-row-label" style="color:var(--play);">P</span>
+                  <div class="pillar-row-bars">
+                    <div class="pbar mid" style="height:9px" title="Operations 66"></div>
+                    <div class="pbar low" style="height:7px" title="Safety 52"></div>
+                    <div class="pbar mid" style="height:9px" title="Maintenance 64"></div>
+                    <div class="pbar mid" style="height:9px" title="Guest Exp 62"></div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td><span class="flag-badge flag-alert">✖ Below threshold</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Two Column Section -->
+    <div class="two-col">
+      <!-- Alerts -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Recent Alerts</div>
+          <div class="card-badge" style="background:rgba(217,64,64,0.12);color:var(--red);">7 Active</div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-dot red"></div>
+          <div>
+            <div class="alert-text"><strong>Coaster Kingdom</strong> fell below critical threshold (54). Readiness and Integrity pillars flagged.</div>
+            <div class="alert-time">2 hours ago</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-dot red"></div>
+          <div>
+            <div class="alert-text"><strong>Galaxy Go-Karts</strong> score dropped 8 points in 90 days. Safety pillar deterioration detected.</div>
+            <div class="alert-time">6 hours ago</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-dot orange"></div>
+          <div>
+            <div class="alert-text"><strong>Splash Mountain</strong> Lifeguard pillar at 64 — lowest in SPLASH book. Audit recommended.</div>
+            <div class="alert-time">1 day ago</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-dot orange"></div>
+          <div>
+            <div class="alert-text"><strong>Adventure World</strong> has 1 unresolved service bulletin (SB-SEZ-02-2026). Compliance overdue 14 days.</div>
+            <div class="alert-time">2 days ago</div>
+          </div>
+        </div>
+        <div class="alert-item">
+          <div class="alert-dot blue"></div>
+          <div>
+            <div class="alert-text"><strong>Lakewood Family Fun Park</strong> achieved Excellent band (91). Eligible for preferred renewal pricing.</div>
+            <div class="alert-time">3 days ago</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Score Distribution -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Book Score Distribution</div>
+          <div class="card-badge" style="background:rgba(255,255,255,0.06);color:var(--text-muted);">47 Facilities</div>
+        </div>
+        <div style="padding: 8px 0;">
+          <div class="dist-row">
+            <div class="dist-label">90–100</div>
+            <div class="dist-bar-bg"><div class="dist-bar" style="width:17%;background:var(--green);"></div></div>
+            <div class="dist-count">8</div>
+          </div>
+          <div class="dist-row">
+            <div class="dist-label">80–89</div>
+            <div class="dist-bar-bg"><div class="dist-bar" style="width:34%;background:var(--green);opacity:0.7;"></div></div>
+            <div class="dist-count">16</div>
+          </div>
+          <div class="dist-row">
+            <div class="dist-label">70–79</div>
+            <div class="dist-bar-bg"><div class="dist-bar" style="width:30%;background:var(--orange);"></div></div>
+            <div class="dist-count">14</div>
+          </div>
+          <div class="dist-row">
+            <div class="dist-label">60–69</div>
+            <div class="dist-bar-bg"><div class="dist-bar" style="width:13%;background:var(--orange);opacity:0.7;"></div></div>
+            <div class="dist-count">6</div>
+          </div>
+          <div class="dist-row">
+            <div class="dist-label">Below 60</div>
+            <div class="dist-bar-bg"><div class="dist-bar" style="width:6%;background:var(--red);"></div></div>
+            <div class="dist-count">3</div>
+          </div>
+        </div>
+        <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--divider);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:600;letter-spacing:0.5px;">By Score Type</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:12px;">
+            <div style="flex:1;background:rgba(232,168,56,0.08);border:1px solid rgba(232,168,56,0.2);border-radius:8px;padding:12px;text-align:center;">
+              <div style="font-size:10px;font-weight:700;color:var(--ride);letter-spacing:1px;">RIDE</div>
+              <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text);margin-top:4px;">18</div>
+              <div style="font-size:10px;color:var(--text-muted);">Avg: 77.2</div>
+            </div>
+            <div style="flex:1;background:rgba(30,158,212,0.08);border:1px solid rgba(30,158,212,0.2);border-radius:8px;padding:12px;text-align:center;">
+              <div style="font-size:10px;font-weight:700;color:var(--splash);letter-spacing:1px;">SPLASH</div>
+              <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text);margin-top:4px;">12</div>
+              <div style="font-size:10px;color:var(--text-muted);">Avg: 74.8</div>
+            </div>
+            <div style="flex:1;background:rgba(31,184,122,0.08);border:1px solid rgba(31,184,122,0.2);border-radius:8px;padding:12px;text-align:center;">
+              <div style="font-size:10px;font-weight:700;color:var(--play);letter-spacing:1px;">PLAY</div>
+              <div style="font-size:22px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text);margin-top:4px;">17</div>
+              <div style="font-size:10px;color:var(--text-muted);">Avg: 77.6</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- end view-overview -->
+
+    <!-- ═══ VIEW: FACILITIES ═══ -->
+    <div class="view-panel" id="view-facilities">
+      <div class="main-header"><h1>All Facilities</h1><div class="main-header-actions"><button class="btn btn-ghost">Export CSV</button><button class="btn btn-primary">+ Add Facility</button></div></div>
+      <div class="kpi-strip">
+        <div class="kpi-card"><div class="kpi-label">Total Facilities</div><div class="kpi-value">47</div><div class="kpi-sub">Active in book</div></div>
+        <div class="kpi-card"><div class="kpi-label">States Covered</div><div class="kpi-value">14</div><div class="kpi-sub">NJ, PA, NY, FL, TX, CA +8</div></div>
+        <div class="kpi-card"><div class="kpi-label">Multi-Score Facilities</div><div class="kpi-value">22</div><div class="kpi-sub">2+ score types active</div></div>
+        <div class="kpi-card"><div class="kpi-label">Pending Onboarding</div><div class="kpi-value orange">4</div><div class="kpi-sub">Data collection in progress</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Facility Directory</div><div class="card-badge" style="background:rgba(255,255,255,0.06);color:var(--text-muted);">47 Active</div></div>
+        <table class="facility-table">
+          <thead><tr><th>Facility</th><th>Score Types</th><th>Composite</th><th>Policy #</th><th>Renewal</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><div class="facility-name">Lakewood Family Fun Park</div><div class="facility-location">Lakewood, NJ</div></td><td><div class="score-types"><span class="facility-type type-ride">RIDE</span><span class="facility-type type-splash">SPLASH</span><span class="facility-type type-play">PLAY</span></div></td><td class="score-cell score-excellent">91</td><td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);">AR-2026-4471</td><td style="font-size:12px;color:var(--text-dim);">Sep 15, 2026</td><td><span class="flag-badge flag-ok">✓ Active</span></td></tr>
+            <tr><td><div class="facility-name">Thunderbolt Amusement Park</div><div class="facility-location">Wildwood, NJ</div></td><td><div class="score-types"><span class="facility-type type-ride">RIDE</span><span class="facility-type type-splash">SPLASH</span></div></td><td class="score-cell score-strong">84</td><td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);">AR-2026-4523</td><td style="font-size:12px;color:var(--text-dim);">Jul 1, 2026</td><td><span class="flag-badge flag-ok">✓ Active</span></td></tr>
+            <tr><td><div class="facility-name">Adventure World Family Fun Center</div><div class="facility-location">Seaside Heights, NJ</div></td><td><div class="score-types"><span class="facility-type type-splash">SPLASH</span><span class="facility-type type-play">PLAY</span></div></td><td class="score-cell score-adequate">78</td><td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);">AR-2025-3891</td><td style="font-size:12px;color:var(--text-dim);">Apr 30, 2026</td><td><span class="flag-badge flag-warn">⚠ SB pending</span></td></tr>
+            <tr><td><div class="facility-name">Tidal Wave Water Park</div><div class="facility-location">Toms River, NJ</div></td><td><div class="score-types"><span class="facility-type type-splash">SPLASH</span></div></td><td class="score-cell score-adequate">72</td><td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);">AR-2025-3744</td><td style="font-size:12px;color:var(--text-dim);">May 15, 2026</td><td><span class="flag-badge flag-warn">⚠ Under review</span></td></tr>
+            <tr><td><div class="facility-name">Galaxy Go-Karts &amp; Arcade</div><div class="facility-location">Point Pleasant, NJ</div></td><td><div class="score-types"><span class="facility-type type-play">PLAY</span></div></td><td class="score-cell score-adequate">68</td><td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);">AR-2025-3612</td><td style="font-size:12px;color:var(--text-dim);">Jun 1, 2026</td><td><span class="flag-badge flag-alert">✖ Score drop</span></td></tr>
+            <tr><td><div class="facility-name">Coaster Kingdom</div><div class="facility-location">Jackson, NJ</div></td><td><div class="score-types"><span class="facility-type type-ride">RIDE</span><span class="facility-type type-play">PLAY</span></div></td><td class="score-cell score-atrisk">54</td><td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);">AR-2025-3298</td><td style="font-size:12px;color:var(--text-dim);">Aug 1, 2026</td><td><span class="flag-badge flag-alert">✖ Below threshold</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ VIEW: ALERTS ═══ -->
+    <div class="view-panel" id="view-alerts">
+      <div class="main-header"><h1>Active Alerts</h1><div class="main-header-actions"><button class="btn btn-ghost">Mark All Read</button><button class="btn btn-primary">Configure Thresholds</button></div></div>
+      <div class="kpi-strip">
+        <div class="kpi-card"><div class="kpi-label">Critical Alerts</div><div class="kpi-value red">2</div><div class="kpi-sub">Requires immediate action</div></div>
+        <div class="kpi-card"><div class="kpi-label">Warning Alerts</div><div class="kpi-value orange">3</div><div class="kpi-sub">Monitor closely</div></div>
+        <div class="kpi-card"><div class="kpi-label">Info Alerts</div><div class="kpi-value" style="color:var(--accent);">2</div><div class="kpi-sub">Positive developments</div></div>
+        <div class="kpi-card"><div class="kpi-label">Resolved (30d)</div><div class="kpi-value green">11</div><div class="kpi-sub">Average resolution: 4.2 days</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">All Alerts — Chronological</div><div class="card-badge" style="background:rgba(217,64,64,0.12);color:var(--red);">7 Active</div></div>
+        <div class="alert-item"><div class="alert-dot red"></div><div><div class="alert-text"><strong>Coaster Kingdom</strong> RIDE Score fell to 48 — below critical threshold (60). Readiness pillar at 44, Integrity at 42. Recommend immediate loss control intervention.</div><div class="alert-time">2 hours ago · RIDE Score · Jackson, NJ</div></div></div>
+        <div class="alert-item"><div class="alert-dot red"></div><div><div class="alert-text"><strong>Galaxy Go-Karts</strong> PLAY Score dropped 8 points in 90 days (76→68). Safety pillar declined from 72 to 56. Pattern consistent with staffing reduction.</div><div class="alert-time">6 hours ago · PLAY Score · Point Pleasant, NJ</div></div></div>
+        <div class="alert-item"><div class="alert-dot orange"></div><div><div class="alert-text"><strong>Tidal Wave Water Park</strong> SPLASH Lifeguard pillar at 58 — lowest in book. Third consecutive quarterly decline. Pre-season audit strongly recommended.</div><div class="alert-time">1 day ago · SPLASH Score · Toms River, NJ</div></div></div>
+        <div class="alert-item"><div class="alert-dot orange"></div><div><div class="alert-text"><strong>Adventure World</strong> unresolved service bulletin SB-SEZ-02-2026 (Soaring Eagle Zipline). Compliance overdue 14 days. Manufacturer response pending.</div><div class="alert-time">2 days ago · PLAY Score · Seaside Heights, NJ</div></div></div>
+        <div class="alert-item"><div class="alert-dot orange"></div><div><div class="alert-text"><strong>Coaster Kingdom</strong> PLAY Score Environment pillar declined to 62. Weather-adjusted load decisions showing non-compliance with recommended thresholds.</div><div class="alert-time">3 days ago · PLAY Score · Jackson, NJ</div></div></div>
+        <div class="alert-item"><div class="alert-dot blue"></div><div><div class="alert-text"><strong>Lakewood Family Fun Park</strong> achieved Excellent band (91) across all three score types. Eligible for preferred renewal pricing tier.</div><div class="alert-time">3 days ago · All Scores · Lakewood, NJ</div></div></div>
+        <div class="alert-item"><div class="alert-dot blue"></div><div><div class="alert-text"><strong>Thunderbolt Amusement Park</strong> SPLASH Score improved +6 points after lifeguard staffing increase. Now at 81 (Strong band).</div><div class="alert-time">5 days ago · SPLASH Score · Wildwood, NJ</div></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ VIEW: SCORE TRENDS ═══ -->
+    <div class="view-panel" id="view-trends">
+      <div class="main-header"><h1>Score Trends</h1><div class="main-header-actions"><button class="btn btn-ghost">Export Data</button></div></div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Book Average — Quarterly Trend</div></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:12px 0;">
+          <div style="text-align:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;"><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;font-weight:600;">Q2 2025</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text);margin-top:4px;">71.2</div></div>
+          <div style="text-align:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;"><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;font-weight:600;">Q3 2025</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text);margin-top:4px;">72.8</div><div style="font-size:11px;color:var(--green);font-weight:600;">↑ +1.6</div></div>
+          <div style="text-align:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;"><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;font-weight:600;">Q4 2025</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text);margin-top:4px;">74.3</div><div style="font-size:11px;color:var(--green);font-weight:600;">↑ +1.5</div></div>
+          <div style="text-align:center;padding:16px;background:var(--accent-glow);border:1px solid rgba(46,117,182,0.3);border-radius:8px;"><div style="font-size:10px;color:var(--accent);text-transform:uppercase;font-weight:600;">Q1 2026</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text);margin-top:4px;">76.4</div><div style="font-size:11px;color:var(--green);font-weight:600;">↑ +2.1</div></div>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Trend by Score Type</div></div>
+          <div style="padding:8px 0;">
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--divider);"><span style="font-size:10px;font-weight:700;color:var(--ride);width:60px;">RIDE</span><span style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--text);">77.2</span><span style="font-size:11px;color:var(--green);font-weight:600;margin-left:auto;">↑ +2.4 vs Q4</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--divider);"><span style="font-size:10px;font-weight:700;color:var(--splash);width:60px;">SPLASH</span><span style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--text);">74.8</span><span style="font-size:11px;color:var(--green);font-weight:600;margin-left:auto;">↑ +1.2 vs Q4</span></div>
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 0;"><span style="font-size:10px;font-weight:700;color:var(--play);width:60px;">PLAY</span><span style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--text);">77.6</span><span style="font-size:11px;color:var(--green);font-weight:600;margin-left:auto;">↑ +2.8 vs Q4</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title">Biggest Movers (90 days)</div></div>
+          <div style="padding:8px 0;">
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--divider);"><span style="font-size:12px;font-weight:600;color:var(--text);">Lakewood Family Fun Park</span><span style="font-size:12px;font-family:'DM Mono',monospace;font-weight:700;color:var(--green);margin-left:auto;">↑ +4</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--divider);"><span style="font-size:12px;font-weight:600;color:var(--text);">Thunderbolt Amusement Park</span><span style="font-size:12px;font-family:'DM Mono',monospace;font-weight:700;color:var(--green);margin-left:auto;">↑ +2</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--divider);"><span style="font-size:12px;font-weight:600;color:var(--text);">Tidal Wave Water Park</span><span style="font-size:12px;font-family:'DM Mono',monospace;font-weight:700;color:var(--red);margin-left:auto;">↓ -5</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--divider);"><span style="font-size:12px;font-weight:600;color:var(--text);">Galaxy Go-Karts &amp; Arcade</span><span style="font-size:12px;font-family:'DM Mono',monospace;font-weight:700;color:var(--red);margin-left:auto;">↓ -8</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 0;"><span style="font-size:12px;font-weight:600;color:var(--text);">Coaster Kingdom</span><span style="font-size:12px;font-family:'DM Mono',monospace;font-weight:700;color:var(--red);margin-left:auto;">↓ -12</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VIEW: RIDE SCORE ═══ -->
+    <div class="view-panel" id="view-ride">
+      <div class="main-header"><h1 style="display:flex;align-items:center;gap:10px;"><span style="color:var(--ride);">●</span> RIDE Score — Book View</h1></div>
+      <div class="kpi-strip">
+        <div class="kpi-card"><div class="kpi-label">RIDE-Scored Facilities</div><div class="kpi-value">18</div><div class="kpi-sub">Dry attractions, coasters, flat rides</div></div>
+        <div class="kpi-card"><div class="kpi-label">Avg. RIDE Score</div><div class="kpi-value green">77.2</div><div class="kpi-sub"><span class="kpi-trend up">↑ +2.4 vs Q4</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Weakest Pillar (Book)</div><div class="kpi-value orange">Integrity</div><div class="kpi-sub">Avg: 71.4 across 18 facilities</div></div>
+        <div class="kpi-card"><div class="kpi-label">Below 60</div><div class="kpi-value red">1</div><div class="kpi-sub">Coaster Kingdom (R: 48)</div></div>
+      </div>
+      <div class="card"><div class="card-header"><div class="card-title">RIDE Pillar Averages — Book Level</div><div class="card-badge" style="background:rgba(232,168,56,0.12);color:var(--ride);">4 Pillars</div></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:12px 0;">
+          <div style="text-align:center;padding:16px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:10px;font-weight:700;color:var(--ride);letter-spacing:1px;">READINESS</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green);margin-top:4px;">79.6</div></div>
+          <div style="text-align:center;padding:16px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:10px;font-weight:700;color:var(--ride);letter-spacing:1px;">INTEGRITY</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--orange);margin-top:4px;">71.4</div></div>
+          <div style="text-align:center;padding:16px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:10px;font-weight:700;color:var(--ride);letter-spacing:1px;">DELIVERY</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green);margin-top:4px;">80.1</div></div>
+          <div style="text-align:center;padding:16px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:10px;font-weight:700;color:var(--ride);letter-spacing:1px;">ENVIRONMENT</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green);margin-top:4px;">78.3</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VIEW: SPLASH SCORE ═══ -->
+    <div class="view-panel" id="view-splash">
+      <div class="main-header"><h1 style="display:flex;align-items:center;gap:10px;"><span style="color:var(--splash);">●</span> SPLASH Score — Book View</h1></div>
+      <div class="kpi-strip">
+        <div class="kpi-card"><div class="kpi-label">SPLASH-Scored Facilities</div><div class="kpi-value">12</div><div class="kpi-sub">Water parks, aquatic facilities</div></div>
+        <div class="kpi-card"><div class="kpi-label">Avg. SPLASH Score</div><div class="kpi-value orange">74.8</div><div class="kpi-sub"><span class="kpi-trend up">↑ +1.2 vs Q4</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Weakest Pillar (Book)</div><div class="kpi-value red">Lifeguard</div><div class="kpi-sub">Avg: 68.2 — highest fatality risk</div></div>
+        <div class="kpi-card"><div class="kpi-label">Below 60</div><div class="kpi-value red">1</div><div class="kpi-sub">Tidal Wave Lifeguard: 58</div></div>
+      </div>
+      <div class="card"><div class="card-header"><div class="card-title">SPLASH Pillar Averages — Book Level</div><div class="card-badge" style="background:rgba(30,158,212,0.12);color:var(--splash);">6 Pillars</div></div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;padding:12px 0;">
+          <div style="text-align:center;padding:14px 8px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:9px;font-weight:700;color:var(--splash);letter-spacing:0.5px;">SAFETY</div><div style="font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green);margin-top:4px;">79.1</div></div>
+          <div style="text-align:center;padding:14px 8px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:9px;font-weight:700;color:var(--splash);letter-spacing:0.5px;">PROTOCOL</div><div style="font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--orange);margin-top:4px;">75.4</div></div>
+          <div style="text-align:center;padding:14px 8px;border:1px solid rgba(217,64,64,0.3);border-radius:8px;background:rgba(217,64,64,0.05);"><div style="font-size:9px;font-weight:700;color:var(--red);letter-spacing:0.5px;">LIFEGUARD</div><div style="font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--red);margin-top:4px;">68.2</div></div>
+          <div style="text-align:center;padding:14px 8px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:9px;font-weight:700;color:var(--splash);letter-spacing:0.5px;">AQUATIC</div><div style="font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green);margin-top:4px;">80.6</div></div>
+          <div style="text-align:center;padding:14px 8px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:9px;font-weight:700;color:var(--splash);letter-spacing:0.5px;">STRUCTURE</div><div style="font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--orange);margin-top:4px;">76.8</div></div>
+          <div style="text-align:center;padding:14px 8px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:9px;font-weight:700;color:var(--splash);letter-spacing:0.5px;">HAZARD</div><div style="font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--orange);margin-top:4px;">74.9</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VIEW: PLAY SCORE ═══ -->
+    <div class="view-panel" id="view-play">
+      <div class="main-header"><h1 style="display:flex;align-items:center;gap:10px;"><span style="color:var(--play);">●</span> PLAY Score — Book View</h1></div>
+      <div class="kpi-strip">
+        <div class="kpi-card"><div class="kpi-label">PLAY-Scored Facilities</div><div class="kpi-value">17</div><div class="kpi-sub">FECs, trampoline, entertainment</div></div>
+        <div class="kpi-card"><div class="kpi-label">Avg. PLAY Score</div><div class="kpi-value green">77.6</div><div class="kpi-sub"><span class="kpi-trend up">↑ +2.8 vs Q4</span></div></div>
+        <div class="kpi-card"><div class="kpi-label">Weakest Pillar (Book)</div><div class="kpi-value orange">Safety</div><div class="kpi-sub">Avg: 72.1 across 17 facilities</div></div>
+        <div class="kpi-card"><div class="kpi-label">Below 60</div><div class="kpi-value red">1</div><div class="kpi-sub">Coaster Kingdom (P: 61)</div></div>
+      </div>
+      <div class="card"><div class="card-header"><div class="card-title">PLAY Pillar Averages — Book Level</div><div class="card-badge" style="background:rgba(31,184,122,0.12);color:var(--play);">4 Pillars</div></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:12px 0;">
+          <div style="text-align:center;padding:16px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:10px;font-weight:700;color:var(--play);letter-spacing:1px;">OPERATIONS</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green);margin-top:4px;">80.4</div></div>
+          <div style="text-align:center;padding:16px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:10px;font-weight:700;color:var(--play);letter-spacing:1px;">SAFETY</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--orange);margin-top:4px;">72.1</div></div>
+          <div style="text-align:center;padding:16px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:10px;font-weight:700;color:var(--play);letter-spacing:1px;">MAINTENANCE</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green);margin-top:4px;">78.9</div></div>
+          <div style="text-align:center;padding:16px;border:1px solid var(--card-border);border-radius:8px;"><div style="font-size:10px;font-weight:700;color:var(--play);letter-spacing:1px;">GUEST EXP.</div><div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green);margin-top:4px;">79.2</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VIEW: NEW ASSESSMENT ═══ -->
+    <div class="view-panel" id="view-assessment">
+      <div class="main-header"><h1>New Assessment</h1></div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Submit Facility for Scoring</div></div>
+        <div style="padding:20px 0;color:var(--text-dim);font-size:13px;line-height:1.8;">
+          <p>Submit a new or renewal facility for AS 360 scoring. The assessment process includes:</p>
+          <div style="margin:16px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+            <div style="padding:20px;border:1px solid var(--card-border);border-radius:8px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">1</div><div style="font-size:12px;font-weight:600;color:var(--text);">Data Collection</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Operator onboarding, API connections, checklist setup</div></div>
+            <div style="padding:20px;border:1px solid var(--card-border);border-radius:8px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">2</div><div style="font-size:12px;font-weight:600;color:var(--text);">Scoring Period</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;">30-day data accumulation across active streams</div></div>
+            <div style="padding:20px;border:1px solid var(--card-border);border-radius:8px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">3</div><div style="font-size:12px;font-weight:600;color:var(--text);">Certificate Issued</div><div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Facility Score Certificate + continuous monitoring</div></div>
+          </div>
+          <p style="margin-top:16px;">Contact <strong style="color:var(--accent);">risk@amusementstandards.com</strong> to initiate a new assessment or call <strong style="color:var(--text);">(732) 555-0147</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VIEW: EXPORT ═══ -->
+    <div class="view-panel" id="view-export">
+      <div class="main-header"><h1>Export Reports</h1></div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Available Reports</div></div>
+        <div style="padding:8px 0;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--divider);"><div><div style="font-size:13px;font-weight:600;color:var(--text);">Portfolio Summary Report</div><div style="font-size:11px;color:var(--text-muted);">All 47 facilities, composite scores, trends, alerts</div></div><button class="btn btn-ghost">Download PDF</button></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--divider);"><div><div style="font-size:13px;font-weight:600;color:var(--text);">Facility Score Certificates (Batch)</div><div style="font-size:11px;color:var(--text-muted);">Individual certificates for all scored facilities</div></div><button class="btn btn-ghost">Download ZIP</button></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--divider);"><div><div style="font-size:13px;font-weight:600;color:var(--text);">Score Data Export</div><div style="font-size:11px;color:var(--text-muted);">Raw scores, pillar data, stream status — CSV format</div></div><button class="btn btn-ghost">Download CSV</button></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;"><div><div style="font-size:13px;font-weight:600;color:var(--text);">Quarterly Reinsurance Report</div><div style="font-size:11px;color:var(--text-muted);">Book-level risk quality metrics for treaty support</div></div><button class="btn btn-ghost">Download PDF</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ VIEW: SETTINGS ═══ -->
+    <div class="view-panel" id="view-settings">
+      <div class="main-header"><h1>Settings</h1></div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Alert Thresholds</div></div>
+        <div style="padding:12px 0;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--divider);"><span style="font-size:13px;color:var(--text);">Critical score threshold</span><span style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--red);">60</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--divider);"><span style="font-size:13px;color:var(--text);">Score drop alert (90-day)</span><span style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--orange);">-5 pts</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--divider);"><span style="font-size:13px;color:var(--text);">Pillar floor alert</span><span style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--orange);">55</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;"><span style="font-size:13px;color:var(--text);">Service bulletin compliance window</span><span style="font-family:'DM Mono',monospace;font-size:14px;font-weight:700;color:var(--text);">14 days</span></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header"><div class="card-title">Account</div></div>
+        <div style="padding:12px 0;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--divider);"><span style="font-size:13px;color:var(--text);">Organization</span><span style="font-size:13px;color:var(--text-dim);">Alive Risk — Amusement Program</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--divider);"><span style="font-size:13px;color:var(--text);">Primary contact</span><span style="font-size:13px;color:var(--text-dim);">Rodney Gerbers</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--divider);"><span style="font-size:13px;color:var(--text);">API access</span><span class="flag-badge flag-ok">✓ Enabled</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;"><span style="font-size:13px;color:var(--text);">Data refresh interval</span><span style="font-size:13px;color:var(--text-dim);">Daily</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function switchView(el) {
+  // Update sidebar active state
+  document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+  el.classList.add('active');
+  
+  // Switch view panel
+  const viewId = el.getAttribute('data-view');
+  document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+  const target = document.getElementById('view-' + viewId);
+  if (target) target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
