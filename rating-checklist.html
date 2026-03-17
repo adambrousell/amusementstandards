@@ -1,96 +1,415 @@
-import { useState, useRef } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>AmusementRating — Guest Journey Audit</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FAFAFA;--card:#fff;--border:#E5E7EB;--text:#374151;--dim:#9CA3AF;--dark:#0F172A;--dark2:#1E293B;--fire:#FF4B1F;--fire2:#FF9068;--green:#059669;--greenbg:#ECFDF5;--greenbd:#86EFAC;--indigo:#4338CA;--indigo2:#6366F1;--indigobg:#EEF2FF;--indigobd:#C7D2FE;--purple:#7C3AED;--purplebg:#F5F3FF;--purplebd:#E9D5FF;--mono:'IBM Plex Mono',monospace;--sans:'DM Sans',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button,input,textarea{font-family:var(--sans)}
+input:focus,textarea:focus{outline:none;border-color:var(--fire)!important}
+.mono{font-family:var(--mono)}
+@keyframes su{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.3}}
+.su{animation:su .3s ease-out both}
 
-const P = {
-  O: { label: "OPS", color: "#0D9488", bg: "#CCFBF1", border: "#5EEAD4" },
-  S: { label: "SAFE", color: "#DC2626", bg: "#FEE2E2", border: "#FCA5A5" },
-  G: { label: "GUEST", color: "#2563EB", bg: "#DBEAFE", border: "#93C5FD" },
-  F: { label: "FACIL", color: "#B45309", bg: "#FEF3C7", border: "#FCD34D" },
-};
-const A = [
-  { n: 1, label: "Critical", desc: "Safety hazard or total failure", color: "#DC2626" },
-  { n: 2, label: "Poor", desc: "Below minimum standard", color: "#EA580C" },
-  { n: 3, label: "Acceptable", desc: "Meets baseline expectations", color: "#CA8A04" },
-  { n: 4, label: "Good", desc: "Above average", color: "#16A34A" },
-  { n: 5, label: "Excellent", desc: "Best-in-class", color: "#059669" },
+/* PILLAR BADGES */
+.bdg{display:inline-block;font-family:var(--mono);font-weight:700;letter-spacing:.06em;line-height:1.6;border-radius:4px;font-size:9.5px;padding:1px 7px}
+.bdg-md{font-size:11px;padding:3px 10px;border-radius:5px}
+.bdg-O{color:#0D9488;background:#CCFBF1;border:1px solid #5EEAD4}
+.bdg-S{color:#DC2626;background:#FEE2E2;border:1px solid #FCA5A5}
+.bdg-G{color:#2563EB;background:#DBEAFE;border:1px solid #93C5FD}
+.bdg-F{color:#B45309;background:#FEF3C7;border:1px solid #FCD34D}
+
+/* SCORE BUTTONS */
+.scores{display:flex;gap:5px;margin-top:8px}
+.scores.lg{gap:8px;margin-top:0;justify-content:center}
+.sb{font-family:var(--mono);width:38px;height:34px;border-radius:7px;cursor:pointer;font-weight:700;font-size:13px;border:1.5px solid var(--border);background:#FAFAFA;color:var(--dim);transition:all .15s ease}
+.sb.lg{width:48px;height:44px;font-size:18px;border-radius:10px}
+.sb.on{color:#fff;border-width:2.5px}
+.s1.on{background:#DC2626;border-color:#DC2626;box-shadow:0 2px 8px #DC262633}
+.s2.on{background:#EA580C;border-color:#EA580C;box-shadow:0 2px 8px #EA580C33}
+.s3.on{background:#CA8A04;border-color:#CA8A04;box-shadow:0 2px 8px #CA8A0433}
+.s4.on{background:#16A34A;border-color:#16A34A;box-shadow:0 2px 8px #16A34A33}
+.s5.on{background:#059669;border-color:#059669;box-shadow:0 2px 8px #05966933}
+
+/* LAYOUT */
+.wrap{max-width:480px;margin:0 auto;min-height:100vh}
+.hero{background:linear-gradient(150deg,var(--dark) 0%,var(--dark2) 55%,var(--dark) 100%);padding:32px 20px 28px;color:#fff;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50px;right:-30px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,#FF4B1F22 0%,transparent 70%)}
+.hero::after{content:'';position:absolute;bottom:-60px;left:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,#FF906822 0%,transparent 70%)}
+.hero>div{position:relative}
+.logo{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--fire),var(--fire2));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;box-shadow:0 4px 12px rgba(255,75,31,.35)}
+.body{padding:16px 18px 40px}
+.label{display:block;font-size:10px;font-weight:700;color:#6B7280;margin-bottom:5px;letter-spacing:.08em;text-transform:uppercase}
+.inp{width:100%;padding:11px 13px;border-radius:9px;border:1.5px solid var(--border);font-size:14px;background:var(--card)}
+
+/* TOGGLE */
+.toggle-wrap{width:100%;margin-top:14px;padding:12px 14px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10;border:1.5px solid var(--border);background:var(--card);transition:all .2s ease}
+.toggle-wrap.on{border:2px solid #818CF8;background:linear-gradient(135deg,var(--indigobg),#E0E7FF)}
+.toggle-track{width:44px;height:24px;border-radius:12px;padding:2px;background:#D1D5DB;display:flex;align-items:center;transition:background .2s;flex-shrink:0}
+.toggle-wrap.on .toggle-track{background:#818CF8}
+.toggle-knob{width:20px;height:20px;border-radius:10px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.15);transition:transform .2s}
+.toggle-wrap.on .toggle-knob{transform:translateX(20px)}
+
+/* CARDS */
+.cl-card{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;margin-bottom:8px;border-radius:12px;cursor:pointer;text-align:left;border:1.5px solid var(--border);background:var(--card);transition:all .2s}
+.cl-card.done{border-color:var(--greenbd);background:#F0FDF4}
+
+/* PHASE */
+.phase{margin-bottom:10px;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--card)}
+.phase.complete{border:1.5px solid var(--greenbd)}
+.phase.watch-zone{border-color:var(--indigobd)}
+.phase-hdr{width:100%;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;border:none;cursor:pointer;font-family:var(--sans);background:#FAFAFA}
+.phase.complete .phase-hdr{background:#F0FDF4}
+.phase.watch-zone .phase-hdr{background:var(--purplebg)}
+.phase-body{padding:6px 14px 10px}
+.item{padding:10px 0;border-bottom:1px solid #F5F5F5}
+.item:last-child{border-bottom:none}
+
+/* GPS */
+.gps{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;width:100%;text-align:left;cursor:pointer;border:2px dashed var(--border);background:var(--card)}
+.gps.on{border:1.5px solid var(--green);background:var(--greenbg)}
+
+/* WATCH PHASE */
+.wphase{margin-bottom:10px;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--card)}
+.wphase.scored{border:1.5px solid var(--greenbd)}
+.wphase-hdr{padding:12px 14px;display:flex;align-items:center;gap:10px;background:#FAFAFA;border-bottom:1px solid #F3F4F6}
+.wphase.scored .wphase-hdr{background:#F0FDF4}
+.wphase-body{padding:14px}
+
+/* HANDOFF */
+.handoff{margin:16px 0;padding:14px 16px;border-radius:12px;background:linear-gradient(135deg,var(--indigobg),#E0E7FF);border:2px solid var(--indigobd);display:flex;align-items:center;gap:12px}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;padding:12px 16px 10px;border-bottom:1px solid}
+.nav-dark{background:var(--dark);border-color:var(--dark2)}
+.nav-indigo{background:#1E1B4B;border-color:#312E81}
+.pbar{margin-top:8px;height:3px;border-radius:2px}
+.pfill{height:100%;border-radius:2px;transition:width .4s cubic-bezier(.34,1.56,.64,1)}
+
+/* PHOTO / NOTE */
+.photo-btn{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;font-size:11px;border-radius:6px;cursor:pointer;font-weight:600;border:1.5px dashed var(--border);background:var(--card);color:var(--dim)}
+.photo-btn.on{border:1.5px solid var(--green);background:var(--greenbg);color:var(--green)}
+.note-btn{margin-top:4px;padding:2px 8px;font-size:10.5px;color:var(--dim);background:none;border:1px dashed #D1D5DB;border-radius:4px;cursor:pointer}
+.note-area{margin-top:6px;width:100%;padding:8px 10px;font-size:12.5px;border:1.5px solid var(--border);border-radius:7px;resize:vertical;line-height:1.5;color:var(--text);background:#FAFAFA}
+.memo-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:11.5px;font-weight:600;border:1.5px dashed var(--border);background:var(--card);color:#6B7280}
+.memo-btn.on{border:1.5px solid var(--green);background:var(--greenbg);color:var(--green)}
+
+/* SUBMIT */
+.submit-btn{width:100%;padding:15px;border-radius:12px;border:none;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s}
+.submit-on{background:linear-gradient(135deg,var(--fire),var(--fire2));color:#fff;box-shadow:0 6px 20px rgba(255,75,31,.25)}
+.submit-off{background:#E5E7EB;color:var(--dim);cursor:default}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:#fff;border-radius:16px 16px 0 0;max-width:480px;width:100%;max-height:85vh;overflow:auto;padding:20px 18px 28px}
+
+/* PILLAR DASH */
+.pdash{margin:12px 0;padding:16px;border-radius:12px;background:linear-gradient(145deg,#0F172A 0%,#1E293B 60%,#0F172A 100%);color:#fff}
+.pcell{padding:12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+.pbar-inner{height:3px;border-radius:2px;background:#1E293B;margin-top:6px}
+
+/* PROTOCOL */
+.protocol{margin-top:16px;padding:12px 14px;border-radius:10px;background:#FFFBEB;border:1px solid #FDE68A;font-size:11.5px;color:#92400E;line-height:1.6}
+
+/* LEGEND */
+.legend{margin:8px 0;padding:12px;border-radius:10px;background:#F9FAFB;border:1px solid var(--border)}
+.legend-row{display:flex;gap:8px;align-items:center;margin-bottom:4px}
+.legend-dot{width:22px;height:22px;border-radius:5px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--mono);flex-shrink:0}
+
+.tag{background:#F3F4F6;padding:3px 8px;border-radius:4px;font-size:11px;color:#6B7280}
+.section-label{display:flex;align-items:center;gap:6px;margin-bottom:8px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.haptic{display:inline-block;width:6px;height:6px;border-radius:50%;background:#818CF8;animation:pu 2s infinite}
+.watch-tag{font-family:var(--mono);font-size:9px;padding:1px 6px;border-radius:3px;background:#818CF820;color:var(--indigo2);font-weight:600;border:1px solid var(--indigobd)}
+.watch-tag-sm{font-family:var(--mono);font-size:8px;padding:1px 5px;border-radius:3px;background:#EDE9FE;color:var(--purple);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+// ═══════ DATA ═══════
+const P={O:{l:"OPS",c:"#0D9488"},S:{l:"SAFE",c:"#DC2626"},G:{l:"GUEST",c:"#2563EB"},F:{l:"FACIL",c:"#B45309"}};
+const AN=[{n:1,l:"Critical",d:"Safety hazard or total failure",c:"#DC2626"},{n:2,l:"Poor",d:"Below minimum standard",c:"#EA580C"},{n:3,l:"Acceptable",d:"Meets baseline expectations",c:"#CA8A04"},{n:4,l:"Good",d:"Above average",c:"#16A34A"},{n:5,l:"Excellent",d:"Best-in-class",c:"#059669"}];
+
+const CL=[
+{id:"rc",title:"Roller Coasters",icon:"\u{1F3A2}",desc:"Steel & wood coasters",phases:[
+{n:"Approach",ph:1,items:[{t:"Ride signage visible and legible from 50+ ft",p:"G"},{t:"Height requirement posted clearly at approach",p:"S"},{t:"Wait time posted and appears accurate",p:"O"},{t:"Pathway to entrance clear, ADA-accessible",p:"F"}]},
+{n:"Queue Entry",w:1,items:[{t:"Ride rules and restrictions posted at queue entrance",p:"S"},{t:"Loose article policy clearly communicated",p:"G"},{t:"Entry point staffed or monitored",p:"O"},{t:"Queue entrance area clean and maintained",p:"F"}]},
+{n:"Queue Experience",w:1,items:[{t:"Queue moves at consistent pace — no unexplained stops >3 min",p:"O"},{t:"Shade, fans, or misting available in outdoor sections",p:"G"},{t:"Railings and barriers secure, no sharp edges",p:"S"},{t:"Queue area free of trash, graffiti, standing water",p:"F"}]},
+{n:"Station / Loading",w:1,ph:1,items:[{t:"Grouper efficiently assigns rows, minimizes empty seats",p:"O"},{t:"Operator restraint checks thorough (belt + bar, every guest)",p:"S"},{t:"Verbal safety spiel delivered clearly before dispatch",p:"S"},{t:"Operator engages guests positively — not robotic",p:"G"},{t:"Station platform clean, non-slip surface intact",p:"F"}]},
+{n:"Dispatch",w:1,items:[{t:"All-clear procedure visible (thumbs-up, call-out, panel check)",p:"S"},{t:"Dispatch interval consistent — no excessive stacking",p:"O"},{t:"Gates and airgates function properly",p:"F"}]},
+{n:"Ride",w:1,items:[{t:"Ride operates smoothly — no abnormal sounds or jolts",p:"S"},{t:"On-ride theming and effects functioning",p:"G"},{t:"Track/structure visible portions well-maintained",p:"F"}]},
+{n:"Unload",w:1,items:[{t:"Operator confirms full stop before releasing restraints",p:"S"},{t:"Clear directional signage for exit",p:"G"},{t:"Operator thanks guests or provides positive send-off",p:"G"},{t:"Unload platform clean and dry",p:"F"}]},
+{n:"Exit",ph:1,items:[{t:"Exit path clearly marked — no dead-ends",p:"G"},{t:"On-ride photo/retail does not block egress",p:"S"},{t:"Exit area clean and maintained",p:"F"},{t:"Re-ride option clearly signed (if offered)",p:"O"}]}
+]},
+{id:"fr",title:"Flat Rides",icon:"\u{1F3A1}",desc:"Spinning, swinging & tower rides",phases:[
+{n:"Approach",ph:1,items:[{t:"Ride name and type identifiable from pathway",p:"G"},{t:"Height/weight/health restrictions posted",p:"S"},{t:"Wait time display present and current",p:"O"},{t:"Approach path clear and well-maintained",p:"F"}]},
+{n:"Queue Entry",w:1,items:[{t:"Safety rules and rider responsibility signage posted",p:"S"},{t:"Loose article storage bins or lockers visible",p:"G"},{t:"Queue entry staffed — line-jumping controlled",p:"O"},{t:"Entry infrastructure in good repair",p:"F"}]},
+{n:"Queue Experience",w:1,items:[{t:"Queue flow managed — no bottlenecks",p:"O"},{t:"Guest comfort measures in place (shade, seating)",p:"G"},{t:"Barriers intact — no climbable hazards",p:"S"},{t:"Queue surface level, clean, no trip hazards",p:"F"}]},
+{n:"Station / Loading",w:1,ph:1,items:[{t:"Operator seats guests efficiently — balanced loading",p:"O"},{t:"Restraint check performed individually on every guest",p:"S"},{t:"Operator delivers safety instructions audibly",p:"S"},{t:"Operator friendly — attentive to children/nervous riders",p:"G"},{t:"Loading area surface and seating units clean",p:"F"}]},
+{n:"Dispatch",w:1,items:[{t:"Clear verbal or visual all-clear before start",p:"S"},{t:"Cycle time consistent with posted duration",p:"O"},{t:"Control panel area organized — operator focused",p:"O"}]},
+{n:"Ride",w:1,items:[{t:"Ride operates within expected motion envelope",p:"S"},{t:"Lighting/music/effects functioning",p:"G"},{t:"Visible mechanical components appear maintained",p:"F"}]},
+{n:"Unload",w:1,items:[{t:"Full stop confirmed before restraint release",p:"S"},{t:"Exit direction clearly communicated",p:"G"},{t:"Operator assists guests needing help exiting",p:"G"},{t:"Unload zone clean — free of debris",p:"F"}]},
+{n:"Exit",ph:1,items:[{t:"Exit path intuitive — reconnects to main pathway",p:"G"},{t:"No pinch points or crowd conflicts at exit",p:"S"},{t:"Exit area well-lit and maintained",p:"F"},{t:"Staff visible if guest needs post-ride assistance",p:"O"}]}
+]},
+{id:"wr",title:"Water Rides / Slides",icon:"\u{1F30A}",desc:"Flumes, slides & water coasters",phases:[
+{n:"Approach",ph:1,items:[{t:"Ride/slide name and type visible from approach",p:"G"},{t:"Height/weight/swimming requirements posted",p:"S"},{t:"Wait time or queue status communicated",p:"O"},{t:"Pathway slip-resistant — properly graded",p:"F"}]},
+{n:"Queue Entry",w:1,items:[{t:"Rider rules posted (body position, tube req, no running)",p:"S"},{t:"Tube/raft distribution organized",p:"O"},{t:"Footwear policy and storage communicated",p:"G"},{t:"Queue entry surface non-slip — no standing water",p:"F"}]},
+{n:"Queue Experience",w:1,items:[{t:"Queue flows steadily — staff manage merging lines",p:"O"},{t:"Sun protection on stairways/elevated sections",p:"G"},{t:"Stairways have handrails, non-slip treads, no broken steps",p:"S"},{t:"Queue areas clean — no mildew/algae",p:"F"}]},
+{n:"Launch / Loading",w:1,ph:1,items:[{t:"Attendant verifies rider positioning and tube seating",p:"S"},{t:"Dispatch timing controlled — no premature sends",p:"S"},{t:"Operator gives clear ride instructions",p:"O"},{t:"Operator engaging — reassuring with first-timers",p:"G"},{t:"Launch area surface maintained — adequate drainage",p:"F"}]},
+{n:"Dispatch",w:1,items:[{t:"Spacing between riders controlled (visual/timer)",p:"S"},{t:"Water flow consistent and appropriate",p:"O"},{t:"Communication between top and bottom functional",p:"O"}]},
+{n:"Ride",w:1,items:[{t:"Slide/flume surface smooth — no exposed joints",p:"S"},{t:"Water flow adequate throughout ride path",p:"O"},{t:"Theming/lighting functioning in enclosed sections",p:"G"},{t:"Visible structure in good condition — no rust",p:"F"}]},
+{n:"Splash Zone / Landing",w:1,items:[{t:"Catch pool adequately deep — attendant present",p:"S"},{t:"Clear exit direction from landing area",p:"G"},{t:"Tube return process organized",p:"O"},{t:"Landing pool water clear — surface intact",p:"F"}]},
+{n:"Exit",ph:1,items:[{t:"Exit path non-slip — clearly marked",p:"G"},{t:"No cross-traffic between exiting and approaching guests",p:"S"},{t:"Exit surfaces clean — drainage working",p:"F"},{t:"Staff positioned to assist at exit",p:"O"}]}
+]},
+{id:"la",title:"Lifeguarded Attractions",icon:"\u{1F3CA}",desc:"Wave pools, lazy rivers, swim areas",phases:[
+{n:"Approach",ph:1,items:[{t:"Attraction type and rules visible from approach",p:"G"},{t:"Capacity limits or entry restrictions posted",p:"S"},{t:"Current status (open/closed/capacity) displayed",p:"O"},{t:"Approach deck in good condition — non-slip",p:"F"}]},
+{n:"Entry",items:[{t:"Entry point controlled — wristband/height check enforced",p:"S"},{t:"Life jacket availability and policy communicated",p:"S"},{t:"Rules signage comprehensive",p:"G"},{t:"Entry area clean — deck furniture organized",p:"F"}]},
+{n:"Zone Observation",ph:1,items:[{t:"Water clarity — bottom visible in all areas",p:"S"},{t:"Depth markers clearly visible at all required points",p:"S"},{t:"Patron density within safe limits",p:"O"},{t:"Pool edges in good repair — no chipped tile",p:"F"},{t:"Wave/current intensity appropriate for posted age group",p:"G"}]},
+{n:"Lifeguard Behavior",items:[{t:"Guards in elevated positions with unobstructed zone view",p:"S"},{t:"Guards performing active scanning (10/20 protocol)",p:"S"},{t:"No distractions — no phone use or side conversations",p:"O"},{t:"Rescue equipment within arm's reach",p:"S"},{t:"Guard rotation occurring at regular intervals",p:"O"}]},
+{n:"Patron Management",items:[{t:"Rule violations addressed promptly",p:"S"},{t:"Corrections delivered professionally",p:"G"},{t:"Unattended children identified and guardian located",p:"S"},{t:"Capacity managed — guests informed if at limit",p:"O"}]},
+{n:"Facility Condition",ph:1,items:[{t:"Deck surfaces non-slip — free of tripping hazards",p:"F"},{t:"Drain covers secure and compliant",p:"S"},{t:"Chemical smell not overpowering",p:"F"},{t:"Restrooms/changing areas nearby and accessible",p:"G"},{t:"First aid/emergency equipment visibly accessible",p:"S"}]},
+{n:"Exit",items:[{t:"Exit path clearly defined — non-slip",p:"G"},{t:"Towel/dry-off area available",p:"G"},{t:"Exit no cross-traffic with active area",p:"S"},{t:"Exit area maintained — drains functioning",p:"F"}]}
+]},
+{id:"up",title:"Unmanned Play Structures",icon:"\u{1F6DD}",desc:"Playgrounds, splash pads, toddler areas",phases:[
+{n:"Approach",ph:1,items:[{t:"Play area type and age range clearly posted",p:"G"},{t:"Rules and behavioral expectations posted",p:"S"},{t:"Operating hours and supervision notice visible",p:"O"},{t:"Approach surface even — ADA-accessible",p:"F"}]},
+{n:"Entry",items:[{t:"Entry/exit points defined (not open from all sides)",p:"S"},{t:"Parent/guardian supervision requirement stated",p:"S"},{t:"Footwear policy communicated (if splash pad)",p:"G"},{t:"Entry surface transition safe — no abrupt level change",p:"F"}]},
+{n:"Condition Assessment",ph:1,items:[{t:"All structure components intact — no broken rungs/cracked slides",p:"S"},{t:"Fall surfaces adequate and maintained",p:"S"},{t:"No exposed bolts, sharp edges, or pinch points at child height",p:"S"},{t:"Water features flowing clean — drains unblocked",p:"F"},{t:"Structure clean — no graffiti, gum, or contamination",p:"F"}]},
+{n:"Supervision Environment",items:[{t:"Sightlines clear — parents can see entire play area",p:"G"},{t:"Shaded seating available for supervising adults",p:"G"},{t:"Perimeter prevents wandering into traffic/ride areas",p:"S"},{t:"Staff visible or call button/emergency contact posted",p:"O"}]},
+{n:"Patron Behavior",items:[{t:"Age mixing manageable — older children not creating hazards",p:"S"},{t:"No overcrowding on individual elements",p:"O"},{t:"Parents/guardians engaged (not absent)",p:"G"},{t:"General atmosphere safe for target age group",p:"G"}]},
+{n:"Exit",ph:1,items:[{t:"Exit reconnects safely to main pathway",p:"G"},{t:"No hazardous transition (wet area to hard pavement)",p:"S"},{t:"Trash receptacles available at exit",p:"F"},{t:"Hand-washing or sanitizing station nearby",p:"F"}]}
+]}
 ];
-const CL=[{id:"rc",title:"Roller Coasters",icon:"\u{1F3A2}",desc:"Steel & wood coasters",phases:[{name:"Approach",photo:true,items:[{t:"Ride signage visible and legible from 50+ ft",p:"G"},{t:"Height requirement posted clearly at approach",p:"S"},{t:"Wait time posted and appears accurate (\u00B110 min)",p:"O"},{t:"Pathway to entrance clear, ADA-accessible",p:"F"}]},{name:"Queue Entry",w:true,items:[{t:"Ride rules and restrictions posted at queue entrance",p:"S"},{t:"Loose article policy clearly communicated",p:"G"},{t:"Entry point staffed or monitored",p:"O"},{t:"Queue entrance area clean and maintained",p:"F"}]},{name:"Queue Experience",w:true,items:[{t:"Queue moves at consistent pace \u2014 no unexplained stops >3 min",p:"O"},{t:"Shade, fans, or misting available in outdoor sections",p:"G"},{t:"Railings and barriers secure, no sharp edges",p:"S"},{t:"Queue area free of trash, graffiti, standing water",p:"F"}]},{name:"Station / Loading",w:true,photo:true,items:[{t:"Grouper efficiently assigns rows, minimizes empty seats",p:"O"},{t:"Operator restraint checks thorough (belt + bar, every guest)",p:"S"},{t:"Verbal safety spiel delivered clearly before dispatch",p:"S"},{t:"Operator engages guests positively \u2014 not robotic",p:"G"},{t:"Station platform clean, non-slip surface intact",p:"F"}]},{name:"Dispatch",w:true,items:[{t:"All-clear procedure visible (thumbs-up, call-out, panel check)",p:"S"},{t:"Dispatch interval consistent \u2014 no excessive stacking",p:"O"},{t:"Gates and airgates function properly",p:"F"}]},{name:"Ride",w:true,items:[{t:"Ride operates smoothly \u2014 no abnormal sounds or jolts",p:"S"},{t:"On-ride theming and effects functioning",p:"G"},{t:"Track and structure visible portions well-maintained",p:"F"}]},{name:"Unload",w:true,items:[{t:"Operator confirms full stop before releasing restraints",p:"S"},{t:"Clear directional signage for exit",p:"G"},{t:"Operator thanks guests or provides positive send-off",p:"G"},{t:"Unload platform clean and dry",p:"F"}]},{name:"Exit",photo:true,items:[{t:"Exit path clearly marked \u2014 no dead-ends",p:"G"},{t:"On-ride photo / retail does not block egress",p:"S"},{t:"Exit area clean and maintained",p:"F"},{t:"Re-ride option clearly signed (if offered)",p:"O"}]}]},{id:"fr",title:"Flat Rides",icon:"\u{1F3A1}",desc:"Spinning, swinging & tower rides",phases:[{name:"Approach",photo:true,items:[{t:"Ride name and type identifiable from pathway",p:"G"},{t:"Height / weight / health restrictions posted",p:"S"},{t:"Wait time display present and current",p:"O"},{t:"Approach path clear and well-maintained",p:"F"}]},{name:"Queue Entry",w:true,items:[{t:"Safety rules and rider responsibility signage posted",p:"S"},{t:"Loose article storage bins or lockers visible",p:"G"},{t:"Queue entry staffed \u2014 line-jumping controlled",p:"O"},{t:"Entry infrastructure in good repair",p:"F"}]},{name:"Queue Experience",w:true,items:[{t:"Queue flow managed \u2014 no bottlenecks",p:"O"},{t:"Guest comfort measures in place (shade, accessible seating)",p:"G"},{t:"Barriers intact \u2014 no climbable hazards",p:"S"},{t:"Queue surface level, clean, no trip hazards",p:"F"}]},{name:"Station / Loading",w:true,photo:true,items:[{t:"Operator seats guests efficiently \u2014 balanced loading",p:"O"},{t:"Restraint check performed individually on every guest",p:"S"},{t:"Operator delivers safety instructions audibly",p:"S"},{t:"Operator demeanor friendly \u2014 attentive to children",p:"G"},{t:"Loading area surface and seating units clean",p:"F"}]},{name:"Dispatch",w:true,items:[{t:"Clear verbal or visual all-clear before start",p:"S"},{t:"Cycle time consistent with posted duration",p:"O"},{t:"Control panel area organized \u2014 operator focused",p:"O"}]},{name:"Ride",w:true,items:[{t:"Ride operates within expected motion envelope",p:"S"},{t:"Lighting / music / effects functioning",p:"G"},{t:"Visible mechanical components appear maintained",p:"F"}]},{name:"Unload",w:true,items:[{t:"Full stop confirmed before restraint release",p:"S"},{t:"Exit direction clearly communicated",p:"G"},{t:"Operator assists guests needing help exiting",p:"G"},{t:"Unload zone clean \u2014 free of debris",p:"F"}]},{name:"Exit",photo:true,items:[{t:"Exit path intuitive \u2014 reconnects to main pathway",p:"G"},{t:"No pinch points or crowd conflicts at exit",p:"S"},{t:"Exit area well-lit and maintained",p:"F"},{t:"Staff visible if guest needs post-ride assistance",p:"O"}]}]},{id:"wr",title:"Water Rides / Slides",icon:"\u{1F30A}",desc:"Flumes, slides & water coasters",phases:[{name:"Approach",photo:true,items:[{t:"Ride / slide name and type visible from approach",p:"G"},{t:"Height / weight / swimming ability requirements posted",p:"S"},{t:"Wait time or queue status communicated",p:"O"},{t:"Pathway slip-resistant \u2014 properly graded for drainage",p:"F"}]},{name:"Queue Entry",w:true,items:[{t:"Rider rules posted (body position, tube requirements, no running)",p:"S"},{t:"Tube / raft distribution organized",p:"O"},{t:"Footwear policy and storage clearly communicated",p:"G"},{t:"Queue entry surface non-slip \u2014 free of standing water",p:"F"}]},{name:"Queue Experience",w:true,items:[{t:"Queue flows steadily \u2014 staff manage merging lines",p:"O"},{t:"Sun protection present on stairways / elevated sections",p:"G"},{t:"Stairways have handrails, non-slip treads, no broken steps",p:"S"},{t:"Queue areas clean \u2014 free of mildew and algae",p:"F"}]},{name:"Launch / Loading",w:true,photo:true,items:[{t:"Attendant verifies rider positioning and tube seating",p:"S"},{t:"Dispatch timing controlled \u2014 no premature sends",p:"S"},{t:"Operator gives clear ride instructions",p:"O"},{t:"Operator engaging and reassuring with first-timers",p:"G"},{t:"Launch area surface maintained \u2014 adequate drainage",p:"F"}]},{name:"Dispatch",w:true,items:[{t:"Spacing between riders controlled (visual / timer system)",p:"S"},{t:"Water flow consistent and appropriate",p:"O"},{t:"Communication system between top and bottom functional",p:"O"}]},{name:"Ride",w:true,items:[{t:"Slide / flume surface smooth \u2014 no exposed joints",p:"S"},{t:"Water flow adequate throughout ride path",p:"O"},{t:"Theming / lighting functioning in enclosed sections",p:"G"},{t:"Visible structure in good condition \u2014 no rust",p:"F"}]},{name:"Splash Zone / Landing",w:true,items:[{t:"Catch pool adequately deep \u2014 attendant present",p:"S"},{t:"Clear exit direction from landing area",p:"G"},{t:"Tube return process organized",p:"O"},{t:"Landing pool water clear \u2014 surface intact",p:"F"}]},{name:"Exit",photo:true,items:[{t:"Exit path non-slip \u2014 clearly marked",p:"G"},{t:"No cross-traffic between exiting and approaching guests",p:"S"},{t:"Exit surfaces clean \u2014 drainage working",p:"F"},{t:"Staff positioned to assist or direct at exit",p:"O"}]}]},{id:"la",title:"Lifeguarded Attractions",icon:"\u{1F3CA}",desc:"Wave pools, lazy rivers, swim areas",phases:[{name:"Approach",photo:true,items:[{t:"Attraction type and rules visible from approach",p:"G"},{t:"Capacity limits or entry restrictions posted",p:"S"},{t:"Current status (open / closed / at capacity) displayed",p:"O"},{t:"Approach deck in good condition \u2014 non-slip",p:"F"}]},{name:"Entry",items:[{t:"Entry point controlled \u2014 wristband / height check enforced",p:"S"},{t:"Life jacket availability and policy communicated",p:"S"},{t:"Rules signage comprehensive",p:"G"},{t:"Entry area clean \u2014 deck furniture organized",p:"F"}]},{name:"Zone Observation",photo:true,items:[{t:"Water clarity \u2014 bottom visible in all areas",p:"S"},{t:"Depth markers clearly visible at all required points",p:"S"},{t:"Patron density within safe limits",p:"O"},{t:"Pool edges in good repair \u2014 no chipped tile or sharp edges",p:"F"},{t:"Wave / current intensity appropriate for posted age group",p:"G"}]},{name:"Lifeguard Behavior",items:[{t:"Guards in elevated positions with unobstructed zone view",p:"S"},{t:"Guards performing active scanning (10/20 protocol)",p:"S"},{t:"No distractions \u2014 no phone use or side conversations",p:"O"},{t:"Rescue equipment within arm\u2019s reach",p:"S"},{t:"Guard rotation occurring at regular intervals",p:"O"}]},{name:"Patron Management",items:[{t:"Rule violations addressed promptly",p:"S"},{t:"Corrections delivered professionally",p:"G"},{t:"Unattended children identified and guardian located",p:"S"},{t:"Capacity managed \u2014 guests informed if at limit",p:"O"}]},{name:"Facility Condition",photo:true,items:[{t:"Deck surfaces non-slip \u2014 free of tripping hazards",p:"F"},{t:"Drain covers secure and compliant",p:"S"},{t:"Chemical smell not overpowering",p:"F"},{t:"Restrooms / changing areas nearby and accessible",p:"G"},{t:"First aid / emergency equipment visibly accessible",p:"S"}]},{name:"Exit",items:[{t:"Exit path clearly defined \u2014 non-slip",p:"G"},{t:"Towel / dry-off area available",p:"G"},{t:"Exit does not create cross-traffic with active area",p:"S"},{t:"Exit area maintained \u2014 drains functioning",p:"F"}]}]},{id:"up",title:"Unmanned Play Structures",icon:"\u{1F6DD}",desc:"Playgrounds, splash pads, toddler areas",phases:[{name:"Approach",photo:true,items:[{t:"Play area type and age range clearly posted",p:"G"},{t:"Rules and behavioral expectations posted",p:"S"},{t:"Operating hours and supervision notice visible",p:"O"},{t:"Approach surface even \u2014 ADA-accessible",p:"F"}]},{name:"Entry",items:[{t:"Entry / exit points defined (not open from all sides)",p:"S"},{t:"Parent / guardian supervision requirement stated",p:"S"},{t:"Footwear policy communicated (if splash pad)",p:"G"},{t:"Entry surface transition safe \u2014 no abrupt level change",p:"F"}]},{name:"Condition Assessment",photo:true,items:[{t:"All structure components intact \u2014 no broken rungs or cracked slides",p:"S"},{t:"Fall surfaces adequate and maintained",p:"S"},{t:"No exposed bolts, sharp edges, or pinch points at child height",p:"S"},{t:"Water features flowing clean \u2014 drains unblocked",p:"F"},{t:"Structure clean \u2014 no graffiti, gum, or contamination",p:"F"}]},{name:"Supervision Environment",items:[{t:"Sightlines clear \u2014 parents can see entire play area",p:"G"},{t:"Shaded seating available for supervising adults",p:"G"},{t:"Perimeter prevents wandering into traffic / ride areas",p:"S"},{t:"Staff visible or call button / emergency contact posted",p:"O"}]},{name:"Patron Behavior",items:[{t:"Age mixing manageable \u2014 older children not creating hazards",p:"S"},{t:"No overcrowding on individual elements",p:"O"},{t:"Parents / guardians engaged (not absent)",p:"G"},{t:"General atmosphere safe for target age group",p:"G"}]},{name:"Exit",photo:true,items:[{t:"Exit reconnects safely to main pathway",p:"G"},{t:"No hazardous transition (wet area to hard pavement)",p:"S"},{t:"Trash receptacles available at exit",p:"F"},{t:"Hand-washing or sanitizing station nearby",p:"F"}]}]}];
 
-const M={fontFamily:"'IBM Plex Mono',monospace"};
-const CSS=`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');*{box-sizing:border-box;margin:0;padding:0}@keyframes su{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes fi{from{opacity:0}to{opacity:1}}@keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}textarea:focus,input:focus{outline:none;border-color:#FF4B1F!important}::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:4px}`;
-const RS={fontFamily:"'DM Sans',system-ui,sans-serif",maxWidth:480,margin:"0 auto",minHeight:"100vh",WebkitFontSmoothing:"antialiased"};
+// ═══════ STATE ═══════
+let view='home',activeCL=null,meta={park:'',auditor:'',watchMode:false};
+let allScores={},allNotes={},allPhotos={},allWS={},allWM={},expanded={},showLeg=false;
 
-function Bdg({c,sz}){const p=P[c];const b=sz==="md";return<span style={{...M,display:"inline-block",padding:b?"3px 10px":"1px 7px",borderRadius:b?5:4,fontSize:b?11:9.5,fontWeight:700,letterSpacing:".06em",color:p.color,backgroundColor:p.bg,border:`1px solid ${p.border}`,lineHeight:1.6}}>{p.label}</span>}
+function sc(id){return allScores[id]||{}}
+function nt(id){return allNotes[id]||{}}
+function ph(id){return allPhotos[id]||{}}
+function ws(id){return allWS[id]||{}}
+function wm(id){return allWM[id]||{}}
 
-function SB({value,onChange,large}){const s=large?{w:48,h:44,f:18,r:10}:{w:38,h:34,f:13,r:7};return<div style={{display:"flex",gap:large?8:5,marginTop:large?0:8,justifyContent:large?"center":"flex-start"}}>{A.map(a=>{const on=value===a.n;return<button key={a.n}onClick={()=>onChange(on?null:a.n)}title={`${a.label}: ${a.desc}`}style={{...M,width:s.w,height:s.h,borderRadius:s.r,cursor:"pointer",border:on?`2.5px solid ${a.color}`:"1.5px solid #E5E7EB",background:on?a.color:"#FAFAFA",color:on?"#fff":"#9CA3AF",fontWeight:700,fontSize:s.f,boxShadow:on?`0 2px 8px ${a.color}33`:"none",transition:"all .15s ease",WebkitTapHighlightColor:"transparent"}}>{a.n}</button>})}</div>}
+function setScore(clId,k,v){if(!allScores[clId])allScores[clId]={};allScores[clId][k]=v;render();}
+function setNote(clId,k,v){if(!allNotes[clId])allNotes[clId]={};allNotes[clId][k]=v;}
+function setPhoto(clId,k,v){if(!allPhotos[clId])allPhotos[clId]={};allPhotos[clId][k]=v;render();}
+function setWS(clId,k,v){if(!allWS[clId])allWS[clId]={};allWS[clId][k]=v;render();}
+function setWM(clId,k,v){if(!allWM[clId])allWM[clId]={};allWM[clId][k]=v;render();}
 
-function NF({value,onChange}){const[o,sO]=useState(!!value);if(!o)return<button onClick={()=>sO(true)}style={{marginTop:4,padding:"2px 8px",fontSize:10.5,color:"#9CA3AF",background:"none",border:"1px dashed #D1D5DB",borderRadius:4,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>+ note</button>;return<textarea autoFocus value={value||""}onChange={e=>onChange(e.target.value)}placeholder="Observation note\u2026"rows={2}style={{marginTop:6,width:"100%",padding:"8px 10px",fontSize:12.5,border:"1.5px solid #E5E7EB",borderRadius:7,resize:"vertical",fontFamily:"'DM Sans',sans-serif",lineHeight:1.5,color:"#374151",background:"#FAFAFA",boxSizing:"border-box",outline:"none"}}/>}
-
-function PB({on,onToggle}){return<button onClick={onToggle}style={{display:"inline-flex",alignItems:"center",gap:6,padding:"5px 10px",fontSize:11,borderRadius:6,cursor:"pointer",fontWeight:600,fontFamily:"'DM Sans',sans-serif",border:on?"1.5px solid #059669":"1.5px dashed #D1D5DB",background:on?"#ECFDF5":"#fff",color:on?"#059669":"#9CA3AF"}}>{on?"\u2713 \u{1F4F7} Photo captured":"\u{1F4F7} Add photo"}<span style={{fontSize:9,color:"#9CA3AF",fontWeight:400}}>\u00B7 required</span></button>}
-
-function GPS({label,value,onCapture,icon}){return<button onClick={onCapture}style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",borderRadius:10,width:"100%",textAlign:"left",cursor:"pointer",fontFamily:"'DM Sans',sans-serif",border:value?"1.5px solid #059669":"2px dashed #D1D5DB",background:value?"#ECFDF5":"#fff"}}><span style={{fontSize:20}}>{value?"\u{1F4CD}":icon}</span><div style={{flex:1}}><div style={{fontSize:11.5,fontWeight:700,color:value?"#059669":"#6B7280"}}>{label}</div><div style={{...M,fontSize:10.5,color:value?"#065F46":"#9CA3AF",marginTop:1}}>{value||"Tap to capture GPS + timestamp"}</div></div></button>}
-
-function WPC({phase,idx,ws,wm,onS,onM}){return<div style={{marginBottom:10,borderRadius:12,overflow:"hidden",border:ws!=null?"1.5px solid #86EFAC":"1px solid #E5E7EB",background:"#fff"}}><div style={{padding:"12px 14px",display:"flex",alignItems:"center",gap:10,background:ws!=null?"#F0FDF4":"#FAFAFA",borderBottom:"1px solid #F3F4F6"}}><span style={{fontSize:16}}>\u231A</span><div style={{flex:1}}><div style={{fontWeight:700,fontSize:13.5,color:"#111827",display:"flex",alignItems:"center",gap:6}}>{phase.name}<span style={{...M,fontSize:9,padding:"1px 6px",borderRadius:3,background:"#818CF820",color:"#6366F1",fontWeight:600,border:"1px solid #C7D2FE"}}>WATCH</span></div><div style={{fontSize:10.5,color:"#9CA3AF",marginTop:1}}>{phase.items.length} items \u00B7 Phase-level score</div></div></div><div style={{padding:14}}><div style={{textAlign:"center",marginBottom:8}}><div style={{fontSize:11,fontWeight:600,color:"#6B7280",marginBottom:8}}>Overall phase score</div><SB value={ws}onChange={onS}large/></div><div style={{marginTop:12}}><button onClick={()=>onM(wm?"":"\u{1F3A4} Voice memo recorded")}style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center",gap:6,padding:"8px 12px",borderRadius:8,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",fontSize:11.5,fontWeight:600,border:wm?"1.5px solid #059669":"1.5px dashed #D1D5DB",background:wm?"#ECFDF5":"#fff",color:wm?"#059669":"#6B7280"}}>\u{1F399} {wm?"Memo captured":"Voice memo (Siri)"}</button></div><div style={{marginTop:8,display:"flex",alignItems:"center",gap:6,fontSize:10,color:"#9CA3AF"}}><span style={{display:"inline-block",width:6,height:6,borderRadius:"50%",background:"#818CF8",animation:"pu 2s infinite"}}/>Haptic tap at phase transition</div></div></div>}
-
-function PDC({phase,idx,scores,notes,photos,setScore,setNote,setPhoto,watchScore,expanded,onToggle}){const done=phase.items.filter((_,i)=>scores[`${idx}-${i}`]!=null).length;const total=phase.items.length;const comp=done===total;return<div style={{marginBottom:10,borderRadius:12,overflow:"hidden",border:comp?"1.5px solid #86EFAC":phase.w?"1px solid #C7D2FE":"1px solid #E5E7EB",background:"#fff"}}><button onClick={onToggle}style={{width:"100%",padding:"11px 14px",display:"flex",justifyContent:"space-between",alignItems:"center",background:comp?"#F0FDF4":phase.w?"#F5F3FF":"#FAFAFA",borderBottom:expanded?"1px solid #F3F4F6":"none",border:"none",cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}><div style={{display:"flex",alignItems:"center",gap:8,textAlign:"left"}}><span style={{fontSize:11,color:"#9CA3AF",transform:expanded?"rotate(0)":"rotate(-90deg)",transition:"transform .2s"}}>\u25BE</span>{comp&&<span style={{fontSize:13}}>\u2713</span>}<span style={{fontWeight:700,fontSize:13.5,color:"#111827"}}>{phase.name}</span>{phase.w&&<span style={{...M,fontSize:8,padding:"1px 5px",borderRadius:3,background:"#EDE9FE",color:"#7C3AED",fontWeight:600}}>\u231A {watchScore||"\u2014"}</span>}{phase.photo&&<span style={{fontSize:10}}>\u{1F4F7}</span>}</div><span style={{...M,fontSize:11,fontWeight:600,color:comp?"#16A34A":"#9CA3AF"}}>{done}/{total}</span></button>{expanded&&<div style={{padding:"6px 14px 10px"}}>{phase.w&&watchScore&&<div style={{padding:"8px 10px",marginBottom:8,borderRadius:8,background:"#F5F3FF",border:"1px solid #E9D5FF",fontSize:11,color:"#7C3AED"}}>\u231A Watch scored <strong>{watchScore}/5</strong> \u2014 now add item detail</div>}{phase.items.map((item,i)=>{const k=`${idx}-${i}`;return<div key={k}style={{padding:"10px 0",borderBottom:i<phase.items.length-1?"1px solid #F5F5F5":"none"}}><div style={{display:"flex",gap:8,alignItems:"flex-start"}}><Bdg c={item.p}/><span style={{fontSize:12.5,color:"#374151",lineHeight:1.55,flex:1}}>{item.t}</span></div><SB value={scores[k]}onChange={v=>setScore(k,v)}/><NF value={notes[k]}onChange={v=>setNote(k,v)}/></div>})}{phase.photo&&<div style={{marginTop:8,paddingTop:8,borderTop:"1px solid #F3F4F6"}}><PB on={photos[idx]}onToggle={()=>setPhoto(idx,!photos[idx])}/></div>}</div>}</div>}
-
-function PD({checklist,scores}){const pd={O:[],S:[],G:[],F:[]};checklist.phases.forEach((ph,pi)=>ph.items.forEach((it,ii)=>{const v=scores[`${pi}-${ii}`];if(v!=null)pd[it.p].push(v)}));const total=checklist.phases.reduce((s,p)=>s+p.items.length,0);const scored=Object.values(scores).filter(v=>v!=null).length;return<div style={{margin:"12px 0",padding:16,borderRadius:12,background:"linear-gradient(145deg,#0F172A 0%,#1E293B 60%,#0F172A 100%)",color:"#fff"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><span style={{fontSize:12,fontWeight:700,letterSpacing:".08em",textTransform:"uppercase",color:"#94A3B8"}}>Pillar Scores</span><span style={{...M,fontSize:11,color:"#64748B"}}>{scored}/{total}</span></div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>{Object.entries(pd).map(([c,arr])=>{const avg=arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;const p=P[c];const pt=checklist.phases.reduce((s,ph)=>s+ph.items.filter(i=>i.p===c).length,0);const bc=avg>=4?"#059669":avg>=3?"#CA8A04":avg>0?"#DC2626":"#334155";return<div key={c}style={{padding:12,borderRadius:10,background:"rgba(255,255,255,.04)",border:"1px solid rgba(255,255,255,.06)"}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{...M,fontSize:10,fontWeight:700,color:"#94A3B8",letterSpacing:".08em"}}>{p.label}</span><span style={{...M,fontSize:9,color:"#475569"}}>{arr.length}/{pt}</span></div><div style={{...M,fontSize:26,fontWeight:800,color:arr.length?"#F8FAFC":"#334155",marginTop:2,lineHeight:1.1}}>{arr.length?avg.toFixed(1):"\u2014"}</div><div style={{marginTop:6,height:3,borderRadius:2,background:"#1E293B"}}><div style={{height:"100%",borderRadius:2,width:`${avg*20}%`,background:bc,transition:"width .4s ease"}}/></div></div>})}</div></div>}
-
-function Leg({show,toggle}){return<div><button onClick={toggle}style={{padding:"5px 10px",fontSize:11,border:"1px solid #E5E7EB",borderRadius:6,background:"#fff",cursor:"pointer",color:"#6B7280",fontWeight:600,fontFamily:"'DM Sans',sans-serif",marginTop:10}}>{show?"\u25BE Hide":"\u25B8 Show"} score anchors</button>{show&&<div style={{margin:"8px 0",padding:12,borderRadius:10,background:"#F9FAFB",border:"1px solid #E5E7EB"}}>{A.map(a=><div key={a.n}style={{display:"flex",gap:8,alignItems:"center",marginBottom:4}}><span style={{...M,width:22,height:22,borderRadius:5,background:a.color,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:700,flexShrink:0}}>{a.n}</span><span style={{fontSize:12,color:"#374151"}}><strong>{a.label}</strong> \u2014 {a.desc}</span></div>)}</div>}</div>}
-
-function SM2({checklist,scores,notes,meta,watchScores,watchMemos,onClose}){const payload={audit_id:`AR-${checklist.id.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`,checklist_type:checklist.title,park_name:meta.park||"(not set)",auditor:meta.auditor||"(not set)",capture_mode:meta.watchMode?"phone+watch":"phone-only",gps_start:meta.startTime||null,gps_end:meta.endTime||null,pillar_averages:{},watch_phase_scores:{},items:[]};const pv={O:[],S:[],G:[],F:[]};checklist.phases.forEach((ph,pi)=>{if(watchScores[pi]!=null)payload.watch_phase_scores[ph.name]={score:watchScores[pi],voice_memo:!!watchMemos[pi]};ph.items.forEach((it,ii)=>{const k=`${pi}-${ii}`;const v=scores[k];if(v!=null){payload.items.push({phase:ph.name,observation:it.t,pillar:it.p,score:v,note:notes[k]||null,watch_zone:!!ph.w});pv[it.p].push(v)}})});Object.entries(pv).forEach(([p,arr])=>{payload.pillar_averages[p]=arr.length?+(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(2):null});const[copied,setCopied]=useState(false);const copy=()=>{navigator.clipboard.writeText(JSON.stringify(payload,null,2));setCopied(true);setTimeout(()=>setCopied(false),2000)};return<div onClick={e=>{if(e.target===e.currentTarget)onClose()}}style={{position:"fixed",inset:0,background:"rgba(0,0,0,.55)",zIndex:1000,display:"flex",alignItems:"flex-end",justifyContent:"center"}}><div style={{background:"#fff",borderRadius:"16px 16px 0 0",maxWidth:480,width:"100%",maxHeight:"85vh",overflow:"auto",padding:"20px 18px 28px"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}><div><h3 style={{fontSize:16,fontWeight:800,margin:0}}>Submission Payload</h3><p style={{fontSize:11,color:"#6B7280",marginTop:2}}>POST \u2192 Airtable API \u00B7 {meta.watchMode?"Phone + Watch":"Phone-only"}</p></div><button onClick={onClose}style={{border:"none",background:"#F3F4F6",borderRadius:8,width:32,height:32,fontSize:16,cursor:"pointer",color:"#6B7280",display:"flex",alignItems:"center",justifyContent:"center"}}>\u2715</button></div><pre style={{...M,background:"#0F172A",color:"#E2E8F0",padding:14,borderRadius:10,fontSize:10,overflow:"auto",whiteSpace:"pre-wrap",lineHeight:1.6,maxHeight:"45vh"}}>{JSON.stringify(payload,null,2)}</pre><div style={{marginTop:14,display:"flex",gap:8}}><button onClick={copy}style={{flex:1,padding:12,borderRadius:10,border:"1.5px solid #E5E7EB",background:copied?"#F0FDF4":"#fff",fontWeight:700,fontSize:13,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",color:copied?"#059669":"#374151"}}>{copied?"\u2713 Copied":"Copy JSON"}</button><button style={{flex:1,padding:12,borderRadius:10,border:"none",background:"linear-gradient(135deg,#FF4B1F,#FF9068)",color:"#fff",fontWeight:800,fontSize:13,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",boxShadow:"0 4px 14px rgba(255,75,31,.3)"}}>Submit to Airtable</button></div></div></div>}
-
-export default function App(){
-  const[view,setView]=useState("home");
-  const[active,setActive]=useState(null);
-  const[allScores,setAllScores]=useState({});
-  const[allNotes,setAllNotes]=useState({});
-  const[allPhotos,setAllPhotos]=useState({});
-  const[allWS,setAllWS]=useState({});
-  const[allWM,setAllWM]=useState({});
-  const[meta,setMeta]=useState({park:"",auditor:"",watchMode:false});
-  const[showLeg,setShowLeg]=useState(false);
-  const[showSub,setShowSub]=useState(false);
-  const[exp,setExp]=useState({});
-  const topRef=useRef(null);
-
-  const sc=active?(allScores[active.id]||{}):{};
-  const nt=active?(allNotes[active.id]||{}):{};
-  const ph=active?(allPhotos[active.id]||{}):{};
-  const ws=active?(allWS[active.id]||{}):{};
-  const wm=active?(allWM[active.id]||{}):{};
-  const mkU=(fn)=>(k,v)=>fn(prev=>({...prev,[active.id]:{...(prev[active.id]||{}),[k]:v}}));
-  const hasW=active?active.phases.some(p=>p.w):false;
-
-  const captGPS=(field)=>{const now=new Date();const ts=now.toLocaleString("en-US",{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit"});setMeta(prev=>({...prev,[`${field}Time`]:`${ts} \u00B7 GPS pending`}));if(navigator.geolocation){navigator.geolocation.getCurrentPosition(pos=>setMeta(prev=>({...prev,[`${field}Time`]:`${ts} \u00B7 ${pos.coords.latitude.toFixed(4)}\u00B0, ${pos.coords.longitude.toFixed(4)}\u00B0`})),()=>setMeta(prev=>({...prev,[`${field}Time`]:`${ts} \u00B7 GPS unavailable`})),{timeout:5000})}};
-
-  const openCL=(cl)=>{setActive(cl);setView(meta.watchMode&&cl.phases.some(p=>p.w)?"audit-watch":"audit-detail");setExp({});setTimeout(()=>topRef.current?.scrollIntoView({behavior:"smooth"}),50)};
-
-  if(view==="home"){return<div style={{...RS,background:"#FAFAFA"}}><style>{CSS}</style><div ref={topRef}/><div style={{background:"linear-gradient(150deg,#0F172A 0%,#1E293B 55%,#0F172A 100%)",padding:"32px 20px 28px",color:"#fff",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:-50,right:-30,width:180,height:180,borderRadius:"50%",background:"radial-gradient(circle,#FF4B1F22 0%,transparent 70%)"}}/><div style={{position:"absolute",bottom:-60,left:-40,width:160,height:160,borderRadius:"50%",background:"radial-gradient(circle,#FF906822 0%,transparent 70%)"}}/><div style={{position:"relative"}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:6}}><div style={{width:36,height:36,borderRadius:9,background:"linear-gradient(135deg,#FF4B1F 0%,#FF9068 100%)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:900,color:"#fff",boxShadow:"0 4px 12px rgba(255,75,31,.35)"}}>AR</div><span style={{fontSize:22,fontWeight:800,letterSpacing:"-.02em"}}>AmusementRating</span></div><p style={{fontSize:13.5,color:"#94A3B8",fontWeight:400}}>Guest Journey Audit Checklists</p><p style={{fontSize:11,color:"#475569",marginTop:4}}>5 checklists \u00B7 4 pillars \u00B7 Watch handoff</p></div></div><div style={{padding:"16px 18px 40px"}}><div><label style={{display:"block",fontSize:10,fontWeight:700,color:"#6B7280",marginBottom:5,letterSpacing:".08em",textTransform:"uppercase"}}>Park Name</label><input value={meta.park}onChange={e=>setMeta(p=>({...p,park:e.target.value}))}placeholder="e.g. Six Flags Great Adventure"style={{width:"100%",padding:"11px 13px",borderRadius:9,border:"1.5px solid #E5E7EB",fontSize:14,fontFamily:"'DM Sans',sans-serif",background:"#fff"}}/></div><div style={{marginTop:10}}><label style={{display:"block",fontSize:10,fontWeight:700,color:"#6B7280",marginBottom:5,letterSpacing:".08em",textTransform:"uppercase"}}>Auditor</label><input value={meta.auditor}onChange={e=>setMeta(p=>({...p,auditor:e.target.value}))}placeholder="Your name"style={{width:"100%",padding:"11px 13px",borderRadius:9,border:"1.5px solid #E5E7EB",fontSize:14,fontFamily:"'DM Sans',sans-serif",background:"#fff"}}/></div>
-  <button onClick={()=>setMeta(p=>({...p,watchMode:!p.watchMode}))}style={{width:"100%",marginTop:14,padding:"12px 14px",borderRadius:10,cursor:"pointer",display:"flex",alignItems:"center",gap:10,fontFamily:"'DM Sans',sans-serif",border:meta.watchMode?"2px solid #818CF8":"1.5px solid #E5E7EB",background:meta.watchMode?"linear-gradient(135deg,#EEF2FF,#E0E7FF)":"#fff",transition:"all .2s ease"}}><span style={{fontSize:22}}>\u231A</span><div style={{flex:1,textAlign:"left"}}><div style={{fontSize:13.5,fontWeight:700,color:meta.watchMode?"#4338CA":"#374151"}}>Apple Watch Handoff Mode</div><div style={{fontSize:10.5,color:meta.watchMode?"#6366F1":"#9CA3AF",marginTop:1}}>{meta.watchMode?"ON \u2014 Phone-free phases scored on Watch":"OFF \u2014 Full phone scoring only"}</div></div><div style={{width:44,height:24,borderRadius:12,padding:2,background:meta.watchMode?"#818CF8":"#D1D5DB",display:"flex",alignItems:"center"}}><div style={{width:20,height:20,borderRadius:10,background:"#fff",boxShadow:"0 1px 3px rgba(0,0,0,.15)",transition:"transform .2s ease",transform:meta.watchMode?"translateX(20px)":"translateX(0)"}}/></div></button>
-  {meta.watchMode&&<div style={{margin:"8px 0 4px",padding:"10px 12px",borderRadius:8,background:"#F5F3FF",border:"1px solid #E9D5FF",fontSize:11,color:"#6D28D9",lineHeight:1.5}}><strong>Watch workflow:</strong> Score Approach on phone \u2192 lock phone at queue \u2192 Watch captures phase-level scores + voice memos through ride \u2192 phone resumes at Exit \u2192 backfill item detail</div>}
-  <div style={{display:"flex",gap:6,padding:"10px 12px",borderRadius:9,background:"#fff",border:"1px solid #E5E7EB",marginTop:12,flexWrap:"wrap",alignItems:"center"}}>{Object.keys(P).map(k=><Bdg key={k}c={k}sz="md"/>)}<span style={{...M,fontSize:10,color:"#9CA3AF",marginLeft:"auto"}}>4 pillars</span></div>
-  <div style={{marginTop:18}}><span style={{fontSize:10,fontWeight:700,color:"#6B7280",letterSpacing:".08em",textTransform:"uppercase"}}>Select Checklist</span><div style={{marginTop:10}}>{CL.map((cl,ci)=>{const tot=cl.phases.reduce((s,p)=>s+p.items.length,0);const scd=Object.values(allScores[cl.id]||{}).filter(v=>v!=null).length;const pct=tot?Math.round(scd/tot*100):0;const dn=pct===100;const wpc=cl.phases.filter(p=>p.w).length;return<button key={cl.id}onClick={()=>openCL(cl)}style={{display:"flex",alignItems:"center",gap:12,width:"100%",padding:"14px 16px",marginBottom:8,borderRadius:12,cursor:"pointer",textAlign:"left",border:dn?"1.5px solid #86EFAC":"1.5px solid #E5E7EB",background:dn?"#F0FDF4":"#fff",fontFamily:"'DM Sans',sans-serif",WebkitTapHighlightColor:"transparent"}}><span style={{fontSize:30,width:42,textAlign:"center"}}>{cl.icon}</span><div style={{flex:1}}><div style={{fontSize:15,fontWeight:700,color:"#111827"}}>{cl.title}</div><div style={{fontSize:11,color:"#9CA3AF",marginTop:2}}>{cl.phases.length} phases \u00B7 {tot} items{meta.watchMode&&wpc>0&&<span style={{color:"#818CF8"}}> \u00B7 \u231A {wpc} watch</span>}</div></div><div style={{textAlign:"right",minWidth:42}}>{scd>0?<><div style={{...M,fontSize:17,fontWeight:800,color:dn?"#16A34A":"#FF4B1F"}}>{pct}%</div><div style={{...M,fontSize:9.5,color:"#9CA3AF"}}>{scd}/{tot}</div></>:<span style={{fontSize:20,color:"#D1D5DB"}}>\u203A</span>}</div></button>})}</div></div>
-  <div style={{marginTop:16,padding:"12px 14px",borderRadius:10,background:"#FFFBEB",border:"1px solid #FDE68A",fontSize:11.5,color:"#92400E",lineHeight:1.6}}><strong>Auditor Protocol:</strong> Walk each attraction as a guest. {meta.watchMode?"Use Watch for phone-free queue/ride phases. Backfill item detail on phone after exit.":"Score items in real-time."} Target 5\u20138 minutes per checklist.</div></div></div>}
-
-  if(view==="audit-watch"&&active){const wps=active.phases.map((p,i)=>({...p,idx:i}));const pre=wps.filter(p=>!p.w&&wps.indexOf(p)<wps.findIndex(x=>x.w));const wz=wps.filter(p=>p.w);const post=wps.filter(p=>!p.w&&wps.indexOf(p)>=wps.findIndex(x=>x.w)+wz.length);const wsd=Object.values(ws).filter(v=>v!=null).length;const twp=wz.length;return<div style={{...RS,background:"#F8FAFC"}}><style>{CSS}</style><div ref={topRef}/><div style={{position:"sticky",top:0,zIndex:100,background:"#1E1B4B",padding:"12px 16px 10px",borderBottom:"1px solid #312E81"}}><div style={{display:"flex",alignItems:"center",gap:10}}><button onClick={()=>setView("home")}style={{background:"none",border:"none",color:"#A5B4FC",fontSize:20,cursor:"pointer",padding:0}}>\u2190</button><span style={{fontSize:20}}>{active.icon}</span><div style={{flex:1}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:14.5,fontWeight:700,color:"#F8FAFC"}}>{active.title}</span><span style={{...M,fontSize:9,padding:"2px 6px",borderRadius:4,background:"#818CF830",color:"#A5B4FC",fontWeight:600}}>\u231A WATCH</span></div><div style={{fontSize:10.5,color:"#6366F1",marginTop:1}}>{wsd}/{twp} watch phases scored</div></div></div><div style={{marginTop:8,height:3,borderRadius:2,background:"#312E81"}}><div style={{height:"100%",borderRadius:2,width:`${twp?(wsd/twp*100):0}%`,background:"linear-gradient(90deg,#818CF8,#A78BFA)",transition:"width .4s cubic-bezier(.34,1.56,.64,1)"}}/></div></div><div style={{padding:"14px 16px 40px"}}><div style={{display:"flex",gap:6,flexWrap:"wrap",fontSize:11,color:"#6B7280",marginBottom:12}}>{meta.park&&<span style={{background:"#F3F4F6",padding:"3px 8px",borderRadius:4}}>\u{1F4CD} {meta.park}</span>}{meta.auditor&&<span style={{background:"#F3F4F6",padding:"3px 8px",borderRadius:4}}>\u{1F464} {meta.auditor}</span>}</div>
-  <GPS label="START \u2014 GPS + Timestamp"value={meta.startTime}onCapture={()=>captGPS("start")}icon="\u{1F7E2}"/>
-  {pre.length>0&&<div style={{marginTop:14}}><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><span style={{fontSize:14}}>\u{1F4F1}</span><span style={{fontSize:11,fontWeight:700,color:"#374151",letterSpacing:".04em",textTransform:"uppercase"}}>Phone Zone</span></div>{pre.map(p=><PDC key={p.idx}phase={p}idx={p.idx}scores={sc}notes={nt}photos={ph}setScore={mkU(setAllScores)}setNote={mkU(setAllNotes)}setPhoto={mkU(setAllPhotos)}expanded={exp[p.idx]}onToggle={()=>setExp(prev=>({...prev,[p.idx]:!prev[p.idx]}))}/>)}</div>}
-  <div style={{margin:"16px 0",padding:"14px 16px",borderRadius:12,background:"linear-gradient(135deg,#EEF2FF,#E0E7FF)",border:"2px solid #C7D2FE",display:"flex",alignItems:"center",gap:12}}><div style={{fontSize:28}}>\u{1F4F1}\u2192\u231A</div><div><div style={{fontSize:13,fontWeight:800,color:"#4338CA"}}>Phone \u2192 Watch Handoff</div><div style={{fontSize:11,color:"#6366F1",marginTop:2,lineHeight:1.4}}>Lock phone in locker. Watch captures phase scores + voice memos.</div></div></div>
-  <div style={{marginBottom:14}}><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><span style={{fontSize:14}}>\u231A</span><span style={{fontSize:11,fontWeight:700,color:"#4338CA",letterSpacing:".04em",textTransform:"uppercase"}}>Watch Zone \u2014 Phase Scoring</span></div>{wz.map(p=><WPC key={p.idx}phase={p}idx={p.idx}ws={ws[p.idx]}wm={wm[p.idx]}onS={v=>mkU(setAllWS)(p.idx,v)}onM={v=>mkU(setAllWM)(p.idx,v)}/>)}</div>
-  <div style={{margin:"16px 0",padding:"14px 16px",borderRadius:12,background:"linear-gradient(135deg,#E0E7FF,#EEF2FF)",border:"2px solid #C7D2FE",display:"flex",alignItems:"center",gap:12}}><div style={{fontSize:28}}>\u231A\u2192\u{1F4F1}</div><div><div style={{fontSize:13,fontWeight:800,color:"#4338CA"}}>Watch \u2192 Phone Sync</div><div style={{fontSize:11,color:"#6366F1",marginTop:2,lineHeight:1.4}}>Retrieve phone. Watch scores sync automatically.</div></div></div>
-  {post.length>0&&<div><div style={{display:"flex",alignItems:"center",gap:6,marginBottom:8}}><span style={{fontSize:14}}>\u{1F4F1}</span><span style={{fontSize:11,fontWeight:700,color:"#374151",letterSpacing:".04em",textTransform:"uppercase"}}>Phone Zone</span></div>{post.map(p=><PDC key={p.idx}phase={p}idx={p.idx}scores={sc}notes={nt}photos={ph}setScore={mkU(setAllScores)}setNote={mkU(setAllNotes)}setPhoto={mkU(setAllPhotos)}expanded={exp[p.idx]}onToggle={()=>setExp(prev=>({...prev,[p.idx]:!prev[p.idx]}))}/>)}</div>}
-  <div style={{marginTop:10}}><GPS label="END \u2014 GPS + Timestamp"value={meta.endTime}onCapture={()=>captGPS("end")}icon="\u{1F534}"/></div>
-  <button onClick={()=>{setView("audit-detail");setExp({})}}style={{width:"100%",marginTop:14,padding:13,borderRadius:10,border:"1.5px solid #C7D2FE",background:"#EEF2FF",color:"#4338CA",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>\u{1F4F1} Switch to Full Detail Mode</button>
-  <button onClick={()=>setShowSub(true)}style={{width:"100%",marginTop:8,padding:15,borderRadius:12,border:"none",background:"linear-gradient(135deg,#FF4B1F,#FF9068)",color:"#fff",fontSize:15,fontWeight:800,cursor:"pointer",fontFamily:"'DM Sans',sans-serif",boxShadow:"0 6px 20px rgba(255,75,31,.25)"}}>Review & Submit</button></div>{showSub&&<SM2 checklist={active}scores={sc}notes={nt}meta={meta}watchScores={ws}watchMemos={wm}onClose={()=>setShowSub(false)}/>}</div>}
-
-  if(view==="audit-detail"&&active){const total=active.phases.reduce((s,p)=>s+p.items.length,0);const scored=Object.values(sc).filter(v=>v!=null).length;const pct=total?Math.round(scored/total*100):0;return<div style={{...RS,background:"#F8FAFC"}}><style>{CSS}</style><div ref={topRef}/><div style={{position:"sticky",top:0,zIndex:100,background:"#0F172A",padding:"12px 16px 10px",borderBottom:"1px solid #1E293B"}}><div style={{display:"flex",alignItems:"center",gap:10}}><button onClick={()=>setView(meta.watchMode&&hasW?"audit-watch":"home")}style={{background:"none",border:"none",color:"#94A3B8",fontSize:20,cursor:"pointer",padding:0}}>\u2190</button><span style={{fontSize:20}}>{active.icon}</span><div style={{flex:1}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:14.5,fontWeight:700,color:"#F8FAFC"}}>{active.title}</span><span style={{...M,fontSize:9,padding:"2px 6px",borderRadius:4,background:"#ffffff15",color:"#94A3B8",fontWeight:600}}>DETAIL</span></div><div style={{fontSize:10.5,color:"#64748B",marginTop:1}}>{active.phases.length} phases \u00B7 {total} observations</div></div><span style={{...M,fontSize:14,fontWeight:800,color:pct===100?"#86EFAC":"#FF9068"}}>{pct}%</span></div><div style={{marginTop:8,height:3,borderRadius:2,background:"#1E293B"}}><div style={{height:"100%",borderRadius:2,width:`${pct}%`,background:pct===100?"#16A34A":"linear-gradient(90deg,#FF4B1F,#FF9068)",transition:"width .4s cubic-bezier(.34,1.56,.64,1)"}}/></div></div><div style={{padding:"14px 16px 40px"}}><div style={{display:"flex",gap:6,flexWrap:"wrap",fontSize:11,color:"#6B7280",marginBottom:12}}>{meta.park&&<span style={{background:"#F3F4F6",padding:"3px 8px",borderRadius:4}}>\u{1F4CD} {meta.park}</span>}{meta.auditor&&<span style={{background:"#F3F4F6",padding:"3px 8px",borderRadius:4}}>\u{1F464} {meta.auditor}</span>}</div>
-  <GPS label="START \u2014 GPS + Timestamp"value={meta.startTime}onCapture={()=>captGPS("start")}icon="\u{1F7E2}"/>
-  <Leg show={showLeg}toggle={()=>setShowLeg(!showLeg)}/>
-  <PD checklist={active}scores={sc}/>
-  {active.phases.map((phase,i)=><PDC key={i}phase={phase}idx={i}scores={sc}notes={nt}photos={ph}setScore={mkU(setAllScores)}setNote={mkU(setAllNotes)}setPhoto={mkU(setAllPhotos)}watchScore={ws[i]}expanded={exp[i]!==false}onToggle={()=>setExp(prev=>({...prev,[i]:prev[i]===false?true:false}))}/>)}
-  <div style={{marginTop:10}}><GPS label="END \u2014 GPS + Timestamp"value={meta.endTime}onCapture={()=>captGPS("end")}icon="\u{1F534}"/></div>
-  {meta.watchMode&&hasW&&<button onClick={()=>setView("audit-watch")}style={{width:"100%",marginTop:14,padding:13,borderRadius:10,border:"1.5px solid #C7D2FE",background:"#EEF2FF",color:"#4338CA",fontSize:13,fontWeight:700,cursor:"pointer",fontFamily:"'DM Sans',sans-serif"}}>\u231A Switch to Watch Capture Mode</button>}
-  <button onClick={()=>setShowSub(true)}style={{width:"100%",marginTop:8,padding:15,borderRadius:12,border:"none",background:scored>0?"linear-gradient(135deg,#FF4B1F,#FF9068)":"#E5E7EB",color:scored>0?"#fff":"#9CA3AF",fontSize:15,fontWeight:800,cursor:scored>0?"pointer":"default",fontFamily:"'DM Sans',sans-serif",boxShadow:scored>0?"0 6px 20px rgba(255,75,31,.25)":"none"}}>Review & Submit ({scored}/{total})</button></div>{showSub&&<SM2 checklist={active}scores={sc}notes={nt}meta={meta}watchScores={ws}watchMemos={wm}onClose={()=>setShowSub(false)}/>}</div>}
-
-  return null;
+function captGPS(field){
+  const now=new Date();
+  const ts=now.toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  meta[field+'Time']=ts+' · GPS pending';render();
+  if(navigator.geolocation){navigator.geolocation.getCurrentPosition(pos=>{meta[field+'Time']=ts+' · '+pos.coords.latitude.toFixed(4)+'°, '+pos.coords.longitude.toFixed(4)+'°';render();},()=>{meta[field+'Time']=ts+' · GPS unavailable';render();},{timeout:5000});}
 }
+
+// ═══════ HELPERS ═══════
+function bdg(p,md){return`<span class="bdg ${md?'bdg-md':''} bdg-${p}">${P[p].l}</span>`;}
+function scoreBtns(clId,key,lg){
+  return`<div class="scores${lg?' lg':''}">${AN.map(a=>`<button class="sb s${a.n}${lg?' lg':''} ${(sc(clId)[key]===a.n)?'on':''}" title="${a.l}: ${a.d}" onclick="setScore('${clId}','${key}',${sc(clId)[key]===a.n?'null':a.n})">${a.n}</button>`).join('')}</div>`;
+}
+function gpsBlock(label,field,icon){
+  const v=meta[field+'Time'];
+  return`<button class="gps${v?' on':''}" onclick="captGPS('${field}')"><span style="font-size:20px">${v?'📍':icon}</span><div style="flex:1"><div style="font-size:11.5px;font-weight:700;color:${v?'var(--green)':'#6B7280'}">${label}</div><div class="mono" style="font-size:10.5px;color:${v?'#065F46':'var(--dim)'};margin-top:1px">${v||'Tap to capture GPS + timestamp'}</div></div></button>`;
+}
+function noteField(clId,key){
+  const v=nt(clId)[key];
+  if(v)return`<textarea class="note-area" onchange="setNote('${clId}','${key}',this.value)" rows="2">${v}</textarea>`;
+  return`<button class="note-btn" onclick="this.outerHTML='<textarea class=\\'note-area\\' onchange=\\'setNote(\\\"${clId}\\\",\\\"${key}\\\",this.value)\\' rows=\\'2\\' placeholder=\\'Observation note…\\'></textarea>'">+ note</button>`;
+}
+function photoBtn(clId,idx){
+  const on=ph(clId)[idx];
+  return`<button class="photo-btn${on?' on':''}" onclick="setPhoto('${clId}',${idx},${on?'false':'true'})">${on?'✓ 📷 Photo captured':'📷 Add photo'} <span style="font-size:9px;color:var(--dim);font-weight:400">· required</span></button>`;
+}
+function counted(clId,phases){
+  const s=sc(clId);let total=0,scored=0;
+  phases.forEach((p,pi)=>{p.items.forEach((_,ii)=>{total++;if(s[pi+'-'+ii]!=null)scored++;});});
+  return{total,scored,pct:total?Math.round(scored/total*100):0};
+}
+
+// ═══════ RENDER ═══════
+function render(){
+  const app=document.getElementById('app');
+  if(view==='home')app.innerHTML=renderHome();
+  else if(view==='audit-watch')app.innerHTML=renderWatch();
+  else if(view==='audit-detail')app.innerHTML=renderDetail();
+}
+
+function renderHome(){
+  let h=`<div class="hero"><div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><div class="logo">AR</div><span style="font-size:22px;font-weight:800;letter-spacing:-.02em">AmusementRating</span></div><p style="font-size:13.5px;color:#94A3B8">Guest Journey Audit Checklists</p><p style="font-size:11px;color:#475569;margin-top:4px">5 checklists · 4 pillars · Watch handoff</p></div></div>`;
+  h+=`<div class="body">`;
+  h+=`<div><span class="label">Park Name</span><input class="inp" value="${meta.park}" placeholder="e.g. Six Flags Great Adventure" onchange="meta.park=this.value"></div>`;
+  h+=`<div style="margin-top:10px"><span class="label">Auditor</span><input class="inp" value="${meta.auditor}" placeholder="Your name" onchange="meta.auditor=this.value"></div>`;
+
+  // Watch toggle
+  h+=`<div class="toggle-wrap${meta.watchMode?' on':''}" onclick="meta.watchMode=!meta.watchMode;render()"><span style="font-size:22px">⌚</span><div style="flex:1;text-align:left"><div style="font-size:13.5px;font-weight:700;color:${meta.watchMode?'var(--indigo)':'var(--text)'}">Apple Watch Handoff Mode</div><div style="font-size:10.5px;color:${meta.watchMode?'var(--indigo2)':'var(--dim)'};margin-top:1px">${meta.watchMode?'ON — Phone-free phases scored on Watch':'OFF — Full phone scoring only'}</div></div><div class="toggle-track"><div class="toggle-knob"></div></div></div>`;
+  if(meta.watchMode)h+=`<div style="margin:8px 0 4px;padding:10px 12px;border-radius:8px;background:var(--purplebg);border:1px solid var(--purplebd);font-size:11px;color:#6D28D9;line-height:1.5"><strong>Watch workflow:</strong> Score Approach on phone → lock phone at queue → Watch captures phase-level scores + voice memos → phone resumes at Exit → backfill item detail</div>`;
+
+  // Pillar key
+  h+=`<div style="display:flex;gap:6px;padding:10px 12px;border-radius:9px;background:var(--card);border:1px solid var(--border);margin-top:12px;flex-wrap:wrap;align-items:center">${Object.keys(P).map(k=>bdg(k,1)).join('')}<span class="mono" style="font-size:10px;color:var(--dim);margin-left:auto">4 pillars</span></div>`;
+
+  // Checklist cards
+  h+=`<div style="margin-top:18px"><span class="label">Select Checklist</span><div style="margin-top:10px">`;
+  CL.forEach(cl=>{
+    const c=counted(cl.id,cl.phases);const dn=c.pct===100;const wpc=cl.phases.filter(p=>p.w).length;
+    h+=`<button class="cl-card${dn?' done':''}" onclick="activeCL=CL.find(x=>x.id==='${cl.id}');view=meta.watchMode&&activeCL.phases.some(p=>p.w)?'audit-watch':'audit-detail';expanded={};render();window.scrollTo(0,0)"><span style="font-size:30px;width:42px;text-align:center">${cl.icon}</span><div style="flex:1"><div style="font-size:15px;font-weight:700;color:#111827">${cl.title}</div><div style="font-size:11px;color:var(--dim);margin-top:2px">${cl.phases.length} phases · ${c.total} items${meta.watchMode&&wpc?` <span style="color:#818CF8">· ⌚ ${wpc} watch</span>`:''}</div></div><div style="text-align:right;min-width:42px">${c.scored>0?`<div class="mono" style="font-size:17px;font-weight:800;color:${dn?'#16A34A':'var(--fire)'}">${c.pct}%</div><div class="mono" style="font-size:9.5px;color:var(--dim)">${c.scored}/${c.total}</div>`:'<span style="font-size:20px;color:#D1D5DB">›</span>'}</div></button>`;
+  });
+  h+=`</div></div>`;
+  h+=`<div class="protocol"><strong>Auditor Protocol:</strong> Walk each attraction as a guest. ${meta.watchMode?'Use Watch for phone-free queue/ride phases. Backfill item detail on phone after exit.':'Score items in real-time.'} Target 5–8 minutes per checklist.</div>`;
+  h+=`</div>`;
+  return h;
+}
+
+function renderPhaseDetail(cl,phaseIdx,phase){
+  const clId=cl.id;const s=sc(clId);
+  const done=phase.items.filter((_,i)=>s[phaseIdx+'-'+i]!=null).length;
+  const comp=done===phase.items.length;const isExp=expanded[phaseIdx]!==false;
+  const wsVal=ws(clId)[phaseIdx];
+
+  let h=`<div class="phase${comp?' complete':''}${phase.w?' watch-zone':''}">`;
+  h+=`<button class="phase-hdr" onclick="expanded[${phaseIdx}]=${isExp?'false':'true'};render()"><div style="display:flex;align-items:center;gap:8px;text-align:left"><span style="font-size:11px;color:var(--dim);transition:transform .2s;transform:rotate(${isExp?'0':'-90'}deg)">▾</span>${comp?'<span style="font-size:13px">✓</span>':''}<span style="font-weight:700;font-size:13.5px;color:#111827">${phase.n}</span>${phase.w?`<span class="watch-tag-sm">⌚ ${wsVal||'—'}</span>`:''}${phase.ph?'<span style="font-size:10px">📷</span>':''}</div><span class="mono" style="font-size:11px;font-weight:600;color:${comp?'#16A34A':'var(--dim)'}">${done}/${phase.items.length}</span></button>`;
+
+  if(isExp){
+    h+=`<div class="phase-body">`;
+    if(phase.w&&wsVal)h+=`<div style="padding:8px 10px;margin-bottom:8px;border-radius:8px;background:var(--purplebg);border:1px solid var(--purplebd);font-size:11px;color:var(--purple)">⌚ Watch scored <strong>${wsVal}/5</strong> — now add item detail</div>`;
+    phase.items.forEach((item,i)=>{
+      const k=phaseIdx+'-'+i;
+      h+=`<div class="item"><div style="display:flex;gap:8px;align-items:flex-start">${bdg(item.p)}<span style="font-size:12.5px;color:var(--text);line-height:1.55;flex:1">${item.t}</span></div>${scoreBtns(clId,k)}${noteField(clId,k)}</div>`;
+    });
+    if(phase.ph)h+=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid #F3F4F6">${photoBtn(clId,phaseIdx)}</div>`;
+    h+=`</div>`;
+  }
+  h+=`</div>`;
+  return h;
+}
+
+function renderWatchPhase(cl,phaseIdx,phase){
+  const clId=cl.id;const wsVal=ws(clId)[phaseIdx];const wmVal=wm(clId)[phaseIdx];
+  let h=`<div class="wphase${wsVal!=null?' scored':''}">`;
+  h+=`<div class="wphase-hdr"><span style="font-size:16px">⌚</span><div style="flex:1"><div style="font-weight:700;font-size:13.5px;color:#111827;display:flex;align-items:center;gap:6px">${phase.n} <span class="watch-tag">WATCH</span></div><div style="font-size:10.5px;color:var(--dim);margin-top:1px">${phase.items.length} items · Phase-level score</div></div></div>`;
+  h+=`<div class="wphase-body"><div style="text-align:center;margin-bottom:8px"><div style="font-size:11px;font-weight:600;color:#6B7280;margin-bottom:8px">Overall phase score</div>${scoreBtns(clId,'w'+phaseIdx,1).replace(/setScore/g,'setWS')}</div>`;
+  h+=`<div style="margin-top:12px"><button class="memo-btn${wmVal?' on':''}" onclick="setWM('${clId}',${phaseIdx},${wmVal?"''":"'recorded'"})">🎙 ${wmVal?'Memo captured':'Voice memo (Siri)'}</button></div>`;
+  h+=`<div style="margin-top:8px;display:flex;align-items:center;gap:6px;font-size:10px;color:var(--dim)"><span class="haptic"></span>Haptic tap at phase transition</div>`;
+  h+=`</div></div>`;
+  return h;
+}
+
+function renderPillarDash(cl){
+  const s=sc(cl.id);const pd={O:[],S:[],G:[],F:[]};
+  cl.phases.forEach((p,pi)=>p.items.forEach((it,ii)=>{const v=s[pi+'-'+ii];if(v!=null)pd[it.p].push(v)}));
+  const c=counted(cl.id,cl.phases);
+  let h=`<div class="pdash"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><span style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94A3B8">Pillar Scores</span><span class="mono" style="font-size:11px;color:#64748B">${c.scored}/${c.total}</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">`;
+  Object.entries(pd).forEach(([code,arr])=>{
+    const avg=arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:0;
+    const pt=cl.phases.reduce((s,p)=>s+p.items.filter(i=>i.p===code).length,0);
+    const bc=avg>=4?'#059669':avg>=3?'#CA8A04':avg>0?'#DC2626':'#334155';
+    h+=`<div class="pcell"><div style="display:flex;justify-content:space-between"><span class="mono" style="font-size:10px;font-weight:700;color:#94A3B8;letter-spacing:.08em">${P[code].l}</span><span class="mono" style="font-size:9px;color:#475569">${arr.length}/${pt}</span></div><div class="mono" style="font-size:26px;font-weight:800;color:${arr.length?'#F8FAFC':'#334155'};margin-top:2px;line-height:1.1">${arr.length?avg.toFixed(1):'—'}</div><div class="pbar-inner"><div style="height:3px;border-radius:2px;width:${avg*20}%;background:${bc};transition:width .4s ease"></div></div></div>`;
+  });
+  h+=`</div></div>`;return h;
+}
+
+function renderNav(cl,mode){
+  const c=counted(cl.id,cl.phases);const isW=mode==='watch';
+  const wsd=Object.values(ws(cl.id)).filter(v=>v!=null).length;
+  const twp=cl.phases.filter(p=>p.w).length;
+  let h=`<div class="nav ${isW?'nav-indigo':'nav-dark'}"><div style="display:flex;align-items:center;gap:10px"><button onclick="view=${isW?"'home'":meta.watchMode&&cl.phases.some(p=>p.w)?"'audit-watch'":"'home'"};render();window.scrollTo(0,0)" style="background:none;border:none;color:${isW?'#A5B4FC':'#94A3B8'};font-size:20px;cursor:pointer;padding:0">←</button><span style="font-size:20px">${cl.icon}</span><div style="flex:1"><div style="display:flex;align-items:center;gap:6px"><span style="font-size:14.5px;font-weight:700;color:#F8FAFC">${cl.title}</span>${isW?'<span class="watch-tag">⌚ WATCH</span>':'<span class="mono" style="font-size:9px;padding:2px 6px;border-radius:4px;background:#ffffff15;color:#94A3B8;font-weight:600">DETAIL</span>'}</div><div style="font-size:10.5px;color:${isW?'var(--indigo2)':'#64748B'};margin-top:1px">${isW?wsd+'/'+twp+' watch phases scored':cl.phases.length+' phases · '+c.total+' observations'}</div></div>${!isW?`<span class="mono" style="font-size:14px;font-weight:800;color:${c.pct===100?'#86EFAC':'var(--fire2)'}">${c.pct}%</span>`:''}</div>`;
+  if(isW){h+=`<div class="pbar" style="background:#312E81"><div class="pfill" style="width:${twp?wsd/twp*100:0}%;background:linear-gradient(90deg,#818CF8,#A78BFA)"></div></div>`;}
+  else{h+=`<div class="pbar" style="background:var(--dark2)"><div class="pfill" style="width:${c.pct}%;background:${c.pct===100?'#16A34A':'linear-gradient(90deg,var(--fire),var(--fire2))'}"></div></div>`;}
+  h+=`</div>`;return h;
+}
+
+function renderTags(){
+  let h='<div style="display:flex;gap:6px;flex-wrap:wrap;font-size:11px;color:#6B7280;margin-bottom:12px">';
+  if(meta.park)h+=`<span class="tag">📍 ${meta.park}</span>`;
+  if(meta.auditor)h+=`<span class="tag">👤 ${meta.auditor}</span>`;
+  h+='</div>';return h;
+}
+
+function renderWatch(){
+  const cl=activeCL;const phases=cl.phases.map((p,i)=>({...p,idx:i}));
+  const pre=phases.filter(p=>!p.w&&phases.indexOf(p)<phases.findIndex(x=>x.w));
+  const wz=phases.filter(p=>p.w);
+  const post=phases.filter(p=>!p.w&&phases.indexOf(p)>=phases.findIndex(x=>x.w)+wz.length);
+
+  let h=renderNav(cl,'watch');
+  h+=`<div class="body">${renderTags()}`;
+  h+=gpsBlock('START — GPS + Timestamp','start','🟢');
+
+  if(pre.length){
+    h+=`<div style="margin-top:14px"><div class="section-label"><span style="font-size:14px">📱</span><span style="color:var(--text)">Phone Zone</span></div>`;
+    pre.forEach(p=>{h+=renderPhaseDetail(cl,p.idx,p);});
+    h+=`</div>`;
+  }
+
+  h+=`<div class="handoff"><div style="font-size:28px">📱→⌚</div><div><div style="font-size:13px;font-weight:800;color:var(--indigo)">Phone → Watch Handoff</div><div style="font-size:11px;color:var(--indigo2);margin-top:2px;line-height:1.4">Lock phone in locker. Watch captures phase scores + voice memos.</div></div></div>`;
+
+  h+=`<div style="margin-bottom:14px"><div class="section-label"><span style="font-size:14px">⌚</span><span style="color:var(--indigo)">Watch Zone — Phase Scoring</span></div>`;
+  wz.forEach(p=>{h+=renderWatchPhase(cl,p.idx,p);});
+  h+=`</div>`;
+
+  h+=`<div class="handoff"><div style="font-size:28px">⌚→📱</div><div><div style="font-size:13px;font-weight:800;color:var(--indigo)">Watch → Phone Sync</div><div style="font-size:11px;color:var(--indigo2);margin-top:2px;line-height:1.4">Retrieve phone. Watch scores sync automatically.</div></div></div>`;
+
+  if(post.length){
+    h+=`<div><div class="section-label"><span style="font-size:14px">📱</span><span style="color:var(--text)">Phone Zone</span></div>`;
+    post.forEach(p=>{h+=renderPhaseDetail(cl,p.idx,p);});
+    h+=`</div>`;
+  }
+
+  h+=`<div style="margin-top:10px">${gpsBlock('END — GPS + Timestamp','end','🔴')}</div>`;
+  h+=`<button onclick="view='audit-detail';expanded={};render();window.scrollTo(0,0)" style="width:100%;margin-top:14px;padding:13px;border-radius:10px;border:1.5px solid var(--indigobd);background:var(--indigobg);color:var(--indigo);font-size:13px;font-weight:700;cursor:pointer">📱 Switch to Full Detail Mode</button>`;
+  h+=`<button class="submit-btn submit-on" style="margin-top:8px" onclick="showSubmit()">Review & Submit</button>`;
+  h+=`</div>`;
+  return h;
+}
+
+function renderDetail(){
+  const cl=activeCL;const c=counted(cl.id,cl.phases);
+  let h=renderNav(cl,'detail');
+  h+=`<div class="body">${renderTags()}`;
+  h+=gpsBlock('START — GPS + Timestamp','start','🟢');
+
+  // Legend toggle
+  h+=`<button onclick="showLeg=!showLeg;render()" style="padding:5px 10px;font-size:11px;border:1px solid var(--border);border-radius:6px;background:var(--card);cursor:pointer;color:#6B7280;font-weight:600;margin-top:10px">${showLeg?'▾ Hide':'▸ Show'} score anchors</button>`;
+  if(showLeg){
+    h+=`<div class="legend">${AN.map(a=>`<div class="legend-row"><span class="legend-dot" style="background:${a.c}">${a.n}</span><span style="font-size:12px;color:var(--text)"><strong>${a.l}</strong> — ${a.d}</span></div>`).join('')}</div>`;
+  }
+
+  h+=renderPillarDash(cl);
+  cl.phases.forEach((phase,i)=>{h+=renderPhaseDetail(cl,i,phase);});
+
+  h+=`<div style="margin-top:10px">${gpsBlock('END — GPS + Timestamp','end','🔴')}</div>`;
+  if(meta.watchMode&&cl.phases.some(p=>p.w)){
+    h+=`<button onclick="view='audit-watch';expanded={};render();window.scrollTo(0,0)" style="width:100%;margin-top:14px;padding:13px;border-radius:10px;border:1.5px solid var(--indigobd);background:var(--indigobg);color:var(--indigo);font-size:13px;font-weight:700;cursor:pointer">⌚ Switch to Watch Capture Mode</button>`;
+  }
+  h+=`<button class="submit-btn ${c.scored>0?'submit-on':'submit-off'}" style="margin-top:8px" ${c.scored>0?'onclick="showSubmit()"':''}}>Review & Submit (${c.scored}/${c.total})</button>`;
+  h+=`</div>`;
+  return h;
+}
+
+function showSubmit(){
+  const cl=activeCL;const s=sc(cl.id);const n=nt(cl.id);const w=ws(cl.id);const wm2=wm(cl.id);
+  const payload={audit_id:'AR-'+cl.id.toUpperCase()+'-'+Date.now().toString(36).toUpperCase(),checklist_type:cl.title,park_name:meta.park||'(not set)',auditor:meta.auditor||'(not set)',capture_mode:meta.watchMode?'phone+watch':'phone-only',gps_start:meta.startTime||null,gps_end:meta.endTime||null,pillar_averages:{},watch_phase_scores:{},items:[]};
+  const pv={O:[],S:[],G:[],F:[]};
+  cl.phases.forEach((ph,pi)=>{
+    if(w[pi]!=null)payload.watch_phase_scores[ph.n]={score:w[pi],voice_memo:!!wm2[pi]};
+    ph.items.forEach((it,ii)=>{const k=pi+'-'+ii;const v=s[k];if(v!=null){payload.items.push({phase:ph.n,observation:it.t,pillar:it.p,score:v,note:n?.[k]||null,watch_zone:!!ph.w});pv[it.p].push(v);}});
+  });
+  Object.entries(pv).forEach(([p,arr])=>{payload.pillar_averages[p]=arr.length?+(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(2):null;});
+
+  const j=JSON.stringify(payload,null,2);
+  const ov=document.createElement('div');ov.className='overlay';ov.onclick=e=>{if(e.target===ov)ov.remove();};
+  ov.innerHTML=`<div class="modal"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><div><h3 style="font-size:16px;font-weight:800">Submission Payload</h3><p style="font-size:11px;color:#6B7280;margin-top:2px">POST → Airtable API · ${meta.watchMode?'Phone + Watch':'Phone-only'}</p></div><button onclick="this.closest('.overlay').remove()" style="border:none;background:#F3F4F6;border-radius:8px;width:32px;height:32px;font-size:16px;cursor:pointer;color:#6B7280;display:flex;align-items:center;justify-content:center">✕</button></div><pre class="mono" style="background:#0F172A;color:#E2E8F0;padding:14px;border-radius:10px;font-size:10px;overflow:auto;white-space:pre-wrap;line-height:1.6;max-height:45vh">${j.replace(/</g,'&lt;')}</pre><div style="margin-top:14px;display:flex;gap:8px"><button onclick="navigator.clipboard.writeText(JSON.stringify(${JSON.stringify(payload)},null,2));this.textContent='✓ Copied';setTimeout(()=>this.textContent='Copy JSON',2000)" style="flex:1;padding:12px;border-radius:10px;border:1.5px solid var(--border);background:var(--card);font-weight:700;font-size:13px;cursor:pointer;color:var(--text)">Copy JSON</button><button style="flex:1;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--fire),var(--fire2));color:#fff;font-weight:800;font-size:13px;cursor:pointer;box-shadow:0 4px 14px rgba(255,75,31,.3)">Submit to Airtable</button></div></div>`;
+  document.body.appendChild(ov);
+}
+
+// ═══════ INIT ═══════
+render();
+</script>
+</body>
+</html>
