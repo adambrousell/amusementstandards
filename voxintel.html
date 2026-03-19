@@ -1420,13 +1420,10 @@ document.addEventListener('DOMContentLoaded', () => {
       item.style.borderColor = 'transparent';
     }, 2000);
 
-    // Remove overflow
-    while (feed.children.length > MAX_ITEMS) {
+    // Remove overflow — just remove immediately, no fade
+    if (feed.children.length > MAX_ITEMS) {
       const last = feed.lastElementChild;
-      last.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-      last.style.opacity = '0';
-      last.style.transform = 'translateX(20px)';
-      setTimeout(() => { if (last.parentNode) last.remove(); }, 400);
+      last.remove();
     }
   }
 
