@@ -691,6 +691,40 @@ nav .container {
   margin-bottom: 1rem;
   padding-bottom: 0.8rem;
   border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.channel-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+}
+
+.channel-footer-stat {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  transition: color 0.3s;
+}
+
+.channel-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+
+.channel-fill.hot::after {
+  content: '';
+  position: absolute;
+  top: -2px; right: 0; bottom: -2px;
+  width: 8px;
+  border-radius: 0 3px 3px 0;
+  animation: pulseGlow 1.5s ease infinite;
 }
 
 .channel-bar {
@@ -986,43 +1020,7 @@ footer .container {
             <span class="live-feed-title">VoxIntel Live Feed</span>
             <span class="live-dot">LISTENING</span>
           </div>
-          <div class="feed-items">
-            <div class="feed-item">
-              <span class="feed-time">14:32:08</span>
-              <span class="feed-channel">CH-03 SEC</span>
-              <span class="feed-text">Unit 7 reports crowd surge near Gate C</span>
-              <span class="feed-tag tag-security">SEC</span>
-            </div>
-            <div class="feed-item">
-              <span class="feed-time">14:32:14</span>
-              <span class="feed-channel">CH-01 MED</span>
-              <span class="feed-text">Medical team dispatched to Section 214</span>
-              <span class="feed-tag tag-medical">MED</span>
-            </div>
-            <div class="feed-item">
-              <span class="feed-time">14:32:21</span>
-              <span class="feed-channel">CH-05 MNT</span>
-              <span class="feed-text">HVAC unit B3 offline — sending tech</span>
-              <span class="feed-tag tag-maint">MNT</span>
-            </div>
-            <div class="feed-item">
-              <span class="feed-time">14:32:33</span>
-              <span class="feed-channel">CH-02 OPS</span>
-              <span class="feed-text">Throughput at 94% — holding pattern on entry</span>
-              <span class="feed-tag tag-ops">OPS</span>
-            </div>
-            <div class="feed-item">
-              <span class="feed-time">14:32:41</span>
-              <span class="feed-channel">CH-03 SEC</span>
-              <span class="feed-text">⚠ STEP-ON detected — 2 simultaneous TX</span>
-              <span class="feed-tag tag-crowd">COLL</span>
-            </div>
-            <div class="feed-item">
-              <span class="feed-time">14:32:55</span>
-              <span class="feed-channel">CH-08 WX</span>
-              <span class="feed-text">Lightning within 10mi — standby for protocol</span>
-              <span class="feed-tag tag-weather">WX</span>
-            </div>
+          <div class="feed-items" id="liveFeed">
           </div>
           <div class="waveform-bar">
             <span></span><span></span><span></span><span></span><span></span>
@@ -1139,47 +1137,17 @@ footer .container {
 
     <div class="mc-grid">
       <div class="mc-visual fade-up fade-up-d2">
-        <div class="mc-visual-header">Channel Utilization — Live</div>
+        <div class="mc-visual-header">
+          <span>Channel Utilization — Live</span>
+          <span class="live-dot" style="font-size:0.65rem;">MONITORING</span>
+        </div>
 
-        <div class="channel-bar">
-          <span class="channel-name">CH-03 SEC</span>
-          <div class="channel-meter"><div class="channel-fill" style="width:87%;background:var(--red)"></div></div>
-          <span class="channel-pct" style="color:var(--red)">87%</span>
-        </div>
-        <div class="channel-bar">
-          <span class="channel-name">CH-01 MED</span>
-          <div class="channel-meter"><div class="channel-fill" style="width:62%;background:var(--gold)"></div></div>
-          <span class="channel-pct" style="color:var(--gold)">62%</span>
-        </div>
-        <div class="channel-bar">
-          <span class="channel-name">CH-02 OPS</span>
-          <div class="channel-meter"><div class="channel-fill" style="width:71%;background:var(--accent)"></div></div>
-          <span class="channel-pct" style="color:var(--accent)">71%</span>
-        </div>
-        <div class="channel-bar">
-          <span class="channel-name">CH-05 MNT</span>
-          <div class="channel-meter"><div class="channel-fill" style="width:34%;background:var(--purple)"></div></div>
-          <span class="channel-pct" style="color:var(--purple)">34%</span>
-        </div>
-        <div class="channel-bar">
-          <span class="channel-name">CH-04 F&B</span>
-          <div class="channel-meter"><div class="channel-fill" style="width:28%;background:var(--cyan)"></div></div>
-          <span class="channel-pct" style="color:var(--cyan)">28%</span>
-        </div>
-        <div class="channel-bar">
-          <span class="channel-name">CH-06 PKG</span>
-          <div class="channel-meter"><div class="channel-fill" style="width:14%;background:var(--green)"></div></div>
-          <span class="channel-pct" style="color:var(--green)">14%</span>
-        </div>
-        <div class="channel-bar">
-          <span class="channel-name">CH-07 GST</span>
-          <div class="channel-meter"><div class="channel-fill" style="width:41%;background:var(--accent-glow)"></div></div>
-          <span class="channel-pct" style="color:var(--accent-glow)">41%</span>
-        </div>
-        <div class="channel-bar">
-          <span class="channel-name">CH-08 WX</span>
-          <div class="channel-meter"><div class="channel-fill" style="width:8%;background:var(--text-muted)"></div></div>
-          <span class="channel-pct">8%</span>
+        <div id="channelBars"></div>
+
+        <div class="channel-footer">
+          <span class="channel-footer-stat" id="totalTx">0 TX/min</span>
+          <span class="channel-footer-stat" id="stepOns">0 step-ons</span>
+          <span class="channel-footer-stat" id="peakCh">—</span>
         </div>
       </div>
 
@@ -1276,7 +1244,7 @@ footer .container {
         VoxIntel is currently accepting pilot venue partners for early deployment. Stadiums, arenas, theme parks, and live event operators — let's talk.
       </p>
       <div class="hero-actions" style="justify-content:center;">
-        <a href="mailto:adam@amusementstandards.com" class="btn-primary">Request a Demo →</a>
+        <a href="/cdn-cgi/l/email-protection#701114111d30111d0503151d151e040304111e14110214035e131f1d" class="btn-primary">Request a Demo →</a>
         <a href="#solution" class="btn-outline">Learn More</a>
       </div>
     </div>
@@ -1290,14 +1258,16 @@ footer .container {
       VOXINTEL &copy; 2026 &nbsp;·&nbsp; A product of <a href="https://amusementstandards.com" style="color:var(--accent-glow);text-decoration:none;">Amusement Standards</a>
     </div>
     <div class="footer-right">
-      <a href="mailto:adam@amusementstandards.com">adam@amusementstandards.com</a>
+      <a href="/cdn-cgi/l/email-protection#6d0c090c002d0c00181e08000803191e190c03090c1f091e430e0200"><span class="__cf_email__" data-cfemail="771613161a37161a0204121a1219030403161913160513045914181a">[email&#160;protected]</span></a>
     </div>
   </div>
 </footer>
 
-<!-- ========== SCROLL REVEAL ========== -->
+<!-- ========== SCROLL REVEAL & LIVE FEED ========== -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
+  // ===== SCROLL REVEAL =====
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -1313,6 +1283,261 @@ document.addEventListener('DOMContentLoaded', () => {
       observer.observe(el);
     }
   });
+
+  // ===== LIVE FEED ENGINE =====
+  const feed = document.getElementById('liveFeed');
+  const MAX_ITEMS = 7;
+  let clock = { h: 14, m: 32, s: 5 };
+
+  const transmissions = [
+    { ch: 'CH-03 SEC', tag: 'SEC', cls: 'tag-security', msgs: [
+      'Unit 7 reports crowd surge near Gate C',
+      'All clear — Gate B perimeter check complete',
+      'Suspicious package reported Lot D Row 14',
+      'Requesting backup at Main Entry turnstiles',
+      'VIP escort moving from Suite Level to field',
+      'Perimeter sweep complete — north fence line',
+      'Unattended bag flagged Section 108 Row 22',
+      'Patron ejection in progress — Section 305',
+      'Camera 14 offline — switching to manual post',
+      'Tailgate lot closing in 15 minutes',
+    ]},
+    { ch: 'CH-01 MED', tag: 'MED', cls: 'tag-medical', msgs: [
+      'Medical team dispatched to Section 214',
+      'Heat-related incident — first aid tent 2',
+      'AED deployed Level 3 concourse east',
+      'Patient stable — ambulance en route Gate F',
+      'Requesting wheelchair at Section 112 aisle 4',
+      'Second heat case — opening cooling station',
+      'Allergic reaction reported — concession area B',
+      'Minor laceration — first aid handling on site',
+    ]},
+    { ch: 'CH-02 OPS', tag: 'OPS', cls: 'tag-ops', msgs: [
+      'Throughput at 94% — holding pattern on entry',
+      'Gates A and B at capacity — divert to C',
+      'Halftime rotation starting in 3 minutes',
+      'Elevator 4 stuck between levels 2 and 3',
+      'Restroom queue exceeding 15 min — west side',
+      'PA system check complete — all zones nominal',
+      'Shift change commencing — all leads confirm',
+      'Attendance count: 41,287 through gates',
+      'Entry pace ahead of projections by 12%',
+    ]},
+    { ch: 'CH-05 MNT', tag: 'MNT', cls: 'tag-maint', msgs: [
+      'HVAC unit B3 offline — sending tech',
+      'Water pressure drop — concourse level 2',
+      'Lighting panel 7C flickering — electrician dispatched',
+      'Escalator 3 east shutdown for repair',
+      'Generator backup test complete — all pass',
+      'Drainage issue reported field level tunnel',
+      'Scoreboard display glitch — rebooting system',
+    ]},
+    { ch: 'CH-04 F&B', tag: 'F&B', cls: 'tag-ops', msgs: [
+      'Beer taps dry at stand 14 — resupply needed',
+      'Register 3 Section 200 is down — going manual',
+      'Ice delivery to commissary — truck at Dock B',
+      'Hot dog inventory critical — stand 7 and 12',
+      'Spill cleanup needed concourse C near stand 9',
+      'Premium club bar backed up — need extra staff',
+    ]},
+    { ch: 'CH-08 WX', tag: 'WX', cls: 'tag-weather', msgs: [
+      'Lightning within 10mi — standby for protocol',
+      'Wind gust advisory: 35mph expected in 20 min',
+      'All clear — lightning moved outside 15mi radius',
+      'Temperature check: field level 94F heat index 102',
+      'Rain expected in 45 min — cover protocols ready',
+    ]},
+    { ch: 'CH-07 GST', tag: 'GST', cls: 'tag-ops', msgs: [
+      'Lost child reported — boy age 6 blue shirt Gate A',
+      'Lost child reunited with family — all clear',
+      'ADA seating request — Section 104 needs assist',
+      'Guest complaint escalation — Suite 12',
+      'Found item: wallet turned in at Guest Services B',
+      'Tour group of 40 arriving Gate D — heads up',
+    ]},
+    { ch: 'CH-06 PKG', tag: 'PKG', cls: 'tag-maint', msgs: [
+      'Lot C full — redirecting to overflow Lot E',
+      'Fender bender Lot B Row 22 — no injuries',
+      'Bus staging area clear for post-event loading',
+      'Handicap spaces full — opening reserve block',
+      'Traffic control in place — eastbound backup 0.5mi',
+    ]},
+    { ch: 'CH-03 SEC', tag: 'COLL', cls: 'tag-crowd', msgs: [
+      '\u26A0 STEP-ON detected — 2 simultaneous TX',
+      '\u26A0 STEP-ON — partial recovery: "...need backup at..."',
+      '\u26A0 STEP-ON — CH-02 collision, both TX logged',
+      '\u26A0 STEP-ON — 3rd collision this hour on CH-03',
+    ]},
+  ];
+
+  function advanceClock() {
+    clock.s += Math.floor(Math.random() * 8) + 3;
+    if (clock.s >= 60) { clock.s -= 60; clock.m++; }
+    if (clock.m >= 60) { clock.m -= 60; clock.h++; }
+    if (clock.h >= 24) { clock.h = 0; }
+    return String(clock.h).padStart(2,'0') + ':' + String(clock.m).padStart(2,'0') + ':' + String(clock.s).padStart(2,'0');
+  }
+
+  function getRandomTransmission() {
+    const group = transmissions[Math.floor(Math.random() * transmissions.length)];
+    const msg = group.msgs[Math.floor(Math.random() * group.msgs.length)];
+    return { ch: group.ch, tag: group.tag, cls: group.cls, msg: msg };
+  }
+
+  function createFeedItem(tx, time) {
+    const div = document.createElement('div');
+    div.className = 'feed-item';
+    div.style.opacity = '0';
+    div.style.transform = 'translateX(-20px)';
+    div.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+
+    const t = document.createElement('span');
+    t.className = 'feed-time'; t.textContent = time;
+    const c = document.createElement('span');
+    c.className = 'feed-channel'; c.textContent = tx.ch;
+    const m = document.createElement('span');
+    m.className = 'feed-text'; m.textContent = tx.msg;
+    const g = document.createElement('span');
+    g.className = 'feed-tag ' + tx.cls; g.textContent = tx.tag;
+
+    div.appendChild(t);
+    div.appendChild(c);
+    div.appendChild(m);
+    div.appendChild(g);
+    return div;
+  }
+
+  function addMessage() {
+    const tx = getRandomTransmission();
+    const time = advanceClock();
+    const item = createFeedItem(tx, time);
+
+    feed.prepend(item);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        item.style.opacity = '1';
+        item.style.transform = 'translateX(0)';
+      });
+    });
+
+    while (feed.children.length > MAX_ITEMS) {
+      const last = feed.lastElementChild;
+      last.style.opacity = '0';
+      last.style.transform = 'translateX(20px)';
+      setTimeout(() => { if (last.parentNode) last.remove(); }, 400);
+    }
+
+    item.style.background = 'rgba(59, 130, 246, 0.08)';
+    item.style.borderColor = 'rgba(59, 130, 246, 0.2)';
+    setTimeout(() => {
+      item.style.transition = 'opacity 0.4s ease, transform 0.4s ease, background 1s ease, border-color 1s ease';
+      item.style.background = 'rgba(255,255,255,0.015)';
+      item.style.borderColor = 'transparent';
+    }, 1500);
+  }
+
+  // Initial burst
+  for (let i = 0; i < 6; i++) {
+    setTimeout(() => addMessage(), i * 500);
+  }
+
+  // Ongoing feed
+  function scheduleNext() {
+    const delay = 2500 + Math.random() * 3500;
+    setTimeout(() => {
+      addMessage();
+      scheduleNext();
+    }, delay);
+  }
+  setTimeout(scheduleNext, 4000);
+
+  // ===== CHANNEL UTILIZATION ENGINE =====
+  const channels = [
+    { name: 'CH-03 SEC', base: 82, color: '#ef4444', variance: 15 },
+    { name: 'CH-02 OPS', base: 68, color: '#3b82f6', variance: 18 },
+    { name: 'CH-01 MED', base: 55, color: '#f59e0b', variance: 20 },
+    { name: 'CH-07 GST', base: 40, color: '#60a5fa', variance: 15 },
+    { name: 'CH-05 MNT', base: 32, color: '#8b5cf6', variance: 12 },
+    { name: 'CH-04 F&B', base: 26, color: '#06b6d4', variance: 14 },
+    { name: 'CH-06 PKG', base: 15, color: '#10b981', variance: 10 },
+    { name: 'CH-08 WX',  base: 6,  color: '#64748b', variance: 8 },
+  ];
+
+  let stepOnCount = 0;
+  const barsContainer = document.getElementById('channelBars');
+
+  // Build the bar HTML
+  channels.forEach((ch, i) => {
+    const bar = document.createElement('div');
+    bar.className = 'channel-bar';
+    bar.innerHTML = '<span class="channel-name">' + ch.name + '</span>' +
+      '<div class="channel-meter"><div class="channel-fill" id="fill-' + i + '" style="width:0%;background:' + ch.color + '"></div></div>' +
+      '<span class="channel-pct" id="pct-' + i + '" style="color:' + ch.color + '">0%</span>';
+    barsContainer.appendChild(bar);
+  });
+
+  function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
+
+  function updateChannels() {
+    let maxVal = 0;
+    let maxName = '';
+    let totalTx = 0;
+
+    channels.forEach((ch, i) => {
+      const drift = (Math.random() - 0.45) * ch.variance;
+      ch.current = clamp((ch.current || ch.base) + drift, Math.max(2, ch.base - ch.variance), Math.min(99, ch.base + ch.variance));
+      const val = Math.round(ch.current);
+
+      const fill = document.getElementById('fill-' + i);
+      const pct = document.getElementById('pct-' + i);
+
+      fill.style.width = val + '%';
+      pct.textContent = val + '%';
+
+      // Hot glow when above 80%
+      if (val >= 80) {
+        fill.classList.add('hot');
+        fill.style.boxShadow = '0 0 8px ' + ch.color + '66';
+      } else {
+        fill.classList.remove('hot');
+        fill.style.boxShadow = 'none';
+      }
+
+      // Color shift for congested channels
+      if (val >= 85) {
+        pct.style.fontWeight = '700';
+      } else {
+        pct.style.fontWeight = '400';
+      }
+
+      totalTx += val;
+      if (val > maxVal) { maxVal = val; maxName = ch.name; }
+    });
+
+    // Random step-on events
+    if (Math.random() < 0.12) {
+      stepOnCount++;
+    }
+
+    // Update footer stats
+    const txPerMin = Math.round(totalTx * 0.6 + Math.random() * 20);
+    document.getElementById('totalTx').textContent = txPerMin + ' TX/min';
+
+    const stepEl = document.getElementById('stepOns');
+    stepEl.textContent = stepOnCount + ' step-on' + (stepOnCount !== 1 ? 's' : '');
+    if (stepOnCount > 0) stepEl.style.color = '#ef4444';
+
+    const peakEl = document.getElementById('peakCh');
+    peakEl.textContent = 'Peak: ' + maxName;
+    peakEl.style.color = channels.find(c => c.name === maxName).color;
+  }
+
+  // Initial animation — bars grow from 0
+  setTimeout(() => updateChannels(), 500);
+  // Then update every 2 seconds
+  setInterval(updateChannels, 2000);
+
 });
 </script>
 
