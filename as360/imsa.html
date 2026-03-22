@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iMSA — In-House Mystery Service Audit · AS 360</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c1018;--card:#111827;--card2:#1a2234;--border:#1e293b;--border2:#2a3a52;--muted:#64748b;--dim:#94a3b8;--text:#e2e8f0;--white:#f8fafc;--amber:#f59e0b;--amber-bg:rgba(245,158,11,0.08);--green:#22c55e;--green-bg:rgba(34,197,94,0.06);--red:#ef4444;--red-bg:rgba(239,68,68,0.06);--blue:#3b82f6;--mono:'Space Mono',monospace;--ui:'DM Sans',sans-serif;--r:12px;--shadow:0 1px 3px rgba(0,0,0,0.3);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--ui);font-size:15px;line-height:1.5;min-height:100vh;padding-bottom:100px;}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-badge{background:var(--amber);color:#000;font-family:var(--mono);font-size:10px;font-weight:700;padding:4px 10px;border-radius:4px;letter-spacing:1px;}
+.topbar-title{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:0.5px;}
+.topbar-score{font-family:var(--mono);font-size:13px;color:var(--amber);font-weight:700;}
+
+.container{max-width:680px;margin:0 auto;padding:20px 16px;}
+
+.hero{text-align:center;padding:32px 20px;margin-bottom:24px;}
+.hero-icon{font-size:48px;margin-bottom:12px;}
+.hero h1{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--white);letter-spacing:0.5px;margin-bottom:6px;}
+.hero p{font-size:14px;color:var(--muted);max-width:500px;margin:0 auto;line-height:1.6;}
+.hero-badge{display:inline-block;background:var(--amber-bg);border:1px solid rgba(245,158,11,0.2);color:var(--amber);font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:5px 14px;border-radius:100px;margin-top:14px;}
+
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;}
+.meta-field{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;}
+.meta-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.meta-field input,.meta-field select{width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--ui);font-size:14px;padding:10px 12px;outline:none;}
+.meta-field input:focus,.meta-field select:focus{border-color:var(--amber);}
+.meta-field select{-webkit-appearance:none;cursor:pointer;}
+.meta-full{grid-column:1/-1;}
+
+.section-label{font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:1.5px;text-transform:uppercase;margin:28px 0 14px;padding-left:2px;}
+
+.obs-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden;transition:border-color 0.2s;}
+.obs-card.scored-good{border-left:3px solid var(--green);}
+.obs-card.scored-issue{border-left:3px solid var(--amber);}
+.obs-card.scored-fail{border-left:3px solid var(--red);}
+.obs-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;}
+.obs-q{font-size:14px;font-weight:600;color:var(--white);flex:1;padding-right:12px;}
+.obs-num{font-family:var(--mono);font-size:10px;color:var(--muted);margin-right:10px;letter-spacing:0.5px;}
+
+.obs-btns{display:flex;gap:6px;}
+.obs-btn{font-family:var(--mono);font-size:11px;padding:7px 14px;border-radius:6px;border:1px solid var(--border2);background:var(--card2);color:var(--dim);cursor:pointer;transition:all 0.15s;letter-spacing:0.3px;}
+.obs-btn:hover{border-color:var(--dim);}
+.obs-btn.sel-good{background:var(--green-bg);border-color:var(--green);color:var(--green);font-weight:700;}
+.obs-btn.sel-issue{background:var(--amber-bg);border-color:var(--amber);color:var(--amber);font-weight:700;}
+.obs-btn.sel-fail{background:var(--red-bg);border-color:var(--red);color:var(--red);font-weight:700;}
+.obs-btn.sel-na{background:rgba(100,116,139,0.1);border-color:var(--muted);color:var(--muted);font-weight:700;}
+
+.obs-detail{display:none;padding:0 16px 14px;border-top:1px solid var(--border);}
+.obs-detail.open{display:block;padding-top:12px;}
+.obs-note{width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:var(--ui);font-size:13px;padding:10px 12px;min-height:60px;resize:vertical;outline:none;}
+.obs-note:focus{border-color:var(--amber);}
+.obs-photo-row{display:flex;gap:8px;margin-top:8px;align-items:center;}
+.obs-photo-btn{font-family:var(--mono);font-size:11px;color:var(--dim);background:var(--card2);border:1px dashed var(--border2);border-radius:8px;padding:8px 14px;cursor:pointer;}
+.obs-photo-btn:hover{border-color:var(--amber);color:var(--amber);}
+.obs-ref{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:0.3px;}
+
+.score-bar{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;margin-top:24px;display:flex;align-items:center;justify-content:space-between;position:sticky;bottom:16px;box-shadow:0 -4px 20px rgba(0,0,0,0.4);}
+.score-left{display:flex;align-items:center;gap:16px;}
+.score-circle{width:56px;height:56px;border-radius:50%;border:3px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:20px;font-weight:700;color:var(--dim);transition:all 0.3s;}
+.score-circle.good{border-color:var(--green);color:var(--green);}
+.score-circle.watch{border-color:var(--amber);color:var(--amber);}
+.score-circle.crit{border-color:var(--red);color:var(--red);}
+.score-meta{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.5px;}
+.score-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+
+.submit-btn{background:linear-gradient(135deg,var(--amber),#d97706);color:#000;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:1px;padding:14px 28px;border:none;border-radius:8px;cursor:pointer;transition:filter 0.15s;}
+.submit-btn:hover{filter:brightness(1.1);}
+.submit-btn:disabled{opacity:0.4;cursor:not-allowed;}
+
+.pillar-tags{display:flex;gap:6px;margin-top:20px;justify-content:center;flex-wrap:wrap;}
+.pillar-tag{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:4px 10px;border-radius:4px;border:1px solid var(--border);}
+.pillar-tag.r{color:#D4A843;border-color:rgba(212,168,67,0.3);}
+.pillar-tag.i{color:#3b82f6;border-color:rgba(59,130,246,0.3);}
+.pillar-tag.d{color:#22c55e;border-color:rgba(34,197,94,0.3);}
+.pillar-tag.e{color:#a855f7;border-color:rgba(168,85,247,0.3);}
+
+@media(max-width:480px){.meta-grid{grid-template-columns:1fr;}.obs-btns{flex-wrap:wrap;}.score-bar{flex-direction:column;gap:12px;text-align:center;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-badge">iMSA</span>
+    <span class="topbar-title">IN-HOUSE MYSTERY SERVICE AUDIT · AS 360</span>
+  </div>
+  <span class="topbar-score" id="topScore">— / 100</span>
+</div>
+
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-icon">🕵️</div>
+    <h1>Plain-Clothes Ride Observation</h1>
+    <p>Ride the ride as a guest. Exit. Log what you saw. Under 60 seconds. Crew never knows.</p>
+    <div class="hero-badge">DAILY · EVERY MANAGER · ONE RIDE PER SHIFT</div>
+    <div class="pillar-tags">
+      <span class="pillar-tag r">R · READINESS</span>
+      <span class="pillar-tag i">I · INTEGRITY</span>
+      <span class="pillar-tag d">D · DELIVERY</span>
+      <span class="pillar-tag e">E · ENVIRONMENT</span>
+    </div>
+  </div>
+
+  <div class="meta-grid">
+    <div class="meta-field">
+      <div class="meta-label">Date</div>
+      <input type="date" id="msaDate">
+    </div>
+    <div class="meta-field">
+      <div class="meta-label">Shift</div>
+      <select id="msaShift"><option>Open</option><option>Mid</option><option>Close</option></select>
+    </div>
+    <div class="meta-field">
+      <div class="meta-label">Observer (You)</div>
+      <input type="text" id="msaObserver" placeholder="Your name">
+    </div>
+    <div class="meta-field">
+      <div class="meta-label">Attraction</div>
+      <select id="msaRide"><option value="">— Select ride —</option></select>
+    </div>
+  </div>
+
+  <div class="section-label">Queue & Approach</div>
+  <div id="cat-queue"></div>
+
+  <div class="section-label">Boarding & Dispatch</div>
+  <div id="cat-boarding"></div>
+
+  <div class="section-label">Ride Experience</div>
+  <div id="cat-ride"></div>
+
+  <div class="section-label">Unload & Exit</div>
+  <div id="cat-unload"></div>
+
+  <div class="section-label">Staff & Professionalism</div>
+  <div id="cat-staff"></div>
+
+</div>
+
+<div class="score-bar">
+  <div class="score-left">
+    <div class="score-circle" id="scoreCircle">—</div>
+    <div>
+      <div class="score-label" id="scoreLabel">Complete all observations</div>
+      <div class="score-meta" id="scoreMeta">0 of 15 answered</div>
+    </div>
+  </div>
+  <button class="submit-btn" id="submitBtn" disabled onclick="submitAudit()">SUBMIT iMSA</button>
+</div>
+
+<script>
+const QUESTIONS = [
+  // Queue & Approach
+  {id:'q1', cat:'cat-queue', q:'Was the posted wait time visible and accurate?', pillar:'D', ref:'ASTM F770 §7.3 — guest communication'},
+  {id:'q2', cat:'cat-queue', q:'Queue line organized — switchbacks, signage, shade?', pillar:'E', ref:'Guest environment standard'},
+  {id:'q3', cat:'cat-queue', q:'Staff present and managing the queue?', pillar:'R', ref:'Staffing & readiness'},
+
+  // Boarding & Dispatch
+  {id:'q4', cat:'cat-boarding', q:'Did the operator give a clear safety spiel or announcement?', pillar:'I', ref:'ASTM F770 §8.3 — rider communication'},
+  {id:'q5', cat:'cat-boarding', q:'Was your restraint physically checked by an operator?', pillar:'I', ref:'ASTM F2291 — restraint verification'},
+  {id:'q6', cat:'cat-boarding', q:'Dispatch felt efficient — no excessive wait on the brake run?', pillar:'D', ref:'Throughput & dispatch cadence'},
+  {id:'q7', cat:'cat-boarding', q:'All rows/seats being filled? Or stacking empty rows?', pillar:'D', ref:'Capacity utilization'},
+
+  // Ride Experience
+  {id:'q8', cat:'cat-ride', q:'Ride operated smoothly — no unusual sounds, jolts, or stops?', pillar:'I', ref:'Ride integrity observation'},
+  {id:'q9', cat:'cat-ride', q:'How many trains/vehicles in operation?', pillar:'D', ref:'Fleet utilization', type:'count'},
+
+  // Unload & Exit
+  {id:'q10', cat:'cat-unload', q:'Clear instructions given before unloading?', pillar:'I', ref:'ASTM F770 §8.3'},
+  {id:'q11', cat:'cat-unload', q:'Exit path clear, signed, and accessible?', pillar:'E', ref:'ADA / egress standard'},
+  {id:'q12', cat:'cat-unload', q:'Photo/retail area not blocking exit flow?', pillar:'E', ref:'Guest flow & safety'},
+
+  // Staff & Professionalism
+  {id:'q13', cat:'cat-staff', q:'Operators appeared attentive and engaged (not on phones)?', pillar:'R', ref:'Operator attentiveness'},
+  {id:'q14', cat:'cat-staff', q:'Staff were professional and friendly to guests?', pillar:'E', ref:'Guest experience quality'},
+  {id:'q15', cat:'cat-staff', q:'Uniforms/name tags worn and presentable?', pillar:'R', ref:'Operational presentation'},
+];
+
+const state = {};
+
+function init(){
+  document.getElementById('msaDate').value = new Date().toISOString().split('T')[0];
+
+  QUESTIONS.forEach((q,i) => {
+    const container = document.getElementById(q.cat);
+    const card = document.createElement('div');
+    card.className = 'obs-card';
+    card.id = 'card-'+q.id;
+
+    const isCount = q.type === 'count';
+
+    card.innerHTML = `
+      <div class="obs-header">
+        <span class="obs-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="obs-q">${q.q}</span>
+        ${isCount ? `
+          <input type="number" min="0" max="10" placeholder="#" style="width:60px;background:var(--card2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:14px;padding:6px 10px;text-align:center;outline:none;" onchange="scoreCount('${q.id}',this.value)">
+        ` : `
+          <div class="obs-btns">
+            <button class="obs-btn" onclick="score('${q.id}','good',this)">Good</button>
+            <button class="obs-btn" onclick="score('${q.id}','issue',this)">Issue</button>
+            <button class="obs-btn" onclick="score('${q.id}','fail',this)">Fail</button>
+            <button class="obs-btn" onclick="score('${q.id}','na',this)">N/A</button>
+          </div>
+        `}
+      </div>
+      <div class="obs-detail" id="detail-${q.id}">
+        <textarea class="obs-note" placeholder="Describe what you observed..." oninput="storeNote('${q.id}',this.value)"></textarea>
+        <div class="obs-photo-row">
+          <label class="obs-photo-btn">📷 Photo<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="photoAdded('${q.id}',this)"></label>
+          <span id="photo-count-${q.id}" style="font-family:var(--mono);font-size:10px;color:var(--muted);"></span>
+        </div>
+        <div class="obs-ref">↳ ${q.ref} · Pillar: ${q.pillar}</div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  recalc();
+}
+
+function score(id, val, btn){
+  state[id] = {score: val};
+  const card = document.getElementById('card-'+id);
+  card.className = 'obs-card scored-'+({good:'good',issue:'issue',fail:'fail',na:''}[val]||'');
+  card.querySelectorAll('.obs-btn').forEach(b => b.className='obs-btn');
+  btn.classList.add('sel-'+val);
+
+  const detail = document.getElementById('detail-'+id);
+  if(val === 'issue' || val === 'fail'){
+    detail.classList.add('open');
+    detail.querySelector('.obs-note').focus();
+  } else {
+    detail.classList.remove('open');
+  }
+  recalc();
+}
+
+function scoreCount(id, val){
+  state[id] = {score:'count', value: parseInt(val)||0};
+  const card = document.getElementById('card-'+id);
+  card.className = 'obs-card scored-good';
+  recalc();
+}
+
+function storeNote(id, val){
+  if(state[id]) state[id].note = val;
+}
+
+function photoAdded(id, input){
+  const count = input.files.length;
+  document.getElementById('photo-count-'+id).textContent = count + ' photo'+(count!==1?'s':'');
+  if(state[id]) state[id].hasPhoto = true;
+}
+
+function recalc(){
+  const scored = QUESTIONS.filter(q => state[q.id]);
+  const scorable = scored.filter(s => state[s.id].score !== 'na' && state[s.id].score !== 'count');
+  const goods = scorable.filter(s => state[s.id].score === 'good').length;
+  const total = scorable.length;
+  const pct = total > 0 ? Math.round((goods / total) * 100) : null;
+
+  const circle = document.getElementById('scoreCircle');
+  const label = document.getElementById('scoreLabel');
+  const meta = document.getElementById('scoreMeta');
+  const top = document.getElementById('topScore');
+  const btn = document.getElementById('submitBtn');
+
+  meta.textContent = scored.length + ' of ' + QUESTIONS.length + ' answered';
+
+  if(pct !== null){
+    circle.textContent = pct;
+    top.textContent = pct + ' / 100';
+    circle.className = 'score-circle ' + (pct >= 80 ? 'good' : pct >= 60 ? 'watch' : 'crit');
+    label.textContent = pct >= 90 ? 'STRONG — Operations running well' : pct >= 75 ? 'GOOD — Minor observations' : pct >= 60 ? 'WATCH — Issues noted' : 'CRITICAL — Immediate attention needed';
+  } else {
+    circle.textContent = '—';
+    circle.className = 'score-circle';
+    top.textContent = '— / 100';
+    label.textContent = 'Complete all observations';
+  }
+
+  btn.disabled = scored.length < QUESTIONS.length - 1;
+}
+
+function submitAudit(){
+  const data = {
+    date: document.getElementById('msaDate').value,
+    shift: document.getElementById('msaShift').value,
+    observer: document.getElementById('msaObserver').value,
+    ride: document.getElementById('msaRide').value,
+    observations: {},
+  };
+  QUESTIONS.forEach(q => {
+    if(state[q.id]){
+      data.observations[q.id] = {...state[q.id], question: q.q, pillar: q.pillar};
+    }
+  });
+  console.log('iMSA Submission:', JSON.stringify(data, null, 2));
+  alert('iMSA submitted successfully. Score: ' + document.getElementById('scoreCircle').textContent + '/100');
+}
+
+init();
+</script>
+</body>
+</html>
