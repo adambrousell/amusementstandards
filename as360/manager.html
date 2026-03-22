@@ -641,6 +641,27 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   <div id="insp-card-grid" class="insp-grid"></div>
 
   <!-- INLINE FORMS — rendered per-inspection type -->
+  <!-- ══ iMSA — IN-HOUSE MYSTERY SERVICE AUDIT ══ -->
+  <div class="form-panel" id="form-iMSA">
+    <div class="form-panel-hdr">
+      <div class="form-panel-title">In-House Mystery Service Audit</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeForm('iMSA')">✕ Close</button>
+    </div>
+    <div class="form-panel-body" style="text-align:center;padding:32px;">
+      <div style="font-size:48px;margin-bottom:12px;">🕵️</div>
+      <div style="font-family:var(--cond);font-size:20px;font-weight:700;color:var(--text-bright);margin-bottom:8px;">Plain-Clothes Ride Observation</div>
+      <div style="font-size:13px;color:var(--text-dim);line-height:1.6;max-width:400px;margin:0 auto 20px;">Every manager rides one attraction per shift as a guest. Exit the ride. Log 15 operational observations in under 60 seconds from the exit path. Crew never knows they were being watched.</div>
+      <div style="display:flex;gap:6px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;">
+        <span style="font-family:var(--mono);font-size:8px;padding:3px 8px;border-radius:3px;background:rgba(10,191,188,.1);color:var(--teal);border:1px solid rgba(10,191,188,.2);">R · READINESS</span>
+        <span style="font-family:var(--mono);font-size:8px;padding:3px 8px;border-radius:3px;background:rgba(244,63,94,.1);color:var(--red);border:1px solid rgba(244,63,94,.2);">I · INTEGRITY</span>
+        <span style="font-family:var(--mono);font-size:8px;padding:3px 8px;border-radius:3px;background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2);">D · DELIVERY</span>
+        <span style="font-family:var(--mono);font-size:8px;padding:3px 8px;border-radius:3px;background:rgba(139,92,246,.1);color:var(--purple);border:1px solid rgba(139,92,246,.2);">E · ENVIRONMENT</span>
+      </div>
+      <a href="imsa-audit.html" class="btn btn-teal" style="display:inline-block;text-decoration:none;">Open iMSA Audit Tool →</a>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-top:14px;">DAILY · EVERY MANAGER · ONE RIDE PER SHIFT</div>
+    </div>
+  </div>
+
   <div class="form-panel" id="form-CCA">
     <div class="form-panel-hdr">
       <div class="form-panel-title">Cleanliness & Condition Audit</div>
@@ -1746,6 +1767,8 @@ let throughputs=[],handoffs=[],shiftLogs=[],oosUnits=[],cars=[],audits=[],matrix
 let carFilter='all',currentFreq='weekly',activeForms={};
 
 const INSP_DEFS={
+  // Daily — Plain-Clothes Observation
+  iMSA:{id:'iMSA',name:'In-House Mystery Service Audit',table:'iMSA_Log',cadence:1,scores:['r','i','d','e'],freq:'weekly'},
   // Weekly
   CCA:{id:'CCA',name:'Cleanliness & Condition',table:'CCA_Log',cadence:7,scores:['r','s','p'],freq:'weekly'},
   HAE:{id:'HAE',name:'Height & Age Enforcement',table:'HAE_Log',cadence:7,scores:['r','s','p'],freq:'weekly'},
@@ -2509,7 +2532,7 @@ function updateFreqBadges(){
 
 function renderInspectionCards(){
   const freqIds=Object.keys(INSP_DEFS).filter(id=>INSP_DEFS[id].freq===currentFreq);
-  const hasForm=['CCA','HAE','WQA','FLC','YPS','SOA','SAC','EAI','IPL','OLI','LGA','YPR','GES','ACR','SBC','EAP','HDI','LBL'];
+  const hasForm=['iMSA','CCA','HAE','WQA','FLC','YPS','SOA','SAC','EAI','IPL','OLI','LGA','YPR','GES','ACR','SBC','EAP','HDI','LBL'];
   const naForms={BAL:true,VGB:true,SGS:true};// no deep aquatics at Epic Universe
   const grid=document.getElementById('insp-card-grid');
   const cs=document.getElementById('insp-coming-soon');
@@ -4327,6 +4350,22 @@ function init(){
   setInterval(checkRotations,15000);
   setInterval(()=>document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),1000);
   document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+
+  // ── DEEP LINK HANDLER — ?form=CCA opens specific inspection form ──
+  (function(){
+    var params = new URLSearchParams(window.location.search);
+    var formId = params.get('form');
+    if(formId && INSP_DEFS[formId]){
+      var freq = INSP_DEFS[formId].freq;
+      // Switch to inspections view
+      showView('inspections', document.querySelector('[onclick*=inspections]'));
+      // Switch to correct frequency tab, then open the form
+      setTimeout(function(){
+        if(freq) switchFreq(freq);
+        setTimeout(function(){ openForm(formId); }, 150);
+      }, 100);
+    }
+  })();
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
