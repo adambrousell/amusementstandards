@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VoxIntel — Passive Audio Intelligence for Venue Operations</title>
+<meta name="description" content="VoxIntel passively monitors all venue radio channels simultaneously, turning voice transmissions into structured, searchable, scoreable event intelligence.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -29,985 +30,225 @@
   --font-display: 'Outfit', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
-
-*, *::before, *::after {
-  margin: 0; padding: 0; box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent-dim) var(--bg-primary);
-}
-
-body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font-display);
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-/* ========== NOISE TEXTURE OVERLAY ========== */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 9999;
-}
-
-/* ========== ANIMATIONS ========== */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideRight {
-  from { opacity: 0; transform: translateX(-40px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.15); }
-  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.3); }
-}
-
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes waveform {
-  0%, 100% { opacity: 0.3; filter: brightness(1); }
-  50% { opacity: 1; filter: brightness(1.5); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
-.fade-up.visible { opacity: 1; transform: translateY(0); }
-.fade-up-d1 { transition-delay: 0.1s; }
-.fade-up-d2 { transition-delay: 0.2s; }
-.fade-up-d3 { transition-delay: 0.3s; }
-.fade-up-d4 { transition-delay: 0.4s; }
-.fade-up-d5 { transition-delay: 0.5s; }
-.fade-up-d6 { transition-delay: 0.6s; }
-.fade-up-d7 { transition-delay: 0.7s; }
-.fade-up-d8 { transition-delay: 0.8s; }
-
-/* ========== LAYOUT ========== */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 clamp(1.5rem, 4vw, 3rem);
-}
-
-section {
-  padding: clamp(4rem, 8vw, 8rem) 0;
-}
-
-/* ========== NAV ========== */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 1000;
-  background: rgba(6, 9, 15, 0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  animation: fadeIn 0.6s ease;
-}
-
-nav .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 64px;
-}
-
-.nav-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-}
-
-.nav-logo-icon {
-  width: 32px;
-  height: 32px;
-  background: var(--accent);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-}
-
-.nav-logo-text {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--text-primary);
-  letter-spacing: 2px;
-}
-
-.nav-links {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
-}
-
-.nav-links a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover { color: var(--accent-glow); }
-
-.nav-cta {
-  background: var(--accent);
-  color: white !important;
-  padding: 8px 20px;
-  border-radius: 6px;
-  font-weight: 600 !important;
-  transition: all 0.3s !important;
-}
-
-.nav-cta:hover {
-  background: var(--accent-glow) !important;
-  transform: translateY(-1px);
-}
-
-/* ========== HERO ========== */
-.hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  padding-top: 64px;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -20%;
-  width: 800px;
-  height: 800px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: -30%;
-  left: -10%;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid var(--border-accent);
-  border-radius: 100px;
-  padding: 6px 16px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--accent-glow);
-  letter-spacing: 1px;
-  margin-bottom: 1.5rem;
-}
-
-.hero-badge::before {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  animation: blink 2s infinite;
-}
-
-.hero h1 {
-  font-size: clamp(2.8rem, 5vw, 4.2rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -1.5px;
-  margin-bottom: 1.5rem;
-}
-
-.hero h1 .accent { color: var(--accent-glow); }
-.hero h1 .gold { color: var(--gold); }
-
-.hero-sub {
-  font-size: 1.15rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 2rem;
-  max-width: 520px;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--accent);
-  color: white;
-  padding: 14px 28px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-decoration: none;
-  transition: all 0.3s;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background: var(--accent-glow);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25);
-}
-
-.btn-outline {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  color: var(--text-secondary);
-  padding: 14px 28px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 0.95rem;
-  text-decoration: none;
-  border: 1px solid var(--border);
-  transition: all 0.3s;
-  cursor: pointer;
-}
-
-.btn-outline:hover {
-  border-color: var(--accent);
-  color: var(--accent-glow);
-}
-
-/* ========== HERO VISUAL — LIVE FEED ========== */
-.hero-visual {
-  position: relative;
-
-}
-
-.live-feed {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-}
-
-.live-feed-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: rgba(255,255,255,0.02);
-  border-bottom: 1px solid var(--border);
-}
-
-.live-feed-title {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.live-dot {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--green);
-}
-
-.live-dot::before {
-  content: '';
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--green);
-  animation: blink 1.5s infinite;
-}
-
-.feed-items {
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.feed-item {
-  display: grid;
-  grid-template-columns: 60px 70px 1fr 50px;
-  gap: 8px;
-  align-items: center;
-  padding: 10px 12px;
-  border-radius: 8px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  background: rgba(255,255,255,0.015);
-  border: 1px solid transparent;
-}
-
-.feed-item:hover {
-  background: rgba(59, 130, 246, 0.05);
-  border-color: var(--border-accent);
-}
-
-.feed-time { color: var(--text-muted); }
-.feed-channel { color: var(--text-secondary); font-weight: 500; }
-.feed-text { color: var(--text-primary); font-family: var(--font-display); font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-.feed-tag {
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.6rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: center;
-}
-
-.tag-security { background: rgba(239, 68, 68, 0.15); color: var(--red); }
-.tag-medical { background: rgba(245, 158, 11, 0.15); color: var(--gold); }
-.tag-ops { background: rgba(59, 130, 246, 0.15); color: var(--accent-glow); }
-.tag-maint { background: rgba(139, 92, 246, 0.15); color: var(--purple); }
-.tag-crowd { background: rgba(6, 182, 212, 0.15); color: var(--cyan); }
-.tag-weather { background: rgba(16, 185, 129, 0.15); color: var(--green); }
-
-/* ========== WAVEFORM BAR ========== */
-.waveform-bar {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 3px;
-  padding: 14px 16px;
-  border-top: 1px solid var(--border);
-  background: rgba(59, 130, 246, 0.02);
-  height: 56px;
-}
-
-.waveform-bar span {
-  width: 3px;
-  border-radius: 2px;
-  animation: waveform 1.8s ease-in-out infinite;
-  background: linear-gradient(to top, var(--accent-dim), var(--accent-glow));
-  box-shadow: 0 0 6px rgba(96, 165, 250, 0.3);
-}
-
-.waveform-bar span:nth-child(1)  { animation-delay: 0.0s;  height: 6px; }
-.waveform-bar span:nth-child(2)  { animation-delay: 0.15s; height: 14px; }
-.waveform-bar span:nth-child(3)  { animation-delay: 0.05s; height: 22px; }
-.waveform-bar span:nth-child(4)  { animation-delay: 0.25s; height: 10px; }
-.waveform-bar span:nth-child(5)  { animation-delay: 0.4s;  height: 28px; background: linear-gradient(to top, var(--accent-dim), var(--gold)); box-shadow: 0 0 8px rgba(245, 158, 11, 0.3); }
-.waveform-bar span:nth-child(6)  { animation-delay: 0.1s;  height: 16px; }
-.waveform-bar span:nth-child(7)  { animation-delay: 0.3s;  height: 8px; }
-.waveform-bar span:nth-child(8)  { animation-delay: 0.5s;  height: 20px; }
-.waveform-bar span:nth-child(9)  { animation-delay: 0.2s;  height: 12px; }
-.waveform-bar span:nth-child(10) { animation-delay: 0.35s; height: 26px; background: linear-gradient(to top, var(--accent-dim), var(--accent-glow)); box-shadow: 0 0 10px rgba(96, 165, 250, 0.4); }
-.waveform-bar span:nth-child(11) { animation-delay: 0.1s;  height: 6px; }
-.waveform-bar span:nth-child(12) { animation-delay: 0.45s; height: 18px; }
-.waveform-bar span:nth-child(13) { animation-delay: 0.25s; height: 30px; background: linear-gradient(to top, var(--accent-dim), var(--green)); box-shadow: 0 0 8px rgba(16, 185, 129, 0.3); }
-.waveform-bar span:nth-child(14) { animation-delay: 0.15s; height: 12px; }
-.waveform-bar span:nth-child(15) { animation-delay: 0.55s; height: 8px; }
-.waveform-bar span:nth-child(16) { animation-delay: 0.05s; height: 16px; }
-.waveform-bar span:nth-child(17) { animation-delay: 0.3s;  height: 24px; }
-.waveform-bar span:nth-child(18) { animation-delay: 0.4s;  height: 10px; }
-.waveform-bar span:nth-child(19) { animation-delay: 0.2s;  height: 20px; }
-.waveform-bar span:nth-child(20) { animation-delay: 0.0s;  height: 14px; }
-
-/* ========== PROBLEM SECTION ========== */
-#problem {
-  border-top: 1px solid var(--border);
-}
-
-.section-label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--accent-glow);
-  margin-bottom: 1rem;
-}
-
-.section-title {
-  font-size: clamp(2rem, 3.5vw, 2.8rem);
-  font-weight: 700;
-  letter-spacing: -1px;
-  line-height: 1.15;
-  margin-bottom: 1.5rem;
-}
-
-.section-desc {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 680px;
-  margin-bottom: 3rem;
-}
-
-.problem-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-}
-
-.stat-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.4s;
-}
-
-.stat-card:hover {
-  border-color: var(--border-accent);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-}
-
-.stat-number {
-  font-size: clamp(2.2rem, 4vw, 3rem);
-  font-weight: 800;
-  color: var(--gold);
-  font-family: var(--font-mono);
-  margin-bottom: 0.5rem;
-}
-
-.stat-label {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.pain-points {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.pain-point {
-  display: flex;
-  gap: 1rem;
-  padding: 1.5rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  transition: all 0.3s;
-}
-
-.pain-point:hover {
-  border-color: rgba(239, 68, 68, 0.3);
-}
-
-.pain-icon {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  border-radius: 8px;
-  background: rgba(239, 68, 68, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-}
-
-.pain-text h4 {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.pain-text p {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-
-/* ========== PIPELINE SECTION ========== */
-#solution {
-  border-top: 1px solid var(--border);
-  position: relative;
-}
-
-.pipeline {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  margin-top: 3rem;
-}
-
-.pipeline-step {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem 1.5rem;
-  text-align: center;
-  position: relative;
-  transition: all 0.4s;
-}
-
-.pipeline-step:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 50px rgba(0,0,0,0.4);
-}
-
-.pipeline-step::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  border-radius: 12px 12px 0 0;
-}
-
-.pipeline-step:nth-child(1)::before { background: var(--accent); }
-.pipeline-step:nth-child(2)::before { background: var(--purple); }
-.pipeline-step:nth-child(3)::before { background: var(--gold); }
-.pipeline-step:nth-child(4)::before { background: var(--green); }
-
-.pipeline-step:nth-child(1):hover { border-color: rgba(59, 130, 246, 0.3); }
-.pipeline-step:nth-child(2):hover { border-color: rgba(139, 92, 246, 0.3); }
-.pipeline-step:nth-child(3):hover { border-color: rgba(245, 158, 11, 0.3); }
-.pipeline-step:nth-child(4):hover { border-color: rgba(16, 185, 129, 0.3); }
-
-.step-num {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 2px;
-  color: var(--text-muted);
-  margin-bottom: 1.2rem;
-}
-
-.step-icon {
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
-}
-
-.pipeline-step h3 {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 0.8rem;
-}
-
-.pipeline-step:nth-child(1) h3 { color: var(--accent-glow); }
-.pipeline-step:nth-child(2) h3 { color: var(--purple); }
-.pipeline-step:nth-child(3) h3 { color: var(--gold); }
-.pipeline-step:nth-child(4) h3 { color: var(--green); }
-
-.pipeline-step p {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.pipeline-arrow {
-  display: none;
-}
-
-/* ========== MULTI-CHANNEL INTELLIGENCE ========== */
-#multi-channel {
-  border-top: 1px solid var(--border);
-}
-
-.mc-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: center;
-  margin-top: 3rem;
-}
-
-.mc-visual {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1.5rem;
-}
-
-.mc-visual-header {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.channel-footer {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-  padding-top: 0.8rem;
-  border-top: 1px solid var(--border);
-}
-
-.channel-footer-stat {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  transition: color 0.3s;
-}
-
-.channel-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-}
-
-.channel-fill.hot::after {
-  content: '';
-  position: absolute;
-  top: -2px; right: 0; bottom: -2px;
-  width: 8px;
-  border-radius: 0 3px 3px 0;
-  animation: pulseGlow 1.5s ease infinite;
-}
-
-.channel-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-  padding: 6px 0;
-}
-
-.channel-name {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-secondary);
-  width: 80px;
-  min-width: 80px;
-}
-
-.channel-meter {
-  flex: 1;
-  height: 6px;
-  background: rgba(255,255,255,0.04);
-  border-radius: 3px;
-  overflow: hidden;
-  position: relative;
-}
-
-.channel-pct {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  width: 35px;
-  text-align: right;
-}
-
-.mc-features {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.mc-feature {
-  display: flex;
-  gap: 1rem;
-}
-
-.mc-feature-icon {
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-}
-
-.mc-feature h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.mc-feature p {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-/* ========== VERTICALS ========== */
-#verticals {
-  border-top: 1px solid var(--border);
-}
-
-.verticals-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-top: 3rem;
-}
-
-.vertical-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem;
-  transition: all 0.4s;
-  position: relative;
-  overflow: hidden;
-}
-
-.vertical-card::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.03) 0%, transparent 60%);
-  pointer-events: none;
-}
-
-.vertical-card:hover {
-  border-color: var(--border-accent);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
-}
-
-.vertical-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.vertical-card h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.vertical-card p {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-/* ========== QUOTE / CALLOUT ========== */
-.callout {
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: clamp(3rem, 6vw, 5rem) 0;
-  text-align: center;
-  position: relative;
-}
-
-.callout::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%; transform: translateX(-50%);
-  width: 60%;
-  height: 100%;
-  background: radial-gradient(ellipse, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.callout blockquote {
-  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--text-primary);
-  max-width: 800px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.callout blockquote .accent { color: var(--accent-glow); }
-
-/* ========== CTA ========== */
-#cta {
-  text-align: center;
-  padding-bottom: clamp(5rem, 10vw, 8rem);
-}
-
-.cta-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: clamp(3rem, 5vw, 4rem);
-  position: relative;
-  overflow: hidden;
-}
-
-.cta-box::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--purple), var(--gold));
-}
-
-.cta-box h2 {
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
-
-.cta-box p {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  max-width: 550px;
-  margin: 0 auto 2rem;
-  line-height: 1.7;
-}
-
-/* ========== FOOTER ========== */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 2.5rem 0;
-}
-
-footer .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.footer-left {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.footer-right {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.footer-right a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.footer-right a:hover { color: var(--accent-glow); }
-
-/* ========== RESPONSIVE ========== */
-@media (max-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
-  .hero-visual { order: -1; }
-  .problem-stats { grid-template-columns: 1fr; }
-  .pain-points { grid-template-columns: 1fr; }
-  .pipeline { grid-template-columns: repeat(2, 1fr); }
-  .mc-grid { grid-template-columns: 1fr; }
-  .verticals-grid { grid-template-columns: 1fr; }
-  .nav-links { display: none; }
-  footer .container { flex-direction: column; gap: 1rem; text-align: center; }
-}
-
-@media (max-width: 600px) {
-  .pipeline { grid-template-columns: 1fr; }
-  .feed-item { grid-template-columns: 50px 1fr 50px; }
-  .feed-channel { display: none; }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-display); line-height: 1.6; overflow-x: hidden; }
+body::before { content:''; position:fixed; top:0; left:0; width:100%; height:100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:9999; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+@keyframes waveform { 0%,100% { opacity:0.3; filter:brightness(1); } 50% { opacity:1; filter:brightness(1.5); } }
+@keyframes pulseGlow { 0%,100% { box-shadow:0 0 20px rgba(59,130,246,0.15); } 50% { box-shadow:0 0 40px rgba(59,130,246,0.3); } }
+
+.fade-up { opacity:0; transform:translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-up.visible { opacity:1; transform:translateY(0); }
+.fade-up-d1 { transition-delay:0.1s; } .fade-up-d2 { transition-delay:0.2s; } .fade-up-d3 { transition-delay:0.3s; }
+.fade-up-d4 { transition-delay:0.4s; } .fade-up-d5 { transition-delay:0.5s; } .fade-up-d6 { transition-delay:0.6s; }
+.fade-up-d7 { transition-delay:0.7s; } .fade-up-d8 { transition-delay:0.8s; }
+
+.container { max-width:1200px; margin:0 auto; padding:0 clamp(1.5rem,4vw,3rem); }
+section { padding: clamp(4rem,8vw,8rem) 0; }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(6,9,15,0.85); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); animation:fadeIn 0.6s ease; }
+nav .container { display:flex; justify-content:space-between; align-items:center; height:64px; }
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.nav-logo img { height:36px; width:auto; }
+.nav-logo-text { font-family:var(--font-mono); font-weight:700; font-size:1.1rem; color:var(--text-primary); letter-spacing:2px; }
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a { color:var(--text-secondary); text-decoration:none; font-size:0.85rem; font-weight:500; letter-spacing:0.5px; transition:color 0.3s; }
+.nav-links a:hover { color:var(--accent-glow); }
+.nav-cta { background:var(--accent); color:white !important; padding:8px 20px; border-radius:6px; font-weight:600 !important; transition:all 0.3s !important; }
+.nav-cta:hover { background:var(--accent-glow) !important; transform:translateY(-1px); }
+.nav-market-switch { font-family:var(--font-mono); font-size:0.7rem; color:var(--gold); letter-spacing:1px; border:1px solid rgba(245,158,11,0.3); padding:5px 12px; border-radius:4px; transition:all 0.3s; }
+.nav-market-switch:hover { background:rgba(245,158,11,0.1); color:var(--gold); }
+
+/* HERO */
+.hero { min-height:100vh; display:flex; align-items:center; position:relative; overflow:hidden; padding-top:64px; }
+.hero::before { content:''; position:absolute; top:-50%; right:-20%; width:800px; height:800px; background:radial-gradient(circle,rgba(59,130,246,0.08) 0%,transparent 70%); pointer-events:none; }
+.hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+.hero-logo { max-width:320px; margin-bottom:1.5rem; filter:drop-shadow(0 0 40px rgba(59,130,246,0.2)); }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(59,130,246,0.1); border:1px solid var(--border-accent); border-radius:100px; padding:6px 16px; font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-glow); letter-spacing:1px; margin-bottom:1.5rem; }
+.hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); animation:blink 2s infinite; }
+.hero h1 { font-size:clamp(2.8rem,5vw,4.2rem); font-weight:800; line-height:1.08; letter-spacing:-1.5px; margin-bottom:1.5rem; }
+.hero h1 .accent { color:var(--accent-glow); }
+.hero h1 .gold { color:var(--gold); }
+.hero-sub { font-size:1.15rem; color:var(--text-secondary); line-height:1.7; margin-bottom:2rem; max-width:520px; }
+.hero-actions { display:flex; gap:1rem; flex-wrap:wrap; }
+.btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:white; padding:14px 28px; border-radius:8px; font-weight:600; font-size:0.95rem; text-decoration:none; transition:all 0.3s; border:none; cursor:pointer; }
+.btn-primary:hover { background:var(--accent-glow); transform:translateY(-2px); box-shadow:0 8px 30px rgba(59,130,246,0.25); }
+.btn-outline { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-secondary); padding:14px 28px; border-radius:8px; font-weight:500; font-size:0.95rem; text-decoration:none; border:1px solid var(--border); transition:all 0.3s; cursor:pointer; }
+.btn-outline:hover { border-color:var(--accent); color:var(--accent-glow); }
+
+/* LIVE FEED */
+.hero-visual { position:relative; }
+.live-feed { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.5); }
+.live-feed-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:rgba(255,255,255,0.02); border-bottom:1px solid var(--border); }
+.live-feed-title { font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted); letter-spacing:2px; text-transform:uppercase; }
+.live-dot { display:flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:0.7rem; color:var(--green); }
+.live-dot::before { content:''; width:7px; height:7px; border-radius:50%; background:var(--green); animation:blink 1.5s infinite; }
+.feed-items { padding:8px; display:flex; flex-direction:column; gap:4px; }
+.feed-item { display:grid; grid-template-columns:60px 70px 1fr 50px; gap:8px; align-items:center; padding:10px 12px; border-radius:8px; font-family:var(--font-mono); font-size:0.72rem; background:rgba(255,255,255,0.015); border:1px solid transparent; }
+.feed-item:hover { background:rgba(59,130,246,0.05); border-color:var(--border-accent); }
+.feed-time { color:var(--text-muted); } .feed-channel { color:var(--text-secondary); font-weight:500; }
+.feed-text { color:var(--text-primary); font-family:var(--font-display); font-size:0.8rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.feed-tag { padding:2px 8px; border-radius:4px; font-size:0.6rem; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; text-align:center; }
+.tag-security { background:rgba(239,68,68,0.15); color:var(--red); }
+.tag-medical { background:rgba(245,158,11,0.15); color:var(--gold); }
+.tag-ops { background:rgba(59,130,246,0.15); color:var(--accent-glow); }
+.tag-maint { background:rgba(139,92,246,0.15); color:var(--purple); }
+.tag-crowd { background:rgba(6,182,212,0.15); color:var(--cyan); }
+.tag-weather { background:rgba(16,185,129,0.15); color:var(--green); }
+
+.waveform-bar { display:flex; align-items:flex-end; justify-content:center; gap:3px; padding:14px 16px; border-top:1px solid var(--border); background:rgba(59,130,246,0.02); height:56px; }
+.waveform-bar span { width:3px; border-radius:2px; animation:waveform 1.8s ease-in-out infinite; background:linear-gradient(to top,var(--accent-dim),var(--accent-glow)); box-shadow:0 0 6px rgba(96,165,250,0.3); }
+.waveform-bar span:nth-child(1) { animation-delay:0s; height:6px; } .waveform-bar span:nth-child(2) { animation-delay:0.15s; height:14px; }
+.waveform-bar span:nth-child(3) { animation-delay:0.05s; height:22px; } .waveform-bar span:nth-child(4) { animation-delay:0.25s; height:10px; }
+.waveform-bar span:nth-child(5) { animation-delay:0.4s; height:28px; background:linear-gradient(to top,var(--accent-dim),var(--gold)); }
+.waveform-bar span:nth-child(6) { animation-delay:0.1s; height:16px; } .waveform-bar span:nth-child(7) { animation-delay:0.3s; height:8px; }
+.waveform-bar span:nth-child(8) { animation-delay:0.5s; height:20px; } .waveform-bar span:nth-child(9) { animation-delay:0.2s; height:12px; }
+.waveform-bar span:nth-child(10) { animation-delay:0.35s; height:26px; } .waveform-bar span:nth-child(11) { animation-delay:0.1s; height:6px; }
+.waveform-bar span:nth-child(12) { animation-delay:0.45s; height:18px; }
+.waveform-bar span:nth-child(13) { animation-delay:0.25s; height:30px; background:linear-gradient(to top,var(--accent-dim),var(--green)); }
+.waveform-bar span:nth-child(14) { animation-delay:0.15s; height:12px; } .waveform-bar span:nth-child(15) { animation-delay:0.55s; height:8px; }
+.waveform-bar span:nth-child(16) { animation-delay:0.05s; height:16px; } .waveform-bar span:nth-child(17) { animation-delay:0.3s; height:24px; }
+.waveform-bar span:nth-child(18) { animation-delay:0.4s; height:10px; } .waveform-bar span:nth-child(19) { animation-delay:0.2s; height:20px; }
+.waveform-bar span:nth-child(20) { animation-delay:0s; height:14px; }
+
+/* SECTIONS */
+.section-label { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--accent-glow); margin-bottom:1rem; }
+.section-title { font-size:clamp(2rem,3.5vw,2.8rem); font-weight:700; letter-spacing:-1px; line-height:1.15; margin-bottom:1.5rem; }
+.section-desc { font-size:1.05rem; color:var(--text-secondary); line-height:1.7; max-width:680px; margin-bottom:3rem; }
+
+/* STATS */
+.problem-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-bottom:3rem; }
+.stat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:2rem; text-align:center; transition:all 0.4s; }
+.stat-card:hover { border-color:var(--border-accent); transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.3); }
+.stat-number { font-size:clamp(2.2rem,4vw,3rem); font-weight:800; color:var(--gold); font-family:var(--font-mono); margin-bottom:0.5rem; }
+.stat-label { font-size:0.85rem; color:var(--text-secondary); line-height:1.5; }
+
+/* PAIN POINTS */
+.pain-points { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+.pain-point { display:flex; gap:1rem; padding:1.5rem; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; transition:all 0.3s; }
+.pain-point:hover { border-color:rgba(239,68,68,0.3); }
+.pain-icon { width:40px; height:40px; min-width:40px; border-radius:8px; background:rgba(239,68,68,0.1); display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+.pain-text h4 { font-size:0.95rem; font-weight:600; margin-bottom:0.3rem; }
+.pain-text p { font-size:0.82rem; color:var(--text-muted); line-height:1.5; }
+
+/* PIPELINE */
+.pipeline { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-top:3rem; }
+.pipeline-step { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:2rem 1.5rem; text-align:center; position:relative; transition:all 0.4s; }
+.pipeline-step:hover { transform:translateY(-6px); box-shadow:0 16px 50px rgba(0,0,0,0.4); }
+.pipeline-step::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:12px 12px 0 0; }
+.pipeline-step:nth-child(1)::before { background:var(--accent); }
+.pipeline-step:nth-child(2)::before { background:var(--purple); }
+.pipeline-step:nth-child(3)::before { background:var(--gold); }
+.pipeline-step:nth-child(4)::before { background:var(--green); }
+.step-num { font-family:var(--font-mono); font-size:0.65rem; letter-spacing:2px; color:var(--text-muted); margin-bottom:1.2rem; }
+.step-icon { font-size:2.2rem; margin-bottom:1rem; }
+.pipeline-step h3 { font-family:var(--font-mono); font-size:0.85rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:0.8rem; }
+.pipeline-step:nth-child(1) h3 { color:var(--accent-glow); }
+.pipeline-step:nth-child(2) h3 { color:var(--purple); }
+.pipeline-step:nth-child(3) h3 { color:var(--gold); }
+.pipeline-step:nth-child(4) h3 { color:var(--green); }
+.pipeline-step p { font-size:0.85rem; color:var(--text-secondary); line-height:1.6; }
+
+/* VERTICALS */
+.verticals-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3rem; }
+.vertical-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:2rem; transition:all 0.4s; position:relative; overflow:hidden; }
+.vertical-card::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(135deg,rgba(59,130,246,0.03) 0%,transparent 60%); pointer-events:none; }
+.vertical-card:hover { border-color:var(--border-accent); transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.3); }
+.vertical-icon { font-size:2rem; margin-bottom:1rem; }
+.vertical-card h3 { font-size:1.1rem; font-weight:600; margin-bottom:0.5rem; }
+.vertical-card p { font-size:0.85rem; color:var(--text-secondary); line-height:1.6; }
+
+/* CALLOUT */
+.callout { border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:clamp(3rem,6vw,5rem) 0; text-align:center; position:relative; }
+.callout::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:60%; height:100%; background:radial-gradient(ellipse,rgba(59,130,246,0.05) 0%,transparent 70%); pointer-events:none; }
+.callout blockquote { font-size:clamp(1.3rem,2.5vw,1.8rem); font-weight:500; line-height:1.5; color:var(--text-primary); max-width:800px; margin:0 auto; position:relative; }
+.callout blockquote .accent { color:var(--accent-glow); }
+
+/* CTA */
+#cta { text-align:center; padding-bottom:clamp(5rem,10vw,8rem); }
+.cta-box { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:clamp(3rem,5vw,4rem); position:relative; overflow:hidden; }
+.cta-box::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--accent),var(--purple),var(--gold)); }
+.cta-box h2 { font-size:clamp(1.8rem,3vw,2.4rem); font-weight:700; margin-bottom:1rem; }
+.cta-box p { font-size:1.05rem; color:var(--text-secondary); max-width:550px; margin:0 auto 2rem; line-height:1.7; }
+
+/* FOOTER */
+footer { border-top:1px solid var(--border); padding:2.5rem 0; }
+footer .container { display:flex; justify-content:space-between; align-items:center; }
+.footer-left { font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted); }
+.footer-right { font-size:0.8rem; color:var(--text-muted); }
+.footer-right a { color:var(--text-secondary); text-decoration:none; transition:color 0.3s; }
+.footer-right a:hover { color:var(--accent-glow); }
+
+#problem, #solution, #verticals { border-top:1px solid var(--border); }
+
+@media(max-width:900px) {
+  .hero-grid { grid-template-columns:1fr; gap:3rem; }
+  .hero-visual { order:-1; }
+  .problem-stats { grid-template-columns:1fr; }
+  .pain-points { grid-template-columns:1fr; }
+  .pipeline { grid-template-columns:repeat(2,1fr); }
+  .verticals-grid { grid-template-columns:1fr; }
+  .nav-links { display:none; }
+  footer .container { flex-direction:column; gap:1rem; text-align:center; }
+}
+@media(max-width:600px) {
+  .pipeline { grid-template-columns:1fr; }
+  .feed-item { grid-template-columns:50px 1fr 50px; }
+  .feed-channel { display:none; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ========== NAV ========== -->
 <nav>
   <div class="container">
     <a href="#" class="nav-logo">
-      <div class="nav-logo-icon">📡</div>
+      <img src="voxintel-logo.png" alt="VoxIntel" style="height:32px;">
       <span class="nav-logo-text">VOXINTEL</span>
     </a>
     <ul class="nav-links">
       <li><a href="#problem">Problem</a></li>
       <li><a href="#solution">Solution</a></li>
-      <li><a href="#multi-channel">Intelligence</a></li>
       <li><a href="#verticals">Markets</a></li>
+      <li><a href="voxintel-entertainment.html" class="nav-market-switch">FILM & EVENTS →</a></li>
       <li><a href="#cta" class="nav-cta">Request Demo</a></li>
     </ul>
   </div>
 </nav>
 
-<!-- ========== HERO ========== -->
 <section class="hero">
   <div class="container">
     <div class="hero-grid">
       <div>
-        <div class="hero-badge fade-up">PASSIVE AUDIO INTELLIGENCE</div>
-        <h1 class="fade-up fade-up-d1">
+        <img src="voxintel-logo.png" alt="VoxIntel" class="hero-logo fade-up">
+        <div class="hero-badge fade-up fade-up-d1">PASSIVE AUDIO INTELLIGENCE — VENUES</div>
+        <h1 class="fade-up fade-up-d2">
           Every radio channel.<br>
           <span class="accent">Transcribed.</span><br>
           <span class="gold">Classified.</span><br>
           Scored.
         </h1>
-        <p class="hero-sub fade-up fade-up-d2">
+        <p class="hero-sub fade-up fade-up-d3">
           VoxIntel passively monitors all venue radio channels simultaneously, turning thousands of unstructured voice transmissions into structured, searchable, scoreable event intelligence — in real time.
         </p>
-        <div class="hero-actions fade-up fade-up-d3">
-          <a href="#cta" class="btn-primary">Request a Demo →</a>
+        <div class="hero-actions fade-up fade-up-d4">
+          <a href="#cta" class="btn-primary">Request a Pilot →</a>
           <a href="#solution" class="btn-outline">How It Works</a>
         </div>
       </div>
-
-      <div class="hero-visual fade-up fade-up-d4">
+      <div class="hero-visual fade-up fade-up-d5">
         <div class="live-feed">
           <div class="live-feed-header">
-            <span class="live-feed-title">VoxIntel Live Feed</span>
+            <span class="live-feed-title">VoxIntel Live Feed — Venue Ops</span>
             <span class="live-dot">LISTENING</span>
           </div>
-          <div class="feed-items" id="liveFeed">
-          </div>
+          <div class="feed-items" id="liveFeed"></div>
           <div class="waveform-bar">
             <span></span><span></span><span></span><span></span><span></span>
             <span></span><span></span><span></span><span></span><span></span>
@@ -1020,532 +261,105 @@ footer .container {
   </div>
 </section>
 
-<!-- ========== PROBLEM ========== -->
 <section id="problem">
   <div class="container">
     <div class="section-label fade-up">The Problem</div>
     <h2 class="section-title fade-up fade-up-d1">Thousands of voice transmissions.<br>Zero structured data.</h2>
-    <p class="section-desc fade-up fade-up-d2">
-      Every venue with radio operations generates a torrent of critical operational data that disappears into the air the moment it's spoken. No transcripts. No analytics. No record.
-    </p>
-
+    <p class="section-desc fade-up fade-up-d2">Every venue with radio operations generates a torrent of critical operational data that disappears into the air the moment it's spoken. No transcripts. No analytics. No record.</p>
     <div class="problem-stats">
-      <div class="stat-card fade-up fade-up-d3">
-        <div class="stat-number">10,000+</div>
-        <div class="stat-label">voice transmissions per event across security, medical, ops & maintenance</div>
-      </div>
-      <div class="stat-card fade-up fade-up-d4">
-        <div class="stat-number">8–15</div>
-        <div class="stat-label">radio channels per venue — but operators can only monitor one at a time</div>
-      </div>
-      <div class="stat-card fade-up fade-up-d5">
-        <div class="stat-number">0%</div>
-        <div class="stat-label">of radio traffic is captured, transcribed, or analyzed at most venues today</div>
-      </div>
+      <div class="stat-card fade-up fade-up-d3"><div class="stat-number">10,000+</div><div class="stat-label">voice transmissions per event across security, medical, ops & maintenance</div></div>
+      <div class="stat-card fade-up fade-up-d4"><div class="stat-number">8–15</div><div class="stat-label">radio channels per venue — operators can only monitor one at a time</div></div>
+      <div class="stat-card fade-up fade-up-d5"><div class="stat-number">0%</div><div class="stat-label">of radio traffic is captured, transcribed, or analyzed at most venues today</div></div>
     </div>
-
     <div class="pain-points">
-      <div class="pain-point fade-up fade-up-d3">
-        <div class="pain-icon">🔇</div>
-        <div class="pain-text">
-          <h4>Channel Silos</h4>
-          <p>Operators are locked to one channel, missing cross-functional intelligence. Security doesn't hear maintenance. Medical doesn't hear ops.</p>
-        </div>
-      </div>
-      <div class="pain-point fade-up fade-up-d4">
-        <div class="pain-icon">⚡</div>
-        <div class="pain-text">
-          <h4>Stepping On Each Other</h4>
-          <p>Two operators key up simultaneously, blocking both transmissions. Both messages are lost — and nobody knows it happened.</p>
-        </div>
-      </div>
-      <div class="pain-point fade-up fade-up-d5">
-        <div class="pain-icon">🕐</div>
-        <div class="pain-text">
-          <h4>Delayed Reconstruction</h4>
-          <p>Incident reconstruction requires manual interviews hours or days after the event. Critical details are lost to memory and time.</p>
-        </div>
-      </div>
-      <div class="pain-point fade-up fade-up-d6">
-        <div class="pain-icon">📋</div>
-        <div class="pain-text">
-          <h4>Zero Visibility for Insurers</h4>
-          <p>Insurers and regulators have no data on operational response quality. Underwriting is based on checklists, not performance.</p>
-        </div>
-      </div>
+      <div class="pain-point fade-up fade-up-d3"><div class="pain-icon">🔇</div><div class="pain-text"><h4>Channel Silos</h4><p>Operators are locked to one channel. Security doesn't hear maintenance. Medical doesn't hear ops.</p></div></div>
+      <div class="pain-point fade-up fade-up-d4"><div class="pain-icon">⚡</div><div class="pain-text"><h4>Stepping On Each Other</h4><p>Two operators key up simultaneously, blocking both transmissions. Both messages are lost.</p></div></div>
+      <div class="pain-point fade-up fade-up-d5"><div class="pain-icon">🕐</div><div class="pain-text"><h4>Delayed Reconstruction</h4><p>Incident reconstruction requires manual interviews hours after the event. Critical details are lost to memory.</p></div></div>
+      <div class="pain-point fade-up fade-up-d6"><div class="pain-icon">📋</div><div class="pain-text"><h4>Zero Visibility for Insurers</h4><p>Insurers have no data on operational response quality. Underwriting is based on checklists, not performance.</p></div></div>
     </div>
   </div>
 </section>
 
-<!-- ========== SOLUTION — PIPELINE ========== -->
 <section id="solution">
   <div class="container">
     <div class="section-label fade-up">The Solution</div>
     <h2 class="section-title fade-up fade-up-d1">Passive audio intelligence.<br>From RF to insight in milliseconds.</h2>
-    <p class="section-desc fade-up fade-up-d2">
-      VoxIntel monitors every authorized venue radio channel simultaneously — with zero workflow changes, zero device installation, and zero operator training required.
-    </p>
-
+    <p class="section-desc fade-up fade-up-d2">VoxIntel monitors every authorized venue radio channel simultaneously — with zero workflow changes, zero device installation, and zero operator training.</p>
     <div class="pipeline">
-      <div class="pipeline-step fade-up fade-up-d3">
-        <div class="step-num">STEP 01</div>
-        <div class="step-icon">📡</div>
-        <h3>Capture</h3>
-        <p>Passive RF monitoring of all authorized venue radio channels via SDR hardware. ~$168 per receiver unit.</p>
-      </div>
-      <div class="pipeline-step fade-up fade-up-d4">
-        <div class="step-num">STEP 02</div>
-        <div class="step-icon">🎙️</div>
-        <h3>Transcribe</h3>
-        <p>Real-time speech-to-text powered by Whisper with voice activity detection, optimized for high-noise environments.</p>
-      </div>
-      <div class="pipeline-step fade-up fade-up-d5">
-        <div class="step-num">STEP 03</div>
-        <div class="step-icon">🧠</div>
-        <h3>Classify</h3>
-        <p>Proprietary NLP classifies every transmission: medical, security, crowd, maintenance, weather, routine ops.</p>
-      </div>
-      <div class="pipeline-step fade-up fade-up-d6">
-        <div class="step-num">STEP 04</div>
-        <div class="step-icon">📊</div>
-        <h3>Intelligence</h3>
-        <p>Structured event logs, real-time dashboards, congestion scoring, post-event analytics, and risk intelligence feeds.</p>
-      </div>
+      <div class="pipeline-step fade-up fade-up-d3"><div class="step-num">STEP 01</div><div class="step-icon">📡</div><h3>Capture</h3><p>Passive RF monitoring of all authorized venue radio channels via SDR hardware. ~$168 per receiver unit.</p></div>
+      <div class="pipeline-step fade-up fade-up-d4"><div class="step-num">STEP 02</div><div class="step-icon">🎙️</div><h3>Transcribe</h3><p>Real-time speech-to-text powered by Whisper with voice activity detection for noisy radio environments.</p></div>
+      <div class="pipeline-step fade-up fade-up-d5"><div class="step-num">STEP 03</div><div class="step-icon">🧠</div><h3>Classify</h3><p>Proprietary NLP classifies every transmission: medical, security, crowd, maintenance, weather, routine ops.</p></div>
+      <div class="pipeline-step fade-up fade-up-d6"><div class="step-num">STEP 04</div><div class="step-icon">📊</div><h3>Intelligence</h3><p>Structured event logs, real-time dashboards, composite risk scoring, and post-event analytics.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ========== MULTI-CHANNEL INTELLIGENCE ========== -->
-<section id="multi-channel">
-  <div class="container">
-    <div class="section-label fade-up">Multi-Channel Intelligence</div>
-    <h2 class="section-title fade-up fade-up-d1">One radio, one channel.<br>VoxIntel gives you all of them.</h2>
-
-    <div class="mc-grid">
-      <div class="mc-visual fade-up fade-up-d2">
-        <div class="mc-visual-header">
-          <span>Channel Utilization — Live</span>
-          <span class="live-dot" style="font-size:0.65rem;">MONITORING</span>
-        </div>
-
-        <div id="channelBars"></div>
-
-        <div class="channel-footer">
-          <span class="channel-footer-stat" id="totalTx">0 TX/min</span>
-          <span class="channel-footer-stat" id="stepOns">0 step-ons</span>
-          <span class="channel-footer-stat" id="peakCh">—</span>
-        </div>
-      </div>
-
-      <div class="mc-features fade-up fade-up-d3">
-        <div class="mc-feature">
-          <div class="mc-feature-icon" style="background:rgba(59,130,246,0.1)">🔊</div>
-          <div>
-            <h4>All-Channel Listening</h4>
-            <p>Monitor 8–15+ channels simultaneously. Every transmission captured, transcribed, and classified — no channel-switching required.</p>
-          </div>
-        </div>
-        <div class="mc-feature">
-          <div class="mc-feature-icon" style="background:rgba(239,68,68,0.1)">💥</div>
-          <div>
-            <h4>Step-On Detection</h4>
-            <p>Identifies simultaneous transmissions that block each other. Logs collision events, recovers partial transcripts, and scores channel congestion over time.</p>
-          </div>
-        </div>
-        <div class="mc-feature">
-          <div class="mc-feature-icon" style="background:rgba(245,158,11,0.1)">📈</div>
-          <div>
-            <h4>Congestion Scoring</h4>
-            <p>Real-time utilization metrics per channel. Identify bottlenecks, redistribute traffic, and optimize your radio infrastructure with actual usage data.</p>
-          </div>
-        </div>
-        <div class="mc-feature">
-          <div class="mc-feature-icon" style="background:rgba(16,185,129,0.1)">🎯</div>
-          <div>
-            <h4>Filtered Relevance</h4>
-            <p>Supervisors see only what matters to them. A ride ops manager gets ride-related traffic from every channel — not noise from parking.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========== CALLOUT ========== -->
 <div class="callout">
   <div class="container">
     <blockquote class="fade-up">
-      "Today, a venue radio operator is limited to <span class="accent">one channel</span>. VoxIntel gives them <span class="accent">all of them</span> — transcribed, classified, and filtered to what matters. We don't replace the radio. We make it <span class="accent">ten times more useful</span>."
+      "Motorola Solutions does this for public safety at enterprise scale. VoxIntel applies the <span class="accent">same pipeline</span> to venue operations at <span class="accent">1/100th the cost</span>."
     </blockquote>
   </div>
 </div>
 
-<!-- ========== VERTICALS ========== -->
 <section id="verticals">
   <div class="container">
     <div class="section-label fade-up">Market Verticals</div>
     <h2 class="section-title fade-up fade-up-d1">Any venue with radio operations<br>is generating untapped intelligence.</h2>
-
     <div class="verticals-grid">
-      <div class="vertical-card fade-up fade-up-d2">
-        <div class="vertical-icon">🏟️</div>
-        <h3>Stadiums & Arenas</h3>
-        <p>NFL, MLB, NBA, MLS venues with distributed security, medical, and ops teams communicating across dozens of channels every game day.</p>
-      </div>
-      <div class="vertical-card fade-up fade-up-d3">
-        <div class="vertical-icon">🎢</div>
-        <h3>Amusement & Theme Parks</h3>
-        <p>Multi-zone operations with ride dispatch, maintenance, guest services, and emergency channels running simultaneously across hundreds of acres.</p>
-      </div>
-      <div class="vertical-card fade-up fade-up-d4">
-        <div class="vertical-icon">🎵</div>
-        <h3>Live Events & Festivals</h3>
-        <p>Temporary multi-day deployments where operational coordination is critical and post-event incident reconstruction is mandatory for insurers.</p>
-      </div>
-      <div class="vertical-card fade-up fade-up-d5">
-        <div class="vertical-icon">🏗️</div>
-        <h3>Construction Sites</h3>
-        <p>OSHA compliance monitoring through passive capture of safety-related radio traffic. Automatic near-miss and hazard logging without paperwork.</p>
-      </div>
-      <div class="vertical-card fade-up fade-up-d6">
-        <div class="vertical-icon">📦</div>
-        <h3>Logistics & Warehousing</h3>
-        <p>High-volume radio operations in ports, distribution centers, and fulfillment hubs where coordination failures create costly delays.</p>
-      </div>
-      <div class="vertical-card fade-up fade-up-d7">
-        <div class="vertical-icon">🏥</div>
-        <h3>Healthcare Facilities</h3>
-        <p>Hospitals and large care facilities monitoring their own PA systems and radio channels for code calls, bed management, and response times.</p>
-      </div>
+      <div class="vertical-card fade-up fade-up-d2"><div class="vertical-icon">🎢</div><h3>Amusement & Theme Parks</h3><p>Ride dispatch, maintenance, guest services, and emergency channels running simultaneously across hundreds of acres.</p></div>
+      <div class="vertical-card fade-up fade-up-d3"><div class="vertical-icon">🏟️</div><h3>Stadiums & Arenas</h3><p>Distributed security, medical, and ops teams communicating across dozens of channels every game day.</p></div>
+      <div class="vertical-card fade-up fade-up-d4"><div class="vertical-icon">⛷️</div><h3>Ski Resorts</h3><p>Lift operations, ski patrol, mountain safety. Dispatch intervals, patrol response times, avalanche control coordination.</p></div>
+      <div class="vertical-card fade-up fade-up-d5"><div class="vertical-icon">🏗️</div><h3>Construction Sites</h3><p>OSHA compliance monitoring through passive capture of safety-related radio traffic. Automatic near-miss logging.</p></div>
+      <div class="vertical-card fade-up fade-up-d6"><div class="vertical-icon">📦</div><h3>Logistics & Warehousing</h3><p>High-volume radio operations in ports and distribution centers where coordination failures create costly delays.</p></div>
+      <div class="vertical-card fade-up fade-up-d7"><div class="vertical-icon">🎰</div><h3>Casinos & Hospitality</h3><p>Floor operations, security, and event coordination. Table staffing gaps, response times, maintenance cycles.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ========== CTA ========== -->
 <section id="cta">
   <div class="container">
     <div class="cta-box fade-up">
       <h2>Ready to hear what you've been missing?</h2>
-      <p>
-        VoxIntel is currently accepting pilot venue partners for early deployment. Stadiums, arenas, theme parks, and live event operators — let's talk.
-      </p>
+      <p>VoxIntel is accepting pilot venue partners for early deployment. Theme parks, stadiums, arenas, and resorts — let's talk.</p>
       <div class="hero-actions" style="justify-content:center;">
-        <a href="malito:adam@amusementstandards.com" class="btn-primary">Request a Demo →</a>
-        <a href="#solution" class="btn-outline">Learn More</a>
+        <a href="mailto:adam@amusementstandards.com" class="btn-primary">Request a Pilot →</a>
+        <a href="voxintel-entertainment.html" class="btn-outline">Film & Events Version →</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== FOOTER ========== -->
 <footer>
   <div class="container">
-    <div class="footer-left">
-      VOXINTEL &copy; 2026 &nbsp;·&nbsp; A product of <a href="https://amusementstandards.com" style="color:var(--accent-glow);text-decoration:none;">Amusement Standards</a>
-    </div>
-    <div class="footer-right">
-      <a href="malito:adam@amusementstandards.com" class="btn-primary">adam@amusementstandards.com</a>
-    </div>
+    <div class="footer-left">VOXINTEL © 2026 · A product of <a href="https://amusementstandards.com" style="color:var(--accent-glow);text-decoration:none;">Amusement Standards</a></div>
+    <div class="footer-right"><a href="mailto:adam@amusementstandards.com">adam@amusementstandards.com</a></div>
   </div>
 </footer>
 
-<!-- ========== SCROLL REVEAL & LIVE FEED ========== -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded',()=>{
+  const observer=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.fade-up').forEach(el=>{if(el.closest('.hero')){el.classList.add('visible');}else{observer.observe(el);}});
 
-  // ===== SCROLL REVEAL =====
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.fade-up').forEach(el => {
-    if (el.closest('.hero')) {
-      el.classList.add('visible');
-    } else {
-      observer.observe(el);
-    }
-  });
-
-  // ===== LIVE FEED ENGINE =====
-  const feed = document.getElementById('liveFeed');
-  const MAX_ITEMS = 7;
-  let clock = { h: 14, m: 32, s: 5 };
-
-  const transmissions = [
-    { ch: 'CH-03 SEC', tag: 'SEC', cls: 'tag-security', msgs: [
-      'Unit 7 reports crowd surge near Gate C',
-      'All clear — Gate B perimeter check complete',
-      'Suspicious package reported Lot D Row 14',
-      'Requesting backup at Main Entry turnstiles',
-      'VIP escort moving from Suite Level to field',
-      'Perimeter sweep complete — north fence line',
-      'Unattended bag flagged Section 108 Row 22',
-      'Patron ejection in progress — Section 305',
-      'Camera 14 offline — switching to manual post',
-      'Tailgate lot closing in 15 minutes',
-    ]},
-    { ch: 'CH-01 MED', tag: 'MED', cls: 'tag-medical', msgs: [
-      'Medical team dispatched to Section 214',
-      'Heat-related incident — first aid tent 2',
-      'AED deployed Level 3 concourse east',
-      'Patient stable — ambulance en route Gate F',
-      'Requesting wheelchair at Section 112 aisle 4',
-      'Second heat case — opening cooling station',
-      'Allergic reaction reported — concession area B',
-      'Minor laceration — first aid handling on site',
-    ]},
-    { ch: 'CH-02 OPS', tag: 'OPS', cls: 'tag-ops', msgs: [
-      'Throughput at 94% — holding pattern on entry',
-      'Gates A and B at capacity — divert to C',
-      'Halftime rotation starting in 3 minutes',
-      'Elevator 4 stuck between levels 2 and 3',
-      'Restroom queue exceeding 15 min — west side',
-      'PA system check complete — all zones nominal',
-      'Shift change commencing — all leads confirm',
-      'Attendance count: 41,287 through gates',
-      'Entry pace ahead of projections by 12%',
-    ]},
-    { ch: 'CH-05 MNT', tag: 'MNT', cls: 'tag-maint', msgs: [
-      'HVAC unit B3 offline — sending tech',
-      'Water pressure drop — concourse level 2',
-      'Lighting panel 7C flickering — electrician dispatched',
-      'Escalator 3 east shutdown for repair',
-      'Generator backup test complete — all pass',
-      'Drainage issue reported field level tunnel',
-      'Scoreboard display glitch — rebooting system',
-    ]},
-    { ch: 'CH-04 F&B', tag: 'F&B', cls: 'tag-ops', msgs: [
-      'Beer taps dry at stand 14 — resupply needed',
-      'Register 3 Section 200 is down — going manual',
-      'Ice delivery to commissary — truck at Dock B',
-      'Hot dog inventory critical — stand 7 and 12',
-      'Spill cleanup needed concourse C near stand 9',
-      'Premium club bar backed up — need extra staff',
-    ]},
-    { ch: 'CH-08 WX', tag: 'WX', cls: 'tag-weather', msgs: [
-      'Lightning within 10mi — standby for protocol',
-      'Wind gust advisory: 35mph expected in 20 min',
-      'All clear — lightning moved outside 15mi radius',
-      'Temperature check: field level 94F heat index 102',
-      'Rain expected in 45 min — cover protocols ready',
-    ]},
-    { ch: 'CH-07 GST', tag: 'GST', cls: 'tag-ops', msgs: [
-      'Lost child reported — boy age 6 blue shirt Gate A',
-      'Lost child reunited with family — all clear',
-      'ADA seating request — Section 104 needs assist',
-      'Guest complaint escalation — Suite 12',
-      'Found item: wallet turned in at Guest Services B',
-      'Tour group of 40 arriving Gate D — heads up',
-    ]},
-    { ch: 'CH-06 PKG', tag: 'PKG', cls: 'tag-maint', msgs: [
-      'Lot C full — redirecting to overflow Lot E',
-      'Fender bender Lot B Row 22 — no injuries',
-      'Bus staging area clear for post-event loading',
-      'Handicap spaces full — opening reserve block',
-      'Traffic control in place — eastbound backup 0.5mi',
-    ]},
-    { ch: 'CH-03 SEC', tag: 'COLL', cls: 'tag-crowd', msgs: [
-      '\u26A0 STEP-ON detected — 2 simultaneous TX',
-      '\u26A0 STEP-ON — partial recovery: "...need backup at..."',
-      '\u26A0 STEP-ON — CH-02 collision, both TX logged',
-      '\u26A0 STEP-ON — 3rd collision this hour on CH-03',
-    ]},
+  const feed=document.getElementById('liveFeed');
+  let clock={h:14,m:32,s:5};
+  const tx=[
+    {ch:'CH-03 SEC',tag:'SEC',cls:'tag-security',msgs:['Unit 7 reports crowd surge near Gate C','All clear — Gate B perimeter check complete','Requesting backup at Main Entry turnstiles','Patron ejection in progress — Section 305','Camera 14 offline — switching to manual post']},
+    {ch:'CH-01 MED',tag:'MED',cls:'tag-medical',msgs:['Medical team dispatched to Section 214','Heat-related incident — first aid tent 2','AED deployed Level 3 concourse east','Patient stable — ambulance en route Gate F','Allergic reaction reported — concession area B']},
+    {ch:'CH-02 OPS',tag:'OPS',cls:'tag-ops',msgs:['Throughput at 94% — holding pattern on entry','Gates A and B at capacity — divert to C','Halftime rotation starting in 3 minutes','Elevator 4 stuck between levels 2 and 3','Attendance count: 41,287 through gates']},
+    {ch:'CH-05 MNT',tag:'MNT',cls:'tag-maint',msgs:['HVAC unit B3 offline — sending tech','Water pressure drop — concourse level 2','Escalator 3 east shutdown for repair','Scoreboard display glitch — rebooting system']},
+    {ch:'CH-08 WX',tag:'WX',cls:'tag-weather',msgs:['Lightning within 10mi — standby for protocol','Wind gust advisory: 35mph expected in 20 min','All clear — lightning moved outside 15mi radius']},
+    {ch:'CH-03 SEC',tag:'COLL',cls:'tag-crowd',msgs:['⚠ STEP-ON detected — 2 simultaneous TX','⚠ STEP-ON — partial recovery: "...need backup at..."']},
   ];
-
-  function advanceClock() {
-    clock.s += Math.floor(Math.random() * 8) + 3;
-    if (clock.s >= 60) { clock.s -= 60; clock.m++; }
-    if (clock.m >= 60) { clock.m -= 60; clock.h++; }
-    if (clock.h >= 24) { clock.h = 0; }
-    return String(clock.h).padStart(2,'0') + ':' + String(clock.m).padStart(2,'0') + ':' + String(clock.s).padStart(2,'0');
-  }
-
-  function getRandomTransmission() {
-    const group = transmissions[Math.floor(Math.random() * transmissions.length)];
-    const msg = group.msgs[Math.floor(Math.random() * group.msgs.length)];
-    return { ch: group.ch, tag: group.tag, cls: group.cls, msg: msg };
-  }
-
-  function createFeedItem(tx, time, isNew) {
-    const div = document.createElement('div');
-    div.className = 'feed-item';
-    if (isNew) {
-      div.style.opacity = '0';
-      div.style.transform = 'translateX(-20px)';
-      div.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-      div.style.background = 'rgba(59, 130, 246, 0.08)';
-      div.style.borderColor = 'rgba(59, 130, 246, 0.2)';
-    }
-
-    const t = document.createElement('span');
-    t.className = 'feed-time'; t.textContent = time;
-    const c = document.createElement('span');
-    c.className = 'feed-channel'; c.textContent = tx.ch;
-    const m = document.createElement('span');
-    m.className = 'feed-text'; m.textContent = tx.msg;
-    const g = document.createElement('span');
-    g.className = 'feed-tag ' + tx.cls; g.textContent = tx.tag;
-
-    div.appendChild(t);
-    div.appendChild(c);
-    div.appendChild(m);
-    div.appendChild(g);
-    return div;
-  }
-
-  function addMessage() {
-    const tx = getRandomTransmission();
-    const time = advanceClock();
-    const item = createFeedItem(tx, time, true);
-
-    feed.prepend(item);
-
-    // Animate in
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        item.style.opacity = '1';
-        item.style.transform = 'translateX(0)';
-      });
-    });
-
-    // Fade highlight after a moment
-    setTimeout(() => {
-      item.style.transition = 'opacity 0.4s ease, transform 0.4s ease, background 1.2s ease, border-color 1.2s ease';
-      item.style.background = 'rgba(255,255,255,0.015)';
-      item.style.borderColor = 'transparent';
-    }, 2000);
-
-    // Remove overflow — just remove immediately, no fade
-    if (feed.children.length > MAX_ITEMS) {
-      const last = feed.lastElementChild;
-      last.remove();
-    }
-  }
-
-  // Populate feed immediately with 7 items already visible
-  const initialMessages = [
-    { ch: 'CH-02 OPS', tag: 'OPS', cls: 'tag-ops', msg: 'Gates open — all entry points active' },
-    { ch: 'CH-05 MNT', tag: 'MNT', cls: 'tag-maint', msg: 'Pre-event lighting check complete — all zones' },
-    { ch: 'CH-03 SEC', tag: 'SEC', cls: 'tag-security', msg: 'Perimeter sweep complete — north fence line' },
-    { ch: 'CH-01 MED', tag: 'MED', cls: 'tag-medical', msg: 'Medical stations 1 through 4 staffed and ready' },
-    { ch: 'CH-02 OPS', tag: 'OPS', cls: 'tag-ops', msg: 'Throughput at 94% — holding pattern on entry' },
-    { ch: 'CH-04 F&B', tag: 'F&B', cls: 'tag-ops', msg: 'All concession stands open — commissary stocked' },
-    { ch: 'CH-03 SEC', tag: 'SEC', cls: 'tag-security', msg: 'Unit 7 reports crowd surge near Gate C' },
-  ];
-
-  initialMessages.forEach(tx => {
-    const time = advanceClock();
-    const item = createFeedItem(tx, time, false);
-    feed.appendChild(item);
-  });
-
-  // New messages at random intervals — sometimes quick bursts, sometimes quiet
-  function scheduleNext() {
-    const delay = 1800 + Math.random() * 4200; // 1.8s to 6s
-    setTimeout(() => {
-      addMessage();
-      // 25% chance of a quick follow-up within 800ms (simulates radio burst)
-      if (Math.random() < 0.25) {
-        setTimeout(() => addMessage(), 400 + Math.random() * 600);
-      }
-      scheduleNext();
-    }, delay);
-  }
-  scheduleNext();
-
-  // ===== CHANNEL UTILIZATION ENGINE =====
-  const channels = [
-    { name: 'CH-03 SEC', base: 82, color: '#ef4444', variance: 15 },
-    { name: 'CH-02 OPS', base: 68, color: '#3b82f6', variance: 18 },
-    { name: 'CH-01 MED', base: 55, color: '#f59e0b', variance: 20 },
-    { name: 'CH-07 GST', base: 40, color: '#60a5fa', variance: 15 },
-    { name: 'CH-05 MNT', base: 32, color: '#8b5cf6', variance: 12 },
-    { name: 'CH-04 F&B', base: 26, color: '#06b6d4', variance: 14 },
-    { name: 'CH-06 PKG', base: 15, color: '#10b981', variance: 10 },
-    { name: 'CH-08 WX',  base: 6,  color: '#64748b', variance: 8 },
-  ];
-
-  let stepOnCount = 0;
-  const barsContainer = document.getElementById('channelBars');
-
-  // Build the bar HTML
-  channels.forEach((ch, i) => {
-    const bar = document.createElement('div');
-    bar.className = 'channel-bar';
-    bar.innerHTML = '<span class="channel-name">' + ch.name + '</span>' +
-      '<div class="channel-meter"><div class="channel-fill" id="fill-' + i + '" style="width:0%;background:' + ch.color + '"></div></div>' +
-      '<span class="channel-pct" id="pct-' + i + '" style="color:' + ch.color + '">0%</span>';
-    barsContainer.appendChild(bar);
-  });
-
-  function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
-
-  function updateChannels() {
-    let maxVal = 0;
-    let maxName = '';
-    let totalTx = 0;
-
-    channels.forEach((ch, i) => {
-      const drift = (Math.random() - 0.45) * ch.variance;
-      ch.current = clamp((ch.current || ch.base) + drift, Math.max(2, ch.base - ch.variance), Math.min(99, ch.base + ch.variance));
-      const val = Math.round(ch.current);
-
-      const fill = document.getElementById('fill-' + i);
-      const pct = document.getElementById('pct-' + i);
-
-      fill.style.width = val + '%';
-      pct.textContent = val + '%';
-
-      // Hot glow when above 80%
-      if (val >= 80) {
-        fill.classList.add('hot');
-        fill.style.boxShadow = '0 0 8px ' + ch.color + '66';
-      } else {
-        fill.classList.remove('hot');
-        fill.style.boxShadow = 'none';
-      }
-
-      // Color shift for congested channels
-      if (val >= 85) {
-        pct.style.fontWeight = '700';
-      } else {
-        pct.style.fontWeight = '400';
-      }
-
-      totalTx += val;
-      if (val > maxVal) { maxVal = val; maxName = ch.name; }
-    });
-
-    // Random step-on events
-    if (Math.random() < 0.12) {
-      stepOnCount++;
-    }
-
-    // Update footer stats
-    const txPerMin = Math.round(totalTx * 0.6 + Math.random() * 20);
-    document.getElementById('totalTx').textContent = txPerMin + ' TX/min';
-
-    const stepEl = document.getElementById('stepOns');
-    stepEl.textContent = stepOnCount + ' step-on' + (stepOnCount !== 1 ? 's' : '');
-    if (stepOnCount > 0) stepEl.style.color = '#ef4444';
-
-    const peakEl = document.getElementById('peakCh');
-    peakEl.textContent = 'Peak: ' + maxName;
-    peakEl.style.color = channels.find(c => c.name === maxName).color;
-  }
-
-  // Initial animation — bars grow from 0
-  setTimeout(() => updateChannels(), 500);
-  // Then update every 2 seconds
-  setInterval(updateChannels, 2000);
-
+  function advClock(){clock.s+=Math.floor(Math.random()*8)+3;if(clock.s>=60){clock.s-=60;clock.m++;}if(clock.m>=60){clock.m-=60;clock.h++;}return String(clock.h).padStart(2,'0')+':'+String(clock.m).padStart(2,'0')+':'+String(clock.s).padStart(2,'0');}
+  function mkItem(t,time,isNew){const d=document.createElement('div');d.className='feed-item';if(isNew){d.style.cssText='opacity:0;transform:translateX(-20px);transition:all 0.4s;background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.2);';}d.innerHTML='<span class="feed-time">'+time+'</span><span class="feed-channel">'+t.ch+'</span><span class="feed-text">'+t.msg+'</span><span class="feed-tag '+t.cls+'">'+t.tag+'</span>';return d;}
+  const init=[{ch:'CH-02 OPS',tag:'OPS',cls:'tag-ops',msg:'Gates open — all entry points active'},{ch:'CH-05 MNT',tag:'MNT',cls:'tag-maint',msg:'Pre-event lighting check complete'},{ch:'CH-03 SEC',tag:'SEC',cls:'tag-security',msg:'Perimeter sweep complete — north fence'},{ch:'CH-01 MED',tag:'MED',cls:'tag-medical',msg:'Medical stations 1-4 staffed and ready'},{ch:'CH-02 OPS',tag:'OPS',cls:'tag-ops',msg:'Throughput at 94% — holding on entry'},{ch:'CH-04 F&B',tag:'F&B',cls:'tag-ops',msg:'All concession stands open'},{ch:'CH-03 SEC',tag:'SEC',cls:'tag-security',msg:'Unit 7 reports crowd surge Gate C'}];
+  init.forEach(t=>{feed.appendChild(mkItem(t,advClock(),false));});
+  function addMsg(){const g=tx[Math.floor(Math.random()*tx.length)];const t={ch:g.ch,tag:g.tag,cls:g.cls,msg:g.msgs[Math.floor(Math.random()*g.msgs.length)]};const item=mkItem(t,advClock(),true);feed.prepend(item);requestAnimationFrame(()=>requestAnimationFrame(()=>{item.style.opacity='1';item.style.transform='translateX(0)';}));setTimeout(()=>{item.style.transition='all 0.4s,background 1.2s,border-color 1.2s';item.style.background='rgba(255,255,255,0.015)';item.style.borderColor='transparent';},2000);if(feed.children.length>7)feed.lastElementChild.remove();}
+  function sched(){setTimeout(()=>{addMsg();if(Math.random()<0.25)setTimeout(()=>addMsg(),400+Math.random()*600);sched();},1800+Math.random()*4200);}
+  sched();
 });
 </script>
-
 </body>
 </html>
