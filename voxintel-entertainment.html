@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoxIntel — AI-Powered Production Intelligence for Film & Events</title>
+<meta name="description" content="VoxIntel captures walkie-talkie traffic on film sets and live events, producing automated daily logs, safety compliance documentation, and production health scores.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #06090f;
+  --bg-secondary: #0c1220;
+  --bg-card: #111827;
+  --accent: #f59e0b;
+  --accent-glow: #fbbf24;
+  --accent-dim: #b45309;
+  --blue: #3b82f6;
+  --blue-glow: #60a5fa;
+  --green: #10b981;
+  --red: #ef4444;
+  --purple: #8b5cf6;
+  --cyan: #06b6d4;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #1e293b;
+  --border-accent: rgba(245, 158, 11, 0.2);
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-display); line-height: 1.6; overflow-x: hidden; }
+body::before { content:''; position:fixed; top:0; left:0; width:100%; height:100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:9999; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+@keyframes waveform { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
+
+.fade-up { opacity:0; transform:translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-up.visible { opacity:1; transform:translateY(0); }
+.fade-up-d1 { transition-delay:0.1s; } .fade-up-d2 { transition-delay:0.2s; } .fade-up-d3 { transition-delay:0.3s; }
+.fade-up-d4 { transition-delay:0.4s; } .fade-up-d5 { transition-delay:0.5s; } .fade-up-d6 { transition-delay:0.6s; }
+.fade-up-d7 { transition-delay:0.7s; }
+
+.container { max-width:1200px; margin:0 auto; padding:0 clamp(1.5rem,4vw,3rem); }
+section { padding: clamp(4rem,8vw,8rem) 0; }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgba(6,9,15,0.85); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
+nav .container { display:flex; justify-content:space-between; align-items:center; height:64px; }
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.nav-logo img { height:36px; }
+.nav-logo-text { font-family:var(--font-mono); font-weight:700; font-size:1.1rem; color:var(--text-primary); letter-spacing:2px; }
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a { color:var(--text-secondary); text-decoration:none; font-size:0.85rem; font-weight:500; letter-spacing:0.5px; transition:color 0.3s; }
+.nav-links a:hover { color:var(--accent-glow); }
+.nav-cta { background:var(--accent); color:#000 !important; padding:8px 20px; border-radius:6px; font-weight:700 !important; }
+.nav-cta:hover { background:var(--accent-glow) !important; }
+.nav-market-switch { font-family:var(--font-mono); font-size:0.7rem; color:var(--blue-glow); letter-spacing:1px; border:1px solid rgba(59,130,246,0.3); padding:5px 12px; border-radius:4px; transition:all 0.3s; }
+.nav-market-switch:hover { background:rgba(59,130,246,0.1); }
+
+/* HERO */
+.hero { min-height:100vh; display:flex; align-items:center; position:relative; overflow:hidden; padding-top:64px; }
+.hero::before { content:''; position:absolute; top:-50%; right:-20%; width:800px; height:800px; background:radial-gradient(circle,rgba(245,158,11,0.08) 0%,transparent 70%); pointer-events:none; }
+.hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center; }
+.hero-logo { max-width:320px; margin-bottom:1.5rem; filter:drop-shadow(0 0 40px rgba(245,158,11,0.2)); }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(245,158,11,0.1); border:1px solid var(--border-accent); border-radius:100px; padding:6px 16px; font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-glow); letter-spacing:1px; margin-bottom:1.5rem; }
+.hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--green); animation:blink 2s infinite; }
+.hero h1 { font-size:clamp(2.5rem,4.5vw,3.8rem); font-weight:800; line-height:1.08; letter-spacing:-1.5px; margin-bottom:1.5rem; }
+.hero h1 .accent { color:var(--accent-glow); }
+.hero h1 .blue { color:var(--blue-glow); }
+.hero-sub { font-size:1.15rem; color:var(--text-secondary); line-height:1.7; margin-bottom:2rem; max-width:520px; }
+.hero-actions { display:flex; gap:1rem; flex-wrap:wrap; }
+.btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#000; padding:14px 28px; border-radius:8px; font-weight:700; font-size:0.95rem; text-decoration:none; transition:all 0.3s; border:none; cursor:pointer; }
+.btn-primary:hover { background:var(--accent-glow); transform:translateY(-2px); box-shadow:0 8px 30px rgba(245,158,11,0.25); }
+.btn-outline { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text-secondary); padding:14px 28px; border-radius:8px; font-weight:500; font-size:0.95rem; text-decoration:none; border:1px solid var(--border); transition:all 0.3s; cursor:pointer; }
+.btn-outline:hover { border-color:var(--accent); color:var(--accent-glow); }
+
+/* LIVE FEED — FILM VERSION */
+.live-feed { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.5); }
+.live-feed-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:rgba(255,255,255,0.02); border-bottom:1px solid var(--border); }
+.live-feed-title { font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted); letter-spacing:2px; text-transform:uppercase; }
+.live-dot { display:flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:0.7rem; color:var(--green); }
+.live-dot::before { content:''; width:7px; height:7px; border-radius:50%; background:var(--green); animation:blink 1.5s infinite; }
+.feed-items { padding:8px; display:flex; flex-direction:column; gap:4px; }
+.feed-item { display:grid; grid-template-columns:60px 60px 1fr 50px; gap:8px; align-items:center; padding:10px 12px; border-radius:8px; font-family:var(--font-mono); font-size:0.72rem; background:rgba(255,255,255,0.015); border:1px solid transparent; }
+.feed-time { color:var(--text-muted); } .feed-channel { color:var(--text-secondary); font-weight:500; }
+.feed-text { color:var(--text-primary); font-family:var(--font-display); font-size:0.8rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.feed-tag { padding:2px 8px; border-radius:4px; font-size:0.6rem; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; text-align:center; }
+.tag-scene { background:rgba(245,158,11,0.15); color:var(--accent); }
+.tag-safety { background:rgba(239,68,68,0.15); color:var(--red); }
+.tag-talent { background:rgba(139,92,246,0.15); color:var(--purple); }
+.tag-prod { background:rgba(59,130,246,0.15); color:var(--blue-glow); }
+.tag-camera { background:rgba(6,182,212,0.15); color:var(--cyan); }
+.tag-wx { background:rgba(16,185,129,0.15); color:var(--green); }
+
+.waveform-bar { display:flex; align-items:flex-end; justify-content:center; gap:3px; padding:14px 16px; border-top:1px solid var(--border); background:rgba(245,158,11,0.02); height:56px; }
+.waveform-bar span { width:3px; border-radius:2px; animation:waveform 1.8s ease-in-out infinite; background:linear-gradient(to top,var(--accent-dim),var(--accent-glow)); }
+.waveform-bar span:nth-child(1){animation-delay:0s;height:6px;} .waveform-bar span:nth-child(2){animation-delay:.15s;height:14px;}
+.waveform-bar span:nth-child(3){animation-delay:.05s;height:22px;} .waveform-bar span:nth-child(4){animation-delay:.25s;height:10px;}
+.waveform-bar span:nth-child(5){animation-delay:.4s;height:28px;} .waveform-bar span:nth-child(6){animation-delay:.1s;height:16px;}
+.waveform-bar span:nth-child(7){animation-delay:.3s;height:8px;} .waveform-bar span:nth-child(8){animation-delay:.5s;height:20px;}
+.waveform-bar span:nth-child(9){animation-delay:.2s;height:12px;} .waveform-bar span:nth-child(10){animation-delay:.35s;height:26px;}
+.waveform-bar span:nth-child(11){animation-delay:.1s;height:6px;} .waveform-bar span:nth-child(12){animation-delay:.45s;height:18px;}
+.waveform-bar span:nth-child(13){animation-delay:.25s;height:30px;background:linear-gradient(to top,#b45309,#ef4444);}
+.waveform-bar span:nth-child(14){animation-delay:.15s;height:12px;} .waveform-bar span:nth-child(15){animation-delay:.55s;height:8px;}
+.waveform-bar span:nth-child(16){animation-delay:.05s;height:16px;} .waveform-bar span:nth-child(17){animation-delay:.3s;height:24px;}
+.waveform-bar span:nth-child(18){animation-delay:.4s;height:10px;} .waveform-bar span:nth-child(19){animation-delay:.2s;height:20px;}
+.waveform-bar span:nth-child(20){animation-delay:0s;height:14px;}
+
+/* SECTIONS */
+.section-label { font-family:var(--font-mono); font-size:0.72rem; letter-spacing:3px; text-transform:uppercase; color:var(--accent-glow); margin-bottom:1rem; }
+.section-title { font-size:clamp(2rem,3.5vw,2.8rem); font-weight:700; letter-spacing:-1px; line-height:1.15; margin-bottom:1.5rem; }
+.section-desc { font-size:1.05rem; color:var(--text-secondary); line-height:1.7; max-width:680px; margin-bottom:3rem; }
+
+/* RUST SECTION */
+.rust-banner { background:var(--bg-card); border:1px solid rgba(239,68,68,0.2); border-radius:12px; padding:2.5rem; margin-bottom:3rem; position:relative; overflow:hidden; }
+.rust-banner::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--red); }
+.rust-banner h3 { font-size:1.3rem; font-weight:700; margin-bottom:0.8rem; color:var(--red); }
+.rust-banner p { font-size:0.95rem; color:var(--text-secondary); line-height:1.7; }
+.rust-banner .highlight { color:var(--text-primary); font-weight:600; }
+
+/* PIPELINE */
+.pipeline { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-top:3rem; }
+.pipeline-step { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:2rem 1.5rem; text-align:center; position:relative; transition:all 0.4s; }
+.pipeline-step:hover { transform:translateY(-6px); box-shadow:0 16px 50px rgba(0,0,0,0.4); }
+.pipeline-step::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; border-radius:12px 12px 0 0; }
+.pipeline-step:nth-child(1)::before { background:var(--accent); }
+.pipeline-step:nth-child(2)::before { background:var(--purple); }
+.pipeline-step:nth-child(3)::before { background:var(--red); }
+.pipeline-step:nth-child(4)::before { background:var(--green); }
+.step-num { font-family:var(--font-mono); font-size:0.65rem; letter-spacing:2px; color:var(--text-muted); margin-bottom:1.2rem; }
+.step-icon { font-size:2.2rem; margin-bottom:1rem; }
+.pipeline-step h3 { font-family:var(--font-mono); font-size:0.85rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:0.8rem; }
+.pipeline-step:nth-child(1) h3 { color:var(--accent-glow); }
+.pipeline-step:nth-child(2) h3 { color:var(--purple); }
+.pipeline-step:nth-child(3) h3 { color:var(--red); }
+.pipeline-step:nth-child(4) h3 { color:var(--green); }
+.pipeline-step p { font-size:0.85rem; color:var(--text-secondary); line-height:1.6; }
+
+/* USE CASES */
+.use-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3rem; }
+.use-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:2rem; transition:all 0.4s; }
+.use-card:hover { border-color:var(--border-accent); transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.3); }
+.use-icon { font-size:2rem; margin-bottom:1rem; }
+.use-card h3 { font-size:1.1rem; font-weight:600; margin-bottom:0.5rem; }
+.use-card p { font-size:0.85rem; color:var(--text-secondary); line-height:1.6; }
+
+/* STAKEHOLDERS */
+.stake-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:2rem; }
+.stake-card { display:flex; gap:1rem; padding:1.5rem; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; transition:all 0.3s; }
+.stake-card:hover { border-color:var(--border-accent); }
+.stake-icon { width:44px; height:44px; min-width:44px; border-radius:10px; background:rgba(245,158,11,0.1); display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+.stake-text h4 { font-size:0.95rem; font-weight:600; margin-bottom:0.3rem; }
+.stake-text p { font-size:0.82rem; color:var(--text-muted); line-height:1.5; }
+
+/* CALLOUT */
+.callout { border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:clamp(3rem,6vw,5rem) 0; text-align:center; }
+.callout blockquote { font-size:clamp(1.3rem,2.5vw,1.8rem); font-weight:500; line-height:1.5; max-width:800px; margin:0 auto; }
+.callout .accent { color:var(--accent-glow); }
+
+/* CTA */
+#cta { text-align:center; padding-bottom:clamp(5rem,10vw,8rem); }
+.cta-box { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:clamp(3rem,5vw,4rem); position:relative; overflow:hidden; }
+.cta-box::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--accent),var(--red),var(--accent-glow)); }
+.cta-box h2 { font-size:clamp(1.8rem,3vw,2.4rem); font-weight:700; margin-bottom:1rem; }
+.cta-box p { font-size:1.05rem; color:var(--text-secondary); max-width:550px; margin:0 auto 2rem; line-height:1.7; }
+
+/* FOOTER */
+footer { border-top:1px solid var(--border); padding:2.5rem 0; }
+footer .container { display:flex; justify-content:space-between; align-items:center; }
+.footer-left { font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted); }
+.footer-right a { color:var(--text-secondary); text-decoration:none; }
+
+#problem,#solution,#stakeholders,#use-cases { border-top:1px solid var(--border); }
+
+@media(max-width:900px) {
+  .hero-grid { grid-template-columns:1fr; }
+  .pipeline { grid-template-columns:repeat(2,1fr); }
+  .use-grid { grid-template-columns:1fr; }
+  .stake-grid { grid-template-columns:1fr; }
+  .nav-links { display:none; }
+  footer .container { flex-direction:column; gap:1rem; text-align:center; }
+}
+@media(max-width:600px) { .pipeline { grid-template-columns:1fr; } .feed-item { grid-template-columns:50px 1fr 50px; } .feed-channel { display:none; } }
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="container">
+    <a href="#" class="nav-logo">
+      <img src="voxintel-logo.png" alt="VoxIntel" style="height:32px;">
+      <span class="nav-logo-text">VOXINTEL</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#problem">Post-Rust</a></li>
+      <li><a href="#solution">Pipeline</a></li>
+      <li><a href="#stakeholders">Who It's For</a></li>
+      <li><a href="voxintel.html" class="nav-market-switch">← VENUES VERSION</a></li>
+      <li><a href="#cta" class="nav-cta">Request Pilot</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <img src="voxintel-logo.png" alt="VoxIntel" class="hero-logo fade-up">
+        <div class="hero-badge fade-up fade-up-d1">PRODUCTION INTELLIGENCE — FILM & EVENTS</div>
+        <h1 class="fade-up fade-up-d2">
+          Every walkie transmission.<br>
+          <span class="accent">Logged.</span><br>
+          <span class="blue">Classified.</span><br>
+          Defensible.
+        </h1>
+        <p class="hero-sub fade-up fade-up-d3">
+          VoxIntel passively captures set walkie-talkie traffic and transforms it into automated daily production logs, safety compliance records, and incident timelines. No hardware changes. No crew disruption. ~$170 total.
+        </p>
+        <div class="hero-actions fade-up fade-up-d4">
+          <a href="#cta" class="btn-primary">Request a Pilot →</a>
+          <a href="#solution" class="btn-outline">How It Works</a>
+        </div>
+      </div>
+      <div class="hero-visual fade-up fade-up-d5">
+        <div class="live-feed">
+          <div class="live-feed-header">
+            <span class="live-feed-title">VoxIntel Live — Production Set</span>
+            <span class="live-dot">ON SET</span>
+          </div>
+          <div class="feed-items" id="liveFeed"></div>
+          <div class="waveform-bar">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="problem">
+  <div class="container">
+    <div class="section-label fade-up">The Post-Rust Reality</div>
+    <h2 class="section-title fade-up fade-up-d1">Paperwork documents what was planned.<br>VoxIntel documents what actually happened.</h2>
+
+    <div class="rust-banner fade-up fade-up-d2">
+      <h3>Criminal liability is now personal.</h3>
+      <p>The Rust shooting and subsequent criminal prosecution fundamentally changed the liability landscape for film production. Producers, line producers, and safety coordinators now face <span class="highlight">personal criminal exposure</span> for on-set safety failures. The industry responded with more paperwork — longer safety meetings, more forms, more signatures. But paperwork documents what was <em>planned</em>, not what actually <em>happened</em>. VoxIntel documents what actually happened, in real time, from the radio traffic that's already flowing.</p>
+    </div>
+
+    <p class="section-desc fade-up fade-up-d3">Every film set runs on Motorola walkie-talkies. Hundreds of transmissions per hour flow across multiple channels — scene calls, safety checks, talent movements, stunt coordination. 100% of it disappears the moment it's spoken.</p>
+  </div>
+</section>
+
+<section id="solution">
+  <div class="container">
+    <div class="section-label fade-up">The Pipeline</div>
+    <h2 class="section-title fade-up fade-up-d1">From walkie traffic to<br>structured production intelligence.</h2>
+    <p class="section-desc fade-up fade-up-d2">A passive scanner sits near set. No integration with existing radios. No crew training. 30-minute setup. $170 in hardware.</p>
+    <div class="pipeline">
+      <div class="pipeline-step fade-up fade-up-d3"><div class="step-num">STEP 01</div><div class="step-icon">📡</div><h3>Capture</h3><p>Passive SDR receiver monitors all production walkie channels simultaneously from a single device near set.</p></div>
+      <div class="pipeline-step fade-up fade-up-d4"><div class="step-num">STEP 02</div><div class="step-icon">🎙️</div><h3>Transcribe</h3><p>Whisper AI converts every transmission to timestamped text locally. No cloud. No API cost. No data leaves the device.</p></div>
+      <div class="pipeline-step fade-up fade-up-d5"><div class="step-num">STEP 03</div><div class="step-icon">🛡️</div><h3>Classify</h3><p>NLP trained on film production terminology: scene calls, stunt safety, weapons handling, talent, weather holds.</p></div>
+      <div class="pipeline-step fade-up fade-up-d6"><div class="step-num">STEP 04</div><div class="step-icon">📋</div><h3>Deliver</h3><p>Automated daily production log, safety compliance record, incident timeline, and production health score.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="callout">
+  <div class="container">
+    <blockquote class="fade-up">
+      "After Rust, productions need <span class="accent">evidence of what actually happened</span>, not just what was planned. VoxIntel creates that evidence automatically from the radio traffic that's <span class="accent">already flowing on every set</span>."
+    </blockquote>
+  </div>
+</div>
+
+<section id="stakeholders">
+  <div class="container">
+    <div class="section-label fade-up">Who Uses It</div>
+    <h2 class="section-title fade-up fade-up-d1">Value for every stakeholder<br>in the production chain.</h2>
+    <div class="stake-grid">
+      <div class="stake-card fade-up fade-up-d2"><div class="stake-icon">🎬</div><div class="stake-text"><h4>Production Company</h4><p>Automated daily logs, liability protection, safety compliance evidence, reduced wrap report labor.</p></div></div>
+      <div class="stake-card fade-up fade-up-d3"><div class="stake-icon">🏢</div><div class="stake-text"><h4>Studio / Distributor</h4><p>Multi-production dashboard, early warning on troubled sets, operational benchmarking across productions.</p></div></div>
+      <div class="stake-card fade-up fade-up-d4"><div class="stake-icon">🔐</div><div class="stake-text"><h4>Completion Bond</h4><p>Real-time production health visibility, schedule adherence tracking, risk scoring for active bonds.</p></div></div>
+      <div class="stake-card fade-up fade-up-d5"><div class="stake-icon">📊</div><div class="stake-text"><h4>Production Insurer</h4><p>Continuous safety monitoring, claims documentation, risk differentiation for pricing.</p></div></div>
+      <div class="stake-card fade-up fade-up-d6"><div class="stake-icon">📝</div><div class="stake-text"><h4>Line Producer / UPM</h4><p>Time savings on daily reporting, objective record for union disputes, coordination metrics.</p></div></div>
+      <div class="stake-card fade-up fade-up-d7"><div class="stake-icon">⚖️</div><div class="stake-text"><h4>Legal / Risk Management</h4><p>Timestamped radio record for incident reconstruction, safety verification, litigation defense.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="use-cases">
+  <div class="container">
+    <div class="section-label fade-up">Applications</div>
+    <h2 class="section-title fade-up fade-up-d1">Film sets, festivals, and<br>any event with walkies.</h2>
+    <div class="use-grid">
+      <div class="use-card fade-up fade-up-d2"><div class="use-icon">🎥</div><h3>Film & TV Production</h3><p>Automated daily logs from AD radio traffic. Safety compliance records from stunt and weapons channels. Evidence-grade documentation.</p></div>
+      <div class="use-card fade-up fade-up-d3"><div class="use-icon">🎵</div><h3>Music Festivals</h3><p>Crowd management, medical dispatch, security coordination. Post-Astroworld regulatory documentation. Multi-day event intelligence.</p></div>
+      <div class="use-card fade-up fade-up-d4"><div class="use-icon">🎭</div><h3>Live Events & Theater</h3><p>Touring productions, Broadway, arena shows. Stage management, rigging safety, front-of-house coordination captured and classified.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="cta">
+  <div class="container">
+    <div class="cta-box fade-up">
+      <h2>$0 pilot. One production. Prove the model.</h2>
+      <p>We deploy on your set for free. You get daily production logs and safety compliance records. We prove the technology works. Ideal: NY/NJ metro area, mid-budget feature or series.</p>
+      <div class="hero-actions" style="justify-content:center;">
+        <a href="mailto:adam@amusementstandards.com" class="btn-primary">Request a Pilot →</a>
+        <a href="voxintel.html" class="btn-outline">← Venues Version</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-left">VOXINTEL © 2026 · A product of <a href="https://amusementstandards.com" style="color:var(--accent-glow);text-decoration:none;">Amusement Standards</a></div>
+    <div class="footer-right"><a href="mailto:adam@amusementstandards.com">adam@amusementstandards.com</a></div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+  const observer=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.fade-up').forEach(el=>{if(el.closest('.hero')){el.classList.add('visible');}else{observer.observe(el);}});
+
+  const feed=document.getElementById('liveFeed');
+  let clock={h:7,m:45,s:10};
+  const tx=[
+    {ch:'CH-1',tag:'SCENE',cls:'tag-scene',msgs:['Rolling!','Cut — check the gate','Back to one please','That\'s a wrap on Scene 47','Moving on to Scene 52','First team to set','Martini shot — last one of the day','Speed!','Action!']},
+    {ch:'CH-1',tag:'SAFE',cls:'tag-safety',msgs:['Safety meeting in 5 — all department heads','Hot set — no one touches the rigging','Stunt coordinator on channel 6','Weapons check complete — all clear','Harness team standing by for wire work','Live squibs on next take — all departments aware']},
+    {ch:'CH-3',tag:'CAM',cls:'tag-camera',msgs:['Camera\'s up','Lens change — 50mm going on','Dolly track needs leveling — grip to set','Steadicam operator ready','B-cam in position','Checking the gate — hair in the gate, going again']},
+    {ch:'CH-1',tag:'PROD',cls:'tag-prod',msgs:['Lunch in 20 minutes','Turnaround is at 6 AM tomorrow','Company move to Location B at wrap','Meal penalty in 15 if we don\'t break','Call sheet going out — 7 AM crew call','Striking the set — art department to stage']},
+    {ch:'CH-4',tag:'TLNT',cls:'tag-talent',msgs:['Talent to set please','Hair and makeup ready on principal','Stand-in released — first team up','Wardrobe change needed before next scene','Talent in the trailer — 10 minute warning']},
+    {ch:'CH-1',tag:'WX',cls:'tag-wx',msgs:['Weather hold — lightning within 5 miles','All clear — lightning has passed','Wind picking up — secure all flags and scrims','Rain cover standing by']},
+  ];
+  function advClock(){clock.s+=Math.floor(Math.random()*12)+4;if(clock.s>=60){clock.s-=60;clock.m++;}if(clock.m>=60){clock.m-=60;clock.h++;}return String(clock.h).padStart(2,'0')+':'+String(clock.m).padStart(2,'0')+':'+String(clock.s).padStart(2,'0');}
+  function mkItem(t,time,isNew){const d=document.createElement('div');d.className='feed-item';if(isNew){d.style.cssText='opacity:0;transform:translateX(-20px);transition:all 0.4s;background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.2);';}d.innerHTML='<span class="feed-time">'+time+'</span><span class="feed-channel">'+t.ch+'</span><span class="feed-text">'+t.msg+'</span><span class="feed-tag '+t.cls+'">'+t.tag+'</span>';return d;}
+  const init=[
+    {ch:'CH-1',tag:'PROD',cls:'tag-prod',msg:'Crew call — 7:45 AM, all departments check in'},
+    {ch:'CH-1',tag:'SAFE',cls:'tag-safety',msg:'Safety meeting complete — stunt brief at 8:15'},
+    {ch:'CH-3',tag:'CAM',cls:'tag-camera',msg:'Camera\'s up — A-cam on dolly, B-cam handheld'},
+    {ch:'CH-4',tag:'TLNT',cls:'tag-talent',msg:'Talent in hair and makeup — 30 min to set'},
+    {ch:'CH-1',tag:'SCENE',cls:'tag-scene',msg:'First team to set — Scene 47 up first'},
+    {ch:'CH-1',tag:'PROD',cls:'tag-prod',msg:'We are on schedule — first shot by 8:30'},
+    {ch:'CH-1',tag:'SCENE',cls:'tag-scene',msg:'Rolling!'},
+  ];
+  init.forEach(t=>{feed.appendChild(mkItem(t,advClock(),false));});
+  function addMsg(){const g=tx[Math.floor(Math.random()*tx.length)];const t={ch:g.ch,tag:g.tag,cls:g.cls,msg:g.msgs[Math.floor(Math.random()*g.msgs.length)]};const item=mkItem(t,advClock(),true);feed.prepend(item);requestAnimationFrame(()=>requestAnimationFrame(()=>{item.style.opacity='1';item.style.transform='translateX(0)';}));setTimeout(()=>{item.style.transition='all 0.4s,background 1.2s,border-color 1.2s';item.style.background='rgba(255,255,255,0.015)';item.style.borderColor='transparent';},2000);if(feed.children.length>7)feed.lastElementChild.remove();}
+  function sched(){setTimeout(()=>{addMsg();if(Math.random()<0.3)setTimeout(()=>addMsg(),300+Math.random()*500);sched();},2000+Math.random()*5000);}
+  sched();
+});
+</script>
+</body>
+</html>
