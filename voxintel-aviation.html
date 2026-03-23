@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoxIntel — Aviation & Airport Ground Operations</title>
+<meta name="description" content="VoxIntel captures, transcribes, and classifies all airport ground ops radio traffic in real time. Every transmission from tower, ground, fire, medical, and ops — structured, searchable, and scored.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05080e;
+  --bg-card: #0d1520;
+  --bg-card2: #111e2e;
+  --border: #1a2840;
+  --border-hi: rgba(245,158,11,0.25);
+  --accent: #3b82f6;
+  --accent-glow: #60a5fa;
+  --gold: #f59e0b;
+  --gold-dim: rgba(245,158,11,0.12);
+  --red: #ef4444;
+  --red-dim: rgba(239,68,68,0.12);
+  --green: #10b981;
+  --green-dim: rgba(16,185,129,0.12);
+  --purple: #8b5cf6;
+  --orange: #f97316;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --dim: #4a5568;
+  --fm: 'JetBrains Mono', monospace;
+  --fd: 'Outfit', sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fd);line-height:1.6;overflow-x:hidden}
+
+/* grain overlay */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9998}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes pulse{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+@keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+@keyframes wv{0%,100%{height:4px;opacity:.3}50%{height:var(--h);opacity:1}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+.ani{opacity:0;animation:fadeIn .9s ease forwards}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}
+.d4{animation-delay:.4s}.d5{animation-delay:.5s}.d6{animation-delay:.6s}
+.d7{animation-delay:.7s}.d8{animation-delay:.8s}
+
+.w{max-width:1180px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem)}
+
+/* SCANLINE effect */
+.scanline{position:fixed;top:0;left:0;width:100%;height:2px;background:linear-gradient(transparent,rgba(59,130,246,0.06),transparent);animation:scanline 6s linear infinite;pointer-events:none;z-index:9997}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(5,8,14,.9);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;height:60px}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-brand img{height:28px;width:auto}
+.nav-brand-text{font-family:var(--fm);font-weight:700;font-size:1rem;color:var(--text);letter-spacing:2px}
+.nav-brand-sub{font-family:var(--fm);font-size:.6rem;color:var(--gold);letter-spacing:2px;margin-left:4px;opacity:.8}
+.nav-right{display:flex;align-items:center;gap:1.5rem}
+.nav-back{font-family:var(--fm);font-size:.7rem;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s}
+.nav-back:hover{color:var(--accent-glow)}
+.nav-cta{background:var(--gold);color:#000;font-family:var(--fm);font-size:.75rem;font-weight:700;letter-spacing:1px;padding:8px 18px;border-radius:4px;text-decoration:none;transition:all .2s}
+.nav-cta:hover{background:#fbbf24;transform:translateY(-1px)}
+
+/* ALERT BANNER */
+.alert-banner{background:linear-gradient(90deg,rgba(239,68,68,.15),rgba(239,68,68,.05));border-bottom:1px solid rgba(239,68,68,.3);padding:10px 0}
+.alert-inner{display:flex;align-items:center;gap:12px}
+.alert-tag{font-family:var(--fm);font-size:.65rem;font-weight:700;letter-spacing:2px;background:var(--red);color:#fff;padding:3px 10px;border-radius:2px;flex-shrink:0}
+.alert-text{font-family:var(--fm);font-size:.75rem;color:rgba(239,68,68,.9);letter-spacing:.5px}
+.alert-text a{color:var(--red);text-decoration:underline}
+
+/* HERO */
+.hero{padding:clamp(6rem,12vw,9rem) 0 clamp(4rem,8vw,6rem);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:-10%;width:700px;height:700px;background:radial-gradient(circle,rgba(59,130,246,.06) 0%,transparent 65%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-10%;left:-5%;width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,.04) 0%,transparent 65%);pointer-events:none}
+.hero-vertical-tag{font-family:var(--fm);font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid var(--border-hi);background:var(--gold-dim);padding:5px 14px;border-radius:2px;display:inline-flex;align-items:center;gap:8px;margin-bottom:2rem}
+.hero-vertical-tag::before{content:'✈';font-size:.9rem}
+.hero h1{font-size:clamp(2.8rem,6vw,5rem);font-weight:800;line-height:1.04;letter-spacing:-2px;margin-bottom:1.5rem;max-width:860px}
+.hero h1 .r{color:var(--red)}
+.hero h1 .b{color:var(--accent-glow)}
+.hero h1 .g{color:var(--gold)}
+.hero-lead{font-size:1.15rem;color:var(--muted);line-height:1.75;max-width:680px;margin-bottom:2.5rem}
+.hero-lead strong{color:var(--text)}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3.5rem}
+.btn-p{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;padding:13px 26px;border-radius:6px;font-weight:600;font-size:.9rem;text-decoration:none;transition:all .25s;border:none;cursor:pointer}
+.btn-p:hover{background:var(--accent-glow);transform:translateY(-2px);box-shadow:0 8px 28px rgba(59,130,246,.22)}
+.btn-o{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--muted);padding:13px 26px;border-radius:6px;font-size:.9rem;text-decoration:none;border:1px solid var(--border);transition:all .25s;cursor:pointer}
+.btn-o:hover{border-color:var(--accent);color:var(--accent-glow)}
+
+/* INCIDENT TIMELINE */
+.timeline-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:3.5rem}
+.timeline-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--border);background:rgba(239,68,68,.04)}
+.timeline-hd-left{font-family:var(--fm);font-size:.7rem;letter-spacing:2px;color:var(--red)}
+.timeline-hd-right{display:flex;align-items:center;gap:6px;font-family:var(--fm);font-size:.65rem;color:var(--green)}
+.timeline-hd-right::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.8s infinite}
+.tl-items{padding:8px}
+.tl-row{display:grid;grid-template-columns:56px 72px 80px 1fr 64px;gap:10px;align-items:center;padding:10px 12px;border-radius:6px;font-family:var(--fm);font-size:.7rem;margin-bottom:3px;border:1px solid transparent;transition:all .2s}
+.tl-row:hover{background:rgba(255,255,255,.03);border-color:var(--border)}
+.tl-row.crit{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)!important}
+.tl-time{color:var(--dim)}
+.tl-ch{color:var(--muted);font-weight:500}
+.tl-from{color:var(--muted)}
+.tl-msg{color:var(--text);font-family:var(--fd);font-size:.78rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-msg .hl{color:var(--red);font-weight:600}
+.tl-msg .hl-g{color:var(--green);font-weight:600}
+.tl-msg .hl-y{color:var(--gold);font-weight:600}
+.tl-tag{padding:2px 8px;border-radius:3px;font-size:.58rem;font-weight:700;letter-spacing:.5px;text-align:center;text-transform:uppercase}
+.tag-e{background:rgba(239,68,68,.2);color:var(--red)}
+.tag-atc{background:rgba(59,130,246,.2);color:var(--accent-glow)}
+.tag-ops{background:rgba(139,92,246,.2);color:var(--purple)}
+.tag-med{background:rgba(245,158,11,.2);color:var(--gold)}
+.tag-fire{background:rgba(249,115,22,.2);color:var(--orange)}
+.tag-gnd{background:rgba(16,185,129,.2);color:var(--green)}
+.tag-step{background:rgba(239,68,68,.35);color:#fff}
+.tl-footer{padding:10px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.tl-footer-stat{font-family:var(--fm);font-size:.65rem;color:var(--dim)}
+.tl-footer-stat span{color:var(--gold)}
+.waveform{display:flex;align-items:flex-end;gap:2px;height:32px}
+.waveform b{display:block;width:3px;border-radius:2px;background:var(--red);opacity:.6;animation:wv 1.4s ease-in-out infinite}
+.waveform b:nth-child(1){--h:8px;animation-delay:0s}
+.waveform b:nth-child(2){--h:18px;animation-delay:.12s}
+.waveform b:nth-child(3){--h:26px;animation-delay:.06s}
+.waveform b:nth-child(4){--h:12px;animation-delay:.2s}
+.waveform b:nth-child(5){--h:22px;animation-delay:.35s;background:var(--gold)}
+.waveform b:nth-child(6){--h:8px;animation-delay:.08s}
+.waveform b:nth-child(7){--h:16px;animation-delay:.28s}
+.waveform b:nth-child(8){--h:28px;animation-delay:.42s;background:var(--accent-glow)}
+.waveform b:nth-child(9){--h:10px;animation-delay:.16s}
+.waveform b:nth-child(10){--h:20px;animation-delay:.32s}
+
+/* STAT ROW */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:clamp(3rem,6vw,5rem) 0}
+.stat{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:1.75rem 1.5rem;text-align:center;transition:all .35s}
+.stat:hover{border-color:var(--border-hi);transform:translateY(-3px)}
+.stat-n{font-family:var(--fm);font-size:clamp(2rem,3.5vw,2.6rem);font-weight:700;color:var(--gold);margin-bottom:.4rem;line-height:1}
+.stat-l{font-size:.82rem;color:var(--muted);line-height:1.5}
+
+/* CHANNELS SECTION */
+.channels-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem}
+.ch-card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:1.5rem;transition:all .3s;position:relative;overflow:hidden}
+.ch-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;border-radius:8px 0 0 8px}
+.ch-card.atc::before{background:var(--accent)}
+.ch-card.gnd::before{background:var(--green)}
+.ch-card.fire::before{background:var(--orange)}
+.ch-card.med::before{background:var(--gold)}
+.ch-card.ops::before{background:var(--purple)}
+.ch-card.cargo::before{background:var(--muted)}
+.ch-card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-3px)}
+.ch-label{font-family:var(--fm);font-size:.65rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.6rem}
+.ch-card.atc .ch-label{color:var(--accent-glow)}
+.ch-card.gnd .ch-label{color:var(--green)}
+.ch-card.fire .ch-label{color:var(--orange)}
+.ch-card.med .ch-label{color:var(--gold)}
+.ch-card.ops .ch-label{color:var(--purple)}
+.ch-card.cargo .ch-label{color:var(--muted)}
+.ch-title{font-size:.95rem;font-weight:600;margin-bottom:.4rem}
+.ch-desc{font-size:.8rem;color:var(--muted);line-height:1.55}
+.ch-status{display:flex;align-items:center;gap:6px;margin-top:.9rem;font-family:var(--fm);font-size:.62rem;color:var(--dim)}
+.ch-status::before{content:'';width:5px;height:5px;border-radius:50%}
+.ch-card.atc .ch-status::before{background:var(--red);animation:blink 1.5s infinite}
+.ch-card.gnd .ch-status::before{background:var(--green);animation:blink 2s infinite}
+.ch-card.fire .ch-status::before{background:var(--orange);animation:blink 1.8s infinite}
+.ch-card.med .ch-status::before{background:var(--gold);animation:blink 2.2s infinite}
+.ch-card.ops .ch-status::before{background:var(--purple);animation:blink 1.6s infinite}
+.ch-card.cargo .ch-status::before{background:var(--dim)}
+
+/* GAP PROBLEM */
+.gap-block{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:2.5rem;margin-top:2.5rem;position:relative;overflow:hidden}
+.gap-block::before{content:'UNMONITORED GAP';position:absolute;top:1.2rem;right:1.5rem;font-family:var(--fm);font-size:.6rem;letter-spacing:2px;color:var(--red);opacity:.5}
+.gap-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:2rem;align-items:center;margin-top:1.5rem}
+.gap-col{text-align:center}
+.gap-col-title{font-family:var(--fm);font-size:.65rem;letter-spacing:2px;color:var(--muted);margin-bottom:1rem;text-transform:uppercase}
+.gap-items{display:flex;flex-direction:column;gap:.5rem}
+.gap-item{padding:8px 14px;border-radius:4px;font-size:.82rem}
+.gap-item.covered{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--green)}
+.gap-item.uncovered{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:var(--red)}
+.gap-arrow{font-family:var(--fm);font-size:1.5rem;color:var(--dim);text-align:center}
+.gap-vs{font-family:var(--fm);font-size:.65rem;letter-spacing:2px;color:var(--dim);display:block;margin-bottom:.5rem}
+
+/* INCIDENT BREAKDOWN */
+.incident-box{background:linear-gradient(135deg,rgba(239,68,68,.07),rgba(239,68,68,.02));border:1px solid rgba(239,68,68,.25);border-radius:10px;padding:2.5rem;margin:3rem 0}
+.incident-eyebrow{font-family:var(--fm);font-size:.65rem;letter-spacing:2px;color:var(--red);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.incident-eyebrow::before{content:'⚠';font-size:.9rem}
+.incident-title{font-size:1.4rem;font-weight:700;margin-bottom:.75rem;line-height:1.3}
+.incident-body{font-size:.9rem;color:var(--muted);line-height:1.75;max-width:700px;margin-bottom:2rem}
+.incident-body strong{color:var(--text)}
+.incident-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.incident-card{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:8px;padding:1.25rem}
+.incident-card-num{font-family:var(--fm);font-size:1.6rem;font-weight:700;color:var(--gold);margin-bottom:.4rem;line-height:1}
+.incident-card-label{font-size:.8rem;color:var(--muted);line-height:1.5}
+
+/* HOW IT HELPS */
+.helps-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.5rem}
+.help-card{display:flex;gap:1.25rem;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;transition:all .3s}
+.help-card:hover{border-color:rgba(59,130,246,.25)}
+.help-icon{width:42px;height:42px;min-width:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:rgba(59,130,246,.1)}
+.help-body h4{font-size:.95rem;font-weight:600;margin-bottom:.35rem}
+.help-body p{font-size:.82rem;color:var(--muted);line-height:1.55}
+
+/* QUOTE */
+.quote-block{text-align:center;padding:clamp(3rem,6vw,5rem) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.quote-block::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(245,158,11,.04) 0%,transparent 70%);pointer-events:none}
+blockquote{font-size:clamp(1.2rem,2.2vw,1.6rem);font-weight:500;line-height:1.55;color:var(--text);max-width:780px;margin:0 auto;position:relative}
+blockquote .hi{color:var(--gold)}
+cite{display:block;margin-top:1.25rem;font-family:var(--fm);font-size:.7rem;color:var(--dim);letter-spacing:1px;font-style:normal}
+
+/* CTA */
+.cta-sect{padding:clamp(4rem,8vw,6rem) 0}
+.cta-inner{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:clamp(2.5rem,5vw,4rem);text-align:center;position:relative;overflow:hidden}
+.cta-inner::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--gold),var(--accent))}
+.cta-inner h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;margin-bottom:1rem}
+.cta-inner p{font-size:1rem;color:var(--muted);max-width:520px;margin:0 auto 2rem;line-height:1.7}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem 0}
+footer .w{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.foot-l{font-family:var(--fm);font-size:.7rem;color:var(--dim)}
+.foot-l a{color:var(--accent-glow);text-decoration:none}
+.foot-r a{font-family:var(--fm);font-size:.7rem;color:var(--muted);text-decoration:none;margin-left:1.5rem;transition:color .2s}
+.foot-r a:hover{color:var(--accent-glow)}
+
+/* SECTION LABELS */
+.sl{font-family:var(--fm);font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent-glow);margin-bottom:.9rem}
+.st{font-size:clamp(1.8rem,3.2vw,2.5rem);font-weight:700;letter-spacing:-1px;line-height:1.15;margin-bottom:1.2rem}
+.sd{font-size:1rem;color:var(--muted);line-height:1.7;max-width:660px;margin-bottom:2.5rem}
+
+section{padding:clamp(3.5rem,7vw,6rem) 0}
+.border-top{border-top:1px solid var(--border)}
+
+@media(max-width:900px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .channels-grid{grid-template-columns:1fr 1fr}
+  .helps-grid{grid-template-columns:1fr}
+  .incident-grid{grid-template-columns:1fr}
+  .gap-grid{grid-template-columns:1fr}
+  .gap-arrow{display:none}
+  .tl-row{grid-template-columns:56px 1fr 56px}
+  .tl-ch,.tl-from{display:none}
+  .nav-right .nav-back{display:none}
+}
+@media(max-width:600px){
+  .stats{grid-template-columns:1fr 1fr}
+  .channels-grid{grid-template-columns:1fr}
+  .hero h1{letter-spacing:-1px}
+}
+</style>
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<!-- ALERT BANNER -->
+<div class="alert-banner">
+  <div class="w">
+    <div class="alert-inner">
+      <span class="alert-tag">INCIDENT CONTEXT</span>
+      <span class="alert-text">LaGuardia Airport emergency landing (2026) — passenger praises pilot actions. Ground ops radio unmonitored during critical response window.</span>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <div class="w nav-inner">
+    <a href="#" class="nav-brand">
+      <img src="voxintel-logo.png" alt="VoxIntel">
+      <span class="nav-brand-text">VOXINTEL</span>
+      <span class="nav-brand-sub">/ AVIATION</span>
+    </a>
+    <div class="nav-right">
+      <a href="voxintel-index.html" class="nav-back">← All Verticals</a>
+      <a href="mailto:adam@amusementstandards.com" class="nav-cta">Request Pilot</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="w">
+
+    <div class="hero-vertical-tag ani">Aviation & Airport Ground Operations</div>
+
+    <h1 class="ani d1">
+      When a plane goes down,<br>
+      <span class="r">the radio traffic</span> tells<br>
+      the <span class="b">whole story.</span><br>
+      <span class="g">Nobody is recording it.</span>
+    </h1>
+
+    <p class="hero-lead ani d2">
+      ATC recordings are mandatory. <strong>Ground ops radio is not.</strong> Fire, medical, ramp, ops, security — the channels that determine how fast responders arrive, how clearly they communicate, and whether critical transmissions get stepped on — produce zero structured data at most airports today.
+    </p>
+
+    <div class="hero-btns ani d3">
+      <a href="mailto:adam@amusementstandards.com" class="btn-p">Request Aviation Pilot →</a>
+      <a href="#channels" class="btn-o">See the Gap</a>
+    </div>
+
+    <!-- SIMULATED INCIDENT FEED -->
+    <div class="timeline-wrap ani d4">
+      <div class="timeline-hd">
+        <span class="timeline-hd-left">⚠ INCIDENT SIMULATION — Airport Emergency Response · Channel Monitor</span>
+        <span class="timeline-hd-right">ALL CHANNELS ACTIVE</span>
+      </div>
+      <div class="tl-items">
+        <div class="tl-row crit">
+          <span class="tl-time">14:32:07</span>
+          <span class="tl-ch">CH-01 ATC</span>
+          <span class="tl-from">TWR → ALL</span>
+          <span class="tl-msg"><span class="hl">MAYDAY MAYDAY</span> — inbound on 04, gear not confirmed, declare emergency</span>
+          <span class="tl-tag tag-e">EMERG</span>
+        </div>
+        <div class="tl-row crit">
+          <span class="tl-time">14:32:09</span>
+          <span class="tl-ch">CH-01 ATC</span>
+          <span class="tl-from">TWR → GND</span>
+          <span class="tl-msg"><span class="hl">STEP-ON DETECTED</span> — 2 simultaneous transmissions, <span class="hl">partial loss</span></span>
+          <span class="tl-tag tag-step">STEP-ON</span>
+        </div>
+        <div class="tl-row">
+          <span class="tl-time">14:32:14</span>
+          <span class="tl-ch">CH-04 FIRE</span>
+          <span class="tl-from">ARFF → CMD</span>
+          <span class="tl-msg">Units 1 and 3 <span class="hl-y">rolling to position</span> — runway 04 approach end</span>
+          <span class="tl-tag tag-fire">FIRE</span>
+        </div>
+        <div class="tl-row">
+          <span class="tl-time">14:32:22</span>
+          <span class="tl-ch">CH-02 GND</span>
+          <span class="tl-from">GND → OPS</span>
+          <span class="tl-msg">Runway 04 <span class="hl-y">clearing traffic</span> — divert taxiway Alpha to hold short</span>
+          <span class="tl-tag tag-atc">GND</span>
+        </div>
+        <div class="tl-row">
+          <span class="tl-time">14:32:31</span>
+          <span class="tl-ch">CH-06 MED</span>
+          <span class="tl-from">MED → CMD</span>
+          <span class="tl-msg">Medical units <span class="hl-g">staged at Gate 12</span> — awaiting passenger count confirmation</span>
+          <span class="tl-tag tag-med">MEDICAL</span>
+        </div>
+        <div class="tl-row crit">
+          <span class="tl-time">14:32:38</span>
+          <span class="tl-ch">CH-04 FIRE</span>
+          <span class="tl-from">ARFF-1 → CMD</span>
+          <span class="tl-msg"><span class="hl">Unit 1 delayed</span> — gate arm malfunction taxiway Bravo, <span class="hl">ETA +90 seconds</span></span>
+          <span class="tl-tag tag-fire">FIRE</span>
+        </div>
+        <div class="tl-row">
+          <span class="tl-time">14:32:45</span>
+          <span class="tl-ch">CH-07 OPS</span>
+          <span class="tl-from">OPS → ALL</span>
+          <span class="tl-msg">Passenger count confirmed: <span class="hl-y">189 souls on board</span> — airline ops notified</span>
+          <span class="tl-tag tag-ops">OPS</span>
+        </div>
+        <div class="tl-row">
+          <span class="tl-time">14:33:02</span>
+          <span class="tl-ch">CH-06 MED</span>
+          <span class="tl-from">MED → CMD</span>
+          <span class="tl-msg">Additional ambulances <span class="hl-g">en route</span> — mutual aid activated, 4 units ETA 8 min</span>
+          <span class="tl-tag tag-med">MEDICAL</span>
+        </div>
+      </div>
+      <div class="tl-footer">
+        <div class="tl-footer-stat">VoxIntel classified <span>8 events</span> across <span>5 channels</span> in <span>55 seconds</span> · 1 step-on detected · 1 delay flagged</div>
+        <div class="waveform">
+          <b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="w">
+  <div class="stats">
+    <div class="stat ani d2">
+      <div class="stat-n">8–14</div>
+      <div class="stat-l">radio channels active during a major airport incident — ATC, ground, fire, medical, ops, cargo, security, airline</div>
+    </div>
+    <div class="stat ani d3">
+      <div class="stat-n">1</div>
+      <div class="stat-l">channel monitored by ATC recording mandate — the rest produce zero structured data</div>
+    </div>
+    <div class="stat ani d4">
+      <div class="stat-n">~$168</div>
+      <div class="stat-l">hardware cost per VoxIntel receiver unit covering all channels simultaneously</div>
+    </div>
+    <div class="stat ani d5">
+      <div class="stat-n">&lt;2s</div>
+      <div class="stat-l">from radio transmission to classified, timestamped event record in VoxIntel</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHANNELS GAP -->
+<section id="channels" class="border-top">
+  <div class="w">
+    <div class="sl ani">The Coverage Gap</div>
+    <h2 class="st ani d1">ATC is recorded. Everything else disappears.</h2>
+    <p class="sd ani d2">Federal regulation mandates ATC voice recording. Ground ops, ARFF, medical, ramp, and airline ops channels — where responder coordination happens during emergencies — are unmonitored at most airports.</p>
+
+    <div class="channels-grid ani d3">
+      <div class="ch-card atc">
+        <div class="ch-label">CH-01 · ATC Tower</div>
+        <div class="ch-title">Air Traffic Control</div>
+        <div class="ch-desc">Aircraft separation, runway assignments, emergency declarations. Federally mandated recording and archival.</div>
+        <div class="ch-status">RECORDED — FAA MANDATED</div>
+      </div>
+      <div class="ch-card gnd">
+        <div class="ch-label">CH-02 · Ground Control</div>
+        <div class="ch-title">Ground Movement</div>
+        <div class="ch-desc">Taxiway routing, pushback, runway crossings. Critical during emergency diversions and ground stops.</div>
+        <div class="ch-status">UNMONITORED AT MOST AIRPORTS</div>
+      </div>
+      <div class="ch-card fire">
+        <div class="ch-label">CH-04 · ARFF</div>
+        <div class="ch-title">Aircraft Rescue & Fire</div>
+        <div class="ch-desc">ARFF unit dispatch, positioning, access route calls. Response time data exists only in memory.</div>
+        <div class="ch-status">UNMONITORED — RESPONSE DATA LOST</div>
+      </div>
+      <div class="ch-card med">
+        <div class="ch-label">CH-06 · Medical</div>
+        <div class="ch-title">Airport Medical Response</div>
+        <div class="ch-desc">EMS staging, mutual aid activation, patient count coordination. Zero structured record today.</div>
+        <div class="ch-status">UNMONITORED — NO RECORD</div>
+      </div>
+      <div class="ch-card ops">
+        <div class="ch-label">CH-07 · Airport Ops</div>
+        <div class="ch-title">Operations & Command</div>
+        <div class="ch-desc">Passenger counts, gate assignments, airline notification. The command channel during any incident.</div>
+        <div class="ch-status">UNMONITORED AT MOST AIRPORTS</div>
+      </div>
+      <div class="ch-card cargo">
+        <div class="ch-label">CH-09 · Ramp / Cargo</div>
+        <div class="ch-title">Ramp Operations</div>
+        <div class="ch-desc">Ground equipment, fuel, baggage. Often the first to visually observe an aircraft anomaly on approach.</div>
+        <div class="ch-status">NEVER MONITORED</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INCIDENT BREAKDOWN -->
+<section class="border-top">
+  <div class="w">
+    <div class="incident-box ani">
+      <div class="incident-eyebrow">Incident Analysis — LaGuardia Emergency Landing 2026</div>
+      <div class="incident-title">Pilot praised. Responders praised. The radio record? Gone.</div>
+      <div class="incident-body">
+        Passengers praised the pilot's response and the crew's professionalism. What the post-incident investigation cannot reconstruct without VoxIntel: <strong>exactly when ARFF was dispatched, whether any transmissions were stepped on during the critical response window, how long gate arm delays affected positioning, and what ground ops channels said between first mayday and touchdown.</strong> All of that existed in the air for a few seconds and then vanished.
+      </div>
+      <div class="incident-grid">
+        <div class="incident-card">
+          <div class="incident-card-num">0</div>
+          <div class="incident-card-label">ground ops channels with mandatory recording at most regional airports</div>
+        </div>
+        <div class="incident-card">
+          <div class="incident-card-num">Hours</div>
+          <div class="incident-card-label">required to reconstruct timeline from interviews vs. seconds with VoxIntel</div>
+        </div>
+        <div class="incident-card">
+          <div class="incident-card-num">100%</div>
+          <div class="incident-card-label">of step-on events — critical transmissions lost to simultaneous keying — invisible without passive monitoring</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW VOXINTEL HELPS -->
+<section class="border-top">
+  <div class="w">
+    <div class="sl ani">How VoxIntel Helps</div>
+    <h2 class="st ani d1">Four things airports can't do today.<br>VoxIntel does all four.</h2>
+    <div class="helps-grid ani d2">
+      <div class="help-card">
+        <div class="help-icon">📡</div>
+        <div class="help-body">
+          <h4>Monitor all channels simultaneously</h4>
+          <p>One SDR receiver unit captures all airport ground ops frequencies in parallel. No operator required. No workflow changes. ~$168 hardware cost per unit.</p>
+        </div>
+      </div>
+      <div class="help-card">
+        <div class="help-icon">⚡</div>
+        <div class="help-body">
+          <h4>Detect step-ons in real time</h4>
+          <p>When two units transmit simultaneously, the blocked transmission is flagged immediately. Post-incident investigators know exactly where the communication gaps are.</p>
+        </div>
+      </div>
+      <div class="help-card">
+        <div class="help-icon">🕐</div>
+        <div class="help-body">
+          <h4>Instant incident reconstruction</h4>
+          <p>Every transmission timestamped and classified. ARFF dispatch time, medical staging calls, gate arm delay reports — searchable within seconds of the incident ending.</p>
+        </div>
+      </div>
+      <div class="help-card">
+        <div class="help-icon">📊</div>
+        <div class="help-body">
+          <h4>Response time scoring for insurers</h4>
+          <p>ARFF response interval from mayday to position confirmed. Medical staging time. Ops coordination latency. Structured data that underwriters have never had access to before.</p>
+        </div>
+      </div>
+      <div class="help-card">
+        <div class="help-icon">🔍</div>
+        <div class="help-body">
+          <h4>Regulatory compliance evidence</h4>
+          <p>FAA, TSA, and NTSB investigations require timeline reconstruction. VoxIntel provides a verified, structured record of all ground ops communications from first call to all-clear.</p>
+        </div>
+      </div>
+      <div class="help-card">
+        <div class="help-icon">🧠</div>
+        <div class="help-body">
+          <h4>Pattern detection across events</h4>
+          <p>Aggregate across dozens of incidents. Which channel produces the most step-ons? Which gate consistently delays ARFF response? Data that drives operational improvement over time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-block">
+  <div class="w">
+    <blockquote class="ani">
+      "The FAA mandates ATC recordings because <span class="hi">voice traffic is evidence.</span> VoxIntel extends that principle to every channel that matters during an emergency — for the cost of a weekend flight."
+      <cite>— Amusement Standards / VoxIntel</cite>
+    </blockquote>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-sect">
+  <div class="w">
+    <div class="cta-inner ani">
+      <h2>Ready to close the gap?</h2>
+      <p>VoxIntel is accepting pilot partners in aviation, stadium, and venue operations. Early deployments include proof-of-concept at zero integration cost.</p>
+      <div class="hero-btns" style="justify-content:center">
+        <a href="mailto:adam@amusementstandards.com" class="btn-p">Request Aviation Pilot →</a>
+        <a href="voxintel-index.html" class="btn-o">← All Verticals</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="w">
+    <div class="foot-l">VOXINTEL © 2026 · A product of <a href="https://amusementstandards.com">Amusement Standards</a></div>
+    <div class="foot-r">
+      <a href="mailto:adam@amusementstandards.com">adam@amusementstandards.com</a>
+      <a href="voxintel-index.html">Venues</a>
+      <a href="voxintel-entertainment.html">Film & Events</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll-triggered fade-ins for below-fold elements
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // re-trigger animation
+      e.target.style.animation = 'none';
+      e.target.offsetHeight;
+      e.target.style.animation = '';
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.ani').forEach(el => {
+  if (!el.closest('.hero') && !el.closest('.alert-banner')) {
+    el.style.opacity = '0';
+    obs.observe(el);
+  }
+});
+</script>
+</body>
+</html>
