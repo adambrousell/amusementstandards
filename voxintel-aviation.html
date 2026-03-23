@@ -1,1 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoxIntel — Aviation & Airport Ground Operations</title>
+<meta name="description" content="LaGuardia had ASDE-X surface radar. Two pilots still died. The failure was in cross-channel voice coordination — the gap VoxIntel closes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05080e;--bg-card:#0d1520;--bg-card2:#111e2e;--border:#1a2840;--border-hi:rgba(245,158,11,0.25);--accent:#3b82f6;--ag:#60a5fa;--gold:#f59e0b;--gd:rgba(245,158,11,0.1);--red:#ef4444;--rd:rgba(239,68,68,0.1);--green:#10b981;--grd:rgba(16,185,129,0.1);--purple:#8b5cf6;--orange:#f97316;--text:#e2e8f0;--muted:#94a3b8;--dim:#4a5568;--fm:'JetBrains Mono',monospace;--fd:'Outfit',sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fd);line-height:1.6;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9998}
+@keyframes fadeIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes wv{0%,100%{height:4px;opacity:.3}50%{height:var(--h);opacity:1}}
+@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+.ani{opacity:0;animation:fadeIn .9s ease forwards}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.3s}
+.d4{animation-delay:.4s}.d5{animation-delay:.5s}.d6{animation-delay:.6s}
+.w{max-width:1160px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem)}
+.scanline{position:fixed;top:0;left:0;width:100%;height:2px;background:linear-gradient(transparent,rgba(239,68,68,0.05),transparent);animation:scan 8s linear infinite;pointer-events:none;z-index:9997}
 
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(5,8,14,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.ni{display:flex;justify-content:space-between;align-items:center;height:60px}
+.nb{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nb img{height:28px;width:auto}
+.nb-t{font-family:var(--fm);font-weight:700;font-size:1rem;color:var(--text);letter-spacing:2px}
+.nb-s{font-family:var(--fm);font-size:.6rem;color:var(--gold);letter-spacing:2px;margin-left:4px}
+.nr{display:flex;align-items:center;gap:1.5rem}
+.nr a{font-family:var(--fm);font-size:.7rem;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s}
+.nr a:hover{color:var(--ag)}
+.nr .cta{background:var(--gold);color:#000;font-weight:700;padding:8px 18px;border-radius:4px;transition:all .2s}
+.nr .cta:hover{background:#fbbf24;color:#000;transform:translateY(-1px)}
+
+/* ALERT */
+.alert{background:linear-gradient(90deg,rgba(239,68,68,.12),rgba(239,68,68,.04));border-bottom:1px solid rgba(239,68,68,.28);padding:9px 0}
+.al{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.at{font-family:var(--fm);font-size:.62rem;font-weight:700;letter-spacing:2px;background:var(--red);color:#fff;padding:3px 10px;border-radius:2px;flex-shrink:0;white-space:nowrap}
+.am{font-family:var(--fm);font-size:.72rem;color:rgba(239,68,68,.85);letter-spacing:.3px}
+
+/* HERO */
+.hero{padding:clamp(6rem,12vw,9rem) 0 clamp(3rem,6vw,5rem);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:0;right:-5%;width:600px;height:600px;background:radial-gradient(circle,rgba(239,68,68,.05) 0%,transparent 65%);pointer-events:none}
+.vtag{font-family:var(--fm);font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border:1px solid var(--border-hi);background:var(--gd);padding:5px 14px;border-radius:2px;display:inline-flex;align-items:center;gap:8px;margin-bottom:2rem}
+.vtag::before{content:'✈';font-size:.85rem}
+h1{font-size:clamp(2.6rem,5.5vw,4.8rem);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:1.5rem;max-width:860px}
+h1 .r{color:var(--red)}h1 .b{color:var(--ag)}h1 .g{color:var(--gold)}
+.lead{font-size:1.12rem;color:var(--muted);line-height:1.78;max-width:700px;margin-bottom:2.5rem}
+.lead strong{color:var(--text)}
+.btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3.5rem}
+.bp{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;padding:13px 26px;border-radius:6px;font-weight:600;font-size:.9rem;text-decoration:none;transition:all .25s;border:none;cursor:pointer}
+.bp:hover{background:var(--ag);transform:translateY(-2px);box-shadow:0 8px 28px rgba(59,130,246,.22)}
+.bo{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--muted);padding:13px 26px;border-radius:6px;font-size:.9rem;text-decoration:none;border:1px solid var(--border);transition:all .25s}
+.bo:hover{border-color:var(--accent);color:var(--ag)}
+
+/* ATC TRANSCRIPT */
+.atc-box{background:var(--bg-card);border:1px solid rgba(239,68,68,.3);border-radius:10px;overflow:hidden;margin-bottom:3rem}
+.atc-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid rgba(239,68,68,.2);background:rgba(239,68,68,.04)}
+.atc-hd-l{font-family:var(--fm);font-size:.68rem;letter-spacing:2px;color:var(--red)}
+.atc-hd-r{display:flex;align-items:center;gap:6px;font-family:var(--fm);font-size:.65rem;color:rgba(239,68,68,.7)}
+.atc-hd-r::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.5s infinite}
+.atc-lines{padding:12px}
+.atc-row{display:grid;grid-template-columns:58px 80px 1fr;gap:10px;align-items:start;padding:9px 12px;border-radius:6px;font-family:var(--fm);font-size:.72rem;margin-bottom:2px;border:1px solid transparent;transition:background .2s}
+.atc-row:hover{background:rgba(255,255,255,.025)}
+.atc-row.crit{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.18)!important}
+.atc-row.gap{background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.18)!important}
+.at-time{color:var(--dim);white-space:nowrap}
+.at-src{color:var(--muted);font-weight:500;white-space:nowrap}
+.at-msg{color:var(--text);font-family:var(--fd);font-size:.8rem;line-height:1.5}
+.at-msg .hl{color:var(--red);font-weight:600}
+.at-msg .hl-g{color:var(--gold);font-weight:600}
+.at-msg .hl-b{color:var(--ag);font-weight:600}
+.atc-note{padding:10px 18px;border-top:1px solid var(--border);font-family:var(--fm);font-size:.62rem;color:var(--dim);display:flex;justify-content:space-between;align-items:center}
+.atc-note span{color:var(--gold)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:3rem 0}
+.sc{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:1.75rem 1.5rem;text-align:center;transition:all .35s}
+.sc:hover{border-color:var(--border-hi);transform:translateY(-3px)}
+.sn{font-family:var(--fm);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--gold);margin-bottom:.4rem;line-height:1}
+.sl2{font-size:.82rem;color:var(--muted);line-height:1.5}
+
+/* THE REAL PROBLEM */
+.rp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem}
+.rp-card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:2rem;transition:all .3s;position:relative;overflow:hidden}
+.rp-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:8px 0 0 8px}
+.rp-card.covered::before{background:var(--green)}
+.rp-card.gap::before{background:var(--red)}
+.rp-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px)}
+.rp-badge{font-family:var(--fm);font-size:.6rem;letter-spacing:2px;font-weight:700;padding:3px 10px;border-radius:3px;display:inline-block;margin-bottom:1rem;text-transform:uppercase}
+.covered .rp-badge{background:var(--grd);color:var(--green);border:1px solid rgba(16,185,129,.2)}
+.gap .rp-badge{background:var(--rd);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.rp-card h4{font-size:1rem;font-weight:600;margin-bottom:.5rem}
+.rp-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+.rp-items{display:flex;flex-direction:column;gap:.4rem;margin-top:.9rem}
+.rp-item{font-family:var(--fm);font-size:.72rem;padding:5px 10px;border-radius:4px}
+.covered .rp-item{background:rgba(16,185,129,.06);color:var(--green);border:1px solid rgba(16,185,129,.12)}
+.gap .rp-item{background:rgba(239,68,68,.06);color:rgba(239,68,68,.8);border:1px solid rgba(239,68,68,.12)}
+
+/* COORDINATION FAILURE BOX */
+.cf-box{background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(239,68,68,.02));border:1px solid rgba(239,68,68,.22);border-radius:10px;padding:2.5rem;margin:3rem 0}
+.cf-eye{font-family:var(--fm);font-size:.62rem;letter-spacing:2px;color:var(--red);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.cf-eye::before{content:'⚠';font-size:.9rem}
+.cf-title{font-size:1.35rem;font-weight:700;margin-bottom:.8rem;line-height:1.3;max-width:780px}
+.cf-body{font-size:.92rem;color:var(--muted);line-height:1.78;max-width:740px;margin-bottom:1.5rem}
+.cf-body strong{color:var(--text)}
+.cf-quote{background:rgba(0,0,0,.25);border-left:3px solid var(--gold);padding:1rem 1.25rem;border-radius:0 6px 6px 0;font-style:italic;font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.cf-quote strong{color:var(--text);font-style:normal}
+.cf-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.cf-card{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:7px;padding:1.25rem}
+.cf-num{font-family:var(--fm);font-size:1.7rem;font-weight:700;color:var(--gold);margin-bottom:.35rem;line-height:1}
+.cf-lbl{font-size:.8rem;color:var(--muted);line-height:1.5}
+
+/* HOW VI HELPS */
+.hg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2.5rem}
+.hc{display:flex;gap:1.25rem;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;transition:all .3s}
+.hc:hover{border-color:rgba(59,130,246,.2)}
+.hi2{width:42px;height:42px;min-width:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:rgba(59,130,246,.1)}
+.hb h4{font-size:.95rem;font-weight:600;margin-bottom:.3rem}
+.hb p{font-size:.82rem;color:var(--muted);line-height:1.55}
+
+/* ASDE NOTE */
+.asde-note{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:1.75rem;margin-top:2.5rem;display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start}
+.asde-icon{font-size:2rem}
+.asde-body h4{font-size:1rem;font-weight:600;margin-bottom:.5rem}
+.asde-body p{font-size:.85rem;color:var(--muted);line-height:1.65}
+.asde-body .note{font-family:var(--fm);font-size:.7rem;color:var(--gold);margin-top:.75rem;padding:.5rem .75rem;background:var(--gd);border:1px solid var(--border-hi);border-radius:4px;display:inline-block}
+
+/* QUOTE */
+.qb{text-align:center;padding:clamp(3rem,6vw,5rem) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative}
+.qb::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:250px;background:radial-gradient(ellipse,rgba(245,158,11,.04) 0%,transparent 70%);pointer-events:none}
+blockquote{font-size:clamp(1.15rem,2.2vw,1.55rem);font-weight:500;line-height:1.6;color:var(--text);max-width:780px;margin:0 auto}
+blockquote .hi{color:var(--gold)}
+cite{display:block;margin-top:1.25rem;font-family:var(--fm);font-size:.68rem;color:var(--dim);letter-spacing:1px;font-style:normal}
+
+/* CTA */
+.ctas{padding:clamp(4rem,8vw,6rem) 0}
+.ctai{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:clamp(2.5rem,5vw,4rem);text-align:center;position:relative;overflow:hidden}
+.ctai::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red),var(--gold),var(--accent))}
+.ctai h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;margin-bottom:1rem}
+.ctai p{font-size:1rem;color:var(--muted);max-width:520px;margin:0 auto 2rem;line-height:1.7}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem 0}
+footer .w{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.fl{font-family:var(--fm);font-size:.7rem;color:var(--dim)}
+.fl a{color:var(--ag);text-decoration:none}
+.fr a{font-family:var(--fm);font-size:.7rem;color:var(--muted);text-decoration:none;margin-left:1.5rem;transition:color .2s}
+.fr a:hover{color:var(--ag)}
+
+/* SECTION LABELS */
+.sl{font-family:var(--fm);font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--ag);margin-bottom:.9rem}
+.st{font-size:clamp(1.8rem,3.2vw,2.5rem);font-weight:700;letter-spacing:-1px;line-height:1.15;margin-bottom:1.2rem}
+.sd{font-size:1rem;color:var(--muted);line-height:1.7;max-width:660px;margin-bottom:2.5rem}
+section{padding:clamp(3.5rem,7vw,6rem) 0}
+.bt{border-top:1px solid var(--border)}
+
+@media(max-width:900px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .rp-grid{grid-template-columns:1fr}
+  .hg{grid-template-columns:1fr}
+  .cf-cards{grid-template-columns:1fr}
+  .asde-note{grid-template-columns:1fr}
+  .asde-icon{display:none}
+  .nr a:not(.cta){display:none}
+  .atc-row{grid-template-columns:58px 1fr}
+  .at-src{display:none}
+}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}h1{letter-spacing:-1px}}
+</style>
+</head>
+<body>
+<div class="scanline"></div>
+
+<!-- ALERT BANNER -->
+<div class="alert">
+  <div class="w"><div class="al">
+    <span class="at">BREAKING — MARCH 23, 2026</span>
+    <span class="am">LaGuardia Airport: Air Canada Express Flight 8646 collides with ARFF truck on Runway 4. 2 pilots killed. 41 hospitalized. NTSB investigating cross-channel coordination failure. LaGuardia had ASDE-X. It wasn't enough.</span>
+  </div></div>
+</div>
+
+<nav>
+  <div class="w ni">
+    <a href="#" class="nb">
+      <img src="voxintel-logo.png" alt="VoxIntel">
+      <span class="nb-t">VOXINTEL</span>
+      <span class="nb-s">/ AVIATION</span>
+    </a>
+    <div class="nr">
+      <a href="voxintel-index.html">← All Verticals</a>
+      <a href="mailto:adam@amusementstandards.com" class="cta">Request Pilot</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="w">
+    <div class="vtag ani">Aviation & Airport Ground Operations</div>
+    <h1 class="ani d1">
+      LaGuardia had <span class="b">ASDE-X.</span><br>
+      The best surface radar<br>
+      money can buy.<br>
+      <span class="r">Two pilots still died.</span>
+    </h1>
+    <p class="lead ani d2">
+      The failure at LaGuardia wasn't a radar failure. <strong>It was a voice coordination failure.</strong> The ground controller and local controller manage different channels. When a fire truck crossed Runway 4 responding to a separate incident, the two channels didn't talk to each other in time. ASDE-X tracks position. It doesn't monitor, transcribe, or flag what's being said across all radio channels simultaneously. That's the gap VoxIntel closes.
+    </p>
+    <div class="btns ani d3">
+      <a href="mailto:adam@amusementstandards.com" class="bp">Request Aviation Pilot →</a>
+      <a href="#problem" class="bo">See the Gap</a>
+    </div>
+
+    <!-- ATC TRANSCRIPT -->
+    <div class="atc-box ani d4">
+      <div class="atc-hd">
+        <span class="atc-hd-l">⚠ ATC AUDIO TRANSCRIPT — LaGuardia Runway 4 · March 22, 2026 · ~11:30 PM</span>
+        <span class="atc-hd-r">SOURCE: NBC NEW YORK / PUBLIC ATC AUDIO</span>
+      </div>
+      <div class="atc-lines">
+        <div class="atc-row gap">
+          <span class="at-time">23:28:xx</span>
+          <span class="at-src">TWR → GND</span>
+          <span class="at-msg"><span class="hl-g">ARFF Truck 1 dispatched</span> — responding to separate United Airlines cabin odor incident on taxiway · <span class="hl-g">ground ops channel</span></span>
+        </div>
+        <div class="atc-row gap">
+          <span class="at-time">23:29:xx</span>
+          <span class="at-src">TWR → LOCAL</span>
+          <span class="at-msg"><span class="hl-b">Jazz 8646 cleared to land</span> Runway 4 — <span class="hl-b">local controller channel</span> · ground controller managing ARFF on separate frequency</span>
+        </div>
+        <div class="atc-row crit">
+          <span class="at-time">23:30:xx</span>
+          <span class="at-src">TWR → ALL</span>
+          <span class="at-msg">"<span class="hl">Frontier 4195, stop there please</span>" — controller begins issuing stop commands</span>
+        </div>
+        <div class="atc-row crit">
+          <span class="at-time">23:30:xx</span>
+          <span class="at-src">TWR → TRUCK</span>
+          <span class="at-msg">"<span class="hl">Stop, stop, stop, stop.</span>" — "Truck One, stop, stop, stop." — "Stop Truck 1." — "<span class="hl">Stop!</span>" *beeping*</span>
+        </div>
+        <div class="atc-row crit">
+          <span class="at-time">23:30:xx</span>
+          <span class="at-src">TWR → 8646</span>
+          <span class="at-msg"><span class="hl">COLLISION.</span> "Jazz 646, I see you collided with the vehicle. Just hold position. Vehicles are responding to you now."</span>
+        </div>
+        <div class="atc-row gap">
+          <span class="at-time">POST</span>
+          <span class="at-src">CONTROLLER</span>
+          <span class="at-msg">"<span class="hl-g">I messed up</span>" — controller self-report captured on ATC audio after collision</span>
+        </div>
+      </div>
+      <div class="atc-note">
+        <span>Pilots Antoine Forest and MacKenzie Gunther killed. 41 passengers hospitalized. NTSB investigating whether ARFF truck was visible on ASDE-X and whether alerts were generated.</span>
+        <span style="color:var(--red)">2 DEAD · 41 INJURED</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="w">
+  <div class="stats">
+    <div class="sc ani d2">
+      <div class="sn">35</div>
+      <div class="sl2">U.S. airports with ASDE-X surface radar — LaGuardia is one of them. It still happened.</div>
+    </div>
+    <div class="sc ani d3">
+      <div class="sn">2</div>
+      <div class="sl2">separate ATC positions managing the incident — ground controller and local controller on different channels</div>
+    </div>
+    <div class="sc ani d4">
+      <div class="sn">0</div>
+      <div class="sl2">ground ops, ARFF, and ops channels with mandatory recording or real-time cross-channel monitoring</div>
+    </div>
+    <div class="sc ani d5">
+      <div class="sn">&lt;2s</div>
+      <div class="sl2">VoxIntel classification time — from transmission to structured, flagged event record across all channels</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE REAL PROBLEM -->
+<section id="problem" class="bt">
+  <div class="w">
+    <div class="sl ani">What ASDE-X Doesn't Do</div>
+    <h2 class="st ani d1">Radar tracks position.<br>It doesn't monitor voice.</h2>
+    <p class="sd ani d2">LaGuardia's ASDE-X knew where every aircraft and vehicle was on the surface. What it couldn't do — what no system at most airports does — is monitor all radio channels simultaneously and flag when ground ops and local control aren't coordinating in real time.</p>
+
+    <div class="rp-grid ani d3">
+      <div class="rp-card covered">
+        <div class="rp-badge">✓ Covered at LaGuardia</div>
+        <h4>Surface Position Tracking</h4>
+        <p>ASDE-X fuses radar, multilateration, and ADS-B to show controllers exactly where every aircraft and vehicle is on the airport surface.</p>
+        <div class="rp-items">
+          <div class="rp-item">Aircraft position — real time</div>
+          <div class="rp-item">Vehicle position — real time</div>
+          <div class="rp-item">Runway incursion visual alerts</div>
+          <div class="rp-item">ATC Tower voice recording — FAA mandated</div>
+        </div>
+      </div>
+      <div class="rp-card gap">
+        <div class="rp-badge">✗ Not covered anywhere</div>
+        <h4>Cross-Channel Voice Coordination</h4>
+        <p>ASDE-X doesn't know what's being said on ground ops, ARFF, medical, or airline ops channels. It can't flag when two controllers on different frequencies are managing the same runway without knowing it.</p>
+        <div class="rp-items">
+          <div class="rp-item">Ground ops channel — unmonitored</div>
+          <div class="rp-item">ARFF dispatch channel — unmonitored</div>
+          <div class="rp-item">Cross-channel coordination gaps — invisible</div>
+          <div class="rp-item">Simultaneous incident management — no unified view</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASDE-X NOTE -->
+    <div class="asde-note ani d4">
+      <div class="asde-icon">📡</div>
+      <div class="asde-body">
+        <h4>What the NTSB is now investigating</h4>
+        <p>NTSB Chairwoman Jennifer Homendy confirmed investigators are reviewing whether the ARFF truck was visible on the ASDE-X display at the time of the crash, and whether any automated alerts were generated. A retired ATC expert explained the incident reveals a coordination gap between the ground controller managing the ARFF truck and the local controller managing Jazz 8646's landing — two controllers, two channels, one runway, no unified voice picture.</p>
+        <span class="note">Source: NTSB press conference, March 23, 2026 · CNN / Newsweek</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COORDINATION FAILURE -->
+<section class="bt">
+  <div class="w">
+    <div class="cf-box ani">
+      <div class="cf-eye">What VoxIntel Would Have Seen</div>
+      <div class="cf-title">Two controllers. Two channels. One runway. No one had the full picture.</div>
+      <div class="cf-body">
+        The ground controller was managing the ARFF truck on a separate frequency, responding to a United Airlines cabin odor incident. The local controller was managing Jazz 8646's landing approach on a different channel. <strong>Neither had real-time visibility into what the other was transmitting.</strong> VoxIntel monitors all channels simultaneously — the moment ARFF Truck 1 was dispatched toward an active runway on one channel while a landing clearance was issued on another, VoxIntel would have flagged the concurrent activity for immediate human review.
+      </div>
+      <div class="cf-quote">
+        <strong>"There has to be coordination between the ground controller and the local controller when runways are crossed."</strong> Procedures for moving vehicles across runways vary by airport. In some places, ground controllers keep vehicles on their frequency; in others, vehicles switch to the local controller for explicit clearance.
+        <br><br>— Harvey Scolnick, retired air traffic controller, Newsweek, March 23, 2026
+      </div>
+      <div class="cf-cards">
+        <div class="cf-card">
+          <div class="cf-num">2</div>
+          <div class="cf-lbl">simultaneous incidents being managed on different ATC channels — United cabin odor and Jazz 8646 landing — with no unified radio intelligence layer</div>
+        </div>
+        <div class="cf-card">
+          <div class="cf-num">Varies</div>
+          <div class="cf-lbl">frequency handoff procedures by airport — no national standard for when ARFF vehicles switch from ground to local controller channel</div>
+        </div>
+        <div class="cf-card">
+          <div class="cf-num">Hours</div>
+          <div class="cf-lbl">to reconstruct full radio timeline through NTSB interviews vs. seconds with VoxIntel's structured event log</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW VI HELPS -->
+<section class="bt">
+  <div class="w">
+    <div class="sl ani">How VoxIntel Helps</div>
+    <h2 class="st ani d1">What ASDE-X sees with radar,<br>VoxIntel hears on every channel.</h2>
+    <div class="hg ani d2">
+      <div class="hc">
+        <div class="hi2">📡</div>
+        <div class="hb">
+          <h4>Monitor all channels simultaneously</h4>
+          <p>Ground, local, ARFF, medical, airline ops — all captured in parallel. One SDR receiver unit, ~$168 hardware. No workflow changes, no operator training.</p>
+        </div>
+      </div>
+      <div class="hc">
+        <div class="hi2">⚡</div>
+        <div class="hb">
+          <h4>Flag concurrent runway activity across channels</h4>
+          <p>When a landing clearance is issued on one channel while a vehicle dispatch is active on another toward the same runway, VoxIntel surfaces the conflict immediately.</p>
+        </div>
+      </div>
+      <div class="hc">
+        <div class="hi2">🕐</div>
+        <div class="hb">
+          <h4>Instant post-incident reconstruction</h4>
+          <p>Instead of reconstructing the timeline from interviews days later, every transmission is timestamped, classified, and searchable within seconds of the event ending.</p>
+        </div>
+      </div>
+      <div class="hc">
+        <div class="hi2">⚠</div>
+        <div class="hb">
+          <h4>Step-on detection</h4>
+          <p>When two units transmit simultaneously — blocking critical messages — VoxIntel flags the collision automatically. Post-incident investigators know exactly what was lost.</p>
+        </div>
+      </div>
+      <div class="hc">
+        <div class="hi2">📊</div>
+        <div class="hb">
+          <h4>Structured data for NTSB and FAA</h4>
+          <p>Investigators currently reconstruct from memory, interviews, and CVR recordings. VoxIntel provides a complete, verified, cross-channel voice record from first dispatch to all-clear.</p>
+        </div>
+      </div>
+      <div class="hc">
+        <div class="hi2">🔍</div>
+        <div class="hb">
+          <h4>Pattern detection across incidents</h4>
+          <p>Aggregate across events. Which channel handoff procedure produces the most coordination gaps? Which concurrent incident type creates the highest risk window? Data that drives policy change.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="qb">
+  <div class="w">
+    <blockquote class="ani">
+      "ASDE-X tells you <span class="hi">where</span> every vehicle is. VoxIntel tells you <span class="hi">what every channel is saying</span> — simultaneously, in real time. One without the other is an incomplete picture. LaGuardia proved it."
+      <cite>— Amusement Standards / VoxIntel · March 2026</cite>
+    </blockquote>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="ctas">
+  <div class="w">
+    <div class="ctai ani">
+      <h2>Ready to close the voice coordination gap?</h2>
+      <p>VoxIntel is accepting pilot partners in aviation and venue operations. Early deployments at zero integration cost. The hardware fits in a backpack.</p>
+      <div class="btns" style="justify-content:center">
+        <a href="mailto:adam@amusementstandards.com" class="bp">Request Aviation Pilot →</a>
+        <a href="voxintel-index.html" class="bo">← All Verticals</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="w">
+    <div class="fl">VOXINTEL © 2026 · A product of <a href="https://amusementstandards.com">Amusement Standards</a></div>
+    <div class="fr">
+      <a href="mailto:adam@amusementstandards.com">adam@amusementstandards.com</a>
+      <a href="voxintel-index.html">Venues</a>
+      <a href="voxintel-entertainment.html">Film & Events</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.animation = 'fadeIn .9s ease forwards';
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.ani').forEach(el => {
+  if (!el.closest('.hero') && !el.closest('.alert')) {
+    el.style.opacity = '0';
+    obs.observe(el);
+  }
+});
+</script>
+</body>
+</html>
