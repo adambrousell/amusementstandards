@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoxIntel — Live Operations Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#06080E;--bg2:#0A0F1A;--bg3:#111827;--bg4:#1E293B;
+  --gold:#D4A843;--gold-dim:#B8922F;--gold-glow:rgba(212,168,67,.12);
+  --red:#EF4444;--red-dim:#DC2626;--red-glow:rgba(239,68,68,.1);
+  --green:#22C55E;--green-dim:#16A34A;--green-glow:rgba(34,197,94,.1);
+  --amber:#F59E0B;--amber-glow:rgba(245,158,11,.08);
+  --cyan:#06B6D4;--cyan-dim:#0891B2;
+  --text:#F1F5F9;--text2:#94A3B8;--text3:#64748B;--text4:#475569;
+  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  --border:#1E293B;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans)}
+a{color:var(--gold);text-decoration:none}
+
+/* ── Top Bar ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:var(--bg2);border-bottom:1px solid var(--border)}
+.topbar-brand{display:flex;align-items:center;gap:12px}
+.topbar-logo{font-family:var(--mono);font-weight:700;font-size:20px;color:var(--gold);letter-spacing:2px}
+.topbar-tag{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border:1px solid var(--border);border-radius:3px}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.topbar-status{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--text3)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.5)}50%{opacity:.8;box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+.topbar-clock{font-family:var(--mono);font-size:13px;color:var(--text2);letter-spacing:1px}
+.btn-refresh{font-family:var(--mono);font-size:11px;color:var(--gold);background:none;border:1px solid var(--gold-dim);padding:5px 12px;border-radius:3px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.btn-refresh:hover{background:var(--gold-glow);color:var(--gold)}
+
+/* ── Stats Strip ── */
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
+.stat{background:var(--bg2);padding:16px 20px;text-align:center}
+.stat-val{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--text);line-height:1}
+.stat-label{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:6px}
+
+/* ── Main Grid ── */
+.main{display:grid;grid-template-columns:1fr 340px;height:calc(100vh - 130px);overflow:hidden}
+.left{display:flex;flex-direction:column;overflow:hidden}
+.right{background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Tabs ── */
+.tabs{display:flex;gap:0;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0}
+.tab{padding:10px 20px;font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:1px;cursor:pointer;border-bottom:2px solid transparent;text-transform:uppercase;transition:all .2s}
+.tab:hover{color:var(--text2)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab .badge{font-size:9px;background:var(--red);color:#fff;padding:1px 5px;border-radius:8px;margin-left:6px;font-weight:600}
+
+/* ── Ride Status Board ── */
+.board{flex:1;overflow-y:auto;padding:12px}
+.board::-webkit-scrollbar{width:4px}
+.board::-webkit-scrollbar-thumb{background:var(--text4);border-radius:2px}
+.ride-card{display:grid;grid-template-columns:10px 1fr auto auto;gap:12px;align-items:center;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:4px;margin-bottom:6px;transition:all .2s}
+.ride-card:hover{border-color:var(--text4);background:var(--bg3)}
+.ride-dot{width:10px;height:10px;border-radius:50%}
+.ride-dot.open{background:var(--green)}
+.ride-dot.down{background:var(--red);animation:pulse 2s infinite}
+.ride-dot.delayed{background:var(--amber)}
+.ride-dot.closed{background:var(--text4)}
+.ride-name{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text)}
+.ride-area{font-family:var(--sans);font-size:10px;color:var(--text3);margin-top:2px}
+.ride-status{font-family:var(--mono);font-size:10px;letter-spacing:1px;padding:3px 8px;border-radius:3px;text-transform:uppercase;font-weight:600}
+.ride-status.open{color:var(--green);background:var(--green-glow)}
+.ride-status.down{color:var(--red);background:var(--red-glow)}
+.ride-status.delayed{color:var(--amber);background:var(--amber-glow)}
+.ride-status.closed{color:var(--text4);background:rgba(100,116,139,.1)}
+.ride-time{font-family:var(--mono);font-size:10px;color:var(--text3)}
+
+/* ── Incident Panel ── */
+.incidents{flex:1;overflow-y:auto;padding:12px}
+.inc-card{padding:12px;background:var(--bg2);border:1px solid var(--border);border-radius:4px;margin-bottom:6px;border-left:3px solid var(--text4)}
+.inc-card.critical{border-left-color:var(--red)}
+.inc-card.high{border-left-color:var(--amber)}
+.inc-card.medium{border-left-color:var(--cyan)}
+.inc-card.low{border-left-color:var(--text3)}
+.inc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.inc-id{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--gold)}
+.inc-sev{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:2px 6px;border-radius:2px;text-transform:uppercase;font-weight:600}
+.inc-sev.critical{color:var(--red);background:var(--red-glow)}
+.inc-sev.high{color:var(--amber);background:var(--amber-glow)}
+.inc-sev.medium{color:var(--cyan);background:rgba(6,182,212,.1)}
+.inc-sev.low{color:var(--text3);background:rgba(100,116,139,.1)}
+.inc-desc{font-family:var(--sans);font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:6px}
+.inc-meta{font-family:var(--mono);font-size:9px;color:var(--text4)}
+.inc-status{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:2px 6px;border-radius:2px;text-transform:uppercase;margin-left:8px}
+.inc-status.new{color:var(--red);background:var(--red-glow)}
+.inc-status.responding{color:var(--amber);background:var(--amber-glow)}
+.inc-status.resolved{color:var(--green);background:var(--green-glow)}
+
+/* ── Radio Feed (right panel) ── */
+.feed-header{padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.feed-title{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:2px}
+.feed-sub{font-family:var(--mono);font-size:9px;color:var(--text4);letter-spacing:1px;margin-top:2px}
+.feed{flex:1;overflow-y:auto;padding:8px}
+.feed::-webkit-scrollbar{width:3px}
+.feed::-webkit-scrollbar-thumb{background:var(--text4);border-radius:2px}
+.feed-entry{padding:10px 12px;border-bottom:1px solid rgba(30,41,59,.5);transition:background .2s}
+.feed-entry:hover{background:rgba(30,41,59,.3)}
+.feed-entry.flagged{border-left:2px solid var(--red);padding-left:10px}
+.feed-time{font-family:var(--mono);font-size:9px;color:var(--text4);letter-spacing:1px}
+.feed-cat{font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:1px 5px;border-radius:2px;margin-left:8px;text-transform:uppercase;font-weight:600}
+.feed-cat.ride_down{color:var(--red);background:var(--red-glow)}
+.feed-cat.ride_up{color:var(--green);background:var(--green-glow)}
+.feed-cat.incident,.feed-cat.medical{color:var(--red);background:var(--red-glow)}
+.feed-cat.weather{color:var(--amber);background:var(--amber-glow)}
+.feed-cat.maintenance{color:var(--cyan);background:rgba(6,182,212,.1)}
+.feed-cat.guest_issue{color:#A78BFA;background:rgba(167,139,250,.1)}
+.feed-cat.dispatch,.feed-cat.staffing,.feed-cat.routine,.feed-cat.other{color:var(--text3);background:rgba(100,116,139,.08)}
+.feed-text{font-family:var(--sans);font-size:12px;color:var(--text2);line-height:1.5;margin-top:4px}
+.feed-meta{font-family:var(--mono);font-size:9px;color:var(--text4);margin-top:4px}
+.feed-empty{text-align:center;padding:60px 20px;color:var(--text4);font-family:var(--mono);font-size:12px}
+.feed-empty-icon{font-size:32px;margin-bottom:12px;opacity:.3}
+
+/* ── Loading ── */
+.loading{text-align:center;padding:40px;color:var(--text3);font-family:var(--mono);font-size:12px}
+.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .main{grid-template-columns:1fr}
+  .right{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Top Bar ── -->
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">VOXINTEL</div>
+    <div class="topbar-tag">Park Operations</div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-status"><div class="pulse" id="statusDot"></div><span id="statusText">Connecting...</span></div>
+    <div class="topbar-clock" id="clock">--:--:--</div>
+    <button class="btn-refresh" onclick="refreshAll()">↻ REFRESH</button>
+  </div>
+</div>
+
+<!-- ── Stats Strip ── -->
+<div class="stats">
+  <div class="stat"><div class="stat-val" id="sRides">--</div><div class="stat-label">Rides Tracked</div></div>
+  <div class="stat"><div class="stat-val" id="sOpen" style="color:var(--green)">--</div><div class="stat-label">Open</div></div>
+  <div class="stat"><div class="stat-val" id="sDown" style="color:var(--red)">--</div><div class="stat-label">Down</div></div>
+  <div class="stat"><div class="stat-val" id="sIncidents" style="color:var(--amber)">--</div><div class="stat-label">Active Incidents</div></div>
+  <div class="stat"><div class="stat-val" id="sTransmissions">--</div><div class="stat-label">Transmissions Today</div></div>
+  <div class="stat"><div class="stat-val" id="sFlagged" style="color:var(--red)">--</div><div class="stat-label">Flagged</div></div>
+</div>
+
+<!-- ── Main Grid ── -->
+<div class="main">
+  <div class="left">
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('rides',this)">Ride Status</div>
+      <div class="tab" onclick="switchTab('incidents',this)">Incidents <span class="badge" id="incBadge" style="display:none">0</span></div>
+      <div class="tab" onclick="switchTab('weather',this)">Weather</div>
+      <div class="tab" onclick="switchTab('maint',this)">Maintenance</div>
+    </div>
+    <div class="board" id="contentArea">
+      <div class="loading"><div class="spinner"></div>Loading from Airtable...</div>
+    </div>
+  </div>
+  <div class="right">
+    <div class="feed-header">
+      <div class="feed-title">RADIO FEED</div>
+      <div class="feed-sub">LIVE TRANSMISSIONS · NEWEST FIRST</div>
+    </div>
+    <div class="feed" id="radioFeed">
+      <div class="feed-empty"><div class="feed-empty-icon">📻</div>Waiting for transmissions...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Config ──────────────────────────────────────────────────────
+// ── No PAT in client code — worker holds credentials server-side ──
+const API = "https://voxintel-proxy.amusementstandards.workers.dev/airtable";
+const HEADERS = {};  // Worker adds Authorization header
+
+// ── State ───────────────────────────────────────────────────────
+let rides = [], incidents = [], radioLog = [], weather = [], maint = [];
+let currentTab = 'rides';
+let refreshInterval = null;
+
+// ── Clock ───────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', {
+    hour12: false, timeZone: 'America/New_York'
+  }) + ' ET';
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── Airtable Fetch ──────────────────────────────────────────────
+async function fetchTable(table, opts = {}) {
+  const params = new URLSearchParams();
+  if (opts.sort) params.append('sort[0][field]', opts.sort);
+  if (opts.dir) params.append('sort[0][direction]', opts.dir);
+  if (opts.filter) params.append('filterByFormula', opts.filter);
+  if (opts.maxRecords) params.append('maxRecords', opts.maxRecords);
+  
+  const url = `${API}/${encodeURIComponent(table)}?${params}`;
+  try {
+    const r = await fetch(url, { headers: HEADERS });
+    if (!r.ok) throw new Error(`${r.status}`);
+    const data = await r.json();
+    return data.records || [];
+  } catch (e) {
+    console.error(`[VoxIntel] Fetch ${table}:`, e);
+    return [];
+  }
+}
+
+// ── Data Loaders ────────────────────────────────────────────────
+async function loadRides() {
+  rides = await fetchTable('Ride_Status', { sort: 'Ride Name', dir: 'asc' });
+  updateStats();
+  if (currentTab === 'rides') renderRides();
+}
+
+async function loadIncidents() {
+  incidents = await fetchTable('Incident_QuickLog', {
+    sort: 'Timestamp', dir: 'desc', maxRecords: 50
+  });
+  const active = incidents.filter(r => {
+    const s = r.fields['Status'];
+    return s && s !== 'CLOSED' && s !== 'RESOLVED';
+  });
+  const badge = document.getElementById('incBadge');
+  if (active.length > 0) {
+    badge.style.display = 'inline';
+    badge.textContent = active.length;
+  } else {
+    badge.style.display = 'none';
+  }
+  updateStats();
+  if (currentTab === 'incidents') renderIncidents();
+}
+
+async function loadRadioLog() {
+  radioLog = await fetchTable('Radio_Log', {
+    sort: 'Timestamp', dir: 'desc', maxRecords: 100
+  });
+  updateStats();
+  renderFeed();
+}
+
+async function loadWeather() {
+  weather = await fetchTable('Weather_Alerts', {
+    sort: 'Timestamp', dir: 'desc', maxRecords: 20
+  });
+  if (currentTab === 'weather') renderWeather();
+}
+
+async function loadMaint() {
+  maint = await fetchTable('Maintenance_Requests', {
+    sort: 'Timestamp', dir: 'desc', maxRecords: 50
+  });
+  if (currentTab === 'maint') renderMaint();
+}
+
+// ── Stats ───────────────────────────────────────────────────────
+function updateStats() {
+  document.getElementById('sRides').textContent = rides.length || '0';
+  const open = rides.filter(r => r.fields['Current Status'] === 'OPEN').length;
+  const down = rides.filter(r => (r.fields['Current Status'] || '').startsWith('DOWN_')).length;
+  document.getElementById('sOpen').textContent = open;
+  document.getElementById('sDown').textContent = down;
+
+  const activeInc = incidents.filter(r => {
+    const s = r.fields['Status'];
+    return s && s !== 'CLOSED' && s !== 'RESOLVED';
+  }).length;
+  document.getElementById('sIncidents').textContent = activeInc;
+  document.getElementById('sTransmissions').textContent = radioLog.length || '0';
+  const flagged = radioLog.filter(r => r.fields['Flagged']).length;
+  document.getElementById('sFlagged').textContent = flagged;
+}
+
+// ── Renderers ───────────────────────────────────────────────────
+function renderRides() {
+  const el = document.getElementById('contentArea');
+  if (!rides.length) { el.innerHTML = '<div class="loading">No rides in Ride_Status table yet</div>'; return; }
+
+  el.innerHTML = rides.map(r => {
+    const f = r.fields;
+    const status = f['Current Status'] || 'OPEN';
+    const cls = status === 'OPEN' ? 'open' : status.startsWith('DOWN_') ? 'down' : status === 'DELAYED' ? 'delayed' : 'closed';
+    const area = f['Area / Section'] || '';
+    const lastChange = f['Last Status Change'] ? timeSince(f['Last Status Change']) : '';
+    return `<div class="ride-card">
+      <div class="ride-dot ${cls}"></div>
+      <div><div class="ride-name">${esc(f['Ride Name'] || 'Unknown')}</div><div class="ride-area">${esc(area)}</div></div>
+      <div class="ride-status ${cls}">${esc(status.replace('DOWN_','↓ '))}</div>
+      <div class="ride-time">${lastChange}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderIncidents() {
+  const el = document.getElementById('contentArea');
+  if (!incidents.length) { el.innerHTML = '<div class="loading">No incidents logged</div>'; return; }
+
+  el.innerHTML = incidents.map(r => {
+    const f = r.fields;
+    const sev = (f['Severity'] || 'medium').toLowerCase();
+    const status = (f['Status'] || 'NEW').toLowerCase();
+    return `<div class="inc-card ${sev}">
+      <div class="inc-head">
+        <div class="inc-id">${esc(f['Incident ID'] || '')}</div>
+        <div class="inc-sev ${sev}">${esc(f['Severity'] || 'UNKNOWN')}</div>
+      </div>
+      <div class="inc-desc">${esc(f['Description'] || '')}</div>
+      <div class="inc-meta">
+        ${esc(f['Location / Ride'] || '')} · ${formatTime(f['Timestamp'])}
+        <span class="inc-status ${status === 'new' ? 'new' : status === 'responding' || status === 'acknowledged' ? 'responding' : 'resolved'}">${esc(f['Status'] || '')}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderWeather() {
+  const el = document.getElementById('contentArea');
+  if (!weather.length) { el.innerHTML = '<div class="loading">No weather alerts</div>'; return; }
+
+  el.innerHTML = weather.map(r => {
+    const f = r.fields;
+    const sev = (f['Severity'] || 'WATCH').toLowerCase();
+    return `<div class="inc-card ${sev === 'emergency' ? 'critical' : sev === 'warning' ? 'high' : 'medium'}">
+      <div class="inc-head">
+        <div class="inc-id">${esc(f['Alert ID'] || '')}</div>
+        <div class="inc-sev ${sev === 'emergency' ? 'critical' : sev === 'warning' ? 'high' : 'medium'}">${esc(f['Severity'] || '')}</div>
+      </div>
+      <div class="inc-desc"><strong>${esc(f['Alert Type'] || '')}</strong> — ${esc(f['Description'] || '')}</div>
+      <div class="inc-meta">${formatTime(f['Timestamp'])} · Source: ${esc(f['Source'] || '')}${f['All Clear At'] ? ' · All clear: ' + formatTime(f['All Clear At']) : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderMaint() {
+  const el = document.getElementById('contentArea');
+  if (!maint.length) { el.innerHTML = '<div class="loading">No maintenance requests</div>'; return; }
+
+  el.innerHTML = maint.map(r => {
+    const f = r.fields;
+    const pri = (f['Priority'] || 'routine').toLowerCase();
+    const cls = pri === 'emergency' ? 'critical' : pri === 'urgent' ? 'high' : pri === 'routine' ? 'medium' : 'low';
+    const status = (f['Status'] || 'OPEN').toLowerCase();
+    return `<div class="inc-card ${cls}">
+      <div class="inc-head">
+        <div class="inc-id">${esc(f['Request ID'] || '')}</div>
+        <div class="inc-sev ${cls}">${esc(f['Priority'] || '')}</div>
+      </div>
+      <div class="inc-desc"><strong>${esc(f['Ride / Asset'] || '')}</strong> [${esc(f['Category'] || '')}] — ${esc(f['Description'] || '')}</div>
+      <div class="inc-meta">
+        ${formatTime(f['Timestamp'])}
+        <span class="inc-status ${status === 'open' ? 'new' : status === 'complete' ? 'resolved' : 'responding'}">${esc(f['Status'] || '')}</span>
+        ${f['Assigned To'] ? ' · ' + esc(f['Assigned To']) : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderFeed() {
+  const el = document.getElementById('radioFeed');
+  if (!radioLog.length) {
+    el.innerHTML = '<div class="feed-empty"><div class="feed-empty-icon">📻</div>Waiting for transmissions...</div>';
+    return;
+  }
+
+  el.innerHTML = radioLog.map(r => {
+    const f = r.fields;
+    const cat = (f['Event Category'] || 'other').toLowerCase();
+    const flagged = f['Flagged'] === true;
+    return `<div class="feed-entry${flagged ? ' flagged' : ''}">
+      <div>
+        <span class="feed-time">${formatTime(f['Timestamp'])}</span>
+        <span class="feed-cat ${cat}">${esc(f['Event Category'] || 'OTHER')}</span>
+      </div>
+      <div class="feed-text">${esc(f['Cleaned Transcript'] || f['Raw Transcript'] || '')}</div>
+      <div class="feed-meta">${esc(f['Channel Label'] || '')} · ${esc(f['Frequency'] || '')}${f['Speaker Tag'] ? ' · ' + esc(f['Speaker Tag']) : ''} · ${f['Confidence'] || 0}% conf</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Tab Switching ───────────────────────────────────────────────
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  const area = document.getElementById('contentArea');
+  area.innerHTML = '<div class="loading"><div class="spinner"></div>Loading...</div>';
+
+  if (tab === 'rides') { loadRides(); }
+  else if (tab === 'incidents') { loadIncidents(); }
+  else if (tab === 'weather') { loadWeather(); }
+  else if (tab === 'maint') { loadMaint(); }
+}
+
+// ── Refresh All ─────────────────────────────────────────────────
+async function refreshAll() {
+  document.getElementById('statusText').textContent = 'Refreshing...';
+  document.getElementById('statusDot').style.background = 'var(--amber)';
+
+  await Promise.all([loadRides(), loadIncidents(), loadRadioLog(), loadWeather(), loadMaint()]);
+
+  document.getElementById('statusText').textContent = 'Connected';
+  document.getElementById('statusDot').style.background = 'var(--green)';
+}
+
+// ── Utilities ───────────────────────────────────────────────────
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function formatTime(iso) {
+  if (!iso) return '--';
+  const d = new Date(iso);
+  return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/New_York' });
+}
+
+function timeSince(iso) {
+  if (!iso) return '';
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
+
+// ── Init ────────────────────────────────────────────────────────
+(async function init() {
+  await refreshAll();
+  // Auto-refresh every 30 seconds
+  refreshInterval = setInterval(refreshAll, 30000);
+})();
+</script>
+</body>
+</html>
