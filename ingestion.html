@@ -65,10 +65,48 @@ nav{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:cente
 .section-title em{color:var(--gold);font-style:italic}
 .section-sub{font-size:15px;font-weight:300;color:var(--muted);line-height:1.75;max-width:560px}
 
-/* animated pipeline flow */
-.pipeline-diagram{margin-top:56px;position:relative}
-.pipeline-row{display:grid;grid-template-columns:1fr 60px 1fr 60px 1fr 60px 1fr;align-items:center;gap:0}
-.pipe-col{display:flex;flex-direction:column;gap:8px}
+/* animated pipeline flow — VERTICAL */
+.pipeline-diagram{margin-top:56px;max-width:760px;margin-left:auto;margin-right:auto}
+
+/* step rows */
+.vp-step{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}
+@media(max-width:700px){.vp-step{grid-template-columns:1fr;gap:12px}}
+.vp-step-label{padding-top:4px;display:flex;flex-direction:column;gap:4px;text-align:right}
+@media(max-width:700px){.vp-step-label{text-align:left;flex-direction:row;align-items:center;gap:10px}}
+.vp-step-num{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em}
+.vp-step-title{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--bright);letter-spacing:.04em;text-transform:uppercase}
+.vp-step-sub{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:.04em}
+@media(max-width:700px){.vp-step-sub{display:none}}
+
+/* source cards in step 1 */
+.vp-sources{display:flex;flex-direction:column;gap:6px}
+.vp-workers{display:flex;flex-direction:column;gap:5px}
+.vp-worker{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.4);background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:4px;padding:7px 12px;letter-spacing:.04em}
+
+/* normalization engine in step 3 */
+.vp-engine{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:20px 22px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start}
+@media(max-width:600px){.vp-engine{grid-template-columns:1fr}}
+.vp-engine-steps{display:flex;flex-direction:column;gap:0}
+.vp-estep{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid rgba(201,168,76,.08);font-size:12px;color:rgba(255,255,255,.45);line-height:1.45}
+.vp-estep:last-child{border-bottom:none}
+.vp-estep-n{color:rgba(201,168,76,.5);flex-shrink:0;font-family:var(--font-mono);font-size:11px;padding-top:1px}
+.vp-engine-tables{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.vp-etable{font-family:var(--font-mono);font-size:8px;letter-spacing:.05em;color:rgba(201,168,76,.55);background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.12);border-radius:3px;padding:4px 9px;white-space:nowrap}
+
+/* score output in step 4 */
+.vp-scores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:500px){.vp-scores{grid-template-columns:1fr}}
+
+/* animated vertical connector between steps */
+.vp-arrow{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:center;padding:6px 0}
+@media(max-width:700px){.vp-arrow{grid-template-columns:1fr}}
+.vp-arrow::before{content:'';display:block}
+@media(max-width:700px){.vp-arrow::before{display:none}}
+.vp-arrow-wrap{display:flex;flex-direction:column;align-items:flex-start;padding-left:8px}
+.vp-arrow-line{width:2px;height:36px;background:rgba(255,255,255,.07);border-radius:1px;position:relative;overflow:visible;margin-left:16px}
+.vp-particle{position:absolute;left:-3px;width:8px;height:8px;border-radius:50%;animation:vParticle 2s ease-in-out infinite}
+@keyframes vParticle{0%{top:-8px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:calc(100% + 8px);opacity:0}}
+.vp-arrow-head{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid rgba(255,255,255,.2);margin-left:12px}
 .pipe-source{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:14px 16px;position:relative;overflow:hidden;transition:border-color .3s,transform .2s}
 .pipe-source:hover{transform:translateY(-2px)}
 .pipe-source::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
@@ -86,31 +124,7 @@ nav{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:cente
 .ps-ellis .ps-tag{background:rgba(6,182,212,.12);color:rgba(6,182,212,.8);border:1px solid rgba(6,182,212,.2)}
 .ps-custom .ps-tag{background:rgba(139,92,246,.12);color:rgba(139,92,246,.8);border:1px solid rgba(139,92,246,.2)}
 
-/* animated arrows between columns */
-.pipe-arrow{display:flex;align-items:center;justify-content:center;position:relative;height:100%}
-.pipe-line{width:100%;height:1px;background:rgba(201,168,76,.2);position:relative;overflow:visible}
-.pipe-line::after{content:'';position:absolute;top:-2px;right:-5px;width:0;height:0;border-left:6px solid rgba(201,168,76,.4);border-top:3px solid transparent;border-bottom:3px solid transparent}
-.pipe-particle{position:absolute;top:-3px;width:6px;height:6px;border-radius:50%;animation:flowParticle 2.4s ease-in-out infinite}
-@keyframes flowParticle{0%{left:-6px;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:calc(100% + 6px);opacity:0}}
-.pp-mobaro{background:var(--mobaro);animation-delay:0s}
-.pp-cmd{background:var(--cmd);animation-delay:.4s}
-.pp-sw24{background:var(--sw24);animation-delay:.8s}
-.pp-state{background:var(--state);animation-delay:1.2s}
-.pp-ellis{background:var(--ellis);animation-delay:1.6s}
-.pp-gold{background:var(--gold);animation-delay:0s}
-
-/* center column — normalization engine */
-.pipe-engine{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:22px 18px;text-align:center;position:relative;overflow:hidden}
-.pipe-engine::before{content:'';position:absolute;inset:-1px;border-radius:8px;background:linear-gradient(135deg,rgba(201,168,76,.1),transparent 40%,rgba(201,168,76,.05));pointer-events:none}
-.pe-label{font-family:var(--font-mono);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px}
-.pe-name{font-family:var(--font-serif);font-size:18px;color:var(--gold);line-height:1.1;margin-bottom:8px}
-.pe-steps{display:flex;flex-direction:column;gap:4px;margin-top:8px}
-.pe-step{font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.4);padding:3px 0;border-bottom:1px solid rgba(255,255,255,.05);text-align:left}
-.pe-step:last-child{border-bottom:none}
-.pe-step::before{content:'→ ';color:rgba(201,168,76,.5)}
-
-/* output column */
-.pipe-output{display:flex;flex-direction:column;gap:8px}
+/* pipe-source cards — used in step 1 */
 .po-score{border-radius:6px;padding:12px 14px;text-align:center;transition:transform .2s}
 .po-score:hover{transform:translateY(-2px)}
 .po-ride{background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.2)}
@@ -280,7 +294,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:28px 4
     <a href="https://amusementstandards.com/as360/lens-iq.html" style="color:#0099FF">LensIQ</a>
     <a href="https://amusementstandards.com/voxintel.html" style="color:#a78bfa">VoxIntel</a>
     <a href="https://amusementstandards.com/as360/methodology.html">Methodology</a>
-    <a href="mailto:adam@amusementstandards.com" class="nav-cta">Request Demo</a>
+    <a href="/cdn-cgi/l/email-protection#761712171b36171b0305131b1318020502171812170412055815191b" class="nav-cta">Request Demo</a>
   </div>
 </nav>
 
@@ -312,137 +326,114 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:28px 4
     </div>
 
     <div class="pipeline-diagram reveal">
-      <div class="pipeline-row">
 
-        <!-- Sources column -->
-        <div class="pipe-col">
-          <div class="pipe-source ps-mobaro">
-            <div class="ps-name">Mobaro</div>
-            <div class="ps-desc">Inspections, downtime, maintenance records</div>
-            <span class="ps-tag">API</span>
-          </div>
-          <div class="pipe-source ps-cmd">
-            <div class="ps-name">CommandCentr</div>
-            <div class="ps-desc">Ride checks, throughput, incidents</div>
-            <span class="ps-tag">API</span>
-          </div>
-          <div class="pipe-source ps-sw24">
-            <div class="ps-name">24/7 Software</div>
-            <div class="ps-desc">Work orders, guard tours, maintenance</div>
-            <span class="ps-tag">API / Export</span>
-          </div>
-          <div class="pipe-source ps-state">
-            <div class="ps-name">State Databases</div>
-            <div class="ps-desc">Public inspection records, compliance filings</div>
-            <span class="ps-tag">Scrape / FOIA</span>
-          </div>
-          <div class="pipe-source ps-ellis">
-            <div class="ps-name">Ellis EAVS</div>
-            <div class="ps-desc">Aquatic AI alerts, drowning detection events</div>
-            <span class="ps-tag">Webhook</span>
-          </div>
+      <!-- STEP 1: Sources -->
+      <div class="vp-step">
+        <div class="vp-step-label">
+          <span class="vp-step-num">01</span>
+          <span class="vp-step-title">Source Platforms</span>
+          <span class="vp-step-sub">Your existing operational data</span>
         </div>
-
-        <!-- Arrow 1 -->
-        <div class="pipe-arrow">
-          <div class="pipe-line">
-            <div class="pipe-particle pp-mobaro"></div>
-            <div class="pipe-particle pp-cmd"></div>
-            <div class="pipe-particle pp-sw24"></div>
-            <div class="pipe-particle pp-state"></div>
-            <div class="pipe-particle pp-ellis"></div>
-          </div>
+        <div class="vp-sources">
+          <div class="pipe-source ps-mobaro"><div class="ps-name">Mobaro</div><div class="ps-desc">Inspections, downtime, maintenance records</div><span class="ps-tag">API</span></div>
+          <div class="pipe-source ps-cmd"><div class="ps-name">CommandCentr</div><div class="ps-desc">Ride checks, throughput, incidents</div><span class="ps-tag">API</span></div>
+          <div class="pipe-source ps-sw24"><div class="ps-name">24/7 Software</div><div class="ps-desc">Work orders, guard tours, maintenance</div><span class="ps-tag">API / Export</span></div>
+          <div class="pipe-source ps-state"><div class="ps-name">State Databases</div><div class="ps-desc">Public inspection records, compliance filings</div><span class="ps-tag">Scrape / FOIA</span></div>
+          <div class="pipe-source ps-ellis"><div class="ps-name">Ellis EAVS</div><div class="ps-desc">Aquatic AI alerts, drowning detection events</div><span class="ps-tag">Webhook</span></div>
         </div>
-
-        <!-- Connector workers -->
-        <div class="pipe-col">
-          <div style="background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:6px;padding:14px 16px;text-align:center">
-            <div style="font-family:var(--font-mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Cloudflare Workers</div>
-            <div style="font-family:var(--font-serif);font-size:16px;color:var(--bright);margin-bottom:6px">Source Connectors</div>
-            <div style="font-size:11px;color:var(--muted)">Per-platform Workers poll APIs, parse webhooks, and ingest exported files</div>
-          </div>
-          <div style="background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:6px;padding:12px 14px">
-            <div style="font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.35);line-height:1.8">
-              <span style="color:var(--teal)">mobaro-connector</span>.workers.dev<br>
-              <span style="color:var(--cmd)">cmdcentr-connector</span>.workers.dev<br>
-              <span style="color:var(--sw24)">sw24-connector</span>.workers.dev<br>
-              <span style="color:var(--state)">state-ingest</span>.workers.dev<br>
-              <span style="color:var(--ellis)">ellis-eavs</span>.workers.dev
-            </div>
-          </div>
-        </div>
-
-        <!-- Arrow 2 -->
-        <div class="pipe-arrow">
-          <div class="pipe-line">
-            <div class="pipe-particle pp-gold" style="animation-delay:.2s"></div>
-            <div class="pipe-particle pp-gold" style="animation-delay:1.4s"></div>
-          </div>
-        </div>
-
-        <!-- Normalization engine -->
-        <div class="pipe-engine">
-          <div class="pe-label">AS 360 Engine</div>
-          <div class="pe-name">Field<br>Normalization</div>
-          <div class="pe-steps">
-            <div class="pe-step">Schema mapping</div>
-            <div class="pe-step">Type coercion</div>
-            <div class="pe-step">0–100 conversion</div>
-            <div class="pe-step">Pillar assignment</div>
-            <div class="pe-step">Weight application</div>
-            <div class="pe-step">Score recalculation</div>
-          </div>
-        </div>
-
-        <!-- Arrow 3 -->
-        <div class="pipe-arrow">
-          <div class="pipe-line">
-            <div class="pipe-particle pp-gold" style="animation-delay:.6s"></div>
-            <div class="pipe-particle pp-gold" style="animation-delay:1.8s"></div>
-          </div>
-        </div>
-
-        <!-- Airtable -->
-        <div class="pipe-col">
-          <div style="background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:6px;padding:14px 16px;text-align:center;margin-bottom:8px">
-            <div style="font-family:var(--font-mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">AS360 Intelligence Hub</div>
-            <div style="font-family:var(--font-serif);font-size:16px;color:var(--bright);margin-bottom:4px">Airtable</div>
-            <div style="font-size:11px;color:var(--muted)">appeCjHyrnZ5ARTi0</div>
-          </div>
-          <div style="background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.15);border-radius:4px;padding:10px 12px;font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.35);line-height:1.8">
-            Normalized_Streams<br>
-            External_Ingestion_Log<br>
-            RIDE_Score_Inputs<br>
-            SPLASH_Score_Inputs<br>
-            PLAY_Score_Inputs
-          </div>
-        </div>
-
-        <!-- Arrow 4 -->
-        <div class="pipe-arrow">
-          <div class="pipe-line">
-            <div class="pipe-particle pp-gold" style="animation-delay:1s"></div>
-            <div class="pipe-particle pp-gold" style="animation-delay:2.2s"></div>
-          </div>
-        </div>
-
-        <!-- Output scores -->
-        <div class="pipe-output">
-          <div class="po-score po-ride">
-            <div class="po-name">RIDE</div>
-            <div class="po-pillars">R · I · D · E</div>
-          </div>
-          <div class="po-score po-splash">
-            <div class="po-name">SPLASH</div>
-            <div class="po-pillars">S · P · L · A · S · H</div>
-          </div>
-          <div class="po-score po-play">
-            <div class="po-name">PLAY</div>
-            <div class="po-pillars">P · L · A · Y</div>
-          </div>
-        </div>
-
       </div>
+
+      <!-- down arrow -->
+      <div class="vp-arrow">
+        <div class="vp-arrow-wrap">
+          <div class="vp-arrow-line">
+            <div class="vp-particle" style="background:var(--mobaro);animation-delay:0s"></div>
+            <div class="vp-particle" style="background:var(--cmd);animation-delay:.5s"></div>
+            <div class="vp-particle" style="background:var(--sw24);animation-delay:1s"></div>
+            <div class="vp-particle" style="background:var(--state);animation-delay:1.5s"></div>
+            <div class="vp-particle" style="background:var(--ellis);animation-delay:2s"></div>
+          </div>
+          <div class="vp-arrow-head"></div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Connectors -->
+      <div class="vp-step">
+        <div class="vp-step-label">
+          <span class="vp-step-num">02</span>
+          <span class="vp-step-title">Cloudflare Workers</span>
+          <span class="vp-step-sub">Per-platform connectors — poll, parse, ingest</span>
+        </div>
+        <div class="vp-workers">
+          <div class="vp-worker" style="border-color:rgba(99,102,241,.3)"><span style="color:var(--mobaro);font-weight:700">mobaro</span>-connector.workers.dev</div>
+          <div class="vp-worker" style="border-color:rgba(245,158,11,.3)"><span style="color:var(--cmd);font-weight:700">cmdcentr</span>-connector.workers.dev</div>
+          <div class="vp-worker" style="border-color:rgba(16,185,129,.3)"><span style="color:var(--sw24);font-weight:700">sw24</span>-connector.workers.dev</div>
+          <div class="vp-worker" style="border-color:rgba(100,116,139,.3)"><span style="color:var(--state);font-weight:700">state-ingest</span>.workers.dev</div>
+          <div class="vp-worker" style="border-color:rgba(6,182,212,.3)"><span style="color:var(--ellis);font-weight:700">ellis-eavs</span>.workers.dev</div>
+        </div>
+      </div>
+
+      <!-- down arrow -->
+      <div class="vp-arrow">
+        <div class="vp-arrow-wrap">
+          <div class="vp-arrow-line">
+            <div class="vp-particle" style="background:var(--gold);animation-delay:0s"></div>
+            <div class="vp-particle" style="background:var(--gold);animation-delay:1.2s"></div>
+          </div>
+          <div class="vp-arrow-head"></div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Normalization engine -->
+      <div class="vp-step">
+        <div class="vp-step-label">
+          <span class="vp-step-num">03</span>
+          <span class="vp-step-title">Field Normalization Engine</span>
+          <span class="vp-step-sub">AS 360 Intelligence Hub · appeCjHyrnZ5ARTi0</span>
+        </div>
+        <div class="vp-engine">
+          <div class="vp-engine-steps">
+            <div class="vp-estep"><span class="vp-estep-n">→</span><span>Schema mapping — translate source field names to AS 360 stream identifiers</span></div>
+            <div class="vp-estep"><span class="vp-estep-n">→</span><span>Type coercion — binary flags → pass rates, severity codes → penalty scores</span></div>
+            <div class="vp-estep"><span class="vp-estep-n">→</span><span>0–100 conversion — linear rescale, penalty-decay, or range normalization</span></div>
+            <div class="vp-estep"><span class="vp-estep-n">→</span><span>Pillar assignment — each stream value routed to R · I · D · E or S · P · L · A · S · H</span></div>
+            <div class="vp-estep"><span class="vp-estep-n">→</span><span>Provenance tagging — source platform, connector version, confidence level recorded</span></div>
+          </div>
+          <div class="vp-engine-tables">
+            <div class="vp-etable">Normalized_Streams</div>
+            <div class="vp-etable">External_Ingestion_Log</div>
+            <div class="vp-etable">RIDE_Score_Inputs</div>
+            <div class="vp-etable">SPLASH_Score_Inputs</div>
+            <div class="vp-etable">PLAY_Score_Inputs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- down arrow -->
+      <div class="vp-arrow">
+        <div class="vp-arrow-wrap">
+          <div class="vp-arrow-line">
+            <div class="vp-particle" style="background:var(--gold);animation-delay:.3s"></div>
+            <div class="vp-particle" style="background:var(--gold);animation-delay:1.5s"></div>
+          </div>
+          <div class="vp-arrow-head"></div>
+        </div>
+      </div>
+
+      <!-- STEP 4: Score output -->
+      <div class="vp-step">
+        <div class="vp-step-label">
+          <span class="vp-step-num">04</span>
+          <span class="vp-step-title">Composite Score Output</span>
+          <span class="vp-step-sub">Same model, same output — regardless of data source</span>
+        </div>
+        <div class="vp-scores">
+          <div class="po-score po-ride"><div class="po-name">RIDE</div><div class="po-pillars">Readiness · Integrity · Delivery · Environment</div><div style="font-family:var(--font-mono);font-size:8px;color:rgba(255,107,53,.45);margin-top:4px">15 streams · 4 pillars</div></div>
+          <div class="po-score po-splash"><div class="po-name">SPLASH</div><div class="po-pillars">Safety · Protocol · Lifeguard · Aquatic · Structure · Hazard</div><div style="font-family:var(--font-mono);font-size:8px;color:rgba(30,158,212,.45);margin-top:4px">12 streams · 6 pillars</div></div>
+          <div class="po-score po-play"><div class="po-name">PLAY</div><div class="po-pillars">Performance · Liability · Attraction · Youth</div><div style="font-family:var(--font-mono);font-size:8px;color:rgba(31,184,122,.45);margin-top:4px">10 streams · 4 pillars</div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -925,7 +916,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:28px 4
         <p class="ic-body">When a RIDE Score is informed by state inspection records, Mobaro's independently-collected maintenance data, and Ellis EAVS aquatic alerts — alongside native AS 360 audits and OpsScan behavioral data — a park operator cannot improve their score by providing favorable self-reported inputs alone. The aggregation layer is the integrity layer. That's what makes the number underwriting-grade.</p>
       </div>
       <div class="ic-btns">
-        <a href="mailto:adam@amusementstandards.com" class="btn btn-primary">Request Insurer Dossier</a>
+        <a href="/cdn-cgi/l/email-protection#08696c69654869657d7b6d656d667c7b7c69666c697a6c7b266b6765" class="btn btn-primary">Request Insurer Dossier</a>
         <a href="https://amusementstandards.com/as360-platform.html#insurers" class="btn btn-ghost">For Insurers →</a>
       </div>
     </div>
@@ -939,7 +930,7 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:28px 4
     <h2 class="cta-title">Already running<br><em>Mobaro or CommandCentr?</em></h2>
     <p class="cta-sub">Your existing operational data is already generating RIDE Score inputs. You don't need to change anything. Connect your platform and your historical records start scoring on day one.</p>
     <div class="cta-btns">
-      <a href="mailto:adam@amusementstandards.com" class="btn btn-primary">Discuss Your Platform</a>
+      <a href="/cdn-cgi/l/email-protection#59383d38341938342c2a3c343c372d2a2d38373d382b3d2a773a3634" class="btn btn-primary">Discuss Your Platform</a>
       <a href="https://amusementstandards.com/as360-platform.html" class="btn btn-ghost">Full AS 360 Platform →</a>
       <a href="https://amusementstandards.com/as360/methodology.html" class="btn btn-ghost">Scoring Methodology →</a>
     </div>
@@ -955,12 +946,12 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:28px 4
     <a href="https://amusementstandards.com/as360/lens-iq.html" style="color:rgba(0,153,255,.6)">LensIQ</a>
     <a href="https://amusementstandards.com/voxintel.html" style="color:rgba(167,139,250,.6)">VoxIntel</a>
     <a href="https://amusementstandards.com/as360/methodology.html">Methodology</a>
-    <a href="mailto:adam@amusementstandards.com">Contact</a>
+    <a href="/cdn-cgi/l/email-protection#2b4a4f4a466b4a465e584e464e455f585f4a454f4a594f5805484446">Contact</a>
   </div>
   <div class="footer-copy">© 2025 Amusement Standards · RIDE Score™ · SPLASH Score™ · PLAY Score™ · Proprietary</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* reveal on scroll */
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible') })
@@ -990,20 +981,4 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el))
       }, 28)
     })
 
-    const scoreEl = document.getElementById('vis-score')
-    if (scoreEl) {
-      let c = 0
-      const iv = setInterval(() => {
-        c = Math.min(81, c + 2)
-        scoreEl.textContent = c
-        if (c >= 81) clearInterval(iv)
-      }, 22)
-    }
-
-    obs.disconnect()
-  }, { threshold: .3 })
-  obs.observe(section)
-})()
-</script>
-</body>
-</html>
+    const scoreEl = document.getElementById
