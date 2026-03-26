@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LensIQ — Ride Mapping Setup</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:   #0c0f14;
+  --nm:     #141820;
+  --nl:     #1c2230;
+  --nb:     #232b3a;
+  --b:      #0099FF;
+  --bd:     #006acc;
+  --bf:     rgba(0,153,255,0.07);
+  --gold:   #D4A843;
+  --green:  #22c55e;
+  --red:    #ef4444;
+  --amber:  #f59e0b;
+  --t:      #e8eaf0;
+  --t2:     #8b93a8;
+  --t3:     #4a5268;
+  --mono:   'IBM Plex Mono', monospace;
+  --disp:   'Barlow Condensed', sans-serif;
+  --body:   'Barlow', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--navy);
+  color: var(--t);
+  font-family: var(--body);
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  padding: 14px 40px;
+  display: flex; align-items:center; justify-content:space-between;
+  background: rgba(12,15,20,.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--nb);
+}
+.nav-brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.nav-logo {
+  width:26px; height:26px; border:2px solid var(--b); border-radius:3px;
+  display:flex; align-items:center; justify-content:center;
+}
+.nav-title { font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.15em; text-transform:uppercase; color:var(--t2); }
+.nav-title span { color:var(--b); }
+.nav-badge {
+  font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; padding:4px 10px; border-radius:2px;
+  background: rgba(0,153,255,.1); color:var(--b); border:1px solid rgba(0,153,255,.25);
+}
+
+/* ── LAYOUT ── */
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 96px 40px 80px;
+}
+
+/* ── PAGE HEADER ── */
+.page-eyebrow {
+  font-family: var(--mono); font-size:10px; font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--b);
+  display:flex; align-items:center; gap:10px; margin-bottom:16px;
+}
+.page-eyebrow::before { content:''; width:20px; height:2px; background:var(--b); }
+.page-title {
+  font-family:var(--disp); font-size:clamp(42px,5vw,64px);
+  font-weight:900; line-height:.9; letter-spacing:-.02em; margin-bottom:10px;
+}
+.page-title span { color:var(--b); }
+.page-sub { font-size:14px; color:var(--t2); line-height:1.7; max-width:560px; margin-bottom:40px; }
+
+/* ── PLATFORM SELECTOR ── */
+.platform-select-label {
+  font-family:var(--mono); font-size:10px; font-weight:600;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--t2); margin-bottom:12px;
+}
+.platform-tabs {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:2px;
+  margin-bottom:40px; background:var(--nb); border-radius:4px; overflow:hidden;
+}
+.ptab {
+  padding:16px 20px; cursor:pointer;
+  background:var(--nm); border:none; text-align:left;
+  transition:background .2s;
+  display:flex; align-items:center; gap:10px;
+}
+.ptab:hover { background:var(--nl); }
+.ptab.active { background:var(--bf); }
+.ptab-dot {
+  width:8px; height:8px; border-radius:50%; flex-shrink:0;
+}
+.ptab[data-platform="nola"] .ptab-dot    { background:var(--b); }
+.ptab[data-platform="safari"] .ptab-dot  { background:var(--green); }
+.ptab[data-platform="sensource"] .ptab-dot { background:var(--amber); }
+.ptab.active[data-platform="nola"]      { border-top:2px solid var(--b); }
+.ptab.active[data-platform="safari"]    { border-top:2px solid var(--green); }
+.ptab.active[data-platform="sensource"] { border-top:2px solid var(--amber); }
+.ptab-name {
+  font-family:var(--mono); font-size:11px; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+}
+.ptab[data-platform="nola"] .ptab-name    { color:var(--b); }
+.ptab[data-platform="safari"] .ptab-name  { color:var(--green); }
+.ptab[data-platform="sensource"] .ptab-name { color:var(--amber); }
+.ptab-desc { font-size:11px; color:var(--t3); margin-top:2px; }
+
+/* ── PLATFORM INFO BANNER ── */
+.platform-info {
+  display:none; padding:16px 20px; border-radius:4px; margin-bottom:32px;
+  border:1px solid; font-size:12px; line-height:1.6; color:var(--t2);
+}
+.platform-info.visible { display:block; }
+.platform-info.nola    { background:rgba(0,153,255,.06); border-color:rgba(0,153,255,.2); }
+.platform-info.safari  { background:rgba(34,197,94,.05); border-color:rgba(34,197,94,.2); }
+.platform-info.sensource { background:rgba(245,158,11,.05); border-color:rgba(245,158,11,.2); }
+.pi-head { font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; margin-bottom:6px; }
+.nola .pi-head    { color:var(--b); }
+.safari .pi-head  { color:var(--green); }
+.sensource .pi-head { color:var(--amber); }
+
+/* ── FORM ── */
+.form-card {
+  background:var(--nm); border:1px solid var(--nb); border-radius:6px; overflow:hidden;
+}
+.form-section {
+  padding:28px 28px 0; border-bottom:1px solid var(--nb); margin-bottom:0;
+}
+.form-section:last-of-type { border-bottom:none; padding-bottom:28px; }
+.section-head {
+  font-family:var(--mono); font-size:9px; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--t3);
+  margin-bottom:20px; display:flex; align-items:center; gap:10px;
+}
+.section-head::after { content:''; flex:1; height:1px; background:var(--nb); }
+
+.field-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+.field-grid.full { grid-template-columns:1fr; }
+.field-grid.three { grid-template-columns:1fr 1fr 1fr; }
+
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label {
+  font-family:var(--mono); font-size:9px; font-weight:600;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--t2);
+  display:flex; align-items:center; gap:6px;
+}
+.req { color:var(--b); }
+.field input, .field select, .field textarea {
+  background:var(--nl); border:1px solid var(--nb); border-radius:3px;
+  color:var(--t); font-family:var(--mono); font-size:12px;
+  padding:10px 12px; transition:border-color .2s, background .2s;
+  outline:none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color:var(--b); background:rgba(0,153,255,.04);
+}
+.field input::placeholder, .field textarea::placeholder { color:var(--t3); }
+.field select { cursor:pointer; }
+.field select option { background:var(--nm); }
+.field textarea { resize:vertical; min-height:72px; line-height:1.6; }
+.field-hint { font-size:11px; color:var(--t3); line-height:1.5; }
+
+/* platform ID fields get colored border when platform selected */
+.platform-field input:focus { border-color:var(--b); }
+body.platform-nola .platform-field input:focus    { border-color:var(--b); }
+body.platform-safari .platform-field input:focus  { border-color:var(--green); }
+body.platform-sensource .platform-field input:focus { border-color:var(--amber); }
+
+/* ── HELP TEXT BLOCKS ── */
+.help-block {
+  background:var(--nl); border:1px solid var(--nb); border-radius:4px;
+  padding:14px 16px; margin-top:8px; display:none;
+}
+.help-block.visible { display:block; }
+.help-block p { font-size:12px; color:var(--t2); line-height:1.65; }
+.help-block code {
+  font-family:var(--mono); font-size:11px; color:var(--b);
+  background:rgba(0,153,255,.1); padding:1px 5px; border-radius:2px;
+}
+
+/* ── TOGGLE ── */
+.toggle-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 0;
+}
+.toggle-info { flex:1; }
+.toggle-label {
+  font-family:var(--mono); font-size:11px; font-weight:600;
+  letter-spacing:.08em; color:var(--t);
+}
+.toggle-sub { font-size:12px; color:var(--t3); margin-top:3px; }
+.toggle {
+  position:relative; width:44px; height:24px; cursor:pointer; flex-shrink:0;
+}
+.toggle input { opacity:0; width:0; height:0; }
+.toggle-track {
+  position:absolute; inset:0; background:var(--nb);
+  border-radius:12px; transition:background .2s;
+}
+.toggle input:checked ~ .toggle-track { background:var(--b); }
+.toggle-thumb {
+  position:absolute; top:3px; left:3px; width:18px; height:18px;
+  background:#fff; border-radius:50%; transition:transform .2s; box-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+.toggle input:checked ~ .toggle-track .toggle-thumb { transform:translateX(20px); }
+
+/* ── SUBMIT AREA ── */
+.form-footer {
+  padding:24px 28px; background:var(--nl); border-top:1px solid var(--nb);
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+.form-status { font-family:var(--mono); font-size:11px; color:var(--t3); flex:1; }
+.form-status.success { color:var(--green); }
+.form-status.error   { color:var(--red); }
+.btn-submit {
+  font-family:var(--mono); font-size:11px; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase;
+  background:var(--b); color:#fff; border:none;
+  padding:12px 28px; border-radius:2px; cursor:pointer;
+  transition:background .2s, transform .1s;
+  display:flex; align-items:center; gap:8px;
+}
+.btn-submit:hover  { background:#33aaff; }
+.btn-submit:active { transform:scale(.98); }
+.btn-submit:disabled { background:var(--nb); color:var(--t3); cursor:not-allowed; }
+.btn-reset {
+  font-family:var(--mono); font-size:11px; font-weight:500;
+  letter-spacing:.1em; text-transform:uppercase;
+  background:transparent; color:var(--t3); border:1px solid var(--nb);
+  padding:12px 20px; border-radius:2px; cursor:pointer; transition:all .2s;
+}
+.btn-reset:hover { border-color:var(--t2); color:var(--t); }
+
+/* ── RECORDS TABLE ── */
+.records-section { margin-top:48px; }
+.records-head {
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;
+}
+.records-title {
+  font-family:var(--mono); font-size:10px; font-weight:700;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--t2);
+}
+.records-count {
+  font-family:var(--mono); font-size:10px; color:var(--b);
+  background:rgba(0,153,255,.1); border:1px solid rgba(0,153,255,.2);
+  padding:2px 9px; border-radius:2px;
+}
+.records-table-wrap { overflow-x:auto; }
+table {
+  width:100%; border-collapse:collapse;
+  background:var(--nm); border:1px solid var(--nb); border-radius:4px;
+  overflow:hidden;
+}
+thead th {
+  font-family:var(--mono); font-size:9px; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--t3);
+  padding:10px 14px; text-align:left; background:var(--nl);
+  border-bottom:1px solid var(--nb); white-space:nowrap;
+}
+tbody tr { border-bottom:1px solid rgba(255,255,255,.04); transition:background .15s; }
+tbody tr:last-child { border-bottom:none; }
+tbody tr:hover { background:var(--nl); }
+tbody td { padding:10px 14px; font-size:12px; color:var(--t2); vertical-align:middle; }
+.td-mono { font-family:var(--mono); font-size:10px; }
+.td-platform {
+  font-family:var(--mono); font-size:9px; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase;
+  padding:2px 7px; border-radius:2px;
+}
+.td-platform.nola      { background:rgba(0,153,255,.1); color:var(--b); border:1px solid rgba(0,153,255,.2); }
+.td-platform.safari    { background:rgba(34,197,94,.1); color:var(--green); border:1px solid rgba(34,197,94,.2); }
+.td-platform.sensource { background:rgba(245,158,11,.1); color:var(--amber); border:1px solid rgba(245,158,11,.2); }
+.td-active { display:flex; align-items:center; gap:5px; font-family:var(--mono); font-size:9px; }
+.td-active-dot { width:6px; height:6px; border-radius:50%; }
+.dot-on  { background:var(--green); }
+.dot-off { background:var(--t3); }
+.btn-delete {
+  font-family:var(--mono); font-size:9px; font-weight:600;
+  letter-spacing:.08em; text-transform:uppercase;
+  background:transparent; color:var(--t3); border:1px solid var(--nb);
+  padding:3px 9px; border-radius:2px; cursor:pointer; transition:all .2s;
+}
+.btn-delete:hover { border-color:var(--red); color:var(--red); }
+.empty-row td { text-align:center; padding:28px; color:var(--t3); font-size:12px; }
+
+/* ── SPINNER ── */
+.spinner {
+  width:14px; height:14px; border:2px solid rgba(255,255,255,.2);
+  border-top-color:#fff; border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px) {
+  nav { padding:12px 20px; }
+  .page { padding:80px 20px 60px; }
+  .platform-tabs { grid-template-columns:1fr; }
+  .field-grid { grid-template-columns:1fr; }
+  .field-grid.three { grid-template-columns:1fr 1fr; }
+  .form-footer { flex-direction:column; align-items:stretch; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://amusementstandards.com" class="nav-brand">
+    <div class="nav-logo">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <rect x="1" y="1" width="4" height="4" fill="#0099FF"/>
+        <rect x="7" y="1" width="4" height="4" fill="#0099FF" opacity=".4"/>
+        <rect x="1" y="7" width="4" height="4" fill="#0099FF" opacity=".4"/>
+        <rect x="7" y="7" width="4" height="4" fill="#0099FF"/>
+      </svg>
+    </div>
+    <span class="nav-title">Amusement <span>Standards</span></span>
+  </a>
+  <span class="nav-badge">LensIQ Setup</span>
+</nav>
+
+<div class="page">
+
+  <div class="page-eyebrow">LensIQ · Ride Mapping Configuration</div>
+  <h1 class="page-title">Camera<br><span>Onboarding.</span></h1>
+  <p class="page-sub">Map each CV platform's internal zone and location IDs to AS 360 ride records. One row per ride per platform. The ingest Worker reads this table to know what to poll and where to write.</p>
+
+  <!-- Platform Selector -->
+  <div class="platform-select-label">Select CV Platform</div>
+  <div class="platform-tabs">
+    <button class="ptab active" data-platform="nola" onclick="selectPlatform('nola')">
+      <div class="ptab-dot"></div>
+      <div>
+        <div class="ptab-name">Nola</div>
+        <div class="ptab-desc">REST API · OAuth 2.0</div>
+      </div>
+    </button>
+    <button class="ptab" data-platform="safari" onclick="selectPlatform('safari')">
+      <div class="ptab-dot"></div>
+      <div>
+        <div class="ptab-name">Safari AI</div>
+        <div class="ptab-desc">Webhook · API Key</div>
+      </div>
+    </button>
+    <button class="ptab" data-platform="sensource" onclick="selectPlatform('sensource')">
+      <div class="ptab-dot"></div>
+      <div>
+        <div class="ptab-name">SenSource</div>
+        <div class="ptab-desc">REST API · OAuth 2.0</div>
+      </div>
+    </button>
+  </div>
+
+  <!-- Platform Info Banners -->
+  <div class="platform-info nola visible" id="info-nola">
+    <div class="pi-head">Where to find Nola IDs</div>
+    Log into app.nolahq.com → navigate to your venue → the URL contains your <code>LOCATION_ID</code>.
+    Call <code>GET /api/v1/companies/{COMPANY_ID}/categories</code> to get your <code>CATEGORY_ID</code> for throughput metrics.
+    Contact hello@nolahq.com to get your <code>COMPANY_ID</code> and API credentials if not already set up.
+  </div>
+  <div class="platform-info safari" id="info-safari">
+    <div class="pi-head">Where to find Safari AI IDs</div>
+    Contact your Safari AI account rep to get your <code>LOCATION_ID</code> and <code>ZONE_ID</code> values from their dashboard.
+    Safari AI pushes data to your webhook endpoint — set your Worker URL as the destination:
+    <code>https://lensiq-ingest.amusementstandards.workers.dev/webhook/safari</code>
+  </div>
+  <div class="platform-info sensource" id="info-sensource">
+    <div class="pi-head">Where to find SenSource IDs</div>
+    Log into vea.sensourceinc.com → Locations → select your site → the <code>SITE_ID</code> appears in the URL.
+    Your API <code>CLIENT_ID</code> and <code>CLIENT_SECRET</code> are in Settings → Integrations.
+    SenSource API docs: <code>vea.sensourceinc.com/api-docs</code>
+  </div>
+
+  <!-- Form -->
+  <div class="form-card">
+
+    <!-- Section 1: Identity -->
+    <div class="form-section">
+      <div class="section-head">Mapping Identity</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Mapping Name <span class="req">*</span></label>
+          <input type="text" id="mapping_name" placeholder="e.g. Superman — Nola" autocomplete="off">
+          <span class="field-hint">Human-readable label for this mapping row</span>
+        </div>
+        <div class="field">
+          <label>Platform <span class="req">*</span></label>
+          <select id="platform">
+            <option value="nola">Nola</option>
+            <option value="safari">Safari AI</option>
+            <option value="sensource">SenSource</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Park / Facility Name <span class="req">*</span></label>
+          <input type="text" id="park_name" placeholder="e.g. Six Flags Great Adventure" autocomplete="off">
+        </div>
+        <div class="field">
+          <label>Onboarded Date</label>
+          <input type="date" id="onboarded_date">
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Platform IDs -->
+    <div class="form-section">
+      <div class="section-head">Platform Identifiers</div>
+      <div class="field-grid platform-field">
+        <div class="field">
+          <label>Platform Location ID <span class="req">*</span></label>
+          <input type="text" id="platform_location_id" placeholder="e.g. abc123-uuid-..." autocomplete="off">
+          <span class="field-hint" id="hint-location">The venue/location UUID from the CV platform</span>
+        </div>
+        <div class="field">
+          <label>Platform Metric / Zone ID</label>
+          <input type="text" id="platform_metric_id" placeholder="e.g. metric-uuid-..." autocomplete="off">
+          <span class="field-hint" id="hint-metric">Category, zone, or metric ID within that location</span>
+        </div>
+      </div>
+      <div class="help-block" id="help-ids">
+        <p id="help-ids-text"></p>
+      </div>
+    </div>
+
+    <!-- Section 3: Ride Details -->
+    <div class="form-section">
+      <div class="section-head">AS 360 Ride Details</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Ride Name <span class="req">*</span></label>
+          <input type="text" id="ride_name" placeholder="e.g. Superman: Ultimate Flight" autocomplete="off">
+        </div>
+        <div class="field">
+          <label>Ride Airtable Record ID</label>
+          <input type="text" id="ride_airtable_id" placeholder="recXXXXXXXXXXXXXX" autocomplete="off">
+          <span class="field-hint">From your Rides table — starts with "rec"</span>
+        </div>
+      </div>
+      <div class="field-grid three">
+        <div class="field">
+          <label>Design Capacity (guests/hr) <span class="req">*</span></label>
+          <input type="number" id="design_capacity" placeholder="e.g. 1400" min="0" max="10000">
+          <span class="field-hint">Manufacturer's rated hourly throughput</span>
+        </div>
+        <div class="field">
+          <label>Ride Type</label>
+          <select id="ride_type">
+            <option value="">Select type...</option>
+            <option value="coaster">Roller Coaster</option>
+            <option value="flat">Flat Ride</option>
+            <option value="water">Water Ride</option>
+            <option value="dark">Dark Ride</option>
+            <option value="family">Family Ride</option>
+            <option value="thrill">Thrill Ride</option>
+            <option value="waterslide">Water Slide</option>
+            <option value="wave_pool">Wave Pool</option>
+            <option value="lazy_river">Lazy River</option>
+            <option value="go_kart">Go-Kart</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Ride Score Type</label>
+          <select id="score_type">
+            <option value="ride">RIDE Score</option>
+            <option value="splash">SPLASH Score</option>
+            <option value="play">PLAY Score</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 4: Camera Details -->
+    <div class="form-section">
+      <div class="section-head">Camera Configuration</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Camera Position</label>
+          <input type="text" id="camera_position" placeholder="e.g. Load platform overhead, east side" autocomplete="off">
+        </div>
+        <div class="field">
+          <label>Camera Model / Brand</label>
+          <input type="text" id="camera_model" placeholder="e.g. Hikvision DS-2CD2143G2-I" autocomplete="off">
+        </div>
+      </div>
+      <div class="field-grid full">
+        <div class="field">
+          <label>Notes</label>
+          <textarea id="notes" placeholder="Camera angle notes, known occlusion issues, calibration history, seasonal lighting concerns..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Status -->
+    <div class="form-section" style="padding-bottom:28px">
+      <div class="section-head">Activation</div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Active — Include in polling cycle</div>
+          <div class="toggle-sub">When ON, the ingest Worker will poll this mapping on every cron cycle. Set to OFF to pause without deleting.</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="active" checked>
+          <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="form-footer">
+      <div class="form-status" id="form-status">Ready to submit</div>
+      <button class="btn-reset" onclick="resetForm()">Clear Form</button>
+      <button class="btn-submit" id="btn-submit" onclick="submitMapping()">
+        <span id="btn-text">Save Mapping</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Records Table -->
+  <div class="records-section">
+    <div class="records-head">
+      <span class="records-title">Configured Mappings</span>
+      <span class="records-count" id="records-count">0 mappings</span>
+    </div>
+    <div class="records-table-wrap">
+      <table id="records-table">
+        <thead>
+          <tr>
+            <th>Mapping Name</th>
+            <th>Platform</th>
+            <th>Park</th>
+            <th>Ride</th>
+            <th>Location ID</th>
+            <th>Capacity</th>
+            <th>Active</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="records-body">
+          <tr class="empty-row">
+            <td colspan="8">No mappings yet — submit the form above to add the first ride</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+// Set your Airtable credentials here or via URL params:
+// ?baseId=appXXX&apiKey=patXXX
+const params = new URLSearchParams(window.location.search);
+const AIRTABLE_BASE_ID = params.get('baseId') || 'appeCjHyrnZ5ARTi0';
+const AIRTABLE_API_KEY = params.get('apiKey') || '';
+const MAP_TABLE = 'LensIQ_RideMapping';
+const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(MAP_TABLE)}`;
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let currentPlatform = 'nola';
+let existingRecords = [];
+
+// ── PLATFORM SELECTION ────────────────────────────────────────────────────────
+function selectPlatform(platform) {
+  currentPlatform = platform;
+
+  // Update tabs
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.ptab[data-platform="${platform}"]`).classList.add('active');
+
+  // Update info banners
+  document.querySelectorAll('.platform-info').forEach(el => el.classList.remove('visible'));
+  document.getElementById(`info-${platform}`).classList.add('visible');
+
+  // Sync select field
+  document.getElementById('platform').value = platform;
+
+  // Update hint text
+  updateHints(platform);
+
+  // Update body class for CSS color theming
+  document.body.className = `platform-${platform}`;
+}
+
+function updateHints(platform) {
+  const locationHint = document.getElementById('hint-location');
+  const metricHint   = document.getElementById('hint-metric');
+  const helpBlock    = document.getElementById('help-ids');
+  const helpText     = document.getElementById('help-ids-text');
+
+  const hints = {
+    nola: {
+      location: 'Nola LOCATION_ID — from URL in app.nolahq.com/locations',
+      metric:   'Nola CATEGORY_ID — from GET /api/v1/companies/{id}/categories',
+      help:     'In Nola\'s dashboard, navigate to your venue. The URL contains your location ID. To find the category ID for throughput, use the Nola API: GET /api/v1/companies/{COMPANY_ID}/categories and look for the "Throughput" or "Count" category.'
+    },
+    safari: {
+      location: 'Safari AI LOCATION_ID — from Safari AI dashboard or account rep',
+      metric:   'Safari AI ZONE_ID — the specific ride zone identifier',
+      help:     'Safari AI uses webhook push delivery — they send data to your endpoint rather than you polling them. Contact your Safari AI account rep to get your location_id and zone_id values, and configure your webhook destination URL as: https://lensiq-ingest.amusementstandards.workers.dev/webhook/safari'
+    },
+    sensource: {
+      location: 'SenSource SITE_ID — from URL in vea.sensourceinc.com/locations',
+      metric:   'Optional: specific sensor ID within the site',
+      help:     'In SenSource Vea, go to Locations and select your site. The site ID appears in the URL. If you want data from a specific sensor rather than all sensors at the site, find the sensor ID under the site\'s configuration page.'
+    }
+  };
+
+  locationHint.textContent = hints[platform].location;
+  metricHint.textContent   = hints[platform].metric;
+  helpText.textContent     = hints[platform].help;
+  helpBlock.classList.add('visible');
+}
+
+// ── FORM SUBMIT ───────────────────────────────────────────────────────────────
+async function submitMapping() {
+  const btn = document.getElementById('btn-submit');
+  const status = document.getElementById('form-status');
+
+  // Collect values
+  const fields = {
+    Mapping_Name:           document.getElementById('mapping_name').value.trim(),
+    Platform:               document.getElementById('platform').value,
+    Park_Name:              document.getElementById('park_name').value.trim(),
+    Platform_Location_ID:   document.getElementById('platform_location_id').value.trim(),
+    Platform_Metric_ID:     document.getElementById('platform_metric_id').value.trim(),
+    Ride_Name:              document.getElementById('ride_name').value.trim(),
+    Ride_ID:                document.getElementById('ride_airtable_id').value.trim(),
+    Design_Capacity:        parseInt(document.getElementById('design_capacity').value) || 0,
+    Camera_Position:        document.getElementById('camera_position').value.trim(),
+    Notes:                  document.getElementById('notes').value.trim(),
+    Active:                 document.getElementById('active').checked,
+    Onboarded_Date:         document.getElementById('onboarded_date').value || new Date().toISOString().slice(0,10)
+  };
+
+  // Validation
+  const required = ['Mapping_Name', 'Platform', 'Park_Name', 'Platform_Location_ID', 'Ride_Name'];
+  const missing = required.filter(k => !fields[k]);
+  if (missing.length > 0) {
+    setStatus(`Missing required fields: ${missing.join(', ')}`, 'error');
+    return;
+  }
+  if (fields.Design_Capacity <= 0) {
+    setStatus('Design Capacity must be greater than 0', 'error');
+    return;
+  }
+
+  // Clean empty strings
+  Object.keys(fields).forEach(k => { if (fields[k] === '') delete fields[k]; });
+
+  // If no API key, save locally and show instructions
+  if (!AIRTABLE_API_KEY) {
+    saveLocalRecord(fields);
+    setStatus('Saved locally — add ?apiKey=patXXX to URL to write directly to Airtable', 'success');
+    renderLocalRecord(fields);
+    resetForm();
+    return;
+  }
+
+  // Submit to Airtable
+  setStatus('Saving...', '');
+  setButtonLoading(true);
+
+  try {
+    const resp = await fetch(AIRTABLE_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ records: [{ fields }] })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.error?.message || `HTTP ${resp.status}`);
+    }
+
+    const data = await resp.json();
+    setStatus(`✓ Mapping saved — Record ID: ${data.records[0].id}`, 'success');
+    resetForm();
+    await loadRecords();
+
+  } catch (err) {
+    setStatus(`Error: ${err.message}`, 'error');
+  } finally {
+    setButtonLoading(false);
+  }
+}
+
+// ── LOAD EXISTING RECORDS ──────────────────────────────────────────────────────
+async function loadRecords() {
+  if (!AIRTABLE_API_KEY) {
+    renderLocalRecords();
+    return;
+  }
+
+  try {
+    const resp = await fetch(
+      `${AIRTABLE_URL}?sort%5B0%5D%5Bfield%5D=Mapping_Name&sort%5B0%5D%5Bdirection%5D=asc`,
+      { headers: { 'Authorization': `Bearer ${AIRTABLE_API_KEY}` } }
+    );
+    if (!resp.ok) return;
+    const data = await resp.json();
+    existingRecords = data.records || [];
+    renderRecordsTable(existingRecords);
+  } catch {}
+}
+
+function renderRecordsTable(records) {
+  const tbody = document.getElementById('records-body');
+  const count = document.getElementById('records-count');
+  count.textContent = `${records.length} mapping${records.length !== 1 ? 's' : ''}`;
+
+  if (records.length === 0) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No mappings configured yet</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = records.map(r => {
+    const f = r.fields;
+    const platform = f.Platform || '';
+    return `
+      <tr>
+        <td style="color:var(--t);font-weight:500">${f.Mapping_Name || '—'}</td>
+        <td><span class="td-platform ${platform}">${platform}</span></td>
+        <td>${f.Park_Name || '—'}</td>
+        <td>${f.Ride_Name || '—'}</td>
+        <td class="td-mono" style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${f.Platform_Location_ID || ''}">${f.Platform_Location_ID || '—'}</td>
+        <td class="td-mono">${f.Design_Capacity ? f.Design_Capacity.toLocaleString() + '/hr' : '—'}</td>
+        <td>
+          <div class="td-active">
+            <div class="td-active-dot ${f.Active ? 'dot-on' : 'dot-off'}"></div>
+            ${f.Active ? 'Active' : 'Paused'}
+          </div>
+        </td>
+        <td><button class="btn-delete" onclick="deleteRecord('${r.id}')">Delete</button></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function deleteRecord(recordId) {
+  if (!confirm('Delete this mapping? The Worker will stop polling this ride.')) return;
+  if (!AIRTABLE_API_KEY) return;
+
+  try {
+    await fetch(`${AIRTABLE_URL}/${recordId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${AIRTABLE_API_KEY}` }
+    });
+    await loadRecords();
+  } catch (err) {
+    alert('Delete failed: ' + err.message);
+  }
+}
+
+// ── LOCAL STORAGE FALLBACK ────────────────────────────────────────────────────
+function saveLocalRecord(fields) {
+  const stored = JSON.parse(localStorage.getItem('lensiq_mappings') || '[]');
+  stored.push({ ...fields, _id: Date.now() });
+  localStorage.setItem('lensiq_mappings', JSON.stringify(stored));
+}
+
+function renderLocalRecords() {
+  const stored = JSON.parse(localStorage.getItem('lensiq_mappings') || '[]');
+  renderRecordsTable(stored.map(s => ({ id: s._id, fields: s })));
+}
+
+function renderLocalRecord(fields) {
+  renderLocalRecords();
+}
+
+// ── UTILITIES ─────────────────────────────────────────────────────────────────
+function setStatus(msg, type) {
+  const el = document.getElementById('form-status');
+  el.textContent = msg;
+  el.className = 'form-status ' + type;
+}
+
+function setButtonLoading(loading) {
+  const btn = document.getElementById('btn-submit');
+  const txt = document.getElementById('btn-text');
+  if (loading) {
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div>';
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = '<span id="btn-text">Save Mapping</span>';
+  }
+}
+
+function resetForm() {
+  ['mapping_name','platform_location_id','platform_metric_id','ride_name',
+   'ride_airtable_id','park_name','camera_position','camera_model','notes']
+    .forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('design_capacity').value = '';
+  document.getElementById('active').checked = true;
+  document.getElementById('onboarded_date').value = '';
+  document.getElementById('ride_type').value = '';
+  document.getElementById('score_type').value = 'ride';
+  setStatus('Form cleared', '');
+  setTimeout(() => setStatus('Ready to submit', ''), 2000);
+}
+
+// ── SYNC PLATFORM SELECT WITH TABS ────────────────────────────────────────────
+document.getElementById('platform').addEventListener('change', function() {
+  selectPlatform(this.value);
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Set today's date as default
+  document.getElementById('onboarded_date').value = new Date().toISOString().slice(0, 10);
+
+  // Show initial hints
+  updateHints('nola');
+
+  // Load existing records
+  loadRecords();
+
+  // Show API key warning if missing
+  if (!AIRTABLE_API_KEY) {
+    setStatus('No API key — add ?apiKey=patXXX to URL to enable Airtable writes', '');
+  }
+});
+</script>
+</body>
+</html>
