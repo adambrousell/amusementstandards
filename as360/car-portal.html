@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAR Portal — Corrective Action Registry | Amusement Standards AS 360</title>
+<meta name="description" content="AS 360 Corrective Action Registry — multi-layer review workflow, inspector credentialing, gamified closure rates, and insurer-ready audit trails.">
+<link rel="canonical" href="https://www.amusementstandards.com/car-portal.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04060A;--bg2:#07090F;--bg3:#0A0D14;--bg4:#0D1018;
+  --gold:#D4AF37;--gold2:#B8960C;--gold-dim:rgba(212,175,55,.12);
+  --teal:#00D4D0;--teal-dim:rgba(0,212,208,.1);
+  --red:#FF3B5C;--amber:#FFB800;--green:#00D68F;--blue:#2E6FFF;--purple:#8B5CF6;
+  --text:#6E7E96;--text2:#9BAABF;--text3:#D8E2F0;
+  --mono:'IBM Plex Mono',monospace;
+  --display:'Rajdhani',sans-serif;
+  --body:'Barlow',sans-serif;
+  --border:rgba(255,255,255,.055);
+  --border2:rgba(255,255,255,.1);
+  --crit:#FF3B5C;--major:#FF6B35;--minor:#FFB800;--obs:#2E6FFF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:var(--bg);color:var(--text2);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+a{text-decoration:none;color:inherit;}
+
+/* SCANLINE TEXTURE */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,212,208,.006) 3px,rgba(0,212,208,.006) 4px);}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:300;height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(4,6,10,.5);border-bottom:1px solid rgba(0,212,208,.15);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);}
+.nav-logo{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.04em;}
+.nav-links{display:flex;align-items:center;gap:4px;}
+.nav-links a{font-family:var(--mono);font-size:9px;font-weight:500;color:rgba(255,255,255,.25);padding:5px 10px;border-radius:3px;letter-spacing:.1em;text-transform:uppercase;transition:all .2s;}
+.nav-links a:hover{color:var(--teal);background:rgba(0,212,208,.06);}
+.nav-cta{background:rgba(212,175,55,.1)!important;color:var(--gold)!important;border:1px solid rgba(212,175,55,.3)!important;}
+.nav-cta:hover{background:rgba(212,175,55,.2)!important;}
+
+/* HERO */
+.hero{position:relative;padding:88px 64px 60px;overflow:hidden;background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(212,175,55,.04) 0%,transparent 65%),var(--bg);}
+.hero-grid-bg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,212,208,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,208,.018) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 0%,transparent 70%);}
+.hero-inner{position:relative;z-index:1;max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 440px;gap:80px;align-items:center;}
+.hero-ey{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.hero-ey::before{content:'';width:28px;height:1px;background:var(--gold);}
+h1.hero-title{font-family:var(--display);font-size:clamp(52px,5.5vw,82px);font-weight:800;line-height:.92;letter-spacing:.5px;color:var(--text3);margin-bottom:18px;}
+h1.hero-title .t{color:var(--teal);}
+h1.hero-title .g{color:var(--gold);}
+.hero-desc{font-size:15px;line-height:1.8;color:var(--text);max-width:520px;margin-bottom:32px;}
+.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:linear-gradient(135deg,var(--gold2),var(--gold));border-radius:4px;font-family:var(--display);font-size:18px;font-weight:700;letter-spacing:1px;color:#04060A;text-decoration:none;transition:all .2s;box-shadow:0 4px 24px rgba(212,175,55,.2);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(212,175,55,.35);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border:1px solid rgba(0,212,208,.25);border-radius:4px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);background:rgba(0,212,208,.04);transition:all .2s;}
+.btn-outline:hover{background:rgba(0,212,208,.1);border-color:var(--teal);}
+
+/* HERO STAT CARD */
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.hs-item{background:var(--bg2);padding:20px 18px;}
+.hs-num{font-family:var(--display);font-size:38px;font-weight:800;line-height:1;margin-bottom:3px;}
+.hs-label{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--text);}
+.hs-sub{font-size:11px;color:rgba(255,255,255,.22);margin-top:3px;}
+.c-g{color:var(--green);}.c-a{color:var(--amber);}.c-r{color:var(--red);}.c-t{color:var(--teal);}.c-g2{color:var(--gold);}
+
+/* SECTION */
+.sec{padding:80px 64px;}
+.sec-dark{background:rgba(0,0,0,.2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.sec-inner{max-width:1280px;margin:0 auto;}
+.sec-ey{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.sec-ey::before{content:'';width:20px;height:1px;background:var(--teal);}
+.sec-title{font-family:var(--display);font-size:clamp(34px,3.8vw,54px);font-weight:800;letter-spacing:.5px;color:var(--text3);line-height:.95;margin-bottom:14px;}
+.sec-title .t{color:var(--teal);}.sec-title .g{color:var(--gold);}
+.sec-body{font-size:15px;line-height:1.8;color:var(--text);max-width:640px;}
+
+/* WORKFLOW PIPELINE */
+.workflow-track{margin-top:52px;display:flex;flex-direction:column;gap:0;}
+.wf-stage{display:grid;grid-template-columns:200px 1fr;gap:32px;position:relative;}
+.wf-stage::before{content:'';position:absolute;left:183px;top:52px;bottom:-52px;width:2px;background:linear-gradient(180deg,var(--border2),var(--border));z-index:0;}
+.wf-stage:last-child::before{display:none;}
+.wf-left{padding-top:22px;text-align:right;position:relative;z-index:1;}
+.wf-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em;}
+.wf-role{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-top:3px;}
+.wf-badge{display:inline-block;margin-top:6px;font-family:var(--mono);font-size:8px;padding:2px 8px;border-radius:12px;font-weight:600;letter-spacing:.06em;}
+
+.wf-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:24px 22px;margin:16px 0 36px;position:relative;overflow:hidden;transition:border-color .2s;}
+.wf-card:hover{border-color:var(--border2);}
+.wf-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;border-radius:3px 0 0 3px;}
+
+.stage-submit .wf-role{color:#00FF88;}.stage-submit .wf-badge{background:rgba(0,255,136,.1);color:#00FF88;border:1px solid rgba(0,255,136,.2);}
+.stage-submit .wf-card::before{background:#00FF88;}
+.stage-mgr .wf-role{color:var(--teal);}.stage-mgr .wf-badge{background:rgba(0,212,208,.1);color:var(--teal);border:1px solid rgba(0,212,208,.2);}
+.stage-mgr .wf-card::before{background:var(--teal);}
+.stage-remediate .wf-role{color:var(--amber);}.stage-remediate .wf-badge{background:rgba(255,184,0,.1);color:var(--amber);border:1px solid rgba(255,184,0,.2);}
+.stage-remediate .wf-card::before{background:var(--amber);}
+.stage-verify .wf-role{color:var(--purple);}.stage-verify .wf-badge{background:rgba(139,92,246,.1);color:var(--purple);border:1px solid rgba(139,92,246,.2);}
+.stage-verify .wf-card::before{background:var(--purple);}
+.stage-close .wf-role{color:var(--gold);}.stage-close .wf-badge{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(212,175,55,.25);}
+.stage-close .wf-card::before{background:var(--gold);}
+
+.wf-title{font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:.4px;color:var(--text3);margin-bottom:8px;}
+.wf-desc{font-size:13px;color:var(--text);line-height:1.65;margin-bottom:14px;}
+.wf-actions{display:flex;flex-wrap:wrap;gap:6px;}
+.wf-action{font-family:var(--mono);font-size:9px;padding:4px 10px;border-radius:3px;background:rgba(255,255,255,.03);border:1px solid var(--border);color:rgba(255,255,255,.3);letter-spacing:.06em;}
+.wf-sla{font-family:var(--mono);font-size:8.5px;margin-top:10px;color:rgba(255,255,255,.2);}
+.wf-sla strong{color:var(--amber);}
+
+/* CONNECTOR NODE */
+.wf-connector{display:grid;grid-template-columns:200px 1fr;gap:32px;align-items:center;padding:0 0 4px;}
+.wf-conn-spacer{text-align:right;padding-right:6px;}
+.wf-conn-dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--border);background:var(--bg);margin-left:10px;position:relative;z-index:2;}
+.wf-conn-label{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.18);margin-left:16px;letter-spacing:.06em;}
+
+/* CAR SUBMISSION FORM DEMO */
+.form-demo{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.form-header{background:rgba(0,0,0,.3);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.form-header-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);}
+.form-header-id{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2);}
+.form-body{padding:22px 20px;display:flex;flex-direction:column;gap:14px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-field{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.form-input{font-family:var(--mono);font-size:11px;padding:8px 11px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;color:var(--text2);outline:none;transition:border-color .2s;width:100%;}
+.form-input:focus{border-color:rgba(0,212,208,.4);background:rgba(0,212,208,.02);}
+.form-input.severity-crit{border-color:rgba(255,59,92,.4);color:var(--red);background:rgba(255,59,92,.04);}
+.form-input.severity-major{border-color:rgba(255,107,53,.4);color:#FF6B35;background:rgba(255,107,53,.04);}
+.form-textarea{font-family:var(--mono);font-size:11px;padding:8px 11px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;color:var(--text2);outline:none;resize:none;width:100%;height:72px;transition:border-color .2s;}
+.form-textarea:focus{border-color:rgba(0,212,208,.4);}
+.form-source-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.source-chip{font-family:var(--mono);font-size:8px;padding:5px 8px;border-radius:3px;border:1px solid var(--border);color:rgba(255,255,255,.2);cursor:pointer;text-align:center;transition:all .2s;letter-spacing:.04em;}
+.source-chip:hover{border-color:rgba(0,212,208,.3);color:var(--teal);}
+.source-chip.active{background:rgba(0,212,208,.08);border-color:rgba(0,212,208,.3);color:var(--teal);}
+.form-submit{display:flex;align-items:center;justify-content:space-between;padding-top:4px;}
+.form-xp-preview{font-family:var(--mono);font-size:9px;color:rgba(212,175,55,.6);}
+.form-xp-preview strong{color:var(--gold);}
+.form-btn{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:9px 20px;border-radius:4px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#04060A;border:none;cursor:pointer;transition:all .2s;}
+.form-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(212,175,55,.25);}
+
+/* SEVERITY PILLS LEGEND */
+.sev-legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.sev-pill{font-family:var(--mono);font-size:8.5px;font-weight:700;padding:3px 10px;border-radius:3px;letter-spacing:.06em;}
+.sev-crit{background:rgba(255,59,92,.12);color:var(--red);border:1px solid rgba(255,59,92,.25);}
+.sev-major{background:rgba(255,107,53,.12);color:#FF6B35;border:1px solid rgba(255,107,53,.25);}
+.sev-minor{background:rgba(255,184,0,.12);color:var(--amber);border:1px solid rgba(255,184,0,.25);}
+.sev-obs{background:rgba(46,111,255,.12);color:var(--blue);border:1px solid rgba(46,111,255,.25);}
+
+/* GAMIFICATION SECTION */
+.game-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px;}
+.game-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:22px 18px;position:relative;overflow:hidden;transition:all .2s;}
+.game-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.4);}
+.game-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:.6;}
+.gc-xp::before{background:var(--gold);}
+.gc-speed::before{background:var(--green);}
+.gc-streak::before{background:var(--teal);}
+.gc-rank::before{background:var(--purple);}
+.gc-board::before{background:var(--amber);}
+.gc-badge::before{background:var(--blue);}
+.game-icon{font-size:26px;margin-bottom:10px;display:block;}
+.game-title{font-family:var(--display);font-size:19px;font-weight:700;letter-spacing:.4px;color:var(--text3);margin-bottom:6px;}
+.game-desc{font-size:12.5px;color:var(--text);line-height:1.6;}
+.game-detail{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2);margin-top:10px;padding:7px 10px;background:rgba(255,255,255,.02);border-radius:3px;border:1px solid var(--border);line-height:1.7;}
+.game-detail strong{color:rgba(255,255,255,.4);}
+
+/* XP BREAKDOWN TABLE */
+.xp-table{margin-top:36px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.xp-table-hdr{display:grid;grid-template-columns:1fr 80px 80px 120px;padding:10px 16px;background:rgba(0,0,0,.3);border-bottom:1px solid var(--border);}
+.xp-table-hdr span{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);}
+.xp-row{display:grid;grid-template-columns:1fr 80px 80px 120px;padding:10px 16px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s;}
+.xp-row:last-child{border-bottom:none;}
+.xp-row:hover{background:rgba(255,255,255,.02);}
+.xp-action{font-size:12.5px;color:var(--text2);}
+.xp-actor{font-family:var(--mono);font-size:9px;color:var(--text);}
+.xp-pts{font-family:var(--display);font-size:17px;font-weight:700;color:var(--gold);}
+.xp-cond{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.2);}
+
+/* LEADERBOARD */
+.leaderboard{margin-top:36px;}
+.lb-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.lb-title{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);}
+.lb-period{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);border:1px solid var(--border);padding:3px 8px;border-radius:3px;}
+.lb-row{display:grid;grid-template-columns:28px 1fr 60px 80px 90px;gap:12px;align-items:center;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:5px;transition:all .2s;}
+.lb-row:hover{border-color:var(--border2);}
+.lb-row.lb-top{border-color:rgba(212,175,55,.2);background:rgba(212,175,55,.03);}
+.lb-rank{font-family:var(--display);font-size:18px;font-weight:800;color:rgba(255,255,255,.2);text-align:center;}
+.lb-top .lb-rank{color:var(--gold);}
+.lb-facility{font-weight:500;color:var(--text2);font-size:13px;}
+.lb-cacr{font-family:var(--mono);font-size:11px;font-weight:700;}
+.lb-open{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3);}
+.lb-xp{font-family:var(--display);font-size:15px;font-weight:700;color:var(--gold);text-align:right;}
+.lb-badge-row{display:flex;gap:3px;flex-wrap:wrap;}
+.lb-badge{font-size:13px;}
+
+/* CAR TRACKER DEMO */
+.tracker-grid{display:grid;grid-template-columns:1fr;gap:6px;margin-top:36px;}
+.car-row{display:grid;grid-template-columns:110px 1fr 90px 80px 80px 90px 32px;gap:10px;align-items:center;padding:11px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;transition:all .2s;}
+.car-row:hover{border-color:var(--border2);background:var(--bg3);}
+.car-id{font-family:var(--mono);font-size:9.5px;font-weight:700;color:var(--text);}
+.car-title{font-size:13px;color:var(--text2);font-weight:500;}
+.car-sev{font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;text-align:center;}
+.sev-c{background:rgba(255,59,92,.12);color:var(--red);border:1px solid rgba(255,59,92,.2);}
+.sev-ma{background:rgba(255,107,53,.12);color:#FF6B35;border:1px solid rgba(255,107,53,.2);}
+.sev-mi{background:rgba(255,184,0,.12);color:var(--amber);border:1px solid rgba(255,184,0,.2);}
+.sev-o{background:rgba(46,111,255,.12);color:var(--blue);border:1px solid rgba(46,111,255,.2);}
+.car-status{font-family:var(--mono);font-size:8.5px;font-weight:600;padding:3px 8px;border-radius:3px;text-align:center;}
+.st-open{background:rgba(255,59,92,.08);color:rgba(255,59,92,.8);border:1px solid rgba(255,59,92,.15);}
+.st-inprog{background:rgba(255,184,0,.08);color:rgba(255,184,0,.8);border:1px solid rgba(255,184,0,.15);}
+.st-verify{background:rgba(139,92,246,.08);color:rgba(139,92,246,.8);border:1px solid rgba(139,92,246,.15);}
+.st-closed{background:rgba(0,214,143,.08);color:var(--green);border:1px solid rgba(0,214,143,.15);}
+.car-age{font-family:var(--mono);font-size:10px;font-weight:600;text-align:center;}
+.age-ok{color:var(--green);}.age-warn{color:var(--amber);}.age-over{color:var(--red);}
+.car-assigned{font-size:11px;color:rgba(255,255,255,.3);}
+.car-action{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.15);padding:3px 6px;border:1px solid var(--border);border-radius:3px;cursor:pointer;transition:all .2s;text-align:center;}
+.car-action:hover{color:var(--teal);border-color:rgba(0,212,208,.3);}
+.tracker-hdr{display:grid;grid-template-columns:110px 1fr 90px 80px 80px 90px 32px;gap:10px;padding:8px 14px;margin-bottom:4px;}
+.tracker-hdr span{font-family:var(--mono);font-size:7.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.2);}
+
+/* CACR METER */
+.cacr-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:36px;}
+.cacr-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px 18px;text-align:center;}
+.cacr-num{font-family:var(--display);font-size:44px;font-weight:800;line-height:1;margin-bottom:4px;}
+.cacr-label{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--text);margin-bottom:8px;}
+.cacr-bar{height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden;}
+.cacr-fill{height:100%;border-radius:2px;transition:width 2s ease;}
+.cacr-sub{font-size:11px;color:rgba(255,255,255,.2);margin-top:6px;}
+
+/* REVIEW BOARD */
+.board-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:36px;}
+.board-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:22px 20px;}
+.board-title{font-family:var(--display);font-size:19px;font-weight:700;color:var(--text3);margin-bottom:6px;letter-spacing:.4px;}
+.board-role{font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;}
+.board-powers{display:flex;flex-direction:column;gap:4px;}
+.board-power{font-size:12px;color:var(--text);padding:5px 8px;background:rgba(255,255,255,.02);border-radius:3px;display:flex;gap:7px;align-items:flex-start;line-height:1.45;}
+.board-power::before{content:'→';flex-shrink:0;font-family:var(--mono);font-size:10px;}
+
+/* INSURER CALLOUT */
+.insurer-box{background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:40px 44px;margin-top:52px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+.insurer-ey{font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(212,175,55,.6);margin-bottom:10px;}
+.insurer-title{font-family:var(--display);font-size:clamp(22px,3vw,36px);font-weight:800;letter-spacing:.5px;color:var(--text3);margin-bottom:12px;}
+.insurer-title .g{color:var(--gold);}
+.insurer-body{font-size:14px;color:var(--text);line-height:1.75;max-width:520px;}
+.insurer-btns{display:flex;flex-direction:column;gap:10px;flex-shrink:0;}
+
+.btn-export-insurer{font-family:var(--mono);font-size:9px;padding:7px 14px;border-radius:3px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);color:var(--gold);cursor:pointer;letter-spacing:.08em;transition:all .2s;}
+.btn-export-insurer:hover{background:rgba(212,175,55,.14);}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:24px 64px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.f-brand{font-family:var(--display);font-size:16px;font-weight:700;color:var(--text);letter-spacing:.5px;}
+.f-brand span{color:var(--teal);}
+.f-copy{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.1);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-stats{max-width:420px;}
+  nav,.hero,.sec,footer{padding-left:24px;padding-right:24px;}
+  .game-grid{grid-template-columns:1fr 1fr;}
+  .board-grid{grid-template-columns:1fr;}
+  .insurer-box{grid-template-columns:1fr;}
+}
+@media(max-width:720px){
+  .game-grid{grid-template-columns:1fr;}
+  .cacr-strip{grid-template-columns:1fr 1fr;}
+  .wf-stage,.wf-connector{grid-template-columns:1fr;}
+  .wf-stage::before{display:none;}
+  .wf-left{text-align:left;}
+  .car-row{grid-template-columns:1fr 1fr;gap:6px;}
+  .tracker-hdr{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://amusementstandards.com" class="nav-logo">amusement standards.</a>
+  <div class="nav-links">
+    <a href="https://amusementstandards.com/as360-platform.html">Platform</a>
+    <a href="https://amusementstandards.com/as360/manager.html" style="color:var(--teal)">Manager</a>
+    <a href="https://amusementstandards.com/as360/ops-scan.html" style="color:#00FF88">OpsScan</a>
+    <a href="https://amusementstandards.com/ingestion.html">Ingestion</a>
+    <a href="mailto:adam@amusementstandards.com" class="nav-cta">Request Demo</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-ey">AS 360 · Corrective Action Registry</div>
+      <h1 class="hero-title">CAR Portal.<br><span class="t">Multi-Layer.</span><br><span class="g">Insurer-Grade.</span></h1>
+      <p class="hero-desc">Five-stage review workflow from field submission to verified closure. Every corrective action is timestamped, assigned, tracked, and scored into the RIDE / SPLASH / PLAY composite. Gamified to reward the operators who surface problems — not hide them.</p>
+      <div class="hero-ctas">
+        <a href="#workflow" class="btn-primary">View Workflow →</a>
+        <a href="#tracker" class="btn-outline">Live Tracker Demo</a>
+        <a href="#gamification" class="btn-outline">Gamification Model</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hs-item">
+        <div class="hs-num c-t">5</div>
+        <div class="hs-label">Review Stages</div>
+        <div class="hs-sub">Submit → Acknowledge → Remediate → Verify → Close</div>
+      </div>
+      <div class="hs-item">
+        <div class="hs-num c-g2">CACR</div>
+        <div class="hs-label">Key Metric</div>
+        <div class="hs-sub">Corrective Action Closure Rate — rolling 90 days</div>
+      </div>
+      <div class="hs-item">
+        <div class="hs-num c-g">4</div>
+        <div class="hs-label">Submitter Roles</div>
+        <div class="hs-sub">Operators, Managers, Maintenance, 3rd-party Inspectors</div>
+      </div>
+      <div class="hs-item">
+        <div class="hs-num c-a">XP</div>
+        <div class="hs-label">Gamification</div>
+        <div class="hs-sub">Points for surfacing, speed bonuses, inspector ranks</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEVERITY LEGEND -->
+<div style="background:rgba(0,0,0,.25);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 64px;">
+  <div style="max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <span style="font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.2);">Severity Tiers</span>
+    <div class="sev-legend">
+      <span class="sev-pill sev-crit">CRITICAL — Immediate shutdown required</span>
+      <span class="sev-pill sev-major">MAJOR — 24-hr remediation SLA</span>
+      <span class="sev-pill sev-minor">MINOR — 7-day remediation SLA</span>
+      <span class="sev-pill sev-obs">OBSERVATION — Log and monitor</span>
+    </div>
+  </div>
+</div>
+
+<!-- WORKFLOW -->
+<section class="sec" id="workflow">
+  <div class="sec-inner">
+    <div class="reveal">
+      <div class="sec-ey">Multi-Layer Review Process</div>
+      <h2 class="sec-title">Five stages.<br><span class="t">Nothing closes without verification.</span></h2>
+      <p class="sec-body">Every CAR travels a defined path from field submission to verified closure. No stage can be skipped. Critical findings trigger automatic escalation. Third-party inspectors have a dedicated credentialed access layer — their sign-off is weighted differently from internal verification.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 400px;gap:48px;margin-top:52px;align-items:start;">
+      <div class="workflow-track">
+
+        <!-- STAGE 1 -->
+        <div class="wf-stage stage-submit reveal">
+          <div class="wf-left">
+            <div class="wf-num">01</div>
+            <div class="wf-role">Field Submission</div>
+            <div class="wf-badge">Operators · Maintenance · Inspectors</div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-title">Submit Finding</div>
+            <div class="wf-desc">Any credentialed user submits a CAR via OpsScan QR scan, portal form, or third-party inspector upload. Auto-generates CAR ID, timestamps submission, and routes to Operations Manager queue.</div>
+            <div class="wf-actions">
+              <span class="wf-action">CAR ID auto-generated</span>
+              <span class="wf-action">Ride / attraction linked</span>
+              <span class="wf-action">Severity assigned</span>
+              <span class="wf-action">Finding source tagged</span>
+              <span class="wf-action">Photo/doc attach</span>
+            </div>
+            <div class="wf-sla">XP awarded on valid submission · <strong>+50–150 pts depending on severity</strong></div>
+          </div>
+        </div>
+
+        <!-- STAGE 2 -->
+        <div class="wf-stage stage-mgr reveal">
+          <div class="wf-left">
+            <div class="wf-num">02</div>
+            <div class="wf-role">Manager Review</div>
+            <div class="wf-badge">Operations Manager</div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-title">Acknowledge & Assign</div>
+            <div class="wf-desc">Operations Manager reviews the finding, confirms severity, assigns an owner, sets a due date, and pushes to the assigned party's queue. Critical CARs trigger immediate Slack/email alert.</div>
+            <div class="wf-actions">
+              <span class="wf-action">Severity confirm / override</span>
+              <span class="wf-action">Owner assignment</span>
+              <span class="wf-action">Due date set</span>
+              <span class="wf-action">Priority flag</span>
+              <span class="wf-action">Escalation trigger</span>
+            </div>
+            <div class="wf-sla">SLA clock starts on acknowledgment · <strong>CRITICAL: 2hr ack SLA</strong></div>
+          </div>
+        </div>
+
+        <!-- STAGE 3 -->
+        <div class="wf-stage stage-remediate reveal">
+          <div class="wf-left">
+            <div class="wf-num">03</div>
+            <div class="wf-role">Remediation</div>
+            <div class="wf-badge">Assigned Owner</div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-title">Document the Fix</div>
+            <div class="wf-desc">Assigned party documents remediation steps, parts used, time spent, and attaches evidence (photo, test result, cert). Submits for verification — cannot self-close.</div>
+            <div class="wf-actions">
+              <span class="wf-action">Remediation notes</span>
+              <span class="wf-action">Parts / labor log</span>
+              <span class="wf-action">Evidence upload</span>
+              <span class="wf-action">NDT result attach</span>
+              <span class="wf-action">Submit for verify</span>
+            </div>
+            <div class="wf-sla">Speed bonus XP available · <strong>+100 pts for on-time closure</strong></div>
+          </div>
+        </div>
+
+        <!-- STAGE 4 -->
+        <div class="wf-stage stage-verify reveal">
+          <div class="wf-left">
+            <div class="wf-num">04</div>
+            <div class="wf-role">Independent Verification</div>
+            <div class="wf-badge">Maintenance Manager · 3rd-Party Inspector</div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-title">Verify Closure</div>
+            <div class="wf-desc">A separate credentialed verifier confirms the fix is complete and adequate. Third-party inspectors carry a higher verification weight in the CACR calculation. The submitter cannot be the verifier.</div>
+            <div class="wf-actions">
+              <span class="wf-action">Physical inspection confirm</span>
+              <span class="wf-action">Evidence reviewed</span>
+              <span class="wf-action">Adequate / Inadequate</span>
+              <span class="wf-action">3rd-party weight +1.4×</span>
+              <span class="wf-action">Return to stage 3 if inadequate</span>
+            </div>
+            <div class="wf-sla">Third-party sign-off feeds inspector credential score · <strong>NAARSO-adjacent ranking</strong></div>
+          </div>
+        </div>
+
+        <!-- STAGE 5 -->
+        <div class="wf-stage stage-close reveal">
+          <div class="wf-left">
+            <div class="wf-num">05</div>
+            <div class="wf-role">Closure & Scoring</div>
+            <div class="wf-badge">Operations Manager · AS 360</div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-title">Close & Score</div>
+            <div class="wf-desc">Manager closes the CAR. Full audit trail locked. CACR updates. The closure feeds back into the RIDE / SPLASH / PLAY Integrity pillar score — a closed CAR is a positive signal. An aged open CAR is a penalty.</div>
+            <div class="wf-actions">
+              <span class="wf-action">Audit trail locked</span>
+              <span class="wf-action">CACR recalculated</span>
+              <span class="wf-action">Integrity pillar updated</span>
+              <span class="wf-action">XP awarded to all parties</span>
+              <span class="wf-action">Insurer export flagged</span>
+            </div>
+            <div class="wf-sla">Full provenance visible to insurer · <strong>Source → Finding → Fix → Verifier chain</strong></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- LIVE FORM DEMO -->
+      <div style="position:sticky;top:64px;">
+        <div class="form-demo reveal">
+          <div class="form-header">
+            <span class="form-header-title">Submit CAR</span>
+            <span class="form-header-id">CAR-2026-0047 · AUTO</span>
+          </div>
+          <div class="form-body">
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label">Facility</label>
+                <input class="form-input" type="text" value="Six Flags Great Adventure" readonly>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Attraction</label>
+                <input class="form-input" type="text" value="Kingda Ka" readonly>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label">Finding Type</label>
+                <select class="form-input">
+                  <option>Mechanical</option>
+                  <option>Electrical</option>
+                  <option>Structural</option>
+                  <option>Behavioral</option>
+                  <option>Documentation</option>
+                  <option>Aquatic</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Severity</label>
+                <select class="form-input severity-major" id="sevSelect" onchange="updateSev(this)">
+                  <option>CRITICAL</option>
+                  <option selected>MAJOR</option>
+                  <option>MINOR</option>
+                  <option>OBSERVATION</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Finding Description</label>
+              <textarea class="form-textarea">Hydraulic fluid seepage observed at launch mechanism base. Approximately 2oz pooling. No guest exposure. Ride held pending inspection.</textarea>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Data Source</label>
+              <div class="form-source-grid">
+                <div class="source-chip">Internal Audit</div>
+                <div class="source-chip active">Operator Report</div>
+                <div class="source-chip">State Inspection</div>
+                <div class="source-chip">Guest Report</div>
+                <div class="source-chip">VoxIntel</div>
+                <div class="source-chip">3rd-Party Insp.</div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label">Assigned To</label>
+                <input class="form-input" type="text" value="M. Smith — Maintenance">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Due Date</label>
+                <input class="form-input" type="text" value="2026-03-26 · 24hr SLA">
+              </div>
+            </div>
+            <div class="form-submit">
+              <div class="form-xp-preview">+<strong>100 XP</strong> on submission · +<strong>100 XP</strong> speed bonus available</div>
+              <button class="form-btn" onclick="submitCAR()">Submit CAR →</button>
+            </div>
+          </div>
+        </div>
+        <div id="car-confirm" style="display:none;margin-top:10px;background:rgba(0,214,143,.06);border:1px solid rgba(0,214,143,.2);border-radius:6px;padding:14px 16px;">
+          <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--green);margin-bottom:4px;">✓ CAR-2026-0047 SUBMITTED</div>
+          <div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);">Routed to Ops Manager queue · +100 XP awarded · RIDE Score Integrity pillar flagged pending</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE TRACKER -->
+<section class="sec sec-dark" id="tracker">
+  <div class="sec-inner">
+    <div class="reveal">
+      <div class="sec-ey">CAR Tracker</div>
+      <h2 class="sec-title">Every finding.<br><span class="g">Full aging. Full audit trail.</span></h2>
+      <p class="sec-body">Real-time view of all open, in-progress, and recently closed CARs across a facility. Color-coded aging, severity filtering, and one-click insurer export. This is the view Tom Jones sees at renewal.</p>
+    </div>
+
+    <!-- CACR STRIP -->
+    <div class="cacr-strip reveal">
+      <div class="cacr-card">
+        <div class="cacr-num c-g">94%</div>
+        <div class="cacr-label">CACR · Rolling 90d</div>
+        <div class="cacr-bar"><div class="cacr-fill" style="width:94%;background:var(--green);"></div></div>
+        <div class="cacr-sub">34/36 CARs closed on time</div>
+      </div>
+      <div class="cacr-card">
+        <div class="cacr-num c-a">3</div>
+        <div class="cacr-label">Open CARs</div>
+        <div class="cacr-bar"><div class="cacr-fill" style="width:30%;background:var(--amber);"></div></div>
+        <div class="cacr-sub">1 Critical · 1 Major · 1 Minor</div>
+      </div>
+      <div class="cacr-card">
+        <div class="cacr-num c-r">1</div>
+        <div class="cacr-label">Overdue</div>
+        <div class="cacr-bar"><div class="cacr-fill" style="width:10%;background:var(--red);"></div></div>
+        <div class="cacr-sub">Past SLA · Escalated to manager</div>
+      </div>
+      <div class="cacr-card">
+        <div class="cacr-num c-t">4.2d</div>
+        <div class="cacr-label">Avg Close Time</div>
+        <div class="cacr-bar"><div class="cacr-fill" style="width:70%;background:var(--teal);"></div></div>
+        <div class="cacr-sub">vs 7d industry benchmark</div>
+      </div>
+    </div>
+
+    <!-- TRACKER TABLE -->
+    <div class="tracker-grid reveal">
+      <div class="tracker-hdr">
+        <span>CAR ID</span><span>Finding</span><span>Severity</span><span>Status</span><span>Age</span><span>Assigned</span><span></span>
+      </div>
+      <div class="car-row">
+        <div class="car-id">CAR-2026-0047</div>
+        <div class="car-title">Hydraulic seepage · Kingda Ka launch</div>
+        <div class="car-sev sev-ma">MAJOR</div>
+        <div class="car-status st-inprog">IN PROGRESS</div>
+        <div class="car-age age-ok">1d</div>
+        <div class="car-assigned">M. Smith</div>
+        <div class="car-action">→</div>
+      </div>
+      <div class="car-row">
+        <div class="car-id">CAR-2026-0046</div>
+        <div class="car-title">Restraint sensor intermittent · Batman</div>
+        <div class="car-sev sev-c">CRITICAL</div>
+        <div class="car-status st-verify">VERIFY</div>
+        <div class="car-age age-warn">3d</div>
+        <div class="car-assigned">T. Brown · 3rd Party</div>
+        <div class="car-action">→</div>
+      </div>
+      <div class="car-row">
+        <div class="car-id">CAR-2026-0045</div>
+        <div class="car-title">Ops manual SOP outdated — El Toro</div>
+        <div class="car-sev sev-mi">MINOR</div>
+        <div class="car-status st-open">OPEN</div>
+        <div class="car-age age-over">9d ⚠</div>
+        <div class="car-assigned">Unassigned</div>
+        <div class="car-action">→</div>
+      </div>
+      <div class="car-row" style="opacity:.5;">
+        <div class="car-id">CAR-2026-0044</div>
+        <div class="car-title">Pre-open checklist gap · Superman</div>
+        <div class="car-sev sev-ma">MAJOR</div>
+        <div class="car-status st-closed">CLOSED</div>
+        <div class="car-age age-ok">2d</div>
+        <div class="car-assigned">R. Jones · Verified</div>
+        <div class="car-action">→</div>
+      </div>
+      <div class="car-row" style="opacity:.5;">
+        <div class="car-id">CAR-2026-0043</div>
+        <div class="car-title">Lifeguard zone coverage gap · Wave pool</div>
+        <div class="car-sev sev-c">CRITICAL</div>
+        <div class="car-status st-closed">CLOSED</div>
+        <div class="car-age age-ok">1d</div>
+        <div class="car-assigned">StarGuard · 3rd Party</div>
+        <div class="car-action">→</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+      <button class="btn-export-insurer">Export for Insurer Review →</button>
+      <button style="font-family:var(--mono);font-size:9px;padding:7px 14px;border-radius:3px;background:rgba(0,212,208,.04);border:1px solid rgba(0,212,208,.15);color:var(--teal);cursor:pointer;letter-spacing:.08em;transition:all .2s;">Filter by Severity</button>
+      <button style="font-family:var(--mono);font-size:9px;padding:7px 14px;border-radius:3px;background:rgba(255,255,255,.02);border:1px solid var(--border);color:rgba(255,255,255,.2);cursor:pointer;letter-spacing:.08em;transition:all .2s;">Show Closed Only</button>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEW BOARD -->
+<section class="sec" id="review-board">
+  <div class="sec-inner">
+    <div class="reveal">
+      <div class="sec-ey">Review Board Structure</div>
+      <h2 class="sec-title">Every role.<br><span class="t">Defined authority. Defined accountability.</span></h2>
+      <p class="sec-body">The review board is a multi-role structure where authority is tiered by credentialing and independence. Operators surface findings. Managers assign and close. Verifiers confirm independently. Third-party inspectors carry elevated weight. No one closes their own finding.</p>
+    </div>
+    <div class="board-grid reveal">
+      <div class="board-card">
+        <div class="board-role" style="color:#00FF88;">Ride Operator / Field Staff</div>
+        <div class="board-title">Surface & Submit</div>
+        <div class="board-powers">
+          <div class="board-power">Submit new CAR from any attraction via OpsScan QR or portal</div>
+          <div class="board-power">Attach photo evidence, voice note (VoxIntel integration)</div>
+          <div class="board-power">Earn submission XP — rewarded for surfacing, never penalized</div>
+          <div class="board-power">Cannot assign, verify, or close their own submission</div>
+        </div>
+      </div>
+      <div class="board-card">
+        <div class="board-role" style="color:var(--teal);">Operations Manager</div>
+        <div class="board-title">Review, Assign & Close</div>
+        <div class="board-powers">
+          <div class="board-power">Acknowledge all incoming CARs · override severity if warranted</div>
+          <div class="board-power">Assign to owner — maintenance, staff, or third-party inspector</div>
+          <div class="board-power">Final closure authority after verification is complete</div>
+          <div class="board-power">CACR dashboard visible in Manager Module live</div>
+        </div>
+      </div>
+      <div class="board-card">
+        <div class="board-role" style="color:var(--amber);">Maintenance Manager</div>
+        <div class="board-title">Remediate & Document</div>
+        <div class="board-powers">
+          <div class="board-power">Primary remediation owner for mechanical, electrical, structural findings</div>
+          <div class="board-power">Documents fix: parts, labor, NDT results, test records</div>
+          <div class="board-power">Can verify CARs they did not remediate (cross-verification)</div>
+          <div class="board-power">NDT upload center and inspector credential registry</div>
+        </div>
+      </div>
+      <div class="board-card" style="border-color:rgba(139,92,246,.2);background:rgba(139,92,246,.03);">
+        <div class="board-role" style="color:var(--purple);">Third-Party Inspector</div>
+        <div class="board-title">Independent Verification</div>
+        <div class="board-powers">
+          <div class="board-power">Credentialed access layer — NAARSO/AIMS cert number on file</div>
+          <div class="board-power">Verification carries 1.4× weight in CACR calculation vs internal</div>
+          <div class="board-power">Can submit CARs independently from on-site inspections</div>
+          <div class="board-power">Builds inspector rank score — feed to credential leaderboard</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAMIFICATION -->
+<section class="sec sec-dark" id="gamification">
+  <div class="sec-inner">
+    <div class="reveal">
+      <div class="sec-ey">Gamification Layer</div>
+      <h2 class="sec-title">Reward the operators<br><span class="g">who surface problems.</span></h2>
+      <p class="sec-body">The CAR system only works if people submit honestly. Gamification inverts the incentive — operators are rewarded for finding and reporting issues, not penalized. Speed bonuses reward fast remediation. Streaks recognize consistently clean operations. Inspector ranks build professional credentialing.</p>
+    </div>
+    <div class="game-grid">
+      <div class="game-card gc-xp reveal">
+        <span class="game-icon">⚡</span>
+        <div class="game-title">Submission XP</div>
+        <div class="game-desc">Points awarded on every valid CAR submission. Higher severity = more XP. The system rewards operators for being honest about what they find — not for having a clean record.</div>
+        <div class="game-detail"><strong>Critical:</strong> +150 XP · <strong>Major:</strong> +100 XP<br><strong>Minor:</strong> +50 XP · <strong>Observation:</strong> +25 XP<br>Invalid / duplicate: 0 XP</div>
+      </div>
+      <div class="game-card gc-speed reveal">
+        <span class="game-icon">🏁</span>
+        <div class="game-title">Speed Bonus</div>
+        <div class="game-desc">Extra XP for closing CARs before the SLA deadline. The faster the remediation, the bigger the bonus. Creates a healthy competition between maintenance teams.</div>
+        <div class="game-detail"><strong>&lt;50% of SLA time:</strong> +100 XP<br><strong>50–80% of SLA:</strong> +50 XP<br><strong>On time:</strong> Base XP only<br><strong>Overdue:</strong> −25 XP</div>
+      </div>
+      <div class="game-card gc-streak reveal">
+        <span class="game-icon">🔥</span>
+        <div class="game-title">Clean Audit Streak</div>
+        <div class="game-desc">Consecutive weeks with zero overdue CARs and CACR above 90% earns a streak multiplier. Streaks are displayed on the facility leaderboard — visible to operators and insurers.</div>
+        <div class="game-detail"><strong>4-week streak:</strong> 1.25× XP multiplier<br><strong>8-week streak:</strong> 1.5× multiplier<br><strong>12-week streak:</strong> 🏆 Gold Tier badge<br><strong>Broken streak:</strong> Reset to 1×</div>
+      </div>
+      <div class="game-card gc-rank reveal">
+        <span class="game-icon">🏅</span>
+        <div class="game-title">Inspector Rank</div>
+        <div class="game-desc">Third-party inspectors earn a rank score based on verification volume, accuracy, and speed. Builds toward an AS 360 Inspector credential that complements NAARSO and AIMS.</div>
+        <div class="game-detail"><strong>Level 1:</strong> 0–500 verifications<br><strong>Level 2:</strong> 500–2,000 · +1.2× weight<br><strong>Level 3:</strong> 2,000+ · +1.4× weight<br><strong>Elite:</strong> 95%+ accuracy · Gold badge</div>
+      </div>
+      <div class="game-card gc-board reveal">
+        <span class="game-icon">📊</span>
+        <div class="game-title">Facility Leaderboard</div>
+        <div class="game-desc">CACR rankings across all enrolled facilities. Operators know where they stand. Parks with high CACR scores get premium leverage at insurer renewal. Drives competition between facilities.</div>
+        <div class="game-detail"><strong>Public:</strong> Rank, CACR %, streak<br><strong>Insurer-visible:</strong> Full CAR history<br><strong>Operator-visible:</strong> Own scores + rank<br><strong>Updated:</strong> Real-time</div>
+      </div>
+      <div class="game-card gc-badge reveal">
+        <span class="game-icon">✅</span>
+        <div class="game-title">Closure Badges</div>
+        <div class="game-desc">Milestone badges awarded for sustained performance. Displayed on facility profile, operator profiles, and the insurer dossier. Each badge is a data-backed claim — not self-reported.</div>
+        <div class="game-detail"><strong>Perfect Month:</strong> 100% CACR · 30d<br><strong>Zero Overdue:</strong> 90 consecutive days<br><strong>Critical Crusher:</strong> 10 Critical CARs closed<br><strong>Speed Demon:</strong> 20 early closures</div>
+      </div>
+    </div>
+
+    <!-- XP TABLE -->
+    <div class="xp-table reveal">
+      <div class="xp-table-hdr">
+        <span>Action</span><span>Actor</span><span>XP</span><span>Condition</span>
+      </div>
+      <div class="xp-row"><div class="xp-action">Submit Critical CAR</div><div class="xp-actor">Any role</div><div class="xp-pts">+150</div><div class="xp-cond">Valid submission</div></div>
+      <div class="xp-row"><div class="xp-action">Submit Major CAR</div><div class="xp-actor">Any role</div><div class="xp-pts">+100</div><div class="xp-cond">Valid submission</div></div>
+      <div class="xp-row"><div class="xp-action">Submit Minor / Observation</div><div class="xp-actor">Any role</div><div class="xp-pts">+25–50</div><div class="xp-cond">Valid submission</div></div>
+      <div class="xp-row"><div class="xp-action">Acknowledge within SLA</div><div class="xp-actor">Ops Manager</div><div class="xp-pts">+30</div><div class="xp-cond">Within 2hr (Critical) / 24hr</div></div>
+      <div class="xp-row"><div class="xp-action">Early remediation close</div><div class="xp-actor">Maintenance</div><div class="xp-pts">+100</div><div class="xp-cond">&lt;50% of SLA time</div></div>
+      <div class="xp-row"><div class="xp-action">Third-party verification</div><div class="xp-actor">3rd-Party Inspector</div><div class="xp-pts">+75</div><div class="xp-cond">NAARSO/AIMS credentialed</div></div>
+      <div class="xp-row"><div class="xp-action">Overdue CAR penalty</div><div class="xp-actor">Assigned owner</div><div class="xp-pts" style="color:var(--red);">−25</div><div class="xp-cond">Past SLA, not closed</div></div>
+      <div class="xp-row"><div class="xp-action">Perfect month bonus</div><div class="xp-actor">Facility</div><div class="xp-pts">+500</div><div class="xp-cond">100% CACR, zero overdue</div></div>
+      <div class="xp-row"><div class="xp-action">Streak multiplier active</div><div class="xp-actor">Facility</div><div class="xp-pts">1.25–1.5×</div><div class="xp-cond">4+ week clean streak</div></div>
+    </div>
+
+    <!-- LEADERBOARD DEMO -->
+    <div class="leaderboard reveal">
+      <div class="lb-hdr">
+        <div class="lb-title">Facility CACR Leaderboard</div>
+        <div class="lb-period">Rolling 90 days · NJ Region</div>
+      </div>
+      <div class="lb-row lb-top">
+        <div class="lb-rank">1</div>
+        <div><div class="lb-facility">Facility A — Six Flags Great Adventure</div><div class="lb-badge-row"><span class="lb-badge">🔥</span><span class="lb-badge">✅</span><span class="lb-badge">🏆</span></div></div>
+        <div class="lb-cacr c-g">98%</div>
+        <div class="lb-open">0 open</div>
+        <div class="lb-xp">12,840 XP</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">2</div>
+        <div><div class="lb-facility">Facility B — Morey's Piers</div><div class="lb-badge-row"><span class="lb-badge">🔥</span><span class="lb-badge">✅</span></div></div>
+        <div class="lb-cacr c-g">94%</div>
+        <div class="lb-open">1 open</div>
+        <div class="lb-xp">9,210 XP</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">3</div>
+        <div><div class="lb-facility">Facility C — Clementon Park</div><div class="lb-badge-row"><span class="lb-badge">✅</span></div></div>
+        <div class="lb-cacr c-a">87%</div>
+        <div class="lb-open">2 open</div>
+        <div class="lb-xp">6,450 XP</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">4</div>
+        <div><div class="lb-facility">Facility D — Jenkinson's Boardwalk</div><div class="lb-badge-row"></div></div>
+        <div class="lb-cacr c-r">71%</div>
+        <div class="lb-open">4 open</div>
+        <div class="lb-xp">3,120 XP</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSURER CALLOUT -->
+<section class="sec">
+  <div class="sec-inner">
+    <div class="insurer-box reveal">
+      <div>
+        <div class="insurer-ey">For Specialty Lines Carriers &amp; MGAs</div>
+        <div class="insurer-title">CACR is your<br><span class="g">pre-loss indicator.</span></div>
+        <p class="insurer-body">A facility with 94% CACR and an average closure time of 4.2 days is a fundamentally different underwriting risk than one with 71% CACR and 9-day open CARs. AS 360 makes that number continuous, auditable, and tamper-resistant — sourced from operator behavior, not self-reported claims. At renewal, Tom Jones can see every CAR opened in the last 12 months, who closed it, who verified it, and how long it took. That's underwriting-grade data.</p>
+      </div>
+      <div class="insurer-btns">
+        <a href="mailto:adam@amusementstandards.com" class="btn-primary">Request Insurer Demo</a>
+        <a href="https://amusementstandards.com/masi-demo.html" class="btn-outline">AS 360 Platform →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand">amusement <span>standards.</span></div>
+  <div style="font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.15);">CAR Portal · AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · CACR™ · Proprietary</div>
+  <div class="f-copy">© 2026 Amusement Standards · Asbury Park, NJ</div>
+</footer>
+
+<script>
+// Reveal on scroll
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+  });
+}, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// Severity color update
+function updateSev(sel) {
+  sel.className = 'form-input';
+  if (sel.value === 'CRITICAL') sel.classList.add('severity-crit');
+  else if (sel.value === 'MAJOR') sel.classList.add('severity-major');
+}
+
+// Source chip toggle
+document.querySelectorAll('.source-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.source-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+  });
+});
+
+// Form submit
+function submitCAR() {
+  var el = document.getElementById('car-confirm');
+  if (!el) return;
+  el.style.display = 'block';
+  setTimeout(function() { el.style.display = 'none'; }, 4000);
+}
+
+// Animate CACR bars on scroll
+const cacrObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.cacr-fill').forEach(function(bar) {
+        var w = bar.getAttribute('data-w') || bar.style.width;
+        bar.style.width = '0';
+        setTimeout(function() { bar.style.width = w; }, 100);
+      });
+      cacrObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll('.cacr-strip').forEach(function(el) { cacrObs.observe(el); });
+</script>
+</body>
+</html>
