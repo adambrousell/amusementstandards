@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MASI Requirements Map · AS 360</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080B11;--surface:#0C1019;--panel:#111620;--panel2:#161D2A;--border:#1E2740;--border2:#283550;--teal:#0ABFBC;--teal-dim:rgba(10,191,188,.12);--gold:#D4AF37;--gold-dim:rgba(212,175,55,.1);--green:#10B981;--green-dim:rgba(16,185,129,.1);--amber:#F59E0B;--amber-dim:rgba(245,158,11,.1);--red:#F43F5E;--red-dim:rgba(244,63,94,.1);--text:#B8C4D8;--text-bright:#E2E8F0;--text-dim:#5A6A82;--text-muted:#3A4860;--mono:'IBM Plex Mono',monospace;--serif:'Source Serif 4',Georgia,serif;--sans:'IBM Plex Sans',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);padding:32px;max-width:960px;margin:0 auto;}
+
+.hdr{margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.mark{width:36px;height:36px;background:linear-gradient(135deg,var(--teal),#0891B2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700;color:#fff;}
+.hdr-title{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--text-bright);}
+.hdr-sub{font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:.5px;}
+
+.legend{display:flex;gap:16px;margin-bottom:24px;padding:12px 16px;background:var(--panel);border:1px solid var(--border);border-radius:8px;flex-wrap:wrap;}
+.leg-item{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;font-weight:600;}
+.leg-dot{width:10px;height:10px;border-radius:3px;}
+
+.section{margin-bottom:24px;}
+.sec-title{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--teal);padding:8px 0;border-bottom:1px solid var(--border);margin-bottom:10px;}
+
+.req{background:var(--panel);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.req-hdr{display:grid;grid-template-columns:1fr 90px 80px;gap:12px;align-items:center;padding:12px 16px;cursor:pointer;transition:background .12s;}
+.req-hdr:hover{background:var(--panel2);}
+.req-q{font-size:13px;font-weight:600;color:var(--text-bright);}
+.req-status{font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 10px;border-radius:4px;text-align:center;letter-spacing:.5px;}
+.req-status.built{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25);}
+.req-status.demo{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(10,191,188,.25);}
+.req-status.roadmap{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
+.req-status.planned{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(212,175,55,.25);}
+.req-conf{font-family:var(--mono);font-size:9px;font-weight:600;text-align:center;}
+.req-body{padding:0 16px 14px;display:none;}
+.req.open .req-body{display:block;}
+.req-answer{font-size:13px;line-height:1.7;color:var(--text);padding:10px 14px;background:var(--panel2);border-radius:6px;border-left:3px solid var(--teal);}
+.req-talk{font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:8px;padding:6px 10px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.1);border-radius:4px;}
+.req-talk::before{content:'TALKING POINT: ';color:var(--gold);font-weight:700;}
+
+.summary{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;margin-top:24px;}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px;}
+.sum-card{text-align:center;padding:14px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;}
+.sum-num{font-family:var(--serif);font-size:28px;font-weight:700;line-height:1;}
+.sum-label{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-dim);margin-top:4px;}
+
+.footer{margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-family:var(--mono);font-size:8px;color:var(--text-muted);text-align:center;letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-top"><div class="mark">AS</div><div class="hdr-title">MASI Requirements Response</div></div>
+  <div class="hdr-sub">Prepared for: Tom Jones &amp; Noah · McGowan Allied Specialty Insurance · Tuesday Call Prep<br>Amusement Standards · Adam Brousell · March 2026</div>
+</div>
+
+<div class="legend">
+  <div class="leg-item"><div class="leg-dot" style="background:var(--green);"></div> BUILT &amp; LIVE — Can demo now</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--teal);"></div> DEMO — Functional prototype, not in production</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--amber);"></div> ROADMAP — Architected, 2-6 weeks to build</div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--gold);"></div> PLANNED — Scoped, pending insurer input on requirements</div>
+</div>
+
+<div class="section">
+  <div class="sec-title">SCORING &amp; METHODOLOGY</div>
+
+  <div class="req open" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"How do you score a facility? What's the methodology?"</div><div class="req-status built">BUILT</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">RIDE Score is a weighted composite across 4 pillars — Readiness, Integrity, Delivery, Environment — fed by 15 data streams. Scoring methodology is published at the 10,000-foot and 30,000-foot level on amusementstandards.com. Weights are configurable per facility type. Parallel scores exist for aquatics (SPLASH Score, 12 streams, 6 pillars) and FECs (PLAY Score, 10 streams). Total architecture: 37 data streams across the three indices.</div>
+      <div class="req-talk">Anchor on the FICO analogy — "We're building the credit score for ride safety. Just like FICO aggregates payment history, credit utilization, and length of history into a single number, RIDE Score aggregates inspection compliance, maintenance velocity, operator behavior, and incident patterns."</div>
+    </div>
+  </div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"How is the score validated? Is it just self-reported data?"</div><div class="req-status built">BUILT</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">Multiple validation layers. First, behavioral integrity analysis flags statistical anomalies in self-reported data — checklist speed, zero-variance patterns, submission clustering. Second, an independent external crowdsourced validation stream provides guest-side audit data that pipes into AS 360 as an external signal. The external platform is structurally independent from operator-facing tools so the data can't be influenced. Third, the amendment system preserves immutable original records — any corrections create linked amendments with geo-verification, device binding, and supervisor approval.</div>
+      <div class="req-talk">Don't name AmusementRating.org — just say "We have an independent, structurally separated external validation platform." The independence is the selling point. If they ask more, explain the architecture without revealing the brand.</div>
+    </div>
+  </div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"Can we customize scoring weights for our book of business?"</div><div class="req-status roadmap">ROADMAP</div><div class="req-conf" style="color:var(--amber);">MED</div></div>
+    <div class="req-body">
+      <div class="req-answer">Architecture supports configurable weights per insurer. The 4-pillar structure (R/I/D/E) stays constant, but the weight allocation between pillars can be adjusted based on what an insurer prioritizes. For example, MASI might weight Integrity at 35% vs. the default 25% because audit integrity is your primary loss control concern. Implementation: 4-6 weeks for insurer-specific weight profiles.</div>
+      <div class="req-talk">Frame as: "The framework is fixed — that's what makes it comparable across facilities. But the emphasis is configurable. Think of it like credit scoring where the categories are standard but the model can be tuned for different lending products."</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">INSPECTIONS &amp; COMPLIANCE</div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"How do you track whether inspections are actually being done?"</div><div class="req-status built">BUILT</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">19 inspection/audit form types built into the Manager Module — daily ride, weekly ride, monthly facility, quarterly comprehensive, annual state, plus specialized forms (iGSA, mGSA, NMR, IRL, TTX). Each has a defined cadence, age tracking, and compliance scoring. Status engine tracks current/due-soon/overdue/expired states. All completions are timestamped, geo-tagged, and device-identified.</div>
+      <div class="req-talk">Show the Inspections tab in the Manager Module — the visual impact of 19 form types with real-time status tracking is strong. Then show the Audit Schedule calendar view.</div>
+    </div>
+  </div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"Can you detect whether inspections are being fabricated?"</div><div class="req-status demo">DEMO</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">Three anomaly detection patterns are built into AuditScore: (1) Speed flags — checklist completed significantly faster than peer average, suggesting incomplete review. (2) Zero-variance flags — consecutive days of 100% PASS on multi-item checklists, which is statistically improbable. (3) Clustering flags — multiple checklists submitted in rapid sequence, often just before supervisor arrival. These are presented to managers as integrity flags and to insurers as behavioral compliance risk signals.</div>
+      <div class="req-talk">This is your single biggest differentiator. Every competitor has a checklist app. Nobody else detects whether the checklists are real. Lead with the L. Thompson example — 14 consecutive days all PASS, completing in 34 seconds vs. 4.1 minute peer average. That's the story Noah needs to hear.</div>
+    </div>
+  </div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"What happens when someone needs to correct an inspection record?"</div><div class="req-status demo">DEMO</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">Audit Amendment Request (AMR) system. Operator submits a correction request that includes the original value, the requested correction, and a written justification. The system verifies: (1) request originated from same geo-fenced location as original, (2) same device that submitted original, (3) optional photo evidence. Original record is sealed and immutable. Supervisor has 4 hours to approve or deny. Pattern detection flags operators with frequent amendment requests.</div>
+      <div class="req-talk">The immutability angle is what makes this different from "just editing a field." Show the AMR queue in the AuditScore tab — the ORIGINAL → REQUESTED visual with geo/device/photo verification badges.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">INCIDENT &amp; RISK MANAGEMENT</div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"How do you capture and track incidents and near-misses?"</div><div class="req-status built">BUILT</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">Two primary forms: IRL (Incident Report Log) for actual incidents and NMR (Near-Miss Report) for close calls. Both feed into Airtable with severity classification, ride association, and timestamp. CARs (Corrective Action Records) are auto-generated from incidents and track resolution with aging metrics. CACR (Corrective Action Closure Rate) is a primary scoring input. The escalation matrix defines response protocols by severity level.</div>
+    </div>
+  </div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"Can you monitor radio traffic for unreported incidents?"</div><div class="req-status demo">DEMO</div><div class="req-conf" style="color:var(--amber);">MED</div></div>
+    <div class="req-body">
+      <div class="req-answer">VoxIntel is a passive radio intelligence layer — RTL-SDR scanner captures unencrypted analog FM radio traffic, runs it through VAD → Whisper → NLP classification → structured event log. Classifies events as ride-down, medical, EMS, maintenance, queue, security. Cross-references against reported incidents to detect unreported events. Currently demo with simulated feed; hardware deployment scoped at a proof-of-concept site ~7 miles from a major facility.</div>
+      <div class="req-talk">Be transparent: "VoxIntel is our most forward-looking capability. We have the demo feed running in the Manager Module, hardware is scoped, and we have a PoC deployment site. Production deployment is a Phase 2 deliverable." Don't oversell — but do show the feed. The concept alone is powerful.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">INSURER-SPECIFIC CAPABILITIES</div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"What does the insurer portal look like? Can we access facility data?"</div><div class="req-status demo">DEMO</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">Insurer Portal provides: portfolio-level dashboard (aggregate score, distribution, trend), facility search with per-facility drill-down, RIDE Score composite with pillar breakdown, 90-day trend charts, compliance snapshot (inspection completion, CACR, CAR aging, audit integrity rating), active risk flags, full amendment audit trail, and — critically — an Insurer Data Overlay section that displays MASI's own claims history, loss control visit findings, and historical underwriting data alongside AS 360 intelligence. Export capabilities include underwriting report (PDF), renewal summary, and raw data export (CSV).</div>
+      <div class="req-talk">Show the insurer-portal.html mockup — click into a facility and scroll to the "Insurer Data Overlay" panel. Key message: "This isn't a one-way broadcast. We ingest your data and make it more useful. Your claims history, your loss control visit findings, your underwriting notes — all contextualized against real-time operational intelligence."</div>
+    </div>
+  </div>
+
+  <div class="req open" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"Can you ingest our claims data and loss control reports?"</div><div class="req-status planned">PLANNED</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">Yes — and this is where the platform becomes most valuable to MASI specifically. Under mutual NDA, AS 360 can ingest: (1) Claims history — frequency, severity, type, and total incurred by facility, enabling claims-to-score correlation analysis. (2) Loss control visit reports — findings, remediation status, and follow-up schedules, displayed alongside AS 360 inspection data so you can see if your recommendations are actually being implemented. (3) Historical loss runs — for backtest analysis correlating RIDE Score trajectories with claims outcomes. (4) Underwriting notes — premium history and coverage terms for renewal decision support. All MASI data is encrypted at rest (AES-256) and in transit (TLS 1.3), stored in a tenant-isolated partition, and accessible only to authorized MASI personnel. The data never touches operator-facing systems — complete firewall between operational and insurer data.</div>
+      <div class="req-talk">This is a high-priority conversation starter. Lead with: "The most powerful thing we can do together is correlate your claims history against our operational scores. If we can show that facilities with RIDE Scores above 75 have 40% fewer claims than facilities below 60 — that's not a sales pitch, that's actuarial evidence. But we need your data to prove it." Then: "We'd do this under mutual NDA. Your data stays encrypted and tenant-isolated. Our operators never see your claims numbers. Your underwriters see everything."</div>
+    </div>
+  </div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"Can we generate reports for underwriting files?"</div><div class="req-status roadmap">ROADMAP</div><div class="req-conf" style="color:var(--amber);">MED</div></div>
+    <div class="req-body">
+      <div class="req-answer">Report generation engine is architected but not yet in production. Target deliverables: (1) Underwriting Summary — single-page facility risk profile with composite score, pillar breakdown, 90-day trend, and flag status. (2) Renewal Risk Report — year-over-year comparison, improvement trajectory, unresolved CARs. (3) Portfolio Summary — aggregate view across insured book. All exportable as PDF. Implementation: 4 weeks.</div>
+      <div class="req-talk">Frame as: "The data infrastructure is built — the reporting layer is a packaging exercise. What format does your underwriting team prefer? We'll build to your specification."</div>
+    </div>
+  </div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"How does this integrate with our existing loss control workflow?"</div><div class="req-status planned">PLANNED</div><div class="req-conf" style="color:var(--amber);">MED</div></div>
+    <div class="req-body">
+      <div class="req-answer">Integration approach depends on MASI's existing stack. Options include: API-based data feed (JSON endpoints for score history, flag status, compliance metrics), scheduled email digests (weekly portfolio summary, immediate alerts for critical flags), and manual export (CSV/PDF from portal). We'd scope the integration based on what Noah's team uses today.</div>
+      <div class="req-talk">Turn this into a question: "What's your current loss control platform? We'll design the integration to fit your existing workflow rather than asking you to adopt a new one."</div>
+    </div>
+  </div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"What does a pilot look like? How do we test this?"</div><div class="req-status planned">PLANNED</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">Proposed pilot: 3-5 facilities from MASI's book, 90-day window. Pilot includes: Tier 1 OpsScan deployment (passive ingestion from existing shift/maintenance systems — zero new workflows for the facility), RIDE Score calculation with weekly insurer reports, anomaly detection running against real inspection data, and insurer portal access for Tom/Noah's team. Pilot cost: to be negotiated, but positioned as a loss control investment — the goal is demonstrating claims reduction potential.</div>
+      <div class="req-talk">Close the call with this question: "What's your timeline for evaluating a pilot? If we can start with 3-5 facilities from your book, we can have the first RIDE Scores generated within 30 days of data ingestion."</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">OPERATOR INTELLIGENCE &amp; DATA</div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"Can you track operator performance and training compliance?"</div><div class="req-status built">BUILT</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">OpsScan 3-tier model: Tier 1 passively ingests existing shift management data (Kronos/ADP/Mobaro), Tier 2 adds CV-based position tracking from existing CCTV, Tier 3 adds active QR scan-in and voice logging. Rotation tracking, staffing compliance, position coverage gaps, and training module completion (SCORM 1.2 packages via TalentLMS) all feed into scoring. The AuditScore gamification engine tracks per-operator XP, streaks, and completion rates.</div>
+    </div>
+  </div>
+
+  <div class="req" onclick="this.classList.toggle('open')">
+    <div class="req-hdr"><div class="req-q">"What data do you actually have access to today?"</div><div class="req-status built">BUILT</div><div class="req-conf" style="color:var(--green);">HIGH</div></div>
+    <div class="req-body">
+      <div class="req-answer">Airtable-backed data infrastructure with two primary hubs: AS 360 Intelligence Hub (operational data — inspections, CARs, incidents, rotations, shift logs, escalations) and AmusementRating base (external validation — 131 parks, 3,937 rides, guest-submitted audit data with 10-audit threshold and 4 standardized checklists). Power BI connects via M code for 384+ DAX measures across 27 dashboard sections. All data is API-accessible.</div>
+      <div class="req-talk">Be specific about the numbers — 131 parks, 3,937 rides, 384 DAX measures, 37 data streams. Volume signals credibility. But be clear: "The data architecture is built. What we need from a pilot is real operational data flowing through it."</div>
+    </div>
+  </div>
+</div>
+
+<div class="summary">
+  <div style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text-bright);">READINESS SUMMARY</div>
+  <div class="summary-grid">
+    <div class="sum-card"><div class="sum-num" style="color:var(--green);">7</div><div class="sum-label">BUILT &amp; LIVE</div></div>
+    <div class="sum-card"><div class="sum-num" style="color:var(--teal);">4</div><div class="sum-label">DEMO READY</div></div>
+    <div class="sum-card"><div class="sum-num" style="color:var(--amber);">2</div><div class="sum-label">ROADMAP (2-6 WK)</div></div>
+    <div class="sum-card"><div class="sum-num" style="color:var(--gold);">3</div><div class="sum-label">PLANNED (NEEDS INPUT)</div></div>
+  </div>
+  <div style="font-size:13px;color:var(--text-dim);margin-top:12px;line-height:1.7;">Bottom line: 11 of 16 likely requirements are built or demo-ready today. The remaining 5 are architecture-complete and need 2-6 weeks of implementation — most of which benefit from insurer input on requirements before building. The claims data ingestion requirement is the highest-leverage planned item: MASI's own historical data, under NDA, is what transforms AS 360 from an operational tool into an actuarial evidence platform. The strongest play is transparency about what's live vs. what's next, combined with a concrete pilot proposal that gives MASI a low-risk way to validate the platform.</div>
+</div>
+
+<div class="footer">CONFIDENTIAL &middot; AMUSEMENT STANDARDS &middot; PREPARED FOR MASI TUESDAY CALL &middot; MARCH 2026</div>
+
+</body>
+</html>
