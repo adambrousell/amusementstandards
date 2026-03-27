@@ -4,81 +4,82 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AS 360 Platform — Park Operations · RIDE · SPLASH · PLAY | Amusement Standards</title>
-<meta name="description" content="AS 360 is a full-suite park management platform — Manager, Dispatcher, Operator Log, 19 inspections, incident reporting, guest intelligence, OpsScan, LensIQ, VoxIntel, and automated data feeds. Every data point feeds a composite RIDE Score.">
+<meta name="description" content="AS 360 is a full-suite park management platform — Manager Module, Operator Intelligence (OpsScan 3-Tier + VoxIntel + LensIQ + Anomaly Detection), Maintenance Manager, AuditScore, 19 inspections, and automated data feeds. Every data point feeds a composite RIDE Score.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.amusementstandards.com/as360-platform.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#060f24;--navy2:#0a1628;--navy3:#0d1e35;--gold:#c9a84c;--ride:#FF6B35;--splash:#1e9ed4;--play:#1fb87a;--teal:#00D4D0;--vox:#8B5CF6;--ops:#00FF88;--lens:#0099FF;--text:#d0d8e8;--muted:#5e7192;--border:rgba(255,255,255,0.07);--font-serif:'DM Serif Display',serif;--font-mono:'DM Mono',monospace;--font-sans:'DM Sans',sans-serif}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--navy);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}a{text-decoration:none}
+:root{--navy:#060f24;--navy2:#0a1628;--navy3:#0d1e35;--gold:#c9a84c;--ride:#FF6B35;--splash:#1e9ed4;--play:#1fb87a;--teal:#00D4D0;--vox:#8B5CF6;--ops:#00FF88;--lens:#0099FF;--red:#FF3B5C;--amber:#FFB800;--green:#00D68F;--text:#d0d8e8;--muted:#5e7192;--border:rgba(255,255,255,0.07);--font-serif:'DM Serif Display',serif;--font-mono:'DM Mono',monospace;--font-sans:'DM Sans',sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--navy);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}a{text-decoration:none}::selection{background:var(--teal);color:#000}
+
 nav{position:sticky;top:0;z-index:100;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(6,15,36,.94);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}.nav-logo{font-family:var(--font-mono);font-size:14px;font-weight:700;color:var(--gold);letter-spacing:.02em}.nav-links{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.nav-links a{font-size:12px;font-weight:500;color:var(--muted);padding:6px 12px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase;transition:color .2s,background .2s}.nav-links a:hover{color:#fff;background:rgba(255,255,255,.05)}.nav-cta{background:var(--ride)!important;color:#fff!important;font-weight:600!important}.nav-cta:hover{opacity:.85}
+
 .hero{padding:100px 48px 80px;position:relative;overflow:hidden;text-align:center}.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 20% 60%,rgba(255,107,53,.09) 0%,transparent 60%),radial-gradient(ellipse 60% 50% at 80% 60%,rgba(31,184,122,.08) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 50% 20%,rgba(30,158,212,.07) 0%,transparent 60%);pointer-events:none}
 .hero-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:28px;display:flex;align-items:center;justify-content:center;gap:14px}.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:40px;height:1px;background:rgba(255,255,255,.12)}
 .hero h1{font-family:var(--font-serif);font-size:clamp(44px,7vw,90px);color:#fff;line-height:.95;letter-spacing:-.02em;margin-bottom:12px;position:relative}.hero h1 em{color:var(--ride);font-style:italic}
-.hero-module-strip{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);margin-bottom:32px;line-height:1.6}.hero-module-strip span{color:rgba(255,255,255,.2);margin:0 4px}
-.hero-desc{font-size:17px;font-weight:300;color:rgba(255,255,255,.55);max-width:660px;margin:0 auto 40px;line-height:1.75}
-.hero-score-strip{display:inline-flex;align-items:stretch;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.1);margin-bottom:40px}.hss-item{padding:18px 32px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .2s,transform .2s;cursor:pointer}.hss-item:hover{filter:brightness(1.15);transform:translateY(-2px)}.hss-item+.hss-item{border-left:1px solid rgba(255,255,255,.08)}.hss-ride{background:rgba(255,107,53,.1)}.hss-splash{background:rgba(30,158,212,.1)}.hss-play{background:rgba(31,184,122,.1)}.hss-ride:hover{background:rgba(255,107,53,.2)}.hss-splash:hover{background:rgba(30,158,212,.2)}.hss-play:hover{background:rgba(31,184,122,.2)}.hss-name{font-family:var(--font-mono);font-size:16px;font-weight:700}.hss-ride .hss-name{color:var(--ride)}.hss-splash .hss-name{color:var(--splash)}.hss-play .hss-name{color:var(--play)}.hss-seg{font-size:10px;color:rgba(255,255,255,.35);font-family:var(--font-mono);letter-spacing:.05em}.hss-score{font-family:var(--font-mono);font-size:36px;font-weight:700;color:#fff;line-height:1;margin-top:4px}.hss-sample{font-family:var(--font-mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25)}.hss-arrow{display:flex;align-items:center;justify-content:center;padding:0 8px;background:rgba(255,255,255,.02);color:rgba(255,255,255,.15);font-size:14px;border-left:1px solid rgba(255,255,255,.08);flex-shrink:0}
-.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}.btn{display:inline-block;font-family:var(--font-sans);font-weight:600;font-size:14px;padding:13px 28px;border-radius:4px;letter-spacing:.02em;transition:opacity .2s,transform .2s;cursor:pointer}.btn-primary{background:var(--ride);color:#fff}.btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12)}.btn-gold{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.3)}.btn:hover{opacity:.82;transform:translateY(-1px)}
+.hero-sub{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--muted);margin-bottom:14px;line-height:1.6}
+.hero-desc{font-size:17px;font-weight:300;color:rgba(255,255,255,.55);max-width:660px;margin:0 auto 36px;line-height:1.75}
+.hero-scores{display:inline-flex;align-items:stretch;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.1);margin-bottom:36px}
+.hs-item{padding:18px 32px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .2s;cursor:pointer}.hs-item:hover{filter:brightness(1.15);transform:translateY(-2px)}.hs-item+.hs-item{border-left:1px solid rgba(255,255,255,.08)}.hs-ride{background:rgba(255,107,53,.1)}.hs-splash{background:rgba(30,158,212,.1)}.hs-play{background:rgba(31,184,122,.1)}.hs-name{font-family:var(--font-mono);font-size:16px;font-weight:700}.hs-ride .hs-name{color:var(--ride)}.hs-splash .hs-name{color:var(--splash)}.hs-play .hs-name{color:var(--play)}.hs-seg{font-size:10px;color:rgba(255,255,255,.35);font-family:var(--font-mono)}.hs-num{font-family:var(--font-mono);font-size:36px;font-weight:700;color:#fff;line-height:1;margin-top:4px}.hs-tag{font-family:var(--font-mono);font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.25)}.hs-arr{display:flex;align-items:center;padding:0 8px;background:rgba(255,255,255,.02);color:rgba(255,255,255,.15);font-size:14px;border-left:1px solid rgba(255,255,255,.08)}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}.btn{display:inline-block;font-family:var(--font-sans);font-weight:600;font-size:14px;padding:13px 28px;border-radius:4px;letter-spacing:.02em;transition:all .2s;cursor:pointer}.btn-primary{background:var(--ride);color:#fff}.btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12)}.btn-gold{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.3)}.btn:hover{opacity:.82;transform:translateY(-1px)}
+
 .stat-bar{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}@media(min-width:700px){.stat-bar{grid-template-columns:repeat(8,1fr)}}.stat-item{padding:22px 12px;border-right:1px solid var(--border);text-align:center}.stat-item:last-child{border-right:none}.stat-num{font-family:var(--font-serif);font-size:36px;color:#fff;line-height:1;margin-bottom:4px}.stat-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-section{padding:88px 48px}.max-w{max-width:1100px;margin:0 auto}.section-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}.section-title{font-family:var(--font-serif);font-size:clamp(28px,4vw,46px);color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}.section-title em{color:var(--ride);font-style:italic}.section-sub{font-size:15px;font-weight:300;color:var(--muted);line-height:1.75;max-width:580px}
-/* triad */
-.triad-section{background:var(--navy2)}.triad{display:grid;grid-template-columns:1fr;gap:2px;margin-top:52px}@media(min-width:900px){.triad{grid-template-columns:repeat(3,1fr)}}.triad-card{background:rgba(255,255,255,.025);border:1px solid var(--border);padding:36px 28px;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}.triad-card:hover{transform:translateY(-4px)}.tc-mgr{border-color:rgba(0,212,208,.2);background:rgba(0,212,208,.04)}.tc-opd{border-color:rgba(46,111,255,.2);background:rgba(46,111,255,.04)}.tc-atr{border-color:rgba(255,107,53,.2);background:rgba(255,107,53,.04)}.tc-mgr:hover{box-shadow:0 20px 48px rgba(0,212,208,.1)}.tc-opd:hover{box-shadow:0 20px 48px rgba(46,111,255,.1)}.tc-atr:hover{box-shadow:0 20px 48px rgba(255,107,53,.1)}.tc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}.tc-icon{font-size:32px}.tc-code{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:3px;font-weight:700}.tc-mgr .tc-code{background:rgba(0,212,208,.12);color:var(--teal);border:1px solid rgba(0,212,208,.25)}.tc-opd .tc-code{background:rgba(46,111,255,.12);color:#5b8eff;border:1px solid rgba(46,111,255,.25)}.tc-atr .tc-code{background:rgba(255,107,53,.12);color:var(--ride);border:1px solid rgba(255,107,53,.25)}.tc-name{font-family:var(--font-serif);font-size:24px;color:#fff;margin-bottom:10px}.tc-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:20px}.tc-features{list-style:none;margin-bottom:20px}.tc-features li{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;color:rgba(255,255,255,.5);line-height:1.5}.tc-features li:last-child{border-bottom:none}.tc-features li::before{content:'·';flex-shrink:0;font-weight:700;margin-top:-1px}.tc-mgr .tc-features li::before{color:var(--teal)}.tc-opd .tc-features li::before{color:#5b8eff}.tc-atr .tc-features li::before{color:var(--ride)}.tc-link-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:600;padding:7px 14px;border-radius:4px;margin-top:6px;transition:all .2s;text-decoration:none}.tc-link-btn:hover{transform:translateX(3px)}
 
-/* ── DATA ACQUISITION LAYER ── */
-.dal-section{background:var(--navy);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.dal-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:12px}.dal-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.06)}
-.dal-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:40px}@media(min-width:700px){.dal-grid{grid-template-columns:repeat(2,1fr)}}@media(min-width:1000px){.dal-grid{grid-template-columns:repeat(4,1fr)}}
-.dal-card{border-radius:8px;padding:28px 24px;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column;gap:10px}.dal-card:hover{transform:translateY(-4px)}
-.dal-ops{background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2)}.dal-ops:hover{box-shadow:0 16px 40px rgba(0,255,136,.1)}
-.dal-lens{background:rgba(0,153,255,.05);border:1px solid rgba(0,153,255,.2)}.dal-lens:hover{box-shadow:0 16px 40px rgba(0,153,255,.1)}
-.dal-vox{background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.2)}.dal-vox:hover{box-shadow:0 16px 40px rgba(139,92,246,.1)}
-.dal-agg{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.2)}.dal-agg:hover{box-shadow:0 16px 40px rgba(201,168,76,.1)}
-.dal-badge{font-family:var(--font-mono);font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;border-radius:3px;display:inline-flex;align-items:center;gap:5px;width:fit-content}
-.dal-ops .dal-badge{background:rgba(0,255,136,.1);color:#00FF88;border:1px solid rgba(0,255,136,.25)}
-.dal-lens .dal-badge{background:rgba(0,153,255,.1);color:#0099FF;border:1px solid rgba(0,153,255,.25)}
-.dal-vox .dal-badge{background:rgba(139,92,246,.1);color:#a78bfa;border:1px solid rgba(139,92,246,.25)}
-.dal-agg .dal-badge{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.25)}
-.dal-pulse{width:6px;height:6px;border-radius:50%;animation:dalPulse 1.6s ease-in-out infinite}@keyframes dalPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.65)}}
-.dal-ops .dal-pulse{background:#00FF88}.dal-lens .dal-pulse{background:#0099FF}.dal-vox .dal-pulse{background:#a78bfa}.dal-agg .dal-pulse{background:var(--gold)}
-.dal-icon{font-size:28px}
-.dal-name{font-family:var(--font-serif);font-size:22px;color:#fff;line-height:1.1}
-.dal-desc{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;flex:1}
-.dal-features{list-style:none;margin-top:4px}.dal-features li{font-size:11px;color:rgba(255,255,255,.4);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:8px;align-items:flex-start}.dal-features li:last-child{border-bottom:none}.dal-features li::before{content:'·';flex-shrink:0}
-.dal-ops .dal-features li::before{color:#00FF88}.dal-lens .dal-features li::before{color:#0099FF}.dal-vox .dal-features li::before{color:#a78bfa}.dal-agg .dal-features li::before{color:var(--gold)}
-.dal-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.06em;padding:6px 14px;border-radius:4px;margin-top:6px;transition:all .2s;text-decoration:none;width:fit-content}
-.dal-ops .dal-link{background:rgba(0,255,136,.08);color:#00FF88;border:1px solid rgba(0,255,136,.2)}.dal-ops .dal-link:hover{background:rgba(0,255,136,.15)}
-.dal-lens .dal-link{background:rgba(0,153,255,.08);color:#0099FF;border:1px solid rgba(0,153,255,.2)}.dal-lens .dal-link:hover{background:rgba(0,153,255,.15)}
-.dal-vox .dal-link{background:rgba(139,92,246,.08);color:#a78bfa;border:1px solid rgba(139,92,246,.2)}.dal-vox .dal-link:hover{background:rgba(139,92,246,.15)}
-.dal-agg .dal-link{background:rgba(201,168,76,.08);color:var(--gold);border:1px solid rgba(201,168,76,.2)}.dal-agg .dal-link:hover{background:rgba(201,168,76,.15)}
-.dal-triangulate{margin-top:40px;padding:24px 28px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:8px;display:grid;grid-template-columns:1fr;gap:16px}@media(min-width:700px){.dal-triangulate{grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center}}
-.dal-tri-item{text-align:center;padding:10px}
-.dal-tri-name{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
-.dal-tri-desc{font-size:11px;color:var(--muted);line-height:1.5}
-.dal-tri-arrow{color:rgba(255,255,255,.15);font-size:18px;text-align:center;font-family:var(--font-mono)}
-.dal-tri-output{text-align:center;padding:12px 20px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:6px}
-.dal-tri-output-label{font-family:var(--font-mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
-.dal-tri-output-name{font-family:var(--font-serif);font-size:18px;color:#fff}
+section{padding:88px 48px}.max-w{max-width:1100px;margin:0 auto}.sec-ey{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}.sec-title{font-family:var(--font-serif);font-size:clamp(28px,4vw,46px);color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}.sec-title em{color:var(--ride);font-style:italic}.sec-sub{font-size:15px;font-weight:300;color:var(--muted);line-height:1.75;max-width:580px}
 
-/* modules */
-.modules-section{background:var(--navy2)}.group-label{display:flex;align-items:center;gap:14px;margin:40px 0 14px}.gl-text{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;font-weight:700}.gl-line{flex:1;height:1px;background:rgba(255,255,255,.06)}.gl-count{font-family:var(--font-mono);font-size:10px;color:var(--teal);background:rgba(0,212,208,.08);border:1px solid rgba(0,212,208,.15);padding:2px 8px;border-radius:3px;white-space:nowrap}.mod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}@media(min-width:700px){.mod-grid{grid-template-columns:repeat(3,1fr)}}@media(min-width:1000px){.mod-grid{grid-template-columns:repeat(4,1fr)}}.mod-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:6px;padding:16px 14px;display:flex;flex-direction:column;gap:5px;transition:all .18s;position:relative;overflow:hidden;color:inherit}.mod-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .18s;background:var(--teal)}.mod-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.4)}.mod-card:hover::after{opacity:1}.mod-card.mc-red::after{background:#FF3B5C}.mod-card.mc-amber::after{background:#FFB800}.mod-card.mc-green::after{background:var(--play)}.mod-card.mc-purple::after{background:#8B5CF6}.mod-card.mc-gold::after{background:var(--gold)}.mod-card.mc-auto::after{background:var(--teal)}.mc-mgr-badge{font-family:var(--font-mono);font-size:8px;letter-spacing:.06em;padding:2px 7px;border-radius:3px;background:rgba(0,212,208,.06);border:1px solid rgba(0,212,208,.12);color:rgba(0,212,208,.5);display:inline-block;margin-bottom:2px}.m-auto-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:8px;letter-spacing:.06em;padding:2px 7px;border-radius:3px;background:rgba(0,212,208,.06);border:1px solid rgba(0,212,208,.12);color:var(--teal);margin-bottom:2px}.m-auto-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:autoPulse 1.8s ease-in-out infinite}@keyframes autoPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}.m-icon{font-size:20px}.m-code{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;font-weight:700;color:var(--muted)}.m-name{font-size:13px;font-weight:600;color:#fff;line-height:1.25}.m-desc{font-size:11px;color:var(--muted);line-height:1.5;flex:1;font-weight:300}.m-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px}.m-tag{font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.3)}.m-arrow{font-size:12px;color:rgba(255,255,255,.15);transition:color .15s}.mod-card:hover .m-arrow{color:var(--teal)}.sb{font-family:var(--font-mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:2px;letter-spacing:.05em}.sb-ride{background:rgba(255,107,53,.15);color:var(--ride);border:1px solid rgba(255,107,53,.3)}.sb-splash{background:rgba(30,158,212,.15);color:var(--splash);border:1px solid rgba(30,158,212,.3)}.sb-play{background:rgba(31,184,122,.15);color:var(--play);border:1px solid rgba(31,184,122,.3)}.score-badges{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:2px}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px}@media(max-width:700px){.card-grid{grid-template-columns:1fr}}
+.card{background:rgba(255,255,255,.025);border:1px solid var(--border);padding:32px 24px;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column;gap:8px}.card:hover{transform:translateY(-4px)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .2s}.card:hover::before{opacity:1}
+.c-teal{border-color:rgba(0,212,208,.2);background:rgba(0,212,208,.04)}.c-teal:hover{box-shadow:0 20px 48px rgba(0,212,208,.1)}.c-teal::before{background:var(--teal)}
+.c-ops{border-color:rgba(0,255,136,.2);background:rgba(0,255,136,.04)}.c-ops:hover{box-shadow:0 20px 48px rgba(0,255,136,.1)}.c-ops::before{background:var(--ops)}
+.c-amber{border-color:rgba(255,184,0,.2);background:rgba(255,184,0,.04)}.c-amber:hover{box-shadow:0 20px 48px rgba(255,184,0,.1)}.c-amber::before{background:var(--amber)}
+.c-gold{border-color:rgba(201,168,76,.2);background:rgba(201,168,76,.04)}.c-gold:hover{box-shadow:0 20px 48px rgba(201,168,76,.1)}.c-gold::before{background:var(--gold)}
+.c-red{border-color:rgba(255,59,92,.2);background:rgba(255,59,92,.04)}.c-red:hover{box-shadow:0 20px 48px rgba(255,59,92,.1)}.c-red::before{background:var(--red)}
+.c-hdr{display:flex;justify-content:space-between;align-items:flex-start}.c-icon{font-size:28px}.c-code{font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:3px;font-weight:700}
+.c-name{font-family:var(--font-serif);font-size:22px;color:#fff}.c-desc{font-size:12.5px;color:var(--muted);line-height:1.65;font-weight:300;flex:1}
+.c-feats{list-style:none}.c-feats li{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:11.5px;color:rgba(255,255,255,.45);line-height:1.5}.c-feats li:last-child{border-bottom:none}.c-feats li::before{content:'·';flex-shrink:0;font-weight:700}
+.c-teal .c-feats li::before{color:var(--teal)}.c-ops .c-feats li::before{color:var(--ops)}.c-amber .c-feats li::before{color:var(--amber)}.c-gold .c-feats li::before{color:var(--gold)}.c-red .c-feats li::before{color:var(--red)}
+.c-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:11px;font-weight:600;padding:7px 14px;border-radius:4px;margin-top:8px;transition:all .2s;text-decoration:none;width:fit-content}.c-link:hover{transform:translateX(3px)}
+
+/* DAL */
+.dal-bar{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;padding:28px 48px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(255,255,255,.015)}
+.dal-item{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.08em;padding:10px 16px;border-radius:6px;border:1px solid var(--border);background:rgba(255,255,255,.03)}.dal-arr{font-family:var(--font-mono);font-size:14px;color:rgba(255,255,255,.12);padding:0 8px}
+.di-ops{color:var(--ops);border-color:rgba(0,255,136,.15)}.di-vox{color:var(--vox);border-color:rgba(139,92,246,.15)}.di-lens{color:var(--lens);border-color:rgba(0,153,255,.15)}.di-anom{color:var(--red);border-color:rgba(255,59,92,.15)}.di-out{color:var(--gold);border-color:rgba(201,168,76,.2);background:rgba(201,168,76,.04)}
+
+/* modules grid */
+.mod-section{background:var(--navy2)}
+.grp{display:flex;align-items:center;gap:14px;margin:40px 0 14px}.grp-text{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap;font-weight:700}.grp-line{flex:1;height:1px;background:rgba(255,255,255,.06)}.grp-ct{font-family:var(--font-mono);font-size:10px;color:var(--teal);background:rgba(0,212,208,.08);border:1px solid rgba(0,212,208,.15);padding:2px 8px;border-radius:3px}
+.mgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}@media(min-width:700px){.mgrid{grid-template-columns:repeat(3,1fr)}}@media(min-width:1000px){.mgrid{grid-template-columns:repeat(4,1fr)}}
+.mc{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:6px;padding:14px 12px;display:flex;flex-direction:column;gap:4px;transition:all .18s;position:relative;overflow:hidden}.mc:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.4)}
+.mc-badge{font-family:var(--font-mono);font-size:8px;letter-spacing:.06em;padding:2px 7px;border-radius:3px;background:rgba(0,212,208,.06);border:1px solid rgba(0,212,208,.12);color:rgba(0,212,208,.5);display:inline-block;margin-bottom:2px}
+.mc-icon{font-size:18px}.mc-code{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;font-weight:700;color:var(--muted)}.mc-name{font-size:13px;font-weight:600;color:#fff;line-height:1.25}.mc-desc{font-size:11px;color:var(--muted);line-height:1.5;flex:1;font-weight:300}.mc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:3px}.mc-tag{font-family:var(--font-mono);font-size:9px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.3)}
+.sb{font-family:var(--font-mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:2px;letter-spacing:.05em}.sb-r{background:rgba(255,107,53,.15);color:var(--ride);border:1px solid rgba(255,107,53,.3)}.sb-s{background:rgba(30,158,212,.15);color:var(--splash);border:1px solid rgba(30,158,212,.3)}.sb-p{background:rgba(31,184,122,.15);color:var(--play);border:1px solid rgba(31,184,122,.3)}.sbs{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:2px}
+.mc-live{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:8px;padding:2px 7px;border-radius:3px;background:rgba(0,212,208,.06);border:1px solid rgba(0,212,208,.12);color:var(--teal);margin-bottom:2px}.mc-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:pulse 1.8s ease-in-out infinite}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
 /* scores */
-.scores-section{background:var(--navy)}.scores-grid{display:grid;grid-template-columns:1fr;gap:2px;margin-top:52px}@media(min-width:800px){.scores-grid{grid-template-columns:repeat(3,1fr)}}.score-card{padding:36px 30px;border:1px solid var(--border);position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}.score-card:hover{transform:translateY(-4px)}.score-card-ride{background:rgba(255,107,53,.06);border-color:rgba(255,107,53,.2)}.score-card-splash{background:rgba(30,158,212,.06);border-color:rgba(30,158,212,.2)}.score-card-play{background:rgba(31,184,122,.06);border-color:rgba(31,184,122,.2)}.score-card-ride:hover{box-shadow:0 20px 48px rgba(255,107,53,.12)}.score-card-splash:hover{box-shadow:0 20px 48px rgba(30,158,212,.12)}.score-card-play:hover{box-shadow:0 20px 48px rgba(31,184,122,.12)}.sc-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}.sc-name{font-family:var(--font-mono);font-size:40px;font-weight:700;line-height:1}.score-card-ride .sc-name{color:var(--ride)}.score-card-splash .sc-name{color:var(--splash)}.score-card-play .sc-name{color:var(--play)}.sc-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:3px;font-weight:700;margin-top:6px;display:inline-block}.score-card-ride .sc-badge{background:rgba(255,107,53,.15);color:var(--ride);border:1px solid rgba(255,107,53,.3)}.score-card-splash .sc-badge{background:rgba(30,158,212,.15);color:var(--splash);border:1px solid rgba(30,158,212,.3)}.score-card-play .sc-badge{background:rgba(31,184,122,.15);color:var(--play);border:1px solid rgba(31,184,122,.3)}.sc-sample{text-align:right}.sc-num{font-family:var(--font-mono);font-size:48px;font-weight:700;color:#fff;line-height:1}.sc-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:3px}.sc-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px;font-weight:300}.sc-pillars{margin-bottom:20px}.sc-pillar-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}.sc-pillar-row:last-child{border-bottom:none}.sc-pillar-letter{font-family:var(--font-mono);font-size:11px;font-weight:700;width:12px;flex-shrink:0}.score-card-ride .sc-pillar-letter{color:var(--ride)}.score-card-splash .sc-pillar-letter{color:var(--splash)}.score-card-play .sc-pillar-letter{color:var(--play)}.sc-pillar-name{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.5)}.sc-streams{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.22);letter-spacing:.1em;margin-bottom:20px}.sc-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:rgba(255,255,255,.5);transition:all .2s}.sc-link:hover{gap:10px;color:#fff}
+.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px}@media(max-width:800px){.sc-grid{grid-template-columns:1fr}}
+.sc{padding:32px 26px;border:1px solid var(--border);position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s;display:flex;flex-direction:column;gap:8px}.sc:hover{transform:translateY(-4px)}
+.sc-ride{background:rgba(255,107,53,.06);border-color:rgba(255,107,53,.2)}.sc-ride:hover{box-shadow:0 20px 48px rgba(255,107,53,.12)}
+.sc-splash{background:rgba(30,158,212,.06);border-color:rgba(30,158,212,.2)}.sc-splash:hover{box-shadow:0 20px 48px rgba(30,158,212,.12)}
+.sc-play{background:rgba(31,184,122,.06);border-color:rgba(31,184,122,.2)}.sc-play:hover{box-shadow:0 20px 48px rgba(31,184,122,.12)}
+.sc-hdr{display:flex;justify-content:space-between;align-items:flex-start}.sc-name{font-family:var(--font-mono);font-size:36px;font-weight:700;line-height:1}.sc-ride .sc-name{color:var(--ride)}.sc-splash .sc-name{color:var(--splash)}.sc-play .sc-name{color:var(--play)}
+.sc-badge{font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:3px;font-weight:700;display:inline-block;margin-top:4px}
+.sc-ride .sc-badge{background:rgba(255,107,53,.15);color:var(--ride);border:1px solid rgba(255,107,53,.3)}.sc-splash .sc-badge{background:rgba(30,158,212,.15);color:var(--splash);border:1px solid rgba(30,158,212,.3)}.sc-play .sc-badge{background:rgba(31,184,122,.15);color:var(--play);border:1px solid rgba(31,184,122,.3)}
+.sc-num{font-family:var(--font-mono);font-size:44px;font-weight:700;color:#fff;line-height:1}
+.sc-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;color:rgba(255,255,255,.25);margin-top:3px}
+.sc-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300}
+.sc-pillars{display:flex;flex-direction:column;gap:0}.sc-prow{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)}.sc-prow:last-child{border-bottom:none}.sc-pl{font-family:var(--font-mono);font-size:11px;font-weight:700;width:12px;flex-shrink:0}.sc-ride .sc-pl{color:var(--ride)}.sc-splash .sc-pl{color:var(--splash)}.sc-play .sc-pl{color:var(--play)}.sc-pn{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.sc-meta{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.22);letter-spacing:.1em;margin-top:4px}
+.sc-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:rgba(255,255,255,.5);transition:all .2s;margin-top:auto}.sc-link:hover{gap:10px;color:#fff}
 
-/* PIC */
-.pic-section{background:var(--navy2)}.pic-grid{display:grid;grid-template-columns:1fr;gap:64px;align-items:center;margin-top:52px}@media(min-width:900px){.pic-grid{grid-template-columns:1fr 1fr}}.pic-features{list-style:none;margin-top:28px}.pic-features li{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text)}.pic-features li:last-child{border-bottom:none}.pic-features li::before{content:'◈';color:var(--ride);flex-shrink:0;margin-top:2px;font-size:12px}.pic-visual{background:linear-gradient(135deg,rgba(255,107,53,.08),rgba(30,158,212,.08) 50%,rgba(31,184,122,.08));border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:40px}.pic-composite-display{text-align:center;margin-bottom:32px}.pic-composite-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}.pic-composite-num{font-family:var(--font-mono);font-size:80px;font-weight:700;color:var(--ride);line-height:1}.pic-composite-tier{font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--play);background:rgba(31,184,122,.1);border:1px solid rgba(31,184,122,.25);padding:3px 12px;border-radius:2px;display:inline-block;margin-top:8px}.pic-bars{display:flex;flex-direction:column;gap:10px}.pic-bar-row{display:flex;align-items:center;gap:12px}.pic-bar-name{font-family:var(--font-mono);font-size:11px;font-weight:700;width:52px;flex-shrink:0}.pic-bar-name.ride{color:var(--ride)}.pic-bar-name.splash{color:var(--splash)}.pic-bar-name.play{color:var(--play)}.pic-track{flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}.pic-fill{height:100%;border-radius:3px;width:0;transition:width 1.4s cubic-bezier(.25,.46,.45,.94)}.pic-fill-ride{background:var(--ride)}.pic-fill-splash{background:var(--splash)}.pic-fill-play{background:var(--play)}.pic-fill-total{background:linear-gradient(90deg,var(--ride),var(--splash),var(--play))}.pic-val{font-family:var(--font-mono);font-size:12px;color:var(--text);width:24px;text-align:right;flex-shrink:0}
+/* CTA */
+.cta{background:linear-gradient(135deg,#060f24 0%,#0a2040 50%,#060f24 100%);padding:96px 48px;text-align:center;position:relative;overflow:hidden}.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 20% 50%,rgba(255,107,53,.08) 0%,transparent 60%),radial-gradient(ellipse 50% 70% at 80% 50%,rgba(31,184,122,.07) 0%,transparent 60%);pointer-events:none}.cta-inner{position:relative;z-index:1;max-width:620px;margin:0 auto}
+footer{background:var(--navy2);border-top:1px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}.f-logo{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--gold)}.f-links{display:flex;gap:20px;flex-wrap:wrap}.f-links a{font-size:12px;color:var(--muted);transition:color .2s}.f-links a:hover{color:var(--text)}.f-copy{font-size:11px;color:rgba(255,255,255,.18)}
 
-/* insurer */
-.insurer-section{background:var(--navy2)}.insurer-grid{display:grid;grid-template-columns:1fr;gap:56px;align-items:start;margin-top:52px}@media(min-width:900px){.insurer-grid{grid-template-columns:1fr 1fr}}.insurer-points{list-style:none}.insurer-points li{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text);line-height:1.6}.insurer-points li:last-child{border-bottom:none}.insurer-points li::before{content:'→';color:var(--ride);flex-shrink:0;font-family:var(--font-mono)}.insurer-card{background:var(--navy3);border:1px solid var(--border);border-radius:8px;overflow:hidden}.insurer-card-header{padding:20px 24px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.025)}.insurer-card-title{font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}.insurer-card-name{font-family:var(--font-serif);font-size:20px;color:#fff}.insurer-dossier-row{display:flex;align-items:center;gap:14px;padding:14px 24px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:var(--text)}.insurer-dossier-row:last-child{border-bottom:none}.idr-icon{font-size:16px;flex-shrink:0}.idr-label{flex:1}.idr-status{font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:2px}.idr-included{background:rgba(31,184,122,.15);color:var(--play);border:1px solid rgba(31,184,122,.25)}.idr-pro{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.25)}
-
-/* cta / footer */
-.cta-section{background:linear-gradient(135deg,#060f24 0%,#0a2040 50%,#060f24 100%);padding:96px 48px;text-align:center;position:relative;overflow:hidden}.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 70% at 20% 50%,rgba(255,107,53,.08) 0%,transparent 60%),radial-gradient(ellipse 50% 70% at 80% 50%,rgba(31,184,122,.07) 0%,transparent 60%);pointer-events:none}.cta-inner{position:relative;z-index:1;max-width:600px;margin:0 auto}.cta-title{font-family:var(--font-serif);font-size:clamp(28px,4vw,48px);color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}.cta-title em{color:var(--ride);font-style:italic}.cta-sub{font-size:16px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.75;margin-bottom:40px}.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-footer{background:var(--navy2);border-top:1px solid var(--border);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}.footer-logo{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--gold)}.footer-links{display:flex;gap:24px;flex-wrap:wrap}.footer-links a{font-size:12px;color:var(--muted);transition:color .2s}.footer-links a:hover{color:var(--text)}.footer-copy{font-size:11px;color:rgba(255,255,255,.18)}
-
-@media(max-width:900px){.scores-grid,.triad,.insurer-grid,.pic-grid{grid-template-columns:1fr}.stat-bar{grid-template-columns:repeat(4,1fr)}nav{padding:0 20px}.nav-links a{font-size:11px;padding:5px 8px}section{padding:60px 20px}footer{padding:28px 20px}.hss-item{padding:14px 20px}.hss-score{font-size:28px}}
-@media(max-width:480px){.stat-bar{grid-template-columns:repeat(2,1fr)}.dal-grid{grid-template-columns:1fr}.hero-btns{flex-direction:column;align-items:center}}
+@media(max-width:900px){section{padding:60px 20px}nav{padding:0 20px}.nav-links a{font-size:11px;padding:5px 8px}footer{padding:28px 20px}.hs-item{padding:14px 20px}.hs-num{font-size:28px}.dal-bar{padding:20px;gap:4px;}.dal-item{font-size:9px;padding:8px 12px}}
+@media(max-width:480px){.stat-bar{grid-template-columns:repeat(2,1fr)}.card-grid,.sc-grid{grid-template-columns:1fr}.hero-btns{flex-direction:column;align-items:center}}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}.reveal.visible{opacity:1;transform:translateY(0)}
 </style>
 </head>
@@ -87,16 +88,15 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:32px 4
 <nav>
   <a href="https://amusementstandards.com" class="nav-logo">amusement standards.</a>
   <div class="nav-links">
-    <a href="#core">Platform</a>
+    <a href="#modules">Platform</a>
     <a href="#dal">Data Layer</a>
-    <a href="#modules">Full Suite</a>
+    <a href="#suite">Full Suite</a>
     <a href="#scores">Scores</a>
-    <a href="#pic">PIC</a>
     <a href="#insurers">Insurers</a>
-    <a href="https://amusementstandards.com/as360/ops-scan.html" style="color:#00FF88">OpsScan</a>
-    <a href="https://amusementstandards.com/as360/lens-iq.html" style="color:#0099FF">LensIQ</a>
-    <a href="https://amusementstandards.com/voxintel.html" style="color:#a78bfa">VoxIntel</a>
-    <a href="mailto:adam@amusementstandards.com" class="nav-cta">Request Dossier</a>
+    <a href="https://amusementstandards.com/as360/ops-scan.html" style="color:var(--ops)">OpsScan</a>
+    <a href="https://amusementstandards.com/as360/lens-iq.html" style="color:var(--lens)">LensIQ</a>
+    <a href="https://amusementstandards.com/as360/voxintel.html" style="color:var(--vox)">VoxIntel</a>
+    <a href="mailto:adam@amusementstandards.com" class="nav-cta">Contact</a>
   </div>
 </nav>
 
@@ -105,355 +105,271 @@ footer{background:var(--navy2);border-top:1px solid var(--border);padding:32px 4
   <div style="position:relative;z-index:1">
     <div class="hero-eyebrow">Amusement Standards · AS 360 Platform</div>
     <h1>Your Park's<br><em>Operating System.</em></h1>
-    <div class="hero-module-strip">Manager <span>·</span> Dispatcher <span>·</span> Operator Log <span>·</span> 19 Inspections <span>·</span> Incident Reporting <span>·</span> Guest Intelligence <span>·</span> <a href="https://amusementstandards.com/as360/ops-scan.html" style="color:#00FF88;text-decoration:none">OpsScan</a> <span>·</span> <a href="https://amusementstandards.com/as360/lens-iq.html" style="color:#0099FF;text-decoration:none">LensIQ</a> <span>·</span> <a href="https://amusementstandards.com/voxintel.html" style="color:#a78bfa;text-decoration:none">VoxIntel Radio AI</a></div>
-    <div class="hero-score-strip">
-      <a href="https://amusementstandards.com/as360-ride-score.html" class="hss-item hss-ride"><div class="hss-name">RIDE</div><div class="hss-seg">Dry Attractions</div><div class="hss-score">81</div><div class="hss-sample">Sample Score™</div></a>
-      <div class="hss-arrow">↔</div>
-      <a href="https://amusementstandards.com/as360-splash-score.html" class="hss-item hss-splash"><div class="hss-name">SPLASH</div><div class="hss-seg">Aquatic &amp; Water Parks</div><div class="hss-score">78</div><div class="hss-sample">Sample Score™</div></a>
-      <div class="hss-arrow">↔</div>
-      <a href="https://amusementstandards.com/as360-play-score.html" class="hss-item hss-play"><div class="hss-name">PLAY</div><div class="hss-seg">FECs &amp; Entertainment</div><div class="hss-score">83</div><div class="hss-sample">Sample Score™</div></a>
+    <div class="hero-sub">RIDE Score™ · SPLASH Score™ · PLAY Score™ · 37 Data Streams · 14 Pillars</div>
+    <p class="hero-desc">AS 360 is a full-suite park management platform. Three core modules, four independent data acquisition systems (OpsScan 3-Tier, VoxIntel, LensIQ, Anomaly Detection), AuditScore gamified compliance engine, 19 inspection forms, and automated data feeds. Every data point feeds a composite RIDE Score your insurers and ownership can act on. OpsScan deploys on top of what your park already runs — zero new workflows at entry.</p>
+    <div class="hero-scores">
+      <a href="https://amusementstandards.com/as360-ride-score.html" class="hs-item hs-ride"><div class="hs-name">RIDE</div><div class="hs-seg">Dry Attractions</div><div class="hs-num">81</div><div class="hs-tag">SAMPLE SCORE™</div></a>
+      <div class="hs-arr">↔</div>
+      <a href="https://amusementstandards.com/as360-splash-score.html" class="hs-item hs-splash"><div class="hs-name">SPLASH</div><div class="hs-seg">Aquatic &amp; Water Parks</div><div class="hs-num">78</div><div class="hs-tag">SAMPLE SCORE™</div></a>
+      <div class="hs-arr">↔</div>
+      <a href="https://amusementstandards.com/as360-play-score.html" class="hs-item hs-play"><div class="hs-name">PLAY</div><div class="hs-seg">FECs &amp; Entertainment</div><div class="hs-num">83</div><div class="hs-tag">SAMPLE SCORE™</div></a>
     </div>
-    <p class="hero-desc">AS 360 is a full-suite park management platform — built and running. Three core operational modules, 19 inspection and audit forms, structured incident reporting, real-time guest feedback, three independent data acquisition layers (OpsScan, LensIQ, VoxIntel), and automated data feeds. Every data point feeds a composite RIDE Score your insurers and ownership can act on.</p>
     <div class="hero-btns">
-      <a href="#core" class="btn btn-primary">See the Platform</a>
-      <a href="#dal" class="btn btn-ghost" style="color:#00FF88;border-color:rgba(0,255,136,.3)">Data Acquisition →</a>
-      <a href="mailto:adam@amusementstandards.com" class="btn btn-ghost">Request Insurer Dossier</a>
+      <a href="#modules" class="btn btn-primary">See the Platform</a>
+      <a href="https://amusementstandards.com/as360/field-data-layer.html" class="btn btn-ghost" style="color:var(--ops);border-color:rgba(0,255,136,.3)">Field Data Layer →</a>
+      <a href="https://amusementstandards.com/as360/methodology.html" class="btn btn-ghost">Methodology</a>
+      <a href="https://amusementstandards.com/as360/benchmarking.html" class="btn btn-ghost">Benchmarking</a>
     </div>
   </div>
 </section>
 
-<!-- STATS BAR -->
+<!-- STATS -->
 <div class="stat-bar">
   <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Core Modules</div></div>
-  <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Data Acq. Layers</div></div>
-  <div class="stat-item"><div class="stat-num">19</div><div class="stat-label">Inspections &amp; Audits</div></div>
-  <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">Tabletop Exercises</div></div>
-  <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">QR Guest Feedback</div></div>
-  <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Auto-Feeds</div></div>
-  <div class="stat-item"><div class="stat-num">37</div><div class="stat-label">Total Data Streams</div></div>
+  <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Data Acq. Systems</div></div>
+  <div class="stat-item"><div class="stat-num">19</div><div class="stat-label">Inspections</div></div>
+  <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">OpsScan Tiers</div></div>
+  <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">New Workflows<br><span style="font-size:7px;opacity:.4">at Tier 1 entry</span></div></div>
+  <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Anomaly Patterns</div></div>
+  <div class="stat-item"><div class="stat-num">37</div><div class="stat-label">Data Streams</div></div>
   <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Composite Score</div></div>
 </div>
 
-<!-- CORE MODULES -->
-<section class="triad-section" id="core">
+<!-- THREE MODULES -->
+<section style="background:var(--navy2)" id="modules">
   <div class="max-w">
-    <div class="reveal"><div class="section-eyebrow">The Three Core Modules</div><h2 class="section-title">Run the park.<br><em>Not paperwork.</em></h2><p class="section-sub">Three interconnected operational modules your management, dispatch, and ride operations teams use every shift. Real-time data flows between them — when an operator opens a ride in ATR, the Manager's clear-to-open board updates. When EAP roles are assigned in Manager, they push live to the Dispatcher. OpsScan, LensIQ, and VoxIntel feed all three modules with independent real-world data.</p></div>
-    <div class="triad reveal">
-      <div class="triad-card tc-mgr">
-        <div class="tc-header"><div class="tc-icon">👔</div><div class="tc-code">MGR</div></div>
-        <div class="tc-name">Manager Module</div>
-        <div class="tc-desc">The command center. Runs your entire shift from open to close — and houses 19 inspection and audit forms. OpsScan sign-off data and LensIQ throughput feed directly into the command dashboard.</div>
-        <ul class="tc-features">
-          <li>Dashboard — live park status, OOS count, open CARs, critical rotations</li>
-          <li>RIDE Score — composite with four pillar breakdown</li>
-          <li>Out-of-Service tracking — mechanical, staffing, weather, inspection</li>
-          <li>Corrective Action pipeline — CAR creation, aging buckets, escalation</li>
-          <li>Inspections tab — 19 audit and inspection forms</li>
-          <li>Shift &amp; Handoff — shift logs, handoff documents</li>
-          <li>Throughput logging — per-attraction guests, TPH, capacity % via LensIQ</li>
-          <li>Rotation management — warn/critical thresholds, OpsScan timer-driven alerts</li>
-          <li>Ops Panel dual sign-off — clears to open board via OpsScan</li>
-          <li>Escalation Contact Matrix — tiered contact directory</li>
-          <li>Emergency Response Role Cards — assign at shift start, push to OPD</li>
-          <li><a href="https://amusementstandards.com/voxintel.html" style="color:var(--teal);text-decoration:none">VoxIntel Radio Intelligence</a> — all-channel transcription, event classification, congestion scoring in command dashboard</li>
+    <div class="reveal"><div class="sec-ey">The Three Core Modules</div><h2 class="sec-title">Run the park.<br><em>Not paperwork.</em></h2><p class="sec-sub">Manager Module is your command center. Operator Intelligence is your field data layer — four independent systems that cannot be gamed simultaneously. Maintenance Manager is your credentialed inspection layer. VoxIntel and LensIQ stream live into all three.</p></div>
+    <div class="card-grid reveal">
+
+      <div class="card c-teal">
+        <div class="c-hdr"><div class="c-icon">👔</div><div class="c-code" style="background:rgba(0,212,208,.12);color:var(--teal);border:1px solid rgba(0,212,208,.25);">MGR</div></div>
+        <div class="c-name">Manager Module</div>
+        <div class="c-desc">Ops command center. All data layers feed live — VoxIntel, LensIQ, OpsScan. No intermediary.</div>
+        <ul class="c-feats">
+          <li>Dashboard · Park Health Index · RIDE Score · OOS</li>
+          <li>Ride Status Board — world-grouped open/hold/down/delay</li>
+          <li>VoxIntel + LensIQ live feeds</li>
+          <li>AuditScore tab · Manager Streak · Badges</li>
+          <li>19 inspection forms · CARs · Escalation matrix</li>
+          <li>Shift handoff documents with streak data</li>
         </ul>
-        <a href="https://amusementstandards.com/as360/manager.html" class="tc-link-btn" style="background:rgba(0,212,208,.08);border:1px solid rgba(0,212,208,.2);color:var(--teal)">Open Manager →</a>
+        <a href="https://amusementstandards.com/as360/manager.html" class="c-link" style="background:rgba(0,212,208,.08);color:var(--teal);border:1px solid rgba(0,212,208,.2);">Open Manager →</a>
       </div>
-      <div class="triad-card tc-opd">
-        <div class="tc-header"><div class="tc-icon">📡</div><div class="tc-code">OPD</div></div>
-        <div class="tc-name">Ops Dispatcher</div>
-        <div class="tc-desc">Real-time ride status board and operator assignment hub. The dispatcher's live view of everything on the floor — fed by OpsScan position data and VoxIntel radio intelligence.</div>
-        <ul class="tc-features">
-          <li>Ride status board — open, down, hold, delayed per unit</li>
-          <li>Operator-to-unit assignments — who is where, from OpsScan scans</li>
-          <li>Rotation compliance — timer-driven with OpsScan position alerts</li>
-          <li>EAP role assignments — received live from Manager</li>
-          <li>Coverage gap alerts — understaffed positions flagged by OpsScan</li>
-          <li><a href="https://amusementstandards.com/voxintel.html" style="color:#5b8eff;text-decoration:none">VoxIntel Radio Intelligence</a> — live multi-channel feed, NLP classification, step-on collision detection</li>
+
+      <div class="card c-ops">
+        <div class="c-hdr"><div class="c-icon">📡</div><div class="c-code" style="background:rgba(0,255,136,.12);color:var(--ops);border:1px solid rgba(0,255,136,.25);">OPERATOR INTELLIGENCE</div></div>
+        <div class="c-name">Field Data Layer</div>
+        <div class="c-desc">Four independent acquisition systems. Cannot be gamed simultaneously. Signal divergence is the finding.</div>
+        <ul class="c-feats">
+          <li>📱 OpsScan T1 — passive ingest (Kronos/ADP/Mobaro)</li>
+          <li style="padding-left:16px;opacity:.6;">T2 — CV on existing CCTV</li>
+          <li style="padding-left:16px;opacity:.6;">T3 — QR scan-in + voice + camera</li>
+          <li>📡 VoxIntel — passive radio intelligence</li>
+          <li>👁️ LensIQ — CV throughput, no operator input</li>
+          <li>🔍 Anomaly Detection — speed, variance, clustering</li>
         </ul>
-        <a href="https://amusementstandards.com/as360/ops-dispatch.html" class="tc-link-btn" style="background:rgba(46,111,255,.08);border:1px solid rgba(46,111,255,.2);color:#5b8eff">Open Dispatcher →</a>
+        <a href="https://amusementstandards.com/as360/field-data-layer.html" class="c-link" style="background:rgba(0,255,136,.08);color:var(--ops);border:1px solid rgba(0,255,136,.2);">View Field Data Layer →</a>
       </div>
-      <div class="triad-card tc-atr">
-        <div class="tc-header"><div class="tc-icon">🎡</div><div class="tc-code">ATR + OpsScan</div></div>
-        <div class="tc-name">At-Ride / Operator Log</div>
-        <div class="tc-desc">The ride operator's daily tool — powered by OpsScan QR position scan-in. 90 seconds of interaction generates a full shift of structured risk data. No app download, no login required.</div>
-        <ul class="tc-features">
-          <li>QR position scan-in — Load, Control, Unload, Queue positions</li>
-          <li>Ops Panel dual sign-off — Maintenance + Operations required before clear-to-open</li>
-          <li>Voice-to-incident — speak 5 seconds, AI structures the report</li>
-          <li>Rotation intelligence — dynamic reminders adjusted for heat, OLI, open CARs</li>
-          <li>Cycle count tap — TPH calculates automatically from dispatch taps</li>
-          <li>Anomaly detection — AI flags speed, zero-variance, and clustering patterns nightly</li>
-          <li>Auto CAR generation — every trigger event drafts a complete corrective action record</li>
+
+      <div class="card c-amber">
+        <div class="c-hdr"><div class="c-icon">🔧</div><div class="c-code" style="background:rgba(255,184,0,.12);color:var(--amber);border:1px solid rgba(255,184,0,.25);">MAINT</div></div>
+        <div class="c-name">Maintenance Manager</div>
+        <div class="c-desc">Credentialed-access layer. NDT, third-party inspections, maintenance logs. VoxIntel + LensIQ live.</div>
+        <ul class="c-feats">
+          <li>NAARSO/AIMS inspection records</li>
+          <li>NDT upload — ASNT Level II/III</li>
+          <li>Service bulletin compliance tracking</li>
+          <li>Credential registry + expiry alerts</li>
+          <li>Separate access tier from operator-facing modules</li>
         </ul>
-        <a href="https://amusementstandards.com/as360/ops-scan.html" class="tc-link-btn" style="background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);color:#00FF88">OpsScan →</a>
+        <a href="https://amusementstandards.com/as360/maintenance-manager.html" class="c-link" style="background:rgba(255,184,0,.08);color:var(--amber);border:1px solid rgba(255,184,0,.2);">View Maintenance Mgr →</a>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- DATA ACQUISITION LAYER -->
-<section class="dal-section" id="dal">
+<!-- DAL BAR -->
+<div class="dal-bar reveal">
+  <span class="dal-item di-ops">📱 OpsScan (3-Tier)</span><span class="dal-arr">+</span>
+  <span class="dal-item di-vox">📡 VoxIntel</span><span class="dal-arr">+</span>
+  <span class="dal-item di-lens">👁️ LensIQ</span><span class="dal-arr">+</span>
+  <span class="dal-item di-anom">🔍 Anomaly</span><span class="dal-arr">→</span>
+  <span class="dal-item" style="font-size:9px;color:var(--muted);">37 Streams</span><span class="dal-arr">→</span>
+  <span class="dal-item" style="font-size:9px;color:var(--muted);">14 Pillars</span><span class="dal-arr">→</span>
+  <span class="dal-item di-out">RIDE · SPLASH · PLAY</span>
+</div>
+
+<!-- AUDITSCORE -->
+<section id="auditscore">
   <div class="max-w">
-    <div class="reveal">
-      <div class="section-eyebrow">Data Acquisition Layer</div>
-      <h2 class="section-title">Three independent signals.<br><em>One defensible score.</em></h2>
-      <p class="section-sub">AS 360 ingests data from three independent sources that cannot be gamed simultaneously. When signals agree, confidence is high. When they diverge — that gap is the finding. No competitor can replicate this triangulation without building all three layers.</p>
-    </div>
-    <div class="dal-grid reveal">
+    <div class="reveal"><div class="sec-ey">AuditScore · Gamified Compliance Engine</div><h2 class="sec-title">Inspections that<br><em>drive themselves.</em></h2><p class="sec-sub">Operators earn XP for completing audits on time. Supervisors see team streaks. Managers build their own management streaks. The anomaly engine watches for fabricated compliance. Every audit feeds the RIDE Score Readiness pillar.</p></div>
 
-      <div class="dal-card dal-ops">
-        <div class="dal-badge"><div class="dal-pulse"></div>Layer 2 · Field</div>
-        <div class="dal-icon">📱</div>
-        <div class="dal-name">OpsScan</div>
-        <div class="dal-desc">QR-based operator position scan-in at every ride touchpoint. Voice incident reporting, AI anomaly detection, rotation intelligence, and auto CAR generation. 90-second interaction. Full shift data.</div>
-        <ul class="dal-features">
-          <li>Position QR scan-in — Load, Control, Unload, Queue</li>
-          <li>Ops Panel dual sign-off — Maintenance + Operations</li>
-          <li>Voice-to-incident — Whisper + Claude AI pipeline</li>
-          <li>Behavioral anomaly detection — nightly AI batch</li>
-          <li>Dynamic rotation reminders — heat, OLI, CAR-aware</li>
-          <li>Works on any smartphone over 4G — no WiFi, no app</li>
-        </ul>
-        <a href="https://amusementstandards.com/as360/ops-scan.html" class="dal-link">View OpsScan →</a>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:36px;" class="reveal">
+      <div style="padding:20px 16px;background:rgba(255,59,92,.04);border:1px solid rgba(255,59,92,.12);border-radius:8px;border-left:3px solid var(--red);">
+        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--red);margin-bottom:4px;">SPEED FLAG</div>
+        <div style="font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--red);">34s</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">vs. 4.1 min peer avg. Checklist completed faster than anyone can physically inspect.</div>
       </div>
-
-      <div class="dal-card dal-lens">
-        <div class="dal-badge"><div class="dal-pulse"></div>Layer 3 · Visual</div>
-        <div class="dal-icon">👁️</div>
-        <div class="dal-name">LensIQ</div>
-        <div class="dal-desc">Computer vision throughput tracking using your existing cameras. No new hardware. Claude Vision counts guests per cycle, calculates TPH, and flags anomalies — operator-independent.</div>
-        <ul class="dal-features">
-          <li>Integrates with existing CCTV — Verkada, Hikvision, RTSP</li>
-          <li>Guest headcount per cycle — 95%+ accuracy at load platforms</li>
-          <li>Live TPH calculation — independent of operator self-reporting</li>
-          <li>Operator presence check — passive safety audit from camera</li>
-          <li>Throughput anomaly detection — silent slowdowns flagged</li>
-          <li>Zero video storage — structured count data only</li>
-        </ul>
-        <a href="https://amusementstandards.com/as360/lens-iq.html" class="dal-link">View LensIQ →</a>
+      <div style="padding:20px 16px;background:rgba(255,184,0,.04);border:1px solid rgba(255,184,0,.12);border-radius:8px;border-left:3px solid var(--amber);">
+        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--amber);margin-bottom:4px;">ZERO-VARIANCE FLAG</div>
+        <div style="font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--amber);">14 days</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">100% PASS on every item. Statistically improbable across 22-item checklist.</div>
       </div>
-
-      <div class="dal-card dal-vox">
-        <div class="dal-badge"><div class="dal-pulse"></div>Layer 1 · Passive</div>
-        <div class="dal-icon">📡</div>
-        <div class="dal-name">VoxIntel</div>
-        <div class="dal-desc">Passive RF monitoring of all venue radio channels. Real-time transcription, NLP event classification, ride-down detection, step-on collision detection, and congestion scoring — no operator involvement required.</div>
-        <ul class="dal-features">
-          <li>All-channel radio capture — RTL-SDR hardware</li>
-          <li>Whisper transcription + Claude NLP classification</li>
-          <li>Ride-down detection — feeds OOS board automatically</li>
-          <li>Step-on collision detection — dispatcher safety alert</li>
-          <li>Channel congestion scoring — communication risk metric</li>
-          <li>Feeds MGR command dashboard + OPD live view</li>
-        </ul>
-        <a href="https://amusementstandards.com/voxintel.html" class="dal-link">View VoxIntel →</a>
+      <div style="padding:20px 16px;background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.12);border-radius:8px;border-left:3px solid var(--vox);">
+        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--vox);margin-bottom:4px;">CLUSTERING FLAG</div>
+        <div style="font-family:var(--font-mono);font-size:16px;font-weight:700;color:var(--vox);">90s</div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.5;margin-top:4px;">3 checklists before supervisor arrival. Batch-completion pattern.</div>
       </div>
-
-      <div class="dal-card dal-agg">
-        <div class="dal-badge"><div class="dal-pulse"></div>Aggregation Layer</div>
-        <div class="dal-icon">🔗</div>
-        <div class="dal-name">Third-Party Ingestion</div>
-        <div class="dal-desc">AS 360 ingests operational data from existing platforms your park already runs — Mobaro, CommandCentr, 24/7 Software, and others. Keep your current system. AS 360 sits on top and scores it.</div>
-        <ul class="dal-features">
-          <li>Mobaro connector — inspections, downtime, maintenance records</li>
-          <li>CommandCentr connector — ride checks, throughput, incidents</li>
-          <li>24/7 Software connector — work orders, guard tours</li>
-          <li>State inspection database ingestion — public compliance records</li>
-          <li>Ellis EAVS alert feed — aquatic AI events into SPLASH Score</li>
-          <li>Field normalization → 0–100 stream model → RIDE Score</li>
-        </ul>
-        <a href="/ingestion.html" class="dal-link">View Here →</a>
-      </div>
-
     </div>
 
-    <!-- Triangulation bar -->
-    <div class="dal-triangulate reveal">
-      <div class="dal-tri-item">
-        <div class="dal-tri-name" style="color:#00FF88">OpsScan</div>
-        <div class="dal-tri-desc">Operator behavior — what staff do and when</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;" class="reveal">
+      <div style="padding:18px 16px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:8px;">
+        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--green);margin-bottom:6px;">MANAGER STREAK + PARK HEALTH INDEX</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">Consecutive shifts with complete handoffs, no missed inspections, all CARs addressed. 7/14/21-day streak badges in handoff docs. PHI = RIDE 35% + Inspection 25% + CACR 25% + Rotation 15%.</div>
       </div>
-      <div class="dal-tri-arrow">+</div>
-      <div class="dal-tri-item">
-        <div class="dal-tri-name" style="color:#0099FF">LensIQ</div>
-        <div class="dal-tri-desc">Visual verification — what cameras independently see</div>
-      </div>
-      <div class="dal-tri-arrow">+</div>
-      <div class="dal-tri-item">
-        <div class="dal-tri-name" style="color:#a78bfa">VoxIntel</div>
-        <div class="dal-tri-desc">Radio intelligence — what dispatch actually hears</div>
-      </div>
-      <div class="dal-tri-arrow">+</div>
-      <div class="dal-tri-item">
-        <div class="dal-tri-name" style="color:var(--gold)">3rd Party</div>
-        <div class="dal-tri-desc">External platforms — existing operational data</div>
-      </div>
-      <div class="dal-tri-arrow">→</div>
-      <div class="dal-tri-output">
-        <div class="dal-tri-output-label">AS 360 Output</div>
-        <div class="dal-tri-output-name">RIDE · SPLASH · PLAY Score</div>
+      <div style="padding:18px 16px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:8px;">
+        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--gold);margin-bottom:6px;">AUDIT AMENDMENT REQUEST</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65;">Original record sealed. Amendment geo-verified, device-confirmed, photo-evidenced. Supervisor approves within 4 hours. Both records visible at every access tier. Frequency is an Integrity pillar input.</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FULL SUITE -->
-<section class="modules-section" id="modules">
+<section class="mod-section" id="suite">
   <div class="max-w">
-    <div class="reveal"><div class="section-eyebrow">Full Platform Suite</div><h2 class="section-title">Every form. Every feed.<br><em>All built.</em></h2><p class="section-sub">Three core modules, three data acquisition layers, 19 inspection forms inside Manager, four standalone reporting forms, four QR code guest feedback touchpoints, two third-party audit tools, and four automated data feeds. Nothing is conceptual — every item below is built and functional.</p></div>
+    <div class="reveal"><div class="sec-ey">Full Platform Suite</div><h2 class="sec-title">Every form. Every feed.<br><em>All built.</em></h2><p class="sec-sub">19 inspection forms, 5 standalone reporting forms, 4 QR guest feedback touchpoints, 2 third-party audit tools, AuditScore compliance engine, and 4 automated data feeds. Nothing is conceptual.</p></div>
 
-    <div class="group-label reveal"><span class="gl-text">Manager Module → Inspections Tab</span><span class="gl-line"></span><span class="gl-count">19 FORMS</span></div>
-    <div class="mod-grid reveal">
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🧹</div><div class="m-code">CCA</div><div class="m-name">Cleanliness &amp; Condition Audit</div><div class="m-desc">Location-by-location facility condition scoring with photo evidence.</div><div class="m-footer"><span class="m-tag">I · E</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📏</div><div class="m-code">HAE</div><div class="m-name">Height &amp; Age Enforcement</div><div class="m-desc">Staff compliance, violation counts, height stick verification with ±¼″ variance.</div><div class="m-footer"><span class="m-tag">R · I</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🧪</div><div class="m-code">WQA</div><div class="m-name">Water Quality Analysis</div><div class="m-desc">pH, chlorine, alkalinity, temperature, pump turnover, test strip photo.</div><div class="m-footer"><span class="m-tag">A · H</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📋</div><div class="m-code">SOP</div><div class="m-name">SOP Adherence Observation</div><div class="m-desc">Direct SOP compliance observation with gap documentation and coaching log.</div><div class="m-footer"><span class="m-tag">R · I</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🪧</div><div class="m-code">SGN</div><div class="m-name">Signage &amp; Compliance</div><div class="m-desc">Safety, height, and regulatory signage verification.</div><div class="m-footer"><span class="m-tag">I · E</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🚪</div><div class="m-code">EAI</div><div class="m-name">Emergency Access Inspection</div><div class="m-desc">All emergency routes checked with CAR generation on blockage.</div><div class="m-footer"><span class="m-tag">R · E</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏗</div><div class="m-code">INF</div><div class="m-name">Infrastructure &amp; Perimeter</div><div class="m-desc">Fencing, barriers, walkways, lighting, drainage condition scoring.</div><div class="m-footer"><span class="m-tag">I · E</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📊</div><div class="m-code">OLI</div><div class="m-name">Operational Load Index</div><div class="m-desc">Actual vs. design capacity, peak crowd level, park-wide queue averages.</div><div class="m-footer"><span class="m-tag">R · D</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏊</div><div class="m-code">LGD</div><div class="m-name">Lifeguard Zone Audit</div><div class="m-desc">Zone coverage, bottom visibility, rescue equipment, bather load.</div><div class="m-footer"><span class="m-tag">L · S · A</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏎️</div><div class="m-code">FLR</div><div class="m-name">Floor Operations Log</div><div class="m-desc">FEC shift log — incidents, downtime, machine-down, staffing coverage.</div><div class="m-footer"><span class="m-tag">P · A</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🧒</div><div class="m-code">YPL</div><div class="m-name">Youth Patron Shift Log</div><div class="m-desc">Unaccompanied minors, lost children, age challenges, behavioral flags.</div><div class="m-footer"><span class="m-tag">Y</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📊</div><div class="m-code">YPQ</div><div class="m-name">Youth Quarterly Audit</div><div class="m-desc">Supervision ratios, risk zones, lost child drill verification.</div><div class="m-footer"><span class="m-tag">Y</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🎂</div><div class="m-code">GEL</div><div class="m-name">Group &amp; Event Supervision</div><div class="m-desc">Birthday/group check-in, supervision ratios, wristband assignment.</div><div class="m-footer"><span class="m-tag">Y · L</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🎢</div><div class="m-code">ACR</div><div class="m-name">Attraction Condition Report</div><div class="m-desc">Fleet-wide ride condition, engineering flags, work orders.</div><div class="m-footer"><span class="m-tag">I</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📬</div><div class="m-code">SBC</div><div class="m-name">Service Bulletin Compliance</div><div class="m-desc">Manufacturer bulletin tracking — reviewed, pending, overdue.</div><div class="m-footer"><span class="m-tag">I · R</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🚨</div><div class="m-code">EAP</div><div class="m-name">Emergency Action Plan Review</div><div class="m-desc">EAP checklist — last drill, next scheduled, sections needing update.</div><div class="m-footer"><span class="m-tag">R · E</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏥</div><div class="m-code">HDI</div><div class="m-name">Health Dept. Inspection History</div><div class="m-desc">Agency, outcome, violations, corrective actions, re-inspection dates.</div><div class="m-footer"><span class="m-tag">I</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">⚖️</div><div class="m-code">LDL</div><div class="m-name">Liability Documentation Log</div><div class="m-desc">Waivers, releases, insurance certs, legal correspondence, holds.</div><div class="m-footer"><span class="m-tag">L</span></div></div>
-      <div class="mod-card"><div class="mc-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🗺</div><div class="m-code">TTX</div><div class="m-name">Tabletop Exercise Scenarios</div><div class="m-desc">12 phased discussion-based scenarios — facilitator-logged with gap tracking.</div><div class="m-footer"><span class="m-tag">R · E</span></div></div>
+    <div class="grp reveal"><span class="grp-text">Manager Module → Inspections Tab</span><span class="grp-line"></span><span class="grp-ct">19 FORMS</span></div>
+    <div class="mgrid reveal">
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🧹</div><div class="mc-code">CCA</div><div class="mc-name">Cleanliness &amp; Condition</div><div class="mc-desc">Location-by-location facility condition with photo evidence.</div><div class="mc-foot"><span class="mc-tag">I · E</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">📏</div><div class="mc-code">HAE</div><div class="mc-name">Height &amp; Age Enforcement</div><div class="mc-desc">Staff compliance, violation counts, ±¼″ variance.</div><div class="mc-foot"><span class="mc-tag">R · I</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🧪</div><div class="mc-code">WQA</div><div class="mc-name">Water Quality Analysis</div><div class="mc-desc">pH, chlorine, alkalinity, temperature, pump turnover.</div><div class="mc-foot"><span class="mc-tag">A · H</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">📋</div><div class="mc-code">SOP</div><div class="mc-name">SOP Adherence</div><div class="mc-desc">Direct SOP observation with gap documentation.</div><div class="mc-foot"><span class="mc-tag">R · I</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🪧</div><div class="mc-code">SGN</div><div class="mc-name">Signage &amp; Compliance</div><div class="mc-desc">Safety, height, regulatory signage verification.</div><div class="mc-foot"><span class="mc-tag">I · E</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🚪</div><div class="mc-code">EAI</div><div class="mc-name">Emergency Access</div><div class="mc-desc">All emergency routes, CAR on blockage.</div><div class="mc-foot"><span class="mc-tag">R · E</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🏗</div><div class="mc-code">INF</div><div class="mc-name">Infrastructure &amp; Perimeter</div><div class="mc-desc">Fencing, barriers, walkways, lighting, drainage.</div><div class="mc-foot"><span class="mc-tag">I · E</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">📊</div><div class="mc-code">OLI</div><div class="mc-name">Operational Load Index</div><div class="mc-desc">Actual vs. design capacity, peak crowd level.</div><div class="mc-foot"><span class="mc-tag">R · D</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🏊</div><div class="mc-code">LGD</div><div class="mc-name">Lifeguard Zone Audit</div><div class="mc-desc">Zone coverage, visibility, rescue equipment.</div><div class="mc-foot"><span class="mc-tag">L · S · A</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🏎️</div><div class="mc-code">FLR</div><div class="mc-name">Floor Operations Log</div><div class="mc-desc">FEC shift log — incidents, downtime, staffing.</div><div class="mc-foot"><span class="mc-tag">P · A</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🧒</div><div class="mc-code">YPL</div><div class="mc-name">Youth Patron Shift Log</div><div class="mc-desc">Unaccompanied minors, lost children, age challenges.</div><div class="mc-foot"><span class="mc-tag">Y</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">📊</div><div class="mc-code">YPQ</div><div class="mc-name">Youth Quarterly Audit</div><div class="mc-desc">Supervision ratios, risk zones, drill verification.</div><div class="mc-foot"><span class="mc-tag">Y</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🎂</div><div class="mc-code">GEL</div><div class="mc-name">Group &amp; Event Supervision</div><div class="mc-desc">Birthday/group check-in, wristband assignment.</div><div class="mc-foot"><span class="mc-tag">Y · L</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS · DAILY</div><div class="mc-icon">🕵️</div><div class="mc-code">iMSA</div><div class="mc-name">Mystery Service Audit</div><div class="mc-desc">Plain-clothes ride observation, 15 items in 60 seconds.</div><div class="mc-foot"><span class="mc-tag">R · I · D · E</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">📬</div><div class="mc-code">SBC</div><div class="mc-name">Service Bulletin Compliance</div><div class="mc-desc">Manufacturer bulletin tracking — reviewed, pending, overdue.</div><div class="mc-foot"><span class="mc-tag">I · R</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🚨</div><div class="mc-code">EAP</div><div class="mc-name">Emergency Action Plan</div><div class="mc-desc">Last drill, next scheduled, sections needing update.</div><div class="mc-foot"><span class="mc-tag">R · E</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🏥</div><div class="mc-code">HDI</div><div class="mc-name">Health Dept. Inspection</div><div class="mc-desc">Agency, outcome, violations, corrective actions.</div><div class="mc-foot"><span class="mc-tag">I</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">⚖️</div><div class="mc-code">LDL</div><div class="mc-name">Liability Documentation</div><div class="mc-desc">Waivers, releases, insurance certs, legal holds.</div><div class="mc-foot"><span class="mc-tag">L</span></div></div>
+      <div class="mc"><div class="mc-badge">MGR → INSPECTIONS</div><div class="mc-icon">🗺</div><div class="mc-code">TTX</div><div class="mc-name">Tabletop Exercises</div><div class="mc-desc">12 phased scenarios — facilitator-logged with gap tracking.</div><div class="mc-foot"><span class="mc-tag">R · E</span></div></div>
     </div>
 
-    <div class="group-label reveal"><span class="gl-text">QR Code Guest Feedback</span><span class="gl-line"></span><span class="gl-count">4 QR FORMS</span></div>
-    <div class="mod-grid reveal">
-      <div class="mod-card mc-gold"><div class="score-badges"><span class="sb sb-ride">RIDE</span></div><div class="m-icon">🎢</div><div class="m-code">QR-RIDE</div><div class="m-name">Ride Exit Feedback</div><div class="m-desc">QR at ride exits — wait time, staff, ride condition, safety perception.</div><div class="m-footer"><span class="m-tag">D · E</span></div></div>
-      <div class="mod-card mc-gold"><div class="score-badges"><span class="sb sb-splash">SPLASH</span></div><div class="m-icon">🏊</div><div class="m-code">QR-SPLASH</div><div class="m-name">Aquatic Zone Feedback</div><div class="m-desc">QR at wave pools, lazy rivers, slide landings. Water quality, lifeguard, safety.</div><div class="m-footer"><span class="m-tag">D · E</span></div></div>
-      <div class="mod-card mc-gold"><div class="score-badges"><span class="sb sb-play">PLAY</span></div><div class="m-icon">🕹️</div><div class="m-code">QR-PLAY</div><div class="m-name">FEC Play Area Feedback</div><div class="m-desc">QR at FEC exits and play zones. Cleanliness, staff, equipment condition.</div><div class="m-footer"><span class="m-tag">D · E</span></div></div>
-      <div class="mod-card mc-red"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">⚠️</div><div class="m-code">QR-NMR</div><div class="m-name">Guest Near-Miss Flag</div><div class="m-desc">QR-accessible near-miss for guests — same triage pipeline as staff.</div><div class="m-footer"><span class="m-tag">R · I</span></div></div>
+    <div class="grp reveal"><span class="grp-text">Standalone Reporting Forms</span><span class="grp-line"></span><span class="grp-ct">5 FORMS</span></div>
+    <div class="mgrid reveal">
+      <div class="mc"><div class="sbs"><span class="sb sb-r">RIDE</span><span class="sb sb-s">SPLASH</span><span class="sb sb-p">PLAY</span></div><div class="mc-icon">📝</div><div class="mc-code">iGSA</div><div class="mc-name">In-House GSA</div><div class="mc-desc">Rotating management guest services audit.</div><div class="mc-foot"><span class="mc-tag">R · I · D · E</span></div></div>
+      <div class="mc"><div class="sbs"><span class="sb sb-r">RIDE</span></div><div class="mc-icon">🏢</div><div class="mc-code">IHS</div><div class="mc-name">In-House Safety Audit</div><div class="mc-desc">Internal SOP and equipment inspection.</div><div class="mc-foot"><span class="mc-tag">R · I</span></div></div>
+      <div class="mc"><div class="sbs"><span class="sb sb-r">RIDE</span><span class="sb sb-s">SPLASH</span><span class="sb sb-p">PLAY</span></div><div class="mc-icon">⚠️</div><div class="mc-code">NMR</div><div class="mc-name">Near-Miss Report</div><div class="mc-desc">Triage flag — adjusts R and I immediately.</div><div class="mc-foot"><span class="mc-tag">R · I</span></div></div>
+      <div class="mc"><div class="sbs"><span class="sb sb-r">RIDE</span><span class="sb sb-s">SPLASH</span><span class="sb sb-p">PLAY</span></div><div class="mc-icon">🚨</div><div class="mc-code">IRL</div><div class="mc-name">Incident Report</div><div class="mc-desc">Full 7-section legal incident record.</div><div class="mc-foot"><span class="mc-tag">R · I</span></div></div>
+      <div class="mc"><div class="sbs"><span class="sb sb-r">RIDE</span><span class="sb sb-s">SPLASH</span><span class="sb sb-p">PLAY</span></div><div class="mc-icon">📋</div><div class="mc-code">AMR</div><div class="mc-name">Audit Amendment Request</div><div class="mc-desc">Geo-verified correction. Original sealed. 4hr approval.</div><div class="mc-foot"><span class="mc-tag">I</span></div></div>
     </div>
 
-    <div class="group-label reveal"><span class="gl-text">Standalone Reporting Forms</span><span class="gl-line"></span><span class="gl-count">4 FORMS</span></div>
-    <div class="mod-grid reveal">
-      <div class="mod-card mc-amber"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">📝</div><div class="m-code">iGSA</div><div class="m-name">In-House GSA</div><div class="m-desc">Rotating management guest services audit for convergence validity.</div><div class="m-footer"><span class="m-tag">R · I · D · E</span></div></div>
-      <div class="mod-card mc-green"><div class="score-badges"><span class="sb sb-ride">RIDE</span></div><div class="m-icon">🏢</div><div class="m-code">IHS</div><div class="m-name">In-House Safety Audit</div><div class="m-desc">Internal inspection against SOPs, pre-opening checklists, equipment standards.</div><div class="m-footer"><span class="m-tag">R · I</span></div></div>
-      <div class="mod-card mc-red"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">⚠️</div><div class="m-code">NMR</div><div class="m-name">Near-Miss Report</div><div class="m-desc">Structured triage flag — adjusts R and I scores immediately. Auto-escalates to CA.</div><div class="m-footer"><span class="m-tag">R · I</span></div></div>
-      <div class="mod-card mc-red"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">🚨</div><div class="m-code">IRL</div><div class="m-name">Ride Incident Report</div><div class="m-desc">Full 7-section legal incident record — guest, injury, sequence, response.</div><div class="m-footer"><span class="m-tag">R · I</span></div></div>
+    <div class="grp reveal"><span class="grp-text">QR Code Guest Feedback</span><span class="grp-line"></span><span class="grp-ct">4 QR FORMS</span></div>
+    <div class="mgrid reveal">
+      <div class="mc"><div class="sbs"><span class="sb sb-r">RIDE</span></div><div class="mc-icon">🎢</div><div class="mc-code">QR-RIDE</div><div class="mc-name">Ride Exit Feedback</div><div class="mc-desc">Wait time, staff, ride condition, safety.</div><div class="mc-foot"><span class="mc-tag">D · E</span></div></div>
+      <div class="mc"><div class="sbs"><span class="sb sb-s">SPLASH</span></div><div class="mc-icon">🏊</div><div class="mc-code">QR-SPLASH</div><div class="mc-name">Aquatic Feedback</div><div class="mc-desc">Water quality, lifeguard, safety perception.</div><div class="mc-foot"><span class="mc-tag">D · E</span></div></div>
+      <div class="mc"><div class="sbs"><span class="sb sb-p">PLAY</span></div><div class="mc-icon">🕹️</div><div class="mc-code">QR-PLAY</div><div class="mc-name">FEC Feedback</div><div class="mc-desc">Cleanliness, staff, equipment condition.</div><div class="mc-foot"><span class="mc-tag">D · E</span></div></div>
+      <div class="mc"><div class="sbs"><span class="sb sb-r">RIDE</span><span class="sb sb-s">SPLASH</span><span class="sb sb-p">PLAY</span></div><div class="mc-icon">⚠️</div><div class="mc-code">QR-NMR</div><div class="mc-name">Guest Near-Miss Flag</div><div class="mc-desc">QR-accessible near-miss — same triage pipeline.</div><div class="mc-foot"><span class="mc-tag">R · I</span></div></div>
     </div>
 
-    <div class="group-label reveal"><span class="gl-text">Third-Party &amp; Independent Audits</span><span class="gl-line"></span><span class="gl-count">2 FORMS</span></div>
-    <div class="mod-grid reveal">
-      <div class="mod-card mc-purple"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">🕵️</div><div class="m-code">mGSA</div><div class="m-name">Mystery Shopper GSA</div><div class="m-desc">AS-deployed covert auditor. iGSA divergence is the key finding.</div><div class="m-footer"><span class="m-tag">R · I · D · E</span></div></div>
-      <div class="mod-card"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span></div><div class="m-icon">🔍</div><div class="m-code">TPS</div><div class="m-name">Third-Party Safety</div><div class="m-desc">AS-conducted ASTM-aligned compliance inspection.</div><div class="m-footer"><span class="m-tag">R · I · E</span></div></div>
+    <div class="grp reveal"><span class="grp-text">Third-Party &amp; Independent Audits</span><span class="grp-line"></span><span class="grp-ct">2 FORMS</span></div>
+    <div class="mgrid reveal">
+      <div class="mc"><div class="sbs"><span class="sb sb-r">RIDE</span><span class="sb sb-s">SPLASH</span><span class="sb sb-p">PLAY</span></div><div class="mc-icon">🕵️</div><div class="mc-code">mGSA</div><div class="mc-name">Mystery Shopper GSA</div><div class="mc-desc">AS-deployed covert auditor. iGSA divergence is the finding.</div><div class="mc-foot"><span class="mc-tag">R · I · D · E</span></div></div>
+      <div class="mc"><div class="sbs"><span class="sb sb-r">RIDE</span><span class="sb sb-s">SPLASH</span></div><div class="mc-icon">🔍</div><div class="mc-code">TPS</div><div class="mc-name">Third-Party Safety</div><div class="mc-desc">AS-conducted ASTM-aligned compliance inspection.</div><div class="mc-foot"><span class="mc-tag">R · I · E</span></div></div>
     </div>
 
-    <div class="group-label reveal"><span class="gl-text">Post-Visit Intelligence</span><span class="gl-line"></span><span class="gl-count">1 STREAM</span></div>
-    <div class="mod-grid reveal">
-      <div class="mod-card mc-gold"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">✉️</div><div class="m-code">EXS</div><div class="m-name">Post-Visit Survey</div><div class="m-desc">Triggered email survey — reflective sentiment, loyalty data, cross-validates QR feedback.</div><div class="m-footer"><span class="m-tag">D · E</span></div></div>
-    </div>
-
-    <div class="group-label reveal"><span class="gl-text">Automated Data Feeds</span><span class="gl-line"></span><span class="gl-count">4 FEEDS</span></div>
-    <div class="mod-grid reveal">
-      <div class="mod-card mc-auto" style="cursor:default"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">🌤</div><div class="m-code">WX</div><div class="m-name">Weather Data</div><div class="m-desc">Open-Meteo API — temp, precipitation, wind, lightning. Adjusts Environment pillar and OLI.</div><div class="m-footer"><span class="m-tag">E</span><span style="font-size:12px;color:rgba(0,212,208,.3)">⚡</span></div></div>
-      <div class="mod-card mc-auto" style="cursor:default"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">⏱</div><div class="m-code">QTX</div><div class="m-name">Queue &amp; Wait Time</div><div class="m-desc">Live queue length and wait times via sensor, clicker, or POS.</div><div class="m-footer"><span class="m-tag">R · D</span><span style="font-size:12px;color:rgba(0,212,208,.3)">⚡</span></div></div>
-      <div class="mod-card mc-auto" style="cursor:default"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">⭐</div><div class="m-code">OLR</div><div class="m-name">Online Review Intelligence</div><div class="m-desc">Google, TripAdvisor, Yelp — sentiment analysis and keyword extraction.</div><div class="m-footer"><span class="m-tag">D · E</span><span style="font-size:12px;color:rgba(0,212,208,.3)">⚡</span></div></div>
-      <a href="https://amusementstandards.com/voxintel.html" class="mod-card mc-auto"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">📡</div><div class="m-code">VXI</div><div class="m-name">VoxIntel Radio Intelligence</div><div class="m-desc">Passive RF monitoring — real-time transcription, NLP event classification, congestion scoring, step-on detection. Feeds MGR dashboard and OPD live view.</div><div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div></a>
+    <div class="grp reveal"><span class="grp-text">Automated Data Feeds</span><span class="grp-line"></span><span class="grp-ct">4 FEEDS</span></div>
+    <div class="mgrid reveal">
+      <div class="mc"><div class="mc-live"><span class="mc-dot"></span>LIVE</div><div class="mc-icon">🌤</div><div class="mc-code">WX</div><div class="mc-name">Weather Data</div><div class="mc-desc">Open-Meteo API — temp, precipitation, wind, lightning.</div><div class="mc-foot"><span class="mc-tag">E</span></div></div>
+      <div class="mc"><div class="mc-live"><span class="mc-dot"></span>LIVE</div><div class="mc-icon">⏱</div><div class="mc-code">QTX</div><div class="mc-name">Queue &amp; Wait Time</div><div class="mc-desc">Live queue length via sensor, clicker, or POS.</div><div class="mc-foot"><span class="mc-tag">R · D</span></div></div>
+      <div class="mc"><div class="mc-live"><span class="mc-dot"></span>LIVE</div><div class="mc-icon">⭐</div><div class="mc-code">OLR</div><div class="mc-name">Online Reviews</div><div class="mc-desc">Google, TripAdvisor, Yelp sentiment analysis.</div><div class="mc-foot"><span class="mc-tag">D · E</span></div></div>
+      <div class="mc"><div class="mc-live"><span class="mc-dot"></span>LIVE</div><div class="mc-icon">📡</div><div class="mc-code">VXI</div><div class="mc-name">VoxIntel Radio Intelligence</div><div class="mc-desc">Passive RF — transcription, NLP, congestion scoring.</div><div class="mc-foot"><span class="mc-tag">R · I · D · E</span></div></div>
     </div>
   </div>
 </section>
 
 <!-- SCORES -->
-<section class="scores-section" id="scores">
+<section id="scores">
   <div class="max-w">
-    <div class="reveal"><div class="section-eyebrow">The Scoring Output</div><h2 class="section-title">Everything above produces<br><em>three scored indices.</em></h2><p class="section-sub">Deploy one score for your primary operation type, or deploy all three. Each stands alone. Together they close every blind spot and generate the Park Intelligence Composite.</p></div>
-    <div class="scores-grid reveal">
-      <div class="score-card score-card-ride"><div class="sc-header"><div><div class="sc-name">RIDE</div><div class="sc-badge">Dry Attractions</div></div><div class="sc-sample"><div class="sc-num">81</div><div class="sc-tag">Sample</div></div></div><div class="sc-desc">Operational risk index for coasters, flats, dark rides, and midway attractions. 15 independent data streams — now including OpsScan behavioral data and LensIQ throughput.</div><div class="sc-pillars"><div class="sc-pillar-row"><div class="sc-pillar-letter">R</div><div class="sc-pillar-name">Readiness</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">I</div><div class="sc-pillar-name">Integrity</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">D</div><div class="sc-pillar-name">Delivery</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">E</div><div class="sc-pillar-name">Environment</div></div></div><div class="sc-streams">15 streams · 4 pillars</div><a href="https://amusementstandards.com/as360-ride-score.html" class="sc-link">Architecture →</a></div>
-      <div class="score-card score-card-splash"><div class="sc-header"><div><div class="sc-name">SPLASH</div><div class="sc-badge">Aquatic</div></div><div class="sc-sample"><div class="sc-num">78</div><div class="sc-tag">Sample</div></div></div><div class="sc-desc">Aquatic risk index with the only quantitative Lifeguard performance scoring in the industry. LensIQ slide entry counting and OpsScan aquatic sign-off feed directly into this score.</div><div class="sc-pillars"><div class="sc-pillar-row"><div class="sc-pillar-letter">S</div><div class="sc-pillar-name">Safety</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">P</div><div class="sc-pillar-name">Protocol</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">L</div><div class="sc-pillar-name">Lifeguard</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">A</div><div class="sc-pillar-name">Aquatic</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">S</div><div class="sc-pillar-name">Structure</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">H</div><div class="sc-pillar-name">Hazard</div></div></div><div class="sc-streams">12 streams · 6 pillars</div><a href="https://amusementstandards.com/as360-splash-score.html" class="sc-link">Architecture →</a></div>
-      <div class="score-card score-card-play"><div class="sc-header"><div><div class="sc-name">PLAY</div><div class="sc-badge">FECs</div></div><div class="sc-sample"><div class="sc-num">83</div><div class="sc-tag">Sample</div></div></div><div class="sc-desc">FEC risk index with the only standalone Youth pillar. OpsScan QR position data and LensIQ FEC camera feeds contribute to Attraction and Performance pillar scoring.</div><div class="sc-pillars"><div class="sc-pillar-row"><div class="sc-pillar-letter">P</div><div class="sc-pillar-name">Performance</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">L</div><div class="sc-pillar-name">Liability</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">A</div><div class="sc-pillar-name">Attraction</div></div><div class="sc-pillar-row"><div class="sc-pillar-letter">Y</div><div class="sc-pillar-name">Youth</div></div></div><div class="sc-streams">10 streams · 4 pillars</div><a href="https://amusementstandards.com/as360-play-score.html" class="sc-link">Architecture →</a></div>
-    </div>
-  </div>
-</section>
-
-<!-- PIC -->
-<section class="pic-section" id="pic">
-  <div class="max-w">
-    <div class="pic-grid">
-      <div class="reveal"><div class="section-eyebrow">When All Three Scores Are Active</div><h2 class="section-title">Park Intelligence<br><em>Composite.</em></h2><p class="section-sub" style="max-width:100%">The PIC is generated when RIDE, SPLASH, and PLAY are all deployed at the same facility. A weighted, cross-validated composite that covers every guest-facing zone — fed by OpsScan, LensIQ, VoxIntel, and all inspection streams simultaneously.</p><ul class="pic-features"><li>Covers dry rides, aquatic zones, and FEC floors simultaneously</li><li>Cross-score incident patterns calibrate pillar weightings across all three indices</li><li>OpsScan, LensIQ, and VoxIntel triangulate every zone independently</li><li>A single underwriting-ready composite for multi-type park portfolios</li><li>First whole-park risk index in the attractions industry</li></ul></div>
-      <div class="pic-visual reveal"><div class="pic-composite-display"><div class="pic-composite-label">Park Intelligence Composite™</div><div class="pic-composite-num" id="pic-num">0</div><div class="pic-composite-tier">STRONG · Sample</div></div><div class="pic-bars"><div class="pic-bar-row"><div class="pic-bar-name ride">RIDE</div><div class="pic-track"><div class="pic-fill pic-fill-ride" data-w="81"></div></div><div class="pic-val" data-v="81">0</div></div><div class="pic-bar-row"><div class="pic-bar-name splash">SPLASH</div><div class="pic-track"><div class="pic-fill pic-fill-splash" data-w="78"></div></div><div class="pic-val" data-v="78">0</div></div><div class="pic-bar-row"><div class="pic-bar-name play">PLAY</div><div class="pic-track"><div class="pic-fill pic-fill-play" data-w="83"></div></div><div class="pic-val" data-v="83">0</div></div><div class="pic-bar-row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)"><div class="pic-bar-name" style="color:rgba(255,255,255,.6)">PIC</div><div class="pic-track"><div class="pic-fill pic-fill-total" data-w="84"></div></div><div class="pic-val" style="color:var(--ride);font-weight:700" data-v="84">0</div></div></div></div>
+    <div class="reveal"><div class="sec-ey">The Scoring Output</div><h2 class="sec-title">Everything above produces<br><em>three scored indices.</em></h2><p class="sec-sub">Deploy one score for your primary operation type, or all three. Each stands alone. Together they produce a Park Intelligence Composite.</p></div>
+    <div class="sc-grid reveal">
+      <div class="sc sc-ride"><div class="sc-hdr"><div><div class="sc-name">RIDE</div><div class="sc-badge">Dry Attractions</div></div><div style="text-align:right"><div class="sc-num">81</div><div class="sc-tag">Sample</div></div></div><div class="sc-desc">Operational risk index for coasters, flats, dark rides. 15 streams including OpsScan behavioral data and LensIQ throughput.</div><div class="sc-pillars"><div class="sc-prow"><div class="sc-pl">R</div><div class="sc-pn">Readiness</div></div><div class="sc-prow"><div class="sc-pl">I</div><div class="sc-pn">Integrity</div></div><div class="sc-prow"><div class="sc-pl">D</div><div class="sc-pn">Delivery</div></div><div class="sc-prow"><div class="sc-pl">E</div><div class="sc-pn">Environment</div></div></div><div class="sc-meta">15 streams · 4 pillars</div><a href="https://amusementstandards.com/as360-ride-score.html" class="sc-link">Architecture →</a></div>
+      <div class="sc sc-splash"><div class="sc-hdr"><div><div class="sc-name">SPLASH</div><div class="sc-badge">Aquatic</div></div><div style="text-align:right"><div class="sc-num">78</div><div class="sc-tag">Sample</div></div></div><div class="sc-desc">Aquatic risk index with the only quantitative Lifeguard performance scoring in the industry.</div><div class="sc-pillars"><div class="sc-prow"><div class="sc-pl">S</div><div class="sc-pn">Safety</div></div><div class="sc-prow"><div class="sc-pl">P</div><div class="sc-pn">Protocol</div></div><div class="sc-prow"><div class="sc-pl">L</div><div class="sc-pn">Lifeguard</div></div><div class="sc-prow"><div class="sc-pl">A</div><div class="sc-pn">Aquatic</div></div><div class="sc-prow"><div class="sc-pl">S</div><div class="sc-pn">Structure</div></div><div class="sc-prow"><div class="sc-pl">H</div><div class="sc-pn">Hazard</div></div></div><div class="sc-meta">12 streams · 6 pillars</div><a href="https://amusementstandards.com/as360-splash-score.html" class="sc-link">Architecture →</a></div>
+      <div class="sc sc-play"><div class="sc-hdr"><div><div class="sc-name">PLAY</div><div class="sc-badge">FECs</div></div><div style="text-align:right"><div class="sc-num">83</div><div class="sc-tag">Sample</div></div></div><div class="sc-desc">FEC risk index with standalone Youth pillar — the only quantified minor patron risk data available.</div><div class="sc-pillars"><div class="sc-prow"><div class="sc-pl">P</div><div class="sc-pn">Performance</div></div><div class="sc-prow"><div class="sc-pl">L</div><div class="sc-pn">Liability</div></div><div class="sc-prow"><div class="sc-pl">A</div><div class="sc-pn">Attraction</div></div><div class="sc-prow"><div class="sc-pl">Y</div><div class="sc-pn">Youth</div></div></div><div class="sc-meta">10 streams · 4 pillars</div><a href="https://amusementstandards.com/as360-play-score.html" class="sc-link">Architecture →</a></div>
     </div>
   </div>
 </section>
 
 <!-- INSURERS -->
-<section class="insurer-section" id="insurers">
+<section style="background:var(--navy2)" id="insurers">
   <div class="max-w">
-    <div class="reveal"><div class="section-eyebrow">For Specialty Lines Insurers &amp; MGAs</div><h2 class="section-title">Risk quantified.<br><em>Not described.</em></h2><p class="section-sub">The AS 360 Platform translates attractions operational risk into a structured, auditable index — the same function FICO scores serve in credit underwriting. Three independent data sources ensure the score cannot be gamed.</p></div>
-    <div class="insurer-grid reveal">
-      <div><ul class="insurer-points">
-        <li>Composite index replaces subjective loss control surveys with a continuous, scored data system</li>
-        <li>Three independent data acquisition layers — OpsScan, LensIQ, VoxIntel — triangulate every finding</li>
-        <li>OpsScan behavioral anomaly detection flags compliance theater before it becomes a claim</li>
-        <li>LensIQ camera-derived throughput is operator-independent — not self-reported</li>
-        <li>VoxIntel radio intelligence provides auditable operational response data and incident reconstruction</li>
-        <li>Park Intelligence Composite covers every guest-facing zone in a single number</li>
-        <li>Month-over-month trend tracking shows trajectory, not just snapshot risk</li>
-        <li>Youth pillar provides quantified minor patron risk data — unique to PLAY Score</li>
-        <li>Lifeguard zone compliance scoring directly addresses leading cause of aquatic fatalities</li>
-        <li>Third-party data ingestion from Mobaro, CommandCentr, and state inspection databases enriches the score further</li>
-      </ul></div>
-      <div><div class="insurer-card"><div class="insurer-card-header"><div class="insurer-card-title">Structured Risk Dossier</div><div class="insurer-card-name">What Carriers Receive</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">📊</div><div class="idr-label">Composite PIC score with full pillar breakdown</div><div class="idr-status idr-included">Included</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">📱</div><div class="idr-label">OpsScan behavioral compliance data &amp; anomaly flags</div><div class="idr-status idr-included">Included</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">👁️</div><div class="idr-label">LensIQ independent throughput &amp; cycle data</div><div class="idr-status idr-included">Included</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">📡</div><div class="idr-label">VoxIntel radio response analytics &amp; incident log</div><div class="idr-status idr-included">Included</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">📈</div><div class="idr-label">Month-over-month score trend line</div><div class="idr-status idr-included">Included</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">🔍</div><div class="idr-label">Independent audit trail &amp; convergence analysis</div><div class="idr-status idr-included">Included</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">⚠️</div><div class="idr-label">Prioritized corrective action list</div><div class="idr-status idr-included">Included</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">🗂️</div><div class="idr-label">Facility benchmarking &amp; percentile ranking</div><div class="idr-status idr-included">Included</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">🏊</div><div class="idr-label">VGB &amp; lifeguard compliance status</div><div class="idr-status idr-included">SPLASH</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">🧒</div><div class="idr-label">Youth patron risk pillar score</div><div class="idr-status idr-included">PLAY</div></div>
-        <div class="insurer-dossier-row"><div class="idr-icon">🏢</div><div class="idr-label">Portfolio dashboard for multi-location operators</div><div class="idr-status idr-pro">Enterprise</div></div>
-      </div></div>
+    <div class="reveal"><div class="sec-ey">For Specialty Lines Insurers</div><h2 class="sec-title">Risk quantified.<br><em>Not described.</em></h2><p class="sec-sub">AS 360 translates operational risk into a continuous scored index — the same function FICO serves in credit. Three independent data sources ensure the score cannot be gamed. Claims-to-score correlation validates the signal.</p></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:36px;" class="reveal">
+      <div style="padding:22px 20px;background:rgba(201,168,76,.04);border:1px solid rgba(201,168,76,.15);border-radius:8px;border-left:3px solid var(--gold);">
+        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--gold);margin-bottom:8px;">CLAIMS-TO-SCORE CORRELATION</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7;">STRONG (75+): <strong style="color:var(--green);">1.8 claims / 3yr</strong>. WATCH/CRITICAL (&lt;60): <strong style="color:var(--red);">9.8 claims / 3yr</strong>. A <strong style="color:#fff;">5.4× multiplier</strong>. Correlation strengthens as the dataset matures.</div>
+      </div>
+      <div style="padding:22px 20px;background:rgba(0,212,208,.04);border:1px solid rgba(0,212,208,.15);border-radius:8px;border-left:3px solid var(--teal);">
+        <div style="font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--teal);margin-bottom:8px;">INSURER DATA OVERLAY (NDA)</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.7;">Claims history, loss control reports, and loss runs ingested under mutual NDA. AES-256 at rest, TLS 1.3 in transit, tenant-isolated. Your operators never see insurer data.</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;" class="reveal">
+      <a href="https://amusementstandards.com/insurer-services.html" class="btn btn-gold">For Insurers →</a>
+      <a href="https://amusementstandards.com/insurer-portal.html" class="btn btn-ghost" style="color:var(--gold);border-color:rgba(201,168,76,.25);">Insurer Portal →</a>
+      <a href="https://amusementstandards.com/sample-underwriting-risk-profile.pdf" class="btn btn-ghost" style="font-size:12px;">Sample Underwriting Report (PDF)</a>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-section" id="contact">
+<section class="cta">
   <div class="cta-inner">
-    <div class="section-eyebrow" style="color:rgba(255,255,255,.3);justify-content:center;display:flex;align-items:center;gap:14px;margin-bottom:20px"><span style="display:block;width:32px;height:1px;background:rgba(255,255,255,.12)"></span>Get Started<span style="display:block;width:32px;height:1px;background:rgba(255,255,255,.12)"></span></div>
-    <h2 class="cta-title">Ready to run your park on<br><em>AS 360?</em></h2>
-    <p class="cta-sub">Full-suite park management — Manager, Dispatcher, Operator Log, OpsScan, LensIQ, VoxIntel, 19 inspections, incident reporting, guest intelligence, and automated data feeds — deployed across your facility.</p>
-    <div class="cta-btns">
-      <a href="mailto:adam@amusementstandards.com" class="btn btn-primary">Email Us Directly</a>
-      <a href="https://amusementstandards.com/as360/ops-scan.html" class="btn btn-ghost" style="color:#00FF88;border-color:rgba(0,255,136,.3)">OpsScan →</a>
-      <a href="https://amusementstandards.com/as360/lens-iq.html" class="btn btn-ghost" style="color:#0099FF;border-color:rgba(0,153,255,.3)">LensIQ →</a>
-      <a href="https://amusementstandards.com/voxintel.html" class="btn btn-ghost" style="color:#a78bfa;border-color:rgba(139,92,246,.3)">VoxIntel →</a>
-      <a href="https://amusementstandards.com/as360-ride-score.html" class="btn btn-ghost">RIDE Score →</a>
-      <a href="https://amusementstandards.com/as360/methodology.html" class="btn btn-ghost">Methodology →</a>
+    <div class="sec-ey" style="color:rgba(255,255,255,.3);justify-content:center;display:flex;align-items:center;gap:14px;margin-bottom:20px"><span style="display:block;width:32px;height:1px;background:rgba(255,255,255,.12)"></span>Get Started<span style="display:block;width:32px;height:1px;background:rgba(255,255,255,.12)"></span></div>
+    <h2 class="sec-title" style="text-align:center;font-size:clamp(28px,4vw,48px);">Ready to run your park on<br><em>AS 360?</em></h2>
+    <p style="font-size:16px;font-weight:300;color:rgba(255,255,255,.5);line-height:1.75;margin-bottom:36px;text-align:center;">Manager Module, Operator Intelligence (OpsScan 3-Tier + VoxIntel + LensIQ + Anomaly Detection), Maintenance Manager, AuditScore, 19 inspections, incident reporting, guest intelligence, and automated data feeds. Start at Tier 1 with zero new workflows.</p>
+    <div class="hero-btns">
+      <a href="mailto:adam@amusementstandards.com" class="btn btn-primary">Contact Us</a>
+      <a href="https://amusementstandards.com/as360/manager.html" class="btn btn-ghost">Manager Module</a>
+      <a href="https://amusementstandards.com/as360/field-data-layer.html" class="btn btn-ghost" style="color:var(--ops);border-color:rgba(0,255,136,.3)">Field Data Layer</a>
+      <a href="https://amusementstandards.com/as360/methodology.html" class="btn btn-ghost">Methodology</a>
+      <a href="https://amusementstandards.com/as360/benchmarking.html" class="btn btn-ghost">Benchmarking</a>
+      <a href="https://amusementstandards.com/insurer-services.html" class="btn btn-gold">For Insurers</a>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="footer-logo">amusement standards.</div>
-  <div class="footer-links">
+  <div class="f-logo">amusement standards.</div>
+  <div class="f-links">
     <a href="https://amusementstandards.com">Home</a>
+    <a href="https://amusementstandards.com/as360/manager.html">Manager</a>
+    <a href="https://amusementstandards.com/as360/field-data-layer.html" style="color:rgba(0,255,136,.6)">Field Data Layer</a>
     <a href="https://amusementstandards.com/as360/ops-scan.html" style="color:rgba(0,255,136,.6)">OpsScan</a>
     <a href="https://amusementstandards.com/as360/lens-iq.html" style="color:rgba(0,153,255,.6)">LensIQ</a>
-    <a href="https://amusementstandards.com/voxintel.html" style="color:rgba(139,92,246,.6)">VoxIntel</a>
+    <a href="https://amusementstandards.com/as360/voxintel.html" style="color:rgba(139,92,246,.6)">VoxIntel</a>
     <a href="https://amusementstandards.com/as360-ride-score.html">RIDE Score</a>
     <a href="https://amusementstandards.com/as360-splash-score.html">SPLASH Score</a>
     <a href="https://amusementstandards.com/as360-play-score.html">PLAY Score</a>
+    <a href="https://amusementstandards.com/as360/methodology.html">Methodology</a>
+    <a href="https://amusementstandards.com/insurer-services.html" style="color:rgba(201,168,76,.5)">For Insurers</a>
     <a href="mailto:adam@amusementstandards.com">Contact</a>
   </div>
-  <div class="footer-copy">© 2025 Amusement Standards · RIDE Score™ · SPLASH Score™ · PLAY Score™ · OpsScan™ · LensIQ™ · VoxIntel™ · Proprietary</div>
+  <div class="f-copy">© 2026 Amusement Standards · RIDE Score™ · SPLASH Score™ · PLAY Score™ · OpsScan™ · LensIQ™ · VoxIntel™ · Proprietary</div>
 </footer>
 
 <script>
-const revealObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
-(function(){const p=document.getElementById('pic');if(!p)return;let f=false;const o=new IntersectionObserver(entries=>{if(!entries[0].isIntersecting||f)return;f=true;document.querySelectorAll('.pic-fill').forEach(el=>{el.style.width=el.dataset.w+'%'});document.querySelectorAll('.pic-val').forEach(el=>{const t=parseInt(el.dataset.v);let c=0;const iv=setInterval(()=>{c=Math.min(t,c+Math.ceil(t/50));el.textContent=c;if(c>=t)clearInterval(iv)},22)});const n=document.getElementById('pic-num');if(n){let c=0;const iv=setInterval(()=>{c=Math.min(84,c+2);n.textContent=c;if(c>=84)clearInterval(iv)},18)}o.disconnect()},{threshold:.3});o.observe(p)})();
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');ro.unobserve(x.target);}});},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 </script>
 </body>
 </html>
