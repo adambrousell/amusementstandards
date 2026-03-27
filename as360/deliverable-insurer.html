@@ -147,9 +147,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     </div>
     <div class="sb-section">
       <div class="sb-label">REPORTS</div>
-      <div class="sb-item" onclick="showSection('underwriting')"><span class="sb-item-icon">📄</span> Underwriting Report</div>
-      <div class="sb-item" onclick="window.open('https://amusementstandards.com/sample-portfolio-summary.pdf','_blank')"><span class="sb-item-icon">📑</span> Renewal Summary</div>
-      <div class="sb-item" onclick="window.open('https://amusementstandards.com/sample-portfolio-export.csv','_blank')"><span class="sb-item-icon">📦</span> Export Data</div>
+      <div class="sb-item" onclick="showSection('reports')"><span class="sb-item-icon">📄</span> Reports &amp; Exports</div>
     </div>
     <div class="sb-section">
       <div class="sb-label">DATA INTEGRATION</div>
@@ -172,7 +170,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       </div>
       <div class="tb-right">
         <div class="tb-badge">MASI · Loss Control</div>
-        <div class="tb-user" title="Noah">NR</div>
+        <div class="tb-user" title="Noel">NR</div>
       </div>
     </div>
 
@@ -446,35 +444,62 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <!-- REPORTS VIEW -->
       <div id="view-reports" style="display:none;">
         <div style="margin-bottom:16px;">
-          <div style="font-family:var(--serif);font-size:20px;font-weight:700;color:var(--text-bright);">Report Generator</div>
-          <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:2px;">Generate and export reports for underwriting, renewal, and portfolio review</div>
+          <div style="font-family:var(--serif);font-size:20px;font-weight:700;color:var(--text-bright);">Reports &amp; Exports</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:2px;">Download reports for underwriting files, renewal reviews, and portfolio analysis</div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
-          <div class="panel" style="margin-bottom:0;cursor:pointer;" onclick="window.open('https://amusementstandards.com/sample-underwriting-risk-profile.pdf','_blank')">
-            <div class="panel-body" style="text-align:center;padding:32px 16px;">
-              <div style="font-size:32px;margin-bottom:8px;">📄</div>
-              <div style="font-family:var(--serif);font-size:16px;font-weight:700;color:var(--text-bright);margin-bottom:4px;">Underwriting Report</div>
-              <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);line-height:1.6;">Single-facility risk profile<br>Score + pillars + trend + flags<br>MASI data overlay included</div>
-              <div style="margin-top:12px;"><button class="btn btn-teal" style="width:100%;">Generate PDF</button></div>
+
+        <div class="panel">
+          <div class="panel-hdr"><div class="panel-title">Available Reports</div></div>
+          <div class="panel-body" style="padding:0;">
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <div style="width:40px;height:40px;border-radius:8px;background:var(--red-dim);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📄</div>
+                <div>
+                  <div style="font-size:14px;font-weight:600;color:var(--text-bright);">Underwriting Risk Profile</div>
+                  <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;">4 pages · Single-facility risk profile with RIDE Score, pillar breakdown, compliance metrics, MASI data overlay, risk flags, and underwriting recommendation</div>
+                </div>
+              </div>
+              <a href="https://amusementstandards.com/sample-underwriting-risk-profile.pdf" target="_blank" class="btn btn-teal" style="flex-shrink:0;font-size:12px;padding:10px 20px;">Download PDF</a>
             </div>
-          </div>
-          <div class="panel" style="margin-bottom:0;cursor:pointer;" onclick="window.open('https://amusementstandards.com/sample-portfolio-summary.pdf','_blank')">
-            <div class="panel-body" style="text-align:center;padding:32px 16px;">
-              <div style="font-size:32px;margin-bottom:8px;">📑</div>
-              <div style="font-family:var(--serif);font-size:16px;font-weight:700;color:var(--text-bright);margin-bottom:4px;">Renewal Summary</div>
-              <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);line-height:1.6;">Year-over-year comparison<br>Improvement trajectory<br>Claims correlation analysis</div>
-              <div style="margin-top:12px;"><button class="btn btn-gold" style="width:100%;">Generate PDF</button></div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <div style="width:40px;height:40px;border-radius:8px;background:var(--teal-dim);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📑</div>
+                <div>
+                  <div style="font-size:14px;font-weight:600;color:var(--text-bright);">Portfolio Summary</div>
+                  <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;">3 pages · Book-of-business overview with facility rankings, score distribution, claims correlation, required actions, and renewal calendar</div>
+                </div>
+              </div>
+              <a href="https://amusementstandards.com/sample-portfolio-summary.pdf" target="_blank" class="btn btn-teal" style="flex-shrink:0;font-size:12px;padding:10px 20px;">Download PDF</a>
             </div>
-          </div>
-          <div class="panel" style="margin-bottom:0;cursor:pointer;" onclick="window.open('https://amusementstandards.com/sample-portfolio-export.csv','_blank')">
-            <div class="panel-body" style="text-align:center;padding:32px 16px;">
-              <div style="font-size:32px;margin-bottom:8px;">📦</div>
-              <div style="font-family:var(--serif);font-size:16px;font-weight:700;color:var(--text-bright);margin-bottom:4px;">Export Data</div>
-              <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);line-height:1.6;">Full portfolio raw data<br>CSV / JSON format<br>Score history + flags + compliance</div>
-              <div style="margin-top:12px;"><button class="btn btn-ghost" style="width:100%;color:var(--text);">Export CSV</button></div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <div style="width:40px;height:40px;border-radius:8px;background:var(--gold-dim);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📊</div>
+                <div>
+                  <div style="font-size:14px;font-weight:600;color:var(--text-bright);">Quarterly Compliance Review</div>
+                  <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;">4 pages · Deep-dive on a single facility — inspections, CARs, audit integrity, operator performance, incidents, amendments, insurer data overlay</div>
+                </div>
+              </div>
+              <a href="https://amusementstandards.com/sample-quarterly-compliance-review.pdf" target="_blank" class="btn btn-teal" style="flex-shrink:0;font-size:12px;padding:10px 20px;">Download PDF</a>
             </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <div style="width:40px;height:40px;border-radius:8px;background:rgba(59,130,246,.1);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📦</div>
+                <div>
+                  <div style="font-size:14px;font-weight:600;color:var(--text-bright);">Portfolio Data Export</div>
+                  <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;">CSV · 14 facilities × 32 columns — scores, pillars, compliance, claims, loss control visits, renewal dates, recommendations</div>
+                </div>
+              </div>
+              <a href="https://amusementstandards.com/sample-portfolio-export.csv" target="_blank" class="btn btn-teal" style="flex-shrink:0;font-size:12px;padding:10px 20px;">Download CSV</a>
+            </div>
+
           </div>
         </div>
+
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-top:12px;padding:0 4px;">Sample reports contain demo data for illustration. Production reports are generated from live facility data under your MASI portal license.</div>
       </div>
 
       <!-- DATA INTEGRATION VIEW -->
@@ -528,7 +553,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
               </div>
               <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);line-height:1.8;">
                 <div style="color:var(--text-bright);font-weight:600;margin-bottom:4px;">Access Controls</div>
-                Authorized users: 4 (Tom Jones, Noah R., Drew Tewksbury, +1)<br>
+                Authorized users: 4 (Tom Jones, Noel R., Drew Tewksbury, +1)<br>
                 Encryption: AES-256 at rest, TLS 1.3 in transit<br>
                 Tenant isolation: MASI-only partition<br>
                 Operator firewall: Complete separation
@@ -674,7 +699,7 @@ function showSection(s){
     portfolio:'view-portfolio',facilities:'view-portfolio',
     alerts:'view-alerts',trends:'view-trends',
     integrity:'view-integrity',inspections:'view-inspections',amendments:'view-amendments',
-    reports:'view-reports',underwriting:'view-reports',renewal:'view-reports',exportdata:'view-reports',
+    reports:'view-reports',
     claims:'view-integration',lc:'view-integration',lossruns:'view-integration',nda:'view-integration'
   };
   var target=map[s]||'view-portfolio';
