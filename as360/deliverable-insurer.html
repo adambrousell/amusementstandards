@@ -148,8 +148,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <div class="sb-section">
       <div class="sb-label">REPORTS</div>
       <div class="sb-item" onclick="showSection('underwriting')"><span class="sb-item-icon">📄</span> Underwriting Report</div>
-      <div class="sb-item" onclick="showSection('renewal')"><span class="sb-item-icon">📑</span> Renewal Summary</div>
-      <div class="sb-item" onclick="showSection('exportdata')"><span class="sb-item-icon">📦</span> Export Data</div>
+      <div class="sb-item" onclick="window.open('https://amusementstandards.com/sample-portfolio-summary.pdf','_blank')"><span class="sb-item-icon">📑</span> Renewal Summary</div>
+      <div class="sb-item" onclick="window.open('https://amusementstandards.com/sample-portfolio-export.csv','_blank')"><span class="sb-item-icon">📦</span> Export Data</div>
     </div>
     <div class="sb-section">
       <div class="sb-label">DATA INTEGRATION</div>
@@ -689,13 +689,18 @@ function showSection(s){
   if(s==='facilities'){
     setTimeout(function(){document.getElementById('searchInput').focus();},100);
   }
-  // Data Integration sub-items — scroll to relevant section
+  // Data Integration sub-items — scroll to relevant section + highlight
   if(s==='claims'||s==='lc'||s==='lossruns'||s==='nda'){
     setTimeout(function(){
       var scrollTargets={claims:'int-claims',lc:'int-lc',lossruns:'int-lossruns',nda:'int-nda'};
       var el=document.getElementById(scrollTargets[s]);
-      if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
-    },100);
+      if(el){
+        el.scrollIntoView({behavior:'smooth',block:'start'});
+        el.style.transition='box-shadow 0.3s';
+        el.style.boxShadow='0 0 0 2px var(--teal), 0 0 20px rgba(10,191,188,0.15)';
+        setTimeout(function(){el.style.boxShadow='none';},2000);
+      }
+    },150);
   }
 }
 
