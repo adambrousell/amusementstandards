@@ -3,460 +3,939 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AS 360 — Park Operations Platform · Amusement Standards</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<title>AS 360 · Risk Intelligence Platform — McGowan Allied Specialty Insurance</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#06080D;--teal:#00D4D0;--teal2:#00A8A5;--gold:#D4AF37;--gold2:#B8960C;--red:#FF3B5C;--blue:#2E6FFF;--green:#00D68F;--amber:#FFB800;--purple:#8B5CF6;--orange:#FF6B35;--ops:#00FF88;--lens:#0099FF;--vox:#a78bfa;--text:#94A3B8;--text-bright:#E2EAF4;--dim:#1E293B;--mono:'IBM Plex Mono',monospace;--display:'Bebas Neue',sans-serif;--body:'Barlow',sans-serif;}
-*{margin:0;padding:0;box-sizing:border-box;}html,body{width:100%;overflow-x:hidden;}body{font-family:var(--body);background:var(--bg);color:var(--text-bright);min-height:100vh;}
-.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:80px 24px 60px;background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(0,212,208,.07) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 20% 70%,rgba(212,175,55,.04) 0%,transparent 50%),radial-gradient(ellipse 50% 40% at 80% 20%,rgba(46,111,255,.04) 0%,transparent 50%),var(--bg);}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:900px;}.hero-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:3px;color:var(--teal);margin-bottom:18px;opacity:0;animation:fadeUp .6s .2s ease forwards;}.hero-title{font-family:var(--display);font-size:clamp(52px,8.5vw,106px);line-height:.92;color:var(--text-bright);margin-bottom:10px;opacity:0;animation:fadeUp .7s .35s ease forwards;}.hero-title span{color:var(--teal);}.hero-sub{font-family:var(--display);font-size:clamp(16px,2.5vw,26px);color:var(--gold);letter-spacing:2px;margin-bottom:24px;opacity:0;animation:fadeUp .7s .45s ease forwards;line-height:1.5;}.hero-sub a{text-decoration:none;transition:opacity .2s;}.hero-sub a:hover{opacity:.7;}
-.hero-desc{font-size:17px;line-height:1.7;color:var(--text);max-width:680px;margin:0 auto 36px;opacity:0;animation:fadeUp .7s .55s ease forwards;}.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .65s ease forwards;}
-.btn-primary{padding:14px 32px;background:linear-gradient(135deg,var(--teal),var(--teal2));border:none;border-radius:8px;font-family:var(--display);font-size:18px;letter-spacing:1px;color:#06080D;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 4px 24px rgba(0,212,208,.25);display:inline-block;}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(0,212,208,.4);}
-.btn-secondary{padding:14px 28px;border:1.5px solid rgba(148,163,184,.25);border-radius:8px;font-family:var(--display);font-size:18px;letter-spacing:1px;color:var(--text);cursor:pointer;text-decoration:none;transition:all .2s;background:rgba(255,255,255,.03);display:inline-block;}.btn-secondary:hover{border-color:var(--teal);color:var(--teal);background:rgba(0,212,208,.06);}
-.btn-gold{border-color:rgba(212,175,55,.4)!important;color:var(--gold)!important;background:rgba(212,175,55,.06)!important;}.btn-gold:hover{border-color:var(--gold)!important;background:rgba(212,175,55,.12)!important;}
-.btn-ops{border-color:rgba(0,255,136,.4)!important;color:var(--ops)!important;background:rgba(0,255,136,.06)!important;}.btn-ops:hover{border-color:var(--ops)!important;background:rgba(0,255,136,.12)!important;}
-.btn-lens{border-color:rgba(0,153,255,.4)!important;color:var(--lens)!important;background:rgba(0,153,255,.06)!important;}.btn-lens:hover{border-color:var(--lens)!important;background:rgba(0,153,255,.12)!important;}
-.btn-vox{border-color:rgba(167,139,250,.4)!important;color:var(--vox)!important;background:rgba(167,139,250,.06)!important;}.btn-vox:hover{border-color:var(--vox)!important;background:rgba(167,139,250,.12)!important;}
-.btn-insurer{border-color:rgba(46,117,182,.4)!important;color:#5BA3D9!important;background:rgba(46,117,182,.06)!important;}.btn-insurer:hover{border-color:#5BA3D9!important;background:rgba(46,117,182,.12)!important;}
+:root{
+  --bg:#04060A;--bg2:#07090E;--bg3:#0A0D14;
+  --teal:#00D4D0;--teal2:#00A8A5;
+  --gold:#D4AF37;--gold2:#B8960C;
+  --red:#FF3B5C;--blue:#2E6FFF;--green:#00D68F;--amber:#FFB800;
+  --ops:#00FF88;--lens:#0099FF;--vox:#a78bfa;--maint:#F97316;
+  --dim:rgba(255,255,255,.055);
+  --text:#6E7E96;--text2:#9BAABF;--text3:#D8E2F0;
+  --mono:'IBM Plex Mono',monospace;
+  --display:'Rajdhani',sans-serif;
+  --body:'Barlow',sans-serif;
+  --scanline:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,212,208,.008) 3px,rgba(0,212,208,.008) 4px);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:var(--bg);color:var(--text2);overflow-x:hidden;background-image:var(--scanline);}
 
-.stats-bar{padding:40px 24px;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);}.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;}@media(min-width:700px){.stats-inner{grid-template-columns:repeat(8,1fr);}}.stat-item{text-align:center;padding:12px 6px;border-right:1px solid var(--dim);}.stat-item:last-child{border-right:none;}.stat-num{font-family:var(--display);font-size:36px;color:var(--teal);line-height:1;}.stat-label{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--text);margin-top:4px;}
+/* BANNER */
+.insurer-banner{position:fixed;top:0;left:0;right:0;z-index:300;height:42px;background:rgba(4,6,10,.45);border-bottom:1px solid rgba(0,212,208,.2);display:flex;align-items:center;justify-content:space-between;padding:0 32px;backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);box-shadow:0 1px 0 rgba(0,212,208,.1),0 4px 32px rgba(0,0,0,.25);}
+.ib-left{display:flex;align-items:center;gap:12px;}
+.ib-pulse{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);animation:pulse 1.8s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.5)}}
+.ib-label{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);}
+.ib-sep{color:rgba(255,255,255,.12);}
+.ib-name{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:rgba(255,255,255,.28);}
+.ib-nav{display:flex;align-items:center;gap:20px;}
+.ib-link{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);text-decoration:none;transition:color .2s;}
+.ib-link:hover{color:var(--teal);}
+.ib-cta{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:5px 14px;border-radius:3px;background:rgba(212,175,55,.12);color:var(--gold);border:1px solid rgba(212,175,55,.35);text-decoration:none;transition:all .2s;}
+.ib-cta:hover{background:rgba(212,175,55,.22);border-color:var(--gold);}
 
-.sec{padding:80px 24px;}.sec-dark{background:rgba(0,0,0,.3);border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);}.sec-inner{max-width:1200px;margin:0 auto;}.sec-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}.sec-title{font-family:var(--display);font-size:clamp(36px,5vw,64px);color:var(--text-bright);line-height:1;margin-bottom:16px;}.sec-title span{color:var(--teal);}.sec-title .gold{color:var(--gold);}.sec-body{font-size:16px;line-height:1.75;color:var(--text);max-width:680px;}
+/* HERO */
+.hero{min-height:100vh;padding:100px 64px 80px;display:flex;align-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse 55% 65% at 72% 38%,rgba(0,212,208,.055) 0%,transparent 58%),radial-gradient(ellipse 40% 45% at 18% 62%,rgba(212,175,55,.04) 0%,transparent 52%),var(--bg);}
+.hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,212,208,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,208,.022) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 90% 90% at 65% 35%,black 10%,transparent 70%);}
+.hero-inner{position:relative;z-index:2;max-width:1360px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 500px;gap:72px;align-items:center;}
+.hero-eyebrow{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);margin-bottom:22px;display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .5s .2s ease forwards;}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--teal);}
+h1.hero-title{font-family:var(--display);font-size:clamp(52px,5.8vw,88px);line-height:.9;font-weight:800;letter-spacing:.5px;color:var(--text3);margin-bottom:16px;opacity:0;animation:fadeUp .6s .3s ease forwards;}
+h1.hero-title .t{color:var(--teal);}
+h1.hero-title .g{color:var(--gold);}
+.hero-sub{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;line-height:1.8;color:var(--text);margin-bottom:28px;opacity:0;animation:fadeUp .6s .42s ease forwards;}
+.hero-desc{font-size:15.5px;line-height:1.8;color:var(--text);max-width:560px;margin-bottom:36px;opacity:0;animation:fadeUp .6s .52s ease forwards;}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;opacity:0;animation:fadeUp .6s .62s ease forwards;}
+.hero-modules{display:flex;gap:8px;flex-wrap:wrap;opacity:0;animation:fadeUp .6s .72s ease forwards;}
 
-.dal-grid{display:grid;grid-template-columns:1fr;gap:2px;margin-top:48px;background:var(--dim);}@media(min-width:700px){.dal-grid{grid-template-columns:repeat(2,1fr);}}@media(min-width:1000px){.dal-grid{grid-template-columns:repeat(4,1fr);}}
-.dal-card{background:var(--bg);padding:30px 24px;position:relative;overflow:hidden;transition:background .25s;}.dal-card:hover{background:#0c0f18;}
-.dal-ops{border-top:3px solid var(--ops)}.dal-lens{border-top:3px solid var(--lens)}.dal-vox{border-top:3px solid var(--vox)}.dal-agg{border-top:3px solid var(--gold)}
-.dal-badge{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:3px 8px;border-radius:3px;display:inline-flex;align-items:center;gap:5px;margin-bottom:12px;}
-.dal-ops .dal-badge{background:rgba(0,255,136,.1);color:var(--ops);border:1px solid rgba(0,255,136,.25);}
-.dal-lens .dal-badge{background:rgba(0,153,255,.1);color:var(--lens);border:1px solid rgba(0,153,255,.25);}
-.dal-vox .dal-badge{background:rgba(167,139,250,.1);color:var(--vox);border:1px solid rgba(167,139,250,.25);}
-.dal-agg .dal-badge{background:rgba(212,175,55,.1);color:var(--gold);border:1px solid rgba(212,175,55,.25);}
-.dal-pulse{width:5px;height:5px;border-radius:50%;animation:dPulse 1.6s ease-in-out infinite;}@keyframes dPulse{0%,100%{opacity:1}50%{opacity:.3}}
-.dal-ops .dal-pulse{background:var(--ops)}.dal-lens .dal-pulse{background:var(--lens)}.dal-vox .dal-pulse{background:var(--vox)}.dal-agg .dal-pulse{background:var(--gold)}
-.dal-icon{font-size:30px;margin-bottom:10px;display:block;}
-.dal-name{font-family:var(--display);font-size:32px;letter-spacing:.5px;margin-bottom:8px;}
-.dal-ops .dal-name{color:var(--ops)}.dal-lens .dal-name{color:var(--lens)}.dal-vox .dal-name{color:var(--vox)}.dal-agg .dal-name{color:var(--gold)}
-.dal-desc{font-size:13px;color:var(--text);line-height:1.65;margin-bottom:14px;}
-.dal-features{list-style:none;margin-bottom:16px;}
-.dal-features li{font-size:11px;color:rgba(255,255,255,.4);padding:4px 0;border-bottom:1px solid var(--dim);display:flex;gap:7px;}
-.dal-features li:last-child{border-bottom:none;}
-.dal-features li::before{content:'·';flex-shrink:0;}
-.dal-ops .dal-features li::before{color:var(--ops)}.dal-lens .dal-features li::before{color:var(--lens)}.dal-vox .dal-features li::before{color:var(--vox)}.dal-agg .dal-features li::before{color:var(--gold)}
-.dal-link{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;padding:6px 12px;border-radius:3px;text-decoration:none;display:inline-block;transition:all .2s;}
-.dal-ops .dal-link{background:rgba(0,255,136,.08);color:var(--ops);border:1px solid rgba(0,255,136,.2);}.dal-ops .dal-link:hover{background:rgba(0,255,136,.15);}
-.dal-lens .dal-link{background:rgba(0,153,255,.08);color:var(--lens);border:1px solid rgba(0,153,255,.2);}.dal-lens .dal-link:hover{background:rgba(0,153,255,.15);}
-.dal-vox .dal-link{background:rgba(167,139,250,.08);color:var(--vox);border:1px solid rgba(167,139,250,.2);}.dal-vox .dal-link:hover{background:rgba(167,139,250,.15);}
-.dal-agg .dal-link{background:rgba(212,175,55,.08);color:var(--gold);border:1px solid rgba(212,175,55,.2);}.dal-agg .dal-link:hover{background:rgba(212,175,55,.15);}
-.triangulate-bar{margin-top:32px;padding:20px 28px;background:rgba(255,255,255,.025);border:1px solid var(--dim);border-radius:8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;font-family:var(--mono);font-size:11px;}
-.tb-item{padding:6px 14px;border-radius:4px;font-weight:600;letter-spacing:.08em;}
-.tb-ops{background:rgba(0,255,136,.08);color:var(--ops);border:1px solid rgba(0,255,136,.2);}
-.tb-lens{background:rgba(0,153,255,.08);color:var(--lens);border:1px solid rgba(0,153,255,.2);}
-.tb-vox{background:rgba(167,139,250,.08);color:var(--vox);border:1px solid rgba(167,139,250,.2);}
-.tb-agg{background:rgba(212,175,55,.08);color:var(--gold);border:1px solid rgba(212,175,55,.2);}
-.tb-arrow{color:rgba(255,255,255,.2);font-size:14px;}
-.tb-out{background:rgba(212,175,55,.1);color:var(--gold);border:1px solid rgba(212,175,55,.3);padding:8px 20px;border-radius:4px;font-family:var(--display);font-size:18px;letter-spacing:1px;}
+/* BUTTONS */
+.btn-pilot{display:inline-flex;align-items:center;gap:8px;padding:13px 32px;background:linear-gradient(135deg,var(--gold2),var(--gold));border:none;border-radius:5px;font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:1.5px;color:#04060A;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 4px 28px rgba(212,175,55,.22);}
+.btn-pilot:hover{transform:translateY(-2px);box-shadow:0 8px 42px rgba(212,175,55,.38);}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border:1px solid rgba(0,212,208,.3);border-radius:5px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);background:rgba(0,212,208,.04);cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn-outline:hover{background:rgba(0,212,208,.1);border-color:var(--teal);}
+.btn-ghost{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border:1px solid var(--dim);border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);background:transparent;cursor:pointer;text-decoration:none;transition:all .2s;}
+.btn-ghost:hover{border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.5);}
+.btn-g-ops{border-color:rgba(0,255,136,.2)!important;color:rgba(0,255,136,.5)!important;}
+.btn-g-ops:hover{border-color:var(--ops)!important;color:var(--ops)!important;background:rgba(0,255,136,.06)!important;}
+.btn-g-lens{border-color:rgba(0,153,255,.2)!important;color:rgba(0,153,255,.5)!important;}
+.btn-g-lens:hover{border-color:var(--lens)!important;color:var(--lens)!important;background:rgba(0,153,255,.06)!important;}
+.btn-g-vox{border-color:rgba(167,139,250,.2)!important;color:rgba(167,139,250,.5)!important;}
+.btn-g-vox:hover{border-color:var(--vox)!important;color:var(--vox)!important;background:rgba(167,139,250,.06)!important;}
+.btn-g-maint{border-color:rgba(249,115,22,.2)!important;color:rgba(249,115,22,.5)!important;}
+.btn-g-maint:hover{border-color:var(--maint)!important;color:var(--maint)!important;background:rgba(249,115,22,.06)!important;}
 
-.triad{display:grid;grid-template-columns:1fr;gap:20px;margin-top:48px;}@media(min-width:800px){.triad{grid-template-columns:repeat(3,1fr);}}.triad-card{background:rgba(255,255,255,.03);border:1px solid var(--dim);border-radius:16px;padding:32px 28px;position:relative;overflow:hidden;transition:all .2s;}.triad-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}.triad-card:hover{border-color:rgba(255,255,255,.12);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.5);}.tc-mgr::before{background:var(--teal);}.tc-ops::before{background:var(--ops);}.tc-maint::before{background:var(--orange);}.tc-icon{font-size:36px;margin-bottom:12px;}.tc-code{font-family:var(--mono);font-size:11px;letter-spacing:2px;font-weight:700;margin-bottom:4px;}.tc-mgr .tc-code{color:var(--teal);}.tc-ops .tc-code{color:var(--ops);}.tc-maint .tc-code{color:var(--orange);}.tc-name{font-family:var(--display);font-size:28px;color:var(--text-bright);letter-spacing:.5px;margin-bottom:12px;}.tc-desc{font-size:14px;color:var(--text);line-height:1.65;margin-bottom:20px;}.tc-features{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}.tc-feat{font-size:12px;color:rgba(255,255,255,.5);padding:6px 12px;background:rgba(255,255,255,.03);border-radius:6px;display:flex;align-items:center;gap:8px;}.tc-feat-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}.tc-links{display:flex;gap:10px;flex-wrap:wrap;}.tc-link{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-decoration:none;transition:color .15s;}.tc-mgr .tc-link{color:var(--teal);}.tc-ops .tc-link{color:var(--ops);}.tc-maint .tc-link{color:var(--orange);}.tc-link:hover{text-decoration:underline;}.tc-link-ops{color:var(--ops)!important;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);padding:4px 12px;border-radius:4px;transition:all .2s;}.tc-link-ops:hover{background:rgba(0,255,136,.15);text-decoration:none!important;}.tc-link-lens{color:var(--lens)!important;background:rgba(0,153,255,.08);border:1px solid rgba(0,153,255,.2);padding:4px 12px;border-radius:4px;transition:all .2s;}.tc-link-lens:hover{background:rgba(0,153,255,.15);text-decoration:none!important;}.tc-link-vxi{color:#60A5FA!important;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);padding:4px 12px;border-radius:4px;transition:all .2s;}.tc-link-vxi:hover{background:rgba(59,130,246,.15);border-color:#60A5FA;text-decoration:none!important;}
+/* SCORE WIDGET */
+.score-widget{opacity:0;animation:fadeUp .7s .45s ease forwards;}
+.sw-hdr{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.sw-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);animation:pulse 1.6s ease-in-out infinite;}
+.sw-hdr-text{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);}
+.sw-card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden;}
+.sw-card::before{content:'';display:block;height:2px;background:linear-gradient(90deg,transparent 5%,var(--gold) 40%,var(--teal) 60%,transparent 95%);}
+.sw-tabs{display:flex;background:rgba(0,0,0,.3);}
+.sw-tab{flex:1;padding:8px 4px;font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-align:center;cursor:pointer;color:var(--text);transition:all .15s;border-bottom:2px solid transparent;}
+.sw-tab.t-score{color:var(--teal);border-bottom-color:var(--teal);background:rgba(0,212,208,.04);}
+.sw-tab.t-vox{color:var(--vox);border-bottom-color:var(--vox);background:rgba(167,139,250,.04);}
+.sw-tab.t-lens{color:var(--lens);border-bottom-color:var(--lens);background:rgba(0,153,255,.04);}
+.sw-tab:hover{background:rgba(255,255,255,.03);}
+.sw-panel{display:none;padding:22px;}
+.sw-panel.active{display:block;}
+.sw-ring-wrap{display:flex;justify-content:center;margin-bottom:16px;}
+.sw-ring{width:148px;height:148px;position:relative;}
+.sw-ring svg{width:100%;height:100%;}
+.sw-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.sw-num{font-family:var(--display);font-size:58px;font-weight:800;color:var(--gold);line-height:1;}
+.sw-tier{font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(212,175,55,.55);margin-top:2px;}
+.sw-facility{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em;margin-bottom:14px;}
+.sw-pillars{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px;}
+.sw-p{background:var(--bg3);border:1px solid var(--dim);border-radius:5px;padding:9px 11px;}
+.sw-p-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.sw-p-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.06em;color:var(--text);}
+.sw-p-val{font-family:var(--display);font-size:20px;font-weight:700;}
+.sw-p-bar{height:2px;border-radius:1px;background:var(--dim);overflow:hidden;}
+.sw-p-fill{height:100%;border-radius:1px;transition:width 1.8s ease;}
+.sw-rows{border-top:1px solid var(--dim);padding-top:10px;}
+.sw-row{display:flex;justify-content:space-between;align-items:center;padding:4.5px 0;border-bottom:1px solid rgba(255,255,255,.025);}
+.sw-row:last-child{border-bottom:none;}
+.sw-rl{font-family:var(--mono);font-size:8px;color:var(--text);}
+.sw-rv{font-family:var(--mono);font-size:8.5px;font-weight:600;}
+.c-g{color:var(--green);}.c-a{color:var(--amber);}.c-r{color:var(--red);}
+.sw-note{font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,.12);text-align:center;margin-top:12px;letter-spacing:.04em;}
+.lp-event{font-family:var(--mono);font-size:8px;padding:4px 7px;border-radius:2px;margin-bottom:4px;line-height:1.5;}
+.lp-ev-ok{background:rgba(0,214,143,.07);color:var(--green);border:1px solid rgba(0,214,143,.14);}
+.lp-ev-warn{background:rgba(255,184,0,.07);color:var(--amber);border:1px solid rgba(255,184,0,.14);}
+.lp-ev-info{background:rgba(167,139,250,.07);color:var(--vox);border:1px solid rgba(167,139,250,.14);}
 
-.module-group-label{display:flex;align-items:center;gap:14px;margin:40px 0 14px;}.mgl-text{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);white-space:nowrap;font-weight:700;}.mgl-line{flex:1;height:1px;background:rgba(0,212,208,.15);}.mgl-count{font-family:var(--mono);font-size:10px;color:var(--teal);background:rgba(0,212,208,.1);border:1px solid rgba(0,212,208,.2);padding:2px 8px;border-radius:4px;white-space:nowrap;}
-.module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px;}@media(min-width:600px){.module-grid{grid-template-columns:repeat(3,1fr);}}@media(min-width:900px){.module-grid{grid-template-columns:repeat(4,1fr);}}.module-card{background:rgba(255,255,255,.03);border:1px solid var(--dim);border-radius:12px;padding:18px 15px;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:6px;transition:all .18s;position:relative;overflow:hidden;}.module-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .18s;}.module-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,0,0,.4);}.module-card:hover::after{opacity:1;}.mc-teal::after{background:var(--teal);}.mc-blue::after{background:var(--blue);}.mc-green::after{background:var(--green);}.mc-amber::after{background:var(--amber);}.mc-red::after{background:var(--red);}.mc-purple::after{background:var(--purple);}.mc-orange::after{background:var(--orange);}.mc-gold::after{background:var(--gold);}.mc-auto::after{background:var(--teal);}.m-auto-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:1px;padding:2px 8px;border-radius:3px;background:rgba(0,212,208,.08);border:1px solid rgba(0,212,208,.2);color:var(--teal);margin-bottom:2px;}.m-auto-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);animation:autoPulse 1.8s ease-in-out infinite;}.m-mgr-badge{display:inline-flex;align-items:center;gap:4px;font-family:var(--mono);font-size:8px;letter-spacing:.8px;padding:2px 7px;border-radius:3px;background:rgba(0,212,208,.06);border:1px solid rgba(0,212,208,.15);color:rgba(0,212,208,.6);margin-bottom:2px;}@keyframes autoPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}.m-icon{font-size:22px;}.m-code{font-family:var(--mono);font-size:9px;letter-spacing:2px;font-weight:700;}.mc-teal .m-code{color:var(--teal);}.mc-blue .m-code{color:var(--blue);}.mc-green .m-code{color:var(--green);}.mc-amber .m-code{color:var(--amber);}.mc-red .m-code{color:var(--red);}.mc-purple .m-code{color:var(--purple);}.mc-orange .m-code{color:var(--orange);}.mc-gold .m-code{color:var(--gold);}.mc-auto .m-code{color:var(--teal);}.m-name{font-size:13px;font-weight:600;color:var(--text-bright);line-height:1.25;}.m-desc{font-size:11px;color:var(--text);line-height:1.5;flex:1;}.m-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}.m-tag{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.35);}.m-arrow{font-size:13px;color:rgba(255,255,255,.2);transition:color .15s;}.module-card:hover .m-arrow{color:var(--teal);}
-.score-badges{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:3px;}.sb{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;letter-spacing:.05em;}.sb-ride{background:rgba(255,107,53,.15);color:#FF6B35;border:1px solid rgba(255,107,53,.3);}.sb-splash{background:rgba(30,158,212,.15);color:#1e9ed4;border:1px solid rgba(30,158,212,.3);}.sb-play{background:rgba(31,184,122,.15);color:#1fb87a;border:1px solid rgba(31,184,122,.3);}
+/* STATS */
+.stats-bar{border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);background:rgba(0,0,0,.3);}
+.stats-inner{max-width:1360px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
+@media(min-width:700px){.stats-inner{grid-template-columns:repeat(8,1fr);}}
+.stat-item{padding:20px 8px;text-align:center;border-right:1px solid var(--dim);}
+.stat-item:last-child{border-right:none;}
+.stat-num{font-family:var(--display);font-size:36px;font-weight:700;color:var(--teal);line-height:1;}
+.stat-label{font-family:var(--mono);font-size:7.5px;letter-spacing:1.4px;color:var(--text);margin-top:4px;line-height:1.4;}
 
-.score-output{display:grid;grid-template-columns:1fr;gap:32px;margin-top:48px;}@media(min-width:800px){.score-output{grid-template-columns:auto 1fr;}}.score-ring-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:32px;background:rgba(212,175,55,.05);border:1px solid rgba(212,175,55,.15);border-radius:16px;}.score-ring{position:relative;width:140px;height:140px;}.score-ring svg{width:100%;height:100%;}.score-ring .inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}.score-ring .score-num{font-family:var(--display);font-size:52px;color:var(--gold);line-height:1;}.score-ring .score-label{font-family:var(--mono);font-size:9px;color:var(--gold);letter-spacing:2px;margin-top:2px;}.pillar-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}.pillar-chip{padding:8px 14px;border-radius:8px;text-align:center;min-width:80px;}.pillar-chip-letter{font-family:var(--display);font-size:24px;line-height:1;}.pillar-chip-name{font-family:var(--mono);font-size:8px;letter-spacing:1px;margin-top:2px;}.pillar-chip-score{font-family:var(--display);font-size:18px;margin-top:4px;}.score-explanation{display:flex;flex-direction:column;justify-content:center;gap:16px;}.se-title{font-family:var(--display);font-size:clamp(28px,4vw,44px);color:var(--text-bright);line-height:1;}.se-title span{color:var(--gold);}.se-body{font-size:15px;color:var(--text);line-height:1.7;max-width:520px;}.se-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;}.se-link{font-family:var(--mono);font-size:11px;padding:8px 16px;border:1px solid rgba(212,175,55,.3);border-radius:6px;color:var(--gold);text-decoration:none;transition:all .15s;}.se-link:hover{border-color:var(--gold);background:rgba(212,175,55,.1);}.se-link-insurer{border-color:rgba(46,117,182,.3);color:#5BA3D9;}.se-link-insurer:hover{border-color:#5BA3D9;background:rgba(46,117,182,.1);}
+/* SECTIONS */
+.sec{padding:84px 64px;}
+.sec-dark{background:rgba(0,0,0,.22);border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);}
+.sec-inner{max-width:1360px;margin:0 auto;}
+.sec-ey{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.sec-ey::before{content:'';width:22px;height:1px;background:var(--teal);}
+.sec-title{font-family:var(--display);font-size:clamp(36px,4vw,58px);font-weight:800;letter-spacing:.5px;color:var(--text3);line-height:.95;margin-bottom:16px;}
+.sec-title .t{color:var(--teal);}.sec-title .g{color:var(--gold);}
+.sec-body{font-size:15px;line-height:1.8;color:var(--text);max-width:680px;}
 
-.deliverable-banner{margin:48px 0 0;padding:24px 32px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);border-radius:14px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;}.deliverable-banner-label{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}.deliverable-banner-title{font-family:var(--display);font-size:22px;color:var(--text-bright);letter-spacing:.5px;margin-bottom:4px;}.deliverable-banner-desc{font-size:13px;color:var(--text);line-height:1.5;}.deliverable-banner-btn{padding:12px 28px;background:rgba(212,175,55,.12);border:1.5px solid rgba(212,175,55,.4);border-radius:8px;font-family:var(--display);font-size:17px;letter-spacing:1px;color:var(--gold);text-decoration:none;white-space:nowrap;transition:all .2s;flex-shrink:0;}.deliverable-banner-btn:hover{background:rgba(212,175,55,.2);border-color:var(--gold);}
+/* GAP GRID */
+.gap-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:48px;background:var(--dim);}
+@media(min-width:900px){.gap-grid{grid-template-columns:repeat(3,1fr);}}
+.gap-card{background:var(--bg2);padding:28px 24px;position:relative;overflow:hidden;transition:background .2s;}
+.gap-card:hover{background:var(--bg3);}
+.gap-card::before{content:'';position:absolute;top:0;left:0;width:0;height:3px;transition:width .35s;}
+.gap-card:hover::before{width:100%;}
+.gc-t::before{background:var(--teal);}.gc-g::before{background:var(--gold);}.gc-b::before{background:var(--blue);}.gc-gr::before{background:var(--green);}.gc-r::before{background:var(--red);}.gc-v::before{background:var(--vox);}
+.gap-tag{font-family:var(--mono);font-size:7.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:3px 8px;border-radius:2px;display:inline-block;margin-bottom:11px;}
+.tg-t{background:rgba(0,212,208,.08);color:var(--teal);border:1px solid rgba(0,212,208,.18);}
+.tg-g{background:rgba(212,175,55,.08);color:var(--gold);border:1px solid rgba(212,175,55,.18);}
+.tg-b{background:rgba(46,111,255,.08);color:var(--blue);border:1px solid rgba(46,111,255,.18);}
+.tg-gr{background:rgba(0,214,143,.08);color:var(--green);border:1px solid rgba(0,214,143,.18);}
+.tg-r{background:rgba(255,59,92,.08);color:var(--red);border:1px solid rgba(255,59,92,.18);}
+.tg-v{background:rgba(167,139,250,.08);color:var(--vox);border:1px solid rgba(167,139,250,.18);}
+.gap-title{font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:.4px;color:var(--text3);margin-bottom:8px;}
+.gap-masi{font-family:var(--mono);font-size:9.5px;color:var(--text);margin-bottom:8px;padding:7px 10px;background:rgba(255,255,255,.025);border-radius:3px;line-height:1.65;}
+.gap-body{font-size:12.5px;color:var(--text2);line-height:1.65;}
 
-/* AUDITSCORE */
-.as-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:36px;}@media(max-width:800px){.as-grid{grid-template-columns:1fr;}}
-.as-card{background:rgba(255,255,255,.03);border:1px solid var(--dim);border-radius:12px;padding:24px 22px;}.as-card-title{font-family:var(--display);font-size:22px;color:var(--text-bright);letter-spacing:.5px;margin-bottom:8px;}.as-card-body{font-size:13px;color:var(--text);line-height:1.65;}
-.xp-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--dim);}.xp-row:last-child{border-bottom:none;}.xp-action{font-size:12px;color:var(--text);}.xp-val{font-family:var(--display);font-size:18px;font-weight:700;}.xp-pos{color:var(--gold);}.xp-neg{color:var(--red);}.xp-mult{color:var(--green);}
-.tier-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--dim);border-radius:8px;overflow:hidden;margin-top:24px;}.tier-cell{background:var(--bg);padding:14px 12px;}.tier-cell-label{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}.tier-cell-body{font-size:11px;color:var(--text);line-height:1.5;}
-@media(max-width:700px){.tier-strip{grid-template-columns:1fr 1fr;}}
+/* LEVERAGE */
+.leverage-wrap{margin-top:36px;background:var(--bg2);border:1px solid rgba(212,175,55,.15);border-radius:10px;overflow:hidden;}
+.lev-hdr{padding:20px 26px 16px;border-bottom:1px solid rgba(212,175,55,.1);}
+.lev-label{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.lev-hdr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px;}
+.lev-title{font-family:var(--display);font-size:22px;font-weight:700;letter-spacing:.5px;color:var(--text3);}
+.lev-desc{font-size:13px;color:var(--text);line-height:1.6;max-width:420px;}
+.lev-body{display:grid;grid-template-columns:1fr 1fr;background:var(--dim);}
+@media(min-width:900px){.lev-body{grid-template-columns:repeat(3,1fr);}}
+.lev-item{background:var(--bg2);padding:16px 18px;border-right:1px solid rgba(212,175,55,.07);border-bottom:1px solid rgba(212,175,55,.07);}
+.lev-num{font-family:var(--display);font-size:32px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:2px;}
+.lev-lbl{font-family:var(--mono);font-size:8.5px;font-weight:600;letter-spacing:.08em;color:rgba(212,175,55,.55);margin-bottom:5px;}
+.lev-desc-t{font-size:11.5px;color:var(--text);line-height:1.55;}
+.lev-foot{padding:14px 22px;border-top:1px solid rgba(212,175,55,.1);display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.lev-foot-t{font-size:12.5px;color:var(--text);flex:1;}
+.lev-foot-t strong{color:var(--gold);}
 
-.cta-section{padding:100px 24px;text-align:center;}.cta-inner{max-width:640px;margin:0 auto;}.cta-title{font-family:var(--display);font-size:clamp(40px,7vw,80px);color:var(--text-bright);line-height:.95;margin-bottom:20px;}.cta-title span{color:var(--teal);}.cta-body{font-size:17px;line-height:1.7;color:var(--text);margin-bottom:36px;}.cta-note{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.2);margin-top:20px;letter-spacing:.5px;}
+/* SCORES */
+.scores-grid{display:grid;grid-template-columns:1fr;gap:20px;margin-top:48px;}
+@media(min-width:800px){.scores-grid{grid-template-columns:repeat(3,1fr);}}
+.sc-card{border-radius:10px;padding:30px 26px;border:1px solid;transition:all .2s;}
+.sc-card:hover{transform:translateY(-4px);}
+.sc-ride{background:rgba(255,107,53,.04);border-color:rgba(255,107,53,.18);}
+.sc-ride:hover{box-shadow:0 14px 44px rgba(255,107,53,.09);}
+.sc-splash{background:rgba(30,158,212,.04);border-color:rgba(30,158,212,.18);}
+.sc-splash:hover{box-shadow:0 14px 44px rgba(30,158,212,.09);}
+.sc-play{background:rgba(31,184,122,.04);border-color:rgba(31,184,122,.18);}
+.sc-play:hover{box-shadow:0 14px 44px rgba(31,184,122,.09);}
+.sc-name{font-family:var(--display);font-size:52px;font-weight:800;line-height:1;margin-bottom:3px;}
+.sc-ride .sc-name{color:#FF6B35;}.sc-splash .sc-name{color:#1e9ed4;}.sc-play .sc-name{color:#1fb87a;}
+.sc-sub{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px;}
+.sc-ride .sc-sub{color:rgba(255,107,53,.55);}.sc-splash .sc-sub{color:rgba(30,158,212,.55);}.sc-play .sc-sub{color:rgba(31,184,122,.55);}
+.sc-desc{font-size:13px;color:var(--text);line-height:1.65;margin-bottom:14px;}
+.sc-pillars{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;}
+.sc-pill{font-family:var(--mono);font-size:9.5px;color:rgba(255,255,255,.35);padding:4px 9px;background:rgba(255,255,255,.025);border-radius:3px;display:flex;align-items:center;}
+.sc-meta{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.18);letter-spacing:.1em;}
+.sc-link{font-family:var(--mono);font-size:8.5px;text-decoration:none;padding:3px 9px;border-radius:3px;transition:all .2s;}
+.sc-ride .sc-link{color:#FF6B35;border:1px solid rgba(255,107,53,.25);}.sc-ride .sc-link:hover{background:rgba(255,107,53,.1);}
+.sc-splash .sc-link{color:#1e9ed4;border:1px solid rgba(30,158,212,.25);}.sc-splash .sc-link:hover{background:rgba(30,158,212,.1);}
+.sc-play .sc-link{color:#1fb87a;border:1px solid rgba(31,184,122,.25);}.sc-play .sc-link:hover{background:rgba(31,184,122,.1);}
 
-.site-footer{border-top:1px solid var(--dim);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}.sf-brand{font-family:var(--display);font-size:20px;color:var(--text);letter-spacing:1px;}.sf-brand span{color:var(--teal);}.sf-links{display:flex;gap:20px;flex-wrap:wrap;}.sf-links a{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.3);text-decoration:none;letter-spacing:1px;transition:color .15s;}.sf-links a:hover{color:var(--teal);}.sf-copy{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.15);}
+/* MODULES */
+.modules-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:48px;}
+@media(min-width:700px){.modules-grid{grid-template-columns:1fr 1fr;}}
+@media(min-width:1050px){.modules-grid{grid-template-columns:1fr 1fr 1fr;}}
+.mod-card{background:var(--bg2);border:1px solid var(--dim);border-radius:8px;padding:22px 20px;position:relative;overflow:hidden;transition:all .2s;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;}
+.mod-card:hover{border-color:rgba(255,255,255,.1);transform:translateY(-2px);box-shadow:0 10px 34px rgba(0,0,0,.4);}
+.mod-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .2s;}
+.mod-card:hover::after{opacity:1;}
+.mm-teal::after{background:var(--teal);}
+.mm-ops::after{background:var(--ops);}
+.mm-maint::after{background:var(--maint);}
+.mod-code{font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;}
+.mm-teal .mod-code{color:var(--teal);}
+.mm-ops .mod-code{color:var(--ops);}
+.mm-maint .mod-code{color:var(--maint);}
+.mod-name{font-family:var(--display);font-size:24px;font-weight:700;letter-spacing:.4px;color:var(--text3);}
+.mod-desc{font-size:12.5px;color:var(--text);line-height:1.6;}
+.mod-feats{display:flex;flex-direction:column;gap:3.5px;}
+.mod-feat{font-size:11px;color:rgba(255,255,255,.3);padding:4px 8px;background:rgba(255,255,255,.02);border-radius:3px;display:flex;align-items:flex-start;gap:5px;line-height:1.4;}
+.mod-feat::before{content:'·';flex-shrink:0;}
+.mm-teal .mod-feat::before{color:var(--teal);}
+.mm-ops .mod-feat::before{color:var(--ops);}
+.mm-maint .mod-feat::before{color:var(--maint);}
+.mod-link{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.08em;padding:5px 10px;border-radius:3px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;margin-top:4px;transition:all .2s;align-self:flex-start;}
+.mm-teal .mod-link{color:var(--teal);background:rgba(0,212,208,.06);border:1px solid rgba(0,212,208,.18);}
+.mm-ops .mod-link{color:var(--ops);background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.18);}
+.mm-maint .mod-link{color:var(--maint);background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.18);}
+.live-panel{background:var(--bg3);border:1px solid var(--dim);border-radius:5px;overflow:hidden;margin-top:4px;}
+.lp-tabs{display:flex;background:rgba(0,0,0,.3);}
+.lp-tab{flex:1;padding:7px 4px;font-family:var(--mono);font-size:7.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-align:center;cursor:pointer;color:rgba(255,255,255,.2);border-bottom:1px solid var(--dim);transition:all .15s;}
+.lp-av{color:var(--vox)!important;border-bottom-color:var(--vox)!important;background:rgba(167,139,250,.04)!important;}
+.lp-al{color:var(--lens)!important;border-bottom-color:var(--lens)!important;background:rgba(0,153,255,.04)!important;}
+.lp-content{padding:10px;}
+.lp-row{display:flex;justify-content:space-between;align-items:center;padding:3.5px 0;border-bottom:1px solid rgba(255,255,255,.025);}
+.lp-row:last-child{border-bottom:none;}
+.lp-lbl{font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,.28);}
+.lp-val{font-family:var(--mono);font-size:8px;font-weight:500;}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}@keyframes ringDraw{from{stroke-dashoffset:440;}to{stroke-dashoffset:80;}}.ring-anim{animation:ringDraw 1.8s 1s ease forwards;}.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease;}.reveal.visible{opacity:1;transform:translateY(0);}
+/* DAL */
+.dal-grid{display:grid;grid-template-columns:1fr;gap:1px;margin-top:48px;background:var(--dim);}
+@media(min-width:700px){.dal-grid{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:1000px){.dal-grid{grid-template-columns:repeat(4,1fr);}}
+.dal-card{background:var(--bg);padding:26px 20px;transition:background .2s;}
+.dal-card:hover{background:var(--bg2);}
+.dal-ops{border-top:3px solid var(--ops);}.dal-lens{border-top:3px solid var(--lens);}.dal-vox{border-top:3px solid var(--vox);}.dal-agg{border-top:3px solid var(--gold);}
+.dal-badge{font-family:var(--mono);font-size:7.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:3px 8px;border-radius:2px;display:inline-flex;align-items:center;gap:5px;margin-bottom:10px;}
+.dal-ops .dal-badge{background:rgba(0,255,136,.07);color:var(--ops);border:1px solid rgba(0,255,136,.18);}
+.dal-lens .dal-badge{background:rgba(0,153,255,.07);color:var(--lens);border:1px solid rgba(0,153,255,.18);}
+.dal-vox .dal-badge{background:rgba(167,139,250,.07);color:var(--vox);border:1px solid rgba(167,139,250,.18);}
+.dal-agg .dal-badge{background:rgba(212,175,55,.07);color:var(--gold);border:1px solid rgba(212,175,55,.18);}
+.dal-pulse{width:5px;height:5px;border-radius:50%;animation:pulse 1.6s ease-in-out infinite;}
+.dal-ops .dal-pulse{background:var(--ops);}.dal-lens .dal-pulse{background:var(--lens);}.dal-vox .dal-pulse{background:var(--vox);}.dal-agg .dal-pulse{background:var(--gold);}
+.dal-icon{font-size:24px;margin-bottom:8px;display:block;}
+.dal-name{font-family:var(--display);font-size:28px;font-weight:700;letter-spacing:.5px;margin-bottom:6px;}
+.dal-ops .dal-name{color:var(--ops);}.dal-lens .dal-name{color:var(--lens);}.dal-vox .dal-name{color:var(--vox);}.dal-agg .dal-name{color:var(--gold);}
+.dal-desc{font-size:12px;color:var(--text);line-height:1.6;margin-bottom:10px;}
+.dal-feats{list-style:none;margin-bottom:12px;}
+.dal-feats li{font-size:10px;color:rgba(255,255,255,.3);padding:3px 0;border-bottom:1px solid var(--dim);display:flex;gap:6px;}
+.dal-feats li:last-child{border-bottom:none;}
+.dal-feats li::before{content:'·';flex-shrink:0;}
+.dal-ops .dal-feats li::before{color:var(--ops);}.dal-lens .dal-feats li::before{color:var(--lens);}.dal-vox .dal-feats li::before{color:var(--vox);}.dal-agg .dal-feats li::before{color:var(--gold);}
+.dal-link{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.08em;padding:6px 12px;border-radius:3px;text-decoration:none;display:inline-block;transition:all .2s;}
+.dal-ops .dal-link{background:rgba(0,255,136,.05);color:var(--ops);border:1px solid rgba(0,255,136,.14);}
+.dal-lens .dal-link{background:rgba(0,153,255,.05);color:var(--lens);border:1px solid rgba(0,153,255,.14);}
+.dal-vox .dal-link{background:rgba(167,139,250,.05);color:var(--vox);border:1px solid rgba(167,139,250,.14);}
+.dal-agg .dal-link{background:rgba(212,175,55,.05);color:var(--gold);border:1px solid rgba(212,175,55,.14);}
+.div-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;}
+.div-card{background:var(--bg2);border:1px solid var(--dim);border-radius:6px;padding:16px;}
+.div-hd{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;margin-bottom:7px;}
+.div-ok .div-hd{color:var(--green);}.div-warn .div-hd{color:var(--amber);}
+.div-body{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.28);line-height:1.75;}
+.tri-bar{margin-top:22px;padding:15px 20px;background:rgba(255,255,255,.015);border:1px solid var(--dim);border-radius:6px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:center;font-family:var(--mono);font-size:10.5px;}
+.ti{padding:5px 13px;border-radius:3px;font-weight:600;letter-spacing:.07em;}
+.ti-o{background:rgba(0,255,136,.07);color:var(--ops);border:1px solid rgba(0,255,136,.18);}
+.ti-l{background:rgba(0,153,255,.07);color:var(--lens);border:1px solid rgba(0,153,255,.18);}
+.ti-v{background:rgba(167,139,250,.07);color:var(--vox);border:1px solid rgba(167,139,250,.18);}
+.ti-a{background:rgba(212,175,55,.07);color:var(--gold);border:1px solid rgba(212,175,55,.18);}
+.ti-arr{color:rgba(255,255,255,.15);}
+.ti-out{background:rgba(212,175,55,.09);color:var(--gold);border:1px solid rgba(212,175,55,.25);padding:7px 17px;font-family:var(--display);font-size:17px;font-weight:700;letter-spacing:1px;}
 
-@media(max-width:700px){.stats-inner{grid-template-columns:repeat(4,1fr)}.hero-cta{flex-direction:column;align-items:center}.triad{grid-template-columns:1fr}.dal-grid{grid-template-columns:1fr}.site-footer{flex-direction:column;text-align:center}}
+/* PILOT */
+.pilot-sec{padding:100px 64px;text-align:center;position:relative;overflow:hidden;}
+.pilot-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 65% at 50% 50%,rgba(212,175,55,.045) 0%,transparent 62%);}
+.pilot-inner{position:relative;z-index:1;max-width:720px;margin:0 auto;}
+.pilot-ey{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;justify-content:center;gap:14px;}
+.pilot-ey::before,.pilot-ey::after{content:'';width:32px;height:1px;background:rgba(212,175,55,.35);}
+.pilot-title{font-family:var(--display);font-size:clamp(48px,6vw,76px);font-weight:800;letter-spacing:.5px;color:var(--text3);line-height:.92;margin-bottom:18px;}
+.pilot-title .g{color:var(--gold);}
+.pilot-body{font-size:15.5px;line-height:1.8;color:var(--text);margin-bottom:12px;}
+.pilot-detail{font-family:var(--mono);font-size:10.5px;color:rgba(255,255,255,.22);line-height:1.9;margin-bottom:40px;letter-spacing:.03em;}
+.pilot-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.pilot-mods{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+.pilot-mod{font-family:var(--mono);font-size:8.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:4px 11px;border-radius:2px;color:rgba(255,255,255,.22);border:1px solid var(--dim);}
+
+/* FOOTER */
+.op-foot{background:var(--bg2);border-top:1px solid var(--dim);padding:28px 64px;}
+.of-inner{max-width:1360px;margin:0 auto;}
+.of-label{font-family:var(--mono);font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.18);margin-bottom:12px;}
+.of-links{display:flex;gap:8px;flex-wrap:wrap;}
+.of-link{font-family:var(--mono);font-size:8.5px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;padding:5px 11px;border-radius:3px;text-decoration:none;color:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.06);transition:all .2s;}
+.of-link:hover{color:var(--teal);border-color:rgba(0,212,208,.2);}
+.of-ops{color:rgba(0,255,136,.35)!important;border-color:rgba(0,255,136,.1)!important;}
+.of-ops:hover{color:var(--ops)!important;border-color:rgba(0,255,136,.28)!important;}
+.of-lens{color:rgba(0,153,255,.35)!important;border-color:rgba(0,153,255,.1)!important;}
+.of-lens:hover{color:var(--lens)!important;border-color:rgba(0,153,255,.28)!important;}
+.of-vox{color:rgba(167,139,250,.35)!important;border-color:rgba(167,139,250,.1)!important;}
+.of-vox:hover{color:var(--vox)!important;border-color:rgba(167,139,250,.28)!important;}
+.of-maint{color:rgba(249,115,22,.35)!important;border-color:rgba(249,115,22,.1)!important;}
+.of-maint:hover{color:var(--maint)!important;border-color:rgba(249,115,22,.28)!important;}
+footer{border-top:1px solid var(--dim);padding:22px 64px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.f-brand{font-family:var(--display);font-size:17px;font-weight:700;letter-spacing:1px;color:var(--text);}
+.f-brand span{color:var(--teal);}
+.f-copy{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.1);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes ringDraw{from{stroke-dashoffset:402;}to{stroke-dashoffset:76;}}
+.ring-anim{animation:ringDraw 2.2s 1.4s ease forwards;}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .hero{padding:90px 28px 60px;}
+  .hero-inner{grid-template-columns:1fr;}
+  .score-widget{max-width:440px;}
+  .sec{padding:60px 28px;}
+  .pilot-sec{padding:72px 28px;}
+  .op-foot,.insurer-banner,footer{padding-left:20px;padding-right:20px;}
+  .ib-nav .ib-link:not(.ib-cta){display:none;}
+}
+@media(max-width:640px){
+  .gap-grid,.scores-grid,.div-grid{grid-template-columns:1fr;}
+  .stats-inner{grid-template-columns:repeat(4,1fr);}
+  .lev-body{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
+<div class="insurer-banner">
+  <div class="ib-left">
+    <div class="ib-pulse"></div>
+    <span class="ib-label">Live AS 360 Demo</span>
+    <span class="ib-sep">·</span>
+    <span class="ib-name">Prepared for McGowan Allied Specialty Insurance · IAAPA-Endorsed Carrier</span>
+  </div>
+  <div class="ib-nav">
+    <a href="#gap" class="ib-link">Book Gap</a>
+    <a href="#scores" class="ib-link">Scores</a>
+    <a href="#modules" class="ib-link">Modules</a>
+    <a href="#auditscore" class="ib-link" style="color:var(--gold);">AuditScore</a>
+    <a href="#amend" class="ib-link">Amendment</a>
+    <a href="#dal" class="ib-link">Data Layers</a>
+    <a href="#pilot" class="ib-cta">Propose a Pilot →</a>
+  </div>
+</div>
 
-<section class="hero">
-  <div class="hero-content">
-    <div class="hero-eyebrow">AMUSEMENT STANDARDS · AS 360 PLATFORM</div>
-    <div class="hero-title">YOUR PARK'S<br><span>OPERATING SYSTEM.</span></div>
-    <div class="hero-sub">
-      Manager · Maintenance Manager · Operator Intelligence · Audits · AuditScore ·
-      <a href="https://amusementstandards.com/as360/ops-scan.html" style="color:var(--ops)">OpsScan (3-Tier)</a> ·
-      <a href="https://amusementstandards.com/as360/lens-iq.html" style="color:var(--lens)">LensIQ</a> ·
-      <a href="https://amusementstandards.com/as360/voxintel.html" style="color:var(--vox)">VoxIntel Radio AI</a> ·
-      Guest Intelligence
+<section class="hero" id="top">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Amusement Standards · AS 360 · Risk Intelligence Platform · Asbury Park, NJ</div>
+      <h1 class="hero-title">LOSS CONTROL<br><span class="t">INFRASTRUCTURE</span><br>FOR THE<br><span class="g">ATTRACTIONS INDUSTRY.</span></h1>
+      <div class="hero-sub">RIDE Score™ · SPLASH Score™ · PLAY Score™ · 37 Data Streams · 4 Independent Pillars<br>Manager Module · OpsScan (3-Tier) · LensIQ · VoxIntel · Maintenance Manager</div>
+      <p class="hero-desc">AS 360 is continuous operational risk intelligence built specifically for amusement parks, water parks, and FECs. It replaces point-in-time loss control surveys with a live, multi-source composite score — giving specialty lines underwriters the ongoing facility signal that loss history alone cannot provide. Every data layer is designed to deploy on top of what parks already run — zero adoption friction at entry.</p>
+      <div class="hero-ctas">
+        <a href="#pilot" class="btn-pilot">Propose a Pilot →</a>
+        <a href="#gap" class="btn-outline">What This Means for Your Book</a>
+        <a href="https://amusementstandards.com/as360/methodology.html" class="btn-ghost">Methodology</a>
+      </div>
+      <div class="hero-modules">
+        <a href="https://amusementstandards.com/as360/manager.html" class="btn-ghost btn-g-ops">📊 Manager Module</a>
+        <a href="https://amusementstandards.com/as360/ops-scan.html" class="btn-ghost btn-g-ops">📱 OpsScan</a>
+        <a href="https://amusementstandards.com/as360/lens-iq.html" class="btn-ghost btn-g-lens">👁️ LensIQ</a>
+        <a href="https://amusementstandards.com/as360/voxintel.html" class="btn-ghost btn-g-vox">📡 VoxIntel</a>
+        <a href="https://amusementstandards.com/as360/maintenance-manager.html" class="btn-ghost btn-g-maint">🔧 Maintenance Mgr</a>
+      </div>
     </div>
-    <div class="hero-desc">AS 360 is a full-suite park management platform — built and running. Three core operational modules, three independent data acquisition layers (OpsScan 3-tier, LensIQ, VoxIntel), 19 inspection and audit forms, AuditScore gamified compliance engine, structured incident reporting, real-time guest feedback, and automated data feeds. OpsScan deploys on top of what your park already runs — Kronos, ADP, Mobaro, existing CCTV — with zero new workflows at entry. Every data point feeds a composite RIDE Score your insurers and ownership can act on.</div>
-    <div class="hero-cta">
-      <a href="https://amusementstandards.com/as360/manager.html" class="btn-primary">Open Manager Module</a>
-      <a href="#dal" class="btn-secondary">Data Acquisition</a>
-      <a href="#modules" class="btn-secondary">See the Full Suite</a>
-      <a href="#auditscore" class="btn-secondary btn-gold">🏆 AuditScore</a>
-      <a href="https://amusementstandards.com/as360/methodology.html" class="btn-secondary">Methodology</a>
-      <a href="https://amusementstandards.com/as360/ops-scan.html" class="btn-secondary btn-ops">📱 OpsScan</a>
-      <a href="https://amusementstandards.com/as360/lens-iq.html" class="btn-secondary btn-lens">👁️ LensIQ</a>
-      <a href="https://amusementstandards.com/as360/voxintel.html" class="btn-secondary btn-vox">📡 VoxIntel</a>
-      <a href="https://amusementstandards.com/as360/deliverable-sample.html" class="btn-secondary btn-gold">📄 Sample Deliverable</a>
-      <a href="https://amusementstandards.com/as360/deliverable-insurer.html" class="btn-secondary btn-insurer">🏦 Insurer Dashboard</a>
+
+    <div class="score-widget">
+      <div class="sw-hdr"><div class="sw-dot"></div><span class="sw-hdr-text">Live RIDE Score™ · Manager View</span></div>
+      <div class="sw-card">
+        <div class="sw-tabs">
+          <div class="sw-tab t-score" id="swtScore" onclick="swTab('Score',this,'t-score')">Score</div>
+          <div class="sw-tab" id="swtVox" onclick="swTab('Vox',this,'t-vox')" style="color:rgba(167,139,250,.5);">📡 VoxIntel</div>
+          <div class="sw-tab" id="swtLens" onclick="swTab('Lens',this,'t-lens')" style="color:rgba(0,153,255,.5);">👁️ LensIQ</div>
+        </div>
+        <div class="sw-panel active" id="swpScore">
+          <div class="sw-ring-wrap">
+            <div class="sw-ring">
+              <svg viewBox="0 0 148 148"><circle cx="74" cy="74" r="64" fill="none" stroke="rgba(212,175,55,.08)" stroke-width="9"/><circle cx="74" cy="74" r="64" fill="none" stroke="url(#rg)" stroke-width="9" stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="402" transform="rotate(-90 74 74)" class="ring-anim"/><defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#B8960C"/><stop offset="100%" stop-color="#D4AF37"/></linearGradient></defs></svg>
+              <div class="sw-ring-inner"><div class="sw-num" id="scoreNum">0</div><div class="sw-tier" id="scoreTier">—</div></div>
+            </div>
+          </div>
+          <div class="sw-facility">SAMPLE PARK · RIDE SCORE™</div>
+          <div class="sw-pillars">
+            <div class="sw-p"><div class="sw-p-top"><span class="sw-p-lbl">Readiness</span><span class="sw-p-val" style="color:#2E6FFF" id="pvR">—</span></div><div class="sw-p-bar"><div class="sw-p-fill" style="background:#2E6FFF;width:0%" id="bR"></div></div></div>
+            <div class="sw-p"><div class="sw-p-top"><span class="sw-p-lbl">Integrity</span><span class="sw-p-val" style="color:#00D68F" id="pvI">—</span></div><div class="sw-p-bar"><div class="sw-p-fill" style="background:#00D68F;width:0%" id="bI"></div></div></div>
+            <div class="sw-p"><div class="sw-p-top"><span class="sw-p-lbl">Delivery</span><span class="sw-p-val" style="color:#FF6B35" id="pvD">—</span></div><div class="sw-p-bar"><div class="sw-p-fill" style="background:#FF6B35;width:0%" id="bD"></div></div></div>
+            <div class="sw-p"><div class="sw-p-top"><span class="sw-p-lbl">Environment</span><span class="sw-p-val" style="color:#8B5CF6" id="pvE">—</span></div><div class="sw-p-bar"><div class="sw-p-fill" style="background:#8B5CF6;width:0%" id="bE"></div></div></div>
+          </div>
+          <div class="sw-rows">
+            <div class="sw-row"><span class="sw-rl">Active Streams</span><span class="sw-rv c-g">12 / 15</span></div>
+            <div class="sw-row"><span class="sw-rl">Open CARs</span><span class="sw-rv c-a">3</span></div>
+            <div class="sw-row"><span class="sw-rl">OOS Units</span><span class="sw-rv">1</span></div>
+            <div class="sw-row"><span class="sw-rl">OpsScan Tier</span><span class="sw-rv c-g">Tier 2 · CV + Ingest</span></div>
+          </div>
+          <div class="sw-note">SAMPLE DATA · ILLUSTRATIVE ONLY</div>
+        </div>
+        <div class="sw-panel" id="swpVox">
+          <div style="font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--vox);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><div style="width:5px;height:5px;border-radius:50%;background:var(--vox);animation:pulse 1.5s infinite;"></div>ALL-CHANNEL RADIO INTELLIGENCE</div>
+          <div class="lp-event lp-ev-ok">✓ 09:14 — Superman clear to open · Control confirmed</div>
+          <div class="lp-event lp-ev-warn">⚠ 10:45 — Batman hold · queue backup 85+</div>
+          <div class="lp-event lp-ev-info">📡 11:02 — Guest medical · EMS responding at front gate</div>
+          <div class="lp-event lp-ev-ok" style="margin-bottom:10px;">✓ 11:20 — El Toro reopened · maintenance cleared</div>
+          <div class="sw-rows">
+            <div class="sw-row"><span class="sw-rl">Events Today</span><span class="sw-rv">23</span></div>
+            <div class="sw-row"><span class="sw-rl">Ride-Downs Detected</span><span class="sw-rv c-a">2</span></div>
+            <div class="sw-row"><span class="sw-rl">Unreported Stoppages</span><span class="sw-rv c-r">1 flagged</span></div>
+            <div class="sw-row"><span class="sw-rl">Channel Congestion</span><span class="sw-rv c-g">Low</span></div>
+          </div>
+          <div class="sw-note">LIVE IN MANAGER · MAINTENANCE MANAGER</div>
+        </div>
+        <div class="sw-panel" id="swpLens">
+          <div style="font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--lens);margin-bottom:10px;display:flex;align-items:center;gap:6px;"><div style="width:5px;height:5px;border-radius:50%;background:var(--lens);animation:pulse 1.5s infinite;"></div>CV THROUGHPUT · NOLA + SAFARI AI + SENSOURCE</div>
+          <div class="sw-rows">
+            <div class="sw-row"><span class="sw-rl">Superman — TPH</span><span class="sw-rv c-g">824 / hr</span></div>
+            <div class="sw-row"><span class="sw-rl">El Toro — TPH</span><span class="sw-rv c-a">612 / hr ↓ anomaly</span></div>
+            <div class="sw-row"><span class="sw-rl">Kingda Ka — TPH</span><span class="sw-rv c-g">1,020 / hr</span></div>
+            <div class="sw-row"><span class="sw-rl">Batman — TPH</span><span class="sw-rv c-r">0 · HOLD</span></div>
+            <div class="sw-row"><span class="sw-rl">All Positions Staffed</span><span class="sw-rv c-g">Yes</span></div>
+            <div class="sw-row"><span class="sw-rl">Anomalies Flagged</span><span class="sw-rv c-a">1 (El Toro)</span></div>
+          </div>
+          <div class="sw-note">OPERATOR-INDEPENDENT · 98%+ CV ACCURACY</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <div class="stats-bar reveal">
   <div class="stats-inner">
-    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Core Modules</div></div>
-    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Data Acq. Layers</div></div>
-    <div class="stat-item"><div class="stat-num">19</div><div class="stat-label">Inspections</div></div>
-    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">OpsScan Tiers</div></div>
-    <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">New Workflows<br><span style="font-size:7px;opacity:.5">at Tier 1 entry</span></div></div>
-    <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Auto-Feeds</div></div>
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Score Indices</div></div>
     <div class="stat-item"><div class="stat-num">37</div><div class="stat-label">Data Streams</div></div>
+    <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Acq. Layers</div></div>
+    <div class="stat-item"><div class="stat-num">19</div><div class="stat-label">Audit Forms</div></div>
+    <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">New Workflows<br><span style="font-size:7px;opacity:.4">at Tier 1 entry</span></div></div>
+    <div class="stat-item"><div class="stat-num">98%+</div><div class="stat-label">CV Accuracy</div></div>
+    <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">OpsScan Tiers</div></div>
     <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Composite Score</div></div>
   </div>
 </div>
 
-<!-- CORE MODULES -->
-<section class="sec sec-dark" id="core">
+<section class="sec sec-dark" id="gap">
   <div class="sec-inner">
-    <div class="sec-eyebrow reveal">THE THREE CORE MODULES</div>
-    <div class="sec-title reveal">Run the park. <span>Not paperwork.</span></div>
-    <div class="sec-body reveal">Operations Manager is your command center. Maintenance Manager is your credentialed inspection layer. OpsScan is the field intelligence that feeds both — from passive ingestion of existing systems all the way to full camera + QR + voice. VoxIntel and LensIQ stream live into both manager modules.</div>
-    <div class="triad reveal">
-      <div class="triad-card tc-mgr">
-        <div class="tc-icon">👔</div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><div class="tc-code">MGR</div><a href="https://amusementstandards.com/as360/manager.html" class="tc-link" style="font-size:10px;padding:4px 12px;border:1px solid rgba(0,212,208,.25);border-radius:4px;background:rgba(0,212,208,.06);">Open →</a></div>
-        <div class="tc-name">Manager Module</div>
-        <div class="tc-desc">Operations Manager command center. VoxIntel, LensIQ, and OpsScan (all tiers) feed live — every field event surfaces here without an intermediary.</div>
-        <div class="tc-features">
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Dashboard · RIDE Score · OOS · Open CARs · Rotations</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>Live Ride Status — open, hold, down · operator assignments</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>VoxIntel — radio intelligence, ride-down detection, EAP</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>LensIQ — CV-derived TPH, no operator input</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>OpsScan multi-source view — CV, Kronos, QR in one panel</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--teal)"></span>19 inspection forms · CAR pipeline · Escalation matrix</div>
-        </div>
-        <div style="margin-top:auto;padding-top:12px;border-top:1px solid var(--dim);display:flex;flex-direction:column;gap:4px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:var(--mono);font-size:8px;color:rgba(167,139,250,.6);">📡 09:14 Superman clear</span><span style="font-family:var(--mono);font-size:8px;color:var(--green);font-weight:700;">OPEN</span></div>
-          <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:var(--mono);font-size:8px;color:rgba(255,184,0,.6);">📹 10:31 Pos C 55min CV alert</span><span style="font-family:var(--mono);font-size:8px;color:var(--amber);font-weight:700;">ALERT</span></div>
-          <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-family:var(--mono);font-size:8px;color:rgba(167,139,250,.6);">📡 11:02 Medical · front gate</span><span style="font-family:var(--mono);font-size:8px;color:var(--vox);font-weight:700;">EMS</span></div>
+    <div class="sec-ey reveal">For McGowan Allied Specialty Insurance</div>
+    <h2 class="sec-title reveal">What This Means<br>For <span class="g">Your Book.</span></h2>
+    <p class="sec-body reveal">AS 360 maps directly to the loss control gaps that exist across the current attractions insurance market. Each category below represents a risk area where existing underwriting relies on self-reported data, periodic audits, or no signal at all — and where AS 360 provides a continuous, independently-derived measurement. Critically: every layer deploys on top of what parks already run. The pilot requires zero operator adoption.</p>
+    <div class="gap-grid reveal">
+      <div class="gap-card gc-t"><span class="gap-tag tg-t">Equipment Breakdown</span><div class="gap-title">Mechanical Integrity</div><div class="gap-masi"><b>Current signal:</b> Loss history only. No pre-loss mechanical compliance data in the underwriting file at any stage of the policy lifecycle.</div><div class="gap-body">AS 360 Integrity pillar scores maintenance log compliance, NDT status, service bulletin adherence, and CAR closure rates — continuously, not at renewal.</div></div>
+      <div class="gap-card gc-g"><span class="gap-tag tg-g">GL · Water Parks</span><div class="gap-title">Aquatic Risk Gap</div><div class="gap-masi"><b>Current signal:</b> No aquatics-specific loss control content in the specialty market. Generic GL applied to high-severity water park claims.</div><div class="gap-body">SPLASH Score is the only standalone aquatic risk index. 12 streams, 6 pillars — including a dedicated Lifeguard pillar, the leading variable in aquatic fatalities.</div></div>
+      <div class="gap-card gc-b"><span class="gap-tag tg-b">Operator Compliance</span><div class="gap-title">Behavioral Drift</div><div class="gap-masi"><b>Current signal:</b> Periodic audit snapshots. No compliance data between audit dates. Compliance theater is indistinguishable from genuine compliance.</div><div class="gap-body">OpsScan deploys in 3 tiers. At Tier 1, it ingests shift logs the park already produces — Kronos, ADP, Mobaro — and scores from that data alone, with zero adoption friction. At Tier 2, CV on existing CCTV passively tracks operator presence and rotation timing. At Tier 3, QR behavioral timestamps + voice reports + camera validation create an independently-verified signal that can't be gamed simultaneously. AI anomaly detection flags speed, zero-variance, and clustering patterns at every tier.</div></div>
+      <div class="gap-card gc-gr"><span class="gap-tag tg-gr">GL · FECs</span><div class="gap-title">FEC / PLAY Score Gap</div><div class="gap-masi"><b>Current signal:</b> FECs treated with the same framework as traditional parks despite a different risk profile — youth patron exposure, inflatables, trampolines, laser tag, high throughput.</div><div class="gap-body">PLAY Score is the only FEC-specific risk index. Includes a standalone Youth pillar — the only quantified minor patron risk data available to any carrier in this market.</div></div>
+      <div class="gap-card gc-r"><span class="gap-tag tg-r">Operational Tempo</span><div class="gap-title">Throughput Pressure</div><div class="gap-masi"><b>Current signal:</b> No operational loading data in any underwriting file. A park running at 120% capacity on a 95°F holiday weekend looks identical to a normal day.</div><div class="gap-body">LensIQ ingests CV-derived throughput from existing park cameras — independently. Capacity utilization and OLI feed the Delivery pillar in real time, no operator input.</div></div>
+      <div class="gap-card gc-v"><span class="gap-tag tg-v">Incident Response</span><div class="gap-title">Radio Intelligence</div><div class="gap-masi"><b>Current signal:</b> Incident reports submitted post-event with no independent verification of response timing, communication quality, or unreported events.</div><div class="gap-body">VoxIntel passively monitors all venue radio channels. Ride-down events, response timing, step-on collision detection — an auditable operational timeline no operator can alter.</div></div>
+    </div>
+
+    <div class="leverage-wrap reveal">
+      <div class="lev-hdr">
+        <div class="lev-label">Score Trend = Renewal Intelligence</div>
+        <div class="lev-hdr-top">
+          <div class="lev-title">Score Improvement Is the Premium Leverage Mechanism.</div>
+          <div style="max-width:420px;"><div class="lev-desc">AS 360 creates a compounding incentive structure. Operators who improve their score have a data-backed case for premium differentiation at renewal. Carriers who own that trend data own the relationship — before the broker does.</div></div>
         </div>
       </div>
-      <div class="triad-card tc-ops">
-        <div class="tc-icon">📱</div>
-        <div class="tc-code">OPSSCAN · 3-TIER</div>
-        <div class="tc-name">Operator Intelligence Layer</div>
-        <div class="tc-desc">Deploys in three tiers — from passive ingestion of existing systems to full camera + QR + voice. Every tier feeds the same RIDE Score. Signal quality increases with tier; adoption friction decreases.</div>
-        <div class="tc-features">
-          <div class="tc-feat" style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.15)"><span class="tc-feat-dot" style="background:var(--gold)"></span>Tier 1: Ingest Kronos/ADP/Mobaro — zero new workflows</div>
-          <div class="tc-feat" style="background:rgba(0,153,255,.06);border:1px solid rgba(0,153,255,.15)"><span class="tc-feat-dot" style="background:var(--lens)"></span>Tier 2: CV on existing CCTV — passive position tracking</div>
-          <div class="tc-feat" style="background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15)"><span class="tc-feat-dot" style="background:var(--ops)"></span>Tier 3: QR scan-in + voice-to-incident + camera validation</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--ops)"></span>AI anomaly detection at every tier — speed, variance, clustering</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--ops)"></span>Source divergence = the finding (CV vs. Kronos vs. QR)</div>
+      <div class="lev-body">
+        <div class="lev-item"><div class="lev-num">+14</div><div class="lev-lbl">Score Points</div><div class="lev-desc-t">Documented 90-day improvement becomes the renewal narrative — data-backed, not operator-asserted.</div></div>
+        <div class="lev-item"><div class="lev-num">3×</div><div class="lev-lbl">Indep. Data Sources</div><div class="lev-desc-t">Score improvements backed by CV data, radio intelligence, and behavioral timestamps — not self-reported audits.</div></div>
+        <div class="lev-item"><div class="lev-num">Quarterly</div><div class="lev-lbl">Dossier Delivery</div><div class="lev-desc-t">Structured risk dossiers per facility — formatted for underwriting submission and broker use at renewal.</div></div>
+        <div class="lev-item"><div class="lev-num">WATCH</div><div class="lev-lbl">Flagged Before Claims</div><div class="lev-desc-t">WATCH-tier facilities visible proactively — loss control intervention becomes possible before a claim materializes.</div></div>
+        <div class="lev-item"><div class="lev-num">Tier 1</div><div class="lev-lbl">Zero-Friction Entry</div><div class="lev-desc-t">Pilot starts by ingesting data parks already produce. No hardware, no training, no adoption risk. Score from what exists today.</div></div>
+        <div class="lev-item"><div class="lev-num">FICO</div><div class="lev-lbl">The Analogy</div><div class="lev-desc-t">Carriers already price credit risk by score. AS 360 applies the same logic to operational risk — continuous behavioral signal driving underwriting precision.</div></div>
+      </div>
+      <div class="lev-foot">
+        <div class="lev-foot-t">The operator who raises their RIDE Score from <strong>WATCH → GOOD</strong> has a documented, evidence-based case at renewal. <strong>You own that data.</strong></div>
+        <a href="#pilot" class="btn-pilot" style="font-size:16px;padding:11px 26px;">Propose a Pilot →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="scores">
+  <div class="sec-inner">
+    <div class="sec-ey reveal">The Scoring Output</div>
+    <h2 class="sec-title reveal">Three Indices.<br><span class="t">Every Attraction Type.</span></h2>
+    <p class="sec-body reveal">A coaster gets a RIDE Score. A wave pool gets a SPLASH Score. A play structure gets a PLAY Score. A hybrid attraction scores across multiple indices. A facility with all three active generates a Park Intelligence Composite (PIC). Every score is composited from independent data streams — regardless of which OpsScan tier the facility runs.</p>
+    <div class="scores-grid reveal">
+      <div class="sc-card sc-ride">
+        <div class="sc-name">RIDE</div>
+        <div class="sc-sub">Dry Attractions · Coasters · Flats · Go-Karts</div>
+        <div class="sc-desc">15 data streams across 4 pillars. Incorporates OpsScan behavioral data (any tier), LensIQ CV throughput, VoxIntel radio intelligence, and Maintenance Manager NDT records.</div>
+        <div class="sc-pillars">
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#2E6FFF;flex-shrink:0;display:inline-block;margin-right:6px;"></span>R — Readiness</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#00D68F;flex-shrink:0;display:inline-block;margin-right:6px;"></span>I — Integrity</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#FF6B35;flex-shrink:0;display:inline-block;margin-right:6px;"></span>D — Delivery</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#8B5CF6;flex-shrink:0;display:inline-block;margin-right:6px;"></span>E — Environment</div>
         </div>
-        <div class="tc-links">
-          <a href="https://amusementstandards.com/as360/ops-scan.html" class="tc-link tc-link-ops">View OpsScan →</a>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+          <div class="sc-meta">15 streams · 4 pillars</div>
+          <a href="https://amusementstandards.com/as360-ride-score.html" class="sc-link">RIDE Score →</a>
         </div>
       </div>
-      <div class="triad-card tc-maint">
-        <div class="tc-icon">🔧</div>
-        <div class="tc-code">MAINT</div>
-        <div class="tc-name">Maintenance Manager</div>
-        <div class="tc-desc">Separate credentialed-access layer for NDT data, third-party inspection records, and maintenance logs. VoxIntel and LensIQ stream live here too.</div>
-        <div class="tc-features">
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Annual &amp; pre-season inspection records — NAARSO/AIMS</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>NDT upload center — ASNT Level II/III attested conclusions</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Service bulletin compliance tracking</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Inspector credential registry — cert numbers + expiry</div>
-          <div class="tc-feat"><span class="tc-feat-dot" style="background:var(--orange)"></span>Separate access tier from operator-facing modules</div>
+      <div class="sc-card sc-splash">
+        <div class="sc-name">SPLASH</div>
+        <div class="sc-sub">Aquatic · Water Parks · Wave Pools</div>
+        <div class="sc-desc">The only standalone aquatic risk index. Dedicated Lifeguard pillar — continuous lifeguard zone compliance data unavailable to any carrier anywhere in the current market.</div>
+        <div class="sc-pillars">
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#1e9ed4;flex-shrink:0;display:inline-block;margin-right:6px;"></span>S — Safety</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#00D68F;flex-shrink:0;display:inline-block;margin-right:6px;"></span>P — Protocol</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#2E6FFF;flex-shrink:0;display:inline-block;margin-right:6px;"></span>L — Lifeguard</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#FFB800;flex-shrink:0;display:inline-block;margin-right:6px;"></span>A — Aquatic</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#8B5CF6;flex-shrink:0;display:inline-block;margin-right:6px;"></span>S — Structure</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#FF3B5C;flex-shrink:0;display:inline-block;margin-right:6px;"></span>H — Hazard</div>
         </div>
-        <div class="tc-links">
-          <a href="https://amusementstandards.com/as360/maintenance-manager.html" class="tc-link" style="color:var(--orange)">View Maintenance Manager →</a>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+          <div class="sc-meta">12 streams · 6 pillars</div>
+          <a href="https://amusementstandards.com/as360-splash-score.html" class="sc-link">SPLASH Score →</a>
+        </div>
+      </div>
+      <div class="sc-card sc-play">
+        <div class="sc-name">PLAY</div>
+        <div class="sc-sub">FECs · Entertainment Centers · Youth</div>
+        <div class="sc-desc">The only FEC-specific risk index. Standalone Youth pillar — the only quantified minor patron risk data available to any insurer in this market.</div>
+        <div class="sc-pillars">
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#1fb87a;flex-shrink:0;display:inline-block;margin-right:6px;"></span>P — Performance</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#2E6FFF;flex-shrink:0;display:inline-block;margin-right:6px;"></span>L — Liability</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#FFB800;flex-shrink:0;display:inline-block;margin-right:6px;"></span>A — Attraction</div>
+          <div class="sc-pill"><span style="width:5px;height:5px;border-radius:50%;background:#FF3B5C;flex-shrink:0;display:inline-block;margin-right:6px;"></span>Y — Youth Patron</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+          <div class="sc-meta">10 streams · 4 pillars</div>
+          <a href="https://amusementstandards.com/as360-play-score.html" class="sc-link">PLAY Score →</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DATA ACQUISITION LAYER -->
+<section class="sec sec-dark" id="modules">
+  <div class="sec-inner">
+    <div class="sec-ey reveal">Platform Modules</div>
+    <h2 class="sec-title reveal">Three Modules.<br><span class="t">One Integrated System.</span></h2>
+    <p class="sec-body reveal">The Operations Manager and Maintenance Manager each have direct visibility into VoxIntel and LensIQ — every ride-down event, throughput anomaly, and radio call surfaces directly to the people responsible for acting on it. No intermediary role required.</p>
+    <div class="modules-grid reveal">
+
+      <div class="mod-card mm-teal">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div class="mod-code">MGR</div>
+          <a href="https://amusementstandards.com/as360/manager.html" class="mod-link" style="margin-top:0;">Open →</a>
+        </div>
+        <div class="mod-name">Manager Module</div>
+        <div class="mod-desc">Operations Manager command center. VoxIntel, LensIQ, and OpsScan (all tiers) feed live — every field event surfaces here without an intermediary.</div>
+        <div class="mod-feats">
+          <div class="mod-feat">Dashboard · RIDE Score · OOS · Open CARs · Rotations</div>
+          <div class="mod-feat">Live Ride Status — open, hold, down · operator assignments</div>
+          <div class="mod-feat">VoxIntel — radio intelligence, ride-down detection, EAP</div>
+          <div class="mod-feat">LensIQ — CV-derived TPH, no operator input</div>
+          <div class="mod-feat">OpsScan multi-source view — CV, Kronos, QR in one panel</div>
+          <div class="mod-feat">19 inspection forms · CAR pipeline · Escalation matrix</div>
+        </div>
+        <div style="margin-top:auto;padding-top:10px;border-top:1px solid var(--dim);display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:var(--mono);font-size:8px;color:rgba(167,139,250,.6);">📡 09:14 Superman clear</span>
+            <span style="font-family:var(--mono);font-size:8px;color:var(--green);font-weight:700;">OPEN</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:var(--mono);font-size:8px;color:rgba(255,184,0,.6);">📹 10:31 Pos C 55min CV alert</span>
+            <span style="font-family:var(--mono);font-size:8px;color:var(--amber);font-weight:700;">ALERT</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:var(--mono);font-size:8px;color:rgba(167,139,250,.6);">📡 11:02 Medical · front gate</span>
+            <span style="font-family:var(--mono);font-size:8px;color:var(--vox);font-weight:700;">EMS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mod-card mm-ops">
+        <div class="mod-code">OpsScan · 3-Tier</div>
+        <div class="mod-name">Operator Intelligence Layer</div>
+        <div class="mod-desc">Deploys in three tiers — from passive ingestion of existing systems to full camera + QR + voice. Every tier feeds the same RIDE Score. Signal quality increases with tier; adoption friction decreases.</div>
+        <div class="mod-feats">
+          <div class="mod-feat">Tier 1: Ingest Kronos/ADP/Mobaro — zero new workflows</div>
+          <div class="mod-feat">Tier 2: CV on existing CCTV — passive position tracking</div>
+          <div class="mod-feat">Tier 3: QR scan-in + voice-to-incident + camera validation</div>
+          <div class="mod-feat">AI anomaly detection at every tier — speed, variance, clustering</div>
+          <div class="mod-feat">Source divergence = the finding (CV vs. Kronos vs. QR)</div>
+        </div>
+        <a href="https://amusementstandards.com/as360/ops-scan.html" class="mod-link">View OpsScan →</a>
+      </div>
+
+      <div class="mod-card mm-maint">
+        <div class="mod-code">MAINT</div>
+        <div class="mod-name">Maintenance Manager</div>
+        <div class="mod-desc">Separate credentialed-access layer for NDT data, third-party inspection records, and maintenance logs. VoxIntel and LensIQ stream live here too.</div>
+        <div class="live-panel">
+          <div class="lp-tabs">
+            <div class="lp-tab lp-av" id="xVoxTab" onclick="maintPnl('vox',this)">📡 VoxIntel</div>
+            <div class="lp-tab" id="xLensTab" onclick="maintPnl('lens',this)" style="border-bottom-color:var(--dim);">👁️ LensIQ</div>
+          </div>
+          <div class="lp-content" id="xVox">
+            <div class="lp-row"><span class="lp-lbl">Ride-Downs Today</span><span class="lp-val c-a">2 detected</span></div>
+            <div class="lp-row"><span class="lp-lbl">Unreported Stoppages</span><span class="lp-val c-r">1 flagged</span></div>
+            <div class="lp-row"><span class="lp-lbl">Maintenance Radio Calls</span><span class="lp-val">7</span></div>
+          </div>
+          <div class="lp-content" id="xLens" style="display:none;">
+            <div class="lp-row"><span class="lp-lbl">El Toro vs. Baseline</span><span class="lp-val c-a">−26% · flagged</span></div>
+            <div class="lp-row"><span class="lp-lbl">Batman</span><span class="lp-val c-r">0 TPH · on hold</span></div>
+            <div class="lp-row"><span class="lp-lbl">All Others</span><span class="lp-val c-g">Normal range</span></div>
+          </div>
+        </div>
+        <div class="mod-feats">
+          <div class="mod-feat">Annual & pre-season inspection records — NAARSO/AIMS</div>
+          <div class="mod-feat">NDT upload center — ASNT Level II/III attested conclusions</div>
+          <div class="mod-feat">Service bulletin compliance tracking</div>
+          <div class="mod-feat">Inspector credential registry — cert numbers + expiry</div>
+          <div class="mod-feat">Separate access tier from operator-facing modules</div>
+        </div>
+        <a href="https://amusementstandards.com/as360/maintenance-manager.html" class="mod-link">View Maintenance Manager →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="dal">
   <div class="sec-inner">
-    <div class="sec-eyebrow reveal">DATA ACQUISITION LAYER</div>
-    <div class="sec-title reveal">Three independent signals. <span>One defensible score.</span></div>
-    <div class="sec-body reveal">AS 360 ingests data from three independent sources that cannot be gamed simultaneously — plus a fourth aggregation layer that ingests data from platforms your park already runs. When signals agree, confidence is high. When they diverge, that gap is the finding.</div>
+    <div class="sec-ey reveal">Data Acquisition Layer</div>
+    <h2 class="sec-title reveal">Three Independent Signals.<br><span class="t">One Defensible Score.</span></h2>
+    <p class="sec-body reveal">The critical underwriting property of AS 360 is that its data acquisition layers cannot be gamed simultaneously. When all sources agree, the score is high-confidence. When they diverge — that gap is the finding. OpsScan itself operates across three tiers, each adding signal depth without requiring the previous tier's adoption.</p>
     <div class="dal-grid reveal">
-      <div class="dal-card dal-ops">
-        <div class="dal-badge"><div class="dal-pulse"></div>Layer 2 · Field · 3-Tier</div>
-        <span class="dal-icon">📱</span>
-        <div class="dal-name">OpsScan</div>
-        <div class="dal-desc">Three deployment tiers — from passive ingestion to full camera + QR + voice. Tier 1: ingest shift logs from Kronos, ADP, Mobaro with zero new workflows. Tier 2: CV on existing CCTV for passive position tracking. Tier 3: QR behavioral timestamps + voice reports + camera validation. AI anomaly detection runs at every tier.</div>
-        <ul class="dal-features">
-          <li>Tier 1: Ingest Kronos/ADP/Mobaro — zero adoption friction</li>
-          <li>Tier 2: CV on existing CCTV — passive position + rotation tracking</li>
-          <li>Tier 3: QR scan-in + voice-to-incident + camera validation</li>
-          <li>AI anomaly detection — speed, variance, clustering at every tier</li>
-          <li>Source divergence across tiers = the finding</li>
-          <li>Works on any smartphone over 4G at Tier 3 — no WiFi, no app</li>
-        </ul>
-        <a href="https://amusementstandards.com/as360/ops-scan.html" class="dal-link">View OpsScan →</a>
-      </div>
-      <div class="dal-card dal-lens">
-        <div class="dal-badge"><div class="dal-pulse"></div>Layer 3 · Visual</div>
-        <span class="dal-icon">👁️</span>
-        <div class="dal-name">LensIQ</div>
-        <div class="dal-desc">Computer vision throughput tracking using your existing cameras. No new hardware. Claude Vision counts guests per cycle, calculates TPH, and flags anomalies — operator-independent data.</div>
-        <ul class="dal-features">
-          <li>Integrates with existing CCTV — Verkada, Hikvision, RTSP</li>
-          <li>Guest headcount per cycle — 95%+ accuracy at load platforms</li>
-          <li>Live TPH — independent of operator self-reporting</li>
-          <li>Operator presence check — passive safety audit from camera</li>
-          <li>Throughput anomaly detection — silent slowdowns flagged</li>
-          <li>Zero video storage — structured count data only</li>
-        </ul>
-        <a href="https://amusementstandards.com/as360/lens-iq.html" class="dal-link">View LensIQ →</a>
-      </div>
-      <div class="dal-card dal-vox">
-        <div class="dal-badge"><div class="dal-pulse"></div>Layer 1 · Passive</div>
-        <span class="dal-icon">📡</span>
-        <div class="dal-name">VoxIntel</div>
-        <div class="dal-desc">Passive RF monitoring of all venue radio channels. Real-time transcription, NLP event classification, ride-down detection, step-on collision detection — no operator involvement required.</div>
-        <ul class="dal-features">
-          <li>All-channel radio capture — RTL-SDR hardware</li>
-          <li>Whisper transcription + Claude NLP classification</li>
-          <li>Ride-down detection — feeds OOS board automatically</li>
-          <li>Step-on collision detection — dispatcher safety alert</li>
-          <li>Channel congestion scoring — communication risk metric</li>
-          <li>Feeds MGR command dashboard + OPD live view</li>
-        </ul>
-        <a href="https://amusementstandards.com/as360/voxintel.html" class="dal-link">View VoxIntel →</a>
-      </div>
-      <div class="dal-card dal-agg">
-        <div class="dal-badge"><div class="dal-pulse"></div>Aggregation Layer</div>
-        <span class="dal-icon">🔗</span>
-        <div class="dal-name">3rd Party Ingestion</div>
-        <div class="dal-desc">AS 360 ingests operational data from platforms your park already runs. Keep your existing system. AS 360 sits on top and scores it — turning your existing tools into RIDE Score inputs.</div>
-        <ul class="dal-features">
-          <li>Mobaro connector — inspections, downtime, maintenance</li>
-          <li>CommandCentr connector — ride checks, throughput, incidents</li>
-          <li>24/7 Software connector — work orders, guard tours</li>
-          <li>State inspection databases — public compliance records</li>
-          <li>Ellis EAVS alert feed — aquatic AI events → SPLASH Score</li>
-          <li>Field normalization → 0–100 stream model → Score</li>
-        </ul>
-        <a href="mailto:adam@amusementstandards.com" class="dal-link">Discuss Integration →</a>
+      <div class="dal-card dal-ops"><div class="dal-badge"><div class="dal-pulse"></div>Layer 2 · Field · 3-Tier</div><span class="dal-icon">📱</span><div class="dal-name">OpsScan</div><div class="dal-desc">Three deployment tiers. Tier 1: ingest shift logs the park already produces (Kronos, ADP, Mobaro) — zero adoption. Tier 2: CV on existing CCTV for passive position tracking and rotation timing. Tier 3: QR behavioral timestamps + voice reports + camera validation. AI anomaly detection runs at every tier.</div><ul class="dal-feats"><li>Tier 1: Passive ingestion — no new workflows</li><li>Tier 2: CV on existing CCTV — no operator interaction</li><li>Tier 3: QR + voice + camera — max signal quality</li><li>Source divergence across tiers = the finding</li></ul><a href="https://amusementstandards.com/as360/ops-scan.html" class="dal-link">View OpsScan →</a></div>
+      <div class="dal-card dal-lens"><div class="dal-badge"><div class="dal-pulse"></div>Layer 3 · Visual</div><span class="dal-icon">👁️</span><div class="dal-name">LensIQ</div><div class="dal-desc">Ingests CV-derived throughput from Nola, Safari AI, and SenSource. 98%+ validated accuracy. TPH and capacity utilization with zero operator involvement.</div><ul class="dal-feats"><li>Nola REST API · Safari AI Webhook · SenSource Vea</li><li>98%+ CV accuracy — independently validated</li><li>TPH, capacity utilization, anomaly detection</li><li>Zero operator involvement in data capture</li></ul><a href="https://amusementstandards.com/as360/lens-iq.html" class="dal-link">View LensIQ →</a></div>
+      <div class="dal-card dal-vox"><div class="dal-badge"><div class="dal-pulse"></div>Layer 1 · Passive</div><span class="dal-icon">📡</span><div class="dal-name">VoxIntel</div><div class="dal-desc">Passive RF monitoring of all venue radio channels. Ride-down events, response timing, step-on collision detection — an operational timeline independent of operator documentation.</div><ul class="dal-feats"><li>All-channel passive capture — no operator consent required</li><li>Whisper transcription + Claude NLP classification</li><li>Independent ride-down detection vs. reported OOS</li><li>Response interval timing — auditable after incidents</li></ul><a href="https://amusementstandards.com/as360/voxintel.html" class="dal-link">View VoxIntel →</a></div>
+      <div class="dal-card dal-agg"><div class="dal-badge"><div class="dal-pulse"></div>Aggregation Layer</div><span class="dal-icon">🔗</span><div class="dal-name">3rd Party Ingestion</div><div class="dal-desc">Ingests from Mobaro, CommandCentr, 24/7 Software — platforms parks already run — plus state inspection databases and Ellis EAVS aquatic AI events for SPLASH Score.</div><ul class="dal-feats"><li>Mobaro, CommandCentr, 24/7 Software connectors</li><li>State inspection database ingestion (NJ DCA + others)</li><li>Ellis EAVS aquatic AI events → SPLASH Score</li><li>Normalized → 0–100 stream model → composite score</li></ul><a href="https://amusementstandards.com/ingestion.html" class="dal-link">View Ingestion →</a></div>
+    </div>
+    <div style="margin-top:22px;" class="reveal">
+      <div style="font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.18);margin-bottom:10px;">Signal Triangulation — When Sources Diverge, That Is the Finding</div>
+      <div class="div-grid">
+        <div class="div-card div-ok"><div class="div-hd">✓ ALL SOURCES AGREE — HIGH CONFIDENCE</div><div class="div-body">VoxIntel: operational all day · OpsScan CV: all positions filled · Kronos: shifts match · LensIQ: TPH 820/hr sustained → Score holds · Integrity: 91</div></div>
+        <div class="div-card div-warn"><div class="div-hd">⚠ DIVERGENCE DETECTED — INTEGRITY FLAG</div><div class="div-body">VoxIntel: ride-down call 10:45 · OpsScan CV: zero bodies at station 10:45–13:20 · Kronos: operators still clocked in · No CAR opened → Unreported 2.5hr stoppage · Integrity: −14pts</div></div>
       </div>
     </div>
-    <div class="triangulate-bar reveal">
-      <span class="tb-item tb-ops">OpsScan (3-Tier)</span>
-      <span class="tb-arrow">+</span>
-      <span class="tb-item tb-lens">LensIQ</span>
-      <span class="tb-arrow">+</span>
-      <span class="tb-item tb-vox">VoxIntel</span>
-      <span class="tb-arrow">+</span>
-      <span class="tb-item tb-agg">3rd Party</span>
-      <span class="tb-arrow">→</span>
-      <span class="tb-out">RIDE · SPLASH · PLAY Score</span>
+    <div class="tri-bar reveal">
+      <span class="ti ti-o">OpsScan (3-Tier)</span><span class="ti-arr">+</span><span class="ti ti-l">LensIQ</span><span class="ti-arr">+</span><span class="ti ti-v">VoxIntel</span><span class="ti-arr">+</span><span class="ti ti-a">3rd Party</span><span class="ti-arr">→</span><span class="ti ti-out">RIDE · SPLASH · PLAY Score</span>
     </div>
   </div>
 </section>
 
-<!-- AUDITSCORE -->
+<!-- AUDITSCORE — unchanged from original -->
 <section class="sec sec-dark" id="auditscore">
   <div class="sec-inner">
-    <div class="sec-eyebrow reveal">AUDITSCORE · GAMIFIED COMPLIANCE ENGINE</div>
-    <div class="sec-title reveal">Inspections that <span>drive themselves.</span></div>
-    <div class="sec-body reveal">AuditScore turns your existing pre-open inspection schedule into a continuous behavioral dataset. Operators earn XP for completing audits on time and thoroughly. Supervisors see their team's streaks. Managers see the facility. The data feeds the RIDE Score Readiness pillar — not just a paper record.</div>
-
-    <div class="as-grid reveal">
-      <!-- XP mechanics -->
-      <div class="as-card">
-        <div class="as-card-title">XP + Streak Engine</div>
-        <div class="as-card-body" style="margin-bottom:14px;">Operators build XP and streaks from daily inspection completion. Consecutive shift completions multiply. Missed audits break streaks. Findings that surface CARs earn bonus XP. Gaming patterns cost XP.</div>
-        <div class="xp-row"><span class="xp-action">Complete pre-open audit (all items)</span><span class="xp-val xp-pos">+75</span></div>
-        <div class="xp-row"><span class="xp-action">Pre-admission timing bonus</span><span class="xp-val xp-pos">+50</span></div>
-        <div class="xp-row"><span class="xp-action">7-day completion streak</span><span class="xp-val xp-mult">1.25×</span></div>
-        <div class="xp-row"><span class="xp-action">Finding surfaces a valid CAR</span><span class="xp-val xp-pos">+150</span></div>
-        <div class="xp-row"><span class="xp-action">Missed scheduled audit</span><span class="xp-val xp-neg">−50</span></div>
-        <div class="xp-row"><span class="xp-action">Gaming pattern detected</span><span class="xp-val xp-neg">−100</span></div>
-      </div>
-
-      <!-- Audit Amendment -->
-      <div class="as-card">
-        <div class="as-card-title">Audit Amendment Request</div>
-        <div class="as-card-body" style="margin-bottom:14px;">When an operator enters the wrong answer on a checklist, the original record is sealed — never overwritten. The amendment creates a linked correction with geo-fence verification, device confirmation, and photo evidence. Supervisor approves within 4 hours. Both records remain visible at every access tier. Amendment frequency itself is an Integrity pillar input.</div>
-        <div class="xp-row"><span class="xp-action">Geo-fence verified</span><span class="xp-val" style="color:var(--green);font-size:14px;">✓ Within 50m of ride</span></div>
-        <div class="xp-row"><span class="xp-action">Same device as original audit</span><span class="xp-val" style="color:var(--green);font-size:14px;">✓ Confirmed</span></div>
-        <div class="xp-row"><span class="xp-action">Photo evidence required</span><span class="xp-val" style="color:var(--green);font-size:14px;">✓ Timestamped</span></div>
-        <div class="xp-row"><span class="xp-action">Original record</span><span class="xp-val" style="color:var(--teal);font-size:14px;">🔒 Sealed</span></div>
-        <div class="xp-row"><span class="xp-action">Supervisor approval window</span><span class="xp-val" style="color:var(--amber);font-size:14px;">4 hours</span></div>
-        <div class="xp-row"><span class="xp-action">5+ amendments in 30 days</span><span class="xp-val xp-neg" style="font-size:14px;">⚠ Pattern flag</span></div>
-      </div>
+    <div class="reveal">
+      <div class="sec-ey">AuditScore · Gamified Inspection Engine</div>
+      <h2 class="sec-title">Compliance behavior.<br><span class="t">Measured. Ranked. Scored.</span></h2>
+      <p class="sec-body">AuditScore converts your existing inspection schedule into a continuous behavioral dataset. Operators earn XP for completing audits on time and thoroughly. Shift supervisors see their team. Operations Managers see the facility. Insurers see the aggregate. Every audit feeds the RIDE Score Readiness pillar — not just the paper record.</p>
     </div>
-
-    <!-- Tiered visibility -->
-    <div class="tier-strip reveal">
-      <div class="tier-cell"><div class="tier-cell-label" style="color:var(--ops);">Operator</div><div class="tier-cell-body">Own XP, personal streak, shift rank. Can submit amendment requests.</div></div>
-      <div class="tier-cell"><div class="tier-cell-label" style="color:var(--teal);">Shift Supervisor</div><div class="tier-cell-body">Team completion rates, skip patterns, amendment approval queue.</div></div>
-      <div class="tier-cell"><div class="tier-cell-label" style="color:var(--amber);">Ops Manager</div><div class="tier-cell-body">All staff, full quality scores, anomaly flags, CACR-linked aggregate, amendment history.</div></div>
-      <div class="tier-cell"><div class="tier-cell-label" style="color:var(--gold);">Ownership / Insurer</div><div class="tier-cell-body">Facility AuditScore index, 90-day completion rate, amendment frequency — no operator names.</div></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--dim);margin-top:40px;border-radius:6px;overflow:hidden;" class="reveal">
+      <div style="background:var(--bg2);padding:16px 14px;"><div style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#00FF88;margin-bottom:6px;">Operator</div><div style="font-size:11.5px;color:var(--text);line-height:1.55;">Own score, personal streak, rank within shift only</div></div>
+      <div style="background:var(--bg2);padding:16px 14px;"><div style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;">Shift Supervisor</div><div style="font-size:11.5px;color:var(--text);line-height:1.55;">Team completion rates, skip patterns — no individual item scores</div></div>
+      <div style="background:var(--bg2);padding:16px 14px;"><div style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;">Ops Manager</div><div style="font-size:11.5px;color:var(--text);line-height:1.55;">All staff, full quality scores, anomaly flags, CACR-linked aggregate</div></div>
+      <div style="background:var(--bg2);padding:16px 14px;"><div style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;">Inspection Coord.</div><div style="font-size:11.5px;color:var(--text);line-height:1.55;">Audit completion rates per attraction vs. scheduled</div></div>
+      <div style="background:rgba(212,175,55,.04);border-left:1px solid rgba(212,175,55,.15);padding:16px 14px;"><div style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Insurer</div><div style="font-size:11.5px;color:var(--text);line-height:1.55;">Facility AuditScore index, 90-day completion rate, streak history — no operator names</div></div>
+    </div>
+    <div style="margin-top:24px;padding:18px 22px;background:var(--bg2);border:1px solid rgba(212,175,55,.15);border-radius:8px;" class="reveal">
+      <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">AuditScore Feeds the Score at Every OpsScan Tier</div>
+      <div style="font-size:13px;color:var(--text);line-height:1.7;">At Tier 1, AuditScore data comes from ingested Mobaro/CommandCentr inspection records. At Tier 2, CV confirms whether inspections happened at the ride (body at station during pre-open window). At Tier 3, QR scan-in timestamps validate the exact audit start and completion time. The same AuditScore index works across all tiers — signal depth increases, but the metric is consistent.</div>
     </div>
   </div>
 </section>
 
-<!-- FULL SUITE -->
-<section class="sec" id="modules">
+<!-- AUDIT AMENDMENT REQUEST -->
+<section class="sec" id="amend">
   <div class="sec-inner">
-    <div class="sec-eyebrow reveal">FULL PLATFORM SUITE</div>
-    <div class="sec-title reveal">Every form. Every feed. <span>All built.</span></div>
-    <div class="sec-body reveal">Three core modules, three data acquisition layers (OpsScan 3-tier), 19 inspection forms, four standalone reporting forms, four QR guest feedback touchpoints, two third-party audit tools, AuditScore compliance engine, Audit Amendment system, and four automated data feeds. Nothing is conceptual — every item below is built and functional.</div>
+    <div class="reveal">
+      <div class="sec-ey">Audit Amendment Request · Record Integrity</div>
+      <h2 class="sec-title">Corrections Without<br><span class="t">Compromising the Record.</span></h2>
+      <p class="sec-body">When an operator makes an error on an audit checklist — pressed FAIL instead of PASS, selected the wrong item, entered an incorrect reading — the original record must never be silently overwritten. The Audit Amendment Request creates a linked correction record while preserving the complete original. Insurers see both. The audit trail is immutable.</p>
+    </div>
 
-    <div class="deliverable-banner reveal">
-      <div>
-        <div class="deliverable-banner-label">AS 360 · RIDE Score™ · Insurer Dossier</div>
-        <div class="deliverable-banner-title">What does the output look like?</div>
-        <div class="deliverable-banner-desc">See a sample structured risk dossier — the format delivered to specialty lines carriers and ownership groups.</div>
+    <!-- WHY THIS MATTERS TO MASI -->
+    <div style="margin-top:36px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.15);border-radius:8px;padding:22px 26px;" class="reveal">
+      <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Why This Matters for Loss Control</div>
+      <div style="font-size:13.5px;color:var(--text);line-height:1.75;">In a post-incident review, the question is always: <em>was the inspection actually performed, or was it documented after the fact?</em> Most systems allow records to be quietly edited — making it impossible to distinguish a legitimate correction from a cover-up. AS 360's amendment system creates a forensic-grade audit trail: every original entry is sealed, every correction is geo-verified and timestamped independently, and every approval has a named supervisor with a 4-hour window. If amendments spike — that pattern itself is a finding.</div>
+    </div>
+
+    <!-- TWO-COLUMN: FLOW + LIVE DEMO -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px;align-items:start;">
+
+      <!-- LEFT: HOW IT WORKS -->
+      <div class="reveal">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:18px;">Amendment Flow · 6-Step Chain of Custody</div>
+
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--dim);">
+            <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--teal);width:22px;flex-shrink:0;">01</div>
+            <div>
+              <div style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;">Operator Identifies Error</div>
+              <div style="font-size:12.5px;color:var(--text);line-height:1.6;">Operator realizes a checklist answer was entered incorrectly. Opens amendment form on their phone — same device, same session. Three fields: which item, what was entered, what it should be.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--dim);">
+            <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--teal);width:22px;flex-shrink:0;">02</div>
+            <div>
+              <div style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;">Geo-Fence + Device Verification</div>
+              <div style="font-size:12.5px;color:var(--text);line-height:1.6;">GPS coordinates are captured at submission. The system verifies the operator is within the ride's defined geo-fence. Device fingerprint confirms the same phone used for the original audit. Amendment from a different location or device is flagged automatically.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--dim);">
+            <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--teal);width:22px;flex-shrink:0;">03</div>
+            <div>
+              <div style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;">Photo Evidence Required</div>
+              <div style="font-size:12.5px;color:var(--text);line-height:1.6;">Operator takes a timestamped photo of the item in question — the gauge reading, the restraint position, the inspection point. Photo is embedded in the amendment record with EXIF data preserved.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--dim);">
+            <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--teal);width:22px;flex-shrink:0;">04</div>
+            <div>
+              <div style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;">Original Record Sealed</div>
+              <div style="font-size:12.5px;color:var(--text);line-height:1.6;">The original audit entry is permanently locked. It cannot be edited, overwritten, or deleted — by anyone, at any access tier. The amendment creates a new linked record; both remain visible side by side.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--dim);">
+            <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--teal);width:22px;flex-shrink:0;">05</div>
+            <div>
+              <div style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;">Supervisor Approval · 4-Hour Window</div>
+              <div style="font-size:12.5px;color:var(--text);line-height:1.6;">Amendment routes to the shift supervisor — not the operations manager. This is a clerical correction, not a safety decision. Supervisor has 4 hours to approve or deny. If denied, original stands. One escalation attempt allowed.</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:14px;padding:14px 0;">
+            <div style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--teal);width:22px;flex-shrink:0;">06</div>
+            <div>
+              <div style="font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;">Pattern Detection</div>
+              <div style="font-size:12.5px;color:var(--text);line-height:1.6;">5+ amendment requests in 30 days from a single operator auto-flags a training gap or possible gaming pattern. The amendment frequency itself becomes an Integrity pillar input — not just the corrections.</div>
+            </div>
+          </div>
+        </div>
       </div>
-      <a href="https://amusementstandards.com/as360/deliverable-sample.html" class="deliverable-banner-btn">📄 View Sample →</a>
-    </div>
 
-    <div class="module-group-label reveal"><span class="mgl-text">Manager Module → Inspections Tab</span><span class="mgl-line"></span><span class="mgl-count">19 FORMS</span></div>
-    <div class="module-grid reveal">
-      <a href="https://amusementstandards.com/as360/manager.html?form=CCA" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🧹</div><div class="m-code">CCA</div><div class="m-name">Cleanliness &amp; Condition Audit</div><div class="m-desc">Location-by-location facility condition scoring with photo evidence.</div><div class="m-footer"><span class="m-tag">I · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=HAE" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📏</div><div class="m-code">HAE</div><div class="m-name">Height &amp; Age Enforcement Audit</div><div class="m-desc">Staff compliance, violation counts, height stick verification with ±¼″ variance.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=WQA" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🧪</div><div class="m-code">WQA</div><div class="m-name">Water Quality Analysis</div><div class="m-desc">pH, chlorine, alkalinity, temperature, pump turnover, test strip photo.</div><div class="m-footer"><span class="m-tag">A · H</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=SOA" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📋</div><div class="m-code">SOP</div><div class="m-name">SOP Adherence Observation</div><div class="m-desc">Direct SOP compliance observation with gap documentation and coaching log.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=SAC" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🪧</div><div class="m-code">SGN</div><div class="m-name">Signage &amp; Compliance Audit</div><div class="m-desc">Safety, height, and regulatory signage verification.</div><div class="m-footer"><span class="m-tag">I · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=EAI" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🚪</div><div class="m-code">EAI</div><div class="m-name">Emergency Access Inspection</div><div class="m-desc">All emergency routes checked with CAR generation on blockage.</div><div class="m-footer"><span class="m-tag">R · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=IPL" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏗</div><div class="m-code">INF</div><div class="m-name">Infrastructure &amp; Perimeter Log</div><div class="m-desc">Fencing, barriers, walkways, lighting, drainage condition scoring.</div><div class="m-footer"><span class="m-tag">I · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=OLI" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📊</div><div class="m-code">OLI</div><div class="m-name">Operational Load Index</div><div class="m-desc">Actual vs. design capacity, peak crowd level, park-wide queue averages.</div><div class="m-footer"><span class="m-tag">R · D</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=LGA" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏊</div><div class="m-code">LGD</div><div class="m-name">Lifeguard Zone Audit</div><div class="m-desc">Zone coverage, bottom visibility, rescue equipment, bather load.</div><div class="m-footer"><span class="m-tag">L · S · A</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=FLC" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏎️</div><div class="m-code">FLR</div><div class="m-name">Floor Operations Log</div><div class="m-desc">FEC shift log — incidents, downtime, machine-down, staffing coverage.</div><div class="m-footer"><span class="m-tag">P · A</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=YPS" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🧒</div><div class="m-code">YPL</div><div class="m-name">Youth Patron Shift Log</div><div class="m-desc">Unaccompanied minors, lost children, age challenges, behavioral flags.</div><div class="m-footer"><span class="m-tag">Y</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=YPR" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📊</div><div class="m-code">YPQ</div><div class="m-name">Youth Patron Quarterly Audit</div><div class="m-desc">Supervision ratios, risk zones, lost child drill verification.</div><div class="m-footer"><span class="m-tag">Y</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=GES" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🎂</div><div class="m-code">GEL</div><div class="m-name">Group &amp; Event Supervision Log</div><div class="m-desc">Birthday/group check-in, supervision ratios, wristband assignment.</div><div class="m-footer"><span class="m-tag">Y · L</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=iMSA" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS · DAILY</div><div class="m-icon">🕵️</div><div class="m-code">iMSA</div><div class="m-name">In-House Mystery Service Audit</div><div class="m-desc">Plain-clothes ride observation — every manager, one ride per shift. 15 observations in 60 seconds.</div><div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=SBC" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">📬</div><div class="m-code">SBC</div><div class="m-name">Service Bulletin Compliance</div><div class="m-desc">Manufacturer bulletin tracking — reviewed, pending, overdue, non-compliant counts.</div><div class="m-footer"><span class="m-tag">I · R</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=EAP" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🚨</div><div class="m-code">EAP</div><div class="m-name">Emergency Action Plan Review</div><div class="m-desc">EAP checklist — last drill, next drill scheduled, sections requiring update.</div><div class="m-footer"><span class="m-tag">R · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=HDI" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🏥</div><div class="m-code">HDI</div><div class="m-name">Health Dept. Inspection History</div><div class="m-desc">Full inspection record — agency, outcome, violations, corrective actions.</div><div class="m-footer"><span class="m-tag">I</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=LBL" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">⚖️</div><div class="m-code">LDL</div><div class="m-name">Liability Documentation Log</div><div class="m-desc">Waivers, releases, insurance certificates, legal correspondence, preservation holds.</div><div class="m-footer"><span class="m-tag">L</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/manager.html?form=TTX" class="module-card mc-teal"><div class="m-mgr-badge">MGR → INSPECTIONS</div><div class="m-icon">🗺</div><div class="m-code">TTX</div><div class="m-name">Tabletop Exercise Scenarios</div><div class="m-desc">12 phased discussion-based scenarios — multi-casualty, active threat, child abduction, and more.</div><div class="m-footer"><span class="m-tag">R · E</span><span class="m-arrow">→</span></div></a>
-    </div>
+      <!-- RIGHT: LIVE AMENDMENT DEMO -->
+      <div class="reveal">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:18px;">Amendment Record · Live View</div>
 
-    <div class="module-group-label reveal"><span class="mgl-text">QR Code Guest Feedback</span><span class="mgl-line"></span><span class="mgl-count">4 QR FORMS</span></div>
-    <div class="module-grid reveal">
-      <a href="https://amusementstandards.com/as360/guest-feedback-ride.html" class="module-card mc-gold"><div class="score-badges"><span class="sb sb-ride">RIDE</span></div><div class="m-icon">🎢</div><div class="m-code">QR-RIDE</div><div class="m-name">Ride Exit Feedback</div><div class="m-desc">QR at ride exits — wait time, staff, ride condition, safety perception.</div><div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/guest-feedback-ride.html" class="module-card mc-gold"><div class="score-badges"><span class="sb sb-splash">SPLASH</span></div><div class="m-icon">🏊</div><div class="m-code">QR-SPLASH</div><div class="m-name">Aquatic Zone Feedback</div><div class="m-desc">QR at wave pools, lazy rivers, slide landings. Water quality, lifeguard, safety.</div><div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/guest-feedback-ride.html" class="module-card mc-gold"><div class="score-badges"><span class="sb sb-play">PLAY</span></div><div class="m-icon">🕹️</div><div class="m-code">QR-PLAY</div><div class="m-name">FEC Play Area Feedback</div><div class="m-desc">QR at FEC exits and play zones. Cleanliness, staff, equipment condition.</div><div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/nmr.html" class="module-card mc-red"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">⚠️</div><div class="m-code">QR-NMR</div><div class="m-name">Guest Near-Miss Flag</div><div class="m-desc">QR-accessible near-miss for guests — same triage pipeline as staff.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
-    </div>
+        <!-- AMENDMENT RECORD CARD -->
+        <div style="background:var(--bg2);border:1px solid var(--dim);border-radius:8px;overflow:hidden;">
+          <div style="background:rgba(0,0,0,.3);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--dim);">
+            <div>
+              <div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--teal);">AMENDMENT REQUEST · AMR-2026-0291</div>
+              <div style="font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);margin-top:2px;">Kingda Ka · Pre-Open Audit · Item 3</div>
+            </div>
+            <div style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:2px;background:rgba(255,184,0,.1);color:var(--amber);border:1px solid rgba(255,184,0,.2);">PENDING APPROVAL</div>
+          </div>
 
-    <div class="module-group-label reveal"><span class="mgl-text">Standalone Reporting Forms</span><span class="mgl-line"></span><span class="mgl-count">5 FORMS</span></div>
-    <div class="module-grid reveal">
-      <a href="https://amusementstandards.com/as360/inhouse-gsa.html" class="module-card mc-amber"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">📝</div><div class="m-code">iGSA</div><div class="m-name">In-House GSA</div><div class="m-desc">Rotating management guest services audit for convergence validity.</div><div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/inhouse-safety.html" class="module-card mc-green"><div class="score-badges"><span class="sb sb-ride">RIDE</span></div><div class="m-icon">🏢</div><div class="m-code">IHS</div><div class="m-name">In-House Safety Audit</div><div class="m-desc">Internal inspection against SOPs, pre-opening checklists, equipment standards.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/nmr.html" class="module-card mc-red"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">⚠️</div><div class="m-code">NMR</div><div class="m-name">Near-Miss Report</div><div class="m-desc">Structured triage flag — adjusts R and I scores immediately. Auto-escalates to CA.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/ride-incident-report.html" class="module-card mc-red"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">🚨</div><div class="m-code">IRL</div><div class="m-name">Ride Incident Report</div><div class="m-desc">Full 7-section legal incident record — guest, injury, sequence, response.</div><div class="m-footer"><span class="m-tag">R · I</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/audit-amend.html" class="module-card mc-teal"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">📋</div><div class="m-code">AMR</div><div class="m-name">Audit Amendment Request</div><div class="m-desc">Geo-verified correction form. Original sealed, amendment linked. Supervisor 4hr approval. Pattern detection at 5+ in 30d.</div><div class="m-footer"><span class="m-tag">I</span><span class="m-arrow">→</span></div></a>
-    </div>
+          <!-- OPERATOR + VERIFICATION -->
+          <div style="padding:14px 16px;border-bottom:1px solid var(--dim);">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <div style="font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,.2);letter-spacing:.08em;margin-bottom:4px;">OPERATOR</div>
+                <div style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--text3);">J. Martinez</div>
+                <div style="font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);">ID: OPS-0847 · AM Shift</div>
+              </div>
+              <div>
+                <div style="font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,.2);letter-spacing:.08em;margin-bottom:4px;">SUBMITTED</div>
+                <div style="font-family:var(--display);font-size:16px;font-weight:700;color:var(--text3);">06:48 AM</div>
+                <div style="font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);">7 min after original audit</div>
+              </div>
+            </div>
+          </div>
 
-    <div class="module-group-label reveal"><span class="mgl-text">Third-Party &amp; Independent Audits</span><span class="mgl-line"></span><span class="mgl-count">2 FORMS</span></div>
-    <div class="module-grid reveal">
-      <a href="https://amusementstandards.com/as360/third-party-gsa.html" class="module-card mc-purple"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">🕵️</div><div class="m-code">mGSA</div><div class="m-name">Mystery Shopper GSA</div><div class="m-desc">AS-deployed covert auditor. iGSA divergence is the key finding.</div><div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div></a>
-      <a href="https://amusementstandards.com/as360/third-party-safety.html" class="module-card mc-teal"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span></div><div class="m-icon">🔍</div><div class="m-code">TPS</div><div class="m-name">Third-Party Safety</div><div class="m-desc">AS-conducted ASTM-aligned compliance inspection.</div><div class="m-footer"><span class="m-tag">R · I · E</span><span class="m-arrow">→</span></div></a>
-    </div>
+          <!-- INTEGRITY CHECKS -->
+          <div style="padding:14px 16px;border-bottom:1px solid var(--dim);">
+            <div style="font-family:var(--mono);font-size:7.5px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.12em;margin-bottom:8px;">INTEGRITY VERIFICATION</div>
+            <div style="display:flex;flex-direction:column;gap:5px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;background:rgba(0,214,143,.05);border:1px solid rgba(0,214,143,.12);border-radius:3px;">
+                <span style="font-size:11px;color:var(--text);">Geo-fence verified</span>
+                <span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--green);">✓ Within 50m</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;background:rgba(0,214,143,.05);border:1px solid rgba(0,214,143,.12);border-radius:3px;">
+                <span style="font-size:11px;color:var(--text);">Same device as original audit</span>
+                <span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--green);">✓ Confirmed</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;background:rgba(0,214,143,.05);border:1px solid rgba(0,214,143,.12);border-radius:3px;">
+                <span style="font-size:11px;color:var(--text);">Photo evidence attached</span>
+                <span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--green);">✓ Timestamped</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:5px 10px;background:rgba(0,214,143,.05);border:1px solid rgba(0,214,143,.12);border-radius:3px;">
+                <span style="font-size:11px;color:var(--text);">Amendment frequency (30d)</span>
+                <span style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--green);">1 of 5 max · Normal</span>
+              </div>
+            </div>
+          </div>
 
-    <div class="module-group-label reveal"><span class="mgl-text">Post-Visit Intelligence</span><span class="mgl-line"></span><span class="mgl-count">1 STREAM</span></div>
-    <div class="module-grid reveal">
-      <a href="https://amusementstandards.com/as360/post-visit.html" class="module-card mc-gold"><div class="score-badges"><span class="sb sb-ride">RIDE</span><span class="sb sb-splash">SPLASH</span><span class="sb sb-play">PLAY</span></div><div class="m-icon">✉️</div><div class="m-code">EXS</div><div class="m-name">Post-Visit Survey</div><div class="m-desc">Triggered email survey — reflective sentiment, loyalty data, cross-validates QR feedback.</div><div class="m-footer"><span class="m-tag">D · E</span><span class="m-arrow">→</span></div></a>
-    </div>
+          <!-- CORRECTION DETAIL -->
+          <div style="padding:14px 16px;border-bottom:1px solid var(--dim);">
+            <div style="font-family:var(--mono);font-size:7.5px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.12em;margin-bottom:8px;">CORRECTION DETAIL</div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+              <div style="flex:1;padding:8px 10px;background:rgba(255,59,92,.06);border:1px solid rgba(255,59,92,.15);border-radius:4px;text-align:center;">
+                <div style="font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.2);letter-spacing:.1em;margin-bottom:2px;">ORIGINAL</div>
+                <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--red);">FAIL</div>
+                <div style="font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.15);">Sealed · Immutable</div>
+              </div>
+              <div style="font-family:var(--mono);font-size:18px;color:rgba(255,255,255,.15);">→</div>
+              <div style="flex:1;padding:8px 10px;background:rgba(0,214,143,.06);border:1px solid rgba(0,214,143,.15);border-radius:4px;text-align:center;">
+                <div style="font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.2);letter-spacing:.1em;margin-bottom:2px;">REQUESTED</div>
+                <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--green);">PASS</div>
+                <div style="font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.15);">Pending supervisor</div>
+              </div>
+            </div>
+            <div style="font-family:var(--mono);font-size:7.5px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.1em;margin-bottom:4px;">ITEM</div>
+            <div style="font-size:12px;color:var(--text2);margin-bottom:8px;">Item 3 — Hydraulic pressure reading</div>
+            <div style="font-family:var(--mono);font-size:7.5px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.1em;margin-bottom:4px;">REASON</div>
+            <div style="font-size:12px;color:var(--text);line-height:1.6;padding:8px 10px;background:rgba(255,255,255,.02);border-radius:3px;border:1px solid var(--dim);">Pressed FAIL instead of PASS on item 3. Hydraulic pressure reading was within spec at 2,800 PSI. Error made during rapid checklist completion at 06:41. Photo of gauge attached showing current reading.</div>
+          </div>
 
-    <div class="module-group-label reveal"><span class="mgl-text">Automated Data Feeds</span><span class="mgl-line"></span><span class="mgl-count">4 FEEDS</span></div>
-    <div class="module-grid reveal">
-      <div class="module-card mc-auto" style="cursor:default"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">🌤</div><div class="m-code">WX</div><div class="m-name">Weather Data</div><div class="m-desc">Open-Meteo API — temperature, precipitation, wind, lightning alerts. Adjusts Environment pillar.</div><div class="m-footer"><span class="m-tag">E</span><span style="font-size:13px;color:rgba(0,212,208,.3)">⚡</span></div></div>
-      <div class="module-card mc-auto" style="cursor:default"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">⏱</div><div class="m-code">QTX</div><div class="m-name">Queue &amp; Wait Time</div><div class="m-desc">Live queue length and wait times via sensor, clicker, or POS. Feeds Readiness and Delivery.</div><div class="m-footer"><span class="m-tag">R · D</span><span style="font-size:13px;color:rgba(0,212,208,.3)">⚡</span></div></div>
-      <div class="module-card mc-auto" style="cursor:default"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">⭐</div><div class="m-code">OLR</div><div class="m-name">Online Review Intelligence</div><div class="m-desc">Google, TripAdvisor, Yelp ingestion with sentiment analysis and keyword extraction.</div><div class="m-footer"><span class="m-tag">D · E</span><span style="font-size:13px;color:rgba(0,212,208,.3)">⚡</span></div></div>
-      <a href="https://amusementstandards.com/as360/voxintel.html" class="module-card mc-auto"><div class="m-auto-badge"><span class="m-auto-dot"></span>LIVE FEED</div><div class="m-icon">📡</div><div class="m-code">VXI</div><div class="m-name">VoxIntel Radio Intelligence</div><div class="m-desc">Passive RF monitoring of all venue radio channels — real-time transcription, NLP event classification, congestion scoring, step-on detection.</div><div class="m-footer"><span class="m-tag">R · I · D · E</span><span class="m-arrow">→</span></div></a>
+          <!-- ROUTING -->
+          <div style="padding:14px 16px;">
+            <div style="font-family:var(--mono);font-size:7.5px;font-weight:700;color:rgba(255,255,255,.2);letter-spacing:.12em;margin-bottom:8px;">APPROVAL CHAIN</div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;background:rgba(255,255,255,.02);border:1px solid var(--dim);border-radius:3px;">
+                <span style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);">Routed to</span>
+                <span style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text2);">R. Thompson · Shift Supervisor</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;background:rgba(255,255,255,.02);border:1px solid var(--dim);border-radius:3px;">
+                <span style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);">Approval window</span>
+                <span style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--amber);">3h 12m remaining</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;background:rgba(255,255,255,.02);border:1px solid var(--dim);border-radius:3px;">
+                <span style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);">If denied</span>
+                <span style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text);">Original stands · 1 escalation allowed</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 10px;background:rgba(255,255,255,.02);border:1px solid var(--dim);border-radius:3px;">
+                <span style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);">Original record</span>
+                <span style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--teal);">🔒 Sealed · Visible to all tiers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- INSURER VIEW -->
+        <div style="margin-top:10px;padding:12px 14px;background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.14);border-radius:5px;">
+          <div style="font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(212,175,55,.6);margin-bottom:5px;">Insurer View · What MASI Sees</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+            <div style="text-align:center;">
+              <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--green);">4</div>
+              <div style="font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.2);letter-spacing:.08em;">AMENDMENTS (90D)</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--green);">100%</div>
+              <div style="font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.2);letter-spacing:.08em;">GEO-VERIFIED</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--teal);">0</div>
+              <div style="font-family:var(--mono);font-size:7px;color:rgba(255,255,255,.2);letter-spacing:.08em;">PATTERN FLAGS</div>
+            </div>
+          </div>
+          <div style="font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.2);margin-top:8px;">Both original and amendment visible · No operator names · Amendment frequency is an Integrity pillar input</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- SCORE OUTPUT -->
-<section class="sec">
-  <div class="sec-inner">
-    <div class="sec-eyebrow reveal">THE OUTPUT</div>
-    <div class="sec-title reveal">Everything above produces <span class="gold">one number.</span></div>
-    <div class="score-output reveal">
-      <div class="score-ring-wrap">
-        <div class="score-ring">
-          <svg viewBox="0 0 160 160"><circle cx="80" cy="80" r="70" fill="none" stroke="rgba(212,175,55,.1)" stroke-width="10"/><circle cx="80" cy="80" r="70" fill="none" stroke="url(#scoreGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440" transform="rotate(-90 80 80)" class="ring-anim"/><defs><linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#B8960C"/><stop offset="100%" stop-color="#D4AF37"/></linearGradient></defs></svg>
-          <div class="inner"><div class="score-num">81</div><div class="score-label">STRONG</div></div>
-        </div>
-        <div class="pillar-row">
-          <div class="pillar-chip" style="background:rgba(46,111,255,.1);border:1px solid rgba(46,111,255,.2);border-radius:8px;"><div class="pillar-chip-letter" style="color:var(--blue)">R</div><div class="pillar-chip-name" style="color:rgba(46,111,255,.6)">READY</div><div class="pillar-chip-score" style="color:var(--blue)">84</div></div>
-          <div class="pillar-chip" style="background:rgba(0,214,143,.1);border:1px solid rgba(0,214,143,.2);border-radius:8px;"><div class="pillar-chip-letter" style="color:var(--green)">I</div><div class="pillar-chip-name" style="color:rgba(0,214,143,.6)">INTEG</div><div class="pillar-chip-score" style="color:var(--green)">79</div></div>
-          <div class="pillar-chip" style="background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2);border-radius:8px;"><div class="pillar-chip-letter" style="color:var(--orange)">D</div><div class="pillar-chip-name" style="color:rgba(255,107,53,.6)">DELIV</div><div class="pillar-chip-score" style="color:var(--orange)">81</div></div>
-          <div class="pillar-chip" style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:8px;"><div class="pillar-chip-letter" style="color:var(--purple)">E</div><div class="pillar-chip-name" style="color:rgba(139,92,246,.6)">ENVIR</div><div class="pillar-chip-score" style="color:var(--purple)">76</div></div>
-        </div>
-      </div>
-      <div class="score-explanation">
-        <div class="se-title">RIDE <span>Score™</span></div>
-        <div class="se-body">Every module, form, inspection, guest feedback stream, OpsScan behavioral data (any tier), LensIQ throughput, VoxIntel radio intelligence, AuditScore compliance metrics, and automated feed on this page converges into four pillar scores — Readiness, Integrity, Delivery, Environment — which aggregate into a single composite RIDE Score. When sources agree, confidence is high. When they diverge, that gap is the finding.</div>
-        <div class="se-links">
-          <a href="https://amusementstandards.com/as360-ride-score.html" class="se-link">How Scoring Works →</a>
-          <a href="https://amusementstandards.com/as360/methodology.html" class="se-link">Methodology →</a>
-          <a href="https://amusementstandards.com/as360/deliverable-sample.html" class="se-link">Sample Deliverable →</a>
-          <a href="https://amusementstandards.com/as360/deliverable-insurer.html" class="se-link se-link-insurer">Insurer Dashboard →</a>
-        </div>
-      </div>
+<section class="pilot-sec" id="pilot">
+  <div class="pilot-inner">
+    <div class="pilot-ey">For McGowan Allied Specialty Insurance</div>
+    <h2 class="pilot-title">Propose<br>A <span class="g">Pilot.</span></h2>
+    <p class="pilot-body">AS 360 is built and running. The pilot starts at Tier 1 — we ingest data the park already produces. No hardware installation, no operator training, no adoption risk. The park changes nothing. We score what exists and deliver the first risk dossier within 30 days. If the signal warrants it, Tier 2 (cameras) and Tier 3 (QR + voice) can be layered in progressively.</p>
+    <div class="pilot-detail">
+      Structure: 90-day pilot · MASI-insured facilities · Based in Asbury Park, NJ<br>
+      Entry: Tier 1 — ingest existing Kronos/ADP/Mobaro data · Zero operator adoption required<br>
+      Escalation: Tier 2 CV on existing CCTV · Tier 3 QR + voice if warranted<br>
+      Deliverable: RIDE/SPLASH/PLAY scores per facility · Pillar breakdown · Anomaly log · Divergence report<br>
+      Comparison: AS 360 score distribution vs. loss history on the same book<br>
+      Cost to MASI: Zero for pilot period · Data agreement only · Reference letter as exit condition
+    </div>
+    <div class="pilot-ctas">
+      <a href="mailto:adam@amusementstandards.com" class="btn-pilot">Propose a Pilot →</a>
+      <a href="https://amusementstandards.com/as360/methodology.html" class="btn-outline">View Methodology</a>
+    </div>
+    <div class="pilot-mods">
+      <span class="pilot-mod">RIDE Score™</span><span class="pilot-mod">SPLASH Score™</span><span class="pilot-mod">PLAY Score™</span><span class="pilot-mod">OpsScan (3-Tier)</span><span class="pilot-mod">LensIQ</span><span class="pilot-mod">VoxIntel</span><span class="pilot-mod">Maintenance Manager</span><span class="pilot-mod">Tier 1 = Zero Friction</span>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section">
-  <div class="cta-inner">
-    <div class="cta-title reveal">Ready to run<br>your park on <span>AS 360?</span></div>
-    <div class="cta-body reveal">Full-suite park management — Manager, Dispatcher, Operator Log, OpsScan (3-tier), LensIQ, VoxIntel, AuditScore, 19 inspections, incident reporting, guest intelligence, and automated data feeds — deployed across your facility. Start at Tier 1 with zero new workflows. Every data point feeds a composite RIDE Score your insurers, operators, and ownership can act on.</div>
-    <div class="hero-cta reveal">
-      <a href="https://amusementstandards.com/as360/manager.html" class="btn-primary">Open Manager Module</a>
-      <a href="https://amusementstandards.com/as360/ops-scan.html" class="btn-secondary btn-ops">📱 OpsScan</a>
-      <a href="https://amusementstandards.com/as360/lens-iq.html" class="btn-secondary btn-lens">👁️ LensIQ</a>
-      <a href="https://amusementstandards.com/as360/voxintel.html" class="btn-secondary btn-vox">📡 VoxIntel</a>
-      <a href="https://amusementstandards.com/as360-ride-score.html" class="btn-secondary">RIDE Score</a>
-      <a href="https://amusementstandards.com/as360/deliverable-sample.html" class="btn-secondary btn-gold">📄 Sample Deliverable</a>
-      <a href="https://amusementstandards.com/as360/deliverable-insurer.html" class="btn-secondary btn-insurer">🏦 Insurer Dashboard</a>
-      <a href="https://amusementstandards.com/as360/methodology.html" class="btn-secondary">Methodology</a>
-      <a href="mailto:adam@amusementstandards.com" class="btn-secondary">Contact</a>
+<div class="op-foot">
+  <div class="of-inner">
+    <div class="of-label">Live Operator Modules — Available for Demo</div>
+    <div class="of-links">
+      <a href="https://amusementstandards.com/as360/manager.html" class="of-link">Manager Module</a>
+      <a href="https://amusementstandards.com/as360/ops-scan.html" class="of-link of-ops">📱 OpsScan (3-Tier)</a>
+      <a href="https://amusementstandards.com/as360/lens-iq.html" class="of-link of-lens">👁️ LensIQ</a>
+      <a href="https://amusementstandards.com/as360/voxintel.html" class="of-link of-vox">📡 VoxIntel</a>
+      <a href="https://amusementstandards.com/as360/maintenance-manager.html" class="of-link of-maint">🔧 Maintenance Manager</a>
+      <a href="https://amusementstandards.com/as360-ride-score.html" class="of-link">RIDE Score Architecture</a>
+      <a href="https://amusementstandards.com/as360/methodology.html" class="of-link">Methodology</a>
+      <a href="https://amusementstandards.com/as360/deliverable-sample.html" class="of-link">Sample Deliverable</a>
     </div>
-    <div class="cta-note reveal">amusementstandards.com · AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · OpsScan™ · LensIQ™ · VoxIntel™ · Proprietary</div>
   </div>
-</section>
+</div>
 
-<footer class="site-footer">
-  <div class="sf-brand">Amusement <span>Standards</span></div>
-  <div class="sf-links">
-    <a href="https://amusementstandards.com/as360/manager.html">Manager Module</a>
-    <a href="https://amusementstandards.com/as360/ops-scan.html" style="color:rgba(0,255,136,.6)">OpsScan</a>
-    <a href="https://amusementstandards.com/as360/lens-iq.html" style="color:rgba(0,153,255,.6)">LensIQ</a>
-    <a href="https://amusementstandards.com/as360/voxintel.html" style="color:rgba(167,139,250,.5)">VoxIntel</a>
-    <a href="https://amusementstandards.com/as360-ride-score.html">RIDE Score</a>
-    <a href="https://amusementstandards.com/as360/deliverable-sample.html" style="color:rgba(212,175,55,.5)">Sample Deliverable</a>
-    <a href="https://amusementstandards.com/as360/methodology.html">Methodology</a>
-    <a href="mailto:adam@amusementstandards.com">Contact</a>
-  </div>
-  <div class="sf-copy">AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · OpsScan™ · LensIQ™ · VoxIntel™ · Proprietary</div>
+<footer>
+  <div class="f-brand">Amusement <span>Standards</span></div>
+  <div class="f-copy">AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · OpsScan™ · LensIQ™ · VoxIntel™ · Proprietary · © 2026 · Asbury Park, NJ</div>
 </footer>
-
 <script>
-const reveals=document.querySelectorAll('.reveal');const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});},{threshold:0,rootMargin:'0px 0px -40px 0px'});reveals.forEach(el=>ro.observe(el));
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('visible');ro.unobserve(x.target);}});},{threshold:0,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+const TARGET=81,PILLARS={R:84,I:79,D:81,E:76};let scored=false;
+function animScore(){
+  if(scored)return;scored=true;
+  let cur=0;const dur=2200,t0=performance.now();
+  (function step(now){
+    const p=Math.min((now-t0)/dur,1),e=1-Math.pow(1-p,3);
+    cur=Math.round(e*TARGET);
+    document.getElementById('scoreNum').textContent=cur;
+    document.getElementById('scoreTier').textContent=cur>=80?'STRONG':cur>=65?'GOOD':cur>=50?'WATCH':'CRITICAL';
+    if(p<1)requestAnimationFrame(step);
+  })(performance.now());
+  setTimeout(()=>{Object.entries(PILLARS).forEach(([k,v],i)=>{setTimeout(()=>{document.getElementById('pv'+k).textContent=v;document.getElementById('b'+k).style.width=v+'%';},i*160);});},900);
+}
+new IntersectionObserver(e=>{if(e[0].isIntersecting)animScore();},{threshold:.3}).observe(document.querySelector('.score-widget'));
+setTimeout(animScore,2200);
+function swTab(name,el,cls){
+  document.querySelectorAll('.sw-tab').forEach(t=>{t.className='sw-tab';});
+  document.querySelectorAll('.sw-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('swp'+name).classList.add('active');
+  el.classList.add(cls);
+}
+function maintPnl(name,el){
+  ['xVox','xLens'].forEach(id=>document.getElementById(id).style.display='none');
+  document.querySelectorAll('#xVoxTab,#xLensTab').forEach(t=>{t.className='lp-tab';t.style.borderBottomColor='var(--dim)';});
+  document.getElementById('x'+name.charAt(0).toUpperCase()+name.slice(1)).style.display='block';
+  el.classList.add(name==='vox'?'lp-av':'lp-al');
+}
 </script>
 </body>
 </html>
