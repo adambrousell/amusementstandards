@@ -372,6 +372,95 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
 /* INSPECTION SUMMARY HEADER */
 .insp-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+
+/* ── RIDE STATUS BOARD ── */
+.rs-world{margin-bottom:16px;}
+.rs-world-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;margin-bottom:8px;}
+.rs-world-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.rs-world-name{font-family:var(--cond);font-size:15px;font-weight:700;color:var(--text-bright);flex:1;}
+.rs-world-stat{font-family:var(--mono);font-size:9px;color:var(--text-dim);}
+.rs-ride-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+@media(min-width:700px){.rs-ride-grid{grid-template-columns:repeat(3,1fr);}}
+.rs-ride{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;position:relative;overflow:hidden;transition:border-color .15s;}
+.rs-ride::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.rs-ride.rs-open::before{background:var(--green);}.rs-ride.rs-hold::before{background:var(--amber);}.rs-ride.rs-down::before{background:var(--red);}.rs-ride.rs-delayed::before{background:var(--blue);}
+.rs-ride.rs-open{border-color:rgba(16,185,129,.25);}.rs-ride.rs-hold{border-color:rgba(245,158,11,.35);}.rs-ride.rs-down{border-color:rgba(244,63,94,.4);}.rs-ride.rs-delayed{border-color:rgba(59,130,246,.3);}
+.rs-ride-name{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);margin-bottom:4px;}
+.rs-ride-status{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:3px;display:inline-block;margin-bottom:6px;}
+.rs-st-open{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25);}
+.rs-st-hold{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
+.rs-st-down{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.25);}
+.rs-st-delayed{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(59,130,246,.25);}
+.rs-ride-meta{font-family:var(--mono);font-size:8px;color:var(--text-dim);line-height:1.6;}
+.rs-ride-actions{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;}
+.rs-act{padding:4px 8px;border-radius:4px;font-family:var(--mono);font-size:8px;font-weight:700;cursor:pointer;border:1px solid var(--border2);color:var(--text-dim);background:var(--panel3);transition:all .12s;min-height:28px;}
+.rs-act:hover{border-color:var(--teal);color:var(--teal);}
+.rs-act.sel{background:var(--teal-dim);border-color:var(--teal);color:var(--teal);}
+/* ── VOXINTEL ── */
+.vox-feed{display:flex;flex-direction:column;gap:4px;max-height:420px;overflow-y:auto;}
+.vox-ev{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:6px;background:var(--panel);border:1px solid var(--border);transition:background .12s;}
+.vox-ev:hover{background:var(--panel2);}
+.vox-ev-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.vox-ev-time{font-family:var(--mono);font-size:10px;color:var(--text-dim);min-width:42px;flex-shrink:0;}
+.vox-ev-body{flex:1;}.vox-ev-msg{font-size:12px;color:var(--text);line-height:1.5;}
+.vox-ev-tags{display:flex;gap:3px;margin-top:3px;flex-wrap:wrap;}
+.vox-tag{font-family:var(--mono);font-size:7px;font-weight:700;padding:1px 5px;border-radius:2px;letter-spacing:.3px;}
+.vox-tag-ride{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.2);}
+.vox-tag-medical{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.2);}
+.vox-tag-maint{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(249,115,22,.2);}
+.vox-tag-queue{background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.2);}
+.vox-tag-security{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(139,92,246,.2);}
+.vox-tag-ai{background:rgba(0,212,208,.08);color:var(--teal);border:1px solid rgba(0,212,208,.2);}
+.vox-ch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.vox-ch{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;}
+.vox-ch-name{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px;}
+.vox-ch-status{font-family:var(--cond);font-size:18px;font-weight:800;}
+/* ── AUDITSCORE ── */
+.as-lb{display:flex;flex-direction:column;gap:4px;}
+.as-lb-row{display:grid;grid-template-columns:28px 1fr 60px 50px 50px;gap:8px;align-items:center;padding:8px 10px;border-radius:6px;background:var(--panel);border:1px solid var(--border);}
+.as-lb-row.gold{border-color:rgba(212,175,55,.3);background:rgba(212,175,55,.04);}
+.as-lb-rank{font-family:var(--cond);font-size:16px;font-weight:800;text-align:center;}
+.as-lb-name{font-size:12px;font-weight:600;color:var(--text-bright);}
+.as-lb-shift{font-family:var(--mono);font-size:8px;color:var(--text-dim);}
+.as-lb-xp{font-family:var(--cond);font-size:16px;font-weight:800;}
+.as-anomaly{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:6px;position:relative;overflow:hidden;}
+.as-anomaly::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;}
+.as-anomaly.warn::before{background:var(--amber);}.as-anomaly.crit::before{background:var(--red);}
+/* ── AMR QUEUE ── */
+.amr-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:8px;}
+.amr-hdr{padding:10px 14px;background:var(--panel2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.amr-body{padding:12px 14px;}
+.amr-correction{display:flex;align-items:center;gap:10px;margin:8px 0;}
+.amr-was{padding:6px 10px;background:var(--red-dim);border:1px solid rgba(244,63,94,.2);border-radius:4px;text-align:center;flex:1;}
+.amr-arrow{font-family:var(--mono);font-size:16px;color:var(--text-muted);}
+.amr-should{padding:6px 10px;background:var(--green-dim);border:1px solid rgba(16,185,129,.2);border-radius:4px;text-align:center;flex:1;}
+.amr-actions{display:flex;gap:8px;margin-top:10px;}
+/* ── PARK HEALTH INDEX ── */
+.phi-display{display:flex;align-items:center;gap:16px;padding:16px;background:var(--panel);border:1px solid var(--border);border-radius:10px;}
+.phi-score{font-family:var(--cond);font-size:48px;font-weight:800;line-height:1;}
+.phi-breakdown{display:flex;flex-direction:column;gap:3px;flex:1;}
+.phi-row{display:flex;align-items:center;gap:8px;}
+.phi-row-label{font-family:var(--mono);font-size:9px;color:var(--text-dim);min-width:80px;}
+.phi-row-bar{flex:1;height:4px;background:var(--panel3);border-radius:2px;overflow:hidden;}
+.phi-row-fill{height:100%;border-radius:2px;}
+.phi-row-val{font-family:var(--mono);font-size:10px;font-weight:700;min-width:30px;text-align:right;}
+/* ── MANAGER STREAK ── */
+.mgr-streak{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--panel);border:1px solid var(--border);border-radius:8px;}
+.mgr-streak-num{font-family:var(--cond);font-size:32px;font-weight:800;color:var(--green);line-height:1;}
+.mgr-streak-label{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:1px;}
+.mgr-badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+.mgr-badge{font-family:var(--mono);font-size:7px;font-weight:700;padding:2px 6px;border-radius:3px;}
+.mgr-badge-gold{background:rgba(212,175,55,.12);color:var(--gold);border:1px solid rgba(212,175,55,.25);}
+.mgr-badge-green{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.25);}
+.mgr-badge-teal{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(10,191,188,.25);}
+/* ── LENSIQ MINI ── */
+.liq-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(36,45,62,.4);}
+.liq-row:last-child{border-bottom:none;}
+.liq-name{font-size:11px;font-weight:600;color:var(--text);}
+.liq-tph{font-family:var(--mono);font-size:12px;font-weight:700;}
+.liq-src{font-family:var(--mono);font-size:7px;font-weight:700;padding:1px 4px;border-radius:2px;margin-left:4px;}
+.liq-src-cv{background:rgba(0,153,255,.1);color:#0099FF;border:1px solid rgba(0,153,255,.15);}
+
 </style>
 </head>
 <body>
@@ -394,19 +483,24 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 </div>
 
 <div class="nav-tabs">
-  <div class="nav-tab" onclick="showView('opening',this)">🟢 Opening <span class="tab-badge neutral" id="ocBadge">—</span></div>
-  <div class="nav-tab active" id="dashboard-tab" onclick="showView('dashboard',this)">📊 Dashboard <span class="tab-badge red" id="rnBadge" style="display:none">!</span></div>
-  <div class="nav-tab" onclick="showView('pillar',this)">🎯 RIDE Score</div>
-  <div class="nav-tab" onclick="showView('oos',this)">⛔ Out of Service <span class="tab-badge red" id="oosBadge">0</span></div>
-  <div class="nav-tab" onclick="showView('car',this)">📂 Corrective Actions <span class="tab-badge neutral" id="carBadge">0</span></div>
-  <div class="nav-tab" onclick="showView('rotations',this)">🔁 Rotations <span class="tab-badge neutral" id="rotBadge">0</span></div>
-  <div class="nav-tab insp-tab" onclick="showView('inspections',this)">🔍 Inspections <span class="tab-badge red" id="inspBadge">0</span></div>
-  <div class="nav-tab" onclick="showView('schedule',this)">📅 Schedule</div>
-  <div class="nav-tab" onclick="showView('matrix',this)">📞 Escalation</div>
+  <div class="nav-tab" onclick="showView('opening',this)">&#x1f7e2; Opening <span class="tab-badge neutral" id="ocBadge">—</span></div>
+  <div class="nav-tab active" id="dashboard-tab" onclick="showView('dashboard',this)">&#x1f4ca; Dashboard <span class="tab-badge red" id="rnBadge" style="display:none">!</span></div>
+  <div class="nav-tab" onclick="showView('ridestatus',this)">&#x1f6a6; Ride Status <span class="tab-badge green" id="rsBadge">11</span></div>
+  <div class="nav-tab" onclick="showView('pillar',this)">&#x1f3af; RIDE Score</div>
+  <div class="nav-tab" onclick="showView('oos',this)">&#x26d4; OOS <span class="tab-badge red" id="oosBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('car',this)">&#x1f4c2; CARs <span class="tab-badge neutral" id="carBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('rotations',this)">&#x1f501; Rotations <span class="tab-badge neutral" id="rotBadge">0</span></div>
+  <div class="nav-tab insp-tab" onclick="showView('inspections',this)">&#x1f50d; Inspections <span class="tab-badge red" id="inspBadge">0</span></div>
+  <div class="nav-tab" onclick="showView('auditscore',this)">&#x1f3c6; AuditScore</div>
   <div class="nav-divider"></div>
-  <div class="nav-tab" onclick="showView('throughput',this)">📈 Throughput</div>
-  <div class="nav-tab" onclick="showView('shiftlog',this)">📋 Shift &amp; Handoff <span class="tab-badge neutral" id="handoffCount">0</span></div>
+  <div class="nav-tab" onclick="showView('schedule',this)">&#x1f4c5; Schedule</div>
+  <div class="nav-tab" onclick="showView('matrix',this)">&#x1f4de; Escalation</div>
+  <div class="nav-tab" onclick="showView('throughput',this)">&#x1f4c8; Throughput</div>
+  <div class="nav-tab" onclick="showView('voxintel',this)">&#x1f4e1; VoxIntel <span class="tab-badge" style="background:rgba(167,139,250,.12);color:var(--purple);border:1px solid rgba(167,139,250,.25);" id="voxBadge">0</span></div>
+  <div class="nav-divider"></div>
+  <div class="nav-tab" onclick="showView('shiftlog',this)">&#x1f4cb; Shift &amp; Handoff <span class="tab-badge neutral" id="handoffCount">0</span></div>
 </div>
+
 
 <div class="main">
 
@@ -453,7 +547,13 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="ssb-item"><div class="ssb-label">RIDE Score</div><div class="ssb-val" id="db-ride-score" style="color:var(--teal)">—</div></div>
     <button class="btn btn-teal btn-sm" onclick="showView('shiftlog',document.querySelector('[onclick*=shiftlog]')); setTimeout(function(){shlSwitch('new',document.getElementById('shl-tab-new'));},50);">New Handoff →</button>
   </div>
-  <!-- Right Now panel -->
+    <!-- Park Health Index + Manager Streak -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+    <div class="phi-display"><div><div class="phi-score" id="phi-score" style="color:var(--teal)">—</div><div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--text-dim);margin-top:2px;">PARK HEALTH</div></div><div class="phi-breakdown"><div class="phi-row"><span class="phi-row-label">RIDE Score</span><div class="phi-row-bar"><div class="phi-row-fill" id="phi-ride" style="width:0%;background:var(--teal)"></div></div><span class="phi-row-val" style="color:var(--teal)" id="phi-ride-val">—</span></div><div class="phi-row"><span class="phi-row-label">Insp Comp.</span><div class="phi-row-bar"><div class="phi-row-fill" id="phi-insp" style="width:0%;background:var(--green)"></div></div><span class="phi-row-val" style="color:var(--green)" id="phi-insp-val">—</span></div><div class="phi-row"><span class="phi-row-label">CACR</span><div class="phi-row-bar"><div class="phi-row-fill" id="phi-cacr" style="width:0%;background:var(--amber)"></div></div><span class="phi-row-val" style="color:var(--amber)" id="phi-cacr-val">—</span></div><div class="phi-row"><span class="phi-row-label">Rotation</span><div class="phi-row-bar"><div class="phi-row-fill" id="phi-rot" style="width:0%;background:var(--purple)"></div></div><span class="phi-row-val" style="color:var(--purple)" id="phi-rot-val">—</span></div></div></div>
+    <div class="mgr-streak"><div><div class="mgr-streak-num" id="mgr-streak-num">0</div><div class="mgr-streak-label">SHIFT STREAK</div></div><div style="flex:1;"><div style="font-size:12px;color:var(--text);font-weight:600;margin-bottom:4px;" id="mgr-streak-desc">Complete handoffs to build streak</div><div class="mgr-badges" id="mgr-badges"></div></div></div>
+  </div>
+
+<!-- Right Now panel -->
   <div style="background:var(--panel2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;margin-bottom:12px;">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
       <span style="font-size:14px;">⚡</span>
@@ -487,7 +587,14 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
       <div id="db-rot-mini"></div>
     </div>
   </div>
-  <div class="panel">
+    <!-- Intelligence Feeds -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+    <div class="panel" style="margin-bottom:0"><div class="panel-hdr"><div class="panel-title">Ride Status</div><button class="btn btn-ghost btn-sm" onclick="showView('ridestatus',document.querySelector('[onclick*=ridestatus]'))">Board &#x2192;</button></div><div style="padding:12px;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;"><div><div style="font-family:var(--cond);font-size:22px;font-weight:800;color:var(--green);" id="db-rs-open">0</div><div style="font-family:var(--mono);font-size:7px;color:var(--text-dim);">OPEN</div></div><div><div style="font-family:var(--cond);font-size:22px;font-weight:800;color:var(--amber);" id="db-rs-hold">0</div><div style="font-family:var(--mono);font-size:7px;color:var(--text-dim);">HOLD</div></div><div><div style="font-family:var(--cond);font-size:22px;font-weight:800;color:var(--red);" id="db-rs-down">0</div><div style="font-family:var(--mono);font-size:7px;color:var(--text-dim);">DOWN</div></div><div><div style="font-family:var(--cond);font-size:22px;font-weight:800;color:var(--blue);" id="db-rs-delayed">0</div><div style="font-family:var(--mono);font-size:7px;color:var(--text-dim);">DELAY</div></div></div></div>
+    <div class="panel" style="margin-bottom:0"><div class="panel-hdr"><div style="display:flex;align-items:center;gap:5px;"><div style="width:5px;height:5px;border-radius:50%;background:var(--purple);animation:dPulse 1.6s infinite;"></div><div class="panel-title">VoxIntel</div></div><button class="btn btn-ghost btn-sm" onclick="showView('voxintel',document.querySelector('[onclick*=voxintel]'))">Feed &#x2192;</button></div><div style="padding:10px;" id="db-vox-mini"><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);padding:8px;">Listening&#x2026;</div></div></div>
+    <div class="panel" style="margin-bottom:0"><div class="panel-hdr"><div style="display:flex;align-items:center;gap:5px;"><div style="width:5px;height:5px;border-radius:50%;background:#0099FF;animation:dPulse 1.6s infinite;"></div><div class="panel-title">LensIQ TPH</div></div><span style="font-family:var(--mono);font-size:7px;font-weight:700;padding:1px 4px;border-radius:2px;background:rgba(0,153,255,.1);color:#0099FF;border:1px solid rgba(0,153,255,.15);">CV</span></div><div style="padding:10px;" id="db-liq-mini"><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);padding:8px;">No CV data</div></div></div>
+  </div>
+
+<div class="panel">
     <div class="panel-hdr">
       <div class="panel-title">Today's Throughput</div>
       <button class="btn btn-ghost btn-sm" onclick="showView('throughput',document.querySelectorAll('.nav-tab')[8])">All →</button>
@@ -1740,6 +1847,97 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     </div>
   </div>
 
+</div>
+
+<!-- ══ RIDE STATUS BOARD ══ -->
+<div class="view" id="view-ridestatus">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+    <div class="sec-label" style="margin:0">// Live Ride Status — All Worlds</div>
+    <div style="display:flex;gap:6px;">
+      <button class="btn btn-ghost btn-sm" onclick="rsSetAll('open')">All Open</button>
+      <button class="btn btn-ghost btn-sm" onclick="rsRefresh()">↻ Refresh</button>
+    </div>
+  </div>
+  <div class="metric-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px;">
+    <div class="metric-card green"><div class="mv green" id="rs-open-count">0</div><div class="ml">Open</div></div>
+    <div class="metric-card amber"><div class="mv amber" id="rs-hold-count">0</div><div class="ml">Hold</div></div>
+    <div class="metric-card red"><div class="mv red" id="rs-down-count">0</div><div class="ml">Down</div></div>
+    <div class="metric-card blue"><div class="mv blue" id="rs-delayed-count">0</div><div class="ml">Delayed</div></div>
+  </div>
+  <div id="rs-board"></div>
+</div>
+
+<!-- ══ VOXINTEL ══ -->
+<div class="view" id="view-voxintel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--purple);animation:dPulse 1.6s ease-in-out infinite;"></div>
+      <div class="sec-label" style="margin:0">// VoxIntel — All-Channel Radio Intelligence</div>
+    </div>
+    <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);" id="vox-last-update">—</div>
+  </div>
+  <div class="metric-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px;">
+    <div class="metric-card" style="border-top:2px solid var(--purple)"><div class="mv" style="color:var(--purple)" id="vox-total">0</div><div class="ml">Events Today</div></div>
+    <div class="metric-card red"><div class="mv red" id="vox-ride-downs">0</div><div class="ml">Ride-Downs</div></div>
+    <div class="metric-card amber"><div class="mv amber" id="vox-unreported">0</div><div class="ml">Unreported</div></div>
+    <div class="metric-card green"><div class="mv green" id="vox-congestion">Low</div><div class="ml">Ch. Congestion</div></div>
+  </div>
+  <div class="vox-ch-grid">
+    <div class="vox-ch"><div class="vox-ch-name">OPS CHANNEL</div><div class="vox-ch-status" style="color:var(--green);">CLEAR</div></div>
+    <div class="vox-ch"><div class="vox-ch-name">MAINT CHANNEL</div><div class="vox-ch-status" style="color:var(--green);">CLEAR</div></div>
+    <div class="vox-ch"><div class="vox-ch-name">SECURITY</div><div class="vox-ch-status" style="color:var(--green);">CLEAR</div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-hdr">
+      <div class="panel-title">Live Event Feed</div>
+      <div style="display:flex;gap:4px;">
+        <button class="btn btn-ghost btn-sm" onclick="voxFilter='all';renderVoxFeed()">All</button>
+        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="voxFilter='ride-down';renderVoxFeed()">Ride-Down</button>
+        <button class="btn btn-ghost btn-sm" style="color:var(--amber)" onclick="voxFilter='queue';renderVoxFeed()">Queue</button>
+        <button class="btn btn-ghost btn-sm" style="color:var(--purple)" onclick="voxFilter='medical';renderVoxFeed()">Medical</button>
+      </div>
+    </div>
+    <div style="padding:10px;" id="vox-feed-list"><div class="empty"><div class="empty-icon">📡</div>Listening…</div></div>
+  </div>
+</div>
+
+<!-- ══ AUDITSCORE ══ -->
+<div class="view" id="view-auditscore">
+  <div class="sec-label">// AuditScore — Gamified Compliance Engine</div>
+  <div class="metric-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px;">
+    <div class="metric-card green"><div class="mv green" id="as-completion">0%</div><div class="ml">Audit Completion (90d)</div></div>
+    <div class="metric-card" style="border-top:2px solid var(--gold)"><div class="mv" style="color:var(--gold)" id="as-index">0</div><div class="ml">AuditScore Index</div></div>
+    <div class="metric-card teal"><div class="mv teal" id="as-streaks">0</div><div class="ml">Active Streaks</div></div>
+    <div class="metric-card amber"><div class="mv amber" id="as-anomalies">0</div><div class="ml">Anomaly Flags</div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-hdr"><div class="panel-title">Shift Leaderboard</div></div>
+    <div style="padding:10px;">
+      <div style="display:grid;grid-template-columns:28px 1fr 60px 50px 50px;gap:8px;padding:4px 10px;font-family:var(--mono);font-size:7px;letter-spacing:1px;color:var(--text-muted);">
+        <span>#</span><span>OPERATOR</span><span>STREAK</span><span>COMP%</span><span>XP</span>
+      </div>
+      <div class="as-lb" id="as-leaderboard"></div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;">
+    <div class="panel" style="margin-bottom:0;text-align:center;padding:16px;">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--green);margin-bottom:6px;">OPEN SHIFT</div>
+      <div style="font-family:var(--cond);font-size:32px;font-weight:800;color:var(--green);" id="as-shift-open">0</div>
+      <div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);">AVG XP</div>
+    </div>
+    <div class="panel" style="margin-bottom:0;text-align:center;padding:16px;">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--amber);margin-bottom:6px;">MID SHIFT</div>
+      <div style="font-family:var(--cond);font-size:32px;font-weight:800;color:var(--amber);" id="as-shift-mid">0</div>
+      <div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);">AVG XP</div>
+    </div>
+    <div class="panel" style="margin-bottom:0;text-align:center;padding:16px;">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--purple);margin-bottom:6px;">CLOSE SHIFT</div>
+      <div style="font-family:var(--cond);font-size:32px;font-weight:800;color:var(--purple);" id="as-shift-close">0</div>
+      <div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);">AVG XP</div>
+    </div>
+  </div>
+  <div class="panel"><div class="panel-hdr"><div class="panel-title">Anomaly Flags</div></div><div style="padding:10px;" id="as-anomaly-list"></div></div>
+  <div class="panel"><div class="panel-hdr"><div class="panel-title">Audit Amendment Queue</div><span class="tab-badge amber" id="amr-count">0</span></div><div style="padding:10px;" id="amr-queue-list"></div></div>
 </div>
 
 <!-- POSITION ASSIGNMENT MODAL (bottom sheet) -->
@@ -3829,6 +4027,7 @@ function refreshDash(){
   const tpRows=document.getElementById('db-tp-rows');
   if(!todayTP.length){tpRows.innerHTML='<div class="empty"><div class="empty-icon">📈</div>No throughput logged today.</div>';}
   else{const byAttr={};todayTP.forEach(t=>{if(!byAttr[t.attraction])byAttr[t.attraction]={guests:0,tphs:[],design:t.design};byAttr[t.attraction].guests+=t.guests;if(t.tph)byAttr[t.attraction].tphs.push(t.tph);});tpRows.innerHTML=Object.entries(byAttr).map(([attr,d])=>{const avg=d.tphs.length?Math.round(d.tphs.reduce((a,b)=>a+b)/d.tphs.length):null;return`<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid rgba(36,45,62,.5);"><div style="flex:1;font-size:12px;font-weight:600;color:var(--text)">${attr}</div><div style="font-family:var(--mono);font-size:11px;color:var(--text-dim)">${d.guests.toLocaleString()}</div><div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--teal)">${avg?avg+'/hr':'—'}</div></div>`;}).join('');}
+  calcParkHealth();calcMgrStreak();renderVoxMini();renderLensIQMini();updateRsMetrics();
   const latest=shiftLogs[0];
   if(latest){document.getElementById('db-shift').textContent=latest.shift.charAt(0).toUpperCase()+latest.shift.slice(1)+' Shift';document.getElementById('db-manager').textContent=latest.manager||'—';}
 }
@@ -4050,6 +4249,7 @@ async function rcConfirmAssignments(){
 
 function refreshAll(){
   refreshDash();renderPillars();renderOOS();renderCARs();renderMatrix();renderThroughput();renderHandoffs();renderShiftLogs();updateBadges();
+  renderRideStatus();renderVoxFeed();updateVoxMetrics();renderVoxMini();renderLensIQMini();renderAuditScore();calcParkHealth();calcMgrStreak();
   renderRightNow();
 }
 function setDefaults(){
@@ -4087,6 +4287,9 @@ function showView(name,tab){
     pillar:renderPillars,oos:renderOOS,car:renderCARs,
     schedule:function(){renderStaffDir();renderSchedule();},matrix:renderMatrix,
     throughput:renderThroughput,
+    ridestatus:function(){renderRideStatus();},
+    voxintel:function(){renderVoxFeed();updateVoxMetrics();},
+    auditscore:function(){renderAuditScore();},
     newthroughput:function(){showView('throughput',document.querySelector('[onclick*=throughput]'));setTimeout(function(){toggleTphForm(true);},100);},
     handoff:renderHandoffs,shift:renderShiftLogs
   };
@@ -4332,6 +4535,198 @@ function renderMatrix(){
 }
 function saveMatrixContact(){const tier=document.getElementById('mc-tier').value,role=document.getElementById('mc-role').value.trim(),name=document.getElementById('mc-name').value.trim(),contact=document.getElementById('mc-contact').value.trim();if(!role||!contact){toast('Role and contact required','err');return;}matrixContacts.push({tier,role,name,contact});save(K.MTX,matrixContacts);renderMatrix();['mc-role','mc-name','mc-contact'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});document.getElementById('matrix-add-form').style.display='none';toast('Contact added','ok');}
 
+// RIDE STATUS ENGINE
+// ══════════════════════════════════════════════════════════════
+let rideStatuses={};
+function rsInit(){
+  EU_ROT_DEFS.forEach(function(d){rideStatuses[d.id]=rideStatuses[d.id]||{status:'open',since:Date.now(),note:''};});
+  try{var s=localStorage.getItem('as360_rs');if(s)rideStatuses=JSON.parse(s);}catch(e){}
+}
+function rsSave(){try{localStorage.setItem('as360_rs',JSON.stringify(rideStatuses));}catch(e){}}
+function rsSetStatus(id,status){
+  rideStatuses[id]={status:status,since:Date.now(),note:''};rsSave();renderRideStatus();updateRsMetrics();
+  toast((EU_ROT_DEFS.find(function(d){return d.id===id;})?.name||id)+' → '+status.toUpperCase(),status==='open'?'ok':status==='down'?'err':'warn');
+}
+function rsSetAll(status){EU_ROT_DEFS.forEach(function(d){rideStatuses[d.id]={status:status,since:Date.now(),note:''};});rsSave();renderRideStatus();updateRsMetrics();toast('All rides → '+status.toUpperCase(),'ok');}
+function rsRefresh(){renderRideStatus();updateRsMetrics();toast('Refreshed','ok');}
+function updateRsMetrics(){
+  var all=Object.values(rideStatuses);
+  var set=function(id,v){var el=document.getElementById(id);if(el)el.textContent=v;};
+  set('rs-open-count',all.filter(function(r){return r.status==='open';}).length);
+  set('rs-hold-count',all.filter(function(r){return r.status==='hold';}).length);
+  set('rs-down-count',all.filter(function(r){return r.status==='down';}).length);
+  set('rs-delayed-count',all.filter(function(r){return r.status==='delayed';}).length);
+  set('db-rs-open',all.filter(function(r){return r.status==='open';}).length);
+  set('db-rs-hold',all.filter(function(r){return r.status==='hold';}).length);
+  set('db-rs-down',all.filter(function(r){return r.status==='down';}).length);
+  set('db-rs-delayed',all.filter(function(r){return r.status==='delayed';}).length);
+  var down=all.filter(function(r){return r.status==='down';}).length;
+  var hold=all.filter(function(r){return r.status==='hold';}).length;
+  var rb=document.getElementById('rsBadge');
+  if(rb){rb.textContent=all.filter(function(r){return r.status==='open';}).length+'/'+all.length;rb.className='tab-badge '+(down?'red':hold?'amber':'green');}
+}
+function renderRideStatus(){
+  var board=document.getElementById('rs-board');if(!board)return;
+  var worlds=['Celestial Park','Ministry of Magic','Super Nintendo World','Isle of Berk','Dark Universe'];
+  var wColors={'Celestial Park':'#00D4FF','Ministry of Magic':'#E040FB','Super Nintendo World':'#FF6B1A','Isle of Berk':'#00E676','Dark Universe':'#F43F5E'};
+  board.innerHTML=worlds.map(function(w){
+    var rides=EU_ROT_DEFS.filter(function(d){return d.world===w;});
+    var openN=rides.filter(function(d){return rideStatuses[d.id]?.status==='open';}).length;
+    return '<div class="rs-world"><div class="rs-world-hdr"><div class="rs-world-dot" style="background:'+wColors[w]+'"></div><div class="rs-world-name">'+w+'</div><div class="rs-world-stat">'+openN+'/'+rides.length+' open</div></div><div class="rs-ride-grid">'+rides.map(function(d){
+      var rs=rideStatuses[d.id]||{status:'open',since:Date.now()};
+      var mins=Math.floor((Date.now()-rs.since)/60000);
+      var filled=d.positions.filter(function(p){return rotPositions[posKey(d.id,p)]?.op;}).length;
+      var stCls={'open':'rs-open','hold':'rs-hold','down':'rs-down','delayed':'rs-delayed'}[rs.status]||'rs-open';
+      var stBadge={'open':'rs-st-open','hold':'rs-st-hold','down':'rs-st-down','delayed':'rs-st-delayed'}[rs.status]||'rs-st-open';
+      return '<div class="rs-ride '+stCls+'"><div class="rs-ride-name">'+d.name+'</div><div class="rs-ride-status '+stBadge+'">'+rs.status.toUpperCase()+'</div><div class="rs-ride-meta">Staffing: '+filled+'/'+d.positions.length+' · '+mins+'m since change</div><div class="rs-ride-actions"><div class="rs-act'+(rs.status==='open'?' sel':'')+'" onclick="rsSetStatus(\''+d.id+'\',\'open\')">OPEN</div><div class="rs-act'+(rs.status==='hold'?' sel':'')+'" onclick="rsSetStatus(\''+d.id+'\',\'hold\')">HOLD</div><div class="rs-act'+(rs.status==='down'?' sel':'')+'" onclick="rsSetStatus(\''+d.id+'\',\'down\')">DOWN</div><div class="rs-act'+(rs.status==='delayed'?' sel':'')+'" onclick="rsSetStatus(\''+d.id+'\',\'delayed\')">DELAY</div></div></div>';
+    }).join('')+'</div></div>';
+  }).join('');
+  updateRsMetrics();
+}
+
+// ══════════════════════════════════════════════════════════════
+// VOXINTEL ENGINE (Demo Feed)
+// ══════════════════════════════════════════════════════════════
+var voxEvents=[];var voxFilter='all';
+var VOX_TEMPLATES=[
+  {type:'ride-down',severity:'high',msgs:['ride-down call — {ride} stopped mid-cycle','E-stop activated — {ride}, maintenance en route','Vehicle fault — {ride}, dispatch holding']},
+  {type:'medical',severity:'high',msgs:['Guest medical — EMS responding at {world}','First aid dispatched — guest fall near {ride}','Medical — heat-related, guest services area']},
+  {type:'queue',severity:'med',msgs:['Queue backup 60+ min — {ride}','Queue overflow into walkway — {ride}','Queue capacity reached — {ride}, redirect active']},
+  {type:'maintenance',severity:'med',msgs:['{ride} — hydraulic pressure alert','Scheduled maintenance complete — {ride} returning','Water feature pump alarm — {world}']},
+  {type:'security',severity:'low',msgs:['Suspicious bag report — {world} entrance','Guest altercation near {ride} queue','Lost child report — {world}, security responding']},
+  {type:'clear',severity:'low',msgs:['{ride} — clear to open, all checks passed','{ride} reopened, maintenance cleared','All-clear — {world}, normal operations resumed']},
+];
+function voxGenEvent(){
+  var template=VOX_TEMPLATES[Math.floor(Math.random()*VOX_TEMPLATES.length)];
+  var msg=template.msgs[Math.floor(Math.random()*template.msgs.length)];
+  var ride=EU_ROT_DEFS[Math.floor(Math.random()*EU_ROT_DEFS.length)];
+  var now=new Date();
+  return{id:'VX-'+Date.now().toString(36).slice(-5).toUpperCase(),type:template.type,severity:template.severity,msg:msg.replace('{ride}',ride.name).replace('{world}',ride.world),ride:ride.name,world:ride.world,time:now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),ts:now.getTime()};
+}
+function voxSeedFeed(){for(var i=0;i<10;i++){var ev=voxGenEvent();ev.ts=Date.now()-(i*Math.random()*600000);ev.time=new Date(ev.ts).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});voxEvents.push(ev);}voxEvents.sort(function(a,b){return b.ts-a.ts;});}
+function voxTick(){if(Math.random()>0.7){voxEvents.unshift(voxGenEvent());if(voxEvents.length>50)voxEvents.pop();renderVoxFeed();updateVoxMetrics();renderVoxMini();}}
+function updateVoxMetrics(){
+  var set=function(id,v){var el=document.getElementById(id);if(el)el.textContent=v;};
+  set('vox-total',voxEvents.length);set('vox-ride-downs',voxEvents.filter(function(e){return e.type==='ride-down';}).length);
+  var vb=document.getElementById('voxBadge');if(vb)vb.textContent=voxEvents.length;
+  var lu=document.getElementById('vox-last-update');if(lu)lu.textContent='Last: '+new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+}
+function renderVoxFeed(){
+  var el=document.getElementById('vox-feed-list');if(!el)return;
+  var evs=voxFilter==='all'?voxEvents:voxEvents.filter(function(e){return e.type===voxFilter;});
+  if(!evs.length){el.innerHTML='<div class="empty"><div class="empty-icon">📡</div>No events matching filter</div>';return;}
+  var dotColors={'ride-down':'var(--red)','medical':'var(--red)','queue':'var(--amber)','maintenance':'var(--orange)','security':'var(--purple)','clear':'var(--green)'};
+  var tagCls={'ride-down':'vox-tag-ride','medical':'vox-tag-medical','queue':'vox-tag-queue','maintenance':'vox-tag-maint','security':'vox-tag-security','clear':'vox-tag-ride'};
+  el.innerHTML='<div class="vox-feed">'+evs.slice(0,25).map(function(e){return '<div class="vox-ev"><div class="vox-ev-dot" style="background:'+(dotColors[e.type]||'var(--text-dim)')+'"></div><div class="vox-ev-time">'+e.time+'</div><div class="vox-ev-body"><div class="vox-ev-msg">'+e.msg+'</div><div class="vox-ev-tags"><span class="vox-tag '+(tagCls[e.type]||'vox-tag-ride')+'">'+e.type.toUpperCase().replace('-',' ')+'</span><span class="vox-tag vox-tag-ai">AI CLASSIFIED</span></div></div></div>';}).join('')+'</div>';
+}
+function renderVoxMini(){
+  var el=document.getElementById('db-vox-mini');if(!el)return;
+  var recent=voxEvents.slice(0,3);
+  if(!recent.length){el.innerHTML='<div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);padding:8px;">Listening…</div>';return;}
+  var dotColors={'ride-down':'var(--red)','medical':'var(--red)','queue':'var(--amber)','maintenance':'var(--orange)','security':'var(--purple)','clear':'var(--green)'};
+  el.innerHTML=recent.map(function(e){return '<div style="display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid rgba(36,45,62,.4);"><div style="width:5px;height:5px;border-radius:50%;background:'+(dotColors[e.type]||'var(--text-dim)')+';flex-shrink:0;"></div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);min-width:36px;">'+e.time+'</div><div style="font-size:10px;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+e.msg+'</div></div>';}).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// LENSIQ MINI
+// ══════════════════════════════════════════════════════════════
+function renderLensIQMini(){
+  var el=document.getElementById('db-liq-mini');if(!el)return;
+  var demoTPH=[{name:'Stardust Racers',tph:824},{name:'Battle at Ministry',tph:712},{name:'Mario Kart',tph:640+Math.floor(Math.random()*80)},{name:"Dragon Racer's Rally",tph:580+Math.floor(Math.random()*60)}];
+  el.innerHTML=demoTPH.map(function(d){return '<div class="liq-row"><div class="liq-name">'+d.name+'</div><div><span class="liq-tph" style="color:'+(d.tph>=700?'var(--green)':d.tph>=500?'var(--teal)':'var(--amber)')+'">'+d.tph+'/hr</span><span class="liq-src liq-src-cv">CV</span></div></div>';}).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// AUDITSCORE ENGINE
+// ══════════════════════════════════════════════════════════════
+var asLbPeriod='week';
+var AS_DEMO_OPS=[
+  {name:'K. Williams',shift:'open',streak:21,comp:100,xp:3210,anomalies:0},
+  {name:'T. Okafor',shift:'open',streak:18,comp:98,xp:2990,anomalies:0},
+  {name:'J. Martinez',shift:'open',streak:14,comp:98,xp:2840,anomalies:0},
+  {name:'R. Chen',shift:'mid',streak:3,comp:88,xp:1640,anomalies:0},
+  {name:'D. Rivera',shift:'mid',streak:9,comp:95,xp:2210,anomalies:0},
+  {name:'S. Park',shift:'mid',streak:12,comp:96,xp:2480,anomalies:1},
+  {name:'M. Johnson',shift:'close',streak:7,comp:92,xp:1890,anomalies:0},
+  {name:'L. Thompson',shift:'close',streak:0,comp:72,xp:980,anomalies:2},
+  {name:'A. Vasquez',shift:'close',streak:5,comp:90,xp:1720,anomalies:0},
+];
+var AS_DEMO_ANOMALIES=[
+  {op:'L. Thompson',type:'speed',desc:'Checklist completed in 34s — peer avg 4.1 min',severity:'warn',ride:"Dragon Racer's Rally"},
+  {op:'L. Thompson',type:'zero-variance',desc:'14 consecutive days all PASS — statistically improbable',severity:'warn',ride:'Fyre Drill'},
+  {op:'S. Park',type:'clustering',desc:'3 checklists submitted within 90s before supervisor arrival',severity:'warn',ride:'Multiple'},
+];
+var AS_DEMO_AMRS=[
+  {id:'AMR-2026-0291',op:'J. Martinez',ride:'Mine-Cart Madness',item:'Item 3 — Hydraulic pressure',was:'FAIL',should:'PASS',reason:'Pressed FAIL instead of PASS. Pressure at 2,800 PSI (in spec).',geo:true,device:true,photo:true,time:'06:48 AM',window:'3h 12m',supervisor:'R. Thompson'},
+  {id:'AMR-2026-0292',op:'D. Rivera',ride:"Hiccup's Wing Gliders",item:'Item 5 — Wind speed check',was:'PASS',should:'FAIL',reason:'Wind gauge reading 38mph at time of check. Correcting to FAIL.',geo:true,device:true,photo:false,time:'09:22 AM',window:'2h 05m',supervisor:'R. Thompson'},
+];
+function renderAuditScore(){
+  var sorted=AS_DEMO_OPS.slice().sort(function(a,b){return b.xp-a.xp;});
+  var lb=document.getElementById('as-leaderboard');
+  if(lb){lb.innerHTML=sorted.map(function(op,i){
+    var rankColor=i===0?'color:var(--gold)':i===1?'color:var(--text)':i===2?'color:var(--teal)':'color:var(--text-dim)';
+    var streakColor=op.streak>=14?'color:var(--green)':op.streak>=7?'color:var(--amber)':'color:var(--text-dim)';
+    return '<div class="as-lb-row'+(i===0?' gold':'')+'"><div class="as-lb-rank" style="'+rankColor+'">'+(i+1)+'</div><div><div class="as-lb-name">'+op.name+'</div><div class="as-lb-shift">'+op.shift.toUpperCase()+' SHIFT</div></div><div class="as-lb-streak" style="'+streakColor+'">'+(op.streak>0?'🔥 '+op.streak+'d':'—')+'</div><div style="font-family:var(--mono);font-size:10px;color:'+(op.comp>=95?'var(--green)':op.comp>=85?'var(--amber)':'var(--red)')+'">'+op.comp+'%</div><div class="as-lb-xp" style="color:var(--gold)">'+op.xp.toLocaleString()+'</div></div>';
+  }).join('');}
+  var set=function(id,v){var el=document.getElementById(id);if(el)el.textContent=v;};
+  var avgComp=Math.round(AS_DEMO_OPS.reduce(function(s,o){return s+o.comp;},0)/AS_DEMO_OPS.length);
+  set('as-completion',avgComp+'%');set('as-index',Math.round(avgComp*0.87));
+  set('as-streaks',AS_DEMO_OPS.filter(function(o){return o.streak>0;}).length);
+  set('as-anomalies',AS_DEMO_ANOMALIES.length);
+  ['open','mid','close'].forEach(function(s){var ops=AS_DEMO_OPS.filter(function(o){return o.shift===s;});var avg=ops.length?Math.round(ops.reduce(function(sum,o){return sum+o.xp;},0)/ops.length):0;set('as-shift-'+s,avg.toLocaleString());});
+  var aList=document.getElementById('as-anomaly-list');
+  if(aList){aList.innerHTML=AS_DEMO_ANOMALIES.length?AS_DEMO_ANOMALIES.map(function(a){return '<div class="as-anomaly '+a.severity+'"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-bright)">'+a.op+' — '+a.type.toUpperCase().replace('-',' ')+'</div><div style="font-family:var(--mono);font-size:8px;font-weight:700;padding:1px 5px;border-radius:2px;background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.2)">INTEGRITY FLAG</div></div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);line-height:1.5;">'+a.desc+'</div><div style="font-family:var(--mono);font-size:8px;color:var(--text-muted);margin-top:2px;">Ride: '+a.ride+'</div></div>';}).join(''):'<div class="empty"><div class="empty-icon">✅</div>No anomaly flags</div>';}
+  var amrList=document.getElementById('amr-queue-list');var amrCount=document.getElementById('amr-count');
+  if(amrCount)amrCount.textContent=AS_DEMO_AMRS.length;
+  if(amrList){amrList.innerHTML=AS_DEMO_AMRS.length?AS_DEMO_AMRS.map(function(a){return '<div class="amr-card"><div class="amr-hdr"><div><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--teal)">'+a.id+'</div><div style="font-family:var(--mono);font-size:8px;color:var(--text-dim)">'+a.op+' · '+a.ride+' · '+a.time+'</div></div><div style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.25)">PENDING</div></div><div class="amr-body"><div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">'+a.item+'</div><div class="amr-correction"><div class="amr-was"><div style="font-family:var(--mono);font-size:7px;color:var(--text-muted)">ORIGINAL</div><div style="font-family:var(--cond);font-size:18px;font-weight:800;color:var(--red)">'+a.was+'</div></div><div class="amr-arrow">→</div><div class="amr-should"><div style="font-family:var(--mono);font-size:7px;color:var(--text-muted)">REQUESTED</div><div style="font-family:var(--cond);font-size:18px;font-weight:800;color:var(--green)">'+a.should+'</div></div></div><div style="font-size:11px;color:var(--text);line-height:1.5;padding:6px 8px;background:var(--panel2);border-radius:4px;margin-bottom:6px">'+a.reason+'</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;"><span style="font-family:var(--mono);font-size:8px;padding:2px 6px;border-radius:2px;background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.2)">GEO '+(a.geo?'✓':'✕')+'</span><span style="font-family:var(--mono);font-size:8px;padding:2px 6px;border-radius:2px;background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.2)">DEVICE '+(a.device?'✓':'✕')+'</span><span style="font-family:var(--mono);font-size:8px;padding:2px 6px;border-radius:2px;'+(a.photo?'background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.2)':'background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.2)')+'">PHOTO '+(a.photo?'✓':'MISSING')+'</span><span style="font-family:var(--mono);font-size:8px;color:var(--amber)">Window: '+a.window+'</span></div><div class="amr-actions"><button class="btn btn-green btn-sm" onclick="amrApprove(\''+a.id+'\')">✓ Approve</button><button class="btn btn-red btn-sm" onclick="amrDeny(\''+a.id+'\')">✕ Deny</button></div></div></div>';}).join(''):'<div class="empty"><div class="empty-icon">📋</div>No pending amendments</div>';}
+}
+function amrApprove(id){AS_DEMO_AMRS.splice(AS_DEMO_AMRS.findIndex(function(a){return a.id===id;}),1);renderAuditScore();toast('Amendment approved — original sealed','ok');}
+function amrDeny(id){AS_DEMO_AMRS.splice(AS_DEMO_AMRS.findIndex(function(a){return a.id===id;}),1);renderAuditScore();toast('Amendment denied — original stands','ok');}
+
+// ══════════════════════════════════════════════════════════════
+// PARK HEALTH INDEX
+// ══════════════════════════════════════════════════════════════
+function calcParkHealth(){
+  var rideScore=calcComposite()||0;
+  var allInsp=Object.keys(INSP_DEFS);
+  var current=allInsp.filter(function(id){var s=getInspStatus(id).status;return s==='current'||s==='due-soon';}).length;
+  var inspPct=allInsp.length?Math.round(current/allInsp.length*100):0;
+  var totalCars=cars.filter(function(c){return c.status==='open';}).length+cars.filter(function(c){return c.status==='closed';}).length;
+  var closedCars=cars.filter(function(c){return c.status==='closed';}).length;
+  var cacr=totalCars?Math.round(closedCars/totalCars*100):100;
+  var totalPos=EU_ROT_DEFS.reduce(function(s,d){return s+d.positions.length;},0);
+  var overdue=rotAlerts.length;
+  var rotPct=totalPos?Math.round((totalPos-overdue)/totalPos*100):100;
+  var phi=Math.round(rideScore*0.35+inspPct*0.25+cacr*0.25+rotPct*0.15);
+  var set=function(id,v){var el=document.getElementById(id);if(el)el.textContent=v;};
+  var bar=function(id,pct,color){var el=document.getElementById(id);if(el){el.style.width=pct+'%';el.style.background=color;}};
+  var phiEl=document.getElementById('phi-score');
+  if(phiEl){phiEl.textContent=phi||'—';phiEl.style.color=phi>=80?'var(--green)':phi>=60?'var(--teal)':phi>=40?'var(--amber)':'var(--red)';}
+  set('phi-ride-val',rideScore||'—');bar('phi-ride',rideScore,'var(--teal)');
+  set('phi-insp-val',inspPct+'%');bar('phi-insp',inspPct,'var(--green)');
+  set('phi-cacr-val',cacr+'%');bar('phi-cacr',cacr,'var(--amber)');
+  set('phi-rot-val',rotPct+'%');bar('phi-rot',rotPct,'var(--purple)');
+}
+
+// ══════════════════════════════════════════════════════════════
+// MANAGER STREAK + BADGES
+// ══════════════════════════════════════════════════════════════
+function calcMgrStreak(){
+  var streak=Math.min(handoffs.length,30);
+  var el=document.getElementById('mgr-streak-num');if(el)el.textContent=streak;
+  var desc=document.getElementById('mgr-streak-desc');
+  if(desc)desc.textContent=streak>0?streak+' consecutive shifts with handoffs':'Start logging handoffs to build streak';
+  var badges=document.getElementById('mgr-badges');if(!badges)return;
+  var html='';
+  if(streak>=7)html+='<span class="mgr-badge mgr-badge-green">7-DAY STREAK</span>';
+  if(streak>=14)html+='<span class="mgr-badge mgr-badge-teal">14-DAY STREAK</span>';
+  if(streak>=21)html+='<span class="mgr-badge mgr-badge-gold">21-DAY STREAK</span>';
+  if(getInspOverdue()===0)html+='<span class="mgr-badge mgr-badge-green">INSPECTIONS CURRENT</span>';
+  var cacr=cars.length?Math.round(cars.filter(function(c){return c.status==='closed';}).length/cars.length*100):100;
+  if(cacr>=90)html+='<span class="mgr-badge mgr-badge-teal">CACR 90%+</span>';
+  badges.innerHTML=html||'<span style="font-family:var(--mono);font-size:8px;color:var(--text-muted);">Complete handoffs to earn badges</span>';
+}
+
 function init(){
   load();
   initRotPositions();
@@ -4343,11 +4738,14 @@ function init(){
   flcSessionEntries=[];
   ypsSessionEntries=[];
   if(!matrixContacts.length)matrixContacts=[...DEFAULT_MATRIX];
+  rsInit();
+  voxSeedFeed();
   buildChecklistItems();
   setDefaults();
   refreshAll();
   checkRotations();
   setInterval(checkRotations,15000);
+  setInterval(voxTick,8000);
   setInterval(()=>document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),1000);
   document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
 
