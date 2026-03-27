@@ -487,7 +487,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
           <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:2px;">MASI data feeds &amp; integration status · Encrypted at rest (AES-256) &amp; in transit (TLS 1.3)</div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-          <div class="panel" style="margin-bottom:0;">
+          <div class="panel" style="margin-bottom:0;" id="int-claims">
             <div class="panel-hdr"><div class="panel-title">MASI Claims Feed</div><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 8px;border-radius:3px;background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.2);">CONNECTED</span></div>
             <div class="panel-body">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
@@ -497,7 +497,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
               <div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);line-height:1.8;">Last sync: 4h ago<br>Records: 186 claims ingested<br>Format: CSV batch upload (monthly)<br>Tenant: MASI-isolated partition</div>
             </div>
           </div>
-          <div class="panel" style="margin-bottom:0;">
+          <div class="panel" style="margin-bottom:0;" id="int-lc">
             <div class="panel-hdr"><div class="panel-title">Loss Control Reports</div><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 8px;border-radius:3px;background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.2);">12 UPLOADED</span></div>
             <div class="panel-body">
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
@@ -508,14 +508,14 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
             </div>
           </div>
         </div>
-        <div class="panel">
+        <div class="panel" id="int-lossruns">
           <div class="panel-hdr"><div class="panel-title">Historical Loss Runs</div><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 8px;border-radius:3px;background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.2);">PENDING</span></div>
           <div class="panel-body">
             <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);line-height:1.7;padding:8px;">Loss run data enables backtest analysis — correlating historical RIDE Score trajectories with claims outcomes. Upload annual loss runs (PDF or CSV) to activate claims correlation scoring across all portfolio facilities.</div>
             <button class="btn btn-gold" style="margin-top:8px;">Upload Loss Runs</button>
           </div>
         </div>
-        <div class="panel">
+        <div class="panel" id="int-nda">
           <div class="panel-hdr"><div class="panel-title">NDA &amp; Access Controls</div></div>
           <div class="panel-body">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -630,12 +630,25 @@ function drawChart(score,trend){
   var pts=[];var base=score-(parseInt(trend)||0);
   for(var i=0;i<13;i++){pts.push(base+Math.round((score-base)*(i/12))+Math.round((Math.random()-0.5)*4));}
   pts[12]=score;
-  var maxY=100;var h=170;var w=c.offsetWidth||600;
-  var points=pts.map(function(v,i){return (i/(pts.length-1))*w+','+((1-v/maxY)*h);}).join(' ');
-  var fillPts='0,'+h+' '+points+' '+w+','+h;
-  var bandColors={'strong':'var(--green)','good':'var(--teal)','watch':'var(--amber)','critical':'var(--red)'};
+  var h=170;var w=c.offsetWidth||600;
+  var allVals=pts.slice();
+  var minY=Math.min.apply(null,allVals)-5;var maxY=Math.max.apply(null,allVals)+5;
+  minY=Math.floor(minY/5)*5;maxY=Math.ceil(maxY/5)*5;
+  var range=maxY-minY||10;
+  var points=pts.map(function(v,i){
+    var x=30+(i/(pts.length-1))*(w-40);
+    var y=h-20-((v-minY)/range)*(h-40);
+    return x+','+y;
+  }).join(' ');
+  var fill='30,'+(h-20)+' '+points+' '+(w-10)+','+(h-20);
   var color=score>=75?'var(--green)':score>=60?'var(--teal)':score>=40?'var(--amber)':'var(--red)';
-  c.innerHTML='<svg width="100%" height="'+h+'" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+color+'" stop-opacity="0.15"/><stop offset="100%" stop-color="'+color+'" stop-opacity="0.01"/></linearGradient></defs><polygon points="'+fillPts+'" fill="url(#cg)"/><polyline points="'+points+'" fill="none" stroke="'+color+'" stroke-width="2"/></svg>';
+  var gridHtml='';
+  for(var g=minY;g<=maxY;g+=5){
+    var gy=h-20-((g-minY)/range)*(h-40);
+    gridHtml+='<line x1="30" y1="'+gy+'" x2="'+w+'" y2="'+gy+'" stroke="rgba(34,46,69,0.5)" stroke-width="0.5"/>';
+    gridHtml+='<text x="26" y="'+(gy+3)+'" fill="rgba(58,72,96,1)" font-size="9" font-family="monospace" text-anchor="end">'+g+'</text>';
+  }
+  c.innerHTML='<svg width="100%" height="'+h+'" viewBox="0 0 '+w+' '+h+'">'+gridHtml+'<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+color+'" stop-opacity="0.2"/><stop offset="100%" stop-color="'+color+'" stop-opacity="0.02"/></linearGradient></defs><polygon points="'+fill+'" fill="url(#cg)"/><polyline points="'+points+'" fill="none" stroke="'+color+'" stroke-width="2.5"/>'+pts.map(function(v,i){var x=30+(i/(pts.length-1))*(w-40);var y=h-20-((v-minY)/range)*(h-40);return '<circle cx="'+x+'" cy="'+y+'" r="3" fill="'+color+'"/>';}).join('')+'<text x="35" y="'+(h-4)+'" fill="rgba(58,72,96,1)" font-size="9" font-family="monospace">Jan</text><text x="'+w/2+'" y="'+(h-4)+'" fill="rgba(58,72,96,1)" font-size="9" font-family="monospace" text-anchor="middle">Feb</text><text x="'+(w-10)+'" y="'+(h-4)+'" fill="rgba(58,72,96,1)" font-size="9" font-family="monospace" text-anchor="end">Mar 25</text></svg>';
 }
 
 function filterFacilities(q){
@@ -672,6 +685,18 @@ function showSection(s){
   if(s==='integrity')renderIntegrity();
   if(s==='inspections')renderInspections();
   if(s==='amendments')renderAmendments();
+  // Facility Search — focus the search input
+  if(s==='facilities'){
+    setTimeout(function(){document.getElementById('searchInput').focus();},100);
+  }
+  // Data Integration sub-items — scroll to relevant section
+  if(s==='claims'||s==='lc'||s==='lossruns'||s==='nda'){
+    setTimeout(function(){
+      var scrollTargets={claims:'int-claims',lc:'int-lc',lossruns:'int-lossruns',nda:'int-nda'};
+      var el=document.getElementById(scrollTargets[s]);
+      if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+    },100);
+  }
 }
 
 function renderAlerts(){
@@ -691,9 +716,23 @@ function renderTrends(){
   if(c){
     var h=170;var w=c.offsetWidth||600;
     var pts=[72,71,72,73,72,73,74,73,74,74,75,74,74];
-    var points=pts.map(function(v,i){return (i/(pts.length-1))*w+','+((1-v/100)*h);}).join(' ');
-    var fill='0,'+h+' '+points+' '+w+','+h;
-    c.innerHTML='<svg width="100%" height="'+h+'" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none"><defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--teal)" stop-opacity="0.15"/><stop offset="100%" stop-color="var(--teal)" stop-opacity="0.01"/></linearGradient></defs><polygon points="'+fill+'" fill="url(#tg)"/><polyline points="'+points+'" fill="none" stroke="var(--teal)" stroke-width="2"/></svg>';
+    var minY=60;var maxY=80;var range=maxY-minY;
+    var points=pts.map(function(v,i){
+      var x=(i/(pts.length-1))*w;
+      var y=h-20-((v-minY)/range)*(h-40);
+      return x+','+y;
+    }).join(' ');
+    var fill='0,'+(h-20)+' '+points+' '+w+','+(h-20);
+    var gridHtml='';
+    for(var g=minY;g<=maxY;g+=5){
+      var gy=h-20-((g-minY)/range)*(h-40);
+      gridHtml+='<line x1="30" y1="'+gy+'" x2="'+w+'" y2="'+gy+'" stroke="rgba(34,46,69,0.5)" stroke-width="0.5"/>';
+      gridHtml+='<text x="26" y="'+(gy+3)+'" fill="rgba(58,72,96,1)" font-size="9" font-family="monospace" text-anchor="end">'+g+'</text>';
+    }
+    var monthHtml='<text x="35" y="'+(h-4)+'" fill="rgba(58,72,96,1)" font-size="9" font-family="monospace">Jan</text>';
+    monthHtml+='<text x="'+w/2+'" y="'+(h-4)+'" fill="rgba(58,72,96,1)" font-size="9" font-family="monospace" text-anchor="middle">Feb</text>';
+    monthHtml+='<text x="'+(w-10)+'" y="'+(h-4)+'" fill="rgba(58,72,96,1)" font-size="9" font-family="monospace" text-anchor="end">Mar 25</text>';
+    c.innerHTML='<svg width="100%" height="'+h+'" viewBox="0 0 '+w+' '+h+'">'+gridHtml+'<defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--teal)" stop-opacity="0.2"/><stop offset="100%" stop-color="var(--teal)" stop-opacity="0.02"/></linearGradient></defs><polygon points="'+fill+'" fill="url(#tg)"/><polyline points="'+points+'" fill="none" stroke="var(--teal)" stroke-width="2.5"/>'+pts.map(function(v,i){var x=(i/(pts.length-1))*w;var y=h-20-((v-minY)/range)*(h-40);return '<circle cx="'+x+'" cy="'+y+'" r="3" fill="var(--teal)"/>';}).join('')+monthHtml+'</svg>';
   }
   var m=document.getElementById('trend-movers');
   if(m){
