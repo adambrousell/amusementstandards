@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>VoxIntel — Live</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#06080D;color:#C8D6E5;font-family:-apple-system,system-ui,sans-serif;min-height:100vh;padding:12px 12px 80px}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 0 12px}
+.logo{font-size:11px;font-weight:700;letter-spacing:.15em;color:#A78BFA;text-transform:uppercase}
+.status{display:flex;align-items:center;gap:5px;font-size:10px;color:#4a5268}
+.pulse{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.pulse-live{background:#22c55e;animation:lp 1.4s ease-in-out infinite}
+.pulse-off{background:#ef4444}
+@keyframes lp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+.clock{font-size:10px;color:#4a5268;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px}
+.st{background:#0B0E16;border:1px solid #1A2235;border-radius:6px;padding:8px 6px;text-align:center}
+.st-n{font-size:20px;font-weight:800;line-height:1}
+.st-n.red{color:#ef4444}.st-n.green{color:#22c55e}.st-n.amber{color:#f59e0b}.st-n.purple{color:#A78BFA}
+.st-l{font-size:7px;color:#4a5268;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.sec{font-size:9px;font-weight:700;letter-spacing:.12em;color:#A78BFA;text-transform:uppercase;margin:14px 0 6px;display:flex;align-items:center;gap:6px}
+.sec::before{content:'';width:10px;height:2px;background:#A78BFA}
+.ride{display:flex;align-items:center;gap:8px;padding:10px;background:#0B0E16;border:1px solid #1A2235;border-radius:6px;margin-bottom:5px}
+.ride-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.dot-down{background:#ef4444;box-shadow:0 0 6px rgba(239,68,68,.4)}
+.dot-up{background:#22c55e;box-shadow:0 0 6px rgba(34,197,94,.4)}
+.ride-info{flex:1;min-width:0}
+.ride-name{font-size:14px;font-weight:700;color:#C8D6E5}
+.ride-sub{font-size:9px;color:#4a5268;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ride-badge{font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:3px;flex-shrink:0}
+.b-down{background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.2)}
+.b-up{background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.2)}
+.b-sig2{background:rgba(239,68,68,.2);color:#ff6b6b;border:1px solid rgba(239,68,68,.35)}
+.evt{display:flex;align-items:flex-start;gap:7px;padding:8px 10px;background:#0B0E16;border:1px solid #1A2235;border-radius:6px;margin-bottom:4px}
+.evt-dot{width:5px;height:5px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.evt-body{flex:1;min-width:0}
+.evt-text{font-size:11px;color:#8494AD;line-height:1.4}
+.evt-meta{font-size:8px;color:#4a5268;margin-top:2px;display:flex;gap:8px;flex-wrap:wrap}
+.evt-tag{font-size:7px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:1px 4px;border-radius:2px}
+.t-emg{background:rgba(239,68,68,.15);color:#ef4444}.t-safe{background:rgba(239,68,68,.1);color:#ff6b6b}
+.t-rd{background:rgba(167,139,250,.12);color:#A78BFA}.t-ru{background:rgba(34,197,94,.12);color:#22c55e}
+.t-res{background:rgba(245,158,11,.12);color:#f59e0b}.t-mnt{background:rgba(0,153,255,.12);color:#0099FF}
+.t-dis{background:rgba(255,255,255,.05);color:#4a5268}.t-ack{background:rgba(255,255,255,.03);color:#333}
+.t-sec{background:rgba(255,120,50,.12);color:#ff7832}.t-stf{background:rgba(0,212,208,.12);color:#00D4D0}
+.empty{text-align:center;padding:20px;color:#4a5268;font-size:12px}
+.err-bar{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:6px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:#ef4444;display:none}
+.tab-bar{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0B0E16;border-top:1px solid #1A2235;padding:8px 0;z-index:10}
+.tab{flex:1;text-align:center;font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#4a5268;padding:6px 0;cursor:pointer;transition:color .15s}
+.tab.active{color:#A78BFA}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">📡 VoxIntel Live</div>
+  <div>
+    <div class="status"><div class="pulse pulse-off" id="pulse"></div><span id="conn-status">Connecting...</span></div>
+    <div class="clock" id="clock"></div>
+  </div>
+</div>
+
+<div class="err-bar" id="err-bar"></div>
+
+<div class="stats">
+  <div class="st"><div class="st-n purple" id="s-total">—</div><div class="st-l">Events</div></div>
+  <div class="st"><div class="st-n red" id="s-down">—</div><div class="st-l">Down</div></div>
+  <div class="st"><div class="st-n green" id="s-up">—</div><div class="st-l">Up</div></div>
+  <div class="st"><div class="st-n amber" id="s-res">—</div><div class="st-l">Resource</div></div>
+</div>
+
+<div id="view-rides">
+  <div class="sec">Ride Status Board</div>
+  <div id="ride-list"><div class="empty">Waiting for data...</div></div>
+</div>
+
+<div id="view-feed" style="display:none">
+  <div class="sec">Live Event Feed</div>
+  <div id="feed-list"><div class="empty">Waiting for data...</div></div>
+</div>
+
+<div class="tab-bar">
+  <div class="tab active" data-view="rides">🎢 Rides</div>
+  <div class="tab" data-view="feed">📻 Feed</div>
+</div>
+
+<script>
+var PROXY = 'https://voxintel-proxy.amusementstandards.workers.dev';
+var TABLE = 'Radio_Log';
+var POLL_MS = 10000;
+var allRecords = [];
+var rideBoard = {};
+
+// Tab switching
+document.querySelectorAll('.tab').forEach(function(t) {
+  t.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(function(x) { x.classList.remove('active'); });
+    t.classList.add('active');
+    var v = t.getAttribute('data-view');
+    document.getElementById('view-rides').style.display = v === 'rides' ? '' : 'none';
+    document.getElementById('view-feed').style.display = v === 'feed' ? '' : 'none';
+  });
+});
+
+// Clock
+setInterval(function() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', {hour12:false});
+}, 1000);
+
+// Category tag classes
+var TAG_CLASS = {
+  'EMERGENCY':'t-emg','SAFETY_SYSTEM':'t-safe','FIRE':'t-emg',
+  'RIDE_DOWN':'t-rd','RIDE_UP':'t-ru','INCIDENT':'t-emg',
+  'RESOURCE_PRESSURE':'t-res','MAINTENANCE':'t-mnt','SECURITY':'t-sec',
+  'STAFFING':'t-stf','DISPATCH':'t-dis','ACK':'t-ack',
+  'MEDICAL':'t-emg','WEATHER':'t-emg','GUEST_ISSUE':'t-stf',
+  'ANIMAL_OPS':'t-mnt','OTHER':'t-dis',
+};
+
+var DOT_COLOR = {
+  'EMERGENCY':'#ef4444','SAFETY_SYSTEM':'#ff6b6b','FIRE':'#ef4444',
+  'RIDE_DOWN':'#A78BFA','RIDE_UP':'#22c55e','INCIDENT':'#f59e0b',
+  'RESOURCE_PRESSURE':'#f59e0b','MAINTENANCE':'#0099FF','SECURITY':'#ff7832',
+  'STAFFING':'#00D4D0','DISPATCH':'#4a5268','ACK':'#333',
+  'MEDICAL':'#ef4444','WEATHER':'#f59e0b','GUEST_ISSUE':'#4a5268',
+};
+
+// Fetch from Airtable via proxy
+function poll() {
+  var params = 'sort%5B0%5D%5Bfield%5D=Timestamp&sort%5B0%5D%5Bdirection%5D=desc&maxRecords=100';
+  var url = PROXY + '/airtable/' + TABLE + '?' + params;
+
+  fetch(url)
+    .then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(function(data) {
+      document.getElementById('pulse').className = 'pulse pulse-live';
+      document.getElementById('conn-status').textContent = 'Live';
+      document.getElementById('err-bar').style.display = 'none';
+
+      if (data.records && data.records.length > 0) {
+        allRecords = data.records;
+        processRecords();
+      }
+    })
+    .catch(function(e) {
+      document.getElementById('pulse').className = 'pulse pulse-off';
+      document.getElementById('conn-status').textContent = 'Offline';
+      document.getElementById('err-bar').textContent = 'Connection error: ' + e.message;
+      document.getElementById('err-bar').style.display = '';
+    });
+}
+
+function processRecords() {
+  rideBoard = {};
+  var downCount = 0;
+  var upCount = 0;
+  var resCount = 0;
+
+  // Process oldest to newest to build ride board chronologically
+  var sorted = allRecords.slice().reverse();
+
+  sorted.forEach(function(r) {
+    var f = r.fields || {};
+    var cat = f['Event Category'] || f['event_category'] || 'OTHER';
+    var text = f['Cleaned Transcript'] || f['cleaned_transcript'] || f['Raw Transcript'] || f['raw_transcript'] || '';
+    var ride = f['Ride Mentioned'] || f['ride_mentioned'] || '';
+    var signal = f['Signal Code'] || f['signal_code'] || '';
+    var tenCode = f['Ten Code'] || f['ten_code'] || '';
+
+    // Ride status from signal codes and categories
+    if (ride) {
+      if (cat === 'RIDE_DOWN' || cat === 'EMERGENCY' || cat === 'SAFETY_SYSTEM' || signal.indexOf('Signal 2') >= 0 || tenCode.indexOf('10-7') >= 0) {
+        rideBoard[ride] = {status:'DOWN', text:text, category:cat, signal:signal};
+      }
+      if (cat === 'RIDE_UP' || tenCode.indexOf('10-8') >= 0) {
+        rideBoard[ride] = {status:'UP', text:text, category:cat, signal:''};
+      }
+    }
+
+    // Resource pressure
+    var tl = text.toLowerCase();
+    if (tl.indexOf('tied up') >= 0 || tl.indexOf('need a hand') >= 0 || tl.indexOf('want us to take') >= 0 || cat === 'RESOURCE_PRESSURE') {
+      resCount++;
+    }
+  });
+
+  Object.keys(rideBoard).forEach(function(k) {
+    if (rideBoard[k].status === 'DOWN') downCount++;
+    if (rideBoard[k].status === 'UP') upCount++;
+  });
+
+  document.getElementById('s-total').textContent = allRecords.length;
+  document.getElementById('s-down').textContent = downCount;
+  document.getElementById('s-up').textContent = upCount;
+  document.getElementById('s-res').textContent = resCount;
+
+  renderRides();
+  renderFeed();
+}
+
+function renderRides() {
+  var el = document.getElementById('ride-list');
+  var keys = Object.keys(rideBoard);
+  if (keys.length === 0) {
+    el.innerHTML = '<div class="empty">No ride status events yet</div>';
+    return;
+  }
+
+  // Sort DOWN first
+  keys.sort(function(a, b) {
+    if (rideBoard[a].status === 'DOWN' && rideBoard[b].status !== 'DOWN') return -1;
+    if (rideBoard[a].status !== 'DOWN' && rideBoard[b].status === 'DOWN') return 1;
+    return a.localeCompare(b);
+  });
+
+  el.innerHTML = keys.map(function(ride) {
+    var info = rideBoard[ride];
+    var isDown = info.status === 'DOWN';
+    var isSig2 = info.signal && info.signal.indexOf('Signal 2') >= 0;
+    var badgeClass = isSig2 ? 'b-sig2' : (isDown ? 'b-down' : 'b-up');
+    var badgeText = isSig2 ? 'SIG 2' : info.status;
+    return '<div class="ride">' +
+      '<div class="ride-dot ' + (isDown ? 'dot-down' : 'dot-up') + '"></div>' +
+      '<div class="ride-info">' +
+        '<div class="ride-name">' + ride + '</div>' +
+        '<div class="ride-sub">' + info.text.substring(0, 80) + '</div>' +
+      '</div>' +
+      '<div class="ride-badge ' + badgeClass + '">' + badgeText + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function renderFeed() {
+  var el = document.getElementById('feed-list');
+  if (allRecords.length === 0) {
+    el.innerHTML = '<div class="empty">No events yet</div>';
+    return;
+  }
+
+  el.innerHTML = allRecords.slice(0, 50).map(function(r) {
+    var f = r.fields || {};
+    var cat = f['Event Category'] || f['event_category'] || 'OTHER';
+    var text = f['Cleaned Transcript'] || f['cleaned_transcript'] || f['Raw Transcript'] || f['raw_transcript'] || '';
+    var conf = f['Confidence'] || f['confidence'] || 0;
+    var ride = f['Ride Mentioned'] || f['ride_mentioned'] || '';
+    var signal = f['Signal Code'] || f['signal_code'] || '';
+    var tenCode = f['Ten Code'] || f['ten_code'] || '';
+    var ts = f['Timestamp'] || f['timestamp'] || '';
+
+    if (!text) return '';
+
+    var time = '';
+    try { time = new Date(ts).toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit', hour12:false}); } catch(e) {}
+    var tagClass = TAG_CLASS[cat] || 't-dis';
+    var dotColor = DOT_COLOR[cat] || '#4a5268';
+
+    var meta = [];
+    if (time) meta.push(time);
+    if (conf) meta.push(Math.round(conf) + '%');
+    if (ride) meta.push('🎢 ' + ride);
+    if (signal) meta.push('⚡ ' + signal);
+    if (tenCode) meta.push('📻 ' + tenCode);
+
+    return '<div class="evt">' +
+      '<div class="evt-dot" style="background:' + dotColor + '"></div>' +
+      '<div class="evt-body">' +
+        '<div class="evt-text">' + text + '</div>' +
+        '<div class="evt-meta">' +
+          '<span class="evt-tag ' + tagClass + '">' + cat + '</span>' +
+          meta.map(function(m) { return '<span>' + m + '</span>'; }).join('') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// Start
+poll();
+setInterval(poll, POLL_MS);
+</script>
+</body>
+</html>
