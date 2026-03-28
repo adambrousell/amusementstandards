@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>AuditScore — Field Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0C10;--surface:#10141A;--surface2:#161B24;--border:rgba(255,255,255,.07);
+  --accent:#3B82F6;--accent-d:rgba(59,130,246,.1);--accent-b:rgba(59,130,246,.22);
+  --good:#10B981;--good-d:rgba(16,185,129,.08);--good-b:rgba(16,185,129,.2);
+  --warn:#F59E0B;--warn-d:rgba(245,158,11,.08);--warn-b:rgba(245,158,11,.2);
+  --red:#EF4444;--red-d:rgba(239,68,68,.06);--red-b:rgba(239,68,68,.18);
+  --muted:rgba(255,255,255,.36);--text:#DFE5ED;--r:10px;
+  --ride-color:#3B82F6;--splash-color:#06B6D4;--play-color:#8B5CF6;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;max-width:430px;margin:0 auto;overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* ── HEADER ── */
+.hdr{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 16px}
+.hdr-top{display:flex;align-items:center;gap:8px}
+.hdr-logo{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--score-color,var(--accent));flex-shrink:0}
+.hdr-logo span{color:var(--muted);font-weight:400}
+.hdr-ride{flex:1;min-width:0;text-align:center}
+.hdr-ride-name{font-size:13px;font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hdr-ride-park{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.04em}
+.hdr-badge{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;flex-shrink:0;letter-spacing:.04em}
+.hdr-badge.ride{background:rgba(59,130,246,.12);color:#3B82F6;border:1px solid rgba(59,130,246,.25)}
+.hdr-badge.splash{background:rgba(6,182,212,.12);color:#06B6D4;border:1px solid rgba(6,182,212,.25)}
+.hdr-badge.play{background:rgba(139,92,246,.12);color:#8B5CF6;border:1px solid rgba(139,92,246,.25)}
+.hdr-meta{display:flex;align-items:center;justify-content:space-between;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted)}
+.hdr-auditor{display:flex;align-items:center;gap:4px}
+.hdr-auditor .dot{width:5px;height:5px;border-radius:50%;background:var(--good);flex-shrink:0}
+.hdr-ts{letter-spacing:.03em}
+
+/* ── PROGRESS BAR ── */
+.progress{padding:0 16px;margin:12px 0 4px}
+.progress-bar{height:3px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:var(--score-color,var(--accent));transition:width .3s}
+.progress-label{display:flex;justify-content:space-between;margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted)}
+
+/* ── PILLAR NAV ── */
+.pillar-nav{display:flex;gap:3px;padding:8px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pillar-nav::-webkit-scrollbar{display:none}
+.pillar-tab{flex-shrink:0;padding:6px 12px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--muted);background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:all .12s;white-space:nowrap}
+.pillar-tab.active{color:var(--score-color,var(--accent));background:var(--accent-d);border-color:var(--accent-b)}
+.pillar-tab .count{font-weight:400;opacity:.6;margin-left:3px}
+
+/* ── QUESTION CARDS ── */
+.questions{padding:8px 16px 120px}
+.q-pillar-hd{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin:16px 0 8px;display:flex;align-items:center;gap:6px}
+.q-pillar-hd::after{content:'';flex:1;height:1px;background:var(--border)}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:6px;transition:border-color .15s}
+.q-card.answered{border-color:var(--good-b)}
+.q-card.flagged{border-color:var(--red-b);background:var(--red-d)}
+.q-num{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin-bottom:4px}
+.q-text{font-size:13px;font-weight:600;color:#fff;line-height:1.4;margin-bottom:10px}
+.q-ref{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-bottom:8px;opacity:.7}
+
+/* SCORE BUTTONS */
+.q-scores{display:flex;gap:4px}
+.q-score{flex:1;height:42px;border-radius:6px;background:var(--surface2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .1s;-webkit-tap-highlight-color:transparent}
+.q-score:active{transform:scale(.95)}
+.q-score.s1{color:var(--red)}.q-score.s1.on{background:var(--red-d);border-color:var(--red-b);color:var(--red)}
+.q-score.s2{color:#F97316}.q-score.s2.on{background:rgba(249,115,22,.08);border-color:rgba(249,115,22,.2);color:#F97316}
+.q-score.s3{color:var(--warn)}.q-score.s3.on{background:var(--warn-d);border-color:var(--warn-b);color:var(--warn)}
+.q-score.s4{color:#22D87C}.q-score.s4.on{background:rgba(34,216,124,.08);border-color:rgba(34,216,124,.2);color:#22D87C}
+.q-score.s5{color:var(--good)}.q-score.s5.on{background:var(--good-d);border-color:var(--good-b);color:var(--good)}
+.q-score.na{font-size:9px;letter-spacing:.04em}
+.q-score.na.on{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.12);color:var(--text)}
+
+/* FLAG + NOTES */
+.q-extras{display:flex;align-items:center;gap:6px;margin-top:8px}
+.q-flag{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;padding:4px 8px;border-radius:4px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .12s}
+.q-flag.on{background:var(--red-d);border-color:var(--red-b);color:var(--red)}
+.q-note-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text);outline:none;transition:border-color .12s}
+.q-note-input:focus{border-color:var(--accent)}
+.q-note-input::placeholder{color:rgba(255,255,255,.18)}
+
+/* ── SUBMIT BAR ── */
+.submit-bar{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:0 auto;background:var(--bg);border-top:1px solid var(--border);padding:10px 16px 24px;z-index:40}
+.submit-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.submit-score{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--score-color,var(--accent))}
+.submit-answered{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
+.submit-btn{width:100%;padding:14px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;color:#fff;cursor:pointer;transition:opacity .12s;background:var(--score-color,var(--accent))}
+.submit-btn:hover{opacity:.92}
+.submit-btn:disabled{opacity:.3;cursor:not-allowed}
+
+/* ── CONFIG SCREEN ── */
+.config{padding:40px 20px;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.config-icon{font-size:48px;margin-bottom:12px}
+.config-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:6px}
+.config-sub{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:24px;max-width:300px}
+.config-params{width:100%;max-width:340px;text-align:left}
+.config-row{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.config-key{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;width:60px;flex-shrink:0}
+.config-val{font-size:13px;font-weight:600;color:#fff;flex:1}
+.config-val.missing{color:var(--red);font-style:italic}
+.config-example{width:100%;max-width:340px;margin-top:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);line-height:1.6;text-align:left;word-break:break-all}
+.config-example b{color:var(--accent)}
+
+/* ── SUBMISSION RESULT ── */
+.result{display:none;padding:40px 20px;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.result.show{display:flex}
+.result-icon{font-size:56px;margin-bottom:12px}
+.result-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px}
+.result-score{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;color:var(--score-color,var(--accent));margin:12px 0}
+.result-band{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:4px 12px;border-radius:4px;margin-bottom:16px}
+.result-band.strong{background:var(--good-d);border:1px solid var(--good-b);color:var(--good)}
+.result-band.good{background:rgba(34,216,124,.06);border:1px solid rgba(34,216,124,.15);color:#22D87C}
+.result-band.watch{background:var(--warn-d);border:1px solid var(--warn-b);color:var(--warn)}
+.result-band.critical{background:var(--red-d);border:1px solid var(--red-b);color:var(--red)}
+.result-pillars{width:100%;max-width:300px;margin-bottom:20px}
+.rp-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
+.rp-row:last-child{border-bottom:none}
+.rp-name{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;width:80px;flex-shrink:0;text-align:left}
+.rp-bar{flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.rp-fill{height:100%;border-radius:3px;transition:width .4s}
+.rp-score{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;width:30px;flex-shrink:0;text-align:right}
+.result-flags{width:100%;max-width:300px;margin-bottom:16px;text-align:left}
+.rf-title{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.rf-item{font-size:11px;color:var(--text);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--border)}
+.rf-item:last-child{border-bottom:none}
+.result-meta{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.result-btn{padding:12px 32px;border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;color:var(--muted);background:transparent;cursor:pointer}
+.result-btn:hover{color:var(--text);border-color:rgba(255,255,255,.15)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(50px);background:var(--surface);border:1px solid var(--accent-b);border-radius:8px;padding:8px 16px;font-size:12px;font-weight:600;color:var(--text);z-index:60;opacity:0;transition:all .25s;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<!-- CONFIG SCREEN (shown when params missing) -->
+<div class="config" id="configScreen" style="display:none">
+  <div class="config-icon">📋</div>
+  <div class="config-title">AuditScore</div>
+  <div class="config-sub">This tool requires pre-assignment. Open it with URL parameters specifying the park, ride, type, and auditor.</div>
+  <div class="config-params" id="configParams"></div>
+  <div class="config-example">
+    <b>Example URL:</b><br>
+    auditscore.html?park=Six+Flags+Great+Adventure&ride=Nitro&type=coaster&auditor=Matt+Smith
+  </div>
+</div>
+
+<!-- AUDIT SCREEN -->
+<div id="auditScreen" style="display:none">
+  <div class="hdr">
+    <div class="hdr-top">
+      <div class="hdr-logo">Audit<span>Score</span></div>
+      <div class="hdr-ride">
+        <div class="hdr-ride-name" id="hdrRide">—</div>
+        <div class="hdr-ride-park" id="hdrPark">—</div>
+      </div>
+      <div class="hdr-badge" id="hdrBadge">RIDE</div>
+    </div>
+    <div class="hdr-meta">
+      <div class="hdr-auditor"><div class="dot"></div><span id="hdrAuditor">—</span></div>
+      <div class="hdr-ts" id="hdrTs">—</div>
+    </div>
+  </div>
+
+  <div class="progress">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-label"><span id="progressText">0 / 0 answered</span><span id="progressPct">0%</span></div>
+  </div>
+
+  <div class="pillar-nav" id="pillarNav"></div>
+  <div class="questions" id="questionsContainer"></div>
+
+  <div class="submit-bar">
+    <div class="submit-top">
+      <div class="submit-score" id="submitScore">Composite: —</div>
+      <div class="submit-answered" id="submitAnswered">0 / 0</div>
+    </div>
+    <button class="submit-btn" id="submitBtn" disabled>Complete All Questions to Submit</button>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="result" id="resultScreen">
+  <div class="result-icon" id="resultIcon">✅</div>
+  <div class="result-title" id="resultTitle">Audit Submitted</div>
+  <div class="result-score" id="resultScore">—</div>
+  <div class="result-band" id="resultBand">—</div>
+  <div class="result-pillars" id="resultPillars"></div>
+  <div class="result-flags" id="resultFlags" style="display:none"></div>
+  <div class="result-meta" id="resultMeta"></div>
+  <button class="result-btn" onclick="location.reload()">Start New Audit</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// AUDITSCORE — FIELD AUDIT TOOL
+// Pre-assigned via URL params. Auto-detects RIDE/SPLASH/PLAY.
+// Writes to AS 360 Airtable base via Cloudflare Worker proxy.
+// ═══════════════════════════════════════════════════════════
+
+var PROXY = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+var BASE_TABLE = 'AuditScore_Submissions'; // table name in AS 360 base
+
+// ── SCORE TYPE DEFINITIONS ──
+var SCORE_TYPES = {
+  // RIDE Score — dry attractions (coasters, flat rides)
+  ride: {
+    label: 'RIDE', color: '#3B82F6', badgeClass: 'ride',
+    pillars: [
+      { key: 'readiness',  label: 'READINESS',  weight: 1.0 },
+      { key: 'integrity',  label: 'INTEGRITY',  weight: 1.5 },
+      { key: 'delivery',   label: 'DELIVERY',   weight: 1.0 },
+      { key: 'environment',label: 'ENVIRONMENT', weight: 0.75 },
+    ]
+  },
+  // SPLASH Score — aquatics
+  splash: {
+    label: 'SPLASH', color: '#06B6D4', badgeClass: 'splash',
+    pillars: [
+      { key: 'safety',    label: 'SAFETY',    weight: 2.0 },
+      { key: 'protocol',  label: 'PROTOCOL',  weight: 1.5 },
+      { key: 'lifeguard', label: 'LIFEGUARD', weight: 2.0 },
+      { key: 'aquatic',   label: 'AQUATIC',   weight: 1.0 },
+      { key: 'structure', label: 'STRUCTURE', weight: 0.75 },
+      { key: 'hazard',    label: 'HAZARD',    weight: 1.5 },
+    ]
+  },
+  // PLAY Score — FECs / entertainment
+  play: {
+    label: 'PLAY', color: '#8B5CF6', badgeClass: 'play',
+    pillars: [
+      { key: 'safety',     label: 'SAFETY',     weight: 2.0 },
+      { key: 'supervision',label: 'SUPERVISION',weight: 1.5 },
+      { key: 'condition',  label: 'CONDITION',  weight: 1.0 },
+      { key: 'cleanliness',label: 'CLEANLINESS',weight: 0.75 },
+    ]
+  }
+};
+
+// ── TYPE DETECTION FROM RIDE TYPE STRING ──
+var TYPE_MAP = {
+  'coaster': 'ride', 'roller coaster': 'ride', 'flat ride': 'ride', 'flat': 'ride',
+  'dark ride': 'ride', 'thrill': 'ride', 'family': 'ride', 'kiddie': 'ride',
+  'water ride': 'ride', 'log flume': 'ride', 'rapids': 'ride',
+  'water slide': 'splash', 'wave pool': 'splash', 'lazy river': 'splash',
+  'aquatic': 'splash', 'pool': 'splash', 'splash pad': 'splash',
+  'play structure': 'play', 'playground': 'play', 'trampoline': 'play',
+  'arcade': 'play', 'fec': 'play', 'go kart': 'play', 'mini golf': 'play',
+  'climbing': 'play', 'ropes course': 'play',
+};
+
+function detectScoreType(typeStr) {
+  if (!typeStr) return 'ride';
+  var t = typeStr.toLowerCase().trim();
+  if (TYPE_MAP[t]) return TYPE_MAP[t];
+  for (var key in TYPE_MAP) { if (t.includes(key)) return TYPE_MAP[key]; }
+  return 'ride';
+}
+
+// ═══════════════════════════════════════════════════════════
+// PLACEHOLDER QUESTIONS — structured by score type + pillar
+// Replace with ASTM/IROC-derived questions once docs uploaded
+// ═══════════════════════════════════════════════════════════
+
+var QUESTIONS = {
+  ride: {
+    readiness: [
+      { id:'R01', text:'Pre-opening inspection documentation complete and signed?', ref:'ASTM F770 §6.1' },
+      { id:'R02', text:'All required EIDs (Employee Identification Documents) present at control panel?', ref:'ASTM F770 §6.2' },
+      { id:'R03', text:'Operator has current certification/training documentation on file?', ref:'ASTM F1193 §4.3' },
+      { id:'R04', text:'Emergency procedures posted and visible at operator station?', ref:'ASTM F770 §8.1' },
+      { id:'R05', text:'Communication equipment tested and functional (radio, PA, e-stop)?', ref:'ASTM F2291 §7.2' },
+    ],
+    integrity: [
+      { id:'I01', text:'Restraint check protocol observed — operator physically verifies each guest?', ref:'ASTM F2291 §6.4' },
+      { id:'I02', text:'Height requirement enforcement observed with measuring device?', ref:'ASTM F2291 §5.1' },
+      { id:'I03', text:'Ride zone clearance verified before each dispatch?', ref:'ASTM F2291 §6.6' },
+      { id:'I04', text:'Lockout/tagout procedures followed for any maintenance activity observed?', ref:'ASTM F770 §9.3' },
+      { id:'I05', text:'Safety signal system (e-stop, Signal 2, 10-codes) functioning and understood by staff?', ref:'ASTM F2291 §7.4' },
+      { id:'I06', text:'Automated safety systems (block zones, proximity sensors) functioning — no overrides observed?', ref:'ASTM F2460 §5.2' },
+    ],
+    delivery: [
+      { id:'D01', text:'Dispatch interval consistent and within design capacity?', ref:'ASTM F2291 §6.8' },
+      { id:'D02', text:'Load/unload process efficient — no unnecessary delays?', ref:'Operational benchmark' },
+      { id:'D03', text:'Number of trains/units running vs. available capacity?', ref:'Operational benchmark' },
+      { id:'D04', text:'Queue line management — merge points, grouping, posted wait accuracy?', ref:'Operational benchmark' },
+      { id:'D05', text:'Staff engagement and guest communication during loading?', ref:'ASTM F1193 §4.6' },
+    ],
+    environment: [
+      { id:'E01', text:'Queue area clean, free of trip hazards, adequate shade/shelter?', ref:'ASTM F2291 §8.1' },
+      { id:'E02', text:'Ride platform and station clean, non-slip surfaces maintained?', ref:'ASTM F2291 §8.2' },
+      { id:'E03', text:'Signage clear, legible, and correctly positioned (restrictions, warnings, rules)?', ref:'ASTM F2291 §5.3' },
+      { id:'E04', text:'Lighting adequate for safe guest movement and operator visibility?', ref:'ASTM F2291 §8.4' },
+    ],
+  },
+  splash: {
+    safety: [
+      { id:'S01', text:'All required safety signage posted (depth markers, rules, emergency contacts)?', ref:'ASTM F2461 §5.1' },
+      { id:'S02', text:'Emergency equipment accessible (ring buoys, backboard, AED)?', ref:'ASTM F2461 §7.1' },
+      { id:'S03', text:'Drain covers compliant and secure (VGB Act)?', ref:'VGB Act §2008' },
+      { id:'S04', text:'Chemical storage area secured and properly ventilated?', ref:'MAHC §5.7' },
+    ],
+    protocol: [
+      { id:'P01', text:'Water chemistry tested within last 2 hours and within range?', ref:'MAHC §5.7.3' },
+      { id:'P02', text:'Fecal/vomit response protocol posted and supplies staged?', ref:'MAHC §6.5' },
+      { id:'P03', text:'Weather monitoring protocol in place (lightning, wind)?', ref:'ASTM F2461 §8.2' },
+      { id:'P04', text:'Patron count tracking system functioning (capacity management)?', ref:'MAHC §6.3' },
+    ],
+    lifeguard: [
+      { id:'L01', text:'All guard stations occupied per zone coverage plan?', ref:'ASTM F2461 §6.1' },
+      { id:'L02', text:'Guards in proper uniform, rescue equipment within reach?', ref:'ASTM F2461 §6.3' },
+      { id:'L03', text:'10/20 Protection Standard observed (10-sec scan, 20-sec reach)?', ref:'Ellis & Associates' },
+      { id:'L04', text:'Guard rotation schedule being followed (max 30-min rotation)?', ref:'Ellis & Associates' },
+    ],
+    aquatic: [
+      { id:'A01', text:'Water clarity — main drain visible from deck?', ref:'MAHC §5.7.1' },
+      { id:'A02', text:'Filtration and circulation system operating normally?', ref:'MAHC §4.7' },
+      { id:'A03', text:'Water temperature within posted/safe range?', ref:'MAHC §5.6' },
+    ],
+    structure: [
+      { id:'T01', text:'Slide/attraction structure free of visible damage, corrosion, missing fasteners?', ref:'ASTM F2376 §5.1' },
+      { id:'T02', text:'Non-slip surfaces on steps, walkways, and platforms maintained?', ref:'ASTM F2376 §6.3' },
+      { id:'T03', text:'Handrails and barriers secure and at correct height?', ref:'ASTM F2376 §6.2' },
+    ],
+    hazard: [
+      { id:'H01', text:'Deck surfaces free of standing water, debris, trip hazards?', ref:'ASTM F2461 §8.1' },
+      { id:'H02', text:'Fencing and barriers secure — no unauthorized access points?', ref:'MAHC §6.1' },
+      { id:'H03', text:'Electrical equipment properly grounded and protected from water?', ref:'NEC §680' },
+    ],
+  },
+  play: {
+    safety: [
+      { id:'PS01', text:'Impact-attenuating surfacing present and maintained under all equipment?', ref:'ASTM F1292' },
+      { id:'PS02', text:'No entrapment hazards (head, finger, clothing) observed?', ref:'ASTM F1487 §7.4' },
+      { id:'PS03', text:'Fall zones clear — no hard objects within use zone?', ref:'ASTM F1487 §9.2' },
+      { id:'PS04', text:'Age-appropriate signage posted (2-5 vs 5-12 areas separated)?', ref:'CPSC Pub. 325' },
+    ],
+    supervision: [
+      { id:'PV01', text:'Staff-to-guest ratio adequate for the activity type?', ref:'Operational benchmark' },
+      { id:'PV02', text:'Attendants positioned with clear sightlines to all play areas?', ref:'ASTM F2374 §5.2' },
+      { id:'PV03', text:'Rules being actively enforced (capacity limits, age restrictions)?', ref:'Operational benchmark' },
+    ],
+    condition: [
+      { id:'PC01', text:'Equipment free of broken, cracked, or missing components?', ref:'ASTM F1487 §8.1' },
+      { id:'PC02', text:'Moving parts (swings, rotating elements) functioning smoothly?', ref:'ASTM F1487 §8.4' },
+      { id:'PC03', text:'Fasteners and connectors secure — no exposed bolt ends?', ref:'ASTM F1487 §7.2' },
+    ],
+    cleanliness: [
+      { id:'PL01', text:'Play surfaces and equipment visibly clean?', ref:'Operational benchmark' },
+      { id:'PL02', text:'Restrooms and handwashing stations clean and stocked?', ref:'Operational benchmark' },
+      { id:'PL03', text:'Waste receptacles available and not overflowing?', ref:'Operational benchmark' },
+    ],
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+// INIT — parse URL params, detect score type, render
+// ═══════════════════════════════════════════════════════════
+
+var params = new URLSearchParams(window.location.search);
+var PARK    = params.get('park') || '';
+var RIDE    = params.get('ride') || '';
+var TYPE    = params.get('type') || '';
+var AUDITOR = params.get('auditor') || '';
+var RIDE_ID = params.get('rideId') || '';
+
+var scoreTypeKey = TYPE ? detectScoreType(TYPE) : 'ride';
+var scoreType = SCORE_TYPES[scoreTypeKey];
+var questions = QUESTIONS[scoreTypeKey] || {};
+var answers = {};  // { questionId: { score: 1-5 | 'na', flag: bool, note: '' } }
+
+// Check required params
+if (!PARK || !RIDE) {
+  document.getElementById('configScreen').style.display = 'flex';
+  var cp = document.getElementById('configParams');
+  var rows = [
+    { key:'park', val:PARK, required:true },
+    { key:'ride', val:RIDE, required:true },
+    { key:'type', val:TYPE || '(auto-detect)', required:false },
+    { key:'auditor', val:AUDITOR || '(anonymous)', required:false },
+  ];
+  cp.innerHTML = rows.map(function(r) {
+    return '<div class="config-row"><div class="config-key">' + r.key + '</div><div class="config-val' + (!r.val && r.required ? ' missing' : '') + '">' + (r.val || (r.required ? 'MISSING' : r.val)) + '</div></div>';
+  }).join('');
+} else {
+  initAudit();
+}
+
+function initAudit() {
+  document.getElementById('auditScreen').style.display = 'block';
+
+  // Set score color
+  document.documentElement.style.setProperty('--score-color', scoreType.color);
+
+  // Header
+  document.getElementById('hdrRide').textContent = RIDE;
+  document.getElementById('hdrPark').textContent = PARK;
+  document.getElementById('hdrBadge').textContent = scoreType.label;
+  document.getElementById('hdrBadge').className = 'hdr-badge ' + scoreType.badgeClass;
+  document.getElementById('hdrAuditor').textContent = AUDITOR || 'Field Observer';
+  document.getElementById('hdrTs').textContent = new Date().toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+
+  // Pillar tabs
+  var nav = document.getElementById('pillarNav');
+  var allTab = document.createElement('div');
+  allTab.className = 'pillar-tab active';
+  allTab.dataset.pillar = 'all';
+  allTab.innerHTML = 'ALL<span class="count">' + getTotalQuestionCount() + '</span>';
+  allTab.onclick = function() { filterPillar('all'); };
+  nav.appendChild(allTab);
+
+  scoreType.pillars.forEach(function(p) {
+    var qs = questions[p.key] || [];
+    var tab = document.createElement('div');
+    tab.className = 'pillar-tab';
+    tab.dataset.pillar = p.key;
+    tab.innerHTML = p.label + '<span class="count">' + qs.length + '</span>';
+    tab.onclick = function() { filterPillar(p.key); };
+    nav.appendChild(tab);
+  });
+
+  // Render questions
+  renderQuestions('all');
+
+  // Submit button
+  document.getElementById('submitBtn').addEventListener('click', submitAudit);
+
+  updateProgress();
+}
+
+function getTotalQuestionCount() {
+  var count = 0;
+  scoreType.pillars.forEach(function(p) { count += (questions[p.key] || []).length; });
+  return count;
+}
+
+function renderQuestions(pillarFilter) {
+  var container = document.getElementById('questionsContainer');
+  var html = '';
+  var globalIdx = 0;
+
+  scoreType.pillars.forEach(function(p) {
+    var qs = questions[p.key] || [];
+    if (!qs.length) return;
+    if (pillarFilter !== 'all' && pillarFilter !== p.key) return;
+
+    html += '<div class="q-pillar-hd">' + p.label + ' (' + qs.length + ')</div>';
+
+    qs.forEach(function(q, qi) {
+      globalIdx++;
+      var a = answers[q.id] || {};
+      var answered = a.score !== undefined;
+      var flagged = a.flag;
+      html += '<div class="q-card' + (answered ? ' answered' : '') + (flagged ? ' flagged' : '') + '" id="qcard-' + q.id + '">';
+      html += '<div class="q-num">' + q.id + ' · ' + p.label + '</div>';
+      html += '<div class="q-text">' + q.text + '</div>';
+      if (q.ref) html += '<div class="q-ref">' + q.ref + '</div>';
+      html += '<div class="q-scores">';
+      for (var s = 1; s <= 5; s++) {
+        html += '<div class="q-score s' + s + (a.score === s ? ' on' : '') + '" onclick="setScore(\'' + q.id + '\',' + s + ')">' + s + '</div>';
+      }
+      html += '<div class="q-score na' + (a.score === 'na' ? ' on' : '') + '" onclick="setScore(\'' + q.id + '\',\'na\')">N/A</div>';
+      html += '</div>';
+      html += '<div class="q-extras">';
+      html += '<div class="q-flag' + (flagged ? ' on' : '') + '" onclick="toggleFlag(\'' + q.id + '\')">🚩 FLAG</div>';
+      html += '<input class="q-note-input" placeholder="Note (optional)" value="' + (a.note || '').replace(/"/g, '&quot;') + '" onchange="setNote(\'' + q.id + '\',this.value)">';
+      html += '</div>';
+      html += '</div>';
+    });
+  });
+
+  container.innerHTML = html;
+}
+
+function filterPillar(key) {
+  document.querySelectorAll('.pillar-tab').forEach(function(t) {
+    t.classList.toggle('active', t.dataset.pillar === key);
+  });
+  renderQuestions(key);
+}
+
+// ── SCORING INTERACTIONS ──
+
+window.setScore = function(qid, val) {
+  if (!answers[qid]) answers[qid] = {};
+  if (answers[qid].score === val) { delete answers[qid].score; } // toggle off
+  else { answers[qid].score = val; }
+  updateCard(qid);
+  updateProgress();
+};
+
+window.toggleFlag = function(qid) {
+  if (!answers[qid]) answers[qid] = {};
+  answers[qid].flag = !answers[qid].flag;
+  updateCard(qid);
+};
+
+window.setNote = function(qid, val) {
+  if (!answers[qid]) answers[qid] = {};
+  answers[qid].note = val;
+};
+
+function updateCard(qid) {
+  var card = document.getElementById('qcard-' + qid);
+  if (!card) return;
+  var a = answers[qid] || {};
+  card.classList.toggle('answered', a.score !== undefined);
+  card.classList.toggle('flagged', !!a.flag);
+
+  // Update score buttons
+  card.querySelectorAll('.q-score').forEach(function(btn) {
+    var isNa = btn.classList.contains('na');
+    var val = isNa ? 'na' : parseInt(btn.textContent);
+    btn.classList.toggle('on', a.score === val);
+  });
+
+  // Update flag
+  var flag = card.querySelector('.q-flag');
+  if (flag) flag.classList.toggle('on', !!a.flag);
+}
+
+// ── PROGRESS + COMPOSITE SCORE ──
+
+function updateProgress() {
+  var total = getTotalQuestionCount();
+  var answered = 0;
+  scoreType.pillars.forEach(function(p) {
+    (questions[p.key] || []).forEach(function(q) {
+      if (answers[q.id] && answers[q.id].score !== undefined) answered++;
+    });
+  });
+  var pct = total > 0 ? Math.round(answered / total * 100) : 0;
+
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = answered + ' / ' + total + ' answered';
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('submitAnswered').textContent = answered + ' / ' + total;
+
+  // Composite score
+  var composite = computeComposite();
+  if (composite !== null) {
+    document.getElementById('submitScore').textContent = 'Composite: ' + composite.toFixed(2);
+  } else {
+    document.getElementById('submitScore').textContent = 'Composite: —';
+  }
+
+  // Submit button state
+  var btn = document.getElementById('submitBtn');
+  if (answered >= total && total > 0) {
+    btn.disabled = false;
+    btn.textContent = 'Submit Audit → ' + scoreType.label + ' Score';
+  } else {
+    btn.disabled = true;
+    btn.textContent = (total - answered) + ' questions remaining';
+  }
+}
+
+function computeComposite() {
+  var weightedSum = 0, weightTotal = 0;
+
+  scoreType.pillars.forEach(function(p) {
+    var qs = questions[p.key] || [];
+    var sum = 0, count = 0;
+    qs.forEach(function(q) {
+      var a = answers[q.id];
+      if (a && a.score !== undefined && a.score !== 'na') {
+        sum += a.score;
+        count++;
+      }
+    });
+    if (count > 0) {
+      var pillarAvg = sum / count;
+      weightedSum += pillarAvg * p.weight;
+      weightTotal += p.weight;
+    }
+  });
+
+  return weightTotal > 0 ? weightedSum / weightTotal : null;
+}
+
+function computePillarScores() {
+  var results = [];
+  scoreType.pillars.forEach(function(p) {
+    var qs = questions[p.key] || [];
+    var sum = 0, count = 0;
+    qs.forEach(function(q) {
+      var a = answers[q.id];
+      if (a && a.score !== undefined && a.score !== 'na') { sum += a.score; count++; }
+    });
+    results.push({
+      key: p.key, label: p.label, weight: p.weight,
+      avg: count > 0 ? sum / count : null, count: count, total: qs.length
+    });
+  });
+  return results;
+}
+
+function getFlaggedItems() {
+  var flagged = [];
+  scoreType.pillars.forEach(function(p) {
+    (questions[p.key] || []).forEach(function(q) {
+      var a = answers[q.id];
+      if (a && a.flag) {
+        flagged.push({ id: q.id, text: q.text, pillar: p.label, score: a.score, note: a.note || '' });
+      }
+    });
+  });
+  return flagged;
+}
+
+function getBand(score) {
+  if (score >= 4.5) return { label: 'STRONG', cls: 'strong' };
+  if (score >= 3.5) return { label: 'GOOD', cls: 'good' };
+  if (score >= 2.5) return { label: 'WATCH', cls: 'watch' };
+  return { label: 'CRITICAL', cls: 'critical' };
+}
+
+function bandColor(score) {
+  if (score >= 4.5) return 'var(--good)';
+  if (score >= 3.5) return '#22D87C';
+  if (score >= 2.5) return 'var(--warn)';
+  return 'var(--red)';
+}
+
+// ── SUBMIT ──
+
+async function submitAudit() {
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  var composite = computeComposite();
+  var pillarScores = computePillarScores();
+  var flagged = getFlaggedItems();
+  var band = composite !== null ? getBand(composite) : { label: '—', cls: '' };
+
+  // Build Airtable record
+  var record = {
+    fields: {
+      'Park': PARK,
+      'Ride': RIDE,
+      'Ride_ID': RIDE_ID,
+      'Ride_Type': TYPE,
+      'Score_Type': scoreTypeKey.toUpperCase(),
+      'Auditor': AUDITOR,
+      'Composite_Score': composite ? parseFloat(composite.toFixed(3)) : null,
+      'Band': band.label,
+      'Timestamp': new Date().toISOString(),
+      'Flagged_Count': flagged.length,
+      'Source': /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+    }
+  };
+
+  // Add pillar scores
+  pillarScores.forEach(function(p) {
+    record.fields['Pillar_' + p.key] = p.avg ? parseFloat(p.avg.toFixed(3)) : null;
+  });
+
+  // Add raw answers as JSON
+  record.fields['Raw_Answers'] = JSON.stringify(answers);
+  record.fields['Flagged_Items'] = JSON.stringify(flagged);
+
+  // Add GPS if available
+  if (navigator.geolocation) {
+    try {
+      var pos = await new Promise(function(resolve, reject) {
+        navigator.geolocation.getCurrentPosition(resolve, reject, { enableHighAccuracy: true, timeout: 5000 });
+      });
+      record.fields['GPS_Lat'] = pos.coords.latitude;
+      record.fields['GPS_Lng'] = pos.coords.longitude;
+      record.fields['GPS_Accuracy'] = Math.round(pos.coords.accuracy);
+    } catch(e) {
+      record.fields['GPS_Lat'] = null;
+      record.fields['GPS_Lng'] = null;
+    }
+  }
+
+  // POST to Airtable
+  try {
+    var res = await fetch(PROXY + '/' + BASE_TABLE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ records: [record] })
+    });
+    var data = await res.json();
+
+    if (data.error) {
+      showToast('Error: ' + (data.error.message || data.error));
+      btn.disabled = false;
+      btn.textContent = 'Retry Submit';
+      return;
+    }
+
+    showResult(composite, pillarScores, flagged, band);
+
+  } catch(e) {
+    showToast('Connection failed — check network');
+    btn.disabled = false;
+    btn.textContent = 'Retry Submit';
+  }
+}
+
+function showResult(composite, pillarScores, flagged, band) {
+  document.getElementById('auditScreen').style.display = 'none';
+  var result = document.getElementById('resultScreen');
+  result.classList.add('show');
+
+  document.getElementById('resultIcon').textContent = band.cls === 'critical' ? '⚠️' : '✅';
+  document.getElementById('resultTitle').textContent = scoreType.label + ' Score Submitted';
+  document.getElementById('resultScore').textContent = composite ? composite.toFixed(2) : '—';
+  var bandEl = document.getElementById('resultBand');
+  bandEl.textContent = band.label;
+  bandEl.className = 'result-band ' + band.cls;
+
+  // Pillar breakdown
+  var ph = '';
+  pillarScores.forEach(function(p) {
+    var pct = p.avg ? (p.avg / 5 * 100) : 0;
+    var color = p.avg ? bandColor(p.avg) : 'var(--muted)';
+    ph += '<div class="rp-row"><div class="rp-name">' + p.label + '</div><div class="rp-bar"><div class="rp-fill" style="width:' + pct + '%;background:' + color + '"></div></div><div class="rp-score" style="color:' + color + '">' + (p.avg ? p.avg.toFixed(1) : '—') + '</div></div>';
+  });
+  document.getElementById('resultPillars').innerHTML = ph;
+
+  // Flagged items
+  if (flagged.length > 0) {
+    var fEl = document.getElementById('resultFlags');
+    fEl.style.display = '';
+    fEl.innerHTML = '<div class="rf-title">🚩 ' + flagged.length + ' Flagged Item' + (flagged.length !== 1 ? 's' : '') + '</div>' +
+      flagged.map(function(f) {
+        return '<div class="rf-item"><b>' + f.id + '</b> · ' + f.pillar + ' — ' + f.text.substring(0, 60) + (f.note ? ' <i>(' + f.note + ')</i>' : '') + '</div>';
+      }).join('');
+  }
+
+  // Meta
+  document.getElementById('resultMeta').innerHTML =
+    RIDE + ' · ' + PARK + '<br>' +
+    'Auditor: ' + (AUDITOR || 'Field Observer') + '<br>' +
+    new Date().toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit' }) + '<br>' +
+    'Score Type: ' + scoreType.label + ' · Band: ' + band.label;
+}
+
+function showToast(html, dur) {
+  var t = document.getElementById('toast');
+  t.innerHTML = html;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(function() { t.classList.remove('show'); }, dur || 3000);
+}
+</script>
+</body>
+</html>
