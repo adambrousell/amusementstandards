@@ -5,400 +5,294 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Audit Amendment Request · AS 360</title>
 <meta name="description" content="Audit record amendment request — AS 360 OpsScan. Geo-verified. Device-bound. Immutable original preserved.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#080A0E;--bg2:#0C0F15;--bg3:#11141C;--bg4:#161A24;
-  --amber:#F59E0B;--amber2:#D97706;--amber-dim:rgba(245,158,11,.1);
-  --red:#EF4444;--red-dim:rgba(239,68,68,.08);
-  --green:#10B981;--green-dim:rgba(16,185,129,.08);
-  --blue:#3B82F6;--teal:#00D4D0;
-  --text:#8A9BB5;--text2:#B8C5D6;--text3:#E8EDF5;
-  --mono:'Share Tech Mono',monospace;
-  --display:'Barlow Condensed',sans-serif;
-  --body:'Barlow',sans-serif;
-  --border:rgba(255,255,255,.07);
-  --border2:rgba(255,255,255,.12);
-  --lock:#F59E0B;
+  --bg:#1A1E25;--surface:#22272E;--surface2:#2D333B;--border:#373E47;
+  --accent:#6CA4DC;--accent-l:rgba(108,164,220,.1);--accent-b:rgba(108,164,220,.25);
+  --text:#D0D7DE;--text2:#9BA4AE;--text3:#6E7681;
+  --good:#3FB950;--good-bg:rgba(63,185,80,.06);--good-b:rgba(63,185,80,.2);
+  --warn:#D29922;--warn-bg:rgba(210,153,34,.06);--warn-b:rgba(210,153,34,.2);
+  --red:#F85149;--red-bg:rgba(248,81,73,.06);--red-b:rgba(248,81,73,.2);
+  --gold:#C9A84C;
+  --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;height:100%;}
-body{font-family:var(--body);background:var(--bg);color:var(--text2);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
-
-/* NOISE TEXTURE */
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");}
+body{font-family:var(--sans);background:var(--bg);color:var(--text2);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 
 /* HEADER */
-.app-header{position:sticky;top:0;z-index:100;background:rgba(8,10,14,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;}
-.header-brand{font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:.15em;}
-.header-id{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2);letter-spacing:.08em;}
-.header-status{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;}
+.app-header{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;}
+.header-brand{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);letter-spacing:.06em;}
+.header-id{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.04em;}
+.header-status{display:flex;align-items:center;gap:6px;}
 .status-dot{width:6px;height:6px;border-radius:50%;animation:blink 1.4s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.status-text{font-family:var(--mono);font-size:9px;letter-spacing:.04em;}
 
 /* INTEGRITY BAR */
-.integrity-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;gap:0;overflow-x:auto;}
+.integrity-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;gap:0;overflow-x:auto;}
 .integrity-bar::-webkit-scrollbar{display:none;}
-.int-check{display:flex;align-items:center;gap:7px;padding:6px 14px;border-right:1px solid var(--border);flex-shrink:0;}
+.int-check{display:flex;align-items:center;gap:6px;padding:5px 14px;border-right:1px solid var(--border);flex-shrink:0;}
 .int-check:last-child{border-right:none;}
-.int-icon{font-size:13px;}
-.int-label{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;}
-.int-val{font-family:var(--mono);font-size:8.5px;font-weight:700;margin-left:4px;}
-.int-ok{color:var(--green);}
-.int-warn{color:var(--amber);}
-.int-pending{color:rgba(255,255,255,.2);}
+.int-icon{font-size:12px;}
+.int-label{font-family:var(--mono);font-size:8px;letter-spacing:.06em;color:var(--text3);}
+.int-val{font-family:var(--mono);font-size:8px;font-weight:600;margin-left:4px;}
+.int-ok{color:var(--good);}
+.int-warn{color:var(--warn);}
+.int-pending{color:var(--text3);}
 .int-fail{color:var(--red);}
 
-/* MAIN LAYOUT */
-.main{max-width:520px;margin:0 auto;padding:20px 16px 40px;}
+/* MAIN */
+.main{max-width:540px;margin:0 auto;padding:20px 16px 40px;}
 
-/* SECTION BLOCKS */
-.block{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:12px;}
-.block-header{background:rgba(0,0,0,.3);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
-.block-title{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;}
-.block-badge{font-family:var(--mono);font-size:8px;padding:2px 7px;border-radius:2px;letter-spacing:.06em;}
-.badge-lock{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2);}
-.badge-req{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2);}
-.badge-live{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2);}
+/* BLOCKS */
+.block{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:12px;}
+.block-header{padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(0,0,0,.15);}
+.block-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;color:var(--text2);}
+.block-badge{font-family:var(--mono);font-size:8px;padding:2px 8px;border-radius:3px;letter-spacing:.04em;}
+.badge-lock{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-b);}
+.badge-req{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b);}
+.badge-live{background:var(--good-bg);color:var(--good);border:1px solid var(--good-b);}
 .block-body{padding:16px;}
 
-/* IMMUTABLE ORIGINAL RECORD */
-.immutable-record{background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:5px;padding:14px;}
-.imm-label{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,68,68,.7);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
-.imm-label::after{content:'';flex:1;height:1px;background:rgba(239,68,68,.15);}
+/* IMMUTABLE RECORD */
+.immutable-record{background:var(--red-bg);border:1px solid var(--red-b);border-radius:5px;padding:14px;}
+.imm-label{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.08em;color:rgba(248,81,73,.6);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.imm-label::after{content:'';flex:1;height:1px;background:var(--red-b);}
 .imm-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;}
-.imm-field{background:rgba(0,0,0,.3);border-radius:3px;padding:8px 10px;}
-.imm-field-label{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:3px;}
+.imm-field{background:rgba(0,0,0,.2);border-radius:4px;padding:8px 10px;}
+.imm-field-label{font-family:var(--mono);font-size:7px;letter-spacing:.08em;color:var(--text3);margin-bottom:2px;}
 .imm-field-val{font-family:var(--mono);font-size:11px;color:var(--text2);}
-.imm-wrong{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);}
+.imm-wrong{background:rgba(248,81,73,.06);border:1px solid var(--red-b);}
 .imm-wrong .imm-field-val{color:var(--red);}
 .imm-checklist{margin-top:10px;display:flex;flex-direction:column;gap:3px;}
-.imm-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:rgba(0,0,0,.2);border-radius:3px;font-size:12px;color:var(--text);}
-.imm-item.flagged{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);}
-.imm-item-ans{font-family:var(--mono);font-size:10px;font-weight:700;}
-.ans-pass{color:var(--green);}
+.imm-item{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:rgba(0,0,0,.15);border-radius:3px;font-size:12px;color:var(--text2);}
+.imm-item.flagged{background:var(--red-bg);border:1px solid var(--red-b);}
+.imm-item-ans{font-family:var(--mono);font-size:10px;font-weight:600;}
+.ans-pass{color:var(--good);}
 .ans-fail{color:var(--red);}
-.ans-wrong{color:var(--amber);}
-.lock-seal{display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px 10px;background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.1);border-radius:3px;}
+.ans-wrong{color:var(--warn);}
+.lock-seal{display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px 10px;background:var(--warn-bg);border:1px solid var(--warn-b);border-radius:4px;}
 .lock-icon{font-size:14px;}
-.lock-text{font-family:var(--mono);font-size:8.5px;color:rgba(245,158,11,.6);line-height:1.5;}
-.lock-hash{font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,.15);margin-top:2px;word-break:break-all;}
+.lock-text{font-family:var(--mono);font-size:8px;color:rgba(210,153,34,.6);line-height:1.5;}
+.lock-hash{font-family:var(--mono);font-size:7px;color:var(--text3);margin-top:2px;word-break:break-all;}
 
-/* GEO-FENCE */
-.geo-wrap{position:relative;}
-.geo-map{width:100%;height:140px;background:var(--bg3);border-radius:4px;overflow:hidden;position:relative;margin-bottom:12px;}
-.geo-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,208,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,208,.06) 1px,transparent 1px);background-size:24px 24px;}
-.geo-fence-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;border:1px dashed rgba(245,158,11,.3);background:rgba(245,158,11,.04);}
-.geo-fence-ring::before{content:'';position:absolute;inset:12px;border-radius:50%;border:1px dashed rgba(245,158,11,.15);}
-.geo-ride-marker{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 3px rgba(245,158,11,.2),0 0 12px rgba(245,158,11,.4);}
-.geo-ride-label{position:absolute;top:calc(50% - 28px);left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:8px;color:var(--amber);white-space:nowrap;letter-spacing:.06em;}
-.geo-operator-marker{position:absolute;width:10px;height:10px;border-radius:50%;border:2px solid var(--teal);background:rgba(0,212,208,.3);box-shadow:0 0 8px rgba(0,212,208,.4);transition:all 1s ease;}
-.geo-operator-marker::after{content:'YOU';position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:7px;color:var(--teal);white-space:nowrap;}
-.geo-distance-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg3);border-radius:4px;border:1px solid var(--border);}
-.geo-dist-label{font-family:var(--mono);font-size:8.5px;color:var(--text);}
-.geo-dist-val{font-family:var(--display);font-size:20px;font-weight:700;letter-spacing:.5px;}
-.geo-dist-status{font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:2px;}
-.geo-ok{color:var(--green);background:var(--green-dim);border:1px solid rgba(16,185,129,.2);}
-.geo-warn{color:var(--amber);background:var(--amber-dim);border:1px solid rgba(245,158,11,.2);}
-.geo-fail{color:var(--red);background:var(--red-dim);border:1px solid rgba(239,68,68,.2);}
+/* GEO */
+.geo-map{width:100%;height:140px;background:var(--surface2);border-radius:5px;overflow:hidden;position:relative;margin-bottom:12px;border:1px solid var(--border);}
+.geo-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(108,164,220,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(108,164,220,.04) 1px,transparent 1px);background-size:24px 24px;}
+.geo-fence-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90px;height:90px;border-radius:50%;border:1px dashed rgba(210,153,34,.25);background:rgba(210,153,34,.03);}
+.geo-fence-ring::before{content:'';position:absolute;inset:12px;border-radius:50%;border:1px dashed rgba(210,153,34,.12);}
+.geo-ride-marker{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15),0 0 10px rgba(201,168,76,.2);}
+.geo-ride-label{position:absolute;top:calc(50% - 28px);left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:8px;color:var(--gold);white-space:nowrap;letter-spacing:.04em;}
+.geo-operator-marker{position:absolute;width:10px;height:10px;border-radius:50%;border:2px solid var(--accent);background:rgba(108,164,220,.3);box-shadow:0 0 8px rgba(108,164,220,.3);transition:all 1s ease;}
+.geo-operator-marker::after{content:'YOU';position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:7px;color:var(--accent);white-space:nowrap;}
+.geo-distance-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--surface2);border-radius:4px;border:1px solid var(--border);}
+.geo-dist-label{font-family:var(--mono);font-size:8px;color:var(--text3);}
+.geo-dist-val{font-family:var(--sans);font-size:20px;font-weight:700;}
+.geo-dist-status{font-family:var(--mono);font-size:8px;font-weight:600;padding:3px 8px;border-radius:3px;}
+.geo-ok{color:var(--good);background:var(--good-bg);border:1px solid var(--good-b);}
+.geo-warn{color:var(--warn);background:var(--warn-bg);border:1px solid var(--warn-b);}
+.geo-fail{color:var(--red);background:var(--red-bg);border:1px solid var(--red-b);}
 
-/* DEVICE BINDING */
-.device-card{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:12px 14px;}
-.device-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+/* DEVICE */
+.device-card{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:12px 14px;}
+.device-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03);}
 .device-row:last-child{border-bottom:none;}
-.device-key{font-family:var(--mono);font-size:9px;color:var(--text);}
+.device-key{font-family:var(--mono);font-size:9px;color:var(--text3);}
 .device-val{font-family:var(--mono);font-size:9px;color:var(--text2);text-align:right;word-break:break-all;max-width:60%;}
-.device-match{color:var(--green)!important;}
+.device-match{color:var(--good)!important;}
 .device-mismatch{color:var(--red)!important;}
 
-/* PHOTO CAPTURE */
-.photo-wrap{position:relative;}
-.photo-preview{width:100%;height:180px;background:var(--bg3);border:2px dashed rgba(255,255,255,.1);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
-.photo-preview:hover{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.02);}
-.photo-preview.captured{border-style:solid;border-color:rgba(16,185,129,.3);}
-.photo-icon{font-size:32px;opacity:.3;}
-.photo-label{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.1em;text-transform:uppercase;}
+/* PHOTO */
+.photo-preview{width:100%;height:160px;background:var(--surface2);border:1px dashed var(--border);border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.photo-preview:hover{border-color:var(--accent-b);}
+.photo-preview.captured{border-style:solid;border-color:var(--good-b);}
+.photo-icon{font-size:28px;opacity:.3;}
+.photo-label{font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:.06em;}
 .photo-captured-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
 .photo-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
-.photo-timestamp{font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:.06em;}
-.photo-coords{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.4);}
-.photo-retake{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.25);padding:4px 10px;border:1px solid rgba(255,255,255,.1);border-radius:3px;margin-top:4px;cursor:pointer;background:transparent;}
-.photo-retake:hover{color:var(--amber);border-color:rgba(245,158,11,.3);}
+.photo-timestamp{font-family:var(--mono);font-size:9px;color:var(--good);}
+.photo-coords{font-family:var(--mono);font-size:8px;color:var(--text3);}
+.photo-retake{font-family:var(--mono);font-size:8px;color:var(--text3);padding:4px 10px;border:1px solid var(--border);border-radius:3px;margin-top:4px;cursor:pointer;background:transparent;}
+.photo-retake:hover{color:var(--accent);border-color:var(--accent-b);}
 #cameraInput{display:none;}
-.photo-meta{display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding:6px 10px;background:var(--bg3);border-radius:3px;border:1px solid var(--border);}
-.photo-meta-label{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.25);}
+.photo-meta{display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding:6px 10px;background:var(--surface2);border-radius:3px;border:1px solid var(--border);}
+.photo-meta-label{font-family:var(--mono);font-size:8px;color:var(--text3);}
 .photo-meta-val{font-family:var(--mono);font-size:8px;color:var(--text2);}
 
-/* AMENDMENT FORM */
+/* FORM */
 .form-field{margin-bottom:14px;}
-.form-label{font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:6px;display:block;}
+.form-label{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.06em;color:var(--text3);margin-bottom:6px;display:block;}
 .form-label .req{color:var(--red);}
-.form-select,.form-input,.form-textarea{width:100%;font-family:var(--mono);font-size:12px;padding:10px 12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;color:var(--text2);outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none;}
-.form-select:focus,.form-input:focus,.form-textarea:focus{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.02);}
+.form-select,.form-input,.form-textarea{width:100%;font-family:var(--mono);font-size:12px;padding:10px 12px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;color:var(--text2);outline:none;transition:border-color .2s;appearance:none;-webkit-appearance:none;}
+.form-select:focus,.form-input:focus,.form-textarea:focus{border-color:var(--accent-b);}
 .form-textarea{resize:none;height:80px;line-height:1.6;}
-.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.2)'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,.15)'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
 
-/* CORRECT VALUE DISPLAY */
+/* CORRECTION */
 .correction-row{display:grid;grid-template-columns:1fr 32px 1fr;gap:8px;align-items:center;margin-bottom:14px;}
-.corr-was{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:4px;padding:10px 12px;}
-.corr-arrow{text-align:center;font-family:var(--mono);font-size:14px;color:rgba(255,255,255,.2);}
-.corr-should{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:4px;padding:10px 12px;}
-.corr-label{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
-.corr-was .corr-label{color:rgba(239,68,68,.5);}
-.corr-should .corr-label{color:rgba(16,185,129,.5);}
+.corr-was{background:var(--red-bg);border:1px solid var(--red-b);border-radius:4px;padding:10px 12px;}
+.corr-arrow{text-align:center;font-size:14px;color:var(--text3);}
+.corr-should{background:var(--good-bg);border:1px solid var(--good-b);border-radius:4px;padding:10px 12px;}
+.corr-label{font-family:var(--mono);font-size:7px;letter-spacing:.08em;margin-bottom:4px;}
+.corr-was .corr-label{color:rgba(248,81,73,.5);}
+.corr-should .corr-label{color:rgba(63,185,80,.5);}
 .corr-val{font-family:var(--mono);font-size:12px;font-weight:700;}
 .corr-was .corr-val{color:var(--red);}
-.corr-should .corr-val{color:var(--green);}
+.corr-should .corr-val{color:var(--good);}
 
 /* PIN */
 .pin-wrap{display:flex;gap:10px;justify-content:center;margin:16px 0;}
-.pin-digit{width:52px;height:64px;background:var(--bg3);border:2px solid var(--border);border-radius:6px;font-family:var(--display);font-size:32px;font-weight:700;color:var(--text3);text-align:center;outline:none;caret-color:var(--amber);transition:border-color .2s;}
-.pin-digit:focus{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.03);}
-.pin-digit.filled{border-color:rgba(245,158,11,.3);color:var(--amber);}
-.pin-label{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.25);text-align:center;letter-spacing:.1em;margin-bottom:8px;}
+.pin-digit{width:48px;height:58px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;font-family:var(--sans);font-size:28px;font-weight:700;color:var(--text);text-align:center;outline:none;caret-color:var(--accent);transition:border-color .2s;}
+.pin-digit:focus{border-color:var(--accent-b);}
+.pin-digit.filled{border-color:var(--accent);color:var(--accent);}
+.pin-label{font-family:var(--mono);font-size:9px;color:var(--text3);text-align:center;margin-bottom:8px;}
 
 /* SUBMIT */
-.submit-btn{width:100%;padding:16px;font-family:var(--display);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;background:linear-gradient(135deg,var(--amber2),var(--amber));color:#080A0E;border:none;border-radius:5px;cursor:pointer;transition:all .2s;box-shadow:0 4px 24px rgba(245,158,11,.2);position:relative;overflow:hidden;}
-.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(245,158,11,.35);}
-.submit-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
-.submit-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.1) 50%,transparent 60%);transform:translateX(-100%);transition:transform .4s;}
-.submit-btn:hover::after{transform:translateX(100%);}
+.submit-btn{width:100%;padding:14px;font-family:var(--sans);font-size:14px;font-weight:700;letter-spacing:.04em;background:var(--accent);color:#fff;border:none;border-radius:5px;cursor:pointer;transition:all .15s;}
+.submit-btn:hover{opacity:.9;}
+.submit-btn:disabled{opacity:.3;cursor:not-allowed;}
 
 /* INTEGRITY SUMMARY */
-.integrity-summary{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:16px;}
-.is-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.integrity-summary{background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:16px;}
+.is-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03);}
 .is-row:last-child{border-bottom:none;}
-.is-key{font-family:var(--mono);font-size:9px;color:var(--text);display:flex;align-items:center;gap:6px;}
-.is-val{font-family:var(--mono);font-size:9px;font-weight:700;}
+.is-key{font-family:var(--mono);font-size:9px;color:var(--text3);display:flex;align-items:center;gap:6px;}
+.is-val{font-family:var(--mono);font-size:9px;font-weight:600;}
 
-/* SUPERVISOR ROUTING */
-.routing-box{background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.15);border-radius:4px;padding:12px 14px;}
-.routing-label{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(59,130,246,.6);margin-bottom:8px;}
+/* ROUTING */
+.routing-box{background:var(--accent-l);border:1px solid var(--accent-b);border-radius:4px;padding:12px 14px;}
+.routing-label{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.06em;color:var(--accent);margin-bottom:8px;}
 .routing-chain{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
-.routing-step{font-family:var(--mono);font-size:9.5px;padding:4px 10px;border-radius:3px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.15);color:rgba(59,130,246,.8);}
-.routing-arrow{font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.15);}
-.routing-note{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.2);margin-top:8px;line-height:1.6;}
+.routing-step{font-family:var(--mono);font-size:9px;padding:4px 10px;border-radius:3px;background:rgba(108,164,220,.06);border:1px solid var(--accent-b);color:var(--accent);}
+.routing-arrow{font-size:11px;color:var(--text3);}
+.routing-note{font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:8px;line-height:1.6;}
 
-/* SUCCESS STATE */
+/* SUCCESS */
 .success-screen{display:none;position:fixed;inset:0;background:var(--bg);z-index:500;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;}
 .success-screen.show{display:flex;}
-.success-icon{font-size:48px;margin-bottom:20px;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
+.success-icon{font-size:44px;margin-bottom:16px;animation:popIn .4s cubic-bezier(.175,.885,.32,1.275);}
 @keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
-.success-title{font-family:var(--display);font-size:32px;font-weight:800;letter-spacing:1px;color:var(--text3);margin-bottom:8px;}
-.success-id{font-family:var(--mono);font-size:12px;color:var(--amber);margin-bottom:16px;letter-spacing:.08em;}
-.success-chain{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:16px 20px;max-width:340px;width:100%;margin-bottom:24px;}
-.success-chain-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.success-title{font-size:24px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.success-id{font-family:var(--mono);font-size:12px;color:var(--accent);margin-bottom:16px;}
+.success-chain{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px 20px;max-width:340px;width:100%;margin-bottom:20px;}
+.success-chain-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03);}
 .success-chain-row:last-child{border-bottom:none;}
-.sc-key{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.3);}
-.sc-val{font-family:var(--mono);font-size:8.5px;color:var(--green);}
-.success-note{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.2);line-height:1.7;max-width:300px;}
-.success-lock{font-family:var(--mono);font-size:8px;color:rgba(245,158,11,.4);margin-top:12px;padding:8px 14px;border:1px solid rgba(245,158,11,.1);border-radius:3px;}
+.sc-key{font-family:var(--mono);font-size:8px;color:var(--text3);}
+.sc-val{font-family:var(--mono);font-size:8px;color:var(--good);}
+.success-note{font-family:var(--mono);font-size:9px;color:var(--text3);line-height:1.7;max-width:300px;}
+.success-lock{font-family:var(--mono);font-size:8px;color:rgba(210,153,34,.5);margin-top:12px;padding:8px 14px;border:1px solid var(--warn-b);border-radius:3px;}
 
 /* PATTERN WARNING */
-.pattern-warn{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:4px;padding:10px 14px;margin-bottom:12px;display:none;}
+.pattern-warn{background:var(--red-bg);border:1px solid var(--red-b);border-radius:5px;padding:10px 14px;margin-bottom:12px;display:none;}
 .pattern-warn.show{display:block;}
-.pw-title{font-family:var(--mono);font-size:8.5px;font-weight:700;color:var(--red);letter-spacing:.1em;margin-bottom:4px;}
-.pw-body{font-family:var(--mono);font-size:8px;color:rgba(239,68,68,.6);line-height:1.6;}
+.pw-title{font-family:var(--mono);font-size:8px;font-weight:600;color:var(--red);letter-spacing:.06em;margin-bottom:4px;}
+.pw-body{font-size:11px;color:var(--text3);line-height:1.6;}
 
 /* UTIL */
+.helper{font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:5px;line-height:1.5;}
+.tag{font-family:var(--mono);font-size:7px;padding:2px 6px;border-radius:3px;}
+.tag-amber{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-b);}
 .divider{height:1px;background:var(--border);margin:16px 0;}
-.helper{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,.2);margin-top:5px;line-height:1.5;}
-.tag{font-family:var(--mono);font-size:7.5px;padding:2px 6px;border-radius:2px;letter-spacing:.06em;}
-.tag-amber{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2);}
-.tag-green{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2);}
-.tag-red{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2);}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="app-header">
-  <div class="header-brand">AS 360 · AUDIT AMEND</div>
+  <div class="header-brand">AS 360 · AUDIT AMENDMENT</div>
   <div class="header-id" id="amendId">AMR-2026-—</div>
   <div class="header-status">
-    <div class="status-dot" id="statusDot" style="background:#F59E0B;"></div>
-    <span id="statusText" style="color:rgba(245,158,11,.7);font-family:var(--mono);font-size:9px;letter-spacing:.08em;">INITIALIZING</span>
+    <div class="status-dot" id="statusDot" style="background:var(--warn);"></div>
+    <span class="status-text" id="statusText" style="color:var(--warn);">VERIFYING</span>
   </div>
 </div>
 
-<!-- INTEGRITY BAR -->
 <div class="integrity-bar">
-  <div class="int-check">
-    <span class="int-icon">📍</span>
-    <span class="int-label" style="color:rgba(255,255,255,.2);">GEO</span>
-    <span class="int-val int-pending" id="geoStatus">ACQUIRING</span>
-  </div>
-  <div class="int-check">
-    <span class="int-icon">📱</span>
-    <span class="int-label" style="color:rgba(255,255,255,.2);">DEVICE</span>
-    <span class="int-val int-pending" id="deviceStatus">CHECKING</span>
-  </div>
-  <div class="int-check">
-    <span class="int-icon">📷</span>
-    <span class="int-label" style="color:rgba(255,255,255,.2);">PHOTO</span>
-    <span class="int-val int-pending" id="photoStatus">REQUIRED</span>
-  </div>
-  <div class="int-check">
-    <span class="int-icon">🔑</span>
-    <span class="int-label" style="color:rgba(255,255,255,.2);">PIN</span>
-    <span class="int-val int-pending" id="pinStatus">PENDING</span>
-  </div>
-  <div class="int-check">
-    <span class="int-icon">🔒</span>
-    <span class="int-label" style="color:rgba(255,255,255,.2);">ORIGINAL</span>
-    <span class="int-val int-ok">LOCKED</span>
-  </div>
+  <div class="int-check"><span class="int-icon">📍</span><span class="int-label">GEO</span><span class="int-val int-pending" id="geoStatus">ACQUIRING</span></div>
+  <div class="int-check"><span class="int-icon">📱</span><span class="int-label">DEVICE</span><span class="int-val int-pending" id="deviceStatus">CHECKING</span></div>
+  <div class="int-check"><span class="int-icon">📷</span><span class="int-label">PHOTO</span><span class="int-val int-pending" id="photoStatus">REQUIRED</span></div>
+  <div class="int-check"><span class="int-icon">🔑</span><span class="int-label">PIN</span><span class="int-val int-pending" id="pinStatus">PENDING</span></div>
+  <div class="int-check"><span class="int-icon">🔒</span><span class="int-label">ORIGINAL</span><span class="int-val int-ok">LOCKED</span></div>
 </div>
 
 <div class="main">
 
-  <!-- PATTERN WARNING (shows if operator has 3+ recent amendments) -->
   <div class="pattern-warn show" id="patternWarn">
     <div class="pw-title">⚠ AMENDMENT PATTERN DETECTED</div>
-    <div class="pw-body">This device has submitted 3 amendment requests in the last 14 days. Requests above 5 in 30 days trigger supervisor review of audit training compliance. This request will be flagged for additional scrutiny.</div>
+    <div class="pw-body">This device has submitted 3 amendment requests in the last 14 days. Requests above 5 in 30 days trigger supervisor review. This request will be flagged.</div>
   </div>
 
-  <!-- BLOCK 1: IMMUTABLE ORIGINAL RECORD -->
+  <!-- ORIGINAL RECORD -->
   <div class="block">
-    <div class="block-header">
-      <span class="block-title" style="color:var(--red);">Original Record</span>
-      <span class="block-badge badge-lock">🔒 IMMUTABLE · SHA-256 SEALED</span>
-    </div>
+    <div class="block-header"><span class="block-title" style="color:var(--red);">Original Record</span><span class="block-badge badge-lock">🔒 IMMUTABLE</span></div>
     <div class="block-body">
       <div class="immutable-record">
-        <div class="imm-label">Audit Record · Cannot be modified or deleted</div>
+        <div class="imm-label">Sealed audit record</div>
         <div class="imm-row">
-          <div class="imm-field">
-            <div class="imm-field-label">Audit ID</div>
-            <div class="imm-field-val">AUD-2026-3847</div>
-          </div>
-          <div class="imm-field">
-            <div class="imm-field-label">Submitted</div>
-            <div class="imm-field-val">06:42:17 EST</div>
-          </div>
+          <div class="imm-field"><div class="imm-field-label">AUDIT ID</div><div class="imm-field-val">AUD-2026-3847</div></div>
+          <div class="imm-field"><div class="imm-field-label">SUBMITTED</div><div class="imm-field-val">06:42:17 EST</div></div>
         </div>
         <div class="imm-row">
-          <div class="imm-field">
-            <div class="imm-field-label">Operator</div>
-            <div class="imm-field-val">J. Martinez</div>
-          </div>
-          <div class="imm-field">
-            <div class="imm-field-label">Attraction</div>
-            <div class="imm-field-val">Kingda Ka</div>
-          </div>
+          <div class="imm-field"><div class="imm-field-label">OPERATOR</div><div class="imm-field-val">J. Martinez</div></div>
+          <div class="imm-field"><div class="imm-field-label">ATTRACTION</div><div class="imm-field-val">Kingda Ka</div></div>
         </div>
         <div class="imm-checklist">
-          <div class="imm-item">
-            <span>Launch mechanism visual check</span>
-            <span class="imm-item-ans ans-pass">PASS</span>
-          </div>
-          <div class="imm-item">
-            <span>Restraint system cycle test</span>
-            <span class="imm-item-ans ans-pass">PASS</span>
-          </div>
-          <div class="imm-item flagged">
-            <span>Hydraulic pressure reading <span class="tag tag-amber" style="margin-left:4px;">ITEM 3</span></span>
-            <span class="imm-item-ans ans-wrong">FAIL ← DISPUTE</span>
-          </div>
-          <div class="imm-item">
-            <span>E-stop function test</span>
-            <span class="imm-item-ans ans-pass">PASS</span>
-          </div>
-          <div class="imm-item">
-            <span>Queue lane clear</span>
-            <span class="imm-item-ans ans-pass">PASS</span>
-          </div>
+          <div class="imm-item"><span>Launch mechanism visual check</span><span class="imm-item-ans ans-pass">PASS</span></div>
+          <div class="imm-item"><span>Restraint system cycle test</span><span class="imm-item-ans ans-pass">PASS</span></div>
+          <div class="imm-item flagged"><span>Hydraulic pressure reading <span class="tag tag-amber" style="margin-left:4px;">ITEM 3</span></span><span class="imm-item-ans ans-wrong">FAIL ← DISPUTE</span></div>
+          <div class="imm-item"><span>E-stop function test</span><span class="imm-item-ans ans-pass">PASS</span></div>
+          <div class="imm-item"><span>Queue lane clear</span><span class="imm-item-ans ans-pass">PASS</span></div>
         </div>
-        <div class="lock-seal">
-          <span class="lock-icon">🔐</span>
-          <div>
-            <div class="lock-text">Original record sealed at submission. This amendment does not alter the original — it creates a linked correction record with full provenance.</div>
-            <div class="lock-hash">SHA: a3f8c2d1e9b047a6f3c8d2e1a9b047a6f3c8d2e1a9b047a6</div>
-          </div>
-        </div>
+        <div class="lock-seal"><span class="lock-icon">🔐</span><div><div class="lock-text">Original record sealed at submission. Amendment creates a linked correction — does not alter the original.</div><div class="lock-hash">SHA: a3f8c2d1e9b047a6f3c8d2e1a9b047a6f3c8d2e1a9b047a6</div></div></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCK 2: GEO-FENCE VERIFICATION -->
+  <!-- GEO-FENCE -->
   <div class="block">
-    <div class="block-header">
-      <span class="block-title" style="color:var(--teal);">Geo-Fence Verification</span>
-      <span class="block-badge badge-live" id="geoBadge">ACQUIRING LOCATION</span>
-    </div>
+    <div class="block-header"><span class="block-title">Geo-Fence Verification</span><span class="block-badge badge-live" id="geoBadge">ACQUIRING</span></div>
     <div class="block-body">
       <div class="geo-map">
         <div class="geo-grid"></div>
-        <!-- Fence ring centered on ride -->
         <div class="geo-fence-ring"></div>
-        <!-- Ride marker -->
         <div class="geo-ride-marker"></div>
-        <div class="geo-ride-label">KINGDA KA</div>
-        <!-- Operator marker — positioned via JS -->
+        <div class="geo-ride-label">ATTRACTION</div>
         <div class="geo-operator-marker" id="operatorMarker" style="top:42%;left:54%;"></div>
       </div>
       <div class="geo-distance-bar">
-        <div>
-          <div class="geo-dist-label">Distance from attraction</div>
-          <div style="font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);margin-top:2px;">Fence radius: 100m · STRONG signal required</div>
-        </div>
+        <div><div class="geo-dist-label">Distance from attraction</div><div style="font-family:var(--mono);font-size:7px;color:var(--text3);margin-top:2px;">Fence radius: 100m</div></div>
         <div style="display:flex;align-items:center;gap:10px;">
-          <div class="geo-dist-val" id="geoDistVal" style="color:var(--amber);">—</div>
+          <div class="geo-dist-val" id="geoDistVal" style="color:var(--warn);">—</div>
           <div class="geo-dist-status geo-warn" id="geoDistStatus">LOCATING</div>
         </div>
       </div>
-      <div class="helper" id="geoHelper">Acquiring GPS signal — ensure location permissions are enabled.</div>
+      <div class="helper" id="geoHelper">Acquiring GPS signal.</div>
     </div>
   </div>
 
-  <!-- BLOCK 3: DEVICE BINDING -->
+  <!-- DEVICE BINDING -->
   <div class="block">
-    <div class="block-header">
-      <span class="block-title" style="color:var(--blue);">Device Binding</span>
-      <span class="block-badge" id="deviceBadge" style="background:rgba(59,130,246,.1);color:#3B82F6;border:1px solid rgba(59,130,246,.2);">VERIFYING</span>
-    </div>
+    <div class="block-header"><span class="block-title">Device Binding</span><span class="block-badge" id="deviceBadge" style="background:var(--accent-l);color:var(--accent);border:1px solid var(--accent-b);">VERIFYING</span></div>
     <div class="block-body">
       <div class="device-card">
-        <div class="device-row">
-          <div class="device-key">Device fingerprint</div>
-          <div class="device-val device-match" id="deviceFP">—</div>
-        </div>
-        <div class="device-row">
-          <div class="device-key">Registered to</div>
-          <div class="device-val device-match">J. Martinez · ID #4471</div>
-        </div>
-        <div class="device-row">
-          <div class="device-key">Last audit from device</div>
-          <div class="device-val">Today 06:42 EST</div>
-        </div>
-        <div class="device-row">
-          <div class="device-key">Device match</div>
-          <div class="device-val device-match" id="deviceMatch">CHECKING...</div>
-        </div>
-        <div class="device-row">
-          <div class="device-key">User agent</div>
-          <div class="device-val" id="deviceUA" style="font-size:8px;">—</div>
-        </div>
+        <div class="device-row"><div class="device-key">Device fingerprint</div><div class="device-val device-match" id="deviceFP">—</div></div>
+        <div class="device-row"><div class="device-key">Registered to</div><div class="device-val device-match">J. Martinez · ID #4471</div></div>
+        <div class="device-row"><div class="device-key">Last audit from device</div><div class="device-val">Today 06:42 EST</div></div>
+        <div class="device-row"><div class="device-key">Device match</div><div class="device-val device-match" id="deviceMatch">CHECKING...</div></div>
+        <div class="device-row"><div class="device-key">User agent</div><div class="device-val" id="deviceUA" style="font-size:8px;">—</div></div>
       </div>
-      <div class="helper">Amendment must originate from the same registered device as the original audit submission. Cross-device requests are auto-denied.</div>
+      <div class="helper">Amendment must originate from the same registered device as the original audit.</div>
     </div>
   </div>
 
-  <!-- BLOCK 4: PHOTO CAPTURE -->
+  <!-- PHOTO -->
   <div class="block">
-    <div class="block-header">
-      <span class="block-title" style="color:var(--amber);">Attraction Photo · Required</span>
-      <span class="block-badge badge-req" id="photoBadge">NOT CAPTURED</span>
-    </div>
+    <div class="block-header"><span class="block-title">Photo Evidence · Required</span><span class="block-badge badge-req" id="photoBadge">NOT CAPTURED</span></div>
     <div class="block-body">
       <div class="photo-preview" id="photoPreview" onclick="triggerCamera()">
         <img class="photo-captured-img" id="capturedImg" style="display:none;">
-        <div id="photoPlaceholder">
-          <div class="photo-icon">📷</div>
-          <div class="photo-label">Tap to photograph attraction</div>
-          <div style="font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.15);margin-top:4px;">Point camera at Kingda Ka</div>
-        </div>
+        <div id="photoPlaceholder"><div class="photo-icon">📷</div><div class="photo-label">Tap to photograph attraction</div></div>
         <div class="photo-overlay" id="photoOverlay" style="display:none;">
           <div class="photo-timestamp" id="photoTimestamp">—</div>
           <div class="photo-coords" id="photoCoords">—</div>
@@ -406,494 +300,123 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;op
         </div>
       </div>
       <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handlePhoto(event)">
-      <div class="photo-meta">
-        <span class="photo-meta-label">Auto-embedded metadata</span>
-        <span class="photo-meta-val" id="photoMeta">Timestamp · GPS · Device ID</span>
-      </div>
-      <div class="helper">Photo proves physical presence at the attraction. Timestamp and GPS coordinates are embedded in the record. Required for all amendment requests.</div>
+      <div class="photo-meta"><span class="photo-meta-label">Auto-embedded</span><span class="photo-meta-val" id="photoMeta">Timestamp · GPS · Device ID</span></div>
+      <div class="helper">Photo proves physical presence. Timestamp and GPS embedded in record.</div>
     </div>
   </div>
 
-  <!-- BLOCK 5: AMENDMENT DETAILS -->
+  <!-- AMENDMENT DETAILS -->
   <div class="block">
-    <div class="block-header">
-      <span class="block-title" style="color:var(--text3);">Amendment Details</span>
-      <span class="block-badge badge-req">REQUIRED</span>
-    </div>
+    <div class="block-header"><span class="block-title">Amendment Details</span><span class="block-badge badge-req">REQUIRED</span></div>
     <div class="block-body">
-
-      <div class="form-field">
-        <label class="form-label">Checklist Item <span class="req">*</span></label>
-        <select class="form-select" id="itemSelect" onchange="updateCorrectionDisplay()">
-          <option value="">Select the item to correct</option>
-          <option value="item1">Item 1 — Launch mechanism visual check</option>
-          <option value="item2">Item 2 — Restraint system cycle test</option>
-          <option value="item3" selected>Item 3 — Hydraulic pressure reading</option>
-          <option value="item4">Item 4 — E-stop function test</option>
-          <option value="item5">Item 5 — Queue lane clear</option>
-        </select>
-      </div>
-
-      <div class="form-field">
-        <label class="form-label">Submitted Answer <span class="req">*</span></label>
-        <select class="form-select" id="wasSelect" onchange="updateCorrectionDisplay()">
-          <option value="">What was entered incorrectly</option>
-          <option value="FAIL" selected>FAIL</option>
-          <option value="PASS">PASS</option>
-          <option value="N/A">N/A</option>
-        </select>
-      </div>
-
-      <div class="form-field">
-        <label class="form-label">Correct Answer <span class="req">*</span></label>
-        <select class="form-select" id="shouldSelect" onchange="updateCorrectionDisplay()">
-          <option value="">What it should be</option>
-          <option value="PASS" selected>PASS</option>
-          <option value="FAIL">FAIL</option>
-          <option value="N/A">N/A</option>
-        </select>
-      </div>
-
-      <!-- CORRECTION VISUAL -->
-      <div class="correction-row" id="correctionRow">
-        <div class="corr-was">
-          <div class="corr-label">Was entered</div>
-          <div class="corr-val" id="corrWas">FAIL</div>
-        </div>
-        <div class="corr-arrow">→</div>
-        <div class="corr-should">
-          <div class="corr-label">Should be</div>
-          <div class="corr-val" id="corrShould">PASS</div>
-        </div>
-      </div>
-
-      <div class="form-field">
-        <label class="form-label">Reason for Amendment <span class="req">*</span></label>
-        <textarea class="form-textarea" id="reasonText" placeholder="Describe exactly what happened — e.g. 'Pressed FAIL instead of PASS on item 3. Hydraulic pressure reading was within spec at 2,800 PSI. Error made during rapid checklist completion at 06:41.'"></textarea>
-        <div class="helper" id="charCount">0 / 20 characters minimum</div>
-      </div>
-
+      <div class="form-field"><label class="form-label">Checklist Item <span class="req">*</span></label><select class="form-select" id="itemSelect" onchange="updateCorrectionDisplay()"><option value="">Select item to correct</option><option value="item1">Item 1 — Launch mechanism visual check</option><option value="item2">Item 2 — Restraint system cycle test</option><option value="item3" selected>Item 3 — Hydraulic pressure reading</option><option value="item4">Item 4 — E-stop function test</option><option value="item5">Item 5 — Queue lane clear</option></select></div>
+      <div class="form-field"><label class="form-label">Submitted Answer <span class="req">*</span></label><select class="form-select" id="wasSelect" onchange="updateCorrectionDisplay()"><option value="">What was entered</option><option value="FAIL" selected>FAIL</option><option value="PASS">PASS</option><option value="N/A">N/A</option></select></div>
+      <div class="form-field"><label class="form-label">Correct Answer <span class="req">*</span></label><select class="form-select" id="shouldSelect" onchange="updateCorrectionDisplay()"><option value="">What it should be</option><option value="PASS" selected>PASS</option><option value="FAIL">FAIL</option><option value="N/A">N/A</option></select></div>
+      <div class="correction-row" id="correctionRow"><div class="corr-was"><div class="corr-label">WAS ENTERED</div><div class="corr-val" id="corrWas">FAIL</div></div><div class="corr-arrow">→</div><div class="corr-should"><div class="corr-label">SHOULD BE</div><div class="corr-val" id="corrShould">PASS</div></div></div>
+      <div class="form-field"><label class="form-label">Reason <span class="req">*</span></label><textarea class="form-textarea" id="reasonText" placeholder="Describe exactly what happened — e.g. 'Pressed FAIL instead of PASS on item 3. Hydraulic pressure was within spec at 2,800 PSI.'"></textarea><div class="helper" id="charCount">0 / 20 characters minimum</div></div>
     </div>
   </div>
 
-  <!-- BLOCK 6: PIN CONFIRMATION -->
+  <!-- PIN -->
   <div class="block">
-    <div class="block-header">
-      <span class="block-title" style="color:var(--amber);">PIN Confirmation</span>
-      <span class="block-badge badge-req">IDENTITY VERIFY</span>
-    </div>
+    <div class="block-header"><span class="block-title">PIN Confirmation</span><span class="block-badge badge-req">IDENTITY VERIFY</span></div>
     <div class="block-body">
-      <div class="pin-label">Enter your 4-digit operator PIN to confirm intent</div>
+      <div class="pin-label">Enter your 4-digit operator PIN</div>
       <div class="pin-wrap">
         <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" id="pin1" oninput="pinInput(this,null,'pin2')">
         <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" id="pin2" oninput="pinInput(this,'pin1','pin3')">
         <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" id="pin3" oninput="pinInput(this,'pin2','pin4')">
         <input class="pin-digit" type="password" inputmode="numeric" maxlength="1" id="pin4" oninput="pinInput(this,'pin3',null)" onkeyup="checkPin()">
       </div>
-      <div class="helper" style="text-align:center;">PIN is separate from your OpsScan login. Set by your Shift Supervisor.</div>
     </div>
   </div>
 
-  <!-- INTEGRITY SUMMARY -->
+  <!-- SUMMARY -->
   <div class="block">
-    <div class="block-header">
-      <span class="block-title">Submission Integrity Summary</span>
-    </div>
+    <div class="block-header"><span class="block-title">Submission Summary</span></div>
     <div class="block-body">
       <div class="integrity-summary">
-        <div class="is-row">
-          <span class="is-key">📍 Geo-fence</span>
-          <span class="is-val" id="sumGeo" style="color:rgba(255,255,255,.2);">Pending</span>
-        </div>
-        <div class="is-row">
-          <span class="is-key">📱 Device binding</span>
-          <span class="is-val" id="sumDevice" style="color:rgba(255,255,255,.2);">Pending</span>
-        </div>
-        <div class="is-row">
-          <span class="is-key">📷 Photo captured</span>
-          <span class="is-val" id="sumPhoto" style="color:rgba(255,255,255,.2);">Pending</span>
-        </div>
-        <div class="is-row">
-          <span class="is-key">🔑 PIN confirmed</span>
-          <span class="is-val" id="sumPin" style="color:rgba(255,255,255,.2);">Pending</span>
-        </div>
-        <div class="is-row">
-          <span class="is-key">📝 Amendment details</span>
-          <span class="is-val" id="sumDetails" style="color:rgba(255,255,255,.2);">Pending</span>
-        </div>
-        <div class="is-row">
-          <span class="is-key">🔒 Original record</span>
-          <span class="is-val" style="color:var(--green);">Sealed · Immutable</span>
-        </div>
+        <div class="is-row"><span class="is-key">📍 Geo-fence</span><span class="is-val" id="sumGeo" style="color:var(--text3);">Pending</span></div>
+        <div class="is-row"><span class="is-key">📱 Device binding</span><span class="is-val" id="sumDevice" style="color:var(--text3);">Pending</span></div>
+        <div class="is-row"><span class="is-key">📷 Photo captured</span><span class="is-val" id="sumPhoto" style="color:var(--text3);">Pending</span></div>
+        <div class="is-row"><span class="is-key">🔑 PIN confirmed</span><span class="is-val" id="sumPin" style="color:var(--text3);">Pending</span></div>
+        <div class="is-row"><span class="is-key">📝 Amendment details</span><span class="is-val" id="sumDetails" style="color:var(--text3);">Pending</span></div>
+        <div class="is-row"><span class="is-key">🔒 Original record</span><span class="is-val" style="color:var(--good);">Sealed</span></div>
       </div>
-
-      <!-- SUPERVISOR ROUTING -->
       <div class="routing-box">
-        <div class="routing-label">Supervisor Routing · On Submit</div>
+        <div class="routing-label">Supervisor Routing</div>
         <div class="routing-chain">
-          <span class="routing-step">Operator submits</span>
-          <span class="routing-arrow">→</span>
-          <span class="routing-step">Shift Supervisor queue</span>
-          <span class="routing-arrow">→</span>
-          <span class="routing-step">4-hour approval window</span>
-          <span class="routing-arrow">→</span>
-          <span class="routing-step">Record amended or denied</span>
+          <span class="routing-step">Submit</span><span class="routing-arrow">→</span>
+          <span class="routing-step">Supervisor queue</span><span class="routing-arrow">→</span>
+          <span class="routing-step">4-hour window</span><span class="routing-arrow">→</span>
+          <span class="routing-step">Amended or denied</span>
         </div>
-        <div class="routing-note">Supervisor: R. Thompson · Notified via Manager Module push alert immediately on submission. Original record remains visible alongside amendment at all times. Operator cannot self-approve.</div>
+        <div class="routing-note">Supervisor notified via Manager Module push alert. Original record remains visible alongside amendment.</div>
       </div>
-
       <div class="divider"></div>
-
-      <button class="submit-btn" id="submitBtn" disabled onclick="submitAmendment()">
-        Submit Amendment Request
-      </button>
-      <div class="helper" style="text-align:center;margin-top:8px;" id="submitHelper">Complete all integrity checks to enable submission.</div>
+      <button class="submit-btn" id="submitBtn" disabled onclick="submitAmendment()">Submit Amendment Request</button>
+      <div class="helper" style="text-align:center;margin-top:8px;" id="submitHelper">Complete all checks to enable submission.</div>
     </div>
   </div>
-
 </div>
 
-<!-- SUCCESS SCREEN -->
+<!-- SUCCESS -->
 <div class="success-screen" id="successScreen">
   <div class="success-icon">✅</div>
   <div class="success-title">Amendment Submitted</div>
   <div class="success-id" id="successId">AMR-2026-0291</div>
   <div class="success-chain">
-    <div class="success-chain-row">
-      <span class="sc-key">Original record</span>
-      <span class="sc-val">Sealed · Unchanged</span>
-    </div>
-    <div class="success-chain-row">
-      <span class="sc-key">Amendment record</span>
-      <span class="sc-val">Created · Linked</span>
-    </div>
-    <div class="success-chain-row">
-      <span class="sc-key">Geo-verified</span>
-      <span class="sc-val" id="successGeo">✓</span>
-    </div>
-    <div class="success-chain-row">
-      <span class="sc-key">Device confirmed</span>
-      <span class="sc-val">✓ Registered device</span>
-    </div>
-    <div class="success-chain-row">
-      <span class="sc-key">Photo embedded</span>
-      <span class="sc-val">✓ Timestamped</span>
-    </div>
-    <div class="success-chain-row">
-      <span class="sc-key">Routed to</span>
-      <span class="sc-val">R. Thompson · Supervisor</span>
-    </div>
-    <div class="success-chain-row">
-      <span class="sc-key">Approval window</span>
-      <span class="sc-val">4 hours from now</span>
-    </div>
+    <div class="success-chain-row"><span class="sc-key">Original record</span><span class="sc-val">Sealed · Unchanged</span></div>
+    <div class="success-chain-row"><span class="sc-key">Amendment record</span><span class="sc-val">Created · Linked</span></div>
+    <div class="success-chain-row"><span class="sc-key">Geo-verified</span><span class="sc-val" id="successGeo">✓</span></div>
+    <div class="success-chain-row"><span class="sc-key">Device confirmed</span><span class="sc-val">✓ Registered</span></div>
+    <div class="success-chain-row"><span class="sc-key">Photo embedded</span><span class="sc-val">✓ Timestamped</span></div>
+    <div class="success-chain-row"><span class="sc-key">Routed to</span><span class="sc-val">R. Thompson · Supervisor</span></div>
+    <div class="success-chain-row"><span class="sc-key">Approval window</span><span class="sc-val">4 hours</span></div>
   </div>
-  <div class="success-note">You will be notified when the supervisor approves or denies this request. The original audit record remains active until approved. Do not re-submit — duplicate requests are auto-denied.</div>
-  <div class="success-lock">🔒 IMMUTABLE CHAIN: AUD-2026-3847 → AMR-2026-0291 · Both records permanent</div>
+  <div class="success-note">You will be notified when the supervisor approves or denies. Original record remains active until approved.</div>
+  <div class="success-lock">🔒 AUD-2026-3847 → AMR-2026-0291 · Both records permanent</div>
 </div>
 
 <script>
-// ── STATE ──
-var state = {
-  geoOk: false, geoDistance: null,
-  deviceOk: false,
-  photoOk: false, photoDataUrl: null,
-  pinOk: false,
-  detailsOk: false
-};
+var state={geoOk:false,geoDistance:null,deviceOk:false,photoOk:false,photoDataUrl:null,pinOk:false,detailsOk:false};
+var amendId='AMR-2026-'+(Math.floor(Math.random()*900)+100);
+document.getElementById('amendId').textContent=amendId;
 
-// ── AMEND ID ──
-var amendId = 'AMR-2026-' + (Math.floor(Math.random()*900)+100);
-document.getElementById('amendId').textContent = amendId;
+function getDeviceFingerprint(){var fp=[navigator.userAgent,navigator.language,screen.width+'x'+screen.height,new Date().getTimezoneOffset()].join('|');var hash=0;for(var i=0;i<fp.length;i++){hash=((hash<<5)-hash)+fp.charCodeAt(i);hash|=0;}return'DEV-'+Math.abs(hash).toString(16).toUpperCase().slice(0,8);}
 
-// ── DEVICE BINDING ──
-function getDeviceFingerprint() {
-  var fp = [
-    navigator.userAgent,
-    navigator.language,
-    screen.width + 'x' + screen.height,
-    new Date().getTimezoneOffset()
-  ].join('|');
-  var hash = 0;
-  for (var i = 0; i < fp.length; i++) {
-    hash = ((hash << 5) - hash) + fp.charCodeAt(i);
-    hash |= 0;
-  }
-  return 'DEV-' + Math.abs(hash).toString(16).toUpperCase().slice(0,8);
-}
+function initDevice(){var fp=getDeviceFingerprint();document.getElementById('deviceFP').textContent=fp;document.getElementById('deviceUA').textContent=navigator.userAgent.slice(0,40)+'...';setTimeout(function(){state.deviceOk=true;document.getElementById('deviceMatch').textContent='✓ MATCH';document.getElementById('deviceMatch').className='device-val device-match';document.getElementById('deviceStatus').textContent='VERIFIED';document.getElementById('deviceStatus').className='int-val int-ok';document.getElementById('deviceBadge').textContent='✓ CONFIRMED';document.getElementById('deviceBadge').style.color='var(--good)';document.getElementById('sumDevice').textContent='✓ Registered · '+fp;document.getElementById('sumDevice').style.color='var(--good)';checkSubmitReady();},1800);}
 
-function initDevice() {
-  var fp = getDeviceFingerprint();
-  document.getElementById('deviceFP').textContent = fp;
-  document.getElementById('deviceUA').textContent = navigator.userAgent.slice(0,40) + '...';
-  // Simulate registered device match (in production: compare against Airtable operator record)
-  setTimeout(function() {
-    state.deviceOk = true;
-    document.getElementById('deviceMatch').textContent = '✓ REGISTERED MATCH';
-    document.getElementById('deviceMatch').className = 'device-val device-match';
-    document.getElementById('deviceStatus').textContent = 'VERIFIED';
-    document.getElementById('deviceStatus').className = 'int-val int-ok';
-    document.getElementById('deviceBadge').textContent = '✓ DEVICE CONFIRMED';
-    document.getElementById('deviceBadge').style.color = 'var(--green)';
-    document.getElementById('sumDevice').textContent = '✓ Registered · ' + fp;
-    document.getElementById('sumDevice').style.color = 'var(--green)';
-    checkSubmitReady();
-  }, 1800);
-}
+function initGeo(){if(!navigator.geolocation){setGeoFail('GPS not available');return;}navigator.geolocation.getCurrentPosition(function(pos){var rideLat=40.1372,rideLng=-74.4348;var dist=haversine(pos.coords.latitude,pos.coords.longitude,rideLat,rideLng);state.geoDistance=dist;document.getElementById('geoDistVal').textContent=Math.round(dist)+'m';if(dist<=100)setGeoOk(dist);else if(dist<=300)setGeoWarn(dist);else setGeoFail('Too far ('+Math.round(dist)+'m). Must be within 100m.');},function(){simulateGeoDemo();},{enableHighAccuracy:true,timeout:8000});}
 
-// ── GEO-FENCE ──
-function initGeo() {
-  if (!navigator.geolocation) {
-    setGeoFail('GPS not available on this device');
-    return;
-  }
-  navigator.geolocation.getCurrentPosition(function(pos) {
-    // Six Flags Great Adventure coords (Kingda Ka) for demo
-    var rideLat = 40.1372, rideLng = -74.4348;
-    var userLat = pos.coords.latitude;
-    var userLng = pos.coords.longitude;
-    var dist = haversine(userLat, userLng, rideLat, rideLng);
-    state.geoDistance = dist;
+function simulateGeoDemo(){var dist=47;state.geoDistance=dist;document.getElementById('geoDistVal').textContent=dist+'m';document.getElementById('operatorMarker').style.top='53%';document.getElementById('operatorMarker').style.left='53%';setGeoOk(dist);}
 
-    document.getElementById('geoDistVal').textContent = Math.round(dist) + 'm';
+function setGeoOk(dist){state.geoOk=true;document.getElementById('geoDistStatus').textContent='✓ ON SITE';document.getElementById('geoDistStatus').className='geo-dist-status geo-ok';document.getElementById('geoDistVal').style.color='var(--good)';document.getElementById('geoStatus').textContent='✓ '+Math.round(dist)+'M';document.getElementById('geoStatus').className='int-val int-ok';document.getElementById('geoBadge').textContent='✓ WITHIN FENCE';document.getElementById('geoHelper').textContent='Location verified.';document.getElementById('sumGeo').textContent='✓ '+Math.round(dist)+'m from attraction';document.getElementById('sumGeo').style.color='var(--good)';checkSubmitReady();}
 
-    // Animate operator marker based on distance
-    var markerEl = document.getElementById('operatorMarker');
-    if (dist <= 100) {
-      setGeoOk(dist);
-    } else if (dist <= 300) {
-      setGeoWarn(dist);
-    } else {
-      setGeoFail('Too far from attraction (' + Math.round(dist) + 'm). Must be within 100m.');
-    }
-  }, function(err) {
-    // Demo fallback — simulate being on-site
-    simulateGeoDemo();
-  }, { enableHighAccuracy: true, timeout: 8000 });
-}
+function setGeoWarn(dist){document.getElementById('geoDistStatus').textContent='⚠ NEAR';document.getElementById('geoDistStatus').className='geo-dist-status geo-warn';document.getElementById('geoStatus').textContent='⚠ '+Math.round(dist)+'M';document.getElementById('geoStatus').className='int-val int-warn';document.getElementById('geoBadge').textContent='⚠ FLAGGED';document.getElementById('geoHelper').textContent='Near but outside fence. Request flagged.';document.getElementById('sumGeo').textContent='⚠ '+Math.round(dist)+'m — flagged';document.getElementById('sumGeo').style.color='var(--warn)';state.geoOk=true;checkSubmitReady();}
 
-function simulateGeoDemo() {
-  var dist = 47;
-  state.geoDistance = dist;
-  document.getElementById('geoDistVal').textContent = dist + 'm';
-  // Move operator marker close to ride marker
-  var marker = document.getElementById('operatorMarker');
-  marker.style.top = '53%';
-  marker.style.left = '53%';
-  setGeoOk(dist);
-}
+function setGeoFail(msg){document.getElementById('geoDistStatus').textContent='✗ FAIL';document.getElementById('geoDistStatus').className='geo-dist-status geo-fail';document.getElementById('geoStatus').textContent='✗ DENIED';document.getElementById('geoStatus').className='int-val int-fail';document.getElementById('geoBadge').textContent='✗ OUTSIDE';document.getElementById('geoHelper').textContent=msg;document.getElementById('sumGeo').textContent='✗ '+msg;document.getElementById('sumGeo').style.color='var(--red)';}
 
-function setGeoOk(dist) {
-  state.geoOk = true;
-  document.getElementById('geoDistStatus').textContent = '✓ ON SITE';
-  document.getElementById('geoDistStatus').className = 'geo-dist-status geo-ok';
-  document.getElementById('geoDistVal').style.color = 'var(--green)';
-  document.getElementById('geoStatus').textContent = '✓ ' + Math.round(dist) + 'M';
-  document.getElementById('geoStatus').className = 'int-val int-ok';
-  document.getElementById('geoBadge').textContent = '✓ WITHIN FENCE · ' + Math.round(dist) + 'M';
-  document.getElementById('geoHelper').textContent = 'Location verified. You are within the attraction geo-fence.';
-  document.getElementById('sumGeo').textContent = '✓ ' + Math.round(dist) + 'm from Kingda Ka';
-  document.getElementById('sumGeo').style.color = 'var(--green)';
-  checkSubmitReady();
-}
+function haversine(lat1,lon1,lat2,lon2){var R=6371000;var dLat=(lat2-lat1)*Math.PI/180;var dLon=(lon2-lon1)*Math.PI/180;var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
 
-function setGeoWarn(dist) {
-  document.getElementById('geoDistStatus').textContent = '⚠ NEAR SITE';
-  document.getElementById('geoDistStatus').className = 'geo-dist-status geo-warn';
-  document.getElementById('geoStatus').textContent = '⚠ ' + Math.round(dist) + 'M';
-  document.getElementById('geoStatus').className = 'int-val int-warn';
-  document.getElementById('geoBadge').textContent = '⚠ NEAR FENCE · FLAGGED';
-  document.getElementById('geoHelper').textContent = 'You are near but outside the 100m fence. Request will be flagged for supervisor review.';
-  document.getElementById('sumGeo').textContent = '⚠ ' + Math.round(dist) + 'm — flagged, outside fence';
-  document.getElementById('sumGeo').style.color = 'var(--amber)';
-  state.geoOk = true; // Allow submission but flag it
-  checkSubmitReady();
-}
+function triggerCamera(){document.getElementById('cameraInput').click();}
+function handlePhoto(e){var file=e.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(ev){state.photoDataUrl=ev.target.result;state.photoOk=true;var now=new Date();var ts=now.toLocaleString('en-US',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'})+' EST';document.getElementById('capturedImg').src=ev.target.result;document.getElementById('capturedImg').style.display='block';document.getElementById('photoPlaceholder').style.display='none';document.getElementById('photoOverlay').style.display='flex';document.getElementById('photoTimestamp').textContent=ts;document.getElementById('photoCoords').textContent='GPS embedded';document.getElementById('photoPreview').classList.add('captured');document.getElementById('photoBadge').textContent='✓ CAPTURED';document.getElementById('photoBadge').style.background='var(--good-bg)';document.getElementById('photoBadge').style.color='var(--good)';document.getElementById('photoBadge').style.borderColor='var(--good-b)';document.getElementById('photoStatus').textContent='✓ CAPTURED';document.getElementById('photoStatus').className='int-val int-ok';document.getElementById('sumPhoto').textContent='✓ Timestamped · GPS embedded';document.getElementById('sumPhoto').style.color='var(--good)';checkSubmitReady();};reader.readAsDataURL(file);}
 
-function setGeoFail(msg) {
-  document.getElementById('geoDistStatus').textContent = '✗ FAIL';
-  document.getElementById('geoDistStatus').className = 'geo-dist-status geo-fail';
-  document.getElementById('geoStatus').textContent = '✗ DENIED';
-  document.getElementById('geoStatus').className = 'int-val int-fail';
-  document.getElementById('geoBadge').textContent = '✗ OUTSIDE FENCE';
-  document.getElementById('geoHelper').textContent = msg;
-  document.getElementById('sumGeo').textContent = '✗ ' + msg;
-  document.getElementById('sumGeo').style.color = 'var(--red)';
-}
+function retakePhoto(e){e.stopPropagation();state.photoOk=false;state.photoDataUrl=null;document.getElementById('capturedImg').style.display='none';document.getElementById('photoPlaceholder').style.display='';document.getElementById('photoOverlay').style.display='none';document.getElementById('photoPreview').classList.remove('captured');document.getElementById('photoBadge').textContent='NOT CAPTURED';document.getElementById('photoBadge').style.background='var(--red-bg)';document.getElementById('photoBadge').style.color='var(--red)';document.getElementById('photoStatus').textContent='REQUIRED';document.getElementById('photoStatus').className='int-val int-pending';document.getElementById('sumPhoto').textContent='Pending';document.getElementById('sumPhoto').style.color='var(--text3)';document.getElementById('cameraInput').value='';checkSubmitReady();}
 
-function haversine(lat1, lon1, lat2, lon2) {
-  var R = 6371000;
-  var dLat = (lat2-lat1)*Math.PI/180;
-  var dLon = (lon2-lon1)*Math.PI/180;
-  var a = Math.sin(dLat/2)*Math.sin(dLat/2) +
-    Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
-    Math.sin(dLon/2)*Math.sin(dLon/2);
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-}
+function pinInput(el,prevId,nextId){el.classList.toggle('filled',el.value.length>0);if(el.value.length===1&&nextId)document.getElementById(nextId).focus();checkPin();}
+function checkPin(){var p=document.getElementById('pin1').value+document.getElementById('pin2').value+document.getElementById('pin3').value+document.getElementById('pin4').value;if(p.length===4){state.pinOk=true;document.getElementById('pinStatus').textContent='✓ CONFIRMED';document.getElementById('pinStatus').className='int-val int-ok';document.getElementById('sumPin').textContent='✓ Confirmed';document.getElementById('sumPin').style.color='var(--good)';checkSubmitReady();}else{state.pinOk=false;document.getElementById('pinStatus').textContent='PENDING';document.getElementById('pinStatus').className='int-val int-pending';document.getElementById('sumPin').textContent='Pending';document.getElementById('sumPin').style.color='var(--text3)';checkSubmitReady();}}
 
-// ── PHOTO CAPTURE ──
-function triggerCamera() {
-  document.getElementById('cameraInput').click();
-}
+function updateCorrectionDisplay(){var was=document.getElementById('wasSelect').value;var should=document.getElementById('shouldSelect').value;if(was)document.getElementById('corrWas').textContent=was;if(should)document.getElementById('corrShould').textContent=should;validateDetails();}
+document.getElementById('reasonText').addEventListener('input',function(){var len=this.value.trim().length;var el=document.getElementById('charCount');el.textContent=len+' / 20 characters minimum';el.style.color=len>=20?'var(--good)':'var(--text3)';validateDetails();});
+function validateDetails(){var item=document.getElementById('itemSelect').value;var was=document.getElementById('wasSelect').value;var should=document.getElementById('shouldSelect').value;var reason=document.getElementById('reasonText').value.trim();var ok=item&&was&&should&&was!==should&&reason.length>=20;state.detailsOk=ok;document.getElementById('sumDetails').textContent=ok?'✓ Complete':'Incomplete';document.getElementById('sumDetails').style.color=ok?'var(--good)':'var(--text3)';checkSubmitReady();}
 
-function handlePhoto(e) {
-  var file = e.target.files[0];
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(ev) {
-    state.photoDataUrl = ev.target.result;
-    state.photoOk = true;
-    var now = new Date();
-    var ts = now.toLocaleString('en-US',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'}) + ' EST · ' + now.toLocaleDateString('en-US');
-    var coords = state.geoDistance !== null ? '40.1372°N 74.4348°W' : 'GPS pending';
+function checkSubmitReady(){var allOk=state.geoOk&&state.deviceOk&&state.photoOk&&state.pinOk&&state.detailsOk;document.getElementById('submitBtn').disabled=!allOk;if(allOk){document.getElementById('submitHelper').textContent='All checks passed. Ready to submit.';document.getElementById('submitHelper').style.color='var(--good)';document.getElementById('statusDot').style.background='var(--good)';document.getElementById('statusText').textContent='READY';document.getElementById('statusText').style.color='var(--good)';}else{var p=[];if(!state.geoOk)p.push('geo');if(!state.deviceOk)p.push('device');if(!state.photoOk)p.push('photo');if(!state.pinOk)p.push('PIN');if(!state.detailsOk)p.push('details');document.getElementById('submitHelper').textContent='Waiting: '+p.join(', ');document.getElementById('submitHelper').style.color='var(--text3)';}}
 
-    document.getElementById('capturedImg').src = ev.target.result;
-    document.getElementById('capturedImg').style.display = 'block';
-    document.getElementById('photoPlaceholder').style.display = 'none';
-    document.getElementById('photoOverlay').style.display = 'flex';
-    document.getElementById('photoTimestamp').textContent = ts;
-    document.getElementById('photoCoords').textContent = coords;
-    document.getElementById('photoPreview').classList.add('captured');
-    document.getElementById('photoBadge').textContent = '✓ CAPTURED';
-    document.getElementById('photoBadge').style.background = 'rgba(16,185,129,.1)';
-    document.getElementById('photoBadge').style.color = 'var(--green)';
-    document.getElementById('photoBadge').style.borderColor = 'rgba(16,185,129,.2)';
-    document.getElementById('photoStatus').textContent = '✓ CAPTURED';
-    document.getElementById('photoStatus').className = 'int-val int-ok';
-    document.getElementById('sumPhoto').textContent = '✓ Timestamped · GPS embedded';
-    document.getElementById('sumPhoto').style.color = 'var(--green)';
-    checkSubmitReady();
-  };
-  reader.readAsDataURL(file);
-}
+function submitAmendment(){var btn=document.getElementById('submitBtn');btn.textContent='Submitting...';btn.disabled=true;setTimeout(function(){document.getElementById('successId').textContent=amendId;document.getElementById('successGeo').textContent='✓ '+Math.round(state.geoDistance||47)+'m';document.getElementById('successScreen').classList.add('show');},1200);}
 
-function retakePhoto(e) {
-  e.stopPropagation();
-  state.photoOk = false;
-  state.photoDataUrl = null;
-  document.getElementById('capturedImg').style.display = 'none';
-  document.getElementById('photoPlaceholder').style.display = '';
-  document.getElementById('photoOverlay').style.display = 'none';
-  document.getElementById('photoPreview').classList.remove('captured');
-  document.getElementById('photoBadge').textContent = 'NOT CAPTURED';
-  document.getElementById('photoBadge').style.background = 'rgba(239,68,68,.1)';
-  document.getElementById('photoBadge').style.color = 'var(--red)';
-  document.getElementById('photoStatus').textContent = 'REQUIRED';
-  document.getElementById('photoStatus').className = 'int-val int-pending';
-  document.getElementById('sumPhoto').textContent = 'Pending';
-  document.getElementById('sumPhoto').style.color = 'rgba(255,255,255,.2)';
-  document.getElementById('cameraInput').value = '';
-  checkSubmitReady();
-}
-
-// ── PIN ──
-function pinInput(el, prevId, nextId) {
-  el.classList.toggle('filled', el.value.length > 0);
-  if (el.value.length === 1 && nextId) {
-    document.getElementById(nextId).focus();
-  }
-  if (el.value.length === 0 && prevId) {
-    el.classList.remove('filled');
-  }
-  checkPin();
-}
-
-function checkPin() {
-  var p1 = document.getElementById('pin1').value;
-  var p2 = document.getElementById('pin2').value;
-  var p3 = document.getElementById('pin3').value;
-  var p4 = document.getElementById('pin4').value;
-  if (p1 && p2 && p3 && p4) {
-    // Demo: any 4-digit PIN accepted
-    state.pinOk = true;
-    document.getElementById('pinStatus').textContent = '✓ CONFIRMED';
-    document.getElementById('pinStatus').className = 'int-val int-ok';
-    document.getElementById('sumPin').textContent = '✓ Identity confirmed';
-    document.getElementById('sumPin').style.color = 'var(--green)';
-    checkSubmitReady();
-  } else {
-    state.pinOk = false;
-    document.getElementById('pinStatus').textContent = 'PENDING';
-    document.getElementById('pinStatus').className = 'int-val int-pending';
-    document.getElementById('sumPin').textContent = 'Pending';
-    document.getElementById('sumPin').style.color = 'rgba(255,255,255,.2)';
-    checkSubmitReady();
-  }
-}
-
-// ── DETAILS VALIDATION ──
-function updateCorrectionDisplay() {
-  var was = document.getElementById('wasSelect').value;
-  var should = document.getElementById('shouldSelect').value;
-  if (was) document.getElementById('corrWas').textContent = was;
-  if (should) document.getElementById('corrShould').textContent = should;
-  validateDetails();
-}
-
-document.getElementById('reasonText').addEventListener('input', function() {
-  var len = this.value.trim().length;
-  var el = document.getElementById('charCount');
-  el.textContent = len + ' / 20 characters minimum';
-  el.style.color = len >= 20 ? 'var(--green)' : 'rgba(255,255,255,.2)';
-  validateDetails();
-});
-
-function validateDetails() {
-  var item = document.getElementById('itemSelect').value;
-  var was = document.getElementById('wasSelect').value;
-  var should = document.getElementById('shouldSelect').value;
-  var reason = document.getElementById('reasonText').value.trim();
-  var ok = item && was && should && was !== should && reason.length >= 20;
-  state.detailsOk = ok;
-  document.getElementById('sumDetails').textContent = ok ? '✓ Complete' : 'Incomplete';
-  document.getElementById('sumDetails').style.color = ok ? 'var(--green)' : 'rgba(255,255,255,.2)';
-  checkSubmitReady();
-}
-
-// ── SUBMIT READINESS ──
-function checkSubmitReady() {
-  var allOk = state.geoOk && state.deviceOk && state.photoOk && state.pinOk && state.detailsOk;
-  var btn = document.getElementById('submitBtn');
-  btn.disabled = !allOk;
-  if (allOk) {
-    document.getElementById('submitHelper').textContent = 'All integrity checks passed. Amendment ready to submit.';
-    document.getElementById('submitHelper').style.color = 'var(--green)';
-    document.getElementById('statusDot').style.background = 'var(--green)';
-    document.getElementById('statusText').textContent = 'READY';
-    document.getElementById('statusText').style.color = 'rgba(16,185,129,.8)';
-  } else {
-    var pending = [];
-    if (!state.geoOk) pending.push('geo');
-    if (!state.deviceOk) pending.push('device');
-    if (!state.photoOk) pending.push('photo');
-    if (!state.pinOk) pending.push('PIN');
-    if (!state.detailsOk) pending.push('details');
-    document.getElementById('submitHelper').textContent = 'Waiting: ' + pending.join(', ');
-    document.getElementById('submitHelper').style.color = 'rgba(255,255,255,.2)';
-  }
-}
-
-// ── SUBMIT ──
-function submitAmendment() {
-  var btn = document.getElementById('submitBtn');
-  btn.textContent = 'Submitting...';
-  btn.disabled = true;
-  setTimeout(function() {
-    document.getElementById('successId').textContent = amendId;
-    document.getElementById('successGeo').textContent = '✓ ' + Math.round(state.geoDistance || 47) + 'm from Kingda Ka';
-    document.getElementById('successScreen').classList.add('show');
-  }, 1200);
-}
-
-// ── INIT ──
-document.getElementById('statusDot').style.background = 'var(--amber)';
-document.getElementById('statusText').textContent = 'VERIFYING';
-initDevice();
-initGeo();
-// Trigger demo geo after 2s if no real GPS
-setTimeout(function() {
-  if (!state.geoOk) simulateGeoDemo();
-}, 3000);
+initDevice();initGeo();
+setTimeout(function(){if(!state.geoOk)simulateGeoDemo();},3000);
 </script>
 </body>
 </html>
