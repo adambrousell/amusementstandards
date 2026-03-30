@@ -227,6 +227,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
 .insurer-box-t{background:rgba(212,175,55,.04);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:32px 36px;margin-top:32px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
 .btn-export-insurer{font-family:var(--mono);font-size:9px;padding:7px 14px;border-radius:3px;background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.2);color:var(--gold);cursor:pointer;letter-spacing:.08em;}
 
+/* SCORES TAB - compact pillar rows */
+.prow{display:flex;align-items:center;gap:6px;padding:3px 0}
+.prow-name{font-size:11px;color:var(--text);flex:1;white-space:nowrap}
+.prow-pct{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);width:28px;text-align:right;flex-shrink:0}
+.prow-bar{flex:0 0 40px;height:3px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.prow-fill{height:100%;background:var(--accent);border-radius:2px}
+.prow-desc{font-size:9px;color:var(--text3);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 </style>
 </head>
 <body>
@@ -341,126 +348,105 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     <div class="note-body">Each facility type gets the score built for its risk profile. <strong>You own that data.</strong></div>
   </div>
 </div>
-<!-- SCORES -->
-<div class="panel" id="p-scores">
-  <div class="ey">Scoring Output</div>
-  <h1 class="ttl" style="margin-bottom:4px">Three Indices. Every Attraction Type.</h1>
-  <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Coaster → RIDE · Wave pool → SPLASH · Play structure → PLAY · All three active = AS 360 Composite.</p>
-
-
-
-  <!-- TOP ROW: Three index cards + Pillar weights side by side -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start;margin-top:0;margin-bottom:10px">
-
-    <!-- Left: Three score cards stacked -->
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div class="sc" style="padding:14px">
-        <div class="sc-name" style="font-size:20px;margin-bottom:2px">RIDE Score</div>
-        <div style="display:flex;flex-direction:column;gap:3px">
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>R — Readiness</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>I — Integrity</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>D — Delivery</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>E — Environment</div>
-        </div>
-      </div>
-      <div class="sc" style="padding:14px">
-        <div class="sc-name" style="font-size:20px;margin-bottom:2px">SPLASH Score</div>
-        <div style="display:flex;flex-direction:column;gap:3px">
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>S — Safety</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>P — Protocol</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>L — Lifeguard</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>A — Aquatic</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>S — Structure</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>H — Hazard</div>
-        </div>
-      </div>
-      <div class="sc" style="padding:14px">
-        <div class="sc-name" style="font-size:20px;margin-bottom:2px">PLAY Score</div>
-        <div style="display:flex;flex-direction:column;gap:3px">
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>P — Performance</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>L — Liability</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>A — Attraction</div>
-          <div class="sc-pill" style="padding:4px 8px;font-size:11px"><div class="sc-dot" style="width:6px;height:6px"></div>Y — Youth Patron</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right: Pillar weights -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
-      <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--accent);letter-spacing:.04em;padding:7px 12px;background:var(--surface2);border-bottom:1px solid var(--border)">PILLAR WEIGHTS BY INDEX · ILLUSTRATIVE</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:10px 12px">
-
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);margin-bottom:4px">RIDE · 4 PILLARS</div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">R — Readiness</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">30%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:30%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Inspections · AuditScore · Staffing</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">I — Integrity</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">30%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:30%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Maintenance · NDT · Incident history</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">D — Delivery</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">25%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:25%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Throughput · LensIQ · Capacity</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">E — Environment</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">15%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:15%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Signage · Weather · Crowd density</div></div>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:8px;border-left:1px solid var(--border);padding-left:12px">
-          <div style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);margin-bottom:4px">SPLASH · 6 PILLARS</div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">L — Lifeguard</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">30%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:30%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Guard ratios · Zones · Drill frequency</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">S — Safety</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">20%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:20%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Incidents · Near-misses · EMS</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">P — Protocol</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">20%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:20%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">SOP compliance · Rescue checks</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">A — Aquatic</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">15%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:15%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Water quality · Chemical · CPO</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">S — Structure</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">10%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:10%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Slides · Deck · Mechanical</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">H — Hazard</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">5%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:5%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Environmental · Slip/fall surfaces</div></div>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:8px;border-left:1px solid var(--border);padding-left:12px">
-          <div style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);margin-bottom:4px">PLAY · 4 PILLARS</div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">Y — Youth Patron</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">35%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:35%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Supervision · Waivers · Age verification</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">L — Liability</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">30%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:30%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Incident rate · Claims · GL exposure</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">P — Performance</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">20%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:20%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Inspections · Compliance · Training</div></div>
-          <div><div style="display:flex;justify-content:space-between"><span style="font-size:13px;color:var(--text)">A — Attraction</span><span style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent)">15%</span></div><div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:2px"><div style="width:15%;height:100%;background:var(--accent);border-radius:2px"></div></div><div style="font-size:10px;color:var(--text3);margin-top:2px">Equipment · Maintenance · NDT</div></div>
-        </div>
-
-      </div>
-    </div>
-
+<!-- SCORES — REBUILT: fits one viewport, no scrolling -->
+<div class="panel" id="p-scores" style="padding:12px 24px 10px">
+  <div style="margin-bottom:6px">
+    <div class="ey" style="margin-bottom:1px">Scoring Output</div>
+    <h1 class="ttl" style="font-size:18px;margin-bottom:1px">Three Indices. Every Attraction Type.</h1>
+    <p style="font-size:10px;color:var(--text2);margin:0">Coaster → RIDE · Wave pool → SPLASH · Play structure → PLAY · All three active = AS 360 Composite.</p>
   </div>
-
-  <!-- COMPOSITE CALCULATION — full width below -->
-  <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:10px">
-    <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--accent);letter-spacing:.04em;padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:6px">
-      <span style="font-size:11px">AS 360 COMPOSITE · FACILITY-LEVEL SCORE</span>
-      <div style="display:flex;gap:4px">
-        <div style="display:flex;align-items:center;gap:4px;padding:3px 7px;background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.3);border-radius:4px"><span style="font-family:var(--mono);font-size:9px;font-weight:700;color:#3FB950">STRONG</span><span style="font-size:8px;color:var(--text3)">75+</span></div>
-        <div style="display:flex;align-items:center;gap:4px;padding:3px 7px;background:rgba(108,164,220,.08);border:1px solid rgba(108,164,220,.25);border-radius:4px"><span style="font-family:var(--mono);font-size:9px;font-weight:700;color:#6CA4DC">GOOD</span><span style="font-size:8px;color:var(--text3)">65–74</span></div>
-        <div style="display:flex;align-items:center;gap:4px;padding:3px 7px;background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.3);border-radius:4px"><span style="font-family:var(--mono);font-size:9px;font-weight:700;color:#D29922">WATCH</span><span style="font-size:8px;color:var(--text3)">50–64</span></div>
-        <div style="display:flex;align-items:center;gap:4px;padding:3px 7px;background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.3);border-radius:4px"><span style="font-family:var(--mono);font-size:9px;font-weight:700;color:#F85149">CRITICAL</span><span style="font-size:8px;color:var(--text3)">&lt;50</span></div>
+  <!-- Three score cards with integrated pillar weights — HORIZONTAL -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;flex:1;min-height:0">
+    <!-- RIDE -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;border-top:3px solid var(--accent);padding:10px 12px;display:flex;flex-direction:column">
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px">RIDE Score</div>
+      <div style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-bottom:6px">4 PILLARS · 15 STREAMS · DRY ATTRACTIONS</div>
+      <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+        <div class="prow"><span class="prow-name">R — Readiness</span><span class="prow-pct">30%</span><div class="prow-bar"><div class="prow-fill" style="width:30%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-2px 0 2px">Inspections · AuditScore · Staffing</div>
+        <div class="prow"><span class="prow-name">I — Integrity</span><span class="prow-pct">30%</span><div class="prow-bar"><div class="prow-fill" style="width:30%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-2px 0 2px">Maintenance · NDT · Incident history</div>
+        <div class="prow"><span class="prow-name">D — Delivery</span><span class="prow-pct">25%</span><div class="prow-bar"><div class="prow-fill" style="width:25%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-2px 0 2px">Throughput · LensIQ · Capacity</div>
+        <div class="prow"><span class="prow-name">E — Environment</span><span class="prow-pct">15%</span><div class="prow-bar"><div class="prow-fill" style="width:15%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-2px 0 0">Signage · Weather · Crowd density</div>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;padding:16px">
-      <div style="text-align:center;padding:8px 10px;background:var(--surface2);border-radius:5px;border:1px solid var(--border);flex:1;display:flex;flex-direction:column;justify-content:flex-start">
-        <div style="font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);margin-bottom:2px">RIDE</div>
-        <div style="font-size:28px;font-weight:700;color:var(--text);line-height:1">74</div>
-        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);margin-top:6px">GOOD</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:6px">Weight: 40%</div>
-      </div>
-      <div style="color:var(--text3);font-size:18px;flex-shrink:0">+</div>
-      <div style="text-align:center;padding:8px 10px;background:var(--surface2);border-radius:5px;border:1px solid var(--border);flex:1;display:flex;flex-direction:column;justify-content:flex-start">
-        <div style="font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);margin-bottom:2px">SPLASH</div>
-        <div style="font-size:28px;font-weight:700;color:var(--text);line-height:1">61</div>
-        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--warn);margin-top:6px">WATCH</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:6px">Weight: 35%</div>
-      </div>
-      <div style="color:var(--text3);font-size:18px;flex-shrink:0">+</div>
-      <div style="text-align:center;padding:8px 10px;background:var(--surface2);border-radius:5px;border:1px solid var(--border);flex:1;display:flex;flex-direction:column;justify-content:flex-start">
-        <div style="font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);margin-bottom:2px">PLAY</div>
-        <div style="font-size:28px;font-weight:700;color:var(--text);line-height:1">58</div>
-        <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:var(--warn);margin-top:6px">WATCH</div>
-        <div style="font-size:12px;color:var(--text3);margin-top:6px">Weight: 25%</div>
-      </div>
-      <div style="color:var(--text3);font-size:18px;flex-shrink:0">=</div>
-      <div style="text-align:center;padding:10px 12px;background:var(--accent-l);border:2px solid var(--accent-b);border-radius:5px;flex:1.3;display:flex;flex-direction:column;justify-content:center">
-        <div style="font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);margin-bottom:6px">AS 360</div>
-        <div style="font-size:34px;font-weight:700;color:var(--text);line-height:1">65</div>
-        <div style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--accent);margin-top:6px">GOOD</div>
+    <!-- SPLASH -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;border-top:3px solid var(--accent);padding:10px 12px;display:flex;flex-direction:column">
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px">SPLASH Score</div>
+      <div style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-bottom:6px">6 PILLARS · 12 STREAMS · AQUATICS</div>
+      <div style="display:flex;flex-direction:column;gap:3px;flex:1">
+        <div class="prow"><span class="prow-name">L — Lifeguard</span><span class="prow-pct">30%</span><div class="prow-bar"><div class="prow-fill" style="width:30%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-1px 0 1px">Guard ratios · Zones · Drill freq</div>
+        <div class="prow"><span class="prow-name">S — Safety</span><span class="prow-pct">20%</span><div class="prow-bar"><div class="prow-fill" style="width:20%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-1px 0 1px">Incidents · Near-misses · EMS</div>
+        <div class="prow"><span class="prow-name">P — Protocol</span><span class="prow-pct">20%</span><div class="prow-bar"><div class="prow-fill" style="width:20%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-1px 0 1px">SOP compliance · Rescue checks</div>
+        <div class="prow"><span class="prow-name">A — Aquatic</span><span class="prow-pct">15%</span><div class="prow-bar"><div class="prow-fill" style="width:15%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-1px 0 1px">Water quality · Chemical · CPO</div>
+        <div class="prow"><span class="prow-name">S — Structure</span><span class="prow-pct">10%</span><div class="prow-bar"><div class="prow-fill" style="width:10%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-1px 0 1px">Slides · Deck · Mechanical</div>
+        <div class="prow"><span class="prow-name">H — Hazard</span><span class="prow-pct">5%</span><div class="prow-bar"><div class="prow-fill" style="width:5%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-1px 0 0">Environmental · Slip/fall surfaces</div>
       </div>
     </div>
-    <div style="padding:5px 12px 7px;font-family:var(--mono);font-size:8px;color:var(--text3);border-top:1px solid var(--border);background:var(--surface2)">ILLUSTRATIVE · (0.40×74)+(0.35×61)+(0.25×58) · Weights configurable per facility type</div>
+    <!-- PLAY -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;border-top:3px solid var(--accent);padding:10px 12px;display:flex;flex-direction:column">
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:2px">PLAY Score</div>
+      <div style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-bottom:6px">4 PILLARS · 10 STREAMS · FECs</div>
+      <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+        <div class="prow"><span class="prow-name">Y — Youth Patron</span><span class="prow-pct">35%</span><div class="prow-bar"><div class="prow-fill" style="width:35%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-2px 0 2px">Supervision · Waivers · Age verification</div>
+        <div class="prow"><span class="prow-name">L — Liability</span><span class="prow-pct">30%</span><div class="prow-bar"><div class="prow-fill" style="width:30%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-2px 0 2px">Incident rate · Claims · GL exposure</div>
+        <div class="prow"><span class="prow-name">P — Performance</span><span class="prow-pct">20%</span><div class="prow-bar"><div class="prow-fill" style="width:20%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-2px 0 2px">Inspections · Compliance · Training</div>
+        <div class="prow"><span class="prow-name">A — Attraction</span><span class="prow-pct">15%</span><div class="prow-bar"><div class="prow-fill" style="width:15%"></div></div></div>
+        <div style="font-size:9px;color:var(--text3);margin:-2px 0 0">Equipment · Maintenance · NDT</div>
+      </div>
+    </div>
+  </div>
+  <!-- COMPOSITE CALCULATION — compact horizontal strip -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
+    <div style="display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--surface2);border-bottom:1px solid var(--border)">
+      <span style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--accent);letter-spacing:.04em">AS 360 COMPOSITE · FACILITY-LEVEL SCORE</span>
+      <div style="display:flex;gap:3px;margin-left:auto">
+        <div style="display:flex;align-items:center;gap:3px;padding:2px 5px;background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.3);border-radius:3px"><span style="font-family:var(--mono);font-size:8px;font-weight:700;color:#3FB950">STRONG</span><span style="font-size:7px;color:var(--text3)">75+</span></div>
+        <div style="display:flex;align-items:center;gap:3px;padding:2px 5px;background:rgba(108,164,220,.08);border:1px solid rgba(108,164,220,.25);border-radius:3px"><span style="font-family:var(--mono);font-size:8px;font-weight:700;color:#6CA4DC">GOOD</span><span style="font-size:7px;color:var(--text3)">65–74</span></div>
+        <div style="display:flex;align-items:center;gap:3px;padding:2px 5px;background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.3);border-radius:3px"><span style="font-family:var(--mono);font-size:8px;font-weight:700;color:#D29922">WATCH</span><span style="font-size:7px;color:var(--text3)">50–64</span></div>
+        <div style="display:flex;align-items:center;gap:3px;padding:2px 5px;background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.3);border-radius:3px"><span style="font-family:var(--mono);font-size:8px;font-weight:700;color:#F85149">CRITICAL</span><span style="font-size:7px;color:var(--text3)">&lt;50</span></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;padding:10px 12px">
+      <div style="text-align:center;padding:6px 8px;background:var(--surface2);border-radius:4px;border:1px solid var(--border);flex:1">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--accent)">RIDE</div>
+        <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1">74</div>
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent)">GOOD</div>
+        <div style="font-size:9px;color:var(--text3)">40%</div>
+      </div>
+      <div style="color:var(--text3);font-size:16px">+</div>
+      <div style="text-align:center;padding:6px 8px;background:var(--surface2);border-radius:4px;border:1px solid var(--border);flex:1">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--accent)">SPLASH</div>
+        <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1">61</div>
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--warn)">WATCH</div>
+        <div style="font-size:9px;color:var(--text3)">35%</div>
+      </div>
+      <div style="color:var(--text3);font-size:16px">+</div>
+      <div style="text-align:center;padding:6px 8px;background:var(--surface2);border-radius:4px;border:1px solid var(--border);flex:1">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--accent)">PLAY</div>
+        <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1">58</div>
+        <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--warn)">WATCH</div>
+        <div style="font-size:9px;color:var(--text3)">25%</div>
+      </div>
+      <div style="color:var(--text3);font-size:16px">=</div>
+      <div style="text-align:center;padding:8px 10px;background:var(--accent-l);border:2px solid var(--accent-b);border-radius:4px;flex:1.2">
+        <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--accent)">AS 360</div>
+        <div style="font-size:28px;font-weight:700;color:var(--text);line-height:1">65</div>
+        <div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent)">GOOD</div>
+      </div>
+    </div>
+    <div style="padding:4px 10px;font-family:var(--mono);font-size:8px;color:var(--text3);border-top:1px solid var(--border);background:var(--surface2)">ILLUSTRATIVE · (0.40×74)+(0.35×61)+(0.25×58) · Weights configurable per facility type</div>
   </div>
 </div>
 <!-- MODULES -->
@@ -489,9 +475,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:18px">🔍</span><div style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--red);letter-spacing:.04em">ANOMALY DETECTION ENGINE</div></div>
     <div style="font-size:15px;color:var(--text);margin-bottom:10px">Runs across all four layers. Flags behavioral patterns that distinguish real compliance from fabricated compliance.</div>
     <div class="g3" style="margin-top:0">
-      <div class="anomaly" style="padding:14px" style="border-left-color:var(--red)"><div class="anomaly-hd" style="font-size:14px;margin-bottom:4px">Speed Flag</div><div class="anomaly-body" style="font-size:13px;line-height:1.5">22-item inspection in 34 seconds. Peer avg: 4.1 min.</div></div>
-      <div class="anomaly" style="padding:14px" style="border-left-color:var(--warn)"><div class="anomaly-hd" style="font-size:14px;margin-bottom:4px">Zero-Variance Flag</div><div class="anomaly-body" style="font-size:13px;line-height:1.5">14 days, 100% PASS every item. Nothing is being checked.</div></div>
-      <div class="anomaly" style="padding:14px" style="border-left-color:var(--accent)"><div class="anomaly-hd" style="font-size:14px;margin-bottom:4px">Clustering Flag</div><div class="anomaly-body" style="font-size:13px;line-height:1.5">3 checklists in 90 seconds before supervisor arrival.</div></div>
+      <div class="anomaly" style="padding:14px"><div class="anomaly-hd" style="font-size:14px;margin-bottom:4px">Speed Flag</div><div class="anomaly-body" style="font-size:13px;line-height:1.5">22-item inspection in 34 seconds. Peer avg: 4.1 min.</div></div>
+      <div class="anomaly" style="padding:14px"><div class="anomaly-hd" style="font-size:14px;margin-bottom:4px">Zero-Variance Flag</div><div class="anomaly-body" style="font-size:13px;line-height:1.5">14 days, 100% PASS every item. Nothing is being checked.</div></div>
+      <div class="anomaly" style="padding:14px"><div class="anomaly-hd" style="font-size:14px;margin-bottom:4px">Clustering Flag</div><div class="anomaly-body" style="font-size:13px;line-height:1.5">3 checklists in 90 seconds before supervisor arrival.</div></div>
     </div>
   </div>
   <div class="g2" style="margin-top:10px">
@@ -564,7 +550,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
   <div class="ey" style="font-size:13px">Pilot Proposal</div>
   <h1 class="ttl" style="font-size:30px">Three Phases. Zero Friction at Entry.</h1>
   <div class="g3">
-    <div class="phase" style="padding:22px"><div class="phase-num" style="font-size:36px;margin-bottom:4px">01</div><div class="phase-label" style="font-size:20px;margin-bottom:4px">Insurer-Side Only</div><div class="phase-time" style="font-size:13px;margin-bottom:12px">Week 1–2</div><div class="phase-hd" style="font-size:12px;margin-top:10px;margin-bottom:4px">MASI provides:</div><div class="phase-body" style="font-size:15px;line-height:1.5">3–5 facilities · Loss runs under NDA.</div><div class="phase-hd" style="font-size:12px;margin-top:10px;margin-bottom:4px">AS 360 delivers:</div><div class="phase-body" style="font-size:15px;line-height:1.5">Desktop Assessment from public data. Certificate returned within the week.</div><div class="phase-hd" style="font-size:12px;margin-top:10px;margin-bottom:4px" style="color:var(--text3)">Park does:</div><div class="phase-body" style="font-size:15px;line-height:1.5" style="color:var(--text3)">Nothing yet. Assessment uses only public data — state inspection records, incident databases, facility benchmarks. No park systems accessed.</div><div class="phase-hd" style="font-size:12px;margin-top:10px;margin-bottom:4px">Optional — Intake Pre-Score:</div><div class="phase-body" style="font-size:13px;line-height:1.5;color:var(--text2)">Existing MASI/ParksPlus application answers map directly to AS 360 pillars. Submission form data generates a preliminary bucket (STRONG / WATCH / CRITICAL) at intake — before public data scrape even runs.</div></div>
+    <div class="phase" style="padding:22px"><div class="phase-num" style="font-size:36px;margin-bottom:4px">01</div><div class="phase-label" style="font-size:20px;margin-bottom:4px">Insurer-Side Only</div><div class="phase-time" style="font-size:13px;margin-bottom:12px">Week 1–2</div><div class="phase-hd" style="font-size:12px;margin-top:10px;margin-bottom:4px">MASI provides:</div><div class="phase-body" style="font-size:15px;line-height:1.5">3–5 facilities · Loss runs under NDA.</div><div class="phase-hd" style="font-size:12px;margin-top:10px;margin-bottom:4px">AS 360 delivers:</div><div class="phase-body" style="font-size:15px;line-height:1.5">Desktop Assessment from public data. Certificate returned within the week.</div><div class="phase-hd" style="font-size:12px;margin-top:10px;margin-bottom:4px">Park does:</div><div class="phase-body" style="font-size:15px;line-height:1.5">Nothing yet. Assessment uses only public data — state inspection records, incident databases, facility benchmarks. No park systems accessed.</div><div class="phase-hd" style="font-size:12px;margin-top:10px;margin-bottom:4px">Optional — Intake Pre-Score:</div><div class="phase-body" style="font-size:13px;line-height:1.5;color:var(--text2)">Existing MASI/ParksPlus application answers map directly to AS 360 pillars. Submission form data generates a preliminary bucket (STRONG / WATCH / CRITICAL) at intake — before public data scrape even runs.</div></div>
     <div class="phase" style="padding:22px"><div class="phase-num" style="font-size:36px;margin-bottom:4px">02</div><div class="phase-label" style="font-size:20px;margin-bottom:4px">Park Opt-In</div><div class="phase-time" style="font-size:13px;margin-bottom:12px">Week 2–6</div><div class="phase-hd" style="font-size:12px;margin-top:10px;margin-bottom:4px">MASI introduces:</div><div class="phase-body" style="font-size:15px;line-height:1.5"><strong>"MASI Loss Control Platform, powered by AS 360."</strong> Free to park. Pre-loaded with their data.</div></div>
     <div class="phase" style="padding:22px"><div class="phase-num" style="font-size:36px;margin-bottom:4px">03</div><div class="phase-label" style="font-size:20px;margin-bottom:4px">Signal Escalation</div><div class="phase-time" style="font-size:13px;margin-bottom:12px">Month 2–3</div><div class="phase-hd" style="font-size:12px;margin-top:10px;margin-bottom:4px">Parks seeing value:</div><div class="phase-body" style="font-size:15px;line-height:1.5">Voluntary Tier 2 upgrade — camera tracking on existing CCTV. Full triangulation active.</div></div>
   </div>
@@ -572,62 +558,31 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     <div class="note-hd" style="font-size:13px;margin-bottom:5px">The Adoption Model</div>
     <div class="note-body" style="font-size:14px;line-height:1.55">Progressive Snapshot model. Insurer offers premium incentive. Strong operators opt in. Operators who decline — that's a signal.</div>
   </div>
-
-  <!-- WEIGHT CONFIGURATION -->
   <div style="margin-top:16px">
     <div style="font-family:var(--mono);font-size:17px;font-weight:600;color:var(--accent);letter-spacing:.04em;margin-bottom:8px">WEIGHT CONFIGURATION · WHAT MASI CONTROLS</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
-        <div style="padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--good);flex-shrink:0"></div>
-          <div style="font-family:var(--mono);font-size:16px;font-weight:600;color:var(--good)">MASI CONFIGURES</div>
-        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--good);flex-shrink:0"></div><div style="font-family:var(--mono);font-size:16px;font-weight:600;color:var(--good)">MASI CONFIGURES</div></div>
         <div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px">
-          <div>
-            <div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">Index Weights</div>
-            <div style="font-size:16px;color:var(--text2);line-height:1.5">Split between RIDE / SPLASH / PLAY per facility type. Carnival books run RIDE-heavy; waterpark books flip to SPLASH.</div>
-          </div>
-          <div>
-            <div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">Active Indices</div>
-            <div style="font-size:16px;color:var(--text2);line-height:1.5">Standalone FEC = PLAY only. Resort with waterpark = all three.</div>
-          </div>
-          <div>
-            <div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">Pillar Weights</div>
-            <div style="font-size:16px;color:var(--text2);line-height:1.5">Calibrated against MASI's loss runs. Tom Jones's expertise informs this directly.</div>
-          </div>
+          <div><div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">Index Weights</div><div style="font-size:16px;color:var(--text2);line-height:1.5">Split between RIDE / SPLASH / PLAY per facility type.</div></div>
+          <div><div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">Active Indices</div><div style="font-size:16px;color:var(--text2);line-height:1.5">Standalone FEC = PLAY only. Resort with waterpark = all three.</div></div>
+          <div><div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">Pillar Weights</div><div style="font-size:16px;color:var(--text2);line-height:1.5">Calibrated against MASI's loss runs.</div></div>
         </div>
       </div>
-
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
-        <div style="padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0"></div>
-          <div style="font-family:var(--mono);font-size:16px;font-weight:600;color:var(--accent)">AS 360 CONTROLS · FIXED</div>
-        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0"></div><div style="font-family:var(--mono);font-size:16px;font-weight:600;color:var(--accent)">AS 360 CONTROLS · FIXED</div></div>
         <div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px">
-          <div>
-            <div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">37 Data Streams</div>
-            <div style="font-size:16px;color:var(--text2);line-height:1.5">Fixed methodology. MASI sets weights — not what each pillar measures.</div>
-          </div>
-          <div>
-            <div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">0–100 Normalization</div>
-            <div style="font-size:16px;color:var(--text2);line-height:1.5">Identical normalization across all facilities. Required for cross-book comparability.</div>
-          </div>
-          <div>
-            <div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">Anomaly Detection Logic</div>
-            <div style="font-size:16px;color:var(--text2);line-height:1.5">Proprietary IP. Not adjustable — this is what makes compliance defensible.</div>
-          </div>
+          <div><div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">37 Data Streams</div><div style="font-size:16px;color:var(--text2);line-height:1.5">Fixed methodology. MASI sets weights — not what each pillar measures.</div></div>
+          <div><div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">0–100 Normalization</div><div style="font-size:16px;color:var(--text2);line-height:1.5">Identical normalization across all facilities.</div></div>
+          <div><div style="font-size:17px;font-weight:700;color:var(--text);margin-bottom:2px">Anomaly Detection Logic</div><div style="font-size:16px;color:var(--text2);line-height:1.5">Proprietary IP. Not adjustable.</div></div>
         </div>
       </div>
-
     </div>
-
     <div style="margin-top:10px;padding:10px 14px;background:var(--accent-l);border:1px solid var(--accent-b);border-radius:6px">
       <div style="font-family:var(--mono);font-size:16px;font-weight:600;color:var(--accent);margin-bottom:3px">PILOT DELIVERABLE · WEIGHT CALIBRATION</div>
-      <div style="font-size:16px;color:var(--text2);line-height:1.5">Phase 1 uses MASI's loss runs to validate default weights. Claims data tells us whether Lifeguard is 30% or 40% of SPLASH. <strong style="color:var(--text)">CompScience calibrated the same way with Swiss Re.</strong></div>
+      <div style="font-size:16px;color:var(--text2);line-height:1.5">Phase 1 uses MASI's loss runs to validate default weights. <strong style="color:var(--text)">CompScience calibrated the same way with Swiss Re.</strong></div>
     </div>
   </div>
-
 </div>
 <!-- ROADMAP -->
 <div class="panel" id="p-roadmap">
@@ -635,10 +590,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
   <h1 class="ttl">From Pilot to Full Deployment</h1>
   <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);margin-bottom:10px">PRE-BIND TO PLATFORM</div>
   <div class="g4" style="margin-top:8px">
-    <div class="card" style="border-top:3px solid var(--accent)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px">1</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Pre-Bind Assessment</div><div style="font-size:12px;color:var(--text2);line-height:1.55">Facility submitted → scored from public data → Certificate returned. Data <strong style="color:var(--text)">pre-populates white-labeled modules.</strong></div></div>
-    <div class="card" style="border-top:3px solid var(--accent)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px">2</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">White-Label Deployment</div><div style="font-size:12px;color:var(--text2);line-height:1.55"><strong style="color:var(--text)">"MASI Loss Control Platform, powered by AS 360."</strong> Park opens Manager Module, AuditScore, and Maintenance Manager — data already loaded.</div></div>
-    <div class="card" style="border-top:3px solid var(--accent)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px">3</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Signal Escalation</div><div style="font-size:12px;color:var(--text2);line-height:1.55">Voluntary Tier 2 upgrade. Camera tracking on existing CCTV. Full triangulation active.</div></div>
-    <div class="card" style="border-top:3px solid var(--accent)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px">4</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Full Production</div><div style="font-size:12px;color:var(--text2);line-height:1.55">Portfolio monitoring across full book. Insurer Portal live. Score trends in renewal workflow.</div></div>
+    <div class="card" style="border-top:3px solid var(--accent)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px">1</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Pre-Bind Assessment</div><div style="font-size:12px;color:var(--text2);line-height:1.55">Facility submitted → scored from public data → Certificate returned.</div></div>
+    <div class="card" style="border-top:3px solid var(--accent)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px">2</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">White-Label Deployment</div><div style="font-size:12px;color:var(--text2);line-height:1.55"><strong style="color:var(--text)">"MASI Loss Control Platform, powered by AS 360."</strong></div></div>
+    <div class="card" style="border-top:3px solid var(--accent)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px">3</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Signal Escalation</div><div style="font-size:12px;color:var(--text2);line-height:1.55">Voluntary Tier 2 upgrade. Camera tracking on existing CCTV.</div></div>
+    <div class="card" style="border-top:3px solid var(--accent)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);margin-bottom:2px">4</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Full Production</div><div style="font-size:12px;color:var(--text2);line-height:1.55">Portfolio monitoring across full book. Insurer Portal live.</div></div>
   </div>
   <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);margin-top:28px;margin-bottom:10px">PRICING</div>
   <div class="g2" style="margin-top:8px">
@@ -654,34 +609,21 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
   </div>
   <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);margin-top:28px;margin-bottom:10px">INTAKE INTELLIGENCE — SCORING FROM YOUR OWN SUBMISSION FORMS</div>
   <div class="note" style="margin-top:8px;margin-bottom:14px">
-    <div class="note-body">Every MASI and ParksPlus submission already contains the inputs for a preliminary AS 360 score. The application answers map directly to pillar streams — no new data collection required. New accounts are bucketed at submission time before a loss control visit ever occurs.</div>
-  </div>
-  <div class="card" style="margin-top:8px">
-    <div class="card-body">MASI and ParksPlus application fields map directly to AS 360 pillar streams across both the GL and property books. Full field-to-pillar methodology disclosed under pilot SOW.</div>
+    <div class="note-body">Every MASI and ParksPlus submission already contains the inputs for a preliminary AS 360 score. The application answers map directly to pillar streams — no new data collection required.</div>
   </div>
   <div class="g3" style="margin-top:14px">
-    <div class="card" style="border-top:3px solid #2a6a3a">
-      <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:#4caf7d;margin-bottom:6px">STRONG PROFILE AT SUBMISSION</div>
-      <div style="font-size:11px;color:var(--text2);line-height:1.6">IAAPA member · ASTM compliant · Safety manager on-site · Clean 5-year loss runs · Maintenance staff present · Sprinklered · State inspections documented</div>
-    </div>
-    <div class="card" style="border-top:3px solid #7a6a1a">
-      <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:#c9a227;margin-bottom:6px">WATCH FLAG AT SUBMISSION</div>
-      <div style="font-size:11px;color:var(--text2);line-height:1.6">No formal safety manager · Maintenance self-reported only · No documented inspection program · Any loss $25K+ in prior 3 years</div>
-    </div>
-    <div class="card" style="border-top:3px solid #6a2a2a">
-      <div style="font-family:var(--mono);font-size:10px;font-weight:700;color:#c94040;margin-bottom:6px">CRITICAL FLAG AT SUBMISSION</div>
-      <div style="font-size:11px;color:var(--text2);line-height:1.6">No ASTM compliance · Prior property policy declined · No state inspection on record · Multiple large losses · No emergency plan on file</div>
-    </div>
+    <div class="card" style="border-top:3px solid #2a6a3a"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:#4caf7d;margin-bottom:6px">STRONG PROFILE AT SUBMISSION</div><div style="font-size:11px;color:var(--text2);line-height:1.6">IAAPA member · ASTM compliant · Safety manager on-site · Clean 5-year loss runs · Maintenance staff present · Sprinklered · State inspections documented</div></div>
+    <div class="card" style="border-top:3px solid #7a6a1a"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:#c9a227;margin-bottom:6px">WATCH FLAG AT SUBMISSION</div><div style="font-size:11px;color:var(--text2);line-height:1.6">No formal safety manager · Maintenance self-reported only · No documented inspection program · Any loss $25K+ in prior 3 years</div></div>
+    <div class="card" style="border-top:3px solid #6a2a2a"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:#c94040;margin-bottom:6px">CRITICAL FLAG AT SUBMISSION</div><div style="font-size:11px;color:var(--text2);line-height:1.6">No ASTM compliance · Prior property policy declined · No state inspection on record · Multiple large losses · No emergency plan on file</div></div>
   </div>
   <div class="note" style="margin-top:14px">
     <div class="note-hd">The Integration Path</div>
-    <div class="note-body">MASI and ParksPlus operate through Applied Systems (Applied Epic). AS 360 scores can be returned as a structured data feed that sits on top of your existing submission workflow — brokers submit normally, preliminary score returns automatically. No workflow change required.</div>
+    <div class="note-body">MASI and ParksPlus operate through Applied Systems (Applied Epic). AS 360 scores can be returned as a structured data feed that sits on top of your existing submission workflow.</div>
   </div>
-
   <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent);margin-top:28px;margin-bottom:10px">EXPANSION PATH</div>
   <div class="g3" style="margin-top:8px">
     <div class="card"><div class="card-label">Year 1</div><div class="card-title">MASI Book</div><div class="card-body">Pilot → full insured book.</div></div>
-    <div class="card"><div class="card-label">Year 1–2</div><div class="card-title">Carrier Expansion</div><div class="card-body">MASI reference → additional carriers. Stronger benchmarks.</div></div>
+    <div class="card"><div class="card-label">Year 1–2</div><div class="card-title">Carrier Expansion</div><div class="card-body">MASI reference → additional carriers.</div></div>
     <div class="card"><div class="card-label">Year 2+</div><div class="card-title">Industry Standard</div><div class="card-body">Multi-carrier scoring infrastructure.</div></div>
   </div>
   <div class="note" style="margin-top:16px">
@@ -695,153 +637,45 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
   <div class="ey">Inspection Coordinator View · Loss Control</div>
   <h1 class="ttl">Know Before You Go. Triage Smarter.</h1>
   <p class="body">AS 360 gives your Inspection Coordinator: <strong>continuous signal between visits,</strong> data-driven prioritization, and documentation built to survive a claim.</p>
-
-
-
   <div style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);margin-bottom:8px;letter-spacing:.04em">PORTFOLIO TRIAGE — WHERE DOES TOM GO NEXT?</div>
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:20px">
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3);letter-spacing:.04em">
-      <div>FACILITY</div><div style="text-align:center">AS 360</div><div style="text-align:center">LAST VISIT</div><div style="text-align:center">OPEN CARs</div><div style="text-align:center">RENEWAL</div><div style="text-align:right">SIGNAL TREND</div>
-    </div>
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:9px 12px;border-bottom:1px solid var(--border);align-items:center;background:var(--red-bg)">
-      <div><div style="font-size:12px;font-weight:700;color:var(--text)">Facility F-019</div><div style="font-size:9px;color:var(--text3)">FEC · Indoor · NJ</div></div>
-      <div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--red);padding:2px 7px;background:var(--red-bg);border:1px solid var(--red-b);border-radius:3px">43 CRIT</span></div>
-      <div style="text-align:center;font-size:11px;color:var(--text2)">14 mo ago</div>
-      <div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--red)">7 open</span></div>
-      <div style="text-align:center;font-size:11px;color:var(--text2)">Aug 2026</div>
-      <div style="text-align:right;font-size:10px;color:var(--red)">&#9660; &#8722;18 pts / 60d</div>
-    </div>
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:9px 12px;border-bottom:1px solid var(--border);align-items:center;background:var(--warn-bg)">
-      <div><div style="font-size:12px;font-weight:700;color:var(--text)">Facility P-037</div><div style="font-size:9px;color:var(--text3)">Amusement Park · OH</div></div>
-      <div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--warn);padding:2px 7px;background:var(--warn-bg);border:1px solid var(--warn-b);border-radius:3px">58 WATCH</span></div>
-      <div style="text-align:center;font-size:11px;color:var(--text2)">9 mo ago</div>
-      <div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--warn)">3 open</span></div>
-      <div style="text-align:center;font-size:11px;color:var(--text2)">Nov 2026</div>
-      <div style="text-align:right;font-size:10px;color:var(--warn)">&#9660; &#8722;9 pts / 30d</div>
-    </div>
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:9px 12px;border-bottom:1px solid var(--border);align-items:center;background:var(--warn-bg)">
-      <div><div style="font-size:12px;font-weight:700;color:var(--text)">Facility W-011</div><div style="font-size:9px;color:var(--text3)">Water Park · FL</div></div>
-      <div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--warn);padding:2px 7px;background:var(--warn-bg);border:1px solid var(--warn-b);border-radius:3px">61 WATCH</span></div>
-      <div style="text-align:center;font-size:11px;color:var(--text2)">7 mo ago</div>
-      <div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--warn)">2 open</span></div>
-      <div style="text-align:center;font-size:11px;color:var(--text2)">Mar 2027</div>
-      <div style="text-align:right;font-size:10px;color:var(--warn)">&#8594; Stable, open CARs</div>
-    </div>
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:9px 12px;border-bottom:1px solid var(--border);align-items:center">
-      <div><div style="font-size:12px;font-weight:700;color:var(--text)">Facility P-044</div><div style="font-size:9px;color:var(--text3)">FEC · TX</div></div>
-      <div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);padding:2px 7px;background:var(--accent-l);border:1px solid var(--accent-b);border-radius:3px">68 GOOD</span></div>
-      <div style="text-align:center;font-size:11px;color:var(--text2)">4 mo ago</div>
-      <div style="text-align:center;font-size:11px;color:var(--text3)">0 open</div>
-      <div style="text-align:center;font-size:11px;color:var(--text2)">Jan 2027</div>
-      <div style="text-align:right;font-size:10px;color:var(--accent)">&#9650; +6 pts / 30d</div>
-    </div>
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:9px 12px;align-items:center">
-      <div><div style="font-size:12px;font-weight:700;color:var(--text)">Facility P-052</div><div style="font-size:9px;color:var(--text3)">Amusement Park · PA</div></div>
-      <div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--good);padding:2px 7px;background:var(--good-bg);border:1px solid var(--good-b);border-radius:3px">81 STRONG</span></div>
-      <div style="text-align:center;font-size:11px;color:var(--text2)">2 mo ago</div>
-      <div style="text-align:center;font-size:11px;color:var(--text3)">0 open</div>
-      <div style="text-align:center;font-size:11px;color:var(--text2)">Jun 2027</div>
-      <div style="text-align:right;font-size:10px;color:var(--good)">&#9650; Consistent. Defer visit.</div>
-    </div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3);letter-spacing:.04em"><div>FACILITY</div><div style="text-align:center">AS 360</div><div style="text-align:center">LAST VISIT</div><div style="text-align:center">OPEN CARs</div><div style="text-align:center">RENEWAL</div><div style="text-align:right">SIGNAL TREND</div></div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:9px 12px;border-bottom:1px solid var(--border);align-items:center;background:var(--red-bg)"><div><div style="font-size:12px;font-weight:700;color:var(--text)">Facility F-019</div><div style="font-size:9px;color:var(--text3)">FEC · Indoor · NJ</div></div><div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--red);padding:2px 7px;background:var(--red-bg);border:1px solid var(--red-b);border-radius:3px">43 CRIT</span></div><div style="text-align:center;font-size:11px;color:var(--text2)">14 mo ago</div><div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--red)">7 open</span></div><div style="text-align:center;font-size:11px;color:var(--text2)">Aug 2026</div><div style="text-align:right;font-size:10px;color:var(--red)">&#9660; &#8722;18 pts / 60d</div></div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:9px 12px;border-bottom:1px solid var(--border);align-items:center;background:var(--warn-bg)"><div><div style="font-size:12px;font-weight:700;color:var(--text)">Facility P-037</div><div style="font-size:9px;color:var(--text3)">Amusement Park · OH</div></div><div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--warn);padding:2px 7px;background:var(--warn-bg);border:1px solid var(--warn-b);border-radius:3px">58 WATCH</span></div><div style="text-align:center;font-size:11px;color:var(--text2)">9 mo ago</div><div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--warn)">3 open</span></div><div style="text-align:center;font-size:11px;color:var(--text2)">Nov 2026</div><div style="text-align:right;font-size:10px;color:var(--warn)">&#9660; &#8722;9 pts / 30d</div></div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:9px 12px;border-bottom:1px solid var(--border);align-items:center;background:var(--warn-bg)"><div><div style="font-size:12px;font-weight:700;color:var(--text)">Facility W-011</div><div style="font-size:9px;color:var(--text3)">Water Park · FL</div></div><div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--warn);padding:2px 7px;background:var(--warn-bg);border:1px solid var(--warn-b);border-radius:3px">61 WATCH</span></div><div style="text-align:center;font-size:11px;color:var(--text2)">7 mo ago</div><div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--warn)">2 open</span></div><div style="text-align:center;font-size:11px;color:var(--text2)">Mar 2027</div><div style="text-align:right;font-size:10px;color:var(--warn)">&#8594; Stable, open CARs</div></div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:9px 12px;border-bottom:1px solid var(--border);align-items:center"><div><div style="font-size:12px;font-weight:700;color:var(--text)">Facility P-044</div><div style="font-size:9px;color:var(--text3)">FEC · TX</div></div><div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);padding:2px 7px;background:var(--accent-l);border:1px solid var(--accent-b);border-radius:3px">68 GOOD</span></div><div style="text-align:center;font-size:11px;color:var(--text2)">4 mo ago</div><div style="text-align:center;font-size:11px;color:var(--text3)">0 open</div><div style="text-align:center;font-size:11px;color:var(--text2)">Jan 2027</div><div style="text-align:right;font-size:10px;color:var(--accent)">&#9650; +6 pts / 30d</div></div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1.5fr;padding:9px 12px;align-items:center"><div><div style="font-size:12px;font-weight:700;color:var(--text)">Facility P-052</div><div style="font-size:9px;color:var(--text3)">Amusement Park · PA</div></div><div style="text-align:center"><span style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--good);padding:2px 7px;background:var(--good-bg);border:1px solid var(--good-b);border-radius:3px">81 STRONG</span></div><div style="text-align:center;font-size:11px;color:var(--text2)">2 mo ago</div><div style="text-align:center;font-size:11px;color:var(--text3)">0 open</div><div style="text-align:center;font-size:11px;color:var(--text2)">Jun 2027</div><div style="text-align:right;font-size:10px;color:var(--good)">&#9650; Consistent. Defer visit.</div></div>
   </div>
-
   <div class="g2">
     <div>
       <div style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);margin-bottom:8px;letter-spacing:.04em">BETWEEN-VISIT SIGNAL — F-019 (CRITICAL)</div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
-        <div style="padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-          <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3)">ACTIVITY LOG SINCE LAST VISIT</div>
-          <div style="font-family:var(--mono);font-size:9px;color:var(--red)">14 months · 0 visits</div>
-        </div>
-        <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-            <div style="font-size:11px;font-weight:600;color:var(--text)">VoxIntel Events</div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--red);font-weight:600">23 flagged</div>
-          </div>
-          <div style="font-size:10px;color:var(--text2);line-height:1.45">4× INCIDENT radio traffic / 60d. 2 unconfirmed ride-downs, no CAR filed.</div>
-        </div>
-        <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-            <div style="font-size:11px;font-weight:600;color:var(--text)">AuditScore Quality</div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--red);font-weight:600">Degraded</div>
-          </div>
-          <div style="font-size:10px;color:var(--text2);line-height:1.45">Speed flags: 11. Zero-variance: 8. Avg inspection 47s vs 4.2min benchmark.</div>
-        </div>
-        <div style="padding:8px 12px;border-bottom:1px solid var(--border)">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-            <div style="font-size:11px;font-weight:600;color:var(--text)">State Inspection DB</div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--warn);font-weight:600">1 notice</div>
-          </div>
-          <div style="font-size:10px;color:var(--text2);line-height:1.45">NJ DACS notice Oct 2025 — no CAR filed.</div>
-        </div>
-        <div style="padding:8px 12px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-            <div style="font-size:11px;font-weight:600;color:var(--text)">CAR Resolution Rate</div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--red);font-weight:600">29% (2 of 7)</div>
-          </div>
-          <div style="font-size:10px;color:var(--text2);line-height:1.45">7 open CARs · 2 resolved in 14 months · 3 overdue.</div>
-        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3)">ACTIVITY LOG SINCE LAST VISIT</div><div style="font-family:var(--mono);font-size:9px;color:var(--red)">14 months · 0 visits</div></div>
+        <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px"><div style="font-size:11px;font-weight:600;color:var(--text)">VoxIntel Events</div><div style="font-family:var(--mono);font-size:10px;color:var(--red);font-weight:600">23 flagged</div></div><div style="font-size:10px;color:var(--text2);line-height:1.45">4× INCIDENT radio traffic / 60d. 2 unconfirmed ride-downs, no CAR filed.</div></div>
+        <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px"><div style="font-size:11px;font-weight:600;color:var(--text)">AuditScore Quality</div><div style="font-family:var(--mono);font-size:10px;color:var(--red);font-weight:600">Degraded</div></div><div style="font-size:10px;color:var(--text2);line-height:1.45">Speed flags: 11. Zero-variance: 8. Avg inspection 47s vs 4.2min benchmark.</div></div>
+        <div style="padding:8px 12px;border-bottom:1px solid var(--border)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px"><div style="font-size:11px;font-weight:600;color:var(--text)">State Inspection DB</div><div style="font-family:var(--mono);font-size:10px;color:var(--warn);font-weight:600">1 notice</div></div><div style="font-size:10px;color:var(--text2);line-height:1.45">NJ DACS notice Oct 2025 — no CAR filed.</div></div>
+        <div style="padding:8px 12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px"><div style="font-size:11px;font-weight:600;color:var(--text)">CAR Resolution Rate</div><div style="font-family:var(--mono);font-size:10px;color:var(--red);font-weight:600">29% (2 of 7)</div></div><div style="font-size:10px;color:var(--text2);line-height:1.45">7 open CARs · 2 resolved in 14 months · 3 overdue.</div></div>
       </div>
     </div>
-
     <div>
       <div style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);margin-bottom:8px;letter-spacing:.04em">CAR CLOSURE TRACKER — PORTFOLIO</div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden">
-        <div style="padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between">
-          <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3)">CORRECTIVE ACTION RECORDS</div>
-          <div style="font-family:var(--mono);font-size:9px;color:var(--warn)">12 open across portfolio</div>
-        </div>
-        <div style="padding:7px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-          <div><div style="font-size:10px;font-weight:700;color:var(--text)">CAR-2026-0041 · F-019</div><div style="font-size:9px;color:var(--text3)">Restraint system — pre-open check gap</div></div>
-          <div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--red)">OVERDUE</div><div style="font-size:9px;color:var(--text3)">Due Jan 15</div></div>
-        </div>
-        <div style="padding:7px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-          <div><div style="font-size:10px;font-weight:700;color:var(--text)">CAR-2026-0038 · F-019</div><div style="font-size:9px;color:var(--text3)">Operator staffing — 2-person minimum not met</div></div>
-          <div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--red)">OVERDUE</div><div style="font-size:9px;color:var(--text3)">Due Dec 1</div></div>
-        </div>
-        <div style="padding:7px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-          <div><div style="font-size:10px;font-weight:700;color:var(--text)">CAR-2026-0055 · P-037</div><div style="font-size:9px;color:var(--text3)">NDT records — 2 rides missing annual cert</div></div>
-          <div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--warn)">PENDING</div><div style="font-size:9px;color:var(--text3)">Due Apr 30</div></div>
-        </div>
-        <div style="padding:7px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-          <div><div style="font-size:10px;font-weight:700;color:var(--text)">CAR-2026-0049 · W-011</div><div style="font-size:9px;color:var(--text3)">Lifeguard zone compliance — drill frequency low</div></div>
-          <div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--warn)">PENDING</div><div style="font-size:9px;color:var(--text3)">Due May 15</div></div>
-        </div>
-        <div style="padding:7px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-          <div><div style="font-size:10px;font-weight:700;color:var(--text)">CAR-2025-0184 · P-044</div><div style="font-size:9px;color:var(--text3)">Signage gap — height restriction not posted</div></div>
-          <div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--good)">CLOSED</div><div style="font-size:9px;color:var(--text3)">Mar 8 &#10003;</div></div>
-        </div>
-        <div style="padding:8px 12px;background:var(--surface2);display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-          <div style="text-align:center"><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--red)">2</div><div style="font-size:9px;color:var(--text3)">Overdue</div></div>
-          <div style="text-align:center"><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--warn)">10</div><div style="font-size:9px;color:var(--text3)">Pending</div></div>
-          <div style="text-align:center"><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--good)">31</div><div style="font-size:9px;color:var(--text3)">Closed YTD</div></div>
-        </div>
+        <div style="padding:8px 12px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between"><div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3)">CORRECTIVE ACTION RECORDS</div><div style="font-family:var(--mono);font-size:9px;color:var(--warn)">12 open across portfolio</div></div>
+        <div style="padding:7px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:10px;font-weight:700;color:var(--text)">CAR-2026-0041 · F-019</div><div style="font-size:9px;color:var(--text3)">Restraint system — pre-open check gap</div></div><div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--red)">OVERDUE</div><div style="font-size:9px;color:var(--text3)">Due Jan 15</div></div></div>
+        <div style="padding:7px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:10px;font-weight:700;color:var(--text)">CAR-2026-0038 · F-019</div><div style="font-size:9px;color:var(--text3)">Operator staffing — 2-person minimum not met</div></div><div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--red)">OVERDUE</div><div style="font-size:9px;color:var(--text3)">Due Dec 1</div></div></div>
+        <div style="padding:7px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:10px;font-weight:700;color:var(--text)">CAR-2026-0055 · P-037</div><div style="font-size:9px;color:var(--text3)">NDT records — 2 rides missing annual cert</div></div><div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--warn)">PENDING</div><div style="font-size:9px;color:var(--text3)">Due Apr 30</div></div></div>
+        <div style="padding:7px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:10px;font-weight:700;color:var(--text)">CAR-2026-0049 · W-011</div><div style="font-size:9px;color:var(--text3)">Lifeguard zone compliance — drill frequency low</div></div><div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--warn)">PENDING</div><div style="font-size:9px;color:var(--text3)">Due May 15</div></div></div>
+        <div style="padding:7px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:10px;font-weight:700;color:var(--text)">CAR-2025-0184 · P-044</div><div style="font-size:9px;color:var(--text3)">Signage gap — height restriction not posted</div></div><div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;font-weight:700;color:var(--good)">CLOSED</div><div style="font-size:9px;color:var(--text3)">Mar 8 &#10003;</div></div></div>
+        <div style="padding:8px 12px;background:var(--surface2);display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div style="text-align:center"><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--red)">2</div><div style="font-size:9px;color:var(--text3)">Overdue</div></div><div style="text-align:center"><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--warn)">10</div><div style="font-size:9px;color:var(--text3)">Pending</div></div><div style="text-align:center"><div style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--good)">31</div><div style="font-size:9px;color:var(--text3)">Closed YTD</div></div></div>
       </div>
     </div>
   </div>
-
   <div style="font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);margin-top:20px;margin-bottom:8px;letter-spacing:.04em">INSPECTION SCHEDULING INTELLIGENCE</div>
   <div class="g3">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px;border-top:2px solid var(--red)">
-      <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--red);margin-bottom:4px">DISPATCH NOW</div>
-      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">F-019 — Critical + 14 months</div>
-      <div style="font-size:10.5px;color:var(--text2);line-height:1.45;margin-bottom:6px">Score 43, −18pts/60d. 7 open CARs, 2 overdue. Unreported incidents. Renewal Aug 2026.</div>
-      <div style="font-family:var(--mono);font-size:9px;padding:3px 7px;background:var(--red-bg);border:1px solid var(--red-b);border-radius:3px;color:var(--red);display:inline-block">Target: April visit</div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px;border-top:2px solid var(--warn)">
-      <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--warn);margin-bottom:4px">SCHEDULE Q2</div>
-      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">P-037 — Watch + 9 months</div>
-      <div style="font-size:10.5px;color:var(--text2);line-height:1.45;margin-bottom:6px">Score 58, declining. NDT missing 2 rides. Renewal Nov risk.</div>
-      <div style="font-family:var(--mono);font-size:9px;padding:3px 7px;background:var(--warn-bg);border:1px solid var(--warn-b);border-radius:3px;color:var(--warn);display:inline-block">Target: May–June</div>
-    </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px;border-top:2px solid var(--good)">
-      <div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--good);margin-bottom:4px">DEFER — MONITORING ONLY</div>
-      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">P-052 — Strong + 2 months</div>
-      <div style="font-size:10.5px;color:var(--text2);line-height:1.45;margin-bottom:6px">Score 81, stable. No open CARs. Renewal June 2027.</div>
-      <div style="font-family:var(--mono);font-size:9px;padding:3px 7px;background:var(--good-bg);border:1px solid var(--good-b);border-radius:3px;color:var(--good);display:inline-block">No visit needed this cycle</div>
-    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px;border-top:2px solid var(--red)"><div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--red);margin-bottom:4px">DISPATCH NOW</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">F-019 — Critical + 14 months</div><div style="font-size:10.5px;color:var(--text2);line-height:1.45;margin-bottom:6px">Score 43, −18pts/60d. 7 open CARs, 2 overdue. Unreported incidents. Renewal Aug 2026.</div><div style="font-family:var(--mono);font-size:9px;padding:3px 7px;background:var(--red-bg);border:1px solid var(--red-b);border-radius:3px;color:var(--red);display:inline-block">Target: April visit</div></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px;border-top:2px solid var(--warn)"><div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--warn);margin-bottom:4px">SCHEDULE Q2</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">P-037 — Watch + 9 months</div><div style="font-size:10.5px;color:var(--text2);line-height:1.45;margin-bottom:6px">Score 58, declining. NDT missing 2 rides. Renewal Nov risk.</div><div style="font-family:var(--mono);font-size:9px;padding:3px 7px;background:var(--warn-bg);border:1px solid var(--warn-b);border-radius:3px;color:var(--warn);display:inline-block">Target: May–June</div></div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px;border-top:2px solid var(--good)"><div style="font-family:var(--mono);font-size:9px;font-weight:600;color:var(--good);margin-bottom:4px">DEFER — MONITORING ONLY</div><div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">P-052 — Strong + 2 months</div><div style="font-size:10.5px;color:var(--text2);line-height:1.45;margin-bottom:6px">Score 81, stable. No open CARs. Renewal June 2027.</div><div style="font-family:var(--mono);font-size:9px;padding:3px 7px;background:var(--good-bg);border:1px solid var(--good-b);border-radius:3px;color:var(--good);display:inline-block">No visit needed this cycle</div></div>
   </div>
-
   <div class="note" style="margin-top:16px">
     <div class="note-hd">Not Replacing Site Visits. Making Every Visit Count.</div>
     <div class="note-body">AS 360 makes site visits smarter. Continuous signal tells the Coordinator <strong>which facilities need attention, when, and why.</strong> STRONG → deferred. CRITICAL → escalated. The blind spot disappears.</div>
@@ -853,45 +687,18 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
   <div class="ey">AS 360 · Corrective Action Registry</div>
   <h1 class="ttl" style="margin-bottom:8px">CAR Portal. Multi-Layer. Insurer-Grade.</h1>
   <p style="font-size:13px;color:var(--text2);line-height:1.7;max-width:680px;margin-bottom:24px;">Five-stage review workflow from field submission to verified closure. Every corrective action is timestamped, assigned, tracked, and scored into the RIDE / SPLASH / PLAY composite. Gamified to reward the operators who surface problems — not hide them.</p>
-
-  <div style="background:rgba(0,0,0,.2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:10px 0;margin-bottom:24px;">
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-      <span style="font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.2);">Severity Tiers</span>
-      <div class="sev-legend">
-        <span class="sev-pill sev-crit">CRITICAL — Immediate shutdown required</span>
-        <span class="sev-pill sev-major">MAJOR — 24-hr remediation SLA</span>
-        <span class="sev-pill sev-minor">MINOR — 7-day remediation SLA</span>
-        <span class="sev-pill sev-obs">OBSERVATION — Log and monitor</span>
-      </div>
-    </div>
-  </div>
-
+  <div style="background:rgba(0,0,0,.2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:10px 0;margin-bottom:24px;"><div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;"><span style="font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.2);">Severity Tiers</span><div class="sev-legend"><span class="sev-pill sev-crit">CRITICAL — Immediate shutdown required</span><span class="sev-pill sev-major">MAJOR — 24-hr remediation SLA</span><span class="sev-pill sev-minor">MINOR — 7-day remediation SLA</span><span class="sev-pill sev-obs">OBSERVATION — Log and monitor</span></div></div></div>
   <div style="display:grid;grid-template-columns:1fr 380px;gap:40px;align-items:start;margin-bottom:40px;">
     <div style="display:flex;flex-direction:column;gap:0;">
       <div style="font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:10px;"><span style="width:20px;height:1px;background:var(--teal);display:inline-block;"></span>Multi-Layer Review Process</div>
       <h2 style="font-family:var(--display,'Rajdhani',sans-serif);font-size:28px;font-weight:800;letter-spacing:.5px;color:var(--text3);line-height:.95;margin-bottom:10px;">Five stages.<br><span style="color:var(--teal);">Nothing closes without verification.</span></h2>
       <p style="font-size:13px;line-height:1.8;color:var(--text);margin-bottom:28px;">Every CAR travels a defined path from field submission to verified closure. No stage can be skipped. Critical findings trigger automatic escalation. Third-party inspectors carry a 1.4× verification weight.</p>
       <div style="display:flex;flex-direction:column;gap:0;">
-        <div class="wf-stage stage-submit">
-          <div class="wf-left"><div class="wf-num">01</div><div class="wf-role">Field Submission</div><div class="wf-badge">Operators · Maintenance · Inspectors</div></div>
-          <div class="wf-card"><div class="wf-title">Submit Finding</div><div class="wf-desc">Any credentialed user submits a CAR via OpsScan QR scan, portal form, or third-party inspector upload. Auto-generates CAR ID, timestamps submission, and routes to Operations Manager queue.</div><div class="wf-actions"><span class="wf-action">CAR ID auto-generated</span><span class="wf-action">Ride / attraction linked</span><span class="wf-action">Severity assigned</span><span class="wf-action">Finding source tagged</span><span class="wf-action">Photo/doc attach</span></div><div class="wf-sla">XP awarded on valid submission · <strong>+50–150 pts depending on severity</strong></div></div>
-        </div>
-        <div class="wf-stage stage-mgr">
-          <div class="wf-left"><div class="wf-num">02</div><div class="wf-role">Manager Review</div><div class="wf-badge">Operations Manager</div></div>
-          <div class="wf-card"><div class="wf-title">Acknowledge & Assign</div><div class="wf-desc">Operations Manager reviews the finding, confirms severity, assigns an owner, sets a due date, and pushes to the assigned party's queue. Critical CARs trigger immediate alert.</div><div class="wf-actions"><span class="wf-action">Severity confirm / override</span><span class="wf-action">Owner assignment</span><span class="wf-action">Due date set</span><span class="wf-action">Priority flag</span><span class="wf-action">Escalation trigger</span></div><div class="wf-sla">SLA clock starts on acknowledgment · <strong>CRITICAL: 2hr ack SLA</strong></div></div>
-        </div>
-        <div class="wf-stage stage-remediate">
-          <div class="wf-left"><div class="wf-num">03</div><div class="wf-role">Remediation</div><div class="wf-badge">Assigned Owner</div></div>
-          <div class="wf-card"><div class="wf-title">Document the Fix</div><div class="wf-desc">Assigned party documents remediation steps, parts used, time spent, and attaches evidence. Submits for verification — cannot self-close.</div><div class="wf-actions"><span class="wf-action">Remediation notes</span><span class="wf-action">Parts / labor log</span><span class="wf-action">Evidence upload</span><span class="wf-action">NDT result attach</span><span class="wf-action">Submit for verify</span></div><div class="wf-sla">Speed bonus XP available · <strong>+100 pts for on-time closure</strong></div></div>
-        </div>
-        <div class="wf-stage stage-verify">
-          <div class="wf-left"><div class="wf-num">04</div><div class="wf-role">Independent Verification</div><div class="wf-badge">Maintenance Manager · 3rd-Party Inspector</div></div>
-          <div class="wf-card"><div class="wf-title">Verify Closure</div><div class="wf-desc">A separate credentialed verifier confirms the fix is complete and adequate. The submitter cannot be the verifier.</div><div class="wf-actions"><span class="wf-action">Physical inspection confirm</span><span class="wf-action">Evidence reviewed</span><span class="wf-action">Adequate / Inadequate</span><span class="wf-action">3rd-party weight +1.4×</span><span class="wf-action">Return to stage 3 if inadequate</span></div><div class="wf-sla">Third-party sign-off feeds inspector credential score · <strong>NAARSO-adjacent ranking</strong></div></div>
-        </div>
-        <div class="wf-stage stage-close">
-          <div class="wf-left"><div class="wf-num">05</div><div class="wf-role">Closure & Scoring</div><div class="wf-badge">Operations Manager · AS 360</div></div>
-          <div class="wf-card"><div class="wf-title">Close & Score</div><div class="wf-desc">Manager closes the CAR. Full audit trail locked. CACR updates. The closure feeds back into the RIDE / SPLASH / PLAY Integrity pillar score.</div><div class="wf-actions"><span class="wf-action">Audit trail locked</span><span class="wf-action">CACR recalculated</span><span class="wf-action">Integrity pillar updated</span><span class="wf-action">XP awarded to all parties</span><span class="wf-action">Insurer export flagged</span></div><div class="wf-sla">Full provenance visible to insurer · <strong>Source → Finding → Fix → Verifier chain</strong></div></div>
-        </div>
+        <div class="wf-stage stage-submit"><div class="wf-left"><div class="wf-num">01</div><div class="wf-role">Field Submission</div><div class="wf-badge">Operators · Maintenance · Inspectors</div></div><div class="wf-card"><div class="wf-title">Submit Finding</div><div class="wf-desc">Any credentialed user submits a CAR via OpsScan QR scan, portal form, or third-party inspector upload.</div><div class="wf-actions"><span class="wf-action">CAR ID auto-generated</span><span class="wf-action">Ride / attraction linked</span><span class="wf-action">Severity assigned</span><span class="wf-action">Photo/doc attach</span></div><div class="wf-sla">XP awarded on valid submission · <strong>+50–150 pts depending on severity</strong></div></div></div>
+        <div class="wf-stage stage-mgr"><div class="wf-left"><div class="wf-num">02</div><div class="wf-role">Manager Review</div><div class="wf-badge">Operations Manager</div></div><div class="wf-card"><div class="wf-title">Acknowledge & Assign</div><div class="wf-desc">Operations Manager reviews, confirms severity, assigns owner, sets due date.</div><div class="wf-actions"><span class="wf-action">Severity confirm / override</span><span class="wf-action">Owner assignment</span><span class="wf-action">Due date set</span><span class="wf-action">Escalation trigger</span></div><div class="wf-sla">SLA clock starts on acknowledgment · <strong>CRITICAL: 2hr ack SLA</strong></div></div></div>
+        <div class="wf-stage stage-remediate"><div class="wf-left"><div class="wf-num">03</div><div class="wf-role">Remediation</div><div class="wf-badge">Assigned Owner</div></div><div class="wf-card"><div class="wf-title">Document the Fix</div><div class="wf-desc">Documents remediation steps, parts, time, evidence. Cannot self-close.</div><div class="wf-actions"><span class="wf-action">Remediation notes</span><span class="wf-action">Parts / labor log</span><span class="wf-action">Evidence upload</span><span class="wf-action">Submit for verify</span></div><div class="wf-sla">Speed bonus XP available · <strong>+100 pts for on-time closure</strong></div></div></div>
+        <div class="wf-stage stage-verify"><div class="wf-left"><div class="wf-num">04</div><div class="wf-role">Independent Verification</div><div class="wf-badge">Maintenance Manager · 3rd-Party Inspector</div></div><div class="wf-card"><div class="wf-title">Verify Closure</div><div class="wf-desc">Separate credentialed verifier confirms fix. Submitter cannot be verifier.</div><div class="wf-actions"><span class="wf-action">Physical inspection confirm</span><span class="wf-action">Adequate / Inadequate</span><span class="wf-action">3rd-party weight +1.4×</span><span class="wf-action">Return to stage 3 if inadequate</span></div><div class="wf-sla">Third-party sign-off feeds inspector credential score · <strong>NAARSO-adjacent ranking</strong></div></div></div>
+        <div class="wf-stage stage-close"><div class="wf-left"><div class="wf-num">05</div><div class="wf-role">Closure & Scoring</div><div class="wf-badge">Operations Manager · AS 360</div></div><div class="wf-card"><div class="wf-title">Close & Score</div><div class="wf-desc">Manager closes. Full audit trail locked. CACR updates. Feeds Integrity pillar.</div><div class="wf-actions"><span class="wf-action">Audit trail locked</span><span class="wf-action">CACR recalculated</span><span class="wf-action">Integrity pillar updated</span><span class="wf-action">Insurer export flagged</span></div><div class="wf-sla">Full provenance visible to insurer · <strong>Source → Finding → Fix → Verifier chain</strong></div></div></div>
       </div>
     </div>
     <div style="position:sticky;top:64px;">
@@ -902,43 +709,38 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
           <div class="form-row"><div class="form-field"><label class="form-label">Finding Type</label><select class="form-input"><option>Mechanical</option><option>Electrical</option><option>Structural</option><option>Behavioral</option><option>Documentation</option><option>Aquatic</option></select></div><div class="form-field"><label class="form-label">Severity</label><select class="form-input severity-major" id="car-sev-sel" onchange="updateCarSev(this)"><option>CRITICAL</option><option selected>MAJOR</option><option>MINOR</option><option>OBSERVATION</option></select></div></div>
           <div class="form-field"><label class="form-label">Finding Description</label><textarea class="form-textarea">Hydraulic fluid seepage observed at launch mechanism base. Approximately 2oz pooling. No guest exposure. Ride held pending inspection.</textarea></div>
           <div class="form-field"><label class="form-label">Data Source</label><div class="form-source-grid"><div class="source-chip">Internal Audit</div><div class="source-chip active">Operator Report</div><div class="source-chip">State Inspection</div><div class="source-chip">Guest Report</div><div class="source-chip">VoxIntel</div><div class="source-chip">3rd-Party Insp.</div></div></div>
-          <div class="form-row"><div class="form-field"><label class="form-label">Assigned To</label><input class="form-input" type="text" value="M. Smith — Maintenance"></div><div class="form-field"><label class="form-label">Due Date</label><input class="form-input" type="text" value="2026-03-26 · 24hr SLA"></div></div>
+          <div class="form-row"><div class="form-field"><label class="form-label">Assigned To</label><input class="form-input" type="text" value="Maintenance Team Lead"></div><div class="form-field"><label class="form-label">Due Date</label><input class="form-input" type="text" value="2026-03-26 · 24hr SLA"></div></div>
           <div class="form-submit"><div class="form-xp-preview">+<strong>100 XP</strong> on submission · +<strong>100 XP</strong> speed bonus available</div><button class="form-btn" onclick="submitCARDemo()">Submit CAR →</button></div>
         </div>
       </div>
       <div id="car-confirm-demo" style="display:none;margin-top:10px;background:rgba(0,214,143,.06);border:1px solid rgba(0,214,143,.2);border-radius:6px;padding:14px 16px;"><div style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--green);margin-bottom:4px;">✓ CAR-2026-0047 SUBMITTED</div><div style="font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.3);">Routed to Ops Manager queue · +100 XP awarded · RIDE Score Integrity pillar flagged pending</div></div>
     </div>
   </div>
-
   <div style="font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:10px;"><span style="width:20px;height:1px;background:var(--teal);display:inline-block;"></span>CAR Tracker</div>
   <h2 style="font-family:var(--display,'Rajdhani',sans-serif);font-size:28px;font-weight:800;letter-spacing:.5px;color:var(--text3);line-height:.95;margin-bottom:10px;">Every finding.<br><span style="color:var(--gold);">Full aging. Full audit trail.</span></h2>
-  <p style="font-size:13px;line-height:1.8;color:var(--text);margin-bottom:0;">Real-time view of all open, in-progress, and recently closed CARs. Color-coded aging, severity filtering, and one-click insurer export.</p>
-
+  <p style="font-size:13px;line-height:1.8;color:var(--text);margin-bottom:0;">Real-time view of all open, in-progress, and recently closed CARs.</p>
   <div class="cacr-strip">
     <div class="cacr-card"><div class="cacr-num c-g">94%</div><div class="cacr-label">CACR · Rolling 90d</div><div class="cacr-bar"><div class="cacr-fill" style="width:94%;background:var(--green);"></div></div><div class="cacr-sub">34/36 CARs closed on time</div></div>
     <div class="cacr-card"><div class="cacr-num c-a">3</div><div class="cacr-label">Open CARs</div><div class="cacr-bar"><div class="cacr-fill" style="width:30%;background:var(--amber);"></div></div><div class="cacr-sub">1 Critical · 1 Major · 1 Minor</div></div>
     <div class="cacr-card"><div class="cacr-num c-r">1</div><div class="cacr-label">Overdue</div><div class="cacr-bar"><div class="cacr-fill" style="width:10%;background:var(--red);"></div></div><div class="cacr-sub">Past SLA · Escalated to manager</div></div>
     <div class="cacr-card"><div class="cacr-num c-t">4.2d</div><div class="cacr-label">Avg Close Time</div><div class="cacr-bar"><div class="cacr-fill" style="width:70%;background:var(--teal);"></div></div><div class="cacr-sub">vs 7d industry benchmark</div></div>
   </div>
-
   <div class="tracker-grid-car">
     <div class="tracker-hdr-t"><span>CAR ID</span><span>Finding</span><span>Severity</span><span>Status</span><span>Age</span><span>Assigned</span><span></span></div>
-    <div class="car-row"><div class="car-id">CAR-2026-0047</div><div class="car-title-t">Hydraulic seepage · Kingda Ka launch</div><div class="car-sev sev-ma">MAJOR</div><div class="car-status-t st-inprog-t">IN PROGRESS</div><div class="car-age-t age-ok-t">1d</div><div class="car-assigned-t">M. Smith</div><div class="car-action-t">→</div></div>
+    <div class="car-row"><div class="car-id">CAR-2026-0047</div><div class="car-title-t">Hydraulic seepage · Kingda Ka launch</div><div class="car-sev sev-ma">MAJOR</div><div class="car-status-t st-inprog-t">IN PROGRESS</div><div class="car-age-t age-ok-t">1d</div><div class="car-assigned-t">Maintenance Lead</div><div class="car-action-t">→</div></div>
     <div class="car-row"><div class="car-id">CAR-2026-0046</div><div class="car-title-t">Restraint sensor intermittent · Batman</div><div class="car-sev sev-c">CRITICAL</div><div class="car-status-t st-verify-t">VERIFY</div><div class="car-age-t age-warn-t">3d</div><div class="car-assigned-t">T. Brown · 3rd Party</div><div class="car-action-t">→</div></div>
     <div class="car-row"><div class="car-id">CAR-2026-0045</div><div class="car-title-t">Ops manual SOP outdated — El Toro</div><div class="car-sev sev-mi">MINOR</div><div class="car-status-t st-open-t">OPEN</div><div class="car-age-t age-over-t">9d ⚠</div><div class="car-assigned-t">Unassigned</div><div class="car-action-t">→</div></div>
     <div class="car-row" style="opacity:.5;"><div class="car-id">CAR-2026-0044</div><div class="car-title-t">Pre-open checklist gap · Superman</div><div class="car-sev sev-ma">MAJOR</div><div class="car-status-t st-closed-t">CLOSED</div><div class="car-age-t age-ok-t">2d</div><div class="car-assigned-t">R. Jones · Verified</div><div class="car-action-t">→</div></div>
     <div class="car-row" style="opacity:.5;"><div class="car-id">CAR-2026-0043</div><div class="car-title-t">Lifeguard zone coverage gap · Wave pool</div><div class="car-sev sev-c">CRITICAL</div><div class="car-status-t st-closed-t">CLOSED</div><div class="car-age-t age-ok-t">1d</div><div class="car-assigned-t">StarGuard · 3rd Party</div><div class="car-action-t">→</div></div>
   </div>
-
   <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
     <button class="btn-export-insurer">Export for Insurer Review →</button>
     <button style="font-family:var(--mono);font-size:9px;padding:7px 14px;border-radius:3px;background:rgba(0,212,208,.04);border:1px solid rgba(0,212,208,.15);color:var(--teal);cursor:pointer;letter-spacing:.08em;">Filter by Severity</button>
   </div>
-
   <div style="background:rgba(0,0,0,.15);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:32px 0;margin:40px 0;">
     <div style="font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:10px;"><span style="width:20px;height:1px;background:var(--teal);display:inline-block;"></span>Review Board Structure</div>
     <h2 style="font-family:var(--display,'Rajdhani',sans-serif);font-size:28px;font-weight:800;letter-spacing:.5px;color:var(--text3);line-height:.95;margin-bottom:10px;">Every role.<br><span style="color:var(--teal);">Defined authority. Defined accountability.</span></h2>
-    <p style="font-size:13px;line-height:1.8;color:var(--text);margin-bottom:0;max-width:640px;">No one closes their own finding. Operators surface. Managers assign. Maintenance remediates. Independent verifiers confirm. Third-party inspectors carry elevated weight.</p>
+    <p style="font-size:13px;line-height:1.8;color:var(--text);margin-bottom:0;max-width:640px;">No one closes their own finding. Operators surface. Managers assign. Maintenance remediates. Independent verifiers confirm.</p>
     <div class="board-grid">
       <div class="board-card"><div class="board-role" style="color:#00FF88;">Ride Operator / Field Staff</div><div class="board-title">Surface & Submit</div><div class="board-powers"><div class="board-power">Submit new CAR via OpsScan QR or portal</div><div class="board-power">Attach photo evidence, voice note (VoxIntel)</div><div class="board-power">Earn submission XP — rewarded for surfacing</div><div class="board-power">Cannot assign, verify, or close their own submission</div></div></div>
       <div class="board-card"><div class="board-role" style="color:var(--teal);">Operations Manager</div><div class="board-title">Review, Assign & Close</div><div class="board-powers"><div class="board-power">Acknowledge all incoming CARs · override severity</div><div class="board-power">Assign to owner — maintenance, staff, or 3rd-party</div><div class="board-power">Final closure authority after verification is complete</div><div class="board-power">CACR dashboard visible in Manager Module live</div></div></div>
@@ -946,19 +748,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
       <div class="board-card" style="border-color:rgba(139,92,246,.2);background:rgba(139,92,246,.03);"><div class="board-role" style="color:var(--purple);">Third-Party Inspector</div><div class="board-title">Independent Verification</div><div class="board-powers"><div class="board-power">Credentialed access — NAARSO/AIMS cert on file</div><div class="board-power">Verification carries 1.4× weight in CACR calculation</div><div class="board-power">Can submit CARs from on-site inspections</div><div class="board-power">Builds inspector rank — feed to credential leaderboard</div></div></div>
     </div>
   </div>
-
   <div style="font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:10px;"><span style="width:20px;height:1px;background:var(--teal);display:inline-block;"></span>Gamification Layer</div>
   <h2 style="font-family:var(--display,'Rajdhani',sans-serif);font-size:28px;font-weight:800;letter-spacing:.5px;color:var(--text3);line-height:.95;margin-bottom:10px;">Reward the operators<br><span style="color:var(--gold);">who surface problems.</span></h2>
-  <p style="font-size:13px;line-height:1.8;color:var(--text);margin-bottom:0;max-width:640px;">Gamification inverts the incentive — operators are rewarded for finding and reporting issues. Speed bonuses reward fast remediation. Streaks recognize consistently clean operations.</p>
+  <p style="font-size:13px;line-height:1.8;color:var(--text);margin-bottom:0;max-width:640px;">Gamification inverts the incentive — operators are rewarded for finding and reporting issues.</p>
   <div class="game-grid">
-    <div class="game-card gc-xp"><span class="game-icon">⚡</span><div class="game-title">Submission XP</div><div class="game-desc">Points awarded on every valid CAR submission. Higher severity = more XP.</div><div class="game-detail"><strong>Critical:</strong> +150 XP · <strong>Major:</strong> +100 XP<br><strong>Minor:</strong> +50 XP · <strong>Observation:</strong> +25 XP</div></div>
-    <div class="game-card gc-speed"><span class="game-icon">🏁</span><div class="game-title">Speed Bonus</div><div class="game-desc">Extra XP for closing CARs before the SLA deadline.</div><div class="game-detail"><strong>&lt;50% of SLA time:</strong> +100 XP<br><strong>50–80% of SLA:</strong> +50 XP<br><strong>Overdue:</strong> −25 XP</div></div>
-    <div class="game-card gc-streak"><span class="game-icon">🔥</span><div class="game-title">Clean Audit Streak</div><div class="game-desc">Zero overdue CARs + CACR above 90% earns a streak multiplier.</div><div class="game-detail"><strong>4-week streak:</strong> 1.25× XP<br><strong>8-week streak:</strong> 1.5× XP<br><strong>12-week streak:</strong> 🏆 Gold Tier</div></div>
-    <div class="game-card gc-rank"><span class="game-icon">🏅</span><div class="game-title">Inspector Rank</div><div class="game-desc">Third-party inspectors earn rank based on verification volume, accuracy, and speed.</div><div class="game-detail"><strong>Level 1:</strong> 0–500 verifications<br><strong>Level 3:</strong> 2,000+ · +1.4× weight<br><strong>Elite:</strong> 95%+ accuracy</div></div>
-    <div class="game-card gc-board"><span class="game-icon">📊</span><div class="game-title">Facility Leaderboard</div><div class="game-desc">CACR rankings across all enrolled facilities. High CACR = leverage at renewal.</div><div class="game-detail"><strong>Public:</strong> Rank, CACR %, streak<br><strong>Insurer-visible:</strong> Full CAR history<br><strong>Updated:</strong> Real-time</div></div>
-    <div class="game-card gc-badge"><span class="game-icon">✅</span><div class="game-title">Closure Badges</div><div class="game-desc">Milestone badges for sustained performance — data-backed, not self-reported.</div><div class="game-detail"><strong>Perfect Month:</strong> 100% CACR · 30d<br><strong>Zero Overdue:</strong> 90 consecutive days<br><strong>Critical Crusher:</strong> 10 Critical CARs</div></div>
+    <div class="game-card gc-xp"><span class="game-icon">⚡</span><div class="game-title">Submission XP</div><div class="game-desc">Points awarded on every valid CAR submission.</div><div class="game-detail"><strong>Critical:</strong> +150 XP · <strong>Major:</strong> +100 XP<br><strong>Minor:</strong> +50 XP · <strong>Observation:</strong> +25 XP</div></div>
+    <div class="game-card gc-speed"><span class="game-icon">🏁</span><div class="game-title">Speed Bonus</div><div class="game-desc">Extra XP for closing CARs before the SLA deadline.</div><div class="game-detail"><strong>&lt;50% of SLA:</strong> +100 XP<br><strong>50–80%:</strong> +50 XP · <strong>Overdue:</strong> −25 XP</div></div>
+    <div class="game-card gc-streak"><span class="game-icon">🔥</span><div class="game-title">Clean Audit Streak</div><div class="game-desc">Zero overdue CARs + CACR above 90% earns streak multiplier.</div><div class="game-detail"><strong>4-week:</strong> 1.25× · <strong>8-week:</strong> 1.5×<br><strong>12-week:</strong> 🏆 Gold Tier</div></div>
+    <div class="game-card gc-rank"><span class="game-icon">🏅</span><div class="game-title">Inspector Rank</div><div class="game-desc">Third-party inspectors earn rank based on verification volume and accuracy.</div><div class="game-detail"><strong>Level 1:</strong> 0–500 · <strong>Level 3:</strong> 2,000+<br><strong>Elite:</strong> 95%+ accuracy · +1.4× weight</div></div>
+    <div class="game-card gc-board"><span class="game-icon">📊</span><div class="game-title">Facility Leaderboard</div><div class="game-desc">CACR rankings across all enrolled facilities.</div><div class="game-detail"><strong>Public:</strong> Rank, CACR %, streak<br><strong>Insurer:</strong> Full CAR history</div></div>
+    <div class="game-card gc-badge"><span class="game-icon">✅</span><div class="game-title">Closure Badges</div><div class="game-desc">Milestone badges for sustained performance.</div><div class="game-detail"><strong>Perfect Month:</strong> 100% CACR · 30d<br><strong>Zero Overdue:</strong> 90 consecutive days</div></div>
   </div>
-
   <div class="xp-table">
     <div class="xp-table-hdr"><span>Action</span><span>Actor</span><span>XP</span><span>Condition</span></div>
     <div class="xp-row"><div class="xp-action">Submit Critical CAR</div><div class="xp-actor">Any role</div><div class="xp-pts">+150</div><div class="xp-cond">Valid submission</div></div>
@@ -970,7 +770,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     <div class="xp-row"><div class="xp-action">Overdue CAR penalty</div><div class="xp-actor">Assigned owner</div><div class="xp-pts" style="color:var(--red);">−25</div><div class="xp-cond">Past SLA, not closed</div></div>
     <div class="xp-row"><div class="xp-action">Perfect month bonus</div><div class="xp-actor">Facility</div><div class="xp-pts">+500</div><div class="xp-cond">100% CACR, zero overdue</div></div>
   </div>
-
   <div class="leaderboard">
     <div class="lb-hdr"><div class="lb-title">Facility CACR Leaderboard</div><div class="lb-period">Rolling 90 days · NJ Region</div></div>
     <div class="lb-row lb-top"><div class="lb-rank">1</div><div><div class="lb-facility">Facility A — Six Flags Great Adventure</div><div class="lb-badge-row"><span>🔥</span><span>✅</span><span>🏆</span></div></div><div class="lb-cacr c-g">98%</div><div class="lb-open">0 open</div><div class="lb-xp">12,840 XP</div></div>
@@ -978,22 +777,21 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     <div class="lb-row"><div class="lb-rank">3</div><div><div class="lb-facility">Facility C — Clementon Park</div></div><div class="lb-cacr c-a">87%</div><div class="lb-open">2 open</div><div class="lb-xp">6,450 XP</div></div>
     <div class="lb-row"><div class="lb-rank">4</div><div><div class="lb-facility">Facility D — Jenkinson's Boardwalk</div></div><div class="lb-cacr c-r">71%</div><div class="lb-open">4 open</div><div class="lb-xp">3,120 XP</div></div>
   </div>
-
 </div>
 <script>
 document.querySelectorAll('.tab').forEach(function(tab){
   tab.addEventListener('click',function(){
     document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
-    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});
+    document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');p.style.display='none'});
     tab.classList.add('active');
     var p=document.getElementById('p-'+tab.dataset.t);
-    if(p){p.classList.add('active');p.scrollTop=0}
+    if(p){p.classList.add('active');if(tab.dataset.t==='overview'){p.style.display='flex'}else{p.style.display='block'}p.scrollTop=0}
   });
 });
 function updateCarSev(sel){sel.className='form-input';if(sel.value==='CRITICAL')sel.classList.add('severity-crit');else if(sel.value==='MAJOR')sel.classList.add('severity-major');}
 function submitCARDemo(){var el=document.getElementById('car-confirm-demo');if(!el)return;el.style.display='block';setTimeout(function(){el.style.display='none';},4000);}
 document.querySelectorAll('.source-chip').forEach(function(chip){chip.addEventListener('click',function(){var grid=chip.closest('.form-source-grid');if(grid)grid.querySelectorAll('.source-chip').forEach(function(c){c.classList.remove('active')});chip.classList.add('active');});});
-const cacrObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.querySelectorAll('.cacr-fill').forEach(function(bar){var w=bar.style.width;bar.style.width='0';setTimeout(function(){bar.style.width=w;},100)});cacrObs.unobserve(e.target);}});},{threshold:0.2});
+var cacrObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.querySelectorAll('.cacr-fill').forEach(function(bar){var w=bar.style.width;bar.style.width='0';setTimeout(function(){bar.style.width=w;},100)});cacrObs.unobserve(e.target);}});},{threshold:0.2});
 document.querySelectorAll('.cacr-strip').forEach(function(el){cacrObs.observe(el);});
 </script>
 </body>
