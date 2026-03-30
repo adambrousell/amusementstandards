@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAAPA Expo 2026 — Speaking Submission</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --deep: #111d33;
+    --slate: #1e2d47;
+    --steel: #64748b;
+    --silver: #94a3b8;
+    --cream: #f1ede6;
+    --warm: #faf8f5;
+    --gold: #d4a24e;
+    --gold-light: #f0d69b;
+    --gold-glow: rgba(212,162,78,0.15);
+    --teal: #2dd4bf;
+    --teal-deep: #0d9488;
+    --coral: #f97066;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === HERO === */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 40px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 20%, rgba(212,162,78,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 20% 80%, rgba(45,212,191,0.05) 0%, transparent 50%),
+      linear-gradient(180deg, var(--navy) 0%, var(--deep) 100%);
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(212,162,78,0.1);
+    border: 1px solid rgba(212,162,78,0.25);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .badge::before {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 24px;
+    animation: fadeDown 0.8s ease 0.1s both;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    font-weight: 300;
+    color: var(--silver);
+    line-height: 1.65;
+    max-width: 680px;
+    margin-bottom: 40px;
+    animation: fadeDown 0.8s ease 0.2s both;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    animation: fadeDown 0.8s ease 0.3s both;
+  }
+
+  .meta-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px 20px;
+    font-size: 14px;
+    color: var(--silver);
+  }
+
+  .meta-chip strong {
+    color: var(--cream);
+    font-weight: 600;
+  }
+
+  .meta-icon {
+    font-size: 18px;
+  }
+
+  /* === SCROLL CTA === */
+  .scroll-cta {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--steel);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: fadeDown 0.8s ease 0.5s both;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--steel), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* === SECTIONS === */
+  .section {
+    padding: 80px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--white);
+    margin-bottom: 28px;
+    line-height: 1.2;
+  }
+
+  .section p, .section li {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--silver);
+    font-weight: 300;
+  }
+
+  .section p + p {
+    margin-top: 18px;
+  }
+
+  /* === DIVIDER === */
+  .divider {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .divider-line {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(212,162,78,0.3), transparent);
+  }
+
+  /* === ABSTRACT CARD === */
+  .abstract-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 48px;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .abstract-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), var(--teal), var(--gold));
+  }
+
+  .abstract-card p {
+    color: var(--cream);
+    font-weight: 400;
+    font-size: 1.08rem;
+  }
+
+  /* === LEARNING OBJECTIVES === */
+  .objectives {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 24px;
+  }
+
+  .objective {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 24px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 14px;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+
+  .objective:hover {
+    border-color: rgba(212,162,78,0.2);
+    background: rgba(212,162,78,0.03);
+  }
+
+  .obj-num {
+    flex-shrink: 0;
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: rgba(212,162,78,0.12);
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .obj-text {
+    color: var(--cream);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* === SPEAKER BIO === */
+  .speaker-row {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    margin-top: 24px;
+  }
+
+  .speaker-avatar {
+    flex-shrink: 0;
+    width: 100px; height: 100px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--slate), var(--deep));
+    border: 2px solid rgba(212,162,78,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--gold);
+  }
+
+  .speaker-info h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .speaker-title {
+    font-size: 0.9rem;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  .speaker-info p {
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: var(--silver);
+  }
+
+  .credential-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .cred-tag {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: rgba(45,212,191,0.08);
+    border: 1px solid rgba(45,212,191,0.2);
+    color: var(--teal);
+  }
+
+  /* === CONFERENCE INFO === */
+  .conf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .conf-item {
+    padding: 24px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+  }
+
+  .conf-item .conf-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .conf-item .conf-label {
+    font-size: 0.82rem;
+    color: var(--steel);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    text-align: center;
+    padding: 60px 40px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .footer p {
+    font-size: 0.85rem;
+    color: var(--steel);
+    line-height: 1.6;
+  }
+
+  .footer a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  /* === ANIMATIONS === */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 640px) {
+    .hero { padding: 48px 24px; }
+    .section { padding: 60px 24px; }
+    .abstract-card { padding: 28px; }
+    .speaker-row { flex-direction: column; gap: 20px; }
+    .meta-chip { padding: 10px 14px; font-size: 13px; }
+    .conf-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="badge">IAAPA Expo 2026 · Speaking Submission</div>
+    <h1>The <em>FICO Score</em><br>for Ride Safety</h1>
+    <p class="hero-sub">What a composite operational risk score could mean for the attractions industry — submitted to the IAAPA Expo 2026 Education Conference, November 16–19 in Orlando, FL.</p>
+    <div class="hero-meta">
+      <div class="meta-chip"><span class="meta-icon">📍</span> <strong>Orlando, FL</strong></div>
+      <div class="meta-chip"><span class="meta-icon">📅</span> <strong>Nov 16–19, 2026</strong></div>
+      <div class="meta-chip"><span class="meta-icon">🎯</span> <strong>Safety & Operations Track</strong></div>
+    </div>
+  </div>
+  <div class="scroll-cta">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ====== SESSION ABSTRACT ====== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-label">Session Abstract</div>
+  <h2>A New Framework for Quantifying Operational Risk</h2>
+  <div class="abstract-card">
+    <p>When a lender evaluates credit risk, they don't just look at whether you paid your last bill. They analyze behavioral patterns over time — utilization, history, trajectory — and produce a composite score that predicts future risk, not just reflects past performance.</p>
+    <p style="margin-top:18px;">The attractions industry doesn't have this yet. Specialty insurers writing ride liability today largely rely on loss history, self-reported applications, and periodic inspections. That's the equivalent of approving a mortgage based on whether the applicant says they pay their bills on time.</p>
+    <p style="margin-top:18px;">This session introduces a composite operational risk scoring framework — built from inspection compliance, maintenance documentation, operator training metrics, and guest experience signals — that gives operators, insurers, and regulators a leading indicator of safety performance, not a lagging one. Attendees will learn how data streams already present in most operations can be structured into a standardized, quantifiable score, and why the attractions industry is overdue for this transformation.</p>
+  </div>
+</section>
+
+<!-- ====== LEARNING OBJECTIVES ====== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-label">Learning Objectives</div>
+  <h2>What Attendees Will Walk Away With</h2>
+  <div class="objectives">
+    <div class="objective">
+      <div class="obj-num">01</div>
+      <div class="obj-text">Understand why composite risk scoring works in other industries (credit, workers' comp, auto insurance) and what's required to apply the same model to attractions safety.</div>
+    </div>
+    <div class="objective">
+      <div class="obj-num">02</div>
+      <div class="obj-text">Identify the operational data streams already present in most facilities — inspection records, maintenance logs, training completion, incident reports — and how they can be structured into measurable risk indicators.</div>
+    </div>
+    <div class="objective">
+      <div class="obj-num">03</div>
+      <div class="obj-text">Apply a practical pillar-based framework (Readiness, Integrity, Delivery, Environment) for evaluating operational risk across different attraction types — dry rides, aquatics, and FEC environments.</div>
+    </div>
+    <div class="objective">
+      <div class="obj-num">04</div>
+      <div class="obj-text">Recognize how demonstrating quantified safety posture can influence insurance pricing, regulatory relationships, and competitive positioning within the market.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SPEAKER ====== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-label">Speaker</div>
+  <h2>About the Presenter</h2>
+  <div class="speaker-row">
+    <div class="speaker-avatar">AB</div>
+    <div class="speaker-info">
+      <h3>Adam Brousell</h3>
+      <div class="speaker-title">Founder, Amusement Standards LLC · Asbury Park, NJ</div>
+      <p>Adam brings over 20 years of amusement park operations experience to the intersection of safety, data analytics, and risk intelligence. He began his career at Six Flags Great Adventure at age 18, earning the 2006 Golden Coin Award for operational excellence. He holds a B.S. in Supply Chain Management from Lehigh University.</p>
+      <p style="margin-top:12px;">He founded Amusement Standards to build the risk intelligence infrastructure the U.S. attractions industry has been missing — a composite scoring platform that quantifies operational safety the way a FICO score quantifies creditworthiness. The platform is currently in active pilot discussions with the IAAPA-endorsed specialty carrier.</p>
+      <div class="credential-tags">
+        <span class="cred-tag">20+ Years Operations</span>
+        <span class="cred-tag">Six Flags Great Adventure</span>
+        <span class="cred-tag">2006 Golden Coin Award</span>
+        <span class="cred-tag">Lehigh University — SCM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== THE OPPORTUNITY ====== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-label">Why This Talk</div>
+  <h2>The Industry Gap</h2>
+  <p>Every year, over 400 million ride cycles occur at U.S. amusement parks and attractions. The specialty insurance market covering these operations exceeds $5 billion. Yet there is no standardized, data-driven framework for quantifying operational safety risk across the industry.</p>
+  <p>Other sectors solved this decades ago. Credit scoring transformed lending. Telematics transformed auto insurance. AI-driven workplace safety platforms are now transforming workers' compensation. The attractions industry — with its complex mix of mechanical systems, seasonal workforces, aquatic environments, and guest behavior variables — is the next frontier.</p>
+  <p>This session doesn't sell a product. It makes the case that the industry needs a common language for operational risk, and walks through what building that language actually looks like — the data streams, the scoring architecture, and the stakeholders who benefit.</p>
+</section>
+
+<!-- ====== CONFERENCE DETAILS ====== -->
+<div class="divider"><div class="divider-line"></div></div>
+<section class="section reveal">
+  <div class="section-label">Conference Details</div>
+  <h2>IAAPA Expo 2026</h2>
+  <div class="conf-grid">
+    <div class="conf-item">
+      <div class="conf-val">Nov 16–19</div>
+      <div class="conf-label">Education Conference</div>
+    </div>
+    <div class="conf-item">
+      <div class="conf-val">Orlando</div>
+      <div class="conf-label">Orange County Convention Center</div>
+    </div>
+    <div class="conf-item">
+      <div class="conf-val">40,000+</div>
+      <div class="conf-label">Annual Attendees</div>
+    </div>
+    <div class="conf-item">
+      <div class="conf-val">Safety</div>
+      <div class="conf-label">Track Category</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<div class="footer">
+  <p>Submitted March 2026 · <a href="https://www.amusementstandards.com" target="_blank">amusementstandards.com</a></p>
+  <p style="margin-top:8px;">Amusement Standards LLC · Asbury Park, NJ</p>
+</div>
+
+<script>
+  // Intersection Observer for scroll reveals
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
