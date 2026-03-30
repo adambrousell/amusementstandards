@@ -22,8 +22,11 @@ html,body{background:var(--bg);min-height:100%;}
 body{font-family:var(--sans);color:var(--text);
   background-image:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(244,63,94,.05) 0%,transparent 60%);}
 
+/* STICKY HEADER GROUP */
+.sticky-header{position:sticky;top:0;z-index:100;background:var(--bg);}
+
 /* TOPBAR */
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;}
 .tb-left{display:flex;align-items:center;gap:14px;}
 .tb-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--red),#BE123C);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--cond);font-size:13px;font-weight:800;color:#fff;}
 .tb-title{font-family:var(--cond);font-size:16px;font-weight:700;color:var(--text-bright);letter-spacing:.3px;}
@@ -32,11 +35,9 @@ body{font-family:var(--sans);color:var(--text);
 .tb-right{display:flex;align-items:center;gap:10px;}
 .tb-clock{font-family:var(--mono);font-size:11px;color:var(--text-dim);}
 #sync-dot{width:7px;height:7px;border-radius:50%;background:#3D4F6A;flex-shrink:0;cursor:default;transition:background .3s;}
-.tb-home{padding:5px 12px;background:var(--panel2);border:1px solid var(--border2);border-radius:5px;font-family:var(--mono);font-size:9px;color:var(--text-dim);text-decoration:none;letter-spacing:.5px;transition:all .15s;}
-.tb-home:hover{color:var(--teal);border-color:var(--teal);}
 
 /* ALERT BANNER */
-.alert-banner{background:linear-gradient(90deg,rgba(244,63,94,.12),rgba(244,63,94,.06));border-bottom:1px solid rgba(244,63,94,.25);padding:10px 24px;display:flex;align-items:center;gap:12px;}
+.alert-banner{background:linear-gradient(90deg,rgba(244,63,94,.12),rgba(244,63,94,.06)),var(--bg);border-bottom:1px solid rgba(244,63,94,.25);padding:10px 24px;display:flex;align-items:center;gap:12px;}
 .alert-icon{font-size:18px;flex-shrink:0;}
 .alert-text{font-size:13px;color:rgba(255,200,210,.7);line-height:1.5;}
 .alert-text strong{color:var(--red);}
@@ -174,6 +175,7 @@ body{font-family:var(--sans);color:var(--text);
 </head>
 <body>
 
+<div class="sticky-header">
 <div class="topbar">
   <div class="tb-left">
     <div class="tb-mark">IR</div>
@@ -184,7 +186,6 @@ body{font-family:var(--sans);color:var(--text);
   <div class="tb-right">
     <div id="sync-dot" title="Airtable sync"></div>
     <div class="tb-clock" id="clock">--:--</div>
-    <a href="index.html" class="tb-home">← HUB</a>
   </div>
 </div>
 
@@ -246,6 +247,7 @@ body{font-family:var(--sans);color:var(--text);
     </div>
   </div>
 </div>
+</div><!-- /sticky-header -->
 
 <div class="main" id="mainForm">
 
@@ -733,7 +735,6 @@ body{font-family:var(--sans);color:var(--text);
   <div class="confirm-actions">
     <button class="btn-teal" onclick="window.print()">🖨 Print / Save PDF</button>
     <a href="ca-manager-v2.html" class="btn-ghost">Open CA Manager →</a>
-    <a href="index.html" class="btn-ghost">← Return to Hub</a>
   </div>
 </div>
 
@@ -804,12 +805,9 @@ async function submitReport() {
 
   // ── Collect all fields ──────────────────────────────────────────────────
   const irlFields = {
-    // Identifiers
     'Report ID':            reportId,
     'Submitted At':         now.toISOString(),
     'Report Date Time':     val('f-datetime'),
-
-    // Incident classification
     'Attraction':           val('f-attraction'),
     'Shift':                val('f-shift'),
     'Operator on Duty':     val('f-operator'),
@@ -817,8 +815,6 @@ async function submitReport() {
     'Incident Type':        pill('f-incident-type'),
     'Severity Level':       sevText,
     'Severity Number':      sevNum ? parseInt(sevNum) : null,
-
-    // Guest info
     'Guest ID Provided':    pill('f-guest-id'),
     'Guest Name':           val('f-guest-name'),
     'Guest DOB':            val('f-guest-dob'),
@@ -830,16 +826,12 @@ async function submitReport() {
     'Guest State':          pill('f-guest-state'),
     'Guest Compliant':      pill('f-guest-compliant'),
     'Additional Guests':    val('f-additional-guests') ? parseInt(val('f-additional-guests')) : 0,
-
-    // Injury
     'Injury Present':       pill('f-injury-present'),
     'Body Zones Affected':  getSelectedZones(),
     'Injury Types':         getChecked(document.getElementById('injuryTypes')),
     'Injury Description':   val('f-injury-desc'),
     'Medical Response':     getChecked(document.querySelector('.sec-body .check-group:not(#injuryTypes)')),
     'EMS Unit Hospital':    val('f-ems'),
-
-    // Sequence
     'Cycle Point':          pill('f-cycle-point'),
     'Restraints Checked':   pill('f-restraints'),
     'Ride Normal':          pill('f-ride-normal'),
@@ -847,38 +839,26 @@ async function submitReport() {
     'Immediate Actions':    val('f-immediate-actions'),
     'Ride Shutdown':        pill('f-ride-shutdown'),
     'Weather Conditions':   val('f-weather'),
-
-    // Response
     'EAP Protocol':         val('f-eap'),
     'Response Time':        val('f-response-time'),
     'Scene Preserved':      pill('f-scene'),
     'Response Notes':       val('f-response-notes'),
-
-    // Witnesses
     'Witnesses Count':      witnesses.length,
     'Witnesses Detail':     witnesses.map(w=>`${w.name} (${w.role}) — ${w.stmt}`).join(' | '),
     'Surveillance':         pill('f-surveillance'),
-
-    // Submitter
     'Submitter Name':       val('f-submitter'),
     'Submitter Title':      val('f-submitter-title'),
-
-    // Source tag
     'Source':               'IRL — Incident Report Form',
   };
 
-  // Remove null/empty to keep Airtable clean
   Object.keys(irlFields).forEach(k => {
     if (irlFields[k] === null || irlFields[k] === '' || irlFields[k] === undefined) {
       delete irlFields[k];
     }
   });
 
-  // ── Push 1: IRL_Submissions ─────────────────────────────────────────────
   const irlOk = await atPost('IRL_Submissions', irlFields);
 
-  // ── Push 2: CAR_Log — auto-create corrective action ────────────────────
-  // Triggered for any Level 2+ incident or equipment malfunction / near miss
   const incidentType = irlFields['Incident Type'] || '';
   const autoCAR = parseInt(sevNum) >= 2
     || incidentType.includes('Equipment')
@@ -907,7 +887,6 @@ async function submitReport() {
     });
   }
 
-  // ── Show confirmation ───────────────────────────────────────────────────
   document.getElementById('mainForm').style.display = 'none';
   document.getElementById('confirmWrap').classList.add('show');
   document.getElementById('confirm-id').textContent = reportId;
@@ -928,12 +907,11 @@ async function submitReport() {
     <div class="confirm-field"><label>Witnesses Recorded</label><div class="cv">${witnesses.length}</div></div>
     ${autoCAR ? `<div class="confirm-field" style="border-color:rgba(244,63,94,.3);"><label>CAR Auto-Created</label><div class="cv" style="color:var(--red)">${carId}</div></div>` : ''}`;
 
-  document.querySelector('.steps-wrap').style.display = 'none';
-  document.querySelector('.alert-banner').style.display = 'none';
+  document.querySelector('.sticky-header').style.display = 'none';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── CORE LOGIC (unchanged from original) ──────────────────────────────────
+// ── CORE LOGIC ────────────────────────────────────────────────────────────
 let currentStep = 1;
 const totalSteps = 7;
 let witnesses = [];
