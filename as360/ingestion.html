@@ -1,0 +1,404 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS 360 Ingestion Layer — Third-Party Data Connectors | Amusement Standards</title>
+<meta name="description" content="AS 360 ingests operational data from Mobaro, CommandCentr, 24/7 Software, state inspection databases, and Ellis EAVS. Keep your existing system. AS 360 scores it.">
+<link rel="canonical" href="https://www.amusementstandards.com/as360/ingestion.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#060f24;--navy2:#0a1628;--navy3:#0d1e35;--navy4:#111f3a;
+  --gold:#c9a84c;--gold2:#a8872e;--gold-glow:rgba(201,168,76,.15);
+  --ride:#FF6B35;--splash:#1e9ed4;--play:#1fb87a;--teal:#00D4D0;
+  --text:#d0d8e8;--muted:#5e7192;--bright:#fff;
+  --border:rgba(255,255,255,.07);--border-med:rgba(255,255,255,.12);
+  --mobaro:#6366f1;--cmd:#f59e0b;--sw24:#10b981;--state:#64748b;
+  --ellis:#06b6d4;--custom:#8b5cf6;
+  --font-serif:'DM Serif Display',serif;
+  --font-mono:'DM Mono',monospace;
+  --font-sans:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+nav{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(6,15,36,.95);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)}
+.nav-logo{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.02em}
+.nav-links{display:flex;align-items:center;gap:6px}
+.nav-links a{font-size:11px;font-weight:500;color:var(--muted);padding:5px 10px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;transition:color .2s,background .2s}
+.nav-links a:hover{color:var(--bright);background:rgba(255,255,255,.05)}
+.nav-cta{background:var(--gold)!important;color:var(--navy)!important;font-weight:700!important}
+.nav-cta:hover{opacity:.88}
+.hero{position:relative;overflow:hidden;padding:96px 48px 72px;text-align:center}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(201,168,76,.07) 0%,transparent 60%),radial-gradient(ellipse 40% 50% at 10% 80%,rgba(99,102,241,.06) 0%,transparent 60%),radial-gradient(ellipse 40% 50% at 90% 80%,rgba(6,182,212,.06) 0%,transparent 60%);pointer-events:none}
+.hero-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:12px}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:36px;height:1px;background:rgba(255,255,255,.1)}
+.hero h1{font-family:var(--font-serif);font-size:clamp(40px,6.5vw,80px);color:var(--bright);line-height:.95;letter-spacing:-.02em;margin-bottom:16px;position:relative;z-index:1}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero-sub{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;color:var(--muted);margin-bottom:28px;line-height:1.8}
+.hero-sub span{color:rgba(255,255,255,.2);margin:0 6px}
+.hero-desc{font-size:17px;font-weight:300;color:rgba(255,255,255,.5);max-width:600px;margin:0 auto 48px;line-height:1.8}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;font-family:var(--font-sans);font-weight:600;font-size:14px;padding:12px 26px;border-radius:4px;letter-spacing:.02em;transition:all .2s;cursor:pointer}
+.btn-primary{background:var(--gold);color:var(--navy)}
+.btn-ghost{background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--border-med)}
+.btn:hover{opacity:.82;transform:translateY(-1px)}
+.pipeline-section{background:var(--navy2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:72px 48px;overflow:hidden;position:relative}
+.pipeline-section::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.pipeline-inner{max-width:1100px;margin:0 auto}
+.section-eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.section-title{font-family:var(--font-serif);font-size:clamp(26px,3.5vw,42px);color:var(--bright);line-height:1.1;letter-spacing:-.02em;margin-bottom:10px}
+.section-title em{color:var(--gold);font-style:italic}
+.section-sub{font-size:15px;font-weight:300;color:var(--muted);line-height:1.75;max-width:560px}
+.pipeline-diagram{margin-top:56px;max-width:760px;margin-left:auto;margin-right:auto}
+.vp-step{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:start}
+.vp-step-label{padding-top:4px;display:flex;flex-direction:column;gap:4px;text-align:right}
+.vp-step-num{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.1em}
+.vp-step-title{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--bright);letter-spacing:.04em;text-transform:uppercase}
+.vp-step-sub{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:.04em}
+.vp-sources{display:flex;flex-direction:column;gap:6px}
+.vp-workers{display:flex;flex-direction:column;gap:5px}
+.vp-worker{font-family:var(--font-mono);font-size:10px;color:rgba(255,255,255,.4);background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:4px;padding:7px 12px;letter-spacing:.04em}
+.vp-engine{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:20px 22px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start}
+.vp-engine-steps{display:flex;flex-direction:column;gap:0}
+.vp-estep{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid rgba(201,168,76,.08);font-size:12px;color:rgba(255,255,255,.45);line-height:1.45}
+.vp-estep:last-child{border-bottom:none}
+.vp-estep-n{color:rgba(201,168,76,.5);flex-shrink:0;font-family:var(--font-mono);font-size:11px;padding-top:1px}
+.vp-engine-tables{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.vp-etable{font-family:var(--font-mono);font-size:8px;letter-spacing:.05em;color:rgba(201,168,76,.55);background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.12);border-radius:3px;padding:4px 9px;white-space:nowrap}
+.vp-scores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.vp-arrow{display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:center;padding:6px 0}
+.vp-arrow::before{content:'';display:block}
+.vp-arrow-wrap{display:flex;flex-direction:column;align-items:flex-start;padding-left:8px}
+.vp-arrow-line{width:2px;height:36px;background:rgba(255,255,255,.07);border-radius:1px;position:relative;overflow:visible;margin-left:16px}
+.vp-particle{position:absolute;left:-3px;width:8px;height:8px;border-radius:50%;animation:vParticle 2s ease-in-out infinite}
+@keyframes vParticle{0%{top:-8px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:calc(100% + 8px);opacity:0}}
+.vp-arrow-head{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid rgba(255,255,255,.2);margin-left:12px}
+.pipe-source{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:14px 16px;position:relative;overflow:hidden;transition:border-color .3s,transform .2s}
+.pipe-source:hover{transform:translateY(-2px)}
+.pipe-source::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px}
+.ps-mobaro::before{background:var(--mobaro)}.ps-cmd::before{background:var(--cmd)}.ps-sw24::before{background:var(--sw24)}.ps-state::before{background:var(--state)}.ps-ellis::before{background:var(--ellis)}.ps-custom::before{background:var(--custom)}
+.ps-mobaro{border-color:rgba(99,102,241,.2)}.ps-cmd{border-color:rgba(245,158,11,.2)}.ps-sw24{border-color:rgba(16,185,129,.2)}.ps-state{border-color:rgba(100,116,139,.2)}.ps-ellis{border-color:rgba(6,182,212,.2)}.ps-custom{border-color:rgba(139,92,246,.2)}
+.ps-name{font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.ps-mobaro .ps-name{color:var(--mobaro)}.ps-cmd .ps-name{color:var(--cmd)}.ps-sw24 .ps-name{color:var(--sw24)}.ps-state .ps-name{color:var(--state)}.ps-ellis .ps-name{color:var(--ellis)}.ps-custom .ps-name{color:var(--custom)}
+.ps-desc{font-size:11px;color:rgba(255,255,255,.35);line-height:1.4}
+.ps-tag{font-family:var(--font-mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:2px;margin-top:6px;display:inline-block}
+.ps-mobaro .ps-tag{background:rgba(99,102,241,.12);color:rgba(99,102,241,.8);border:1px solid rgba(99,102,241,.2)}
+.ps-cmd .ps-tag{background:rgba(245,158,11,.12);color:rgba(245,158,11,.8);border:1px solid rgba(245,158,11,.2)}
+.ps-sw24 .ps-tag{background:rgba(16,185,129,.12);color:rgba(16,185,129,.8);border:1px solid rgba(16,185,129,.2)}
+.ps-state .ps-tag{background:rgba(100,116,139,.12);color:rgba(100,116,139,.8);border:1px solid rgba(100,116,139,.2)}
+.ps-ellis .ps-tag{background:rgba(6,182,212,.12);color:rgba(6,182,212,.8);border:1px solid rgba(6,182,212,.2)}
+.ps-custom .ps-tag{background:rgba(139,92,246,.12);color:rgba(139,92,246,.8);border:1px solid rgba(139,92,246,.2)}
+.po-score{border-radius:6px;padding:12px 14px;text-align:center;transition:transform .2s}
+.po-score:hover{transform:translateY(-2px)}
+.po-ride{background:rgba(255,107,53,.08);border:1px solid rgba(255,107,53,.2)}
+.po-splash{background:rgba(30,158,212,.08);border:1px solid rgba(30,158,212,.2)}
+.po-play{background:rgba(31,184,122,.08);border:1px solid rgba(31,184,122,.2)}
+.po-name{font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.1em}
+.po-ride .po-name{color:var(--ride)}.po-splash .po-name{color:var(--splash)}.po-play .po-name{color:var(--play)}
+.po-pillars{font-family:var(--font-mono);font-size:8px;color:rgba(255,255,255,.3);margin-top:3px}
+.connectors-section{padding:80px 48px}
+.connectors-inner{max-width:1100px;margin:0 auto}
+.connectors-grid{display:grid;grid-template-columns:1fr;gap:2px;margin-top:52px;background:var(--border)}
+@media(min-width:800px){.connectors-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.connectors-grid{grid-template-columns:repeat(3,1fr)}}
+.connector-card{background:var(--navy);padding:32px 28px;position:relative;overflow:hidden;transition:background .25s}
+.connector-card:hover{background:var(--navy2)}
+.connector-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .25s}
+.connector-card:hover::after{opacity:1}
+.cc-mobaro::after{background:var(--mobaro)}.cc-cmd::after{background:var(--cmd)}.cc-sw24::after{background:var(--sw24)}.cc-state::after{background:var(--state)}.cc-ellis::after{background:var(--ellis)}.cc-custom::after{background:var(--custom)}
+.cc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.cc-logo-wrap{display:flex;align-items:center;gap:10px}
+.cc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.cc-mobaro .cc-dot{background:var(--mobaro)}.cc-cmd .cc-dot{background:var(--cmd)}.cc-sw24 .cc-dot{background:var(--sw24)}.cc-state .cc-dot{background:var(--state)}.cc-ellis .cc-dot{background:var(--ellis)}.cc-custom .cc-dot{background:var(--custom)}
+.cc-name{font-family:var(--font-serif);font-size:20px;color:var(--bright)}
+.cc-status{font-family:var(--font-mono);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px}
+.status-planned{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.25)}
+.status-scope{background:rgba(100,116,139,.1);color:#94a3b8;border:1px solid rgba(100,116,139,.25)}
+.cc-org{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.cc-desc{font-size:13px;color:var(--muted);line-height:1.65;font-weight:300;margin-bottom:20px}
+.cc-streams{margin-bottom:20px}
+.cc-streams-label{font-family:var(--font-mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:8px}
+.cc-stream-list{display:flex;flex-direction:column;gap:4px}
+.cc-stream{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.45);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.cc-stream:last-child{border-bottom:none}
+.cc-stream::before{content:'·';flex-shrink:0;font-size:16px;line-height:1}
+.cc-mobaro .cc-stream::before{color:var(--mobaro)}.cc-cmd .cc-stream::before{color:var(--cmd)}.cc-sw24 .cc-stream::before{color:var(--sw24)}.cc-state .cc-stream::before{color:var(--state)}.cc-ellis .cc-stream::before{color:var(--ellis)}.cc-custom .cc-stream::before{color:var(--custom)}
+.cc-maps{margin-bottom:20px}
+.cc-maps-label{font-family:var(--font-mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:8px}
+.cc-map-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-family:var(--font-mono);font-size:10px}
+.cc-map-from{color:rgba(255,255,255,.4);flex:1}
+.cc-map-arrow{color:rgba(255,255,255,.15);font-size:10px}
+.cc-map-to{flex:1;text-align:right}
+.cc-mobaro .cc-map-to{color:rgba(99,102,241,.7)}.cc-cmd .cc-map-to{color:rgba(245,158,11,.7)}.cc-sw24 .cc-map-to{color:rgba(16,185,129,.7)}.cc-state .cc-map-to{color:rgba(100,116,139,.7)}.cc-ellis .cc-map-to{color:rgba(6,182,212,.7)}.cc-custom .cc-map-to{color:rgba(139,92,246,.7)}
+.cc-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.cc-score-badges{display:flex;gap:4px}
+.csb{font-family:var(--font-mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:2px;letter-spacing:.05em}
+.csb-ride{background:rgba(255,107,53,.15);color:var(--ride);border:1px solid rgba(255,107,53,.3)}
+.csb-splash{background:rgba(30,158,212,.15);color:var(--splash);border:1px solid rgba(30,158,212,.3)}
+.csb-play{background:rgba(31,184,122,.15);color:var(--play);border:1px solid rgba(31,184,122,.3)}
+.norm-section{background:var(--navy2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 48px}
+.norm-inner{max-width:1100px;margin:0 auto}
+.norm-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:52px}
+@media(max-width:800px){.norm-grid{grid-template-columns:1fr}}
+.norm-steps{display:flex;flex-direction:column;gap:0}
+.norm-step{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--border);position:relative}
+.norm-step:last-child{border-bottom:none}
+.ns-num{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--gold);width:24px;flex-shrink:0;padding-top:2px}
+.ns-title{font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--bright);margin-bottom:5px}
+.ns-body{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300}
+.ns-code{font-family:var(--font-mono);font-size:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;padding:8px 12px;margin-top:8px;color:rgba(255,255,255,.5);line-height:1.7}
+.ns-code .highlight{color:var(--gold)}
+.norm-visual{background:var(--navy3);border:1px solid var(--border);border-radius:10px;padding:28px;position:sticky;top:80px}
+.nv-title{font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;text-align:center}
+.nv-streams{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.nv-stream{display:flex;align-items:center;gap:10px}
+.nv-stream-name{font-family:var(--font-mono);font-size:9px;color:rgba(255,255,255,.4);width:88px;flex-shrink:0;text-align:right;letter-spacing:.04em}
+.nv-track{flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;position:relative}
+.nv-fill{height:100%;border-radius:2px;transition:width 1.4s cubic-bezier(.25,.46,.45,.94)}
+.nv-val{font-family:var(--font-mono);font-size:10px;font-weight:700;width:28px;text-align:right;flex-shrink:0}
+.nv-divider{height:1px;background:var(--border);margin:4px 0}
+.nv-composite{display:flex;align-items:center;justify-content:space-between;padding:16px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:6px;margin-top:4px}
+.nv-comp-label{font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(201,168,76,.6)}
+.nv-comp-score{font-family:var(--font-serif);font-size:40px;color:var(--gold);line-height:1}
+.nv-comp-tier{font-family:var(--font-mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--play);margin-top:2px}
+.tech-section{padding:80px 48px}
+.tech-inner{max-width:1100px;margin:0 auto}
+.tech-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:52px;align-items:start}
+@media(max-width:800px){.tech-grid{grid-template-columns:1fr}}
+.tech-steps{display:flex;flex-direction:column;gap:0}
+.tech-step{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--border)}
+.tech-step:last-child{border-bottom:none}
+.ts-num{font-family:var(--font-mono);font-size:11px;font-weight:700;color:var(--teal);width:24px;flex-shrink:0;padding-top:2px}
+.ts-title{font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--bright);margin-bottom:4px}
+.ts-body{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300}
+.code-block{background:var(--navy3);border:1px solid var(--border);border-radius:8px;padding:24px;font-family:var(--font-mono);font-size:11px;line-height:1.9;overflow-x:auto}
+.cb-comment{color:rgba(255,255,255,.2)}.cb-key{color:var(--teal)}.cb-val{color:rgba(255,255,255,.55)}.cb-str{color:var(--gold)}.cb-num{color:var(--ride)}.cb-fn{color:var(--play)}.cb-indent{padding-left:16px}.cb-indent2{padding-left:32px}
+.principles-section{background:var(--navy2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 48px}
+.principles-inner{max-width:1100px;margin:0 auto}
+.principles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:52px;background:var(--border)}
+@media(max-width:800px){.principles-grid{grid-template-columns:1fr}}
+.principle-card{background:var(--navy);padding:30px 26px;transition:background .2s}
+.principle-card:hover{background:var(--navy2)}
+.pc-icon{font-size:28px;margin-bottom:14px}
+.pc-title{font-family:var(--font-serif);font-size:20px;color:var(--bright);margin-bottom:10px}
+.pc-body{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300}
+.pc-highlight{color:var(--gold);font-style:italic}
+.insurer-callout{padding:80px 48px}
+.insurer-inner{max-width:1100px;margin:0 auto}
+.ic-box{background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:40px 44px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+@media(max-width:700px){.ic-box{grid-template-columns:1fr}}
+.ic-eyebrow{font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:10px}
+.ic-title{font-family:var(--font-serif);font-size:clamp(22px,3vw,34px);color:var(--bright);margin-bottom:12px}
+.ic-title em{color:var(--gold);font-style:italic}
+.ic-body{font-size:14px;color:var(--muted);line-height:1.7;font-weight:300;max-width:520px}
+.ic-btns{display:flex;flex-direction:column;gap:10px;flex-shrink:0}
+.cta-section{padding:96px 48px;text-align:center;background:linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%)}
+.cta-inner{max-width:560px;margin:0 auto}
+.cta-title{font-family:var(--font-serif);font-size:clamp(28px,4vw,48px);color:var(--bright);line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+.cta-title em{color:var(--gold);font-style:italic}
+.cta-sub{font-size:16px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.75;margin-bottom:36px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+footer{background:var(--navy2);border-top:1px solid var(--border);padding:28px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--gold)}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:12px;color:var(--muted);transition:color .2s}
+.footer-links a:hover{color:var(--text)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.15)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:900px){
+  nav{padding:0 20px}.nav-links{gap:3px}.nav-links a{font-size:10px;padding:4px 7px}
+  .hero,.pipeline-section,.connectors-section,.norm-section,.tech-section,.principles-section,.insurer-callout,.cta-section{padding-left:20px;padding-right:20px}
+  .connectors-grid,.principles-grid{grid-template-columns:1fr}
+  footer{padding:24px 20px;flex-direction:column;text-align:center}
+  .ic-box{grid-template-columns:1fr}
+  .vp-step{grid-template-columns:1fr}
+  .vp-arrow{grid-template-columns:1fr}.vp-arrow::before{display:none}
+  .vp-step-label{text-align:left;flex-direction:row;align-items:center;gap:10px}
+  .vp-step-sub{display:none}
+  .vp-engine{grid-template-columns:1fr}
+  .vp-scores{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="https://amusementstandards.com" class="nav-logo">amusement standards.</a>
+  <div class="nav-links">
+    <a href="https://amusementstandards.com/as360-platform.html">Platform</a>
+    <a href="https://amusementstandards.com/as360/ops-scan.html" style="color:#00FF88">OpsScan</a>
+    <a href="https://amusementstandards.com/as360/lens-iq.html" style="color:#0099FF">LensIQ</a>
+    <a href="https://amusementstandards.com/voxintel.html" style="color:#a78bfa">VoxIntel</a>
+    <a href="https://amusementstandards.com/as360/methodology.html">Methodology</a>
+    <a href="mailto:adam@amusementstandards.com" class="nav-cta">Request Demo</a>
+  </div>
+</nav>
+<section class="hero">
+  <div style="position:relative;z-index:1">
+    <div class="hero-eyebrow">AS 360 · Data Acquisition Layer 4</div>
+    <h1>Keep your system.<br><em>We score it.</em></h1>
+    <div class="hero-sub">Mobaro <span>·</span> CommandCentr <span>·</span> 24/7 Software <span>·</span> State Inspection Databases <span>·</span> Ellis EAVS</div>
+    <p class="hero-desc">AS 360 connects to platforms your park already operates. Your existing operational data — inspections, downtime records, incident reports, compliance filings — is field-normalized to our 0–100 stream model and fed directly into RIDE, SPLASH, PLAY, and MIDWAY scores. No rip-and-replace. No data migration. No new workflows.</p>
+    <div class="hero-btns">
+      <a href="#connectors" class="btn btn-primary">View Connectors</a>
+      <a href="#normalization" class="btn btn-ghost">Normalization Model</a>
+      <a href="https://amusementstandards.com/as360-platform.html" class="btn btn-ghost">Full Platform →</a>
+    </div>
+  </div>
+</section>
+<section class="pipeline-section">
+  <div class="pipeline-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Data Flow Architecture</div>
+      <h2 class="section-title">External platforms in.<br><em>Scored intelligence out.</em></h2>
+      <p class="section-sub">Every third-party source passes through the same normalization engine — field mapping, schema translation, and 0–100 conversion — before entering the scoring pipeline.</p>
+    </div>
+    <div class="pipeline-diagram reveal">
+      <div class="vp-step"><div class="vp-step-label"><span class="vp-step-num">01</span><span class="vp-step-title">Source Platforms</span><span class="vp-step-sub">Your existing operational data</span></div><div class="vp-sources"><div class="pipe-source ps-mobaro"><div class="ps-name">Mobaro</div><div class="ps-desc">Inspections, downtime, maintenance records</div><span class="ps-tag">API</span></div><div class="pipe-source ps-cmd"><div class="ps-name">CommandCentr</div><div class="ps-desc">Ride checks, throughput, incidents</div><span class="ps-tag">API</span></div><div class="pipe-source ps-sw24"><div class="ps-name">24/7 Software</div><div class="ps-desc">Work orders, guard tours, maintenance</div><span class="ps-tag">API / Export</span></div><div class="pipe-source ps-state"><div class="ps-name">State Databases</div><div class="ps-desc">Public inspection records, compliance filings</div><span class="ps-tag">Scrape / FOIA</span></div><div class="pipe-source ps-ellis"><div class="ps-name">Ellis EAVS</div><div class="ps-desc">Aquatic AI alerts, drowning detection events</div><span class="ps-tag">Webhook</span></div></div></div>
+      <div class="vp-arrow"><div class="vp-arrow-wrap"><div class="vp-arrow-line"><div class="vp-particle" style="background:var(--mobaro);animation-delay:0s"></div><div class="vp-particle" style="background:var(--cmd);animation-delay:.5s"></div><div class="vp-particle" style="background:var(--sw24);animation-delay:1s"></div></div><div class="vp-arrow-head"></div></div></div>
+      <div class="vp-step"><div class="vp-step-label"><span class="vp-step-num">02</span><span class="vp-step-title">Cloudflare Workers</span><span class="vp-step-sub">Per-platform connectors</span></div><div class="vp-workers"><div class="vp-worker" style="border-color:rgba(99,102,241,.3)"><span style="color:var(--mobaro);font-weight:700">mobaro</span>-connector.workers.dev</div><div class="vp-worker" style="border-color:rgba(245,158,11,.3)"><span style="color:var(--cmd);font-weight:700">cmdcentr</span>-connector.workers.dev</div><div class="vp-worker" style="border-color:rgba(16,185,129,.3)"><span style="color:var(--sw24);font-weight:700">sw24</span>-connector.workers.dev</div><div class="vp-worker" style="border-color:rgba(100,116,139,.3)"><span style="color:var(--state);font-weight:700">state-ingest</span>.workers.dev</div><div class="vp-worker" style="border-color:rgba(6,182,212,.3)"><span style="color:var(--ellis);font-weight:700">ellis-eavs</span>.workers.dev</div></div></div>
+      <div class="vp-arrow"><div class="vp-arrow-wrap"><div class="vp-arrow-line"><div class="vp-particle" style="background:var(--gold);animation-delay:0s"></div><div class="vp-particle" style="background:var(--gold);animation-delay:1.2s"></div></div><div class="vp-arrow-head"></div></div></div>
+      <div class="vp-step"><div class="vp-step-label"><span class="vp-step-num">03</span><span class="vp-step-title">Normalization Engine</span><span class="vp-step-sub">AS 360 Intelligence Hub</span></div><div class="vp-engine"><div class="vp-engine-steps"><div class="vp-estep"><span class="vp-estep-n">→</span><span>Schema mapping — source fields to AS 360 stream IDs</span></div><div class="vp-estep"><span class="vp-estep-n">→</span><span>Type coercion — binary → pass rates, severity → penalty</span></div><div class="vp-estep"><span class="vp-estep-n">→</span><span>0–100 conversion — linear, penalty-decay, or range</span></div><div class="vp-estep"><span class="vp-estep-n">→</span><span>Pillar assignment — each stream to R·I·D·E or S·P·L·A·S·H or M·I·D·W·A·Y</span></div><div class="vp-estep"><span class="vp-estep-n">→</span><span>Provenance tagging — source, version, confidence</span></div></div><div class="vp-engine-tables"><div class="vp-etable">Normalized_Streams</div><div class="vp-etable">External_Ingestion_Log</div><div class="vp-etable">RIDE_Score_Inputs</div><div class="vp-etable">SPLASH_Score_Inputs</div><div class="vp-etable">PLAY_Score_Inputs</div><div class="vp-etable">MIDWAY_Score_Inputs</div></div></div></div>
+      <div class="vp-arrow"><div class="vp-arrow-wrap"><div class="vp-arrow-line"><div class="vp-particle" style="background:var(--gold);animation-delay:.3s"></div></div><div class="vp-arrow-head"></div></div></div>
+      <div class="vp-step"><div class="vp-step-label"><span class="vp-step-num">04</span><span class="vp-step-title">Score Output</span><span class="vp-step-sub">Same model regardless of source</span></div><div class="vp-scores"><div class="po-score po-ride"><div class="po-name">RIDE</div><div class="po-pillars">R · I · D · E</div></div><div class="po-score po-splash"><div class="po-name">SPLASH</div><div class="po-pillars">S · P · L · A · S · H</div></div><div class="po-score po-play"><div class="po-name">PLAY</div><div class="po-pillars">P · L · A · Y</div></div><div class="po-score" style="background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);grid-column:1/-1;"><div class="po-name" style="color:#10B981;">MIDWAY</div><div class="po-pillars">M · I · D · W · A · Y</div></div></div></div>
+    </div>
+  </div>
+</section>
+<section class="connectors-section" id="connectors">
+  <div class="connectors-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Data Connectors</div>
+      <h2 class="section-title">Six sources.<br><em>One normalization pipeline.</em></h2>
+      <p class="section-sub">Each connector translates the source platform's schema to the AS 360 stream model before it touches the scoring engine.</p>
+    </div>
+    <div class="connectors-grid">
+      <div class="connector-card cc-mobaro reveal"><div class="cc-header"><div class="cc-logo-wrap"><div class="cc-dot"></div><div class="cc-name">Mobaro</div></div><span class="cc-status status-planned">Planned</span></div><div class="cc-org">First Option Software · Orlando, FL</div><div class="cc-desc">Ride safety management — daily checklists, maintenance schedules, downtime records. Maps to Readiness and Integrity pillars.</div><div class="cc-streams"><div class="cc-streams-label">Data ingested</div><div class="cc-stream-list"><div class="cc-stream">Daily ride inspection pass/fail history</div><div class="cc-stream">Planned and corrective maintenance work orders</div><div class="cc-stream">Downtime events — duration, cause, resolution</div><div class="cc-stream">RideOps cycle counts and queue data</div></div></div><div class="cc-maps"><div class="cc-maps-label">Field mapping</div><div class="cc-map-row"><span class="cc-map-from">checklist.pass_rate</span><span class="cc-map-arrow">→</span><span class="cc-map-to">Readiness.R</span></div><div class="cc-map-row"><span class="cc-map-from">downtime.duration_hrs</span><span class="cc-map-arrow">→</span><span class="cc-map-to">Integrity.I</span></div></div><div class="cc-footer"><div class="cc-score-badges"><span class="csb csb-ride">RIDE</span><span class="csb csb-splash">SPLASH</span><span class="csb csb-play">PLAY</span></div><div class="cc-method">REST API · OAuth 2.0</div></div></div>
+      <div class="connector-card cc-cmd reveal"><div class="cc-header"><div class="cc-logo-wrap"><div class="cc-dot"></div><div class="cc-name">CommandCentr</div></div><span class="cc-status status-planned">Planned</span></div><div class="cc-org">First Option Software · Theme Park Ops</div><div class="cc-desc">Ride operations — checks, throughput, operator assignments, incidents. Structured data with minimal transformation needed.</div><div class="cc-streams"><div class="cc-streams-label">Data ingested</div><div class="cc-stream-list"><div class="cc-stream">Ride pre-opening checks and pass/fail</div><div class="cc-stream">Throughput — guests per hour, seat utilization</div><div class="cc-stream">Operator assignments and training certs</div><div class="cc-stream">Downtime and incident reports</div></div></div><div class="cc-maps"><div class="cc-maps-label">Field mapping</div><div class="cc-map-row"><span class="cc-map-from">ride_check.result</span><span class="cc-map-arrow">→</span><span class="cc-map-to">Readiness.R</span></div><div class="cc-map-row"><span class="cc-map-from">throughput.gph</span><span class="cc-map-arrow">→</span><span class="cc-map-to">Delivery.D</span></div></div><div class="cc-footer"><div class="cc-score-badges"><span class="csb csb-ride">RIDE</span><span class="csb csb-play">PLAY</span></div><div class="cc-method">REST API · API Key</div></div></div>
+      <div class="connector-card cc-sw24 reveal"><div class="cc-header"><div class="cc-logo-wrap"><div class="cc-dot"></div><div class="cc-name">24/7 Software</div></div><span class="cc-status status-planned">Planned</span></div><div class="cc-org">Operations Management · Parks &amp; Attractions</div><div class="cc-desc">Work orders, guard tours, maintenance scheduling, incident management. Feeds Readiness and Environment pillars.</div><div class="cc-streams"><div class="cc-streams-label">Data ingested</div><div class="cc-stream-list"><div class="cc-stream">Work orders — scheduled, completed, overdue</div><div class="cc-stream">Guard tour scan timestamps</div><div class="cc-stream">Preventive maintenance completion rates</div><div class="cc-stream">Incident management response times</div></div></div><div class="cc-maps"><div class="cc-maps-label">Field mapping</div><div class="cc-map-row"><span class="cc-map-from">work_order.overdue_count</span><span class="cc-map-arrow">→</span><span class="cc-map-to">Readiness.R penalty</span></div><div class="cc-map-row"><span class="cc-map-from">guard_tour.completion</span><span class="cc-map-arrow">→</span><span class="cc-map-to">Environment.E</span></div></div><div class="cc-footer"><div class="cc-score-badges"><span class="csb csb-ride">RIDE</span><span class="csb csb-splash">SPLASH</span><span class="csb csb-play">PLAY</span></div><div class="cc-method">REST API / CSV Export</div></div></div>
+      <div class="connector-card cc-state reveal"><div class="cc-header"><div class="cc-logo-wrap"><div class="cc-dot"></div><div class="cc-name">State Inspection Records</div></div><span class="cc-status status-scope">In Scope</span></div><div class="cc-org">FL DACS · CA DOSH · TX DI · OH AG · NJ DCA</div><div class="cc-desc">Public ride inspection records, violation histories, compliance filings. Independent external validation — operator-independent and legally obtained.</div><div class="cc-streams"><div class="cc-streams-label">Data ingested</div><div class="cc-stream-list"><div class="cc-stream">Annual state inspection outcomes</div><div class="cc-stream">Violation records — type, severity, resolution</div><div class="cc-stream">Incident reports filed with agencies</div><div class="cc-stream">Permit status and renewal compliance</div></div></div><div class="cc-maps"><div class="cc-maps-label">Field mapping</div><div class="cc-map-row"><span class="cc-map-from">inspection.outcome</span><span class="cc-map-arrow">→</span><span class="cc-map-to">Integrity.I</span></div><div class="cc-map-row"><span class="cc-map-from">violation.severity</span><span class="cc-map-arrow">→</span><span class="cc-map-to">Integrity.I penalty</span></div></div><div class="cc-footer"><div class="cc-score-badges"><span class="csb csb-ride">RIDE</span><span class="csb csb-splash">SPLASH</span></div><div class="cc-method">Web scrape / FOIA / OPRA</div></div></div>
+      <div class="connector-card cc-ellis reveal"><div class="cc-header"><div class="cc-logo-wrap"><div class="cc-dot"></div><div class="cc-name">Ellis EAVS</div></div><span class="cc-status status-scope">In Scope</span></div><div class="cc-org">Ellis International · Aquatic Vigilance System</div><div class="cc-desc">AI-powered aquatic surveillance — thermal and HD cameras for drowning prevention. Alert events feed SPLASH Score Hazard and Lifeguard pillars.</div><div class="cc-streams"><div class="cc-streams-label">Data ingested</div><div class="cc-stream-list"><div class="cc-stream">Distress detection alerts — type, zone, response time</div><div class="cc-stream">Overcrowding flags — bather load thresholds</div><div class="cc-stream">Lifeguard response time per alert</div><div class="cc-stream">Camera coverage gap events</div></div></div><div class="cc-maps"><div class="cc-maps-label">Field mapping</div><div class="cc-map-row"><span class="cc-map-from">alert.response_ms</span><span class="cc-map-arrow">→</span><span class="cc-map-to">Lifeguard.L</span></div><div class="cc-map-row"><span class="cc-map-from">alert.overcrowd</span><span class="cc-map-arrow">→</span><span class="cc-map-to">Hazard.H</span></div></div><div class="cc-footer"><div class="cc-score-badges"><span class="csb csb-splash">SPLASH</span></div><div class="cc-method">Webhook / Alert API</div></div></div>
+      <div class="connector-card cc-custom reveal"><div class="cc-header"><div class="cc-logo-wrap"><div class="cc-dot"></div><div class="cc-name">Custom Connector</div></div><span class="cc-status status-planned">On Request</span></div><div class="cc-org">Any platform with API or data export</div><div class="cc-desc">Regional CMMS, proprietary inspection systems, POS with ride data — any structured source can be normalized to the stream model.</div><div class="cc-streams"><div class="cc-streams-label">What we need</div><div class="cc-stream-list"><div class="cc-stream">API documentation or sample export</div><div class="cc-stream">Field list with data types</div><div class="cc-stream">Update frequency</div><div class="cc-stream">Authentication method</div></div></div><div class="cc-maps"><div class="cc-maps-label">Build timeline</div><div class="cc-map-row"><span class="cc-map-from">Simple API</span><span class="cc-map-arrow">→</span><span class="cc-map-to">3–5 days</span></div><div class="cc-map-row"><span class="cc-map-from">CSV ingestion</span><span class="cc-map-arrow">→</span><span class="cc-map-to">1–2 days</span></div></div><div class="cc-footer"><div class="cc-score-badges"><span class="csb csb-ride">RIDE</span><span class="csb csb-splash">SPLASH</span><span class="csb csb-play">PLAY</span></div><div class="cc-method">Varies</div></div></div>
+    </div>
+  </div>
+</section>
+<section class="norm-section" id="normalization">
+  <div class="norm-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">The Normalization Model</div>
+      <h2 class="section-title">Every source maps<br><em>to the same scale.</em></h2>
+      <p class="section-sub">Raw data arrives in inconsistent shapes. The normalization engine converts every input to 0–100 before it touches scoring. A 72 from Mobaro means the same as a 72 from a native AS 360 audit.</p>
+    </div>
+    <div class="norm-grid">
+      <div class="norm-steps reveal">
+        <div class="norm-step"><div class="ns-num">01</div><div><div class="ns-title">Schema Mapping</div><div class="ns-body">Each connector declares a field map — translating source field names to AS 360 stream identifiers.</div><div class="ns-code"><span class="highlight">// Mobaro field map</span><br>"mobaro.checklist.pass_rate"<br><span class="highlight">  →</span> "as360.stream.R.pre_open_compliance"</div></div></div>
+        <div class="norm-step"><div class="ns-num">02</div><div><div class="ns-title">Type Coercion</div><div class="ns-body">Binary pass/fail → rolling pass rate. Severity codes → weighted penalties. Timestamp gaps → response time metrics.</div><div class="ns-code"><span class="highlight">// Binary → pass rate</span><br>[pass, pass, fail, pass, pass]<br><span class="highlight">  →</span> 80.0 (4/5 pass rate)</div></div></div>
+        <div class="norm-step"><div class="ns-num">03</div><div><div class="ns-title">0–100 Conversion</div><div class="ns-body">Pass rates rescale linearly. Incidents use penalty-decay. Continuous feeds use range normalization.</div><div class="ns-code"><span class="highlight">// Penalty-decay</span><br>incidents_per_1000: 2.4<br><span class="highlight">  →</span> score: 100 × e^(-0.3 × 2.4) = 48.7</div></div></div>
+        <div class="norm-step"><div class="ns-num">04</div><div><div class="ns-title">Pillar Assignment</div><div class="ns-body">Each normalized stream routes to its pillar — R·I·D·E for RIDE, S·P·L·A·S·H for SPLASH, M·I·D·W·A·Y for MIDWAY. Pillar score = weighted average of assigned streams.</div></div></div>
+        <div class="norm-step"><div class="ns-num">05</div><div><div class="ns-title">Source Disclosure</div><div class="ns-body">Every score carries data provenance — which streams from which sources, update cadence, confidence level. Full transparency.</div></div></div>
+      </div>
+      <div class="norm-visual reveal">
+        <div class="nv-title">RIDE Score · Live Normalization View</div>
+        <div class="nv-streams">
+          <div class="nv-stream"><div class="nv-stream-name">Pre-open check</div><div class="nv-track"><div class="nv-fill" data-w="87" style="background:#6366f1"></div></div><div class="nv-val" style="color:#6366f1" data-v="87">0</div></div>
+          <div class="nv-stream"><div class="nv-stream-name">Maintenance PM</div><div class="nv-track"><div class="nv-fill" data-w="79" style="background:#6366f1"></div></div><div class="nv-val" style="color:#6366f1" data-v="79">0</div></div>
+          <div class="nv-stream"><div class="nv-stream-name">State inspection</div><div class="nv-track"><div class="nv-fill" data-w="91" style="background:#64748b"></div></div><div class="nv-val" style="color:#64748b" data-v="91">0</div></div>
+          <div class="nv-divider"></div>
+          <div class="nv-stream"><div class="nv-stream-name">Incident rate</div><div class="nv-track"><div class="nv-fill" data-w="74" style="background:#f59e0b"></div></div><div class="nv-val" style="color:#f59e0b" data-v="74">0</div></div>
+          <div class="nv-stream"><div class="nv-stream-name">Work orders</div><div class="nv-track"><div class="nv-fill" data-w="82" style="background:#10b981"></div></div><div class="nv-val" style="color:#10b981" data-v="82">0</div></div>
+          <div class="nv-stream"><div class="nv-stream-name">SOP compliance</div><div class="nv-track"><div class="nv-fill" data-w="68" style="background:#c9a84c"></div></div><div class="nv-val" style="color:#c9a84c" data-v="68">0</div></div>
+          <div class="nv-divider"></div>
+          <div class="nv-stream"><div class="nv-stream-name">Guest feedback</div><div class="nv-track"><div class="nv-fill" data-w="84" style="background:#FF6B35"></div></div><div class="nv-val" style="color:#FF6B35" data-v="84">0</div></div>
+          <div class="nv-stream"><div class="nv-stream-name">Throughput</div><div class="nv-track"><div class="nv-fill" data-w="77" style="background:#f59e0b"></div></div><div class="nv-val" style="color:#f59e0b" data-v="77">0</div></div>
+        </div>
+        <div class="nv-composite"><div><div class="nv-comp-label">Composite RIDE Score</div><div class="nv-comp-tier">STRONG · External + Native</div></div><div><div class="nv-comp-score" id="vis-score">0</div></div></div>
+        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+          <div style="font-family:var(--font-mono);font-size:8px;padding:3px 8px;border-radius:3px;background:rgba(99,102,241,.1);color:rgba(99,102,241,.8);border:1px solid rgba(99,102,241,.2)">Mobaro 35%</div>
+          <div style="font-family:var(--font-mono);font-size:8px;padding:3px 8px;border-radius:3px;background:rgba(100,116,139,.1);color:rgba(100,116,139,.8);border:1px solid rgba(100,116,139,.2)">State 15%</div>
+          <div style="font-family:var(--font-mono);font-size:8px;padding:3px 8px;border-radius:3px;background:rgba(245,158,11,.1);color:rgba(245,158,11,.8);border:1px solid rgba(245,158,11,.2)">CmdCentr 20%</div>
+          <div style="font-family:var(--font-mono);font-size:8px;padding:3px 8px;border-radius:3px;background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.2)">Native 30%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="principles-section">
+  <div class="principles-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">Design Principles</div>
+      <h2 class="section-title">Why this architecture<br><em>earns trust.</em></h2>
+    </div>
+    <div class="principles-grid">
+      <div class="principle-card reveal"><div class="pc-icon">🔍</div><div class="pc-title">Full Provenance</div><div class="pc-body">Every score carries its data lineage. An underwriter sees <span class="pc-highlight">35% Mobaro, 25% state data, 40% native audits.</span> Complete audit trail.</div></div>
+      <div class="principle-card reveal"><div class="pc-icon">⚖️</div><div class="pc-title">No Single Source Controls</div><div class="pc-body"><span class="pc-highlight">No single platform can dominate the composite.</span> Gaming one source gets flagged when others disagree. Triangulation is the architecture.</div></div>
+      <div class="principle-card reveal"><div class="pc-icon">🔒</div><div class="pc-title">Data Stays Yours</div><div class="pc-body">Connector access authorized by operator. <span class="pc-highlight">AS 360 processes on behalf of subscriber.</span> Raw data not stored — only normalized values and provenance.</div></div>
+      <div class="principle-card reveal"><div class="pc-icon">📡</div><div class="pc-title">Source-Agnostic Scoring</div><div class="pc-body"><span class="pc-highlight">After normalization, all inputs are structurally identical.</span> A park with Mobaro scores on day one. Same model. Same output.</div></div>
+      <div class="principle-card reveal"><div class="pc-icon">🏗️</div><div class="pc-title">No Rip and Replace</div><div class="pc-body"><span class="pc-highlight">Asking parks to abandon existing tools kills deals.</span> AS 360 sits on top. Connector library grows. Moat deepens.</div></div>
+      <div class="principle-card reveal"><div class="pc-icon">📈</div><div class="pc-title">Better Data Over Time</div><div class="pc-body">30 days = baseline. 90 days = trend. 12 months = seasonal patterns. <span class="pc-highlight">Score improves because data depth increases.</span></div></div>
+    </div>
+  </div>
+</section>
+<section class="insurer-callout">
+  <div class="insurer-inner">
+    <div class="ic-box reveal">
+      <div>
+        <div class="ic-eyebrow">For Specialty Lines Carriers &amp; MGAs</div>
+        <h3 class="ic-title">External data means<br><em>the score can't be gamed.</em></h3>
+        <p class="ic-body">When a score is informed by state records, Mobaro maintenance data, and Ellis aquatic alerts — alongside native audits and OpsScan behavioral data — an operator cannot improve by providing favorable self-reported inputs alone. The aggregation layer is the integrity layer.</p>
+      </div>
+      <div class="ic-btns">
+        <a href="mailto:adam@amusementstandards.com" class="btn btn-primary">Request Insurer Dossier</a>
+        <a href="https://amusementstandards.com/as360-platform.html" class="btn btn-ghost">Full Platform →</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2 class="cta-title">Already running<br><em>Mobaro or CommandCentr?</em></h2>
+    <p class="cta-sub">Your existing operational data is already generating score inputs. Connect your platform and historical records start scoring on day one.</p>
+    <div class="cta-btns">
+      <a href="mailto:adam@amusementstandards.com" class="btn btn-primary">Discuss Your Platform</a>
+      <a href="https://amusementstandards.com/as360-platform.html" class="btn btn-ghost">Full Platform →</a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">amusement standards.</div>
+  <div class="footer-links">
+    <a href="https://amusementstandards.com">Home</a>
+    <a href="https://amusementstandards.com/as360-platform.html">AS 360</a>
+    <a href="https://amusementstandards.com/as360/ops-scan.html" style="color:rgba(0,255,136,.6)">OpsScan</a>
+    <a href="https://amusementstandards.com/as360/lens-iq.html" style="color:rgba(0,153,255,.6)">LensIQ</a>
+    <a href="https://amusementstandards.com/voxintel.html" style="color:rgba(167,139,250,.6)">VoxIntel</a>
+    <a href="mailto:adam@amusementstandards.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 Amusement Standards · RIDE Score™ · SPLASH Score™ · PLAY Score™ · MIDWAY Score™</div>
+</footer>
+<script>
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+;(function(){
+  const section=document.querySelector('.norm-section');
+  if(!section)return;
+  let fired=false;
+  const obs=new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting||fired)return;
+    fired=true;
+    document.querySelectorAll('.nv-fill').forEach(el=>{el.style.width=el.dataset.w+'%';});
+    document.querySelectorAll('.nv-val').forEach(el=>{
+      const target=parseInt(el.dataset.v);let current=0;
+      const iv=setInterval(()=>{current=Math.min(target,current+Math.ceil(target/40));el.textContent=current;if(current>=target)clearInterval(iv);},28);
+    });
+    const scoreEl=document.getElementById('vis-score');
+    if(scoreEl){let current=0;const target=80;const iv=setInterval(()=>{current=Math.min(target,current+2);scoreEl.textContent=current;if(current>=target)clearInterval(iv);},28);}
+  },{threshold:.3});
+  obs.observe(section);
+})();
+</script>
+</body>
+</html>
