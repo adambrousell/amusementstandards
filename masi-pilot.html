@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MASI Pilot — Internal Execution Plan | ADAM ONLY</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06090E;--s1:#0B0F18;--s2:#101520;--s3:#161C2A;--border:#1C2436;--b2:#263050;--teal:#0ABFBC;--gold:#D4AF37;--green:#10B981;--amber:#F59E0B;--red:#F43F5E;--text:#B0BCD0;--bright:#E2E8F0;--dim:#4A5974;--muted:#2E3A50;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding:24px;}
+.page{max-width:900px;margin:0 auto;}
+.warn{background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);border-radius:6px;padding:10px 16px;font-family:var(--mono);font-size:10px;color:var(--red);letter-spacing:.5px;margin-bottom:24px;text-align:center;}
+h1{font-size:28px;font-weight:700;color:var(--bright);margin-bottom:4px;}
+.sub{font-family:var(--mono);font-size:10px;color:var(--dim);margin-bottom:28px;}
+.section{margin-bottom:24px;}
+.section-label{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:2px;color:var(--dim);padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:10px;}
+.card-title{font-size:15px;font-weight:700;color:var(--bright);margin-bottom:6px;}
+.card-body{font-size:13px;color:var(--text);line-height:1.7;}
+.pill{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 8px;border-radius:3px;display:inline-block;letter-spacing:.5px;margin-right:4px;}
+.pill-done{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.25);}
+.pill-wip{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25);}
+.pill-todo{background:rgba(244,63,94,.1);color:var(--red);border:1px solid rgba(244,63,94,.2);}
+.pill-teal{background:rgba(10,191,188,.1);color:var(--teal);border:1px solid rgba(10,191,188,.25);}
+.close-box{background:rgba(212,175,55,.06);border:2px solid rgba(212,175,55,.3);border-radius:10px;padding:20px 22px;margin-bottom:16px;}
+.close-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--gold);margin-bottom:10px;}
+.close-line{font-size:18px;font-weight:700;color:var(--bright);line-height:1.5;margin-bottom:10px;}
+.close-line em{color:var(--gold);font-style:normal;}
+.close-sub{font-size:13px;color:var(--dim);line-height:1.7;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.stat{text-align:center;padding:14px;background:var(--s2);border:1px solid var(--border);border-radius:6px;}
+.stat-num{font-family:var(--mono);font-size:28px;font-weight:700;line-height:1;}
+.stat-label{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:4px;letter-spacing:.5px;}
+.step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.step:last-child{border-bottom:none;}
+.step-num{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--teal);width:28px;flex-shrink:0;padding-top:2px;}
+.step-body{flex:1;}
+.step-title{font-size:14px;font-weight:600;color:var(--bright);margin-bottom:2px;}
+.step-desc{font-size:12px;color:var(--dim);line-height:1.6;}
+.checklist{list-style:none;padding:0;}
+.checklist li{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text);}
+.checklist li:last-child{border-bottom:none;}
+.check{font-family:var(--mono);font-size:12px;flex-shrink:0;width:20px;}
+.check-done{color:var(--green);}
+.check-wip{color:var(--amber);}
+.check-todo{color:var(--red);}
+.risk{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:var(--s2);border:1px solid var(--border);border-radius:6px;margin-bottom:6px;}
+.risk-sev{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;flex-shrink:0;margin-top:2px;}
+.risk-high{background:rgba(244,63,94,.1);color:var(--red);border:1px solid rgba(244,63,94,.2);}
+.risk-med{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid rgba(245,158,11,.2);}
+.risk-low{background:rgba(16,185,129,.1);color:var(--green);border:1px solid rgba(16,185,129,.2);}
+.risk-title{font-size:13px;font-weight:600;color:var(--bright);}
+.risk-desc{font-size:11px;color:var(--dim);line-height:1.6;margin-top:2px;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--dim);text-align:left;padding:6px 10px;background:var(--s2);border-bottom:1px solid var(--border);}
+td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);}
+tr:hover td{background:var(--s2);}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="warn">⛔ INTERNAL DOCUMENT — ADAM BROUSELL ONLY — DO NOT SHARE WITH MASI</div>
+  <h1>MASI Pilot Execution Plan</h1>
+  <div class="sub">Last updated: March 31, 2026 · Post-Meeting 2 · Tom Jones + Noah · Deal probability: 55–65%</div>
+
+  <!-- CLOSE STRATEGY -->
+  <div class="section">
+    <div class="section-label">CLOSE STRATEGY</div>
+    <div class="close-box">
+      <div class="close-title">THE ASK</div>
+      <div class="close-line">"Send us <em>5 facilities</em>. We'll have <em>certificates back this week</em>."</div>
+      <div class="close-sub">Not "let's schedule a follow-up." Not "we'll send a proposal." A concrete, low-friction action Tom can take in 5 minutes. He forwards a spreadsheet. You deliver scored output. The pilot is in motion before anyone writes a contract.</div>
+    </div>
+    <div class="close-box" style="border-color:rgba(10,191,188,.3);background:rgba(10,191,188,.04);">
+      <div class="close-title" style="color:var(--teal);">EXIT CONDITION</div>
+      <div class="close-line" style="font-size:15px;">"If the scores align with what your team sees on the ground, I'd ask for a <em>reference letter</em> I can use with other carriers."</div>
+      <div class="close-sub">Low-friction yes for Tom. High-value asset for you. Not a contract. Not a fee. A reference letter from NAARSO Level 3 / MASI Loss Control Manager is worth more than a $10K pilot fee at this stage.</div>
+    </div>
+  </div>
+
+  <!-- BUILD STATUS -->
+  <div class="section">
+    <div class="section-label">BUILD STATUS — WHAT'S READY</div>
+    <div class="grid3" style="margin-bottom:12px;">
+      <div class="stat"><div class="stat-num" style="color:var(--green);">14</div><div class="stat-label">BUILT & READY</div></div>
+      <div class="stat"><div class="stat-num" style="color:var(--amber);">4</div><div class="stat-label">IN PROGRESS</div></div>
+      <div class="stat"><div class="stat-num" style="color:var(--red);">3</div><div class="stat-label">NOT STARTED</div></div>
+    </div>
+    <table>
+      <thead><tr><th>ASSET</th><th>STATUS</th><th>NOTES</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:600;color:var(--bright);">masi-demo.html</td><td><span class="pill pill-done">DONE</span></td><td>10 tabs. MIDWAY added. Scores, Data, Modules, CARs, Pilot Plan all polished.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">insurer-portal.html</td><td><span class="pill pill-done">DONE</span></td><td>Full portal with triage, between-visit signal, CAR tracker, renewal calendar, trend sparklines.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">manager.html</td><td><span class="pill pill-done">DONE</span></td><td>5-stage CAR workflow, zone assignment, opening tab, emergency tab.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">maintenance-manager.html</td><td><span class="pill pill-done">DONE</span></td><td>NDT center, credentials, service bulletins, inspector independence tracking.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">bulk-import.html</td><td><span class="pill pill-done">DONE</span></td><td>CSV upload, column mapping, 18-field template, submit for scoring.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">ingestion.html</td><td><span class="pill pill-done">DONE</span></td><td>Connector cards, normalization pipeline, MIDWAY added. Script fixed.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">Facility Score Certificate PDF</td><td><span class="pill pill-done">DONE</span></td><td>ReportLab generator. Currently hardcoded to SFGA — needs parameterization.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">Pre-Bind Assessment Intake Form</td><td><span class="pill pill-done">DONE</span></td><td>Grid paper design. 3 tiers. Score selection. Upload zone.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">Scoring Methodology (pillar weights)</td><td><span class="pill pill-done">DONE</span></td><td>RIDE 4 pillars, SPLASH 6, PLAY 4, MIDWAY 6. All weights defined.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">as360_scoring_calculator.py</td><td><span class="pill pill-done">DONE</span></td><td>Takes stream inputs → pillar scores → composite. Band labels, confidence thresholds.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">IAAPA Speaking Proposal</td><td><span class="pill pill-done">DONE</span></td><td>"FICO Model for Ride Safety" — submitted March 30.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">VoxIntel Pipeline</td><td><span class="pill pill-done">DONE</span></td><td>RTL-SDR → Whisper → classify → Airtable. 203 captures March 27 field test.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">4 Score Indices Defined</td><td><span class="pill pill-done">DONE</span></td><td>RIDE · SPLASH · PLAY · MIDWAY. 37 total data streams. MASI coverage: ~20 of 22 verticals.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">One-Pager PDF</td><td><span class="pill pill-done">DONE</span></td><td>FICO analogy, 3 scores, pilot structure, contact. For Tom to forward internally.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">Parameterized Certificate Generator</td><td><span class="pill pill-wip">WIP</span></td><td>Need to accept facility name, score, pillars as inputs instead of hardcoded.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">Airtable Scoring Pipeline Base</td><td><span class="pill pill-wip">WIP</span></td><td>Tables defined. Scripting block for calculator. Need single-command pipeline.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">State Inspection Scrapers</td><td><span class="pill pill-wip">WIP</span></td><td>NJ DCA via OPRA filed. FL DACS, PA public DBs identified. Need build time.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">Claude API Narrative Generator</td><td><span class="pill pill-wip">WIP</span></td><td>Prompt template drafted. Takes score JSON, produces risk summary. Needs testing.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">Cloudflare Access on Portal</td><td><span class="pill pill-todo">TODO</span></td><td>Noah needs a login. Cloudflare Access free tier. 30 min to configure.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">Live Airtable → Portal Data Feed</td><td><span class="pill pill-todo">TODO</span></td><td>Replace hardcoded FACILITIES array with fetch from Cloudflare Worker → Airtable.</td></tr>
+        <tr><td style="font-weight:600;color:var(--bright);">NDA Template</td><td><span class="pill pill-todo">TODO</span></td><td>Landan to draft. Needed before MASI sends claims data.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MANUAL FALLBACK -->
+  <div class="section">
+    <div class="section-label">MANUAL FALLBACK — FIRST 5 FACILITIES</div>
+    <div class="card">
+      <div class="card-title">The Pipeline Doesn't Need to Be Automated Yet</div>
+      <div class="card-body">Tom sends 5 facility names. You deliver certificates in 48–72 hours. Nobody needs to know the first batch is manual. The automation catches up behind you.</div>
+    </div>
+    <div class="step"><div class="step-num">01</div><div class="step-body"><div class="step-title">Receive Facility List</div><div class="step-desc">Tom emails or uploads via bulk-import.html. You create an Airtable record per facility manually. 10 minutes.</div></div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-body"><div class="step-title">Public Data Pull</div><div class="step-desc">Google the facility. Pull state inspection records (NJ DCA, FL DACS, PA). Check CPSC incident database. Check local code enforcement. Screenshot everything. 30–45 min per facility.</div></div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-body"><div class="step-title">Score in Spreadsheet</div><div class="step-desc">Use as360_scoring_calculator.py or a manual spreadsheet. Input stream values for each pillar. Calculator outputs composite + band. 15 min per facility.</div></div></div>
+    <div class="step"><div class="step-num">04</div><div class="step-body"><div class="step-title">Write Narrative</div><div class="step-desc">Use Claude API prompt template or write manually. 2-3 paragraphs: what the score means, what drives it, what to watch. 20 min per facility.</div></div></div>
+    <div class="step"><div class="step-num">05</div><div class="step-body"><div class="step-title">Generate Certificate</div><div class="step-desc">Run the parameterized ReportLab script with facility name, score, pillars. Produces branded PDF. 5 min per facility.</div></div></div>
+    <div class="step"><div class="step-num">06</div><div class="step-body"><div class="step-title">Quality Check + Deliver</div><div class="step-desc">Review all 5 certificates. Check for errors. Email to Tom with a brief cover note. Total per facility: ~90 min. Total for 5: ~8 hours.</div></div></div>
+  </div>
+
+  <!-- DO NOT SAY -->
+  <div class="section">
+    <div class="section-label">DO NOT SAY ON THE CALL</div>
+    <div class="grid2">
+      <div class="card" style="border-left:3px solid var(--red);">
+        <div class="card-title" style="color:var(--red);font-size:13px;">Never Mention</div>
+        <ul class="checklist">
+          <li><span class="check check-todo">✕</span>AmusementRating.org — separate brand, separate audience</li>
+          <li><span class="check check-todo">✕</span>VoxIntel — too early, opens questions you can't close</li>
+          <li><span class="check check-todo">✕</span>Event insurance — different product, different conversation</li>
+          <li><span class="check check-todo">✕</span>Matt Smith — silent partner, never client-facing</li>
+          <li><span class="check check-todo">✕</span>"We can handle 500 facilities" — don't promise scale you haven't built</li>
+          <li><span class="check check-todo">✕</span>Specific pricing — let Tom ask first, then respond with pilot framing</li>
+        </ul>
+      </div>
+      <div class="card" style="border-left:3px solid var(--green);">
+        <div class="card-title" style="color:var(--green);font-size:13px;">Always Say</div>
+        <ul class="checklist">
+          <li><span class="check check-done">✓</span>"The pilot is the validation" — not "trust us, it works"</li>
+          <li><span class="check check-done">✓</span>"We supplement your visits, not replace them"</li>
+          <li><span class="check check-done">✓</span>"Phase 1 requires zero park involvement"</li>
+          <li><span class="check check-done">✓</span>"The score can't be gamed — external data triangulation"</li>
+          <li><span class="check check-done">✓</span>"Send us 5 facilities, certificates back this week"</li>
+          <li><span class="check check-done">✓</span>"FICO for ride safety" — the analogy everyone gets</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRICK QUESTIONS -->
+  <div class="section">
+    <div class="section-label">TRICK QUESTIONS TOM WILL ASK</div>
+    <div class="card" style="margin-bottom:6px;"><div class="card-title" style="font-size:13px;">"How is this different from what ODA already gives us?"</div><div class="card-body">ODA gives pass/fail on a single day. AS 360 gives continuous composite across 15+ streams. Don't dismiss the regulator — Tom works alongside them. Say: "ODA validates compliance at a point in time. We measure operational behavior between those visits."</div></div>
+    <div class="card" style="margin-bottom:6px;"><div class="card-title" style="font-size:13px;">"Who validates your methodology?"</div><div class="card-body">No one external yet. Own it. "The pilot IS the validation process. That's why we're here — to calibrate against what your team already knows about these facilities."</div></div>
+    <div class="card" style="margin-bottom:6px;"><div class="card-title" style="font-size:13px;">"What happens when your score and our assessment disagree?"</div><div class="card-body">"The gap is the finding. When AS 360 flags something your team didn't see, or vice versa — that's where we learn the most. We're adding a data layer underneath your judgment, not replacing it."</div></div>
+    <div class="card" style="margin-bottom:6px;"><div class="card-title" style="font-size:13px;">"Can you handle our full book?"</div><div class="card-body">"The pilot is 3–5 facilities. We deliver those with quality, calibrate with your feedback, then scale. Demo-ready for 10, infrastructure-ready for 500."</div></div>
+    <div class="card" style="margin-bottom:6px;"><div class="card-title" style="font-size:13px;">"What does implementation look like for the park?"</div><div class="card-body">"Phase 1 — nothing. Zero park involvement. We score from public data and your loss control records. Phase 2 — MASI introduces it as a free loss control technology benefit of their policy. The park gets the Manager Module branded under MASI."</div></div>
+    <div class="card"><div class="card-title" style="font-size:13px;">"What does this cost?"</div><div class="card-body">Don't lead with price. "The pilot is at our cost — we're investing in the validation. Once we prove correlation, we price per-facility annually as a loss control analytics layer." If pressed: $200–$500/facility/year range for continuous scoring. CompScience charges comparable.</div></div>
+  </div>
+
+  <!-- KEY RISKS -->
+  <div class="section">
+    <div class="section-label">KEY RISKS & MITIGATIONS</div>
+    <div class="risk"><div class="risk-sev risk-high">HIGH</div><div><div class="risk-title">Facility data access</div><div class="risk-desc">Phase 1 works without it. Phase 2 requires park cooperation. Mitigation: white-label under MASI brand so it's their insurer offering it, not a vendor cold-calling.</div></div></div>
+    <div class="risk"><div class="risk-sev risk-high">HIGH</div><div><div class="risk-title">Single insurer dependency</div><div class="risk-desc">If MASI says no, you have zero revenue. Mitigation: warm outreach to PHLY and Alive Risk in parallel. Don't wait for MASI to close.</div></div></div>
+    <div class="risk"><div class="risk-sev risk-med">MED</div><div><div class="risk-title">Claims correlation uncertainty</div><div class="risk-desc">The hypothesis is that AS 360 scores predict claims outcomes. If they don't correlate, the product has no underwriting value. Mitigation: 90-day pilot generates the data to test this. Be honest about it.</div></div></div>
+    <div class="risk"><div class="risk-sev risk-med">MED</div><div><div class="risk-title">Solo founder velocity</div><div class="risk-desc">You're building infrastructure, selling, deploying, and scoring. Something will be late. Mitigation: manual fallback for first 5. Automate behind the scenes while delivering manually.</div></div></div>
+    <div class="risk"><div class="risk-sev risk-low">LOW</div><div><div class="risk-title">E&O exposure</div><div class="risk-desc">If a scored facility has an incident, could you be liable? Mitigation: Landan needs to review. Scoring methodology includes explicit "does not replace inspection" disclaimers.</div></div></div>
+  </div>
+
+  <!-- IMMEDIATE ACTION ITEMS -->
+  <div class="section">
+    <div class="section-label">IMMEDIATE ACTION ITEMS — THIS WEEK</div>
+    <ul class="checklist">
+      <li><span class="check check-done">✓</span><strong>Deploy masi-demo.html</strong> — All 10 tabs polished. MIDWAY added. Ingestion links wired.</li>
+      <li><span class="check check-done">✓</span><strong>Deploy insurer-portal.html</strong> — Triage, between-visit signal, CAR tracker, sparklines.</li>
+      <li><span class="check check-done">✓</span><strong>Deploy bulk-import.html</strong> — Tom can upload a spreadsheet of facilities.</li>
+      <li><span class="check check-done">✓</span><strong>Deploy ingestion.html</strong> — Connector page with MIDWAY. Script fixed.</li>
+      <li><span class="check check-wip">○</span><strong>Parameterize certificate generator</strong> — Accept facility name + scores as CLI args.</li>
+      <li><span class="check check-wip">○</span><strong>Build NJ DCA scraper</strong> — OPRA filed. Build scraper for when data arrives.</li>
+      <li><span class="check check-wip">○</span><strong>Wire Airtable scoring pipeline</strong> — Single-command: input facility → output score.</li>
+      <li><span class="check check-todo">✕</span><strong>NDA template from Landan</strong> — Needed before MASI sends claims data.</li>
+      <li><span class="check check-todo">✕</span><strong>Cloudflare Access on portal subdomain</strong> — 30 min setup. Noah needs a login.</li>
+      <li><span class="check check-todo">✕</span><strong>PHLY / Alive Risk warm outreach</strong> — Parallel track. Don't wait for MASI.</li>
+      <li><span class="check check-todo">✕</span><strong>NAARSO Level I enrollment</strong> — ~$100. Credential gap is real and closeable.</li>
+    </ul>
+  </div>
+
+  <div style="font-family:var(--mono);font-size:8px;color:var(--muted);text-align:center;padding:20px 0;border-top:1px solid var(--border);margin-top:20px;">AMUSEMENT STANDARDS · INTERNAL · CONFIDENTIAL · MARCH 2026</div>
+</div>
+</body>
+</html>
