@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -279,7 +279,7 @@
       <a href="https://amusementstandards.com/as360/deliverable-sample.html" class="btn-secondary btn-gold">📄 Sample Deliverable</a>
       <a href="https://amusementstandards.com/as360/maintenance-manager.html" class="btn-secondary" style="border-color:rgba(255,107,53,.4)!important;color:#FF6B35!important;background:rgba(255,107,53,.06)!important;">🔧 Maintenance Manager</a>
       <a href="https://amusementstandards.com/as360/methodology.html" class="btn-secondary">Methodology</a>
-      <a href="/cdn-cgi/l/email-protection#523336333f12333f2721373f373c262126333c36332036217c313d3f" class="btn-secondary">Contact</a>
+      <a href="mailto:info@amusementstandards.com" class="btn-secondary">Contact</a>
     </div>
     <div class="cta-note reveal">amusementstandards.com · AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · MIDWAY Score™ · OpsScan™ · LensIQ™ · VoxIntel™</div>
   </div>
@@ -295,10 +295,18 @@
     <a href="https://amusementstandards.com/as360-ride-score.html">RIDE Score</a>
     <a href="https://amusementstandards.com/as360/deliverable-sample.html" style="color:rgba(212,175,55,.5)">Sample Deliverable</a>
     <a href="https://amusementstandards.com/as360/methodology.html">Methodology</a>
-    <a href="/cdn-cgi/l/email-protection#d5b4b1b4b895b4b8a0a6b0b8b0bba1a6a1b4bbb1b4a7b1a6fbb6bab8">Contact</a>
+    <a href="mailto:info@amusementstandards.com">Contact</a>
   </div>
   <div class="sf-copy">AS 360 · RIDE Score™ · SPLASH Score™ · PLAY Score™ · MIDWAY Score™ · OpsScan™ · LensIQ™ · VoxIntel™ · Proprietary</div>
 </footer>
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const reveals=document.querySelectorAll('.reveal');
-const ro=new IntersectionObserver(e=>
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}
+  });
+},{threshold:0.12});
+reveals.forEach(r=>ro.observe(r));
+</script>
+</body>
+</html>
