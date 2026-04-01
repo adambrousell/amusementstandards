@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Opening Inspection · AS 360</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -433,10 +433,10 @@ let answers = {};
 let gpsCoords = null;
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-(function init() {
-  const params = new URLSearchParams(window.location.search);
-  const rideCode = (params.get('ride') || '').toUpperCase();
-  currentRide = RIDES[rideCode];
+document.addEventListener('DOMContentLoaded', function() {
+  var params = new URLSearchParams(window.location.search);
+  var rideCode = (params.get('ride') || '').toUpperCase();
+  currentRide = RIDES[rideCode] || null;
   if (!currentRide) {
     document.getElementById('ride-title').textContent = 'Unknown Ride';
     document.getElementById('ride-sub').textContent = 'Use ?ride=GKI or ?ride=CCI';
@@ -450,59 +450,61 @@ let gpsCoords = null;
   // Request GPS — use watchPosition so coords stay fresh for geofence check at submit
   if (navigator.geolocation) {
     navigator.geolocation.watchPosition(
-      pos => { gpsCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: pos.coords.accuracy }; },
-      () => { gpsCoords = null; },
+      function(pos) { gpsCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: pos.coords.accuracy }; },
+      function() { gpsCoords = null; },
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
     );
   }
-})();
+});
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + id).classList.add('active');
-}
+window.showScreen = function(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var el = document.getElementById('screen-' + id);
+  if (el) el.classList.add('active');
+};
 
-function goBack() {
+window.goBack = function() {
   pin = '';
   updatePinDots();
   document.getElementById('pin-error').textContent = '';
   showScreen('role');
-}
+};
 
 // ── ROLE SELECT ───────────────────────────────────────────────────────────────
-function selectRole(role) {
+window.selectRole = function(role) {
   if (!currentRide) return;
   currentRole = role;
-  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('sel'));
-  document.querySelector('.role-btn.' + role).classList.add('sel');
+  document.querySelectorAll('.role-btn').forEach(function(b) { b.classList.remove('sel'); });
+  var btn = document.querySelector('.role-btn.' + role);
+  if (btn) btn.classList.add('sel');
   pin = '';
   updatePinDots();
   document.getElementById('pin-error').textContent = '';
-  const label = role === 'maintenance' ? 'Maintenance' : 'Operations';
+  var label = role === 'maintenance' ? 'Maintenance' : 'Operations';
   document.getElementById('pin-title').textContent = label + ' PIN';
   document.getElementById('pin-sub').textContent = 'Enter your 4-digit staff PIN';
   showScreen('pin');
-}
+};
 
 // ── PIN ENTRY ─────────────────────────────────────────────────────────────────
-function pinKey(d) {
+window.pinKey = function(d) {
   if (pin.length >= 4) return;
   pin += d;
   updatePinDots();
   if (pin.length === 4) validatePin();
-}
+};
 
-function pinDel() {
+window.pinDel = function() {
   pin = pin.slice(0, -1);
   updatePinDots();
   document.getElementById('pin-error').textContent = '';
-}
+};
 
 function updatePinDots() {
-  for (let i = 0; i < 4; i++) {
-    const dot = document.getElementById('pd' + i);
-    dot.className = 'pin-dot' + (i < pin.length ? ' filled' : '');
+  for (var i = 0; i < 4; i++) {
+    var dot = document.getElementById('pd' + i);
+    if (dot) dot.className = 'pin-dot' + (i < pin.length ? ' filled' : '');
   }
 }
 
@@ -545,7 +547,7 @@ async function validatePin() {
 }
 
 // ── LOAD CHECKLIST ────────────────────────────────────────────────────────────
-async function loadChecklist() {
+window.loadChecklist = async function() {
   answers = {};
   const def = currentRide[currentRole];
   const container = document.getElementById('checklist-container');
@@ -633,7 +635,7 @@ async function checkMaintenanceSignoff() {
 }
 
 // ── MARK ITEM ─────────────────────────────────────────────────────────────────
-function mark(key, val, el) {
+window.mark = function(key, val, el) {
   answers[key] = val;
   const row = document.getElementById('row-' + key);
   if (row) {
@@ -697,7 +699,7 @@ function checkGeofence() {
 }
 
 // ── SUBMIT ────────────────────────────────────────────────────────────────────
-async function submitChecklist() {
+window.submitChecklist = async function() {
   // ── Geofence gate ──
   const geo = checkGeofence();
   if (!geo.ok) {
@@ -770,4 +772,86 @@ async function submitChecklist() {
   const targetTable = currentRole === 'operations' && currentRide.opsLogTable
     ? currentRide.opsLogTable
     : currentRide.logTable;
-  await atPush(target
+  await atPush(targetTable, {
+    'Date': today,
+    'Role': currentRole,
+    'Completed By': currentUser.name,
+    'Total Items': total,
+    'Pass': pass,
+    'Fail': fail,
+    'N/A': na,
+    'Pass Rate': passRate + '%',
+    'Notes': notes.trim(),
+    'GPS': gpsStr,
+    'Device Timestamp': deviceTimestamp,
+    'Submitted At': deviceTimestamp
+  });
+
+  // Generate CARs for failed items
+  for (const fi of failItems) {
+    const carId = 'CAR-' + now.getFullYear() + '-' + Date.now().toString(36).toUpperCase().slice(-4);
+    await atPush('CAR_Log', {
+      'CAR ID': carId,
+      'Source': currentRide.code + ' ' + (currentRole === 'maintenance' ? 'Maintenance' : 'Operations') + ' Inspection',
+      'Attraction / Area': fi.section,
+      'Finding': fi.item + ' — FAILED during ' + def.title,
+      'Severity': 'minor',
+      'Stage': 'submitted',
+      'Status': 'Open',
+      'Opened At': deviceTimestamp
+    });
+  }
+
+  // Push notification record so manager.html and maintenance-manager.html can poll it
+  await atPush('Notifications', {
+    'Type': currentRole === 'maintenance' ? 'maint_complete' : 'ops_signoff',
+    'Ride': currentRide.name,
+    'Ride_Code': currentRide.code,
+    'Completed_By': currentUser.name,
+    'Time': deviceTimestamp,
+    'Pass_Rate': passRate + '%',
+    'Failed_Items_Count': fail,
+    'Role': currentRole
+  });
+
+  // Show done screen
+  const failMsg = fail > 0 ? ' · ' + fail + ' CAR' + (fail > 1 ? 's' : '') + ' generated' : '';
+  document.getElementById('done-summary').innerHTML =
+    currentRide.name + ' — ' + (currentRole === 'maintenance' ? 'Maintenance' : 'Operations') + '<br>' +
+    passRate + '% pass rate · ' + total + ' items' + failMsg + '<br>' +
+    '<span style="font-family:var(--mono);font-size:9px;color:var(--text-muted);">' + deviceTimestamp + ' · ' + gpsStr + '</span>';
+
+  showScreen('done');
+  toast(def.title + ' submitted — ' + passRate + '% pass rate' + failMsg, fail > 0 ? 'warn' : 'ok');
+}
+
+// ── AIRTABLE PUSH ─────────────────────────────────────────────────────────────
+async function atPush(table, fields) {
+  const el = document.getElementById('at-sync');
+  if (el) { el.style.color = 'var(--amber)'; el.textContent = '\u2B24 SYNCING'; }
+  try {
+    const res = await fetch(`${AT_URL}/${encodeURIComponent(table)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields })
+    });
+    if (!res.ok) {
+      if (el) { el.style.color = 'var(--red)'; el.textContent = '\u2B24 ERR'; setTimeout(() => { if (el) { el.style.color = 'var(--text-muted)'; el.textContent = '\u2B24 AIRTABLE'; } }, 3000); }
+    } else {
+      if (el) { el.style.color = 'var(--green)'; el.textContent = '\u2B24 SYNCED'; setTimeout(() => { if (el) { el.style.color = 'var(--text-muted)'; el.textContent = '\u2B24 AIRTABLE'; } }, 2000); }
+    }
+  } catch (e) {
+    if (el) { el.style.color = 'var(--red)'; el.textContent = '\u2B24 OFFLINE'; setTimeout(() => { if (el) { el.style.color = 'var(--text-muted)'; el.textContent = '\u2B24 AIRTABLE'; } }, 3000); }
+  }
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast ' + (type || 'ok') + ' show';
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
