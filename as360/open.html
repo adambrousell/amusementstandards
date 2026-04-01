@@ -230,12 +230,23 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 
 const AT_URL = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
 
+// ── GEOFENCE CONFIG ───────────────────────────────────────────────────────────
+// Set facility center coordinates and radius (meters).
+// Change these values to match your facility location.
+const GEOFENCE = {
+  lat: 40.573492,       // facility center latitude
+  lng: -73.978983,      // facility center longitude
+  radiusMeters: 500     // allowed radius in meters
+};
+
 // ── RIDE DEFINITIONS ──────────────────────────────────────────────────────────
 const RIDES = {
   GKI: {
     name: 'Go-Kart Track',
     code: 'GKI',
     logTable: 'GKI_Log',
+    opsLogTable: 'GKI_Ops_Log',
+    minOperators: 2,
     maintenance: {
       title: 'Go-Kart — ASTM F24 Daily Maintenance Inspection',
       sections: [
@@ -293,48 +304,36 @@ const RIDES = {
       ]
     },
     operations: {
-      title: 'Go-Kart — Supervisor Opening Checklist',
+      title: 'Go-Kart — Ops Opening Checklist',
       sections: [
-        { name: 'Staffing & Readiness', items: [
-          'All assigned operators present and in uniform',
-          'Operator certifications current for go-kart operations',
-          'Safety briefing completed with all operators',
-          'Radio / communication check completed',
-          'Break rotation schedule posted'
+        { name: 'Pre-Open Verification', items: [
+          'Maintenance pre-opening checklist has been signed off by a mechanic',
+          'Area safety check — signs, personnel, tools, fencing, gates all in place',
+          'Ride safety check — all ride units, restraints, seatbelts inspected',
+          'Ride test run — minimum 2 cycles per kart completed',
+          'Microphones / automatic spiels operational'
         ]},
-        { name: 'Guest-Facing Areas', items: [
-          'Queue area clean, organized, and barriers set',
-          'Height/age restriction signage posted and visible',
-          'Safety rules signage posted at load area',
-          'Ticket/wristband scanning system operational',
-          'PA announcement tested — audible to guests'
+        { name: 'Station & Equipment', items: [
+          'Cleaning solution and rags available at station',
+          'Ride units, site, and queue line cleaned',
+          'Scanner tested and functional',
+          'Fire extinguisher present and charged',
+          'Fueling area clear, no guests in proximity, signage posted'
         ]},
-        { name: 'Operational Controls', items: [
-          'Remote stop system tested and confirmed functional',
-          'Traffic lights / start-stop signals operational',
-          'Lap counter / timing system operational',
-          'Weather monitoring — conditions acceptable for operation'
-        ]},
-        { name: 'Safety Equipment', items: [
-          'Helmets available, clean, and in good condition (if required)',
-          'First aid kit stocked and accessible',
-          'Fire extinguisher accessible and charged',
-          'Spill kit available for fuel/oil cleanup',
-          'Incident report forms stocked'
-        ]},
-        { name: 'Final Verification', items: [
-          'Maintenance sign-off confirmed for today',
-          'Track walk-through completed — no debris or hazards',
-          'Test laps completed — track conditions acceptable',
-          'Ride status set to OPEN in AS 360'
+        { name: 'Communication & Readiness', items: [
+          'Walkie talkie operational and on correct channel',
+          'All stop lights, pit gate signals, and track signage visible and functional'
         ]}
-      ]
+      ],
+      footer: 'Minimum 2 trained operators required to open. If any item fails, contact zone manager — do not open the ride.'
     }
   },
   CCI: {
     name: 'Carousel — Chance MGR',
     code: 'CCI',
     logTable: 'CCI_Log',
+    opsLogTable: 'CCI_Ops_Log',
+    minOperators: 2,
     maintenance: {
       title: 'Carousel Chance MGR — ASTM F24 Daily Maintenance Inspection',
       sections: [
@@ -397,41 +396,30 @@ const RIDES = {
       ]
     },
     operations: {
-      title: 'Carousel — Supervisor Opening Checklist',
+      title: 'Carousel (Chance MGR) — Ops Opening Checklist',
       sections: [
-        { name: 'Staffing & Readiness', items: [
-          'All assigned operators present and in uniform',
-          'Operator certifications current for carousel operations',
-          'Safety briefing completed with all operators',
-          'Radio / communication check completed',
-          'Break rotation schedule posted'
+        { name: 'Pre-Open Verification', items: [
+          'Maintenance pre-opening checklist has been signed off by a mechanic',
+          'Area safety check — signs, personnel, tools, fencing, gates all in place',
+          'Ride safety check — all ride units, restraints, safety straps inspected',
+          'Ride test run — minimum 2 complete cycles observed',
+          'Microphones / automatic spiels operational'
         ]},
-        { name: 'Guest-Facing Areas', items: [
-          'Queue area clean, organized, and barriers set',
-          'Height/age restriction signage posted and visible',
-          'Safety rules signage posted at load area',
-          'Ticket/wristband scanning system operational',
-          'PA announcement tested — audible to guests'
+        { name: 'Station & Equipment', items: [
+          'Cleaning solution and rags available at station',
+          'Ride units, platform, and queue line cleaned',
+          'Scanner tested and functional',
+          'Fire extinguisher present and charged',
+          'All figure mounting points visually secure from platform level'
         ]},
-        { name: 'Operational Controls', items: [
-          'Operator dispatch panel tested — start/stop/E-stop confirmed',
-          'Ride cycle timer set to correct duration',
-          'Music/audio system operational and at appropriate volume',
-          'Lighting effects operational'
-        ]},
-        { name: 'Safety Equipment', items: [
-          'First aid kit stocked and accessible',
-          'Fire extinguisher accessible and charged',
-          'Incident report forms stocked',
-          'Guest assistance step stool available and stable'
-        ]},
-        { name: 'Final Verification', items: [
-          'Maintenance sign-off confirmed for today',
-          'Platform walk-through completed — no hazards',
-          'Test cycle completed — smooth operation confirmed',
-          'Ride status set to OPEN in AS 360'
+        { name: 'Communication & Safety', items: [
+          'Walkie talkie operational and on correct channel',
+          'Megaphone tested and working',
+          'Platform clear of trip hazards, all gates functioning',
+          'Height requirement and safety signage posted and legible'
         ]}
-      ]
+      ],
+      footer: 'Minimum 2 trained operators required to open. If any item fails, contact zone manager — do not open the ride.'
     }
   }
 };
@@ -459,12 +447,12 @@ let gpsCoords = null;
   document.getElementById('ride-sub').textContent = currentRide.code + ' — Daily Opening Inspection';
   document.title = currentRide.code + ' Opening · AS 360';
 
-  // Request GPS
+  // Request GPS — use watchPosition so coords stay fresh for geofence check at submit
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
+    navigator.geolocation.watchPosition(
       pos => { gpsCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude, acc: pos.coords.accuracy }; },
       () => { gpsCoords = null; },
-      { enableHighAccuracy: true, timeout: 10000 }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
     );
   }
 })();
@@ -567,8 +555,9 @@ async function loadChecklist() {
   if (currentRole === 'operations') {
     const maintOk = await checkMaintenanceSignoff();
     if (!maintOk) {
-      html += '<div class="blocker"><div class="blocker-title">&#x26D4; Maintenance Sign-Off Required</div><div class="blocker-msg">No maintenance inspection has been submitted for ' + currentRide.name + ' today.<br>A maintenance technician must complete and submit their ASTM F24 inspection before operations can open.</div></div>';
-      html += '<button class="btn btn-ghost" onclick="goBack()" style="margin-bottom:14px;">&#x2190; Back</button>';
+      html += '<div class="blocker"><div class="blocker-title">&#x1F512; Waiting for Maintenance Sign-Off</div><div class="blocker-msg">No maintenance inspection has been submitted for ' + currentRide.name + ' today.<br>A maintenance technician must complete and submit their ASTM F24 pre-opening checklist before operations can proceed.<br><br><span style="font-family:var(--mono);font-size:9px;">Have the mechanic open <strong>open.html?ride=' + currentRide.code + '</strong> and submit the Maintenance checklist.</span></div></div>';
+      html += '<button class="btn btn-ghost" onclick="goBack()" style="margin-bottom:8px;">&#x2190; Back</button>';
+      html += '<button class="btn btn-ghost" onclick="loadChecklist()" style="margin-bottom:14px;">&#x21bb; Check Again</button>';
       container.innerHTML = html;
       showScreen('checklist');
       return;
@@ -606,6 +595,11 @@ async function loadChecklist() {
 
   // Fail summary
   html += '<div class="fail-summary" id="fail-summary"><div class="fs-title">FAILED ITEMS — CARs will be auto-generated</div><div class="fs-list" id="fail-list"></div></div>';
+
+  // Footer warning (ops checklists)
+  if (def.footer) {
+    html += '<div style="background:var(--amber-dim);border:1px solid rgba(245,158,11,.3);border-radius:7px;padding:10px 12px;margin-bottom:12px;font-family:var(--mono);font-size:10px;color:var(--amber);line-height:1.5;">&#x26A0; ' + def.footer + '</div>';
+  }
 
   // Certification
   const certRole = currentRole === 'maintenance' ? 'maintenance technician' : 'operations supervisor';
@@ -685,8 +679,63 @@ function updateProgress() {
   if (btn) btn.disabled = !(answered === total && total > 0);
 }
 
+// ── GEOFENCE ──────────────────────────────────────────────────────────────────
+function haversineMeters(lat1, lng1, lat2, lng2) {
+  const R = 6371000; // earth radius in meters
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function checkGeofence() {
+  if (!gpsCoords) return { ok: false, reason: 'no-gps', dist: null };
+  const dist = haversineMeters(gpsCoords.lat, gpsCoords.lng, GEOFENCE.lat, GEOFENCE.lng);
+  if (dist > GEOFENCE.radiusMeters) return { ok: false, reason: 'outside', dist: Math.round(dist) };
+  return { ok: true, reason: null, dist: Math.round(dist) };
+}
+
 // ── SUBMIT ────────────────────────────────────────────────────────────────────
 async function submitChecklist() {
+  // ── Geofence gate ──
+  const geo = checkGeofence();
+  if (!geo.ok) {
+    const gpsStr = gpsCoords
+      ? `${gpsCoords.lat.toFixed(6)},${gpsCoords.lng.toFixed(6)} (±${Math.round(gpsCoords.acc)}m)`
+      : 'GPS unavailable';
+    const distStr = geo.dist !== null ? geo.dist + 'm from facility (limit ' + GEOFENCE.radiusMeters + 'm)' : 'No GPS position';
+
+    // Log the blocked attempt to Airtable
+    atPush('Geofence_Violations', {
+      'Date': new Date().toISOString().split('T')[0],
+      'User': currentUser ? currentUser.name : 'unknown',
+      'Ride': currentRide.code,
+      'Role': currentRole,
+      'GPS': gpsStr,
+      'Distance': distStr,
+      'Reason': geo.reason === 'no-gps' ? 'GPS unavailable' : 'Outside geofence',
+      'Timestamp': new Date().toISOString()
+    });
+
+    toast('You must be on-site to complete this inspection.', 'err');
+
+    // Show inline blocker below submit button
+    let gfBlock = document.getElementById('geofence-block');
+    if (!gfBlock) {
+      gfBlock = document.createElement('div');
+      gfBlock.id = 'geofence-block';
+      gfBlock.className = 'blocker';
+      gfBlock.style.marginTop = '10px';
+      const btn = document.getElementById('submit-btn');
+      if (btn) btn.parentNode.insertBefore(gfBlock, btn.nextSibling);
+    }
+    gfBlock.innerHTML = '<div class="blocker-title">&#x1F6AB; Geofence Violation</div>'
+      + '<div class="blocker-msg">You must be on-site to complete this inspection.<br>'
+      + '<span style="font-family:var(--mono);font-size:9px;">' + distStr + '</span></div>';
+    return;
+  }
+
   const def = currentRide[currentRole];
   const notes = (document.getElementById('form-notes') || {}).value || '';
   let total = 0, pass = 0, fail = 0, na = 0;
@@ -717,75 +766,8 @@ async function submitChecklist() {
   // Build GPS string
   const gpsStr = gpsCoords ? `${gpsCoords.lat.toFixed(6)},${gpsCoords.lng.toFixed(6)} (±${Math.round(gpsCoords.acc)}m)` : 'GPS unavailable';
 
-  // Push to ride log
-  await atPush(currentRide.logTable, {
-    'Date': today,
-    'Role': currentRole,
-    'Completed By': currentUser.name,
-    'Total Items': total,
-    'Pass': pass,
-    'Fail': fail,
-    'N/A': na,
-    'Pass Rate': passRate + '%',
-    'Notes': notes.trim(),
-    'GPS': gpsStr,
-    'Device Timestamp': deviceTimestamp,
-    'Submitted At': deviceTimestamp
-  });
-
-  // Generate CARs for failed items
-  for (const fi of failItems) {
-    const carId = 'CAR-' + now.getFullYear() + '-' + Date.now().toString(36).toUpperCase().slice(-4);
-    await atPush('CAR_Log', {
-      'CAR ID': carId,
-      'Source': currentRide.code + ' ' + (currentRole === 'maintenance' ? 'Maintenance' : 'Operations') + ' Inspection',
-      'Attraction / Area': fi.section,
-      'Finding': fi.item + ' — FAILED during ' + def.title,
-      'Severity': 'minor',
-      'Stage': 'submitted',
-      'Status': 'Open',
-      'Opened At': deviceTimestamp
-    });
-  }
-
-  // Show done screen
-  const failMsg = fail > 0 ? ' · ' + fail + ' CAR' + (fail > 1 ? 's' : '') + ' generated' : '';
-  document.getElementById('done-summary').innerHTML =
-    currentRide.name + ' — ' + (currentRole === 'maintenance' ? 'Maintenance' : 'Operations') + '<br>' +
-    passRate + '% pass rate · ' + total + ' items' + failMsg + '<br>' +
-    '<span style="font-family:var(--mono);font-size:9px;color:var(--text-muted);">' + deviceTimestamp + ' · ' + gpsStr + '</span>';
-
-  showScreen('done');
-  toast(def.title + ' submitted — ' + passRate + '% pass rate' + failMsg, fail > 0 ? 'warn' : 'ok');
-}
-
-// ── AIRTABLE PUSH ─────────────────────────────────────────────────────────────
-async function atPush(table, fields) {
-  const el = document.getElementById('at-sync');
-  if (el) { el.style.color = 'var(--amber)'; el.textContent = '\u2B24 SYNCING'; }
-  try {
-    const res = await fetch(`${AT_URL}/${encodeURIComponent(table)}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fields })
-    });
-    if (!res.ok) {
-      if (el) { el.style.color = 'var(--red)'; el.textContent = '\u2B24 ERR'; setTimeout(() => { if (el) { el.style.color = 'var(--text-muted)'; el.textContent = '\u2B24 AIRTABLE'; } }, 3000); }
-    } else {
-      if (el) { el.style.color = 'var(--green)'; el.textContent = '\u2B24 SYNCED'; setTimeout(() => { if (el) { el.style.color = 'var(--text-muted)'; el.textContent = '\u2B24 AIRTABLE'; } }, 2000); }
-    }
-  } catch (e) {
-    if (el) { el.style.color = 'var(--red)'; el.textContent = '\u2B24 OFFLINE'; setTimeout(() => { if (el) { el.style.color = 'var(--text-muted)'; el.textContent = '\u2B24 AIRTABLE'; } }, 3000); }
-  }
-}
-
-// ── TOAST ─────────────────────────────────────────────────────────────────────
-function toast(msg, type) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'toast ' + (type || 'ok') + ' show';
-  setTimeout(() => el.classList.remove('show'), 3000);
-}
-</script>
-</body>
-</html>
+  // Push to ride log — ops uses separate opsLogTable
+  const targetTable = currentRole === 'operations' && currentRide.opsLogTable
+    ? currentRide.opsLogTable
+    : currentRide.logTable;
+  await atPush(target
