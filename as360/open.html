@@ -93,6 +93,10 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .cg-opt.sel-3{background:var(--amber-dim);border-color:rgba(245,158,11,.4);color:var(--amber);}
 .cg-opt.sel-4{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);color:#5CB89A;}
 .cg-opt.sel-5{background:var(--green-dim);border-color:rgba(16,185,129,.5);color:var(--green);}
+.cg-expand{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 0 0 32px;}
+.cg-expand.open{max-height:300px;}
+.cg-expand-inner{padding:8px 0;}
+.cg-preview{font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:80%;}
 
 /* ── TOAST ──────────────────────────────────────── */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;font-family:var(--mono);font-size:11px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center;}
@@ -437,6 +441,10 @@ let gpsCoords = null;
 let demoMode = false;
 var sectionComments = {};
 var RATING_LABELS = {1:'Immediate Hazard',2:'Serious Deficiency',3:'Needs Attention',4:'Acceptable',5:'Excellent'};
+var itemComments={};
+var itemPhotos={};
+var itemCars={};
+var generatedCars=[];
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
@@ -570,6 +578,10 @@ async function validatePin() {
 window.loadChecklist = async function() {
   answers = {};
   sectionComments = {};
+  itemComments={};
+  itemPhotos={};
+  itemCars={};
+  generatedCars=[];
   var def = currentRide[currentRole];
   var container = document.getElementById('checklist-container');
   var html = '';
@@ -621,10 +633,23 @@ window.loadChecklist = async function() {
       var letter = String.fromCharCode(65 + ii);
       var opts = '';
       for (var r = 1; r <= 5; r++) { opts += '<div class="cg-opt" onclick="mark(\'' + key + '\',' + r + ',this)" title="' + r + ' \u2014 ' + RATING_LABELS[r] + '">' + r + '</div>'; }
-      html += '<div class="cg-row disabled" id="row-' + key + '">';
+      html += '<div class="cg-row disabled" id="row-' + key + '" style="flex-wrap:wrap;">';
       html += '<div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);flex-shrink:0;width:22px;">' + letter + '.</div>';
-      html += '<div class="cg-label">' + item + '</div>';
+      html += '<div class="cg-label" id="label-' + key + '">' + item + '</div>';
       html += '<div class="cg-options">' + opts + '</div>';
+      html += '<div class="cg-expand" id="expand-' + key + '" style="width:100%;"><div class="cg-expand-inner">';
+      html += '<div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text-dim);margin-bottom:4px;">NOTES</div>';
+      html += '<textarea id="comment-' + key + '" rows="2" placeholder="Optional notes..." style="width:100%;padding:8px 10px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;font-family:var(--mono);font-size:12px;color:var(--text);resize:vertical;outline:none;" oninput="onItemComment(\'' + key + '\')" onblur="onItemCommentBlur(\'' + key + '\')"></textarea>';
+      html += '<div id="comment-req-' + key + '" style="display:none;font-family:var(--mono);font-size:9px;color:var(--red);margin-top:3px;">* Comment required for this rating</div>';
+      html += '<div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text-dim);margin:8px 0 4px;">PHOTO EVIDENCE</div>';
+      html += '<div style="display:flex;align-items:center;gap:8px;">';
+      html += '<button onclick="document.getElementById(\'photo-' + key + '\').click()" style="background:var(--panel3);border:1px solid var(--border2);border-radius:6px;padding:6px 12px;font-family:var(--mono);font-size:10px;color:var(--text-dim);cursor:pointer;">&#x1F4F7; Attach Photo</button>';
+      html += '<input type="file" id="photo-' + key + '" accept="image/*" capture="camera" style="display:none;" onchange="onItemPhoto(\'' + key + '\',this)">';
+      html += '<span id="photo-preview-' + key + '" style="font-family:var(--mono);font-size:9px;color:var(--text-muted);"></span>';
+      html += '</div>';
+      html += '<div id="photo-rec-' + key + '" style="display:none;font-family:var(--mono);font-size:9px;color:var(--amber);margin-top:3px;">* Photo recommended</div>';
+      html += '<div id="car-status-' + key + '" style="display:none;font-family:var(--mono);font-size:10px;color:var(--green);margin-top:6px;"></div>';
+      html += '</div></div>';
       html += '</div>';
     });
     // Section comments textarea
@@ -692,7 +717,6 @@ window.confirmLotoOpen = function() {
 
 // ── MARK ITEM ─────────────────────────────────────────────────────────────────
 window.mark = function(key, val, el) {
-  // Block marking if LOTO not confirmed (maintenance role)
   if (currentRole === 'maintenance') {
     var gate = document.getElementById('loto-gate');
     if (gate && gate.style.borderColor !== 'rgba(16, 185, 129, 0.4)') return;
@@ -703,8 +727,107 @@ window.mark = function(key, val, el) {
     row.querySelectorAll('.cg-opt').forEach(function(o) { o.className = 'cg-opt'; });
     el.classList.add('sel-' + val);
   }
+  var expand = document.getElementById('expand-' + key);
+  if (expand) expand.classList.add('open');
+  var commentEl = document.getElementById('comment-' + key);
+  var reqEl = document.getElementById('comment-req-' + key);
+  var recEl = document.getElementById('photo-rec-' + key);
+  if (commentEl) { commentEl.placeholder = val <= 2 ? 'Describe finding...' : 'Optional notes...'; }
+  if (reqEl) { reqEl.style.display = (val <= 2 && !itemComments[key]) ? 'block' : 'none'; }
+  if (recEl) { recEl.style.display = val <= 2 ? 'block' : 'none'; }
   updateProgress();
 };
+
+window.onItemComment = function(key) {
+  var el = document.getElementById('comment-' + key);
+  itemComments[key] = el ? el.value : '';
+  var reqEl = document.getElementById('comment-req-' + key);
+  if (reqEl && answers[key] <= 2) { reqEl.style.display = itemComments[key] ? 'none' : 'block'; }
+  updateProgress();
+};
+
+window.onItemCommentBlur = function(key) {
+  var v = answers[key];
+  if (v && v <= 2 && itemComments[key] && itemComments[key].trim() && !itemCars[key]) {
+    autoGenerateCarOpen(key);
+  }
+  updateItemPreviewOpen(key);
+};
+
+window.onItemPhoto = function(key, input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    itemPhotos[key] = e.target.result;
+    var prev = document.getElementById('photo-preview-' + key);
+    if (prev) prev.innerHTML = '<img src="' + e.target.result + '" style="max-height:60px;border-radius:4px;vertical-align:middle;margin-right:4px;"><span>' + file.name.substring(0, 20) + '</span>';
+    updateItemPreviewOpen(key);
+  };
+  reader.readAsDataURL(file);
+};
+
+function updateItemPreviewOpen(key) {
+  var label = document.getElementById('label-' + key);
+  if (!label) return;
+  var old = label.parentElement.querySelector('.cg-preview');
+  if (old) old.remove();
+  var parts = [];
+  if (itemComments[key] && itemComments[key].trim()) {
+    var t = itemComments[key].trim();
+    parts.push(t.length > 40 ? t.substring(0, 40) + '...' : t);
+  }
+  if (itemPhotos[key]) parts.push('&#x1F4F7;');
+  if (itemCars[key]) parts.push('<span style="color:var(--green);">&#x2713; ' + itemCars[key] + '</span>');
+  if (parts.length) {
+    var prev = document.createElement('div');
+    prev.className = 'cg-preview';
+    prev.innerHTML = parts.join(' &#x2022; ');
+    label.insertAdjacentElement('afterend', prev);
+  }
+}
+
+function genCarIdOpen() {
+  return 'CAR-' + new Date().getFullYear() + '-' + String(Math.floor(1000 + Math.random() * 9000));
+}
+
+async function autoGenerateCarOpen(key) {
+  var carId = genCarIdOpen();
+  itemCars[key] = carId;
+  generatedCars.push(carId);
+  var statusEl = document.getElementById('car-status-' + key);
+  if (statusEl) { statusEl.style.display = 'block'; statusEl.textContent = '\u2713 ' + carId + ' auto-generated'; }
+  var parts = key.split('_');
+  var si = parseInt(parts[0]), ii = parseInt(parts[1]);
+  var def = currentRide[currentRole];
+  var sec = def.sections[si];
+  var item = sec ? sec.items[ii] : '';
+  var carData = {
+    'CAR_ID': carId,
+    'Ride': currentRide.name,
+    'Facility': currentRide.code,
+    'Section': sec ? sec.name : '',
+    'Item': item,
+    'Rating': answers[key],
+    'Severity': answers[key] === 1 ? 'CRITICAL' : 'MAJOR',
+    'Comment': itemComments[key] || '',
+    'Photo': itemPhotos[key] || null,
+    'Inspector_ID': currentUser ? currentUser.id : 'unknown',
+    'Role': currentRole === 'maintenance' ? 'Maintenance' : 'Operations',
+    'Submitted_At': new Date().toISOString(),
+    'Status': 'OPEN',
+    'Source': 'open-checklist'
+  };
+  try {
+    await atPush('CAR_Log', carData);
+  } catch(e) {
+    var pending = JSON.parse(localStorage.getItem('pending_cars') || '[]');
+    pending.push(carData);
+    localStorage.setItem('pending_cars', JSON.stringify(pending));
+    if (statusEl) { statusEl.style.color = 'var(--amber)'; statusEl.textContent = '\u2713 ' + carId + ' queued \u2014 will sync on submit'; }
+  }
+  updateItemPreviewOpen(key);
+}
 
 function updateProgress() {
   var def = currentRide[currentRole];
@@ -715,8 +838,9 @@ function updateProgress() {
       var key = si + '_' + ii;
       var v = answers[key];
       if (v) {
-        answered++;
-        if (v <= 2) fails.push({ item: item, rating: v });
+        if (v <= 2) {
+          if (itemComments[key] && itemComments[key].trim()) { answered++; fails.push({ item: item, rating: v }); }
+        } else { answered++; }
       }
     });
   });
@@ -725,24 +849,16 @@ function updateProgress() {
   if (bar) bar.style.width = pct + '%';
   var txt = document.getElementById('progress-text');
   if (txt) txt.textContent = answered + ' / ' + total + ' answered \u00b7 ' + pct + '%';
-
-  // Flagged counter
   var fc = document.getElementById('flagged-counter');
   if (fc) { if (fails.length > 0) { fc.style.display = 'block'; fc.textContent = 'Flagged: ' + fails.length + ' item' + (fails.length > 1 ? 's' : ''); } else { fc.style.display = 'none'; } }
-
-  // Fail summary
   var fs = document.getElementById('fail-summary');
   var fl = document.getElementById('fail-list');
   if (fs && fl) {
     if (fails.length) {
       fs.style.display = 'block';
       fl.innerHTML = fails.map(function(f) { return '<div style="padding:2px 0;">&#x2022; ' + f.item + ' <span style="font-family:var(--mono);font-size:9px;color:var(--red);">[' + f.rating + ']</span></div>'; }).join('');
-    } else {
-      fs.style.display = 'none';
-    }
+    } else { fs.style.display = 'none'; }
   }
-
-  // Submit button: active only when 100%
   var btn = document.getElementById('submit-btn');
   if (btn) { var ready = answered === total && total > 0; btn.disabled = !ready; btn.style.opacity = ready ? '1' : '.4'; }
 }
@@ -839,6 +955,11 @@ window.submitChecklist = async function() {
   // Build GPS string
   const gpsStr = gpsCoords ? `${gpsCoords.lat.toFixed(6)},${gpsCoords.lng.toFixed(6)} (±${Math.round(gpsCoords.acc)}m)` : 'GPS unavailable';
 
+  // Retry pending CARs
+  var pending = JSON.parse(localStorage.getItem('pending_cars') || '[]');
+  for (var pi = 0; pi < pending.length; pi++) { try { await atPush('CAR_Log', pending[pi]); } catch(e) {} }
+  localStorage.removeItem('pending_cars');
+
   // Push to ride log — ops uses separate opsLogTable
   const targetTable = currentRole === 'operations' && currentRide.opsLogTable
     ? currentRide.opsLogTable
@@ -855,7 +976,9 @@ window.submitChecklist = async function() {
     'Notes': combinedNotes,
     'GPS': gpsStr,
     'Device Timestamp': deviceTimestamp,
-    'Submitted At': deviceTimestamp
+    'Submitted At': deviceTimestamp,
+    'Item_Details': JSON.stringify(def.sections.reduce(function(arr, sec, si) { sec.items.forEach(function(item, ii) { var key = si + '_' + ii; arr.push({item_id:key,rating:answers[key],comment:itemComments[key]||'',photo:itemPhotos[key]?'attached':null,car_id:itemCars[key]||null,required_comment_met:answers[key]<=2?(!!itemComments[key]&&!!itemComments[key].trim()):true}); }); return arr; }, [])),
+    'CARs_Generated': generatedCars.join(', ')
   });
 
   // Generate CARs for failed items
@@ -887,10 +1010,11 @@ window.submitChecklist = async function() {
 
   // Show done screen
   const failMsg = fail > 0 ? ' · ' + fail + ' CAR' + (fail > 1 ? 's' : '') + ' generated' : '';
+  var carListHtml = generatedCars.length > 0 ? '<br><span style="font-family:var(--mono);font-size:9px;color:var(--green);">CARs: ' + generatedCars.join(', ') + '</span><br><span style="font-size:10px;color:var(--text-dim);">CARs have been submitted to the AS 360 CAR Portal</span>' : '';
   document.getElementById('done-summary').innerHTML =
-    currentRide.name + ' — ' + (currentRole === 'maintenance' ? 'Maintenance' : 'Operations') + '<br>' +
-    passRate + '% pass rate · ' + total + ' items' + failMsg + '<br>' +
-    '<span style="font-family:var(--mono);font-size:9px;color:var(--text-muted);">' + deviceTimestamp + ' · ' + gpsStr + '</span>';
+    currentRide.name + ' \u2014 ' + (currentRole === 'maintenance' ? 'Maintenance' : 'Operations') + '<br>' +
+    passRate + '% pass rate \u00b7 ' + total + ' items' + failMsg + carListHtml + '<br>' +
+    '<span style="font-family:var(--mono);font-size:9px;color:var(--text-muted);">' + deviceTimestamp + ' \u00b7 ' + gpsStr + '</span>';
 
   showScreen('done');
   toast(def.title + ' submitted — ' + passRate + '% pass rate' + failMsg, fail > 0 ? 'warn' : 'ok');
