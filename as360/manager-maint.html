@@ -2,186 +2,702 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maintenance Manager · AS 360</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maintenance Module &middot; AS 360</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0c10;--bg2:#10131a;--surface:#161a24;--surface2:#1c2130;--border:#252b3a;--border2:#2f3648;--accent:#5b9bd5;--accent-dim:rgba(91,155,213,.12);--accent-b:rgba(91,155,213,.25);--gold:#d4af37;--gold-dim:rgba(212,175,55,.10);--gold-b:rgba(212,175,55,.25);--green:#22c55e;--green-dim:rgba(34,197,94,.08);--green-b:rgba(34,197,94,.2);--amber:#f59e0b;--amber-dim:rgba(245,158,11,.08);--amber-b:rgba(245,158,11,.2);--red:#ef4444;--red-dim:rgba(239,68,68,.08);--red-b:rgba(239,68,68,.2);--purple:#8b5cf6;--purple-dim:rgba(139,92,246,.08);--purple-b:rgba(139,92,246,.2);--text:#e4e8ef;--text2:#8b95a8;--text3:#515b6e;--sans:'IBM Plex Sans',-apple-system,sans-serif;--mono:'IBM Plex Mono',monospace;--sidebar-w:220px}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--bg);color:var(--text2);font-size:14px}
-.topbar{position:fixed;top:0;left:0;right:0;z-index:100;height:44px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px}
-.tb-left{display:flex;align-items:center;gap:12px}
-.tb-logo{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.02em}
-.tb-logo span{color:var(--accent)}
-.tb-sep{width:1px;height:16px;background:var(--border)}
-.tb-module{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--gold);letter-spacing:.05em}
-.tb-right{display:flex;align-items:center;gap:14px}
-.tb-badge{font-family:var(--mono);font-size:14px;font-weight:600;padding:3px 10px;border-radius:4px;display:flex;align-items:center;gap:6px}
-.tb-at{background:var(--green-dim);border:1px solid var(--green-b);color:var(--green)}
-.tb-at::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.tb-tier{background:var(--purple-dim);border:1px solid var(--purple-b);color:var(--purple)}
-.tb-time{font-family:var(--mono);font-size:14px;color:var(--text3)}
-.sidebar{position:fixed;top:44px;left:0;bottom:0;width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:12px 0;overflow-y:auto}
-.sb-label{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);padding:10px 16px 6px;user-select:none}
-.sb-item{display:flex;align-items:center;gap:10px;padding:9px 16px;cursor:pointer;font-size:14px;font-weight:500;color:var(--text2);transition:all .1s;border-left:3px solid transparent;white-space:nowrap}
-.sb-item:hover{background:rgba(91,155,213,.04);color:var(--text)}
-.sb-item.active{background:rgba(212,175,55,.06);color:var(--gold);border-left-color:var(--gold);font-weight:600}
-.sb-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
-.sb-badge{font-family:var(--mono);font-size:14px;font-weight:700;margin-left:auto;padding:1px 7px;border-radius:8px;background:var(--red-dim);color:var(--red);border:1px solid var(--red-b)}
-.main{position:fixed;top:44px;left:var(--sidebar-w);right:0;bottom:0;overflow:hidden}
-.view{position:absolute;inset:0;overflow-y:auto;padding:24px 28px 60px;display:none}
+:root{
+  --bg:#0C0F14;--surface:#111520;--panel:#161C27;--panel2:#1C2333;--panel3:#222A3A;
+  --border:#242D3E;--border2:#2E3A52;
+  --teal:#0ABFBC;--teal-dim:rgba(10,191,188,.15);
+  --red:#F43F5E;--red-dim:rgba(244,63,94,.15);
+  --amber:#F59E0B;--amber-dim:rgba(245,158,11,.15);
+  --green:#10B981;--green-dim:rgba(16,185,129,.15);
+  --blue:#3B82F6;--blue-dim:rgba(59,130,246,.15);
+  --purple:#8B5CF6;--purple-dim:rgba(139,92,246,.15);
+  --text:#CBD5E1;--text-bright:#E8EDF5;--text-dim:#64748B;--text-muted:#3D4F6A;
+  --mono:'JetBrains Mono',monospace;--sans:'Barlow',sans-serif;--cond:'Barlow Condensed',sans-serif;
+  --accent:#6CA4DC;--accent-dim:rgba(108,164,220,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+a{color:var(--teal);text-decoration:none}
+
+/* Topbar */
+.topbar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.topbar .logo{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--teal),var(--blue));display:flex;align-items:center;justify-content:center;font-family:var(--cond);font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
+.topbar .brand{font-family:var(--cond);font-weight:700;font-size:17px;color:var(--text-bright);letter-spacing:.5px}
+.topbar .divider{width:1px;height:20px;background:var(--border2);flex-shrink:0}
+.topbar .sub{font-family:var(--cond);font-weight:600;font-size:13px;color:var(--teal);letter-spacing:1.5px;text-transform:uppercase}
+.topbar .spacer{flex:1}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse-dot 2s infinite}
+.sync-label{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
+.clock{font-family:var(--mono);font-size:12px;color:var(--text-dim);letter-spacing:.5px}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* Nav Tabs */
+.nav-tabs{display:flex;gap:0;background:var(--surface);border-bottom:1px solid var(--border);padding:0 12px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav-tab{font-family:var(--cond);font-weight:600;font-size:13px;letter-spacing:.8px;text-transform:uppercase;color:var(--text-dim);padding:10px 16px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:color .2s,border-color .2s}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+
+/* Main */
+.main{padding:16px;max-width:960px;margin:0 auto}
+.view{display:none}
 .view.active{display:block}
-.view::-webkit-scrollbar{width:5px}
-.view::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.sec-tag{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
-.sec-title{font-size:22px;font-weight:700;color:var(--text);line-height:1.2;letter-spacing:-.01em;margin-bottom:4px}
-.sec-desc{font-size:14px;color:var(--text2);line-height:1.6;max-width:680px;margin-bottom:18px}
-.cpanel{background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:14px}
-.cpanel-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;transition:background .1s}
-.cpanel-hdr:hover{background:rgba(91,155,213,.03)}
-.cpanel-left{display:flex;align-items:center;gap:10px}
-.cpanel-icon{font-size:16px}
-.cpanel-label{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.04em;color:var(--text)}
-.cpanel-meta{font-size:14px;color:var(--text3);margin-left:6px}
-.cpanel-arrow{font-size:14px;color:var(--text3);transition:transform .15s}
-.cpanel.closed .cpanel-arrow{transform:rotate(-90deg)}
-.cpanel-body{padding:0 16px 16px}
-.cpanel.closed .cpanel-body{display:none}
-.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px;text-align:center}
-.stat-n{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--text);line-height:1}
-.stat-l{font-size:14px;color:var(--text3);margin-top:4px}
-.stat-bar{height:3px;background:var(--surface2);border-radius:2px;margin-top:8px;overflow:hidden}
-.stat-fill{height:100%;border-radius:2px}
-.drow-hdr{display:grid;padding:8px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px 6px 0 0;font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.06em;color:var(--text3);text-transform:uppercase}
-.drow{display:grid;padding:11px 14px;border:1px solid var(--border);border-top:none;align-items:center;font-size:14px;transition:background .1s}
-.drow:last-child{border-radius:0 0 6px 6px}
-.drow:hover{background:rgba(91,155,213,.03)}
-.drow-id{font-family:var(--mono);font-weight:700;color:var(--accent)}
-.drow-val{color:var(--text)}
-.drow-dim{color:var(--text2)}
-.drow-faint{color:var(--text3)}
-.pill{font-family:var(--mono);font-size:14px;font-weight:700;padding:3px 9px;border-radius:4px;display:inline-block;white-space:nowrap}
-.p-pass{background:var(--green-dim);color:var(--green);border:1px solid var(--green-b)}
-.p-cond{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-b)}
-.p-fail{background:var(--red-dim);color:var(--red);border:1px solid var(--red-b)}
-.p-pend{background:var(--purple-dim);color:var(--purple);border:1px solid var(--purple-b)}
-.p-corp{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-b)}
-.p-indep{background:var(--green-dim);color:var(--green);border:1px solid var(--green-b)}
-.p-info{background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-b)}
-.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
-.fl{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3)}
-.fi{font-family:var(--mono);font-size:14px;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);outline:none;width:100%}
-.fi:focus{border-color:var(--accent)}
-.fi::placeholder{color:var(--text3)}
-select.fi{appearance:none;cursor:pointer}
-textarea.fi{resize:vertical;min-height:72px}
-.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.fr4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
-.btn{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.04em;padding:9px 18px;border-radius:4px;border:none;cursor:pointer;transition:all .12s}
-.btn-gold{background:linear-gradient(135deg,#b8960c,#d4af37);color:#0a0c10}
-.btn-gold:hover{filter:brightness(1.1)}
-.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent-b)}
-.btn-outline:hover{background:var(--accent-dim)}
-.note{background:var(--gold-dim);border:1px solid var(--gold-b);border-radius:5px;padding:12px 14px;margin-top:14px}
-.note-h{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--gold);margin-bottom:3px}
-.note-b{font-size:14px;color:var(--text2);line-height:1.55}
-.upzone{border:2px dashed var(--border);border-radius:6px;padding:28px;text-align:center;cursor:pointer;transition:all .15s}
-.upzone:hover{border-color:var(--accent);background:var(--accent-dim)}
-.ccard{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden}
-.ccard-top{padding:11px 14px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.ccard-body{padding:12px 14px}
-.ccard-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:14px}
-.ccard-row:last-child{border-bottom:none}
-.ccard-k{color:var(--text3)}
-.ccard-v{color:var(--text);font-weight:600}
-.bull{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;border-left:3px solid var(--amber)}
-.bull-id{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--amber)}
-.bull-title{font-size:14px;font-weight:600;color:var(--text);margin-top:2px}
-.bull-meta{font-size:14px;color:var(--text3);margin-top:3px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-.fbar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
-.fbtn{font-family:var(--mono);font-size:14px;font-weight:500;padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .1s}
-.fbtn:hover{border-color:var(--text3);color:var(--text2)}
-.fbtn.active{background:var(--gold-dim);border-color:var(--gold-b);color:var(--gold);font-weight:600}
-@media(max-width:768px){.sidebar{display:none}.main{left:0}.stat-row{grid-template-columns:1fr 1fr}.fr2,.fr3,.fr4{grid-template-columns:1fr}.g2,.g3{grid-template-columns:1fr}}
+
+/* Section Label */
+.sec-label{font-family:var(--mono);font-size:11px;color:var(--text-muted);letter-spacing:.5px;margin-bottom:12px}
+
+/* Panels */
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.panel-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);gap:8px}
+.panel-hdr-title{font-family:var(--cond);font-weight:700;font-size:15px;color:var(--text-bright);letter-spacing:.3px}
+.panel-hdr-sub{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
+.panel-body{padding:14px}
+
+/* Ride Cards Grid */
+.ride-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+@media(max-width:640px){.ride-grid{grid-template-columns:1fr}}
+
+.ride-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.ride-card-hdr{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px}
+.ride-icon{font-size:22px;line-height:1;flex-shrink:0}
+.ride-meta{flex:1;min-width:0}
+.ride-title{font-family:var(--cond);font-weight:700;font-size:14px;color:var(--text-bright);line-height:1.3}
+.ride-sub{font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-top:2px}
+.ride-card-body{padding:14px}
+
+.ride-status{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.status-badge{font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:.3px}
+.status-badge.pass{background:var(--green-dim);color:var(--green)}
+.status-badge.not-started{background:var(--panel3);color:var(--text-dim)}
+.status-badge.warning{background:var(--amber-dim);color:var(--amber)}
+.status-badge.danger{background:var(--red-dim);color:var(--red)}
+
+.ride-detail{font-family:var(--mono);font-size:11px;color:var(--text-dim);line-height:1.7}
+.ride-detail strong{color:var(--text);font-weight:500}
+
+.fail-item{display:flex;align-items:flex-start;gap:6px;background:var(--red-dim);border:1px solid rgba(244,63,94,.2);border-radius:6px;padding:8px 10px;margin-top:8px;font-family:var(--mono);font-size:11px;color:var(--red);line-height:1.4}
+.fail-item .fail-label{font-weight:700;flex-shrink:0}
+
+.ride-card-footer{padding:10px 14px;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
+
+/* Buttons */
+.btn{font-family:var(--cond);font-weight:600;font-size:13px;letter-spacing:.5px;border:none;border-radius:6px;padding:7px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s,opacity .15s}
+.btn-sm{font-size:12px;padding:5px 10px}
+.btn-ghost{background:var(--panel3);color:var(--text);border:1px solid var(--border2)}
+.btn-ghost:hover{background:var(--border)}
+.btn-teal{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(10,191,188,.25)}
+.btn-teal:hover{background:rgba(10,191,188,.25)}
+
+/* Weekly Grid */
+.weekly-grid{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.weekly-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
+.weekly-table th{padding:6px 8px;text-align:center;color:var(--text-dim);font-weight:500;border-bottom:1px solid var(--border);white-space:nowrap}
+.weekly-table td{padding:6px 8px;text-align:center;border-bottom:1px solid var(--border);white-space:nowrap}
+.weekly-table .ride-label{text-align:left;color:var(--text-bright);font-weight:700;font-family:var(--cond);font-size:12px;letter-spacing:.3px}
+.week-cell{display:inline-flex;align-items:center;justify-content:center;width:32px;height:28px;border-radius:4px;font-size:10px;font-weight:700}
+.week-cell.done{background:var(--green-dim);color:var(--green)}
+.week-cell.missed{background:var(--red-dim);color:var(--red)}
+.week-cell.pending{background:var(--panel3);color:var(--text-muted)}
+.week-detail{font-size:9px;color:var(--text-dim);margin-top:1px}
+
+/* Alerts */
+.alert-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-left:3px solid var(--red);background:var(--panel2);border-radius:0 6px 6px 0;margin-bottom:8px}
+.alert-item:last-child{margin-bottom:0}
+.alert-item-body{flex:1;min-width:0}
+.alert-item-title{font-family:var(--sans);font-weight:600;font-size:13px;color:var(--text-bright);line-height:1.3}
+.alert-item-meta{font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-top:3px}
+.alert-item-meta .ride-code{color:var(--teal)}
+.alert-item-meta .fail-count{color:var(--red);font-weight:700}
+
+/* Empty state */
+.empty-state{text-align:center;padding:48px 20px;color:var(--text-muted);font-family:var(--mono);font-size:13px}
+
+/* Metric card */
+.metric-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 14px}
+.metric-label{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.metric-val{font-family:var(--cond);font-weight:800;font-size:22px;color:var(--text-bright)}
+
+/* Notification Banner */
+.notif-banner{position:fixed;top:0;left:0;right:0;z-index:200;padding:12px 16px;background:var(--green);color:#fff;font-family:var(--sans);font-weight:600;font-size:13px;text-align:center;transform:translateY(-100%);animation:notif-slide-in .4s ease forwards}
+.notif-banner.out{animation:notif-slide-out .4s ease forwards}
+@keyframes notif-slide-in{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+@keyframes notif-slide-out{from{transform:translateY(0)}to{transform:translateY(-100%)}}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 </style>
 </head>
 <body>
-<div class="topbar"><div class="tb-left"><div class="tb-logo">AS <span>360</span></div><div class="tb-sep"></div><div class="tb-module">MAINT MODULE</div></div><div class="tb-right"><div class="tb-badge tb-at">AIRTABLE</div><div class="tb-badge tb-tier">MAINT-ADMIN</div><div class="tb-time" id="clock">--:--</div></div></div>
-<div class="sidebar"><div class="sb-label">Maintenance</div><div class="sb-item active" data-v="dashboard"><span class="sb-icon">📊</span> Dashboard</div><div class="sb-item" data-v="inspections"><span class="sb-icon">🔍</span> Inspections</div><div class="sb-item" data-v="ndt"><span class="sb-icon">🔬</span> NDT Center</div><div class="sb-item" data-v="maint"><span class="sb-icon">🔧</span> Maint Logs</div><div class="sb-item" data-v="cars"><span class="sb-icon">📂</span> CARs <span class="sb-badge">3</span></div><div class="sb-item" data-v="creds"><span class="sb-icon">🪪</span> Credentials</div><div class="sb-item" data-v="bulletins"><span class="sb-icon">📋</span> Svc Bulletins</div></div>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="logo">AS</div>
+  <span class="brand">AS 360</span>
+  <span class="divider"></span>
+  <span class="sub">MAINTENANCE</span>
+  <span class="spacer"></span>
+  <span class="sync-dot" id="syncDot"></span>
+  <span class="sync-label" id="syncLabel">Synced</span>
+  <span class="divider"></span>
+  <span class="clock" id="clock">--:--:--</span>
+</div>
+
+<!-- Nav Tabs -->
+<div class="nav-tabs">
+  <div class="nav-tab active" data-view="preop" onclick="showView('preop',this)">Pre-Op</div>
+  <div class="nav-tab" data-view="workorders" onclick="showView('workorders',this)">Work Orders</div>
+  <div class="nav-tab" data-view="equipment" onclick="showView('equipment',this)">Equipment</div>
+</div>
+
+<!-- Main Content -->
 <div class="main">
-<div class="view active" id="view-dashboard">
-<div class="stat-row"><div class="stat"><div class="stat-n" style="color:var(--green)">94%</div><div class="stat-l">Inspection Compliance</div><div class="stat-bar"><div class="stat-fill" style="width:94%;background:var(--green)"></div></div></div><div class="stat"><div class="stat-n" style="color:var(--accent)">47</div><div class="stat-l">NDT Records YTD</div><div class="stat-bar"><div class="stat-fill" style="width:78%;background:var(--accent)"></div></div></div><div class="stat"><div class="stat-n" style="color:var(--amber)">3</div><div class="stat-l">Open Maint CARs</div><div class="stat-bar"><div class="stat-fill" style="width:15%;background:var(--amber)"></div></div></div><div class="stat"><div class="stat-n" style="color:var(--green)">12</div><div class="stat-l">Credentialed Inspectors</div><div class="stat-bar"><div class="stat-fill" style="width:60%;background:var(--green)"></div></div></div><div class="stat"><div class="stat-n" style="color:var(--red)">2</div><div class="stat-l">Open Bulletins</div><div class="stat-bar"><div class="stat-fill" style="width:20%;background:var(--red)"></div></div></div></div>
-<div class="cpanel" id="cp-integrity"><div class="cpanel-hdr" onclick="togglePanel('cp-integrity')"><div class="cpanel-left"><span class="cpanel-icon">🎯</span><span class="cpanel-label">Integrity Pillar — Live Inputs</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="fr4"><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:12px;border-top:3px solid var(--green)"><div style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--green)">INSPECTIONS</div><div style="font-size:20px;font-weight:700;color:var(--text);margin:4px 0">94% On-Schedule</div><div style="font-size:14px;color:var(--text3)">23 of 24 scheduled. 1 overdue — Coaster B pre-season NDT.</div></div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:12px;border-top:3px solid var(--accent)"><div style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--accent)">MAINT LOGS</div><div style="font-size:20px;font-weight:700;color:var(--text);margin:4px 0">98% Daily</div><div style="font-size:14px;color:var(--text3)">312 of 318 logs on time. 6 late entries flagged.</div></div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:12px;border-top:3px solid var(--purple)"><div style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--purple)">NDT STATUS</div><div style="font-size:20px;font-weight:700;color:var(--text);margin:4px 0">2 Pending Review</div><div style="font-size:14px;color:var(--text3)">45 verified, 2 in admin queue. 0 FAIL this season.</div></div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:12px;border-top:3px solid var(--amber)"><div style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--amber)">SVC BULLETINS</div><div style="font-size:20px;font-weight:700;color:var(--text);margin:4px 0">2 Open / 14 Done</div><div style="font-size:14px;color:var(--text3)">SB-2026-003 due Apr 15. SB-2026-007 due May 1.</div></div></div></div></div>
-<div class="cpanel" id="cp-indep"><div class="cpanel-hdr" onclick="togglePanel('cp-indep')"><div class="cpanel-left"><span class="cpanel-icon">👁️</span><span class="cpanel-label">Inspector Independence Breakdown</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="g3"><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:16px;text-align:center"><div style="font-size:32px;font-weight:700;color:var(--green)">38%</div><div style="font-size:14px;color:var(--text3);margin-top:3px">Independent</div><div class="stat-bar" style="margin-top:8px"><div class="stat-fill" style="width:38%;background:var(--green)"></div></div></div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:16px;text-align:center"><div style="font-size:32px;font-weight:700;color:var(--amber)">47%</div><div style="font-size:14px;color:var(--text3);margin-top:3px">Corporate-Employed</div><div class="stat-bar" style="margin-top:8px"><div class="stat-fill" style="width:47%;background:var(--amber)"></div></div></div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:16px;text-align:center"><div style="font-size:32px;font-weight:700;color:var(--purple)">15%</div><div style="font-size:14px;color:var(--text3);margin-top:3px">Third-Party Contracted</div><div class="stat-bar" style="margin-top:8px"><div class="stat-fill" style="width:15%;background:var(--purple)"></div></div></div></div><div class="note"><div class="note-h">Industry Context</div><div class="note-b">~85% of NAARSO Level 2 inspectors are corporate-employed. AS 360 is the only platform that flags this distinction. Corporate completions carry an independence flag — insurer-visible.</div></div></div></div>
-<div class="cpanel" id="cp-recent"><div class="cpanel-hdr" onclick="togglePanel('cp-recent')"><div class="cpanel-left"><span class="cpanel-icon">🕐</span><span class="cpanel-label">Recent Activity</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface2);border-radius:4px"><span class="dot" style="background:var(--green)"></span><span class="drow-dim">10:42 AM</span><span class="drow-val">INS-047 — Kingda Ka annual inspection PASS</span><span class="pill p-indep" style="margin-left:auto">Independent</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface2);border-radius:4px"><span class="dot" style="background:var(--amber)"></span><span class="drow-dim">09:15 AM</span><span class="drow-val">NDT-087 — Batman bogie bearings awaiting admin review</span><span class="pill p-pend" style="margin-left:auto">Pending</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface2);border-radius:4px"><span class="dot" style="background:var(--red)"></span><span class="drow-dim">Yesterday</span><span class="drow-val">MC-030 — Batman restraint sensor — escalated to VERIFY</span><span class="pill p-fail" style="margin-left:auto">Critical</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface2);border-radius:4px"><span class="dot" style="background:var(--accent)"></span><span class="drow-dim">Yesterday</span><span class="drow-val">ML-1204 — Kingda Ka hydraulic check complete</span><span class="pill p-pass" style="margin-left:auto">Complete</span></div></div></div></div>
-<div class="cpanel closed" id="cp-tiers"><div class="cpanel-hdr" onclick="togglePanel('cp-tiers')"><div class="cpanel-left"><span class="cpanel-icon">🔐</span><span class="cpanel-label">Access Tiers</span><span class="cpanel-meta">3 tiers configured</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="g3"><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:12px;border-left:3px solid var(--green)"><div style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--green)">MAINT-OPS</div><div style="font-size:14px;color:var(--text2);margin-top:4px">In-house staff. Routine logs, own records only. No NDT or 3rd-party data visible.</div></div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:12px;border-left:3px solid var(--purple)"><div style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--purple)">MAINT-INSPECTOR</div><div style="font-size:14px;color:var(--text2);margin-top:4px">Credentialed 3rd-party. Magic link auth via Sendgrid. Own submissions only.</div></div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:12px;border-left:3px solid var(--gold)"><div style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--gold)">MAINT-ADMIN</div><div style="font-size:14px;color:var(--text2);margin-top:4px">Full access. Insurer reports. Scoring controls. Credential management.</div></div></div></div></div>
+
+  <!-- Pre-Op View -->
+  <div class="view active" id="view-preop">
+
+    <div class="sec-label">// Today's Pre-Op Status</div>
+
+    <div class="ride-grid">
+      <!-- GKI Card -->
+      <div class="ride-card" id="card-gki">
+        <div class="ride-card-hdr">
+          <span class="ride-icon">&#x1F3CE;&#xFE0F;</span>
+          <div class="ride-meta">
+            <div class="ride-title">Go-Karts &mdash; ASTM F24 Pre-Operational</div>
+            <div class="ride-sub">GKI &middot; 35 items</div>
+          </div>
+        </div>
+        <div class="ride-card-body" id="gki-body">
+          <!-- Populated by JS -->
+        </div>
+        <div class="ride-card-footer">
+          <a href="open.html?ride=GKI" class="btn btn-teal btn-sm">&#x1F4F2; Scan QR</a>
+        </div>
+      </div>
+
+      <!-- CCI Card -->
+      <div class="ride-card" id="card-cci">
+        <div class="ride-card-hdr">
+          <span class="ride-icon">&#x1F3A0;</span>
+          <div class="ride-meta">
+            <div class="ride-title">Carousel (Chance MGR) &mdash; ASTM F24 Pre-Operational</div>
+            <div class="ride-sub">CCI &middot; 38 items</div>
+          </div>
+        </div>
+        <div class="ride-card-body" id="cci-body">
+          <!-- Populated by JS -->
+        </div>
+        <div class="ride-card-footer">
+          <a href="open.html?ride=CCI" class="btn btn-teal btn-sm">&#x1F4F2; Scan QR</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-label">// Weekly Completion History</div>
+    <div class="panel" style="margin-bottom:20px">
+      <div class="panel-hdr">
+        <span class="panel-hdr-title">7-Day History</span>
+        <span class="panel-hdr-sub" id="week-range"></span>
+      </div>
+      <div class="panel-body">
+        <div class="weekly-grid">
+          <table class="weekly-table" id="weekly-table">
+            <!-- Populated by JS -->
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-label">// Equipment Alerts</div>
+    <div class="panel">
+      <div class="panel-hdr">
+        <span class="panel-hdr-title">Repeat Failures (30 days)</span>
+        <span class="panel-hdr-sub" id="alert-count">2 items</span>
+      </div>
+      <div class="panel-body" id="alerts-body">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Work Orders View -->
+  <div class="view" id="view-workorders">
+    <div class="sec-label">// Work Orders</div>
+    <div class="panel">
+      <div class="panel-hdr">
+        <span class="panel-hdr-title">Work Orders</span>
+      </div>
+      <div class="panel-body">
+        <div class="empty-state">No open work orders</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Equipment View -->
+  <div class="view" id="view-equipment">
+    <div class="sec-label">// Equipment Registry</div>
+    <div class="panel">
+      <div class="panel-hdr">
+        <span class="panel-hdr-title">Equipment Registry</span>
+      </div>
+      <div class="panel-body">
+        <div class="empty-state">Equipment database</div>
+      </div>
+    </div>
+  </div>
+
 </div>
-<div class="view" id="view-inspections">
-<div class="sec-tag">// Third-Party Inspections</div><div class="sec-title">NAARSO · AIMS · State Agency Records</div><div class="sec-desc">Annual, pre-season, and ad-hoc inspection records. Every record tagged with inspector credential level and independence status. Shared tab — visible in both Manager Module and Maintenance Manager.</div>
-<div class="fbar"><button class="fbtn active">All</button><button class="fbtn">PASS</button><button class="fbtn">CONDITIONAL</button><button class="fbtn">FAIL</button><button class="fbtn">Independent</button><button class="fbtn">Corporate</button></div>
-<div class="drow-hdr" style="grid-template-columns:80px 1fr 120px 100px 100px 100px 80px"><span>ID</span><span>Ride / Attraction</span><span>Inspector</span><span>Cert</span><span>Independence</span><span>Date</span><span>Result</span></div>
-<div class="drow" style="grid-template-columns:80px 1fr 120px 100px 100px 100px 80px"><div class="drow-id">INS-047</div><div class="drow-val">Kingda Ka — Annual</div><div class="drow-dim">T. Jones</div><div><span class="pill p-pass">NAARSO 3</span></div><div><span class="pill p-indep">Independent</span></div><div class="drow-faint">Mar 12</div><div><span class="pill p-pass">PASS</span></div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 120px 100px 100px 100px 80px"><div class="drow-id">INS-046</div><div class="drow-val">El Toro — Pre-Season</div><div class="drow-dim">R. Coetzee</div><div><span class="pill p-pass">NAARSO 2</span></div><div><span class="pill p-indep">3rd-Party</span></div><div class="drow-faint">Mar 8</div><div><span class="pill p-cond">COND</span></div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 120px 100px 100px 100px 80px"><div class="drow-id">INS-045</div><div class="drow-val">Batman: The Ride — Annual</div><div class="drow-dim">M. Davis</div><div><span class="pill p-corp">NAARSO 2</span></div><div><span class="pill p-corp">Corporate</span></div><div class="drow-faint">Mar 5</div><div><span class="pill p-pass">PASS</span></div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 120px 100px 100px 100px 80px"><div class="drow-id">INS-044</div><div class="drow-val">Nitro — Annual</div><div class="drow-dim">T. Jones</div><div><span class="pill p-pass">NAARSO 3</span></div><div><span class="pill p-indep">Independent</span></div><div class="drow-faint">Mar 1</div><div><span class="pill p-pass">PASS</span></div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 120px 100px 100px 100px 80px;opacity:.5"><div class="drow-id">INS-043</div><div class="drow-val">Superman — Pre-Season</div><div class="drow-dim">K. Koenig</div><div><span class="pill p-info">AIMS 1</span></div><div><span class="pill p-indep">3rd-Party</span></div><div class="drow-faint">Feb 22</div><div><span class="pill p-pass">PASS</span></div></div>
-<div class="cpanel" id="cp-submitinsp" style="margin-top:16px"><div class="cpanel-hdr" onclick="togglePanel('cp-submitinsp')"><div class="cpanel-left"><span class="cpanel-icon">＋</span><span class="cpanel-label">Submit Inspection Record</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="fr3"><div class="fg"><label class="fl">Ride / Attraction</label><select class="fi"><option>Select attraction...</option><option>Kingda Ka</option><option>El Toro</option><option>Nitro</option><option>Batman: The Ride</option><option>Superman: Ultimate Flight</option><option>Jersey Devil Coaster</option><option>Medusa</option><option>Joker</option></select></div><div class="fg"><label class="fl">Inspection Type</label><select class="fi"><option>Annual</option><option>Pre-Season</option><option>Post-Incident</option><option>State Agency</option><option>Insurance Required</option></select></div><div class="fg"><label class="fl">Inspector</label><input class="fi" placeholder="Inspector name"></div></div><div class="fr3"><div class="fg"><label class="fl">Cert Level</label><select class="fi"><option>NAARSO Level 1</option><option>NAARSO Level 2</option><option>NAARSO Level 3</option><option>AIMS Level 1</option><option>AIMS Level 2</option><option>State Licensed</option></select></div><div class="fg"><label class="fl">Independence</label><select class="fi"><option>Independent</option><option>Corporate-Employed</option><option>Third-Party Contracted</option></select></div><div class="fg"><label class="fl">Result</label><select class="fi"><option>PASS</option><option>CONDITIONAL</option><option>FAIL</option><option>REQUIRES FOLLOW-UP</option></select></div></div><div class="fg"><label class="fl">Findings / Notes</label><textarea class="fi" placeholder="Inspection findings, component details, recommendations..."></textarea></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span style="font-size:14px;color:var(--text3)">Attachments upload to Cloudflare R2</span><button class="btn btn-gold">Submit Inspection →</button></div></div></div>
-</div>
-<div class="view" id="view-ndt">
-<div class="sec-tag">// Non-Destructive Testing</div><div class="sec-title">NDT Upload Center — ASNT Level II/III Required</div><div class="sec-desc">AS 360 scores the inspector's conclusion (PASS / CONDITIONAL / FAIL) — never raw measurements. Every record requires ASNT Level II or III digital attestation.</div>
-<div class="upzone" id="ndt-upload"><div style="font-size:32px;margin-bottom:6px">📄</div><div style="font-size:15px;color:var(--text2)">Drop NDT report PDF here or click to upload</div><div style="font-size:14px;color:var(--text3);margin-top:4px">Stored in Cloudflare R2 · Claude API extracts structured data · Admin review before scoring</div></div>
-<div class="cpanel" id="cp-ndtrec" style="margin-top:16px"><div class="cpanel-hdr" onclick="togglePanel('cp-ndtrec')"><div class="cpanel-left"><span class="cpanel-icon">📋</span><span class="cpanel-label">NDT Records</span><span class="cpanel-meta">47 YTD</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="drow-hdr" style="grid-template-columns:70px 1fr 110px 90px 80px 70px 70px 60px"><span>ID</span><span>Ride · Component</span><span>Method</span><span>Tech</span><span>ASNT</span><span>Result</span><span>Admin</span><span>PDF</span></div><div class="drow" style="grid-template-columns:70px 1fr 110px 90px 80px 70px 70px 60px"><div class="drow-id">NDT-089</div><div class="drow-val">Kingda Ka · Launch sled axle</div><div class="drow-dim">Ultrasonic (UT)</div><div class="drow-dim">A. Martinez</div><div><span class="pill p-info">III</span></div><div><span class="pill p-pass">PASS</span></div><div><span class="pill p-pass">✓</span></div><div style="color:var(--accent);cursor:pointer">View</div></div><div class="drow" style="grid-template-columns:70px 1fr 110px 90px 80px 70px 70px 60px"><div class="drow-id">NDT-088</div><div class="drow-val">El Toro · Track welds Sec 4</div><div class="drow-dim">Mag Particle (MT)</div><div class="drow-dim">K. Thompson</div><div><span class="pill p-info">II</span></div><div><span class="pill p-cond">COND</span></div><div><span class="pill p-pass">✓</span></div><div style="color:var(--accent);cursor:pointer">View</div></div><div class="drow" style="grid-template-columns:70px 1fr 110px 90px 80px 70px 70px 60px"><div class="drow-id">NDT-087</div><div class="drow-val">Batman · Bogie assembly bearings</div><div class="drow-dim">Liquid Pen (PT)</div><div class="drow-dim">A. Martinez</div><div><span class="pill p-info">III</span></div><div><span class="pill p-pass">PASS</span></div><div><span class="pill p-pend">⏳</span></div><div style="color:var(--accent);cursor:pointer">View</div></div><div class="drow" style="grid-template-columns:70px 1fr 110px 90px 80px 70px 70px 60px"><div class="drow-id">NDT-086</div><div class="drow-val">Nitro · Chassis frame welds</div><div class="drow-dim">Eddy Current (ECT)</div><div class="drow-dim">R. Patel</div><div><span class="pill p-info">II</span></div><div><span class="pill p-pass">PASS</span></div><div><span class="pill p-pass">✓</span></div><div style="color:var(--accent);cursor:pointer">View</div></div></div></div>
-<div class="cpanel" id="cp-pipeline"><div class="cpanel-hdr" onclick="togglePanel('cp-pipeline')"><div class="cpanel-left"><span class="cpanel-icon">⚙️</span><span class="cpanel-label">PDF Extraction Pipeline</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="fr4"><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:14px;text-align:center;border-top:3px solid var(--accent)"><div style="font-size:22px;margin-bottom:4px">📄</div><div style="font-weight:700;color:var(--text)">Upload</div><div style="font-size:14px;color:var(--text3);margin-top:3px">NDT firm uploads PDF → Cloudflare R2</div></div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:14px;text-align:center;border-top:3px solid var(--purple)"><div style="font-size:22px;margin-bottom:4px">🤖</div><div style="font-weight:700;color:var(--text)">Extract</div><div style="font-size:14px;color:var(--text3);margin-top:3px">Claude API → structured JSON pass/fail</div></div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:14px;text-align:center;border-top:3px solid var(--amber)"><div style="font-size:22px;margin-bottom:4px">👁️</div><div style="font-weight:700;color:var(--text)">Review</div><div style="font-size:14px;color:var(--text3);margin-top:3px">Admin checks vs. source PDF</div></div><div style="background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:14px;text-align:center;border-top:3px solid var(--green)"><div style="font-size:22px;margin-bottom:4px">✓</div><div style="font-weight:700;color:var(--text)">Score</div><div style="font-size:14px;color:var(--text3);margin-top:3px">Verified → Integrity pillar</div></div></div></div></div>
-<div class="cpanel closed" id="cp-submitndt"><div class="cpanel-hdr" onclick="togglePanel('cp-submitndt')"><div class="cpanel-left"><span class="cpanel-icon">＋</span><span class="cpanel-label">Submit NDT Record</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="fr3"><div class="fg"><label class="fl">Ride</label><select class="fi"><option>Select attraction...</option><option>Kingda Ka</option><option>El Toro</option><option>Nitro</option><option>Batman: The Ride</option><option>Superman</option><option>Jersey Devil</option></select></div><div class="fg"><label class="fl">Component</label><input class="fi" placeholder="e.g. Launch sled axle, Track welds Sec 4"></div><div class="fg"><label class="fl">Test Method</label><select class="fi"><option>Ultrasonic (UT)</option><option>Magnetic Particle (MT)</option><option>Liquid Penetrant (PT)</option><option>Eddy Current (ECT)</option><option>Visual (VT)</option></select></div></div><div class="fr3"><div class="fg"><label class="fl">Technician</label><input class="fi" placeholder="Technician name"></div><div class="fg"><label class="fl">ASNT Cert Level</label><select class="fi"><option>ASNT Level II</option><option>ASNT Level III</option></select></div><div class="fg"><label class="fl">Result</label><select class="fi"><option>PASS</option><option>CONDITIONAL</option><option>FAIL</option><option>REQUIRES FOLLOW-UP</option></select></div></div><div class="fr2"><div class="fg"><label class="fl">ASNT Cert #</label><input class="fi" placeholder="Certification number"></div><div class="fg"><label class="fl">Bulletin Reference</label><input class="fi" placeholder="SB number if applicable"></div></div><div class="fg"><label class="fl">Notes</label><textarea class="fi" placeholder="Areas tested, findings, recommendations..."></textarea></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><span style="font-size:14px;color:var(--text3)">PDF attachment required · Admin review before scoring</span><button class="btn btn-gold">Submit NDT Record →</button></div></div></div>
-</div>
-<div class="view" id="view-maint">
-<div class="sec-tag">// Routine Maintenance</div><div class="sec-title">Daily · Weekly · Monthly Logs</div><div class="sec-desc">In-house maintenance records. Required by state regulations. Late or missing logs degrade the Integrity pillar automatically. Findings auto-generate a CAR.</div>
-<div class="fbar"><button class="fbtn active">All</button><button class="fbtn">Daily</button><button class="fbtn">Weekly</button><button class="fbtn">Monthly</button><button class="fbtn">Finding</button></div>
-<div class="drow-hdr" style="grid-template-columns:80px 1fr 80px 90px 90px 80px"><span>Log ID</span><span>Ride / System</span><span>Type</span><span>Tech</span><span>Date</span><span>Status</span></div>
-<div class="drow" style="grid-template-columns:80px 1fr 80px 90px 90px 80px"><div class="drow-id">ML-1204</div><div class="drow-val">Kingda Ka — Hydraulic system check</div><div class="drow-dim">Daily</div><div class="drow-dim">R. Smith</div><div class="drow-faint">Mar 29</div><div><span class="pill p-pass">OK</span></div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 80px 90px 90px 80px"><div class="drow-id">ML-1203</div><div class="drow-val">El Toro — Track walk + fastener torque</div><div class="drow-dim">Weekly</div><div class="drow-dim">J. Perez</div><div class="drow-faint">Mar 28</div><div><span class="pill p-pass">OK</span></div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 80px 90px 90px 80px"><div class="drow-id">ML-1202</div><div class="drow-val">Batman — Restraint mechanism service</div><div class="drow-dim">Monthly</div><div class="drow-dim">M. Brown</div><div class="drow-faint">Mar 27</div><div><span class="pill p-cond">FINDING</span></div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 80px 90px 90px 80px"><div class="drow-id">ML-1201</div><div class="drow-val">Nitro — Wheel assembly + brake pads</div><div class="drow-dim">Weekly</div><div class="drow-dim">R. Smith</div><div class="drow-faint">Mar 26</div><div><span class="pill p-pass">OK</span></div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 80px 90px 90px 80px;opacity:.5"><div class="drow-id">ML-1200</div><div class="drow-val">Wave Pool — Pump motor + filtration</div><div class="drow-dim">Daily</div><div class="drow-dim">D. Garcia</div><div class="drow-faint">Mar 26</div><div><span class="pill p-pass">OK</span></div></div>
-<div class="cpanel" id="cp-logmaint" style="margin-top:16px"><div class="cpanel-hdr" onclick="togglePanel('cp-logmaint')"><div class="cpanel-left"><span class="cpanel-icon">＋</span><span class="cpanel-label">Log Maintenance</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="fr3"><div class="fg"><label class="fl">Ride / System</label><select class="fi"><option>Select...</option><option>Kingda Ka</option><option>El Toro</option><option>Nitro</option><option>Batman: The Ride</option><option>Superman</option><option>Wave Pool</option><option>Lazy River</option></select></div><div class="fg"><label class="fl">Log Type</label><select class="fi"><option>Daily</option><option>Weekly</option><option>Monthly</option><option>Unscheduled</option></select></div><div class="fg"><label class="fl">Technician</label><input class="fi" placeholder="Name"></div></div><div class="fg"><label class="fl">Work Performed</label><textarea class="fi" placeholder="Describe maintenance performed, components checked, findings..."></textarea></div><div class="fr2"><div class="fg"><label class="fl">Status</label><select class="fi"><option>Complete — No Issues</option><option>Complete — Finding (auto-generates CAR)</option><option>Incomplete — Parts Needed</option><option>Incomplete — Escalated</option></select></div><div class="fg"><label class="fl">Next Scheduled</label><input class="fi" type="date"></div></div><div style="display:flex;justify-content:flex-end;margin-top:6px"><button class="btn btn-gold">Log Maintenance →</button></div></div></div>
-</div>
-<div class="view" id="view-cars">
-<div class="sec-tag">// Maintenance Corrective Actions</div><div class="sec-title">Findings → Fix → Verify → Close</div><div class="sec-desc">Maintenance-specific CARs linked to inspection and NDT findings. Same 5-stage workflow as Manager Module. Feeds CACR and Integrity pillar.</div>
-<div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;align-items:center"><div style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--text3);margin-right:8px">CACR · 90d</div><div style="padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;text-align:center;font-family:var(--mono)"><div style="font-size:18px;font-weight:700;color:var(--amber)">3</div><div style="font-size:14px;color:var(--text3)">Open</div></div><div style="padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;text-align:center;font-family:var(--mono)"><div style="font-size:18px;font-weight:700;color:var(--red)">1</div><div style="font-size:14px;color:var(--text3)">Overdue</div></div><div style="padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:4px;text-align:center;font-family:var(--mono)"><div style="font-size:18px;font-weight:700;color:var(--text2)">2.1d</div><div style="font-size:14px;color:var(--text3)">Avg Close</div></div></div>
-<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:16px"><div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center;border-top:3px solid var(--accent)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text)">1</div><div style="font-size:14px;color:var(--text3)">Submit</div></div><div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center;border-top:3px solid var(--purple)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text)">1</div><div style="font-size:14px;color:var(--text3)">Acknowledge</div></div><div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center;border-top:3px solid var(--amber)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text)">1</div><div style="font-size:14px;color:var(--text3)">Remediate</div></div><div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center;border-top:3px solid var(--green)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text)">0</div><div style="font-size:14px;color:var(--text3)">Verify</div></div><div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:10px;text-align:center;border-top:3px solid var(--green)"><div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text)">14</div><div style="font-size:14px;color:var(--text3)">Closed</div></div></div>
-<div class="drow-hdr" style="grid-template-columns:80px 1fr 80px 80px 90px 90px 60px"><span>CAR ID</span><span>Finding</span><span>Source</span><span>Severity</span><span>Stage</span><span>Assigned</span><span>Age</span></div>
-<div class="drow" style="grid-template-columns:80px 1fr 80px 80px 90px 90px 60px"><div class="drow-id">MC-031</div><div class="drow-val">El Toro — Track weld indication Sec 4</div><div class="drow-dim">NDT-088</div><div><span class="pill p-fail">MAJOR</span></div><div><span class="pill p-cond">REMED</span></div><div class="drow-dim">J. Perez</div><div style="font-family:var(--mono);font-weight:700;color:var(--amber)">5d</div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 80px 80px 90px 90px 60px"><div class="drow-id">MC-030</div><div class="drow-val">Batman — Restraint sensor replacement</div><div class="drow-dim">INS-046</div><div><span class="pill p-fail">CRIT</span></div><div><span class="pill p-pend">VERIFY</span></div><div class="drow-dim">M. Brown</div><div style="font-family:var(--mono);font-weight:700;color:var(--red)">3d</div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 80px 80px 90px 90px 60px"><div class="drow-id">MC-029</div><div class="drow-val">Kingda Ka — Hydraulic fluid seepage at base</div><div class="drow-dim">ML-1204</div><div><span class="pill p-cond">MINOR</span></div><div><span class="pill p-info">SUBMIT</span></div><div class="drow-dim">R. Smith</div><div style="font-family:var(--mono);font-weight:700;color:var(--green)">1d</div></div>
-<div class="drow" style="grid-template-columns:80px 1fr 80px 80px 90px 90px 60px;opacity:.5"><div class="drow-id">MC-028</div><div class="drow-val">Nitro — Brake pad replacement</div><div class="drow-dim">ML-1198</div><div><span class="pill p-cond">MINOR</span></div><div><span class="pill p-pass">CLOSED</span></div><div class="drow-dim">R. Smith</div><div style="font-family:var(--mono);font-weight:700;color:var(--green)">2d</div></div>
-<div class="cpanel closed" id="cp-opencar" style="margin-top:16px"><div class="cpanel-hdr" onclick="togglePanel('cp-opencar')"><div class="cpanel-left"><span class="cpanel-icon">＋</span><span class="cpanel-label">Open Corrective Action</span><span class="cpanel-meta">Role: Maintenance Admin</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="fr3"><div class="fg"><label class="fl">Source</label><select class="fi"><option>NDT Finding</option><option>Inspection Finding</option><option>Maintenance Log</option><option>Service Bulletin</option><option>VoxIntel Alert</option><option>Operator Report</option></select></div><div class="fg"><label class="fl">Source ID</label><input class="fi" placeholder="e.g. NDT-088, INS-046, ML-1202"></div><div class="fg"><label class="fl">Attraction / Area</label><select class="fi"><option>Select...</option><option>Kingda Ka</option><option>El Toro</option><option>Nitro</option><option>Batman</option><option>Superman</option></select></div></div><div class="fg"><label class="fl">Finding Description</label><textarea class="fi" placeholder="What was found, where, and why it matters..."></textarea></div><div class="fr3"><div class="fg"><label class="fl">Severity</label><select class="fi"><option>🔴 Critical — Immediate shutdown</option><option>🟠 Major — 24hr SLA</option><option>🟡 Minor — 7-day SLA</option><option>🔵 Observation — Log and monitor</option></select></div><div class="fg"><label class="fl">Assign To</label><input class="fi" placeholder="Technician name"></div><div class="fg"><label class="fl">Due Date</label><input class="fi" type="date"></div></div><div style="display:flex;justify-content:flex-end;margin-top:6px"><button class="btn btn-gold">Open CAR → Stage 1</button></div></div></div>
-</div>
-<div class="view" id="view-creds">
-<div class="sec-tag">// Inspector Credential Registry</div><div class="sec-title">Certifications · Expiry Alerts · Independence Tracking</div><div class="sec-desc">Every inspector who touches AS 360 data has credentials on file. NAARSO and AIMS have no public verification API — records are manually verified.</div>
-<div class="g2"><div class="ccard"><div class="ccard-top"><div><div style="font-size:15px;font-weight:700;color:var(--text)">Tom Jones</div><div style="font-size:14px;color:var(--text3)">MASI · Manager of Loss Control</div></div><span class="pill p-indep">Independent</span></div><div class="ccard-body"><div class="ccard-row"><span class="ccard-k">NAARSO</span><span class="ccard-v" style="color:var(--green)">Level 3 · Active</span></div><div class="ccard-row"><span class="ccard-k">Cert #</span><span class="ccard-v">NAARSO-3-TJ-2847</span></div><div class="ccard-row"><span class="ccard-k">Expiry</span><span class="ccard-v">Dec 2027</span></div><div class="ccard-row"><span class="ccard-k">Inspections YTD</span><span class="ccard-v">14</span></div><div class="ccard-row"><span class="ccard-k">Employer</span><span class="ccard-v">McGowan Allied (MASI)</span></div></div></div><div class="ccard"><div class="ccard-top"><div><div style="font-size:15px;font-weight:700;color:var(--text)">Rj Coetzee</div><div style="font-size:14px;color:var(--text3)">LJM &amp; Associates</div></div><span class="pill p-indep">3rd-Party</span></div><div class="ccard-body"><div class="ccard-row"><span class="ccard-k">NAARSO</span><span class="ccard-v" style="color:var(--green)">Level 2 · Active</span></div><div class="ccard-row"><span class="ccard-k">Cert #</span><span class="ccard-v">NAARSO-2-RC-5102</span></div><div class="ccard-row"><span class="ccard-k">Expiry</span><span class="ccard-v">Aug 2026</span></div><div class="ccard-row"><span class="ccard-k">Inspections YTD</span><span class="ccard-v">8</span></div><div class="ccard-row"><span class="ccard-k">Employer</span><span class="ccard-v">LJM &amp; Associates Inc.</span></div></div></div><div class="ccard"><div class="ccard-top"><div><div style="font-size:15px;font-weight:700;color:var(--text)">A. Martinez</div><div style="font-size:14px;color:var(--text3)">TechKnowServ Corp.</div></div><span class="pill p-indep">3rd-Party</span></div><div class="ccard-body"><div class="ccard-row"><span class="ccard-k">ASNT</span><span class="ccard-v" style="color:var(--green)">Level III · Active</span></div><div class="ccard-row"><span class="ccard-k">Cert #</span><span class="ccard-v">ASNT-III-AM-7291</span></div><div class="ccard-row"><span class="ccard-k">Methods</span><span class="ccard-v">UT · MT · PT · ECT</span></div><div class="ccard-row"><span class="ccard-k">Expiry</span><span class="ccard-v">Nov 2026</span></div><div class="ccard-row"><span class="ccard-k">NDT Records</span><span class="ccard-v">23 YTD</span></div></div></div><div class="ccard"><div class="ccard-top"><div><div style="font-size:15px;font-weight:700;color:var(--text)">M. Davis</div><div style="font-size:14px;color:var(--text3)">Six Flags — Staff</div></div><span class="pill p-corp">Corporate</span></div><div class="ccard-body"><div class="ccard-row"><span class="ccard-k">NAARSO</span><span class="ccard-v" style="color:var(--green)">Level 2 · Active</span></div><div class="ccard-row"><span class="ccard-k">Cert #</span><span class="ccard-v">NAARSO-2-MD-4488</span></div><div class="ccard-row"><span class="ccard-k">Expiry</span><span class="ccard-v" style="color:var(--amber)">Jun 2026 ⚠</span></div><div class="ccard-row"><span class="ccard-k">Inspections YTD</span><span class="ccard-v">31</span></div><div class="ccard-row"><span class="ccard-k">Independence</span><span class="ccard-v" style="color:var(--amber)">Corporate — flagged</span></div></div></div></div>
-<div class="cpanel closed" id="cp-addcred" style="margin-top:16px"><div class="cpanel-hdr" onclick="togglePanel('cp-addcred')"><div class="cpanel-left"><span class="cpanel-icon">＋</span><span class="cpanel-label">Add Inspector Credential</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="fr3"><div class="fg"><label class="fl">Inspector Name</label><input class="fi" placeholder="Full name"></div><div class="fg"><label class="fl">Employing Firm</label><input class="fi" placeholder="Company name"></div><div class="fg"><label class="fl">Independence</label><select class="fi"><option>Independent</option><option>Corporate-Employed</option><option>Third-Party Contracted</option></select></div></div><div class="fr4"><div class="fg"><label class="fl">Cert Body</label><select class="fi"><option>NAARSO</option><option>AIMS</option><option>ASNT</option><option>State License</option></select></div><div class="fg"><label class="fl">Level</label><select class="fi"><option>Level 1</option><option>Level 2</option><option>Level 3</option></select></div><div class="fg"><label class="fl">Cert #</label><input class="fi" placeholder="Number"></div><div class="fg"><label class="fl">Expiry</label><input class="fi" type="date"></div></div><div style="display:flex;justify-content:flex-end;margin-top:6px"><button class="btn btn-gold">Add Credential →</button></div></div></div>
-<div class="note"><div class="note-h">Verification Policy</div><div class="note-b">NAARSO and AIMS do not offer a public verification API. All credentials are manually verified against member directories and logged with verification date. Expiry alerts fire 90 days before lapse. Expired credentials block inspection submissions.</div></div>
-</div>
-<div class="view" id="view-bulletins">
-<div class="sec-tag">// Service Bulletin Compliance</div><div class="sec-title">Manufacturer Bulletins · Compliance Tracking</div><div class="sec-desc">Every active service bulletin tracked per ride. Non-compliance degrades the Integrity pillar proportional to days overdue and severity. Insurer-visible.</div>
-<div class="fbar"><button class="fbtn active">All</button><button class="fbtn">Open</button><button class="fbtn">Compliant</button><button class="fbtn">Overdue</button></div>
-<div style="display:flex;flex-direction:column;gap:12px"><div class="bull" style="border-left-color:var(--red)"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="bull-id">SB-2026-003</div><div class="bull-title">Kingda Ka — Launch mechanism hydraulic cylinder recall</div><div class="bull-meta">Intamin AG · Issued Feb 14, 2026 · Due Apr 15, 2026</div></div><span class="pill p-fail">OPEN · 16 DAYS</span></div></div><div class="bull" style="border-left-color:var(--amber)"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="bull-id">SB-2026-007</div><div class="bull-title">El Toro — Track connector bolt torque spec revision</div><div class="bull-meta">Intamin AG · Issued Mar 1, 2026 · Due May 1, 2026</div></div><span class="pill p-cond">OPEN · 32 DAYS</span></div></div><div class="bull" style="border-left-color:var(--green);opacity:.6"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="bull-id">SB-2025-041</div><div class="bull-title">Batman — Anti-rollback device spring tension update</div><div class="bull-meta">B&amp;M · Issued Nov 12, 2025 · Completed Jan 8, 2026</div></div><span class="pill p-pass">COMPLIANT</span></div></div><div class="bull" style="border-left-color:var(--green);opacity:.6"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="bull-id">SB-2025-038</div><div class="bull-title">Nitro — Wheel assembly bearing replacement interval</div><div class="bull-meta">B&amp;M · Issued Oct 5, 2025 · Completed Dec 20, 2025</div></div><span class="pill p-pass">COMPLIANT</span></div></div><div class="bull" style="border-left-color:var(--green);opacity:.6"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="bull-id">SB-2025-029</div><div class="bull-title">Jersey Devil — Restraint latch firmware update v2.4</div><div class="bull-meta">RMC · Issued Aug 22, 2025 · Completed Sep 15, 2025</div></div><span class="pill p-pass">COMPLIANT</span></div></div></div>
-<div class="cpanel closed" id="cp-addbull" style="margin-top:16px"><div class="cpanel-hdr" onclick="togglePanel('cp-addbull')"><div class="cpanel-left"><span class="cpanel-icon">＋</span><span class="cpanel-label">Add Service Bulletin</span></div><span class="cpanel-arrow">▼</span></div><div class="cpanel-body"><div class="fr3"><div class="fg"><label class="fl">Bulletin ID</label><input class="fi" placeholder="SB-2026-XXX"></div><div class="fg"><label class="fl">Manufacturer</label><input class="fi" placeholder="e.g. Intamin AG, B&amp;M, RMC"></div><div class="fg"><label class="fl">Affected Ride</label><select class="fi"><option>Select...</option><option>Kingda Ka</option><option>El Toro</option><option>Nitro</option><option>Batman</option><option>Superman</option><option>Jersey Devil</option></select></div></div><div class="fg"><label class="fl">Bulletin Title / Description</label><textarea class="fi" placeholder="What the bulletin requires..."></textarea></div><div class="fr2"><div class="fg"><label class="fl">Issue Date</label><input class="fi" type="date"></div><div class="fg"><label class="fl">Compliance Due Date</label><input class="fi" type="date"></div></div><div style="display:flex;justify-content:flex-end;margin-top:6px"><button class="btn btn-gold">Add Bulletin →</button></div></div></div>
-<div class="note"><div class="note-h">Scoring Impact</div><div class="note-b">Open service bulletins degrade the Integrity pillar proportional to days overdue and severity class. Compliant bulletins contribute positively. This data is insurer-visible in the Insurer Portal at the facility level — individual ride detail is admin-only.</div></div>
-</div>
-</div>
+
 <script>
-function updateClock(){var d=new Date(),h=d.getHours(),m=d.getMinutes(),ap=h>=12?'PM':'AM';h=h%12||12;document.getElementById('clock').textContent=h+':'+(m<10?'0':'')+m+' '+ap}
-updateClock();setInterval(updateClock,30000);
-document.querySelectorAll('.sb-item').forEach(function(item){item.addEventListener('click',function(){document.querySelectorAll('.sb-item').forEach(function(i){i.classList.remove('active')});document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});item.classList.add('active');var v=document.getElementById('view-'+item.dataset.v);if(v){v.classList.add('active');v.scrollTop=0}})});
-function togglePanel(id){var p=document.getElementById(id);if(p)p.classList.toggle('closed')}
-document.querySelectorAll('.fbar').forEach(function(bar){bar.querySelectorAll('.fbtn').forEach(function(btn){btn.addEventListener('click',function(){bar.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active')})})});
+const AT_URL = 'https://as360-proxy.amusementstandards.workers.dev/airtable';
+
+/* ── Helpers ── */
+function fmtTime(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  let h = d.getHours(), m = d.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return h + ':' + String(m).padStart(2, '0') + ' ' + ampm;
+}
+
+function todayStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function dateStr(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function dayName(d) {
+  return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
+}
+
+/* ── Clock ── */
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent = h + ':' + m + ':' + s;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* ── Tab Switching ── */
+function showView(name, tab) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const view = document.getElementById('view-' + name);
+  if (view) view.classList.add('active');
+  if (tab) tab.classList.add('active');
+}
+
+/* ── Render Ride Card ── */
+function renderRideCard(elId, data) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+
+  if (data.completed) {
+    let html = '<div class="ride-status"><span class="status-badge pass">COMPLETE</span></div>';
+    html += '<div class="ride-detail">';
+    html += '<strong>Mechanic:</strong> ' + escHtml(data.mechanic) + '<br>';
+    html += '<strong>Time:</strong> ' + fmtTime(data.time) + '<br>';
+    html += '<strong>Pass Rate:</strong> ' + escHtml(data.passRate);
+    html += '</div>';
+    if (data.failedItems && data.failedItems.length > 0) {
+      data.failedItems.forEach(function(fi) {
+        html += '<div class="fail-item"><span class="fail-label">FAIL</span><span>' + escHtml(fi.name);
+        if (fi.car) html += ' &mdash; ' + escHtml(fi.car);
+        html += '</span></div>';
+      });
+    }
+    el.innerHTML = html;
+  } else {
+    const now = new Date();
+    const hour = now.getHours();
+    let badgeClass = 'not-started';
+    let label = 'NOT STARTED';
+    if (hour >= 6) { badgeClass = 'danger'; }
+    else if (hour >= 5) { badgeClass = 'warning'; }
+    let html = '<div class="ride-status"><span class="status-badge ' + badgeClass + '">' + label + '</span></div>';
+    html += '<div class="ride-detail" style="color:var(--text-dim)">Awaiting maintenance check-in</div>';
+    el.innerHTML = html;
+  }
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Demo Seed Data ── */
+const demoGKI = {
+  completed: true,
+  mechanic: 'J. Rivera',
+  time: '2026-04-01T05:42:00.000Z',
+  passRate: '97%',
+  failedItems: [
+    { name: 'Throttle \u2014 returns to idle when released', car: 'CAR-2026-A1B2' }
+  ]
+};
+
+const demoCCI = {
+  completed: false
+};
+
+renderRideCard('gki-body', demoGKI);
+renderRideCard('cci-body', demoCCI);
+
+/* ── Weekly History ── */
+function renderWeeklyTable(gkiData, cciData) {
+  const table = document.getElementById('weekly-table');
+  const today = new Date();
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    days.push(d);
+  }
+
+  const rangeEl = document.getElementById('week-range');
+  if (rangeEl) {
+    rangeEl.textContent = dateStr(days[0]) + ' \u2014 ' + dateStr(days[6]);
+  }
+
+  let html = '<thead><tr><th></th>';
+  days.forEach(function(d) {
+    const isToday = dateStr(d) === todayStr();
+    html += '<th' + (isToday ? ' style="color:var(--teal)"' : '') + '>' + dayName(d) + '<br><span style="font-size:9px">' + String(d.getDate()).padStart(2,'0') + '</span></th>';
+  });
+  html += '</tr></thead><tbody>';
+
+  // GKI row
+  html += '<tr><td class="ride-label">GKI</td>';
+  days.forEach(function(d, idx) {
+    const key = dateStr(d);
+    const entry = gkiData[key];
+    if (entry && entry.done) {
+      html += '<td><span class="week-cell done">\u2713</span><div class="week-detail">' + escHtml(entry.initials) + ' ' + escHtml(entry.rate) + '</div></td>';
+    } else if (dateStr(d) === todayStr()) {
+      html += '<td><span class="week-cell pending">\u2014</span></td>';
+    } else {
+      html += '<td><span class="week-cell missed">\u2717</span></td>';
+    }
+  });
+  html += '</tr>';
+
+  // CCI row
+  html += '<tr><td class="ride-label">CCI</td>';
+  days.forEach(function(d, idx) {
+    const key = dateStr(d);
+    const entry = cciData[key];
+    if (entry && entry.done) {
+      html += '<td><span class="week-cell done">\u2713</span><div class="week-detail">' + escHtml(entry.initials) + ' ' + escHtml(entry.rate) + '</div></td>';
+    } else if (dateStr(d) === todayStr()) {
+      html += '<td><span class="week-cell pending">\u2014</span></td>';
+    } else {
+      html += '<td><span class="week-cell missed">\u2717</span></td>';
+    }
+  });
+  html += '</tr>';
+
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+// Build demo weekly data
+function buildDemoWeekly() {
+  const today = new Date();
+  const gki = {}, cci = {};
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const key = dateStr(d);
+    const dow = d.getDay();
+    // GKI: Mon-Sat completed, Sun missed
+    if (dow !== 0 && key !== todayStr()) {
+      gki[key] = { done: true, initials: 'JR', rate: '97%' };
+    }
+    // CCI: Mon-Fri completed, Sat-Sun missed
+    if (dow >= 1 && dow <= 5 && key !== todayStr()) {
+      cci[key] = { done: true, initials: 'ML', rate: '100%' };
+    }
+  }
+  // Today's GKI is already done per demo
+  gki[todayStr()] = { done: true, initials: 'JR', rate: '97%' };
+  return { gki, cci };
+}
+
+const demoWeekly = buildDemoWeekly();
+renderWeeklyTable(demoWeekly.gki, demoWeekly.cci);
+
+/* ── Equipment Alerts ── */
+function renderAlerts(items) {
+  const el = document.getElementById('alerts-body');
+  const countEl = document.getElementById('alert-count');
+  if (!el) return;
+  if (countEl) countEl.textContent = items.length + ' item' + (items.length !== 1 ? 's' : '');
+
+  let html = '';
+  items.forEach(function(a) {
+    html += '<div class="alert-item">';
+    html += '<div class="alert-item-body">';
+    html += '<div class="alert-item-title">' + escHtml(a.name) + '</div>';
+    html += '<div class="alert-item-meta"><span class="ride-code">' + escHtml(a.ride) + '</span> &middot; <span class="fail-count">Failed ' + a.count + 'x in 30 days</span> &middot; Last: ' + escHtml(a.lastDate) + '</div>';
+    html += '</div></div>';
+  });
+  el.innerHTML = html;
+}
+
+const demoAlerts = [
+  { name: 'Throttle \u2014 returns to idle when released', ride: 'GKI', count: 3, lastDate: 'Mar 28' },
+  { name: 'Chain adjustment \u2014 5/8\u201D deflection verified', ride: 'CCI', count: 2, lastDate: 'Mar 25' }
+];
+renderAlerts(demoAlerts);
+
+/* ── Airtable Fetch: Live Pre-Op ── */
+async function fetchLivePreOp(ride, table, renderElId) {
+  try {
+    const today = todayStr();
+    const filter = encodeURIComponent("AND({Date}='" + today + "',{Role}='maintenance')");
+    const res = await fetch(AT_URL + '/' + encodeURIComponent(table) + '?filterByFormula=' + filter, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.records && data.records.length > 0) {
+      const r = data.records[0].fields;
+      const liveData = {
+        completed: true,
+        mechanic: r.Completed_By || r.Name || 'Unknown',
+        time: r.Time || r.Created || '',
+        passRate: r.Pass_Rate || r.PassRate || '100%',
+        failedItems: []
+      };
+      if (r.Failed_Items) {
+        try {
+          const items = typeof r.Failed_Items === 'string' ? JSON.parse(r.Failed_Items) : r.Failed_Items;
+          if (Array.isArray(items)) {
+            liveData.failedItems = items.map(function(fi) {
+              return typeof fi === 'string' ? { name: fi } : fi;
+            });
+          }
+        } catch(e) {}
+      }
+      renderRideCard(renderElId, liveData);
+    } else {
+      renderRideCard(renderElId, { completed: false });
+    }
+    updateSyncStatus(true);
+  } catch(e) {
+    updateSyncStatus(false);
+  }
+}
+
+/* ── Airtable Fetch: Weekly History ── */
+async function fetchWeeklyHistory() {
+  try {
+    const today = new Date();
+    const startDate = new Date(today);
+    startDate.setDate(startDate.getDate() - 6);
+    const startStr = dateStr(startDate);
+    const endStr = dateStr(today);
+
+    const gkiWeek = {}, cciWeek = {};
+
+    for (const cfg of [{ table: 'GKI_Log', dest: gkiWeek, initials: 'JR' }, { table: 'CCI_Log', dest: cciWeek, initials: 'ML' }]) {
+      const filter = encodeURIComponent("AND(IS_AFTER({Date},'" + startStr + "'),IS_BEFORE({Date},DATEADD('" + endStr + "',1,'day')),{Role}='maintenance')");
+      const res = await fetch(AT_URL + '/' + encodeURIComponent(cfg.table) + '?filterByFormula=' + filter, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (data.records) {
+        data.records.forEach(function(rec) {
+          const f = rec.fields;
+          const d = f.Date;
+          if (d) {
+            cfg.dest[d] = {
+              done: true,
+              initials: (f.Completed_By || f.Name || '??').split(' ').map(function(w){return w[0]}).join(''),
+              rate: f.Pass_Rate || f.PassRate || '100%'
+            };
+          }
+        });
+      }
+    }
+
+    renderWeeklyTable(gkiWeek, cciWeek);
+    updateSyncStatus(true);
+  } catch(e) {
+    updateSyncStatus(false);
+  }
+}
+
+/* ── Airtable Fetch: Equipment Alerts ── */
+async function fetchEquipmentAlerts() {
+  try {
+    const today = new Date();
+    const startDate = new Date(today);
+    startDate.setDate(startDate.getDate() - 30);
+    const startStr = dateStr(startDate);
+
+    const failCounts = {};
+
+    for (const cfg of [{ table: 'GKI_Log', ride: 'GKI' }, { table: 'CCI_Log', ride: 'CCI' }]) {
+      const filter = encodeURIComponent("AND(IS_AFTER({Date},'" + startStr + "'),{Role}='maintenance',{Failed_Items}!='')");
+      const res = await fetch(AT_URL + '/' + encodeURIComponent(cfg.table) + '?filterByFormula=' + filter, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (data.records) {
+        data.records.forEach(function(rec) {
+          const f = rec.fields;
+          let items = [];
+          if (f.Failed_Items) {
+            try {
+              items = typeof f.Failed_Items === 'string' ? JSON.parse(f.Failed_Items) : f.Failed_Items;
+              if (!Array.isArray(items)) items = [items];
+            } catch(e) {
+              items = [f.Failed_Items];
+            }
+          }
+          items.forEach(function(item) {
+            const name = typeof item === 'string' ? item : (item.name || item.item || '');
+            const key = name + '|||' + cfg.ride;
+            if (!failCounts[key]) {
+              failCounts[key] = { name: name, ride: cfg.ride, count: 0, lastDate: '' };
+            }
+            failCounts[key].count++;
+            const d = f.Date || '';
+            if (d > failCounts[key].lastDate) failCounts[key].lastDate = d;
+          });
+        });
+      }
+    }
+
+    const alerts = Object.values(failCounts).filter(function(a) { return a.count >= 2; });
+    alerts.sort(function(a, b) { return b.count - a.count; });
+
+    if (alerts.length > 0) {
+      alerts.forEach(function(a) {
+        if (a.lastDate) {
+          const d = new Date(a.lastDate + 'T00:00:00');
+          const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+          a.lastDate = months[d.getMonth()] + ' ' + d.getDate();
+        }
+      });
+      renderAlerts(alerts);
+    }
+  } catch(e) {}
+}
+
+/* ── Sync Status ── */
+function updateSyncStatus(ok) {
+  const dot = document.getElementById('syncDot');
+  const label = document.getElementById('syncLabel');
+  if (ok) {
+    dot.style.background = 'var(--green)';
+    label.textContent = 'Synced';
+  } else {
+    dot.style.background = 'var(--amber)';
+    label.textContent = 'Offline';
+  }
+}
+
+/* ── Notification Banner ── */
+function showNotifBanner(msg) {
+  const banner = document.createElement('div');
+  banner.className = 'notif-banner';
+  banner.textContent = msg;
+  document.body.appendChild(banner);
+  setTimeout(function() {
+    banner.classList.add('out');
+    setTimeout(function() {
+      if (banner.parentNode) banner.parentNode.removeChild(banner);
+    }, 400);
+  }, 8000);
+}
+
+/* ── Notification Polling ── */
+async function pollNotifications() {
+  const lastPoll = localStorage.getItem('mm_last_notif_poll') || new Date(Date.now() - 60000).toISOString();
+  try {
+    const filter = encodeURIComponent("AND(IS_AFTER({Time},'" + lastPoll + "'),{Role}='operations')");
+    const res = await fetch(AT_URL + '/' + encodeURIComponent('Notifications') + '?filterByFormula=' + filter, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.records && data.records.length > 0) {
+      const opsRides = [];
+      data.records.forEach(function(r) {
+        const f = r.fields;
+        if (f.Type === 'ops_signoff') {
+          showNotifBanner('\u2705 Ops sign-off complete \u2014 ' + (f.Ride || '') + ' cleared to open \u00b7 ' + (f.Completed_By || '') + ' \u00b7 ' + fmtTime(f.Time));
+          opsRides.push(f.Ride_Code || f.Ride || '');
+        }
+      });
+      // Check if all rides now have ops sign-off (both GKI and CCI)
+      if (opsRides.length > 0) {
+        checkAllCleared();
+      }
+    }
+    localStorage.setItem('mm_last_notif_poll', new Date().toISOString());
+  } catch(e) {}
+}
+
+/* ── Check All Rides Cleared ── */
+async function checkAllCleared() {
+  try {
+    const today = todayStr();
+    let allDone = true;
+    for (const cfg of [{ table: 'GKI_Ops_Log' }, { table: 'CCI_Ops_Log' }]) {
+      const filter = encodeURIComponent("AND({Date}='" + today + "')");
+      const res = await fetch(AT_URL + '/' + encodeURIComponent(cfg.table) + '?filterByFormula=' + filter, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (!res.ok) { allDone = false; continue; }
+      const data = await res.json();
+      if (!data.records || data.records.length === 0) allDone = false;
+    }
+    if (allDone) {
+      showNotifBanner('\u2705 All pre-operational inspections complete. Facility ready to open.');
+    }
+  } catch(e) {}
+}
+
+/* ── Init ── */
+(function init() {
+  // Fetch live data in background
+  setTimeout(function() {
+    fetchLivePreOp('GKI', 'GKI_Log', 'gki-body');
+    fetchLivePreOp('CCI', 'CCI_Log', 'cci-body');
+    fetchWeeklyHistory();
+    fetchEquipmentAlerts();
+  }, 500);
+
+  // Demo notification after 3 seconds
+  setTimeout(function() {
+    showNotifBanner('\u2705 Ops sign-off complete \u2014 Go-Karts cleared to open \u00b7 T. Morales \u00b7 6:15 AM');
+  }, 3000);
+
+  // Poll notifications every 30 seconds
+  setInterval(pollNotifications, 30000);
+  // Initial poll after 5 seconds
+  setTimeout(pollNotifications, 5000);
+})();
 </script>
 </body>
 </html>
