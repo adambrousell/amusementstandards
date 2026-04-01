@@ -47,16 +47,8 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .ff label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;}
 .ff input{width:100%;padding:10px 12px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;font-family:var(--sans);font-size:14px;color:var(--text);-webkit-appearance:none;transition:border-color .15s;min-height:44px;}
 .ff input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
-/* PIN */
-.pin-display{display:flex;gap:10px;justify-content:center;margin-bottom:16px;}
-.pin-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);transition:all .15s;}
-.pin-dot.filled{background:var(--purple);border-color:var(--purple);}
-.pin-dot.error{background:var(--red);border-color:var(--red);animation:shake .4s;}
-.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:260px;margin:0 auto;}
-.pin-key{background:var(--panel3);border:1px solid var(--border2);border-radius:10px;font-family:var(--cond);font-size:22px;font-weight:700;color:var(--text-bright);height:56px;cursor:pointer;transition:all .1s;display:flex;align-items:center;justify-content:center;}
-.pin-key:active{background:var(--accent-dim);border-color:var(--accent);}
-.pin-key.del{font-size:14px;color:var(--text-dim);}
-@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+/* Login form override for password field */
+.ff input[type="password"]{font-family:var(--sans);letter-spacing:2px;}
 /* Checklist */
 .form-progress{height:3px;background:var(--border);margin-bottom:14px;border-radius:2px;overflow:hidden;}
 .form-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
@@ -116,32 +108,14 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="panel">
       <div class="panel-hdr"><div>
         <div class="panel-title">Third-Party Inspector Login</div>
-        <div class="panel-sub">Enter your Inspector ID and 4-digit PIN</div>
+        <div class="panel-sub">Enter your credentials to access assigned inspections</div>
       </div></div>
       <div class="panel-body">
-        <div class="ff"><label>Inspector ID</label><input type="text" id="inspector-id" placeholder="e.g. INS-0042"></div>
-        <div class="sec-label" style="margin-top:12px;">PIN</div>
-        <div class="pin-display">
-          <div class="pin-dot" id="pd0"></div>
-          <div class="pin-dot" id="pd1"></div>
-          <div class="pin-dot" id="pd2"></div>
-          <div class="pin-dot" id="pd3"></div>
-        </div>
-        <div id="pin-error" style="font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:12px;min-height:16px;text-align:center;"></div>
-        <div class="pin-grid">
-          <div class="pin-key" onclick="pinKey('1')">1</div>
-          <div class="pin-key" onclick="pinKey('2')">2</div>
-          <div class="pin-key" onclick="pinKey('3')">3</div>
-          <div class="pin-key" onclick="pinKey('4')">4</div>
-          <div class="pin-key" onclick="pinKey('5')">5</div>
-          <div class="pin-key" onclick="pinKey('6')">6</div>
-          <div class="pin-key" onclick="pinKey('7')">7</div>
-          <div class="pin-key" onclick="pinKey('8')">8</div>
-          <div class="pin-key" onclick="pinKey('9')">9</div>
-          <div class="pin-key" style="visibility:hidden;"></div>
-          <div class="pin-key" onclick="pinKey('0')">0</div>
-          <div class="pin-key del" onclick="pinDel()">&#x232B;</div>
-        </div>
+        <div id="login-demo-badge" style="display:none;font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-bottom:10px;text-align:center;">Demo mode</div>
+        <div class="ff"><label>Email</label><input type="email" id="login-email" placeholder="inspector@company.com"></div>
+        <div class="ff"><label>Password</label><input type="password" id="login-password" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"></div>
+        <button class="btn btn-purple" onclick="doLogin()" id="login-btn" style="margin-top:4px;">Log In &#x2192;</button>
+        <div id="login-error" style="font-family:var(--mono);font-size:10px;color:var(--red);margin-top:10px;min-height:16px;text-align:center;"></div>
       </div>
     </div>
   </div>
@@ -182,7 +156,7 @@ var RATING_LABELS={1:'Immediate Hazard',2:'Serious Deficiency',3:'Needs Attentio
 // State
 var currentInspector=null;
 var currentAssignment=null;
-var pin='';
+var demoMode=false;
 var answers={};
 var lotoConfirmed=false;
 var lotoTimestamp=null;
@@ -224,49 +198,47 @@ function showScreen(id){
   if(el)el.classList.add('active');
 }
 
-// ── PIN ──
-function pinKey(d){
-  if(pin.length>=4)return;
-  pin+=d;
-  updatePinDots();
-  if(pin.length===4)validateLogin();
-}
-function pinDel(){
-  pin=pin.slice(0,-1);
-  updatePinDots();
-  document.getElementById('pin-error').textContent='';
-}
-function updatePinDots(){
-  for(var i=0;i<4;i++){
-    var dot=document.getElementById('pd'+i);
-    if(dot)dot.className='pin-dot'+(i<pin.length?' filled':'');
-  }
-}
-
 // ── LOGIN ──
-async function validateLogin(){
-  var inspId=document.getElementById('inspector-id').value.trim();
-  if(!inspId){document.getElementById('pin-error').textContent='Enter Inspector ID';pin='';updatePinDots();return;}
-  document.getElementById('pin-error').textContent='';
+async function doLogin(){
+  var email=(document.getElementById('login-email').value||'').trim();
+  var password=(document.getElementById('login-password').value||'').trim();
+  var errEl=document.getElementById('login-error');
+  errEl.textContent='';
+  if(!email||!password){errEl.textContent='Enter email and password';return;}
+  var btn=document.getElementById('login-btn');
+  if(btn){btn.disabled=true;btn.textContent='Logging in...';}
   try{
-    var filter=encodeURIComponent("AND({Inspector_ID}='"+inspId+"',{PIN}='"+pin+"')");
-    var res=await fetch(AT_URL+'/Inspector_Directory?filterByFormula='+filter,{headers:{'Content-Type':'application/json'}});
+    var filter=encodeURIComponent("AND({Email}='"+email+"',{Password}='"+password+"')");
+    var res=await fetch(AT_URL+'/Inspector_Credentials?filterByFormula='+filter,{headers:{'Content-Type':'application/json'}});
     if(!res.ok)throw new Error('Network');
     var data=await res.json();
     if(data.records&&data.records.length>0){
       var r=data.records[0].fields;
-      currentInspector={id:inspId,name:r.Name||r.Full_Name||inspId,recordId:data.records[0].id};
+      currentInspector={id:r.Inspector_ID||email,name:r.Name||r.Full_Name||email,recordId:data.records[0].id};
+      demoMode=false;
       toast('Welcome, '+currentInspector.name,'ok');
       setTimeout(function(){loadAssignments();},300);
     }else{
-      document.querySelectorAll('.pin-dot').forEach(function(d){d.classList.add('error');});
-      document.getElementById('pin-error').textContent='Invalid Inspector ID or PIN';
-      setTimeout(function(){pin='';updatePinDots();},800);
+      errEl.textContent='Invalid credentials';
+      if(btn){btn.disabled=false;btn.textContent='Log In \u2192';}
     }
   }catch(e){
-    document.querySelectorAll('.pin-dot').forEach(function(d){d.classList.add('error');});
-    document.getElementById('pin-error').textContent='Connection error — retry';
-    setTimeout(function(){pin='';updatePinDots();},800);
+    // Demo fallback when proxy is unreachable
+    var demoAccounts={'demo@masi.com':{pw:'masi2026',name:'Demo Inspector \u00b7 MASI Pilot',id:'DEMO-001'},'noel@masi.com':{pw:'inspect2026',name:'Noel Rhodes \u00b7 MASI Loss Control',id:'INS-0001'}};
+    var account=demoAccounts[email.toLowerCase()];
+    if(account&&password===account.pw){
+      demoMode=true;
+      currentInspector={id:account.id,name:account.name,recordId:'demo'};
+      var badge=document.getElementById('login-demo-badge');
+      if(badge)badge.style.display='block';
+      var syncEl=document.getElementById('at-sync');
+      if(syncEl){syncEl.style.color='var(--text-muted)';syncEl.textContent='Demo mode';}
+      toast('Welcome, '+currentInspector.name,'ok');
+      setTimeout(function(){loadAssignments();},300);
+    }else{
+      errEl.textContent='Invalid credentials';
+      if(btn){btn.disabled=false;btn.textContent='Log In \u2192';}
+    }
   }
 }
 
