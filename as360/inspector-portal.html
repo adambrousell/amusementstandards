@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inspector Portal · AS 360</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0C0F14;--surface:#111520;--panel:#161C27;--panel2:#1C2333;--panel3:#222A3A;
+  --border:#242D3E;--border2:#2E3A52;
+  --teal:#0ABFBC;--teal-dim:rgba(10,191,188,.15);
+  --red:#F43F5E;--red-dim:rgba(244,63,94,.15);
+  --amber:#F59E0B;--amber-dim:rgba(245,158,11,.15);
+  --green:#10B981;--green-dim:rgba(16,185,129,.15);
+  --blue:#3B82F6;--blue-dim:rgba(59,130,246,.15);
+  --purple:#8B5CF6;--purple-dim:rgba(139,92,246,.15);
+  --text:#CBD5E1;--text-bright:#E8EDF5;--text-dim:#64748B;--text-muted:#3D4F6A;
+  --mono:'JetBrains Mono',monospace;--sans:'Barlow',sans-serif;--cond:'Barlow Condensed',sans-serif;
+  --accent:#6CA4DC;--accent-dim:rgba(108,164,220,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--bg);}
+body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:100;}
+.tb-logo{display:flex;align-items:center;gap:8px;}
+.tb-logo-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--accent),#0891B2);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;font-family:var(--cond);}
+.tb-brand{font-family:var(--cond);font-size:15px;font-weight:700;letter-spacing:.5px;color:var(--text-bright);}
+.tb-divider{width:1px;height:20px;background:var(--border2);}
+.tb-sub{font-family:var(--mono);font-size:10px;color:var(--purple);letter-spacing:1px;}
+#at-sync{font-family:var(--mono);font-size:9px;color:var(--text-muted);letter-spacing:.5px;}
+.main{flex:1;overflow-y:auto;padding:14px;max-width:640px;margin:0 auto;width:100%;}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.panel-hdr{padding:11px 14px;background:var(--panel2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.panel-title{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);}
+.panel-sub{font-size:11px;color:var(--text-dim);margin-top:2px;}
+.panel-body{padding:14px;}
+.sec-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px;margin-top:4px;}
+.btn{padding:11px 18px;border:none;border-radius:8px;font-family:var(--cond);font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:all .15s;min-height:44px;width:100%;text-align:center;}
+.btn-accent{background:linear-gradient(135deg,var(--accent),#4A8BC4);color:#fff;}
+.btn-purple{background:linear-gradient(135deg,var(--purple),#7C3AED);color:#fff;}
+.btn-green{background:linear-gradient(135deg,var(--green),#059669);color:#fff;}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--text-dim);}
+.btn:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.5);}
+.btn-sm{padding:7px 13px;font-size:12px;border-radius:6px;min-height:36px;width:auto;}
+.ff{margin-bottom:10px;}
+.ff label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;}
+.ff input{width:100%;padding:10px 12px;background:var(--panel2);border:1px solid var(--border2);border-radius:7px;font-family:var(--sans);font-size:14px;color:var(--text);-webkit-appearance:none;transition:border-color .15s;min-height:44px;}
+.ff input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
+/* PIN */
+.pin-display{display:flex;gap:10px;justify-content:center;margin-bottom:16px;}
+.pin-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);transition:all .15s;}
+.pin-dot.filled{background:var(--purple);border-color:var(--purple);}
+.pin-dot.error{background:var(--red);border-color:var(--red);animation:shake .4s;}
+.pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:260px;margin:0 auto;}
+.pin-key{background:var(--panel3);border:1px solid var(--border2);border-radius:10px;font-family:var(--cond);font-size:22px;font-weight:700;color:var(--text-bright);height:56px;cursor:pointer;transition:all .1s;display:flex;align-items:center;justify-content:center;}
+.pin-key:active{background:var(--accent-dim);border-color:var(--accent);}
+.pin-key.del{font-size:14px;color:var(--text-dim);}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+/* Checklist */
+.form-progress{height:3px;background:var(--border);margin-bottom:14px;border-radius:2px;overflow:hidden;}
+.form-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
+.checklist-group{margin-bottom:14px;}
+.cg-title{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.cg-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);}
+.cg-row:last-child{border-bottom:none;}
+.cg-row.disabled{opacity:.35;pointer-events:none;}
+.cg-label{flex:1;font-size:13px;color:var(--text);font-weight:500;}
+.cg-options{display:flex;gap:6px;flex-shrink:0;}
+.cg-opt{padding:6px 7px;border-radius:5px;font-family:var(--mono);font-size:9px;font-weight:700;cursor:pointer;border:1px solid var(--border2);color:var(--text-dim);background:var(--panel3);transition:all .12s;min-width:32px;min-height:36px;display:flex;align-items:center;justify-content:center;}
+.cg-opt.sel-1{background:var(--red-dim);border-color:rgba(244,63,94,.5);color:var(--red);}
+.cg-opt.sel-2{background:rgba(244,63,94,.08);border-color:rgba(244,63,94,.3);color:#E8636F;}
+.cg-opt.sel-3{background:var(--amber-dim);border-color:rgba(245,158,11,.4);color:var(--amber);}
+.cg-opt.sel-4{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);color:#5CB89A;}
+.cg-opt.sel-5{background:var(--green-dim);border-color:rgba(16,185,129,.5);color:var(--green);}
+/* LOTO Gate */
+.loto-gate{background:var(--panel2);border:2px solid var(--amber);border-radius:10px;padding:16px;margin-bottom:16px;text-align:center;}
+.loto-gate .loto-icon{font-size:28px;margin-bottom:8px;}
+.loto-gate .loto-text{font-family:var(--mono);font-size:11px;color:var(--amber);line-height:1.6;margin-bottom:12px;}
+.loto-gate .loto-confirm-btn{background:linear-gradient(135deg,var(--amber),#D97706);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-family:var(--cond);font-size:14px;font-weight:700;cursor:pointer;min-height:44px;}
+.loto-gate.loto-confirmed{border-color:rgba(16,185,129,.4);background:var(--green-dim);}
+/* Assignments */
+.assign-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .2s;}
+.assign-card:hover{border-color:var(--purple);}
+.assign-ride{font-family:var(--cond);font-size:15px;font-weight:700;color:var(--text-bright);}
+.assign-meta{font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:4px;}
+.assign-due{font-family:var(--mono);font-size:9px;font-weight:700;}
+.assign-due.overdue{color:var(--red);}
+.assign-due.today{color:var(--amber);}
+.assign-due.upcoming{color:var(--green);}
+/* Toast */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;font-family:var(--mono);font-size:11px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center;}
+.toast.ok{background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.3);}
+.toast.err{background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.3);}
+.toast.show{opacity:1;}
+/* Screens */
+.screen{display:none;}
+.screen.active{display:block;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-logo">
+    <div class="tb-logo-mark">AS</div>
+    <span class="tb-brand">AS 360</span>
+    <div class="tb-divider"></div>
+    <span class="tb-sub">INSPECTOR PORTAL</span>
+  </div>
+  <div id="at-sync">&#x2B24; AIRTABLE</div>
+</div>
+
+<div class="main">
+  <!-- SCREEN: Login -->
+  <div class="screen active" id="screen-login">
+    <div class="panel">
+      <div class="panel-hdr"><div>
+        <div class="panel-title">Third-Party Inspector Login</div>
+        <div class="panel-sub">Enter your Inspector ID and 4-digit PIN</div>
+      </div></div>
+      <div class="panel-body">
+        <div class="ff"><label>Inspector ID</label><input type="text" id="inspector-id" placeholder="e.g. INS-0042"></div>
+        <div class="sec-label" style="margin-top:12px;">PIN</div>
+        <div class="pin-display">
+          <div class="pin-dot" id="pd0"></div>
+          <div class="pin-dot" id="pd1"></div>
+          <div class="pin-dot" id="pd2"></div>
+          <div class="pin-dot" id="pd3"></div>
+        </div>
+        <div id="pin-error" style="font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:12px;min-height:16px;text-align:center;"></div>
+        <div class="pin-grid">
+          <div class="pin-key" onclick="pinKey('1')">1</div>
+          <div class="pin-key" onclick="pinKey('2')">2</div>
+          <div class="pin-key" onclick="pinKey('3')">3</div>
+          <div class="pin-key" onclick="pinKey('4')">4</div>
+          <div class="pin-key" onclick="pinKey('5')">5</div>
+          <div class="pin-key" onclick="pinKey('6')">6</div>
+          <div class="pin-key" onclick="pinKey('7')">7</div>
+          <div class="pin-key" onclick="pinKey('8')">8</div>
+          <div class="pin-key" onclick="pinKey('9')">9</div>
+          <div class="pin-key" style="visibility:hidden;"></div>
+          <div class="pin-key" onclick="pinKey('0')">0</div>
+          <div class="pin-key del" onclick="pinDel()">&#x232B;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN: Assignments -->
+  <div class="screen" id="screen-assignments">
+    <div class="sec-label">// Your Assigned Inspections</div>
+    <div id="assignments-list"></div>
+  </div>
+
+  <!-- SCREEN: Checklist -->
+  <div class="screen" id="screen-checklist">
+    <div id="checklist-container"></div>
+  </div>
+
+  <!-- SCREEN: Confirmation -->
+  <div class="screen" id="screen-confirm">
+    <div class="panel" style="text-align:center;">
+      <div class="panel-body" style="padding:32px 16px;">
+        <div style="font-size:48px;margin-bottom:12px;">&#x2705;</div>
+        <div class="panel-title" style="margin-bottom:6px;">Inspection Submitted</div>
+        <div class="panel-sub" id="confirm-summary"></div>
+        <div style="margin-top:20px;">
+          <button class="btn btn-ghost" onclick="showScreen('assignments')">Back to Assignments</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var AT_URL='https://as360-proxy.amusementstandards.workers.dev/airtable';
+var AT_BASE='appeCjHyrnZ5ARTi0';
+var RATING_LABELS={1:'Immediate Hazard',2:'Serious Deficiency',3:'Needs Attention',4:'Acceptable',5:'Excellent'};
+
+// State
+var currentInspector=null;
+var currentAssignment=null;
+var pin='';
+var answers={};
+var lotoConfirmed=false;
+var lotoTimestamp=null;
+
+// Electrical Systems (ELV18) section — injected into ride checklists
+var ELV18_SECTION={name:'Electrical Systems (ELV18)',items:[
+  'Fuse ratings correct — no jumpers, no contamination, no bare wires, proper guards installed',
+  'Collector rings and brushes — condition, wear within limits, proper contact maintained',
+  'Lead wires, main disconnect, control panel, sub-panels — condition, integrity, grounding verified',
+  'Lighting — adequate illumination, securely mounted, wiring and plug condition acceptable',
+  'Photo eyes, proximity switches, limit switches and sensors — inspected and tested functional',
+  'Emergency stop switches — all stop and e-stop switches and features tested and operational'
+]};
+
+// Checklist definitions (ride-type inspections include ELV18)
+var PORTAL_CHECKLISTS={
+  'Annual Ride Inspection':{title:'Annual Ride Inspection',sections:[
+    {name:'Structural & Mechanical',items:['Track / guide rail — no abnormal wear','Support structure — no corrosion, cracking, or movement','Vehicle / carrier — paint, body, structural integrity','Restraint devices — wear, function, latch engagement','Brake systems — visual inspection and function test']},
+    {name:'Electrical & Controls',items:['Control panel — all indicators, switches, buttons functional','Safety circuit — all interlocks and sensors tested','Lighting — ride lighting and queue lighting operational','Communication systems — operator radio, PA, intercom','Backup power — UPS or generator tested']},
+    ELV18_SECTION,
+    {name:'Documentation',items:['Maintenance log current','Service bulletin compliance verified','Manufacturer maintenance schedule on track','Incident log reviewed — recurring issues identified','NDT and major inspection dates confirmed current']}
+  ]},
+  'Water Quality Audit':{title:'Water Quality Audit',sections:[
+    {name:'Chemical Levels',items:['Free chlorine within range (1.0-3.0 ppm)','Combined chlorine below 0.4 ppm','pH within range (7.2-7.8)','Total alkalinity within range (80-120 ppm)','Water temperature recorded']},
+    {name:'Filtration & Circulation',items:['Pump operating within normal PSI range','Skimmers clear and functioning','Return jets operating and properly directed','Filter backwash completed on schedule']},
+    {name:'Visual & Safety',items:['Water clarity — main drain visible from deck','No algae growth on walls, floors, or features','Deck surfaces clean and non-slip','Safety equipment present (ring buoys, reach poles)']}
+  ]},
+  'Emergency Systems Review':{title:'Emergency Systems Review',sections:[
+    {name:'Fire & Emergency Access',items:['Fire lanes clear and unobstructed','Fire extinguishers present, charged, tagged within 12 months','Fire alarm pull stations accessible and unblocked','Emergency vehicle access routes passable']},
+    {name:'Evacuation Routes',items:['All emergency exits operational','Exit paths illuminated (emergency lighting tested)','Assembly points marked and accessible','Evacuation maps posted at key decision points']},
+    ELV18_SECTION
+  ]}
+};
+
+// ── NAVIGATION ──
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  var el=document.getElementById('screen-'+id);
+  if(el)el.classList.add('active');
+}
+
+// ── PIN ──
+function pinKey(d){
+  if(pin.length>=4)return;
+  pin+=d;
+  updatePinDots();
+  if(pin.length===4)validateLogin();
+}
+function pinDel(){
+  pin=pin.slice(0,-1);
+  updatePinDots();
+  document.getElementById('pin-error').textContent='';
+}
+function updatePinDots(){
+  for(var i=0;i<4;i++){
+    var dot=document.getElementById('pd'+i);
+    if(dot)dot.className='pin-dot'+(i<pin.length?' filled':'');
+  }
+}
+
+// ── LOGIN ──
+async function validateLogin(){
+  var inspId=document.getElementById('inspector-id').value.trim();
+  if(!inspId){document.getElementById('pin-error').textContent='Enter Inspector ID';pin='';updatePinDots();return;}
+  document.getElementById('pin-error').textContent='';
+  try{
+    var filter=encodeURIComponent("AND({Inspector_ID}='"+inspId+"',{PIN}='"+pin+"')");
+    var res=await fetch(AT_URL+'/Inspector_Directory?filterByFormula='+filter,{headers:{'Content-Type':'application/json'}});
+    if(!res.ok)throw new Error('Network');
+    var data=await res.json();
+    if(data.records&&data.records.length>0){
+      var r=data.records[0].fields;
+      currentInspector={id:inspId,name:r.Name||r.Full_Name||inspId,recordId:data.records[0].id};
+      toast('Welcome, '+currentInspector.name,'ok');
+      setTimeout(function(){loadAssignments();},300);
+    }else{
+      document.querySelectorAll('.pin-dot').forEach(function(d){d.classList.add('error');});
+      document.getElementById('pin-error').textContent='Invalid Inspector ID or PIN';
+      setTimeout(function(){pin='';updatePinDots();},800);
+    }
+  }catch(e){
+    document.querySelectorAll('.pin-dot').forEach(function(d){d.classList.add('error');});
+    document.getElementById('pin-error').textContent='Connection error — retry';
+    setTimeout(function(){pin='';updatePinDots();},800);
+  }
+}
+
+// ── ASSIGNMENTS ──
+async function loadAssignments(){
+  var list=document.getElementById('assignments-list');
+  list.innerHTML='<div style="text-align:center;padding:20px;color:var(--text-dim);font-family:var(--mono);font-size:11px;">Loading assignments...</div>';
+  showScreen('assignments');
+  try{
+    var filter=encodeURIComponent("{Inspector_ID}='"+currentInspector.id+"'");
+    var res=await fetch(AT_URL+'/Inspector_Assignments?filterByFormula='+filter,{headers:{'Content-Type':'application/json'}});
+    if(!res.ok)throw new Error('Network');
+    var data=await res.json();
+    if(!data.records||data.records.length===0){
+      list.innerHTML='<div class="panel"><div class="panel-body" style="text-align:center;padding:32px;"><div style="font-size:28px;margin-bottom:8px;">&#x1F4CB;</div><div style="color:var(--text-dim);">No inspections assigned</div></div></div>';
+      return;
+    }
+    var today=new Date().toISOString().split('T')[0];
+    list.innerHTML=data.records.map(function(rec){
+      var f=rec.fields;
+      var due=f.Due_Date||'';
+      var dueClass=due<today?'overdue':due===today?'today':'upcoming';
+      var dueLabel=due<today?'OVERDUE':due===today?'DUE TODAY':'Due '+due;
+      return '<div class="assign-card" onclick="openAssignment(\''+rec.id+'\')"><div style="display:flex;justify-content:space-between;align-items:center;"><div class="assign-ride">'+(f.Ride||'Ride')+'</div><span class="assign-due '+dueClass+'">'+dueLabel+'</span></div><div class="assign-meta">'+(f.Facility||'Facility')+' &#x2022; '+(f.Inspection_Type||'Inspection')+' &#x2022; '+(f.Ride||'')+'</div></div>';
+    }).join('');
+  }catch(e){
+    list.innerHTML='<div class="panel"><div class="panel-body" style="text-align:center;color:var(--red);">Failed to load assignments</div></div>';
+  }
+}
+
+// Store fetched assignment records
+var assignmentRecords={};
+
+async function openAssignment(recId){
+  try{
+    var res=await fetch(AT_URL+'/Inspector_Assignments/'+recId,{headers:{'Content-Type':'application/json'}});
+    if(!res.ok)throw new Error('Network');
+    var data=await res.json();
+    var f=data.fields||data;
+    currentAssignment={id:recId,facility:f.Facility||'',ride:f.Ride||'',type:f.Inspection_Type||'Annual Ride Inspection',dueDate:f.Due_Date||''};
+    renderChecklist();
+  }catch(e){
+    toast('Failed to load assignment','err');
+  }
+}
+
+// ── LOTO ──
+function confirmLoto(){
+  lotoConfirmed=true;
+  lotoTimestamp=new Date().toISOString();
+  var gate=document.getElementById('loto-gate');
+  if(gate){gate.className='loto-gate loto-confirmed';gate.innerHTML='<div class="loto-icon">&#x2705;</div><div class="loto-text" style="color:var(--green);">LOTO CONFIRMED — '+new Date(lotoTimestamp).toLocaleTimeString()+'</div>';}
+  document.querySelectorAll('.cg-row.disabled').forEach(function(r){r.classList.remove('disabled');});
+  updateProgress();
+}
+
+// ── CHECKLIST RENDER ──
+function renderChecklist(){
+  answers={};
+  lotoConfirmed=false;
+  lotoTimestamp=null;
+  var cl=PORTAL_CHECKLISTS[currentAssignment.type];
+  if(!cl){toast('Unknown inspection type: '+currentAssignment.type,'err');return;}
+  var container=document.getElementById('checklist-container');
+  var totalItems=0;
+  cl.sections.forEach(function(s){totalItems+=s.items.length;});
+
+  var lotoHtml='<div class="loto-gate" id="loto-gate"><div class="loto-icon">&#x1F512;</div><div class="loto-text">Confirm: Main power source has been locked out and tagged out.<br>Zero electrical / energy / mechanical status verified.</div><button class="loto-confirm-btn" onclick="confirmLoto()">Confirm LOTO &#x2192;</button></div>';
+
+  var sectionsHtml=cl.sections.map(function(sec,si){
+    var rows=sec.items.map(function(item,ii){
+      var key=si+'_'+ii;
+      var opts='';
+      for(var r=1;r<=5;r++){opts+='<div class="cg-opt" onclick="markItem(\''+key+'\','+r+',this)" title="'+r+' — '+RATING_LABELS[r]+'">'+r+'</div>';}
+      return '<div class="cg-row disabled" id="row-'+key+'"><div class="cg-label">'+item+'</div><div class="cg-options">'+opts+'</div></div>';
+    }).join('');
+    var isElv18=sec.name.indexOf('ELV18')>-1?' <span style="font-family:var(--mono);font-size:7px;padding:1px 4px;border-radius:2px;background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.25);vertical-align:middle;">INTEGRITY 20%</span>':'';
+    return '<div class="checklist-group"><div class="cg-title">'+sec.name+' — '+sec.items.length+' items'+isElv18+'</div>'+rows+'</div>';
+  }).join('');
+
+  var ratingKey='<div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">Rating: <span style="color:var(--red)">1=Hazard</span> <span style="color:#E8636F">2=Deficiency</span> <span style="color:var(--amber)">3=Attention</span> <span style="color:#5CB89A">4=Acceptable</span> <span style="color:var(--green)">5=Excellent</span></div>';
+
+  var html='<div class="panel"><div class="panel-hdr"><div>';
+  html+='<div class="panel-title">'+cl.title+'</div>';
+  html+='<div class="panel-sub">'+currentAssignment.facility+' &#x2022; '+currentAssignment.ride+' &#x2022; '+currentInspector.name+'</div>';
+  html+='</div></div><div class="panel-body">';
+  html+=lotoHtml;
+  html+='<div class="form-progress"><div class="form-progress-fill" id="progress-bar" style="width:0%"></div></div>';
+  html+='<div id="progress-text" style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-bottom:8px;">0 / '+totalItems+' answered</div>';
+  html+=ratingKey;
+  html+=sectionsHtml;
+  html+='<div id="fail-summary" style="display:none;background:var(--red-dim);border:1px solid rgba(244,63,94,.3);border-radius:7px;padding:10px 12px;margin-bottom:12px;"><div style="font-family:var(--mono);font-size:9px;color:var(--red);margin-bottom:4px;">ITEMS RATED 1-2 &#x2014; CARs will be auto-generated</div><div id="fail-list" style="font-size:11px;color:var(--text);"></div></div>';
+  html+='<div class="ff"><label>Notes (optional)</label><input type="text" id="form-notes" placeholder="Observations..."></div>';
+  html+='<button class="btn btn-purple" id="submit-btn" onclick="submitInspection()" disabled>Submit Inspection &#x2192;</button>';
+  html+='<button class="btn btn-ghost" onclick="showScreen(\'assignments\')" style="margin-top:8px;">Cancel</button>';
+  html+='</div></div>';
+  container.innerHTML=html;
+  showScreen('checklist');
+}
+
+// ── MARK ITEM ──
+function markItem(key,val,el){
+  if(!lotoConfirmed)return;
+  answers[key]=val;
+  var row=document.getElementById('row-'+key);
+  if(row){row.querySelectorAll('.cg-opt').forEach(function(o){o.className='cg-opt';});el.classList.add('sel-'+val);}
+  updateProgress();
+}
+
+function updateProgress(){
+  var cl=PORTAL_CHECKLISTS[currentAssignment.type];if(!cl)return;
+  var total=0,answered=0,fails=[];
+  cl.sections.forEach(function(sec,si){sec.items.forEach(function(item,ii){total++;var key=si+'_'+ii;var v=answers[key];if(v){answered++;if(v<=2)fails.push({item:item,rating:v});}});});
+  var pct=total>0?Math.round(answered/total*100):0;
+  var bar=document.getElementById('progress-bar');if(bar)bar.style.width=pct+'%';
+  var txt=document.getElementById('progress-text');if(txt)txt.textContent=answered+' / '+total+' answered · '+pct+'%';
+  var fs=document.getElementById('fail-summary');var fl=document.getElementById('fail-list');
+  if(fs&&fl){if(fails.length){fs.style.display='block';fl.innerHTML=fails.map(function(f){return '<div style="padding:2px 0;">&#x2022; '+f.item+' ['+f.rating+']</div>';}).join('');}else{fs.style.display='none';}}
+  var btn=document.getElementById('submit-btn');
+  if(btn)btn.disabled=!(answered===total&&total>0&&lotoConfirmed);
+}
+
+// ── SUBMIT ──
+async function submitInspection(){
+  if(!lotoConfirmed){toast('LOTO confirmation required','err');return;}
+  var cl=PORTAL_CHECKLISTS[currentAssignment.type];if(!cl)return;
+  var notes=(document.getElementById('form-notes')||{}).value||'';
+  var total=0,pass=0,fail=0,watch=0,failItems=[];var scoresObj={};
+  cl.sections.forEach(function(sec,si){sec.items.forEach(function(item,ii){total++;var key=si+'_'+ii;var v=answers[key];scoresObj[sec.name+'::'+item]=v;if(v>=4)pass++;else if(v===3)watch++;else if(v<=2){fail++;failItems.push(item);}});});
+  if(pass+fail+watch<total){toast('Rate all items','err');return;}
+  var btn=document.getElementById('submit-btn');
+  if(btn){btn.disabled=true;btn.textContent='Submitting...';}
+  var now=new Date();
+  await atPush('Inspector_Log',{
+    'Inspector_ID':currentInspector.id,
+    'Facility':currentAssignment.facility,
+    'Ride':currentAssignment.ride,
+    'Inspection_Type':currentAssignment.type,
+    'Date':now.toISOString().split('T')[0],
+    'Scores':JSON.stringify(scoresObj),
+    'Failed_Items':failItems.join('; '),
+    'Failed_Count':fail,
+    'Pass_Count':pass,
+    'Watch_Count':watch,
+    'Total_Items':total,
+    'Avg_Score':total>0?(Object.values(answers).reduce(function(a,b){return a+b;},0)/total).toFixed(1):'0',
+    'LOTO_Confirmed':lotoTimestamp,
+    'Notes':notes.trim(),
+    'Submitted_At':now.toISOString()
+  });
+  // Show read-only confirmation
+  var passRate=total>0?Math.round(pass/total*100):100;
+  document.getElementById('confirm-summary').innerHTML=
+    currentAssignment.facility+' &#x2022; '+currentAssignment.ride+'<br>'+
+    currentAssignment.type+'<br>'+
+    passRate+'% pass &#x2022; '+total+' items &#x2022; '+fail+' fail<br>'+
+    '<span style="font-family:var(--mono);font-size:9px;color:var(--text-muted);">'+now.toISOString()+'</span>';
+  showScreen('confirm');
+  toast('Inspection submitted','ok');
+}
+
+// ── AIRTABLE ──
+async function atPush(table,fields){
+  var el=document.getElementById('at-sync');
+  if(el){el.style.color='var(--amber)';el.textContent='\u2B24 SYNCING';}
+  try{
+    var res=await fetch(AT_URL+'/'+encodeURIComponent(table),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:fields})});
+    if(!res.ok){if(el){el.style.color='var(--red)';el.textContent='\u2B24 ERR';setTimeout(function(){if(el){el.style.color='var(--text-muted)';el.textContent='\u2B24 AIRTABLE';}},3000);}}
+    else{if(el){el.style.color='var(--green)';el.textContent='\u2B24 SYNCED';setTimeout(function(){if(el){el.style.color='var(--text-muted)';el.textContent='\u2B24 AIRTABLE';}},2000);}}
+  }catch(e){if(el){el.style.color='var(--red)';el.textContent='\u2B24 OFFLINE';setTimeout(function(){if(el){el.style.color='var(--text-muted)';el.textContent='\u2B24 AIRTABLE';}},3000);}}
+}
+
+function toast(msg,type){
+  var el=document.getElementById('toast');
+  el.textContent=msg;
+  el.className='toast '+(type||'ok')+' show';
+  setTimeout(function(){el.classList.remove('show');},3000);
+}
+</script>
+</body>
+</html>
