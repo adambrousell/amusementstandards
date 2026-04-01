@@ -111,6 +111,9 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
         <div class="panel-sub">Enter your credentials to access assigned inspections</div>
       </div></div>
       <div class="panel-body">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;text-align:center;">DEMO ACCESS</div>
+        <button class="btn btn-accent" onclick="demoBypass()" style="margin-bottom:12px;">Enter as Demo Inspector &#x2192;</button>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div style="flex:1;height:1px;background:var(--border2);"></div><div style="font-family:var(--mono);font-size:9px;color:var(--text-muted);">or login with credentials</div><div style="flex:1;height:1px;background:var(--border2);"></div></div>
         <div id="login-demo-badge" style="display:none;font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-bottom:10px;text-align:center;">Demo mode</div>
         <div class="ff"><label>Email</label><input type="email" id="login-email" placeholder="inspector@company.com"></div>
         <div class="ff"><label>Password</label><input type="password" id="login-password" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;"></div>
@@ -242,11 +245,56 @@ async function doLogin(){
   }
 }
 
+// ── DEMO BYPASS ──
+function demoBypass(){
+  demoMode=true;
+  currentInspector={id:'MASI-001',name:'Noel Rhodes \u00b7 MASI Loss Control',recordId:'demo'};
+  var syncEl=document.getElementById('at-sync');
+  if(syncEl){syncEl.style.color='var(--text-muted)';syncEl.textContent='Demo mode';}
+  toast('Welcome, '+currentInspector.name,'ok');
+  loadAssignments();
+}
+
+// ── DEMO ASSIGNMENTS DATA ──
+var DEMO_ASSIGNMENTS=[
+  {id:'demo-f019',fields:{Facility:'F-019 \u00b7 FEC \u00b7 New Jersey',Ride:'Go-Karts + Carousel',Inspection_Type:'Annual Ride Inspection',Due_Date:'2026-04-07',status:'due'}},
+  {id:'demo-p037',fields:{Facility:'P-037 \u00b7 Amusement \u00b7 Ohio',Ride:'Full facility',Inspection_Type:'Annual Ride Inspection',Due_Date:'2026-06-15',status:'scheduled'}},
+  {id:'demo-w011',fields:{Facility:'W-011 \u00b7 Water Park \u00b7 Florida',Ride:'Pending assignment',Inspection_Type:'Water Quality Audit',Due_Date:'',status:'unassigned'}}
+];
+
+function renderDemoAssignments(){
+  var list=document.getElementById('assignments-list');
+  list.innerHTML=DEMO_ASSIGNMENTS.map(function(rec){
+    var f=rec.fields;
+    var badgeColor=rec.fields.status==='due'?'var(--amber)':rec.fields.status==='scheduled'?'var(--accent)':'var(--text-muted)';
+    var badgeBg=rec.fields.status==='due'?'var(--amber-dim)':rec.fields.status==='scheduled'?'var(--accent-dim)':'var(--panel3)';
+    var badgeLabel=rec.fields.status==='due'?'DUE APR 7':rec.fields.status==='scheduled'?'SCHEDULED Q2':'UNASSIGNED';
+    var actionHtml='';
+    if(rec.fields.status==='due'){
+      actionHtml='<button class="btn btn-accent" style="margin-top:8px;font-size:12px;padding:8px 14px;" onclick="openDemoAssignment(\''+rec.id+'\')">Begin Inspection &#x2192;</button>';
+    }
+    return '<div class="assign-card" style="cursor:default;"><div style="display:flex;justify-content:space-between;align-items:center;"><div class="assign-ride">'+f.Ride+'</div><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:'+badgeBg+';color:'+badgeColor+';border:1px solid '+badgeColor+';">'+badgeLabel+'</span></div><div class="assign-meta">'+f.Facility+' &#x2022; '+f.Inspection_Type+'</div>'+actionHtml+'</div>';
+  }).join('');
+}
+
+function openDemoAssignment(demoId){
+  var rec=DEMO_ASSIGNMENTS.find(function(r){return r.id===demoId;});
+  if(!rec)return;
+  var f=rec.fields;
+  currentAssignment={id:demoId,facility:f.Facility,ride:f.Ride,type:f.Inspection_Type,dueDate:f.Due_Date};
+  renderChecklist();
+}
+
 // ── ASSIGNMENTS ──
 async function loadAssignments(){
   var list=document.getElementById('assignments-list');
-  list.innerHTML='<div style="text-align:center;padding:20px;color:var(--text-dim);font-family:var(--mono);font-size:11px;">Loading assignments...</div>';
   showScreen('assignments');
+  // Demo mode: show hardcoded assignments
+  if(demoMode){
+    renderDemoAssignments();
+    return;
+  }
+  list.innerHTML='<div style="text-align:center;padding:20px;color:var(--text-dim);font-family:var(--mono);font-size:11px;">Loading assignments...</div>';
   try{
     var filter=encodeURIComponent("{Inspector_ID}='"+currentInspector.id+"'");
     var res=await fetch(AT_URL+'/Inspector_Assignments?filterByFormula='+filter,{headers:{'Content-Type':'application/json'}});
