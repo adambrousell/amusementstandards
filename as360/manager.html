@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <!-- saved from url=(0049)https://amusementstandards.com/as360/manager.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -214,11 +214,18 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .cg-row:last-child{border-bottom:none;}
 .cg-label{flex:1;font-size:13px;color:var(--text);font-weight:500;}
 .cg-options{display:flex;gap:6px;flex-shrink:0;}
-.cg-opt{padding:6px 10px;border-radius:5px;font-family:var(--mono);font-size:9px;font-weight:700;cursor:pointer;border:1px solid var(--border2);color:var(--text-dim);background:var(--panel3);transition:all .12s;min-width:44px;min-height:36px;display:flex;align-items:center;justify-content:center;}
-.cg-opt.sel-pass{background:var(--green-dim);border-color:rgba(16,185,129,.4);color:var(--green);}
-.cg-opt.sel-flag{background:var(--amber-dim);border-color:rgba(245,158,11,.4);color:var(--amber);}
-.cg-opt.sel-fail{background:var(--red-dim);border-color:rgba(244,63,94,.4);color:var(--red);}
-.cg-opt.sel-na{background:var(--panel3);border-color:var(--border2);color:var(--text-dim);}
+.cg-opt{padding:6px 7px;border-radius:5px;font-family:var(--mono);font-size:9px;font-weight:700;cursor:pointer;border:1px solid var(--border2);color:var(--text-dim);background:var(--panel3);transition:all .12s;min-width:32px;min-height:36px;display:flex;align-items:center;justify-content:center;}
+.cg-opt.sel-1{background:var(--red-dim);border-color:rgba(244,63,94,.5);color:var(--red);}
+.cg-opt.sel-2{background:rgba(244,63,94,.08);border-color:rgba(244,63,94,.3);color:#E8636F;}
+.cg-opt.sel-3{background:var(--amber-dim);border-color:rgba(245,158,11,.4);color:var(--amber);}
+.cg-opt.sel-4{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);color:#5CB89A;}
+.cg-opt.sel-5{background:var(--green-dim);border-color:rgba(16,185,129,.5);color:var(--green);}
+.cg-row.disabled{opacity:.35;pointer-events:none;}
+.loto-gate{background:var(--panel2);border:2px solid var(--amber);border-radius:10px;padding:16px;margin-bottom:16px;text-align:center;}
+.loto-gate .loto-icon{font-size:28px;margin-bottom:8px;}
+.loto-gate .loto-text{font-family:var(--mono);font-size:11px;color:var(--amber);line-height:1.6;margin-bottom:12px;}
+.loto-gate .loto-confirm-btn{background:linear-gradient(135deg,var(--amber),#D97706);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-family:var(--cond);font-size:14px;font-weight:700;cursor:pointer;min-height:44px;}
+.loto-confirmed{background:var(--green-dim);border-color:rgba(16,185,129,.4);}
 .sb{font-size:8px;padding:1px 5px;border-radius:2px;font-weight:700;font-family:var(--mono);}
 .sb-r{background:rgba(108,164,220,.18);color:var(--accent);border:1px solid rgba(108,164,220,.3);}
 .sb-s{background:rgba(16,185,129,.18);color:var(--green);border:1px solid rgba(16,185,129,.3);}
@@ -3193,6 +3200,7 @@ GES:{title:'Group & Event Supervision',sections:[
 ACR:{title:'Attraction Condition Report',sections:[
 {name:'Structural & Mechanical',items:['Track / guide rail visual inspection — no abnormal wear','Support structure — no corrosion, cracking, or movement','Vehicle / carrier condition — paint, body, structural integrity','Restraint devices — wear, function, latch engagement','Brake systems — visual inspection and function test']},
 {name:'Electrical & Controls',items:['Control panel — all indicators, switches, buttons functional','Safety circuit — all interlocks and sensors tested','Lighting — ride lighting and queue lighting operational','Communication systems — operator radio, PA, intercom','Backup power — UPS or generator tested']},
+{name:'Electrical Systems (ELV18)',items:['Fuse ratings correct — no jumpers, no contamination, no bare wires, proper guards installed','Collector rings and brushes — condition, wear within limits, proper contact maintained','Lead wires, main disconnect, control panel, sub-panels — condition, integrity, grounding verified','Lighting — adequate illumination, securely mounted, wiring and plug condition acceptable','Photo eyes, proximity switches, limit switches and sensors — inspected and tested functional','Emergency stop switches — all stop and e-stop switches and features tested and operational']},
 {name:'Documentation',items:['Maintenance log current through previous month','Service bulletin compliance verified','Manufacturer recommended maintenance schedule on track','Incident log reviewed — recurring issues identified','NDT and major inspection dates confirmed current']}
 ]},
 SBC:{title:'Service Bulletin Compliance',sections:[
@@ -3224,31 +3232,57 @@ window.INSP_CHECKLISTS=INSP_CHECKLISTS;
 // ── FORM ENGINE ─────────────────────────────────────────────────────────────
 let activeInspForm=null;
 let inspFormAnswers={};
+let lotoConfirmed=false;
+let lotoTimestamp=null;
+
+// Rating scale labels for tooltip/display
+var RATING_LABELS={1:'Immediate Hazard',2:'Serious Deficiency',3:'Needs Attention',4:'Acceptable',5:'Excellent'};
+
+window.confirmLoto=function(){
+  lotoConfirmed=true;
+  lotoTimestamp=new Date().toISOString();
+  var gate=document.getElementById('loto-gate');
+  if(gate){gate.className='loto-gate loto-confirmed';gate.innerHTML='<div class="loto-icon">&#x2705;</div><div class="loto-text" style="color:var(--green);">LOTO CONFIRMED — '+new Date(lotoTimestamp).toLocaleTimeString()+'</div>';}
+  // Enable all checklist rows
+  document.querySelectorAll('.cg-row.disabled').forEach(function(r){r.classList.remove('disabled');});
+  var sb=document.getElementById('insp-form-submit-btn');if(sb)sb.dataset.loto='1';
+  updateInspFormProgress();
+};
 
 window.openInspForm=function(id){
   if(activeInspForm===id){closeInspForm();return;}
   activeInspForm=id;
   inspFormAnswers={};
-  const def=INSP_DEFS[id];
-  const cl=INSP_CHECKLISTS[id];
+  lotoConfirmed=false;
+  lotoTimestamp=null;
+  var def=INSP_DEFS[id];
+  var cl=INSP_CHECKLISTS[id];
   if(!cl){_origMarkDone(id);return;}
-  const container=document.getElementById('insp-forms-container');
+  var container=document.getElementById('insp-forms-container');
   if(!container)return;
-  let totalItems=0;
+  var totalItems=0;
   cl.sections.forEach(function(s){totalItems+=s.items.length;});
-  let sectionsHtml=cl.sections.map(function(sec,si){
-    const rows=sec.items.map(function(item,ii){
-      const key=id+'_'+si+'_'+ii;
-      return '<div class="cg-row" id="row-'+key+'"><div class="cg-label">'+item+'</div><div class="cg-options"><div class="cg-opt" onclick="inspMark(\''+key+'\',\'pass\',this)" title="Pass">PASS</div><div class="cg-opt" onclick="inspMark(\''+key+'\',\'flag\',this)" title="Flag">FLAG</div><div class="cg-opt" onclick="inspMark(\''+key+'\',\'fail\',this)" title="Fail">FAIL</div><div class="cg-opt" onclick="inspMark(\''+key+'\',\'na\',this)" title="N/A">N/A</div></div></div>';
+  // LOTO gate
+  var lotoHtml='<div class="loto-gate" id="loto-gate"><div class="loto-icon">&#x1F512;</div><div class="loto-text">Confirm: Main power source has been locked out and tagged out.<br>Zero electrical / energy / mechanical status verified.</div><button class="loto-confirm-btn" onclick="confirmLoto()">Confirm LOTO &#x2192;</button></div>';
+  // Build sections with 5-category rating buttons (disabled until LOTO confirmed)
+  var sectionsHtml=cl.sections.map(function(sec,si){
+    var rows=sec.items.map(function(item,ii){
+      var key=id+'_'+si+'_'+ii;
+      var opts='';
+      for(var r=1;r<=5;r++){opts+='<div class="cg-opt" onclick="inspMark(\''+key+'\','+r+',this)" title="'+r+' — '+RATING_LABELS[r]+'">'+r+'</div>';}
+      return '<div class="cg-row disabled" id="row-'+key+'"><div class="cg-label">'+item+'</div><div class="cg-options">'+opts+'</div></div>';
     }).join('');
-    return '<div class="checklist-group"><div class="cg-title">'+sec.name+' — '+sec.items.length+' items</div>'+rows+'</div>';
+    var isElv18=sec.name.indexOf('ELV18')>-1?' <span style="font-family:var(--mono);font-size:7px;padding:1px 4px;border-radius:2px;background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.25);vertical-align:middle;">INTEGRITY 20%</span>':'';
+    return '<div class="checklist-group"><div class="cg-title">'+sec.name+' — '+sec.items.length+' items'+isElv18+'</div>'+rows+'</div>';
   }).join('');
-  const scoreChips=def.scores.map(function(sc){return '<span class="sb sb-'+sc+'">'+sc.toUpperCase()+'</span>';}).join(' ');
-  container.innerHTML='<div class="form-panel open" id="insp-form-panel"><div class="form-panel-hdr"><div><div class="form-panel-title">'+cl.title+'</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;">'+def.table+' · '+def.freq+' · '+totalItems+' items '+scoreChips+'</div></div><button class="btn-icon" onclick="closeInspForm()" style="font-size:18px;color:var(--text-dim);">×</button></div><div class="form-panel-body"><div class="form-progress"><div class="form-progress-fill" id="insp-form-progress" style="width:0%"></div></div><div id="insp-form-status" style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-bottom:12px;">0 / '+totalItems+' answered</div>'+sectionsHtml+'<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);"><div class="form-grid"><div class="ff"><label>Inspector Name</label><input type="text" id="insp-form-inspector" placeholder="Your name" oninput="updateInspFormProgress()"></div><div class="ff"><label>Notes (optional)</label><input type="text" id="insp-form-notes" placeholder="General observations…"></div></div><div id="insp-form-fail-summary" style="display:none;background:var(--red-dim);border:1px solid rgba(244,63,94,.3);border-radius:7px;padding:10px 12px;margin-bottom:12px;"><div style="font-family:var(--mono);font-size:9px;color:var(--red);margin-bottom:4px;">FAILED ITEMS — CARs will be auto-generated</div><div id="insp-form-fail-list" style="font-size:11px;color:var(--text);"></div></div><div style="display:flex;gap:8px;"><button class="btn btn-accent" style="flex:1;" onclick="submitInspForm(\''+id+'\')" id="insp-form-submit-btn" disabled>Submit Inspection →</button><button class="btn btn-ghost" onclick="closeInspForm()">Cancel</button></div></div></div></div>';
+  var scoreChips=def.scores.map(function(sc){return '<span class="sb sb-'+sc+'">'+sc.toUpperCase()+'</span>';}).join(' ');
+  var ratingKey='<div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">Rating: <span style="color:var(--red)">1=Hazard</span> <span style="color:#E8636F">2=Deficiency</span> <span style="color:var(--amber)">3=Attention</span> <span style="color:#5CB89A">4=Acceptable</span> <span style="color:var(--green)">5=Excellent</span></div>';
+  container.innerHTML='<div class="form-panel open" id="insp-form-panel"><div class="form-panel-hdr"><div><div class="form-panel-title">'+cl.title+'</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px;">'+def.table+' · '+def.freq+' · '+totalItems+' items '+scoreChips+'</div></div><button class="btn-icon" onclick="closeInspForm()" style="font-size:18px;color:var(--text-dim);">&#x2715;</button></div><div class="form-panel-body">'+lotoHtml+'<div class="form-progress"><div class="form-progress-fill" id="insp-form-progress" style="width:0%"></div></div><div id="insp-form-status" style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-bottom:8px;">0 / '+totalItems+' answered</div>'+ratingKey+sectionsHtml+'<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);"><div class="form-grid"><div class="ff"><label>Inspector Name</label><input type="text" id="insp-form-inspector" placeholder="Your name" oninput="updateInspFormProgress()"></div><div class="ff"><label>Notes (optional)</label><input type="text" id="insp-form-notes" placeholder="General observations..."></div></div><div id="insp-form-fail-summary" style="display:none;background:var(--red-dim);border:1px solid rgba(244,63,94,.3);border-radius:7px;padding:10px 12px;margin-bottom:12px;"><div style="font-family:var(--mono);font-size:9px;color:var(--red);margin-bottom:4px;">ITEMS RATED 1-2 &#x2014; CARs will be auto-generated</div><div id="insp-form-fail-list" style="font-size:11px;color:var(--text);"></div></div><div style="display:flex;gap:8px;"><button class="btn btn-accent" style="flex:1;" onclick="submitInspForm(\''+id+'\')" id="insp-form-submit-btn" disabled>Submit Inspection &#x2192;</button><button class="btn btn-ghost" onclick="closeInspForm()">Cancel</button></div></div></div></div>';
   container.scrollIntoView({behavior:'smooth',block:'start'});
 };
 
 window.inspMark=function(key,val,el){
+  if(!lotoConfirmed)return;
   inspFormAnswers[key]=val;
   var row=document.getElementById('row-'+key);
   if(row){row.querySelectorAll('.cg-opt').forEach(function(o){o.className='cg-opt';});el.classList.add('sel-'+val);}
@@ -3258,42 +3292,46 @@ window.inspMark=function(key,val,el){
 window.updateInspFormProgress=function(){
   if(!activeInspForm)return;
   var cl=INSP_CHECKLISTS[activeInspForm];if(!cl)return;
-  var total=0,answered=0,fails=[];
-  cl.sections.forEach(function(sec,si){sec.items.forEach(function(item,ii){total++;var key=activeInspForm+'_'+si+'_'+ii;if(inspFormAnswers[key]){answered++;if(inspFormAnswers[key]==='fail')fails.push(item);}});});
+  var total=0,answered=0,fails=[],watches=[];
+  cl.sections.forEach(function(sec,si){sec.items.forEach(function(item,ii){total++;var key=activeInspForm+'_'+si+'_'+ii;var v=inspFormAnswers[key];if(v){answered++;if(v<=2)fails.push({item:item,rating:v,label:RATING_LABELS[v]});else if(v===3)watches.push(item);}});});
   var pct=total>0?Math.round(answered/total*100):0;
   var bar=document.getElementById('insp-form-progress');if(bar)bar.style.width=pct+'%';
   var status=document.getElementById('insp-form-status');if(status)status.textContent=answered+' / '+total+' answered · '+pct+'%';
   var fs=document.getElementById('insp-form-fail-summary');var fl=document.getElementById('insp-form-fail-list');
-  if(fs&&fl){if(fails.length){fs.style.display='block';fl.innerHTML=fails.map(function(f){return '<div style="padding:2px 0;">· '+f+'</div>';}).join('');}else{fs.style.display='none';}}
+  if(fs&&fl){if(fails.length){fs.style.display='block';fl.innerHTML=fails.map(function(f){return '<div style="padding:2px 0;">&#x2022; '+f.item+' <span style="color:var(--red);font-family:var(--mono);font-size:9px;">['+f.rating+' '+f.label+']</span></div>';}).join('');}else{fs.style.display='none';}}
   var btn=document.getElementById('insp-form-submit-btn');var inspName=document.getElementById('insp-form-inspector');
-  if(btn)btn.disabled=!(answered===total&&total>0&&inspName&&inspName.value.trim().length>=2);
+  if(btn)btn.disabled=!(answered===total&&total>0&&inspName&&inspName.value.trim().length>=2&&lotoConfirmed);
 };
 
 window.submitInspForm=function(id){
   var cl=INSP_CHECKLISTS[id];var def=INSP_DEFS[id];if(!cl||!def)return;
+  if(!lotoConfirmed){toast('LOTO confirmation required','err');return;}
   var inspector=document.getElementById('insp-form-inspector').value.trim();
   var notes=(document.getElementById('insp-form-notes')||{}).value||'';notes=notes.trim();
   if(!inspector||inspector.length<2){toast('Enter inspector name','err');return;}
-  var total=0,pass=0,fail=0,flag=0,na=0,failItems=[];
-  cl.sections.forEach(function(sec,si){sec.items.forEach(function(item,ii){total++;var key=id+'_'+si+'_'+ii;var v=inspFormAnswers[key];if(v==='pass')pass++;else if(v==='fail'){fail++;failItems.push({section:sec.name,item:item});}else if(v==='flag')flag++;else if(v==='na')na++;});});
-  if(pass+fail+flag+na<total){toast('Answer all items before submitting','err');return;}
-  var passRate=(total-na)>0?Math.round(pass/(total-na)*100):100;
+  var total=0,pass=0,fail=0,watch=0,failItems=[],scores={},hasHazard=false;
+  cl.sections.forEach(function(sec,si){sec.items.forEach(function(item,ii){total++;var key=id+'_'+si+'_'+ii;var v=inspFormAnswers[key];scores[key]=v;if(v>=4)pass++;else if(v===3){watch++;}else if(v<=2){fail++;failItems.push({section:sec.name,item:item,rating:v,label:RATING_LABELS[v]});if(v===1)hasHazard=true;}});});
+  if(pass+fail+watch<total){toast('Rate all items before submitting','err');return;}
+  var passRate=total>0?Math.round(pass/total*100):100;
+  var avgScore=total>0?(Object.values(scores).reduce(function(a,b){return a+b;},0)/total).toFixed(1):'0';
   var today=new Date().toISOString().split('T')[0];
   inspections[id]={lastDate:today};save(K.INSP,inspections);
-  atPush(def.table,{'Date':today,'Completed By':inspector,'Total Items':total,'Pass':pass,'Fail':fail,'Flag':flag,'—':na,'Pass Rate':passRate+'%','Notes':notes,'Submitted At':new Date().toISOString()});
+  atPush(def.table,{'Date':today,'Completed By':inspector,'Total Items':total,'Pass (4-5)':pass,'Fail (1-2)':fail,'Watch (3)':watch,'Avg Score':avgScore,'Pass Rate':passRate+'%','Has Hazard':hasHazard,'LOTO Confirmed':lotoTimestamp,'Notes':notes,'Submitted At':new Date().toISOString()});
   failItems.forEach(function(fi){
-    var car={id:'CAR-'+new Date().getFullYear()+'-'+Date.now().toString(36).toUpperCase().slice(-4),source:def.id+' Inspection',location:fi.section,finding:fi.item+' — FAILED during '+cl.title,findingType:'Operational',severity:'minor',assignee:'',due:new Date(Date.now()+7*86400000).toISOString().split('T')[0],stage:'submitted',stageHistory:[{stage:'submitted',at:new Date().toISOString(),by:inspector+' (auto)'}],xpAwarded:50,status:'open',createdAt:new Date().toISOString()};
+    var sev=fi.rating===1?'critical':'minor';
+    var car={id:'CAR-'+new Date().getFullYear()+'-'+Date.now().toString(36).toUpperCase().slice(-4),source:def.id+' Inspection',location:fi.section,finding:fi.item+' — rated '+fi.rating+' ('+fi.label+') during '+cl.title,findingType:'Operational',severity:sev,assignee:'',due:new Date(Date.now()+(fi.rating===1?1:7)*86400000).toISOString().split('T')[0],stage:'submitted',stageHistory:[{stage:'submitted',at:new Date().toISOString(),by:inspector+' (auto)'}],xpAwarded:fi.rating===1?100:50,status:'open',createdAt:new Date().toISOString()};
     cars.unshift(car);
-    atPush('CAR_Log',{'CAR ID':car.id,'Source':car.source,'Attraction / Area':car.location,'Finding':car.finding,'Severity':'minor','Stage':'submitted','Status':'Open','Opened At':car.createdAt});
+    atPush('CAR_Log',{'CAR ID':car.id,'Source':car.source,'Attraction / Area':car.location,'Finding':car.finding,'Severity':sev,'Stage':'submitted','Status':'Open','Opened At':car.createdAt});
   });
   if(failItems.length)save(K.CAR,cars);
   closeInspForm();updateBadges();renderInspections();refreshDash();
-  var failMsg=fail>0?' · '+fail+' fail'+(fail>1?'s':'')+' → CAR'+(fail>1?'s':'')+' generated':'';
-  toast(cl.title+' — '+passRate+'% pass rate'+failMsg,fail>0?'err':'ok');
+  var failMsg=fail>0?' · '+fail+' fail'+(fail>1?'s':'')+' &#x2192; CAR'+(fail>1?'s':'')+' generated':'';
+  var hazardMsg=hasHazard?' &#x1F6A8; HAZARD — opening blocked':'';
+  toast(cl.title+' — Avg '+avgScore+'/5 · '+passRate+'% pass'+failMsg+hazardMsg,fail>0?'err':'ok');
 };
 
 window.closeInspForm=function(){
-  activeInspForm=null;inspFormAnswers={};
+  activeInspForm=null;inspFormAnswers={};lotoConfirmed=false;lotoTimestamp=null;
   var container=document.getElementById('insp-forms-container');if(container)container.innerHTML='';
 };
 
@@ -3337,4 +3375,87 @@ renderInspections();
 
 })();
 
-// ════════════════════
+// ══════════════════════════════════════════════════════════════════════════════
+// NOTIFICATION POLLER — watches for maintenance completions from open.html
+// ══════════════════════════════════════════════════════════════════════════════
+(function(){
+  const NOTIF_POLL_MS=30000;
+  let mgr_lastNotifPoll=localStorage.getItem('mgr_last_notif_poll')||new Date(Date.now()-60000).toISOString();
+  let mgr_seenNotifIds=JSON.parse(localStorage.getItem('mgr_seen_notif_ids')||'[]');
+
+  function fmtNotifTime(iso){
+    if(!iso)return'';
+    try{return new Date(iso).toLocaleTimeString([],{hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase();}catch(e){return'';}
+  }
+
+  function showMgrNotifBanner(msg,actionLabel,actionFn){
+    const banner=document.createElement('div');
+    banner.style.cssText='position:fixed;top:0;left:0;right:0;z-index:9999;padding:12px 16px;background:linear-gradient(135deg,rgba(16,185,129,.95),rgba(5,150,105,.95));color:#fff;font-family:var(--sans);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:8px;transform:translateY(-100%);transition:transform .4s ease;backdrop-filter:blur(8px);';
+    let html='<div style="flex:1;">'+msg+'</div>';
+    if(actionLabel&&actionFn){
+      html+='<button onclick="this.parentElement._action()" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;font-family:var(--cond);font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;cursor:pointer;white-space:nowrap;">'+actionLabel+'</button>';
+    }
+    html+='<button onclick="this.parentElement.remove()" style="background:none;border:none;color:rgba(255,255,255,.7);font-size:16px;cursor:pointer;padding:0 4px;">&times;</button>';
+    banner.innerHTML=html;
+    if(actionFn)banner._action=actionFn;
+    document.body.appendChild(banner);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>banner.style.transform='translateY(0)'));
+    setTimeout(()=>{
+      banner.style.transform='translateY(-100%)';
+      setTimeout(()=>banner.remove(),500);
+    },8000);
+  }
+
+  async function pollMgrNotifications(){
+    try{
+      const filter=encodeURIComponent("AND(IS_AFTER({Time},'"+mgr_lastNotifPoll+"'),{Role}='maintenance')");
+      const res=await fetch(AT_URL+'/Notifications?filterByFormula='+filter,{headers:{'Content-Type':'application/json'}});
+      if(!res.ok)return;
+      const data=await res.json();
+      if(data.records&&data.records.length>0){
+        data.records.forEach(function(r){
+          if(mgr_seenNotifIds.includes(r.id))return;
+          mgr_seenNotifIds.push(r.id);
+          const f=r.fields;
+          if(f.Type==='maint_complete'){
+            const failNote=f.Failed_Items_Count>0?' \u00b7 '+f.Failed_Items_Count+' failed item'+(f.Failed_Items_Count>1?'s':''):'';
+            showMgrNotifBanner(
+              '\u{1F514} '+(f.Ride||f.Ride_Code)+' maintenance complete \u2014 '+(f.Completed_By||'Mechanic')+' \u00b7 '+fmtNotifTime(f.Time)+failNote+' \u00b7 Ready for ops sign-off',
+              'Go to Opening \u2192',
+              function(){
+                const openingTab=document.getElementById('opening-tab');
+                if(openingTab)showView('opening',openingTab);
+                refreshRideInspCards();
+              }
+            );
+          }
+        });
+        // Keep seen list trimmed
+        if(mgr_seenNotifIds.length>50)mgr_seenNotifIds=mgr_seenNotifIds.slice(-30);
+        localStorage.setItem('mgr_seen_notif_ids',JSON.stringify(mgr_seenNotifIds));
+      }
+      mgr_lastNotifPoll=new Date().toISOString();
+      localStorage.setItem('mgr_last_notif_poll',mgr_lastNotifPoll);
+    }catch(e){}
+  }
+
+  // Start polling
+  setInterval(pollMgrNotifications,NOTIF_POLL_MS);
+  // Initial poll after short delay
+  setTimeout(pollMgrNotifications,3000);
+
+  // Demo notification after 4 seconds so Tom sees it populated
+  setTimeout(function(){
+    showMgrNotifBanner(
+      '\u{1F514} Go-Karts maintenance complete \u2014 J. Rivera \u00b7 5:42 AM \u00b7 Ready for ops sign-off',
+      'Go to Opening \u2192',
+      function(){
+        const openingTab=document.getElementById('opening-tab');
+        if(openingTab)showView('opening',openingTab);
+        refreshRideInspCards();
+      }
+    );
+  },4000);
+})();
+</script>
+</body></html>
