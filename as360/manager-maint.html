@@ -152,8 +152,12 @@ a{color:var(--teal);text-decoration:none}
 <!-- Nav Tabs -->
 <div class="nav-tabs">
   <div class="nav-tab active" data-view="preop" onclick="showView('preop',this)">Pre-Op</div>
-  <div class="nav-tab" data-view="workorders" onclick="showView('workorders',this)">Work Orders</div>
-  <div class="nav-tab" data-view="equipment" onclick="showView('equipment',this)">Equipment</div>
+  <div class="nav-tab" data-view="inspections" onclick="showView('inspections',this)">Inspections</div>
+  <div class="nav-tab" data-view="maintenance" onclick="showView('maintenance',this)">Maintenance</div>
+  <div class="nav-tab" data-view="ndt" onclick="showView('ndt',this)">NDT</div>
+  <div class="nav-tab" data-view="cars" onclick="showView('cars',this)">CARs</div>
+  <div class="nav-tab" data-view="credentials" onclick="showView('credentials',this)">Credentials</div>
+  <div class="nav-tab" data-view="bulletins" onclick="showView('bulletins',this)">Bulletins</div>
 </div>
 
 <!-- Main Content -->
@@ -228,29 +232,284 @@ a{color:var(--teal);text-decoration:none}
 
   </div>
 
-  <!-- Work Orders View -->
-  <div class="view" id="view-workorders">
-    <div class="sec-label">// Work Orders</div>
+  <!-- TAB 2: Inspections -->
+  <div class="view" id="view-inspections">
+    <div class="sec-label">// Third-Party &amp; Annual Inspection Records</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">
+      <div class="metric-card"><div class="metric-label">Total (Season)</div><div class="metric-val">12</div></div>
+      <div class="metric-card"><div class="metric-label">NAARSO Level 3</div><div class="metric-val">2</div></div>
+      <div class="metric-card"><div class="metric-label">NAARSO Level 2</div><div class="metric-val">7</div></div>
+      <div class="metric-card"><div class="metric-label">AIMS Certified</div><div class="metric-val">3</div></div>
+    </div>
     <div class="panel">
-      <div class="panel-hdr">
-        <span class="panel-hdr-title">Work Orders</span>
+      <div class="panel-hdr"><span class="panel-hdr-title">Inspection Records</span></div>
+      <div class="panel-body" style="padding:0;overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead><tr style="background:var(--panel2);border-bottom:1px solid var(--border);"><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.5px;">RIDE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">INSPECTOR</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">CERT</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">INDEPENDENCE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">DATE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">RESULT</th><th style="padding:8px 12px;font-family:var(--mono);font-size:9px;color:var(--text-dim);"></th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;color:var(--text-bright);">Go-Karts</td><td style="padding:8px 12px;">Tom Jones</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">NAARSO L3</td><td style="padding:8px 12px;"><span style="color:var(--green);">Independent</span></td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Mar 15 2026</td><td style="padding:8px 12px;"><span class="status-badge pass">PASS</span></td><td style="padding:8px 12px;"><a href="#" class="btn btn-ghost btn-sm">View &#x2192;</a></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;color:var(--text-bright);">Carousel</td><td style="padding:8px 12px;">R.J. Coetzee</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">NAARSO L2</td><td style="padding:8px 12px;"><span style="color:var(--teal);">Third-Party (LJM)</span></td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Feb 28 2026</td><td style="padding:8px 12px;"><span class="status-badge warning">CONDITIONAL</span></td><td style="padding:8px 12px;"><a href="#" class="btn btn-ghost btn-sm">View &#x2192;</a></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;color:var(--text-bright);">Go-Karts</td><td style="padding:8px 12px;">M. Davis</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">NAARSO L2</td><td style="padding:8px 12px;"><span style="color:var(--amber);">&#x26A1; Corporate</span></td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Jan 10 2026</td><td style="padding:8px 12px;"><span class="status-badge pass">PASS</span></td><td style="padding:8px 12px;"><a href="#" class="btn btn-ghost btn-sm">View &#x2192;</a></td></tr>
+            <tr><td style="padding:8px 12px;color:var(--text-bright);">Carousel</td><td style="padding:8px 12px;">A. Martinez</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">ASNT III</td><td style="padding:8px 12px;"><span style="color:var(--teal);">Third-Party (TKS)</span></td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Dec 5 2025</td><td style="padding:8px 12px;"><span class="status-badge pass">PASS</span></td><td style="padding:8px 12px;"><a href="#" class="btn btn-ghost btn-sm">View &#x2192;</a></td></tr>
+          </tbody>
+        </table>
       </div>
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-bottom:14px;">Inspector independence flag affects Integrity pillar weight. Corporate = 0.8&#xD7; &#x2022; Third-Party = 1.0&#xD7; &#x2022; Independent = 1.4&#xD7;</div>
+    <button class="btn btn-teal" onclick="toggleForm('insp-form')">&#xFF0B; Log Inspection</button>
+    <div id="insp-form" style="display:none;margin-top:12px;">
+      <div class="panel"><div class="panel-hdr"><span class="panel-hdr-title">Log Inspection</span><a href="#" onclick="toggleForm('insp-form');return false;" style="font-size:11px;color:var(--text-dim);">Cancel</a></div>
       <div class="panel-body">
-        <div class="empty-state">No open work orders</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">RIDE</label><select id="insp-ride" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>Go-Karts</option><option>Carousel</option></select></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">INSPECTOR NAME</label><input id="insp-name" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;" placeholder="Full name"></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">CERT TYPE</label><select id="insp-cert" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>NAARSO Level 3</option><option>NAARSO Level 2</option><option>AIMS</option><option>ASNT II</option><option>ASNT III</option></select></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">CERT NUMBER</label><input id="insp-certnum" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;" placeholder="e.g. TJ-0847"></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">INDEPENDENCE</label><select id="insp-indep" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>Independent</option><option>Third-Party Contracted</option><option>Corporate</option></select></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">EMPLOYING FIRM</label><input id="insp-firm" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;" placeholder="Firm name"></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">DATE</label><input id="insp-date" type="date" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">RESULT</label><select id="insp-result" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>PASS</option><option>CONDITIONAL</option><option>FAIL</option></select></div>
+        </div>
+        <div style="margin-top:10px;"><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">FINDINGS</label><textarea id="insp-findings" rows="3" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:12px;resize:vertical;" placeholder="Inspection findings..."></textarea></div>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center;"><button class="btn btn-teal" onclick="submitInspection()">Submit</button><span id="insp-status" style="font-family:var(--mono);font-size:10px;"></span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- TAB 3: Maintenance -->
+  <div class="view" id="view-maintenance">
+    <div class="sec-label">// Routine Maintenance Logs</div>
+    <div style="display:flex;gap:6px;margin-bottom:14px;">
+      <button class="btn btn-teal btn-sm" id="maint-freq-daily" onclick="setMaintFreq('daily')">Daily</button>
+      <button class="btn btn-ghost btn-sm" id="maint-freq-weekly" onclick="setMaintFreq('weekly')">Weekly</button>
+      <button class="btn btn-ghost btn-sm" id="maint-freq-monthly" onclick="setMaintFreq('monthly')">Monthly</button>
+      <button class="btn btn-ghost btn-sm" id="maint-freq-annual" onclick="setMaintFreq('annual')">Annual</button>
+    </div>
+    <div id="maint-content">
+      <!-- Populated by JS -->
+    </div>
+    <button class="btn btn-teal" onclick="toggleForm('maint-form')" style="margin-top:14px;">&#xFF0B; Log Maintenance</button>
+    <div id="maint-form" style="display:none;margin-top:12px;">
+      <div class="panel"><div class="panel-hdr"><span class="panel-hdr-title">Log Maintenance</span><a href="#" onclick="toggleForm('maint-form');return false;" style="font-size:11px;color:var(--text-dim);">Cancel</a></div>
+      <div class="panel-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">RIDE</label><select id="maint-ride" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>Go-Karts</option><option>Carousel</option></select></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">FREQUENCY</label><select id="maint-freq-sel" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>Daily</option><option>Weekly</option><option>Monthly</option><option>Annual</option></select></div>
+        </div>
+        <div style="margin-top:10px;"><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">TASK</label><textarea id="maint-task" rows="2" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:12px;resize:vertical;" placeholder="Task description..."></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">RESULT</label><select id="maint-result" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>PASS</option><option>NEEDS ATTENTION</option><option>FAIL</option></select></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">NOTES</label><input id="maint-notes" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;" placeholder="Optional notes"></div>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center;"><button class="btn btn-teal" onclick="submitMaintenance()">Submit</button><span id="maint-status" style="font-family:var(--mono);font-size:10px;"></span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- TAB 4: NDT -->
+  <div class="view" id="view-ndt">
+    <div class="sec-label">// Non-Destructive Testing Records</div>
+    <div style="display:flex;gap:0;margin-bottom:16px;">
+      <div style="flex:1;padding:10px 14px;background:var(--teal-dim);border:1px solid rgba(10,191,188,.25);border-radius:6px 0 0 6px;border-right:none;text-align:center;"><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--teal);">01</div><div style="font-size:10px;color:var(--text-dim);">Upload</div></div>
+      <div style="flex:1;padding:10px 14px;background:var(--teal-dim);border:1px solid rgba(10,191,188,.25);border-right:none;text-align:center;"><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--teal);">02</div><div style="font-size:10px;color:var(--text-dim);">Extract (Claude API)</div></div>
+      <div style="flex:1;padding:10px 14px;background:var(--panel3);border:1px solid var(--border2);border-right:none;text-align:center;"><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text-muted);">03</div><div style="font-size:10px;color:var(--text-muted);">Admin Review</div></div>
+      <div style="flex:1;padding:10px 14px;background:var(--panel3);border:1px solid var(--border2);border-radius:0 6px 6px 0;text-align:center;"><div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text-muted);">04</div><div style="font-size:10px;color:var(--text-muted);">Scored</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><span class="panel-hdr-title">NDT Records</span></div>
+      <div class="panel-body" style="padding:0;overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead><tr style="background:var(--panel2);border-bottom:1px solid var(--border);"><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">RIDE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">COMPONENT</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">METHOD</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">ASNT CERT</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">DATE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">RESULT</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">REVIEW</th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;color:var(--text-bright);">Go-Karts</td><td style="padding:8px 12px;">Chassis frame welds</td><td style="padding:8px 12px;">Visual (VT)</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">ASNT II &#x2014; A. Martinez</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Mar 10 2026</td><td style="padding:8px 12px;"><span class="status-badge pass">PASS</span></td><td style="padding:8px 12px;"><span style="color:var(--green);font-family:var(--mono);font-size:10px;">Verified &#x2713;</span></td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;color:var(--text-bright);">Carousel</td><td style="padding:8px 12px;">Brass poles</td><td style="padding:8px 12px;">Liquid Penetrant (PT)</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">ASNT III &#x2014; A. Martinez</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Feb 15 2026</td><td style="padding:8px 12px;"><span class="status-badge pass">PASS</span></td><td style="padding:8px 12px;"><span style="color:var(--green);font-family:var(--mono);font-size:10px;">Verified &#x2713;</span></td></tr>
+            <tr><td style="padding:8px 12px;color:var(--text-bright);">Carousel</td><td style="padding:8px 12px;">Drive shaft</td><td style="padding:8px 12px;">Ultrasonic (UT)</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">ASNT II &#x2014; K. Thompson</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Jan 20 2026</td><td style="padding:8px 12px;"><span class="status-badge warning">CONDITIONAL</span></td><td style="padding:8px 12px;"><span style="color:var(--amber);font-family:var(--mono);font-size:10px;">Pending Review &#x23F3;</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><span class="panel-hdr-title">Upload NDT Report</span></div>
+      <div class="panel-body">
+        <div id="ndt-drop" style="border:2px dashed var(--border2);border-radius:8px;padding:32px;text-align:center;cursor:pointer;" onclick="document.getElementById('ndt-file').click()">
+          <div style="font-size:24px;margin-bottom:8px;">&#x1F4C4;</div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--text-dim);">Drop NDT Report PDF here or click to browse</div>
+          <input type="file" id="ndt-file" accept=".pdf" style="display:none;" onchange="onNdtFile(this)">
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-top:8px;">ASNT Level II/III certification required. Claude API extracts structured data. Admin review required before score update.</div>
+        <div id="ndt-upload-preview" style="display:none;margin-top:10px;padding:10px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;">
+          <span id="ndt-file-name" style="font-family:var(--mono);font-size:11px;color:var(--text);"></span>
+          <button class="btn btn-teal btn-sm" style="margin-left:10px;" onclick="submitNdt()">Submit for Review &#x2192;</button>
+          <span id="ndt-status" style="font-family:var(--mono);font-size:10px;margin-left:8px;"></span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Equipment View -->
-  <div class="view" id="view-equipment">
-    <div class="sec-label">// Equipment Registry</div>
-    <div class="panel">
-      <div class="panel-hdr">
-        <span class="panel-hdr-title">Equipment Registry</span>
+  <!-- TAB 5: CARs -->
+  <div class="view" id="view-cars">
+    <div class="sec-label">// Maintenance Corrective Action Records</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+      <div class="metric-card"><div class="metric-label">Open CARs</div><div class="metric-val" style="color:var(--red);">3</div></div>
+      <div class="metric-card"><div class="metric-label">Overdue</div><div class="metric-val" style="color:var(--amber);">1</div></div>
+      <div class="metric-card"><div class="metric-label">Closed This Month</div><div class="metric-val" style="color:var(--green);">7</div></div>
+    </div>
+    <div class="panel" style="border-left:3px solid var(--amber);margin-bottom:10px;">
+      <div class="panel-body" style="padding:12px 14px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text-bright);">CAR-2026-4471 <span style="font-size:10px;color:var(--text-dim);font-weight:400;">&#x2022; GKI &#x2022; Pre-Op Checklist</span></div>
+            <div style="font-size:13px;color:var(--text);margin-top:4px;">Throttle not returning to idle</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:4px;">Assigned: J. Rivera &#x2022; Due: Apr 2 2026</div>
+          </div>
+          <span class="status-badge warning">MAJOR</span>
+        </div>
+        <div style="display:flex;gap:4px;margin-top:8px;">
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--teal-dim);border:1px solid var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--teal);">1</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--teal-dim);border:1px solid var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--teal);">2</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;font-weight:700;color:var(--accent);">3</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--panel3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--text-muted);">4</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--panel3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--text-muted);">5</span>
+        </div>
       </div>
+    </div>
+    <div class="panel" style="border-left:3px solid var(--red);margin-bottom:10px;">
+      <div class="panel-body" style="padding:12px 14px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text-bright);">CAR-2026-3892 <span style="font-size:10px;color:var(--text-dim);font-weight:400;">&#x2022; CCI &#x2022; NDT Upload</span></div>
+            <div style="font-size:13px;color:var(--text);margin-top:4px;">Conditional weld finding &#x2014; drive shaft</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:4px;">Assigned: T. Brown &#x2022; Due: Apr 1 2026 <span style="color:var(--red);font-weight:700;">OVERDUE</span></div>
+          </div>
+          <span class="status-badge danger">CRITICAL</span>
+        </div>
+        <div style="display:flex;gap:4px;margin-top:8px;">
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--teal-dim);border:1px solid var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--teal);">1</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;font-weight:700;color:var(--accent);">2</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--panel3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--text-muted);">3</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--panel3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--text-muted);">4</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--panel3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--text-muted);">5</span>
+        </div>
+      </div>
+    </div>
+    <div class="panel" style="border-left:3px solid var(--blue);margin-bottom:14px;">
+      <div class="panel-body" style="padding:12px 14px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text-bright);">CAR-2026-3105 <span style="font-size:10px;color:var(--text-dim);font-weight:400;">&#x2022; CCI &#x2022; Maintenance Log</span></div>
+            <div style="font-size:13px;color:var(--text);margin-top:4px;">Chain deflection out of spec</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:4px;">Assigned: M. Lopez &#x2022; Due: Apr 7 2026</div>
+          </div>
+          <span style="font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:var(--blue-dim);color:var(--blue);">MINOR</span>
+        </div>
+        <div style="display:flex;gap:4px;margin-top:8px;">
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--accent-dim);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;font-weight:700;color:var(--accent);">1</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--panel3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--text-muted);">2</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--panel3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--text-muted);">3</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--panel3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--text-muted);">4</span>
+          <span style="width:20px;height:20px;border-radius:50%;background:var(--panel3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--text-muted);">5</span>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-ghost" onclick="document.getElementById('closed-cars').style.display=document.getElementById('closed-cars').style.display==='none'?'block':'none';">Show Closed CARs (7)</button>
+    <div id="closed-cars" style="display:none;margin-top:10px;">
+      <div class="panel" style="opacity:.5;border-left:3px solid var(--green);margin-bottom:8px;"><div class="panel-body" style="padding:10px 14px;"><div style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">CAR-2026-2801 &#x2022; GKI &#x2022; Brake pad wear &#x2022; Closed Mar 25</div></div></div>
+      <div class="panel" style="opacity:.5;border-left:3px solid var(--green);margin-bottom:8px;"><div class="panel-body" style="padding:10px 14px;"><div style="font-family:var(--mono);font-size:11px;color:var(--text-dim);">CAR-2026-2644 &#x2022; CCI &#x2022; Platform bolt torque &#x2022; Closed Mar 18</div></div></div>
+    </div>
+  </div>
+
+  <!-- TAB 6: Credentials -->
+  <div class="view" id="view-credentials">
+    <div class="sec-label">// Inspector Credential Registry</div>
+    <div id="cred-alert" style="background:var(--red-dim);border:1px solid rgba(244,63,94,.25);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-family:var(--mono);font-size:11px;color:var(--red);">&#x26A0; 1 credential expiring within 60 days &#x2014; review required</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+      <div class="panel"><div class="panel-body" style="padding:14px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><div style="width:36px;height:36px;border-radius:50%;background:var(--accent-dim);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--cond);font-weight:700;font-size:13px;color:var(--accent);">TJ</div><div><div style="font-weight:700;color:var(--text-bright);font-size:13px;">Tom Jones</div><div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);">NAARSO Level 3 &#x2022; #TJ-0847</div></div></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Employing Firm: <span style="color:var(--text);">Independent</span></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Independence: <span style="color:var(--green);">Independent</span></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Expires: <span style="color:var(--green);">Dec 2026</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--green);margin-top:6px;">Verified &#x2713;</div>
+      </div></div>
+      <div class="panel" style="border:1px solid rgba(244,63,94,.3);"><div class="panel-body" style="padding:14px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><div style="width:36px;height:36px;border-radius:50%;background:var(--teal-dim);border:1px solid var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--cond);font-weight:700;font-size:13px;color:var(--teal);">RC</div><div><div style="font-weight:700;color:var(--text-bright);font-size:13px;">R.J. Coetzee</div><div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);">NAARSO Level 2 &#x2022; #RC-1204</div></div></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Employing Firm: <span style="color:var(--text);">LJM Safety</span></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Independence: <span style="color:var(--teal);">Third-Party (LJM Safety)</span></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Expires: <span style="color:var(--red);">May 2026 &#x2014; expiring</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--green);margin-top:6px;">Verified &#x2713;</div>
+      </div></div>
+      <div class="panel"><div class="panel-body" style="padding:14px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><div style="width:36px;height:36px;border-radius:50%;background:var(--teal-dim);border:1px solid var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--cond);font-weight:700;font-size:13px;color:var(--teal);">AM</div><div><div style="font-weight:700;color:var(--text-bright);font-size:13px;">A. Martinez</div><div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);">ASNT Level III &#x2022; #AM-5591</div></div></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Employing Firm: <span style="color:var(--text);">TechKnowServ</span></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Independence: <span style="color:var(--teal);">Third-Party (TechKnowServ)</span></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Expires: <span style="color:var(--green);">Nov 2026</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--green);margin-top:6px;">Verified &#x2713;</div>
+      </div></div>
+      <div class="panel"><div class="panel-body" style="padding:14px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><div style="width:36px;height:36px;border-radius:50%;background:var(--amber-dim);border:1px solid var(--amber);display:flex;align-items:center;justify-content:center;font-family:var(--cond);font-weight:700;font-size:13px;color:var(--amber);">MD</div><div><div style="font-weight:700;color:var(--text-bright);font-size:13px;">M. Davis</div><div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);">NAARSO Level 2 &#x2022; #MD-3312</div></div></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Employing Firm: <span style="color:var(--text);">Corporate</span></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Independence: <span style="color:var(--amber);">&#x26A1; Corporate &#x2014; 0.8&#xD7; weight</span></div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">Expires: <span style="color:var(--green);">Aug 2026</span></div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--amber);margin-top:6px;">&#x26A1; Corporate &#x2014; 0.8&#xD7; weight</div>
+      </div></div>
+    </div>
+    <button class="btn btn-teal" onclick="toggleForm('cred-form')">&#xFF0B; Add Inspector</button>
+    <div id="cred-form" style="display:none;margin-top:12px;">
+      <div class="panel"><div class="panel-hdr"><span class="panel-hdr-title">Add Inspector</span><a href="#" onclick="toggleForm('cred-form');return false;" style="font-size:11px;color:var(--text-dim);">Cancel</a></div>
       <div class="panel-body">
-        <div class="empty-state">Equipment database</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">NAME</label><input id="cred-name" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;" placeholder="Full name"></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">CERT TYPE</label><select id="cred-cert" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>NAARSO Level 3</option><option>NAARSO Level 2</option><option>AIMS</option><option>ASNT II</option><option>ASNT III</option></select></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">CERT NUMBER</label><input id="cred-certnum" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;" placeholder="e.g. TJ-0847"></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">EMPLOYING FIRM</label><input id="cred-firm" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;" placeholder="Firm name"></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">INDEPENDENCE</label><select id="cred-indep" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>Independent</option><option>Third-Party Contracted</option><option>Corporate</option></select></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">EXPIRY DATE</label><input id="cred-expiry" type="date" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"></div>
+        </div>
+        <div style="margin-top:10px;"><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">NOTES</label><textarea id="cred-notes" rows="2" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:12px;resize:vertical;" placeholder="Notes..."></textarea></div>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center;"><button class="btn btn-teal" onclick="submitCredential()">Submit</button><span id="cred-status" style="font-family:var(--mono);font-size:10px;"></span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- TAB 7: Service Bulletins -->
+  <div class="view" id="view-bulletins">
+    <div class="sec-label">// Manufacturer Service Bulletins</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+      <div class="metric-card"><div class="metric-label">Total Bulletins</div><div class="metric-val">5</div></div>
+      <div class="metric-card"><div class="metric-label">Compliant</div><div class="metric-val" style="color:var(--green);">3</div></div>
+      <div class="metric-card"><div class="metric-label">Action Required</div><div class="metric-val" style="color:var(--red);">2</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-hdr"><span class="panel-hdr-title">Bulletin Tracker</span></div>
+      <div class="panel-body" style="padding:0;overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;" id="bulletin-table">
+          <thead><tr style="background:var(--panel2);border-bottom:1px solid var(--border);"><th style="padding:8px 10px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">RIDE</th><th style="padding:8px 10px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">BULLETIN</th><th style="padding:8px 10px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">MFR</th><th style="padding:8px 10px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">SUBJECT</th><th style="padding:8px 10px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">ISSUED</th><th style="padding:8px 10px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">STATUS</th><th style="padding:8px 10px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">DAYS</th><th style="padding:8px 10px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">IMPACT</th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border);" id="sb-row-1"><td style="padding:8px 10px;color:var(--text-bright);">GKI</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;">SB-2025-047</td><td style="padding:8px 10px;">Go Kart Mfg</td><td style="padding:8px 10px;">Throttle cable inspection protocol</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;">Oct 2025</td><td style="padding:8px 10px;" id="sb-status-1"><span class="status-badge danger">ACTION REQ</span> <button class="btn btn-teal btn-sm" style="margin-left:4px;" onclick="markCompliant('1')">Mark Compliant &#x2192;</button></td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--red);">163d</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--amber);">&#x26A0; Integrity &#x2212;4pts</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 10px;color:var(--text-bright);">GKI</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;">SB-2024-112</td><td style="padding:8px 10px;">Go Kart Mfg</td><td style="padding:8px 10px;">Brake pad replacement interval</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;">Jun 2024</td><td style="padding:8px 10px;"><span class="status-badge pass">COMPLIANT</span></td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--text-muted);">Closed</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--text-muted);">None</td></tr>
+            <tr style="border-bottom:1px solid var(--border);" id="sb-row-2"><td style="padding:8px 10px;color:var(--text-bright);">CCI</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;">SB-2026-003</td><td style="padding:8px 10px;">Chance Rides</td><td style="padding:8px 10px;">Chain drive lubrication update</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;">Jan 2026</td><td style="padding:8px 10px;" id="sb-status-2"><span class="status-badge warning">ACTION REQ</span> <button class="btn btn-teal btn-sm" style="margin-left:4px;" onclick="markCompliant('2')">Mark Compliant &#x2192;</button></td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--amber);">91d</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--amber);">&#x26A0; Integrity &#x2212;2pts</td></tr>
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 10px;color:var(--text-bright);">CCI</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;">SB-2024-088</td><td style="padding:8px 10px;">Chance Rides</td><td style="padding:8px 10px;">Pole inspection frequency</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;">Apr 2024</td><td style="padding:8px 10px;"><span class="status-badge pass">COMPLIANT</span></td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--text-muted);">Closed</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--text-muted);">None</td></tr>
+            <tr><td style="padding:8px 10px;color:var(--text-bright);">CCI</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;">SB-2023-201</td><td style="padding:8px 10px;">Chance Rides</td><td style="padding:8px 10px;">Hydraulic fluid spec change</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;">Nov 2023</td><td style="padding:8px 10px;"><span class="status-badge pass">COMPLIANT</span></td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--text-muted);">Closed</td><td style="padding:8px 10px;font-family:var(--mono);font-size:10px;color:var(--text-muted);">None</td></tr>
+          </tbody>
+        </table>
       </div>
+    </div>
+    <button class="btn btn-teal" onclick="toggleForm('bulletin-form')" style="margin-top:4px;">&#xFF0B; Log Bulletin</button>
+    <div id="bulletin-form" style="display:none;margin-top:12px;">
+      <div class="panel"><div class="panel-hdr"><span class="panel-hdr-title">Log Bulletin</span><a href="#" onclick="toggleForm('bulletin-form');return false;" style="font-size:11px;color:var(--text-dim);">Cancel</a></div>
+      <div class="panel-body">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">RIDE</label><select id="sb-ride" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>Go-Karts</option><option>Carousel</option></select></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">BULLETIN ID</label><input id="sb-id" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;" placeholder="SB-YYYY-NNN"></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">MANUFACTURER</label><input id="sb-mfr" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;" placeholder="Manufacturer"></div>
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">ISSUED DATE</label><input id="sb-date" type="date" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"></div>
+        </div>
+        <div style="margin-top:10px;"><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">SUBJECT</label><input id="sb-subject" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;" placeholder="Bulletin subject"></div>
+        <div style="margin-top:10px;"><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">DESCRIPTION</label><textarea id="sb-desc" rows="3" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:var(--mono);font-size:12px;resize:vertical;" placeholder="Details..."></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+          <div><label style="font-family:var(--mono);font-size:9px;color:var(--text-dim);display:block;margin-bottom:4px;">STATUS</label><select id="sb-status-sel" style="width:100%;padding:8px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;"><option>ACTION REQUIRED</option><option>COMPLIANT</option></select></div>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center;"><button class="btn btn-teal" onclick="submitBulletin()">Submit</button><span id="sb-submit-status" style="font-family:var(--mono);font-size:10px;"></span></div>
+      </div></div>
     </div>
   </div>
 
@@ -698,6 +957,137 @@ async function checkAllCleared() {
   // Initial poll after 5 seconds
   setTimeout(pollNotifications, 5000);
 })();
+
+/* ── Form Toggle ── */
+function toggleForm(id){var el=document.getElementById(id);if(el)el.style.display=el.style.display==='none'?'block':'none';}
+
+/* ── Maintenance Tab ── */
+var maintFreq='daily';
+function setMaintFreq(f){
+  maintFreq=f;
+  ['daily','weekly','monthly','annual'].forEach(function(k){
+    var btn=document.getElementById('maint-freq-'+k);
+    if(btn){btn.className=k===f?'btn btn-teal btn-sm':'btn btn-ghost btn-sm';}
+  });
+  renderMaintContent();
+}
+function renderMaintContent(){
+  var el=document.getElementById('maint-content');if(!el)return;
+  if(maintFreq==='daily'){
+    el.innerHTML='<div class="ride-grid"><div class="ride-card"><div class="ride-card-hdr"><span class="ride-icon">&#x1F3CE;&#xFE0F;</span><div class="ride-meta"><div class="ride-title">Go-Karts Daily</div><div class="ride-sub">13 items</div></div></div><div class="ride-card-body"><div class="ride-status"><span class="status-badge pass">COMPLETE</span></div><div class="ride-detail"><strong>Mechanic:</strong> J. Rivera &#x2022; 5:55 AM &#x2022; 13 items checked</div></div></div><div class="ride-card"><div class="ride-card-hdr"><span class="ride-icon">&#x1F3A0;</span><div class="ride-meta"><div class="ride-title">Carousel Daily</div><div class="ride-sub">13 items</div></div></div><div class="ride-card-body"><div class="ride-status"><span class="status-badge warning">PENDING</span></div><div class="ride-detail" style="color:var(--text-dim)">Due by: 7:00 AM &#x2022; 0/13 items</div></div></div></div>';
+  }else if(maintFreq==='weekly'){
+    el.innerHTML='<div class="panel"><div class="panel-hdr"><span class="panel-hdr-title">Weekly Tasks</span></div><div class="panel-body" style="padding:0;"><table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr style="background:var(--panel2);border-bottom:1px solid var(--border);"><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">TASK</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">RIDE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">LAST DONE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">DUE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">STATUS</th></tr></thead><tbody><tr style="border-bottom:1px solid var(--border);"><td style="padding:8px 12px;color:var(--text);">Drive belt tension check</td><td style="padding:8px 12px;">GKI</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Mar 28</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Apr 4</td><td style="padding:8px 12px;"><span class="status-badge warning">DUE</span></td></tr><tr><td style="padding:8px 12px;color:var(--text);">Chain deflection (5/8\u201D)</td><td style="padding:8px 12px;">CCI</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Mar 27</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Apr 3</td><td style="padding:8px 12px;"><span class="status-badge danger">OVERDUE</span></td></tr></tbody></table></div></div>';
+  }else if(maintFreq==='monthly'){
+    el.innerHTML='<div class="panel"><div class="panel-hdr"><span class="panel-hdr-title">Monthly Tasks</span></div><div class="panel-body" style="padding:0;"><table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr style="background:var(--panel2);border-bottom:1px solid var(--border);"><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">TASK</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">RIDE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">LAST DONE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">DUE</th><th style="padding:8px 12px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text-dim);">STATUS</th></tr></thead><tbody><tr><td style="padding:8px 12px;color:var(--text);">Full engine service</td><td style="padding:8px 12px;">GKI</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Feb 15</td><td style="padding:8px 12px;font-family:var(--mono);font-size:10px;">Mar 15</td><td style="padding:8px 12px;"><span class="status-badge danger">OVERDUE</span></td></tr></tbody></table></div></div>';
+  }else{
+    el.innerHTML='<div class="panel"><div class="panel-body"><div class="empty-state">No annual tasks due</div></div></div>';
+  }
+}
+renderMaintContent();
+
+/* ── Airtable Push Helper ── */
+async function mmPush(table,fields,statusElId){
+  var statusEl=statusElId?document.getElementById(statusElId):null;
+  try{
+    var res=await fetch(AT_URL+'/'+encodeURIComponent(table),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:fields})});
+    if(res.ok){if(statusEl){statusEl.style.color='var(--green)';statusEl.textContent='\u2713 Record saved';}}
+    else{throw new Error('err');}
+    updateSyncStatus(true);
+  }catch(e){
+    if(statusEl){statusEl.style.color='var(--amber)';statusEl.textContent='Connection error \u2014 data saved locally';}
+    updateSyncStatus(false);
+  }
+}
+
+/* ── Submit Handlers ── */
+function submitInspection(){
+  mmPush('MM_Inspections',{
+    Ride:document.getElementById('insp-ride').value,
+    Inspector:document.getElementById('insp-name').value,
+    Cert_Type:document.getElementById('insp-cert').value,
+    Cert_Number:document.getElementById('insp-certnum').value,
+    Independence:document.getElementById('insp-indep').value,
+    Employing_Firm:document.getElementById('insp-firm').value,
+    Date:document.getElementById('insp-date').value,
+    Result:document.getElementById('insp-result').value,
+    Findings:document.getElementById('insp-findings').value,
+    Submitted_At:new Date().toISOString()
+  },'insp-status');
+}
+
+function submitMaintenance(){
+  var result=document.getElementById('maint-result').value;
+  mmPush('MM_Maintenance',{
+    Ride:document.getElementById('maint-ride').value,
+    Frequency:document.getElementById('maint-freq-sel').value,
+    Task:document.getElementById('maint-task').value,
+    Result:result,
+    Notes:document.getElementById('maint-notes').value,
+    Submitted_At:new Date().toISOString()
+  },'maint-status');
+  if(result==='FAIL'){
+    var carId='CAR-'+new Date().getFullYear()+'-'+String(Math.floor(1000+Math.random()*9000));
+    mmPush('CAR_Log',{
+      CAR_ID:carId,
+      Ride:document.getElementById('maint-ride').value,
+      Source:'Maintenance Log',
+      Severity:'MAJOR',
+      Item:document.getElementById('maint-task').value,
+      Status:'OPEN',
+      Submitted_At:new Date().toISOString()
+    });
+  }
+}
+
+function onNdtFile(input){
+  if(!input.files||!input.files[0])return;
+  var prev=document.getElementById('ndt-upload-preview');
+  var name=document.getElementById('ndt-file-name');
+  if(prev)prev.style.display='flex';
+  if(name)name.textContent=input.files[0].name;
+}
+
+function submitNdt(){
+  var file=document.getElementById('ndt-file');
+  var fname=file&&file.files[0]?file.files[0].name:'unknown';
+  mmPush('MM_NDT',{
+    File_Name:fname,
+    Review_Status:'Pending',
+    Submitted_At:new Date().toISOString()
+  },'ndt-status');
+}
+
+function submitCredential(){
+  mmPush('MM_Credentials',{
+    Name:document.getElementById('cred-name').value,
+    Cert_Type:document.getElementById('cred-cert').value,
+    Cert_Number:document.getElementById('cred-certnum').value,
+    Employing_Firm:document.getElementById('cred-firm').value,
+    Independence:document.getElementById('cred-indep').value,
+    Expiry_Date:document.getElementById('cred-expiry').value,
+    Notes:document.getElementById('cred-notes').value,
+    Submitted_At:new Date().toISOString()
+  },'cred-status');
+}
+
+function markCompliant(num){
+  var el=document.getElementById('sb-status-'+num);
+  if(el)el.innerHTML='<span class="status-badge pass">COMPLIANT</span>';
+  mmPush('MM_Bulletins',{Bulletin_Row:num,Status:'COMPLIANT',Updated_At:new Date().toISOString()});
+}
+
+function submitBulletin(){
+  mmPush('MM_Bulletins',{
+    Ride:document.getElementById('sb-ride').value,
+    Bulletin_ID:document.getElementById('sb-id').value,
+    Manufacturer:document.getElementById('sb-mfr').value,
+    Subject:document.getElementById('sb-subject').value,
+    Issued_Date:document.getElementById('sb-date').value,
+    Description:document.getElementById('sb-desc').value,
+    Status:document.getElementById('sb-status-sel').value,
+    Submitted_At:new Date().toISOString()
+  },'sb-submit-status');
+}
 </script>
 </body>
 </html>
