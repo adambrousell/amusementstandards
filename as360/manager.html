@@ -388,12 +388,20 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   </div>
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+    <div class="sec-label" style="margin:0">// ASTM F24 Pre-Operational Inspections</div>
+    <button class="btn btn-ghost btn-sm" onclick="refreshRideInspCards()" style="font-size:11px;">&#x21bb; Refresh</button>
+  </div>
+  <div id="oc-ride-insp-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+    <!-- Rendered by renderRideInspCards() -->
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
     <div class="sec-label" style="margin:0">// Pre-Opening Checklist</div>
     <div style="display:flex;gap:6px;">
-      <button class="btn btn-ghost btn-sm" onclick="ocSetFilter(&#39;all&#39;)">All</button>
-      <button class="btn btn-ghost btn-sm" onclick="ocSetFilter(&#39;pending&#39;)" style="color:var(--amber)">Pending</button>
-      <button class="btn btn-ghost btn-sm" onclick="ocSetFilter(&#39;clear&#39;)" style="color:var(--green)">Cleared</button>
-      <button class="btn btn-ghost btn-sm" onclick="ocSetFilter(&#39;hold&#39;)" style="color:var(--red)">Hold</button>
+      <button class="btn btn-ghost btn-sm" onclick="ocSetFilter('all')">All</button>
+      <button class="btn btn-ghost btn-sm" onclick="ocSetFilter('pending')" style="color:var(--amber)">Pending</button>
+      <button class="btn btn-ghost btn-sm" onclick="ocSetFilter('clear')" style="color:var(--green)">Cleared</button>
+      <button class="btn btn-ghost btn-sm" onclick="ocSetFilter('hold')" style="color:var(--red)">Hold</button>
     </div>
   </div>
   <div class="metric-grid">
@@ -402,84 +410,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
     <div class="metric-card red"><div class="mv red" id="oc-hold-count">0</div><div class="ml">On Hold</div></div>
     <div class="metric-card blue"><div class="mv blue" id="oc-total-count">11</div><div class="ml">Total Attractions</div></div>
   </div>
-  <div id="oc-ride-list"><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Coaster — Area 1</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone A</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R01&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R01&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R01&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Flat Ride — Area 1</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone A</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R02&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R02&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R02&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Dark Ride — Area 2</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone B</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R03&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R03&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R03&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Coaster — Area 2</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone B</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R04&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R04&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R04&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Family Ride — Area 2</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone B</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R05&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R05&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R05&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Spinner — Area 2</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone B</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R06&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R06&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R06&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Coaster — Area 3</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone C</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R07&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R07&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R07&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Glider — Area 3</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone C</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R08&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R08&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R08&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Thrill Ride — Area 3</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone C</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R09&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R09&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R09&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Interactive — Area 3</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone C</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R10&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R10&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R10&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div><div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);">Dark Ride — Area 4</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-dim);">Zone D</div></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--panel3);color:var(--text-dim)">PENDING</span>
-        <button class="btn btn-ghost btn-sm" style="color:var(--green)" onclick="ocSet(&#39;R11&#39;,&#39;clear&#39;)">✓</button>
-        <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="ocSet(&#39;R11&#39;,&#39;hold&#39;)">✕</button>
-        <button class="btn btn-ghost btn-sm" onclick="ocSet(&#39;R11&#39;,&#39;pending&#39;)">↺</button>
-      </div>
-    </div></div>
+  <div id="oc-ride-list"></div>
 
   <div style="border-top:1px solid var(--border);margin-top:16px;padding-top:14px;">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
@@ -1917,6 +1848,153 @@ function updateOpeningTabColor(){
 function ocSetFilter(f){
   ocFilterMode=f;renderOpeningChecklist();
 }
+// ── ASTM F24 RIDE INSPECTION CARDS (GKI / CCI) ──────────────────────────────
+const RIDE_INSP_DEFS=[
+  {code:'GKI',name:'Go-Karts',subtitle:'ASTM F24 Pre-Operational',icon:'\u{1F3CE}\uFE0F',logTable:'GKI_Log',opsLogTable:'GKI_Ops_Log',maintItems:35,opsItems:12,zone:'Zone A'},
+  {code:'CCI',name:'Carousel (Chance MGR)',subtitle:'ASTM F24 Pre-Operational',icon:'\u{1F3A0}',logTable:'CCI_Log',opsLogTable:'CCI_Ops_Log',maintItems:38,opsItems:14,zone:'Zone B'}
+];
+let rideInspCache={};
+let rideInspLive=false; // false = show demo, true = fetched from Airtable
+
+// Demo data so Tom sees populated cards on first render
+const RIDE_INSP_DEMO={
+  GKI:{
+    maint:{'Completed By':'J. Rivera','Submitted At':'2026-04-01T05:42:00.000Z','Pass Rate':'100%'},
+    ops:null
+  },
+  CCI:{maint:null,ops:null}
+};
+
+function fmtInspTime(iso){
+  if(!iso)return'';
+  try{const d=new Date(iso);return d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit',hour12:true}).toUpperCase();}catch(e){return'';}
+}
+
+async function fetchRideInspStatus(def){
+  const today=new Date().toISOString().split('T')[0];
+  let maint=null,ops=null;
+  try{
+    const mFilter=encodeURIComponent(`AND({Date}='${today}',{Role}='maintenance')`);
+    const mRes=await fetch(`${AT_URL}/${encodeURIComponent(def.logTable)}?filterByFormula=${mFilter}`,{headers:{'Content-Type':'application/json'}});
+    if(mRes.ok){const d=await mRes.json();if(d.records&&d.records.length>0)maint=d.records[0].fields;}
+  }catch(e){}
+  try{
+    const oFilter=encodeURIComponent(`AND({Date}='${today}')`);
+    const oRes=await fetch(`${AT_URL}/${encodeURIComponent(def.opsLogTable)}?filterByFormula=${oFilter}`,{headers:{'Content-Type':'application/json'}});
+    if(oRes.ok){const d=await oRes.json();if(d.records&&d.records.length>0)ops=d.records[0].fields;}
+  }catch(e){}
+  return{maint,ops};
+}
+
+function buildRideInspCard(def,status){
+  const hasMaint=!!status.maint;
+  const hasOps=!!status.ops;
+
+  // Border + overall badge
+  let borderColor,overallHtml;
+  if(hasMaint&&hasOps){
+    borderColor='rgba(16,185,129,.4)';
+    overallHtml='<span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--green-dim);color:var(--green);border:1px solid rgba(16,185,129,.3);">CLEARED TO OPEN</span>';
+  }else if(hasMaint&&!hasOps){
+    borderColor='rgba(245,158,11,.35)';
+    overallHtml='<span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--amber-dim);color:var(--amber);border:1px solid rgba(245,158,11,.3);">AWAITING OPS SIGN-OFF</span>';
+  }else{
+    borderColor='rgba(244,63,94,.4)';
+    overallHtml='<span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.3);">AWAITING MAINTENANCE</span>';
+  }
+
+  // Layer 1 — Maintenance
+  const maintTime=fmtInspTime(status.maint?.['Submitted At']);
+  const maintWho=status.maint?.['Completed By']||'';
+  const maintRow=hasMaint
+    ?`<div style="display:flex;align-items:center;gap:6px;padding:7px 0;"><span style="color:var(--green);font-size:15px;line-height:1;">&#x2713;</span><div style="flex:1;min-width:0;"><div style="font-family:var(--mono);font-size:10px;color:var(--green);font-weight:700;">Maint: ${maintWho}</div><div style="font-family:var(--mono);font-size:8px;color:var(--text-muted);margin-top:1px;">${maintTime}${status.maint?.['Pass Rate']?' · '+status.maint['Pass Rate']:''}</div></div></div>`
+    :`<div style="display:flex;align-items:center;gap:6px;padding:7px 0;"><span style="font-size:10px;line-height:1;">&#x1F534;</span><div style="font-family:var(--mono);font-size:10px;color:var(--red);font-weight:600;">Awaiting Maintenance</div></div>`;
+
+  // Layer 2 — Operations (grayed out if maint not done)
+  const opsTime=fmtInspTime(status.ops?.['Submitted At']);
+  const opsWho=status.ops?.['Completed By']||'';
+  const opsOpacity=hasMaint?'1':'.35';
+  let opsRow;
+  if(hasOps){
+    opsRow=`<div style="display:flex;align-items:center;gap:6px;padding:7px 0;opacity:${opsOpacity};"><span style="color:var(--green);font-size:15px;line-height:1;">&#x2713;</span><div style="flex:1;min-width:0;"><div style="font-family:var(--mono);font-size:10px;color:var(--green);font-weight:700;">Ops: ${opsWho}</div><div style="font-family:var(--mono);font-size:8px;color:var(--text-muted);margin-top:1px;">${opsTime}${status.ops?.['Pass Rate']?' · '+status.ops['Pass Rate']:''}</div></div></div>`;
+  }else{
+    const opsLabel=hasMaint?'Awaiting Ops Sign-Off':'Awaiting Ops Sign-Off';
+    const opsColor=hasMaint?'var(--amber)':'var(--text-muted)';
+    const opsIcon=hasMaint?'&#x1F7E1;':'&#x26AB;';
+    opsRow=`<div style="display:flex;align-items:center;gap:6px;padding:7px 0;opacity:${opsOpacity};"><span style="font-size:10px;line-height:1;">${opsIcon}</span><div style="font-family:var(--mono);font-size:10px;color:${opsColor};font-weight:600;">${opsLabel}</div></div>`;
+  }
+
+  // Buttons
+  const clearEnabled=hasMaint&&hasOps;
+  const clearBtnStyle=clearEnabled
+    ?'background:linear-gradient(135deg,var(--green),#059669);color:#fff;cursor:pointer;'
+    :'background:var(--panel3);color:var(--text-muted);cursor:not-allowed;opacity:.4;';
+
+  return`<div style="background:var(--panel);border:1px solid ${borderColor};border-radius:10px;overflow:hidden;">
+    <div style="padding:10px 14px;background:var(--panel2);border-bottom:1px solid var(--border);">
+      <div style="font-family:var(--cond);font-size:15px;font-weight:700;color:var(--text-bright);">${def.icon} ${def.name}</div>
+      <div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);margin-top:2px;">${def.subtitle} · ${def.maintItems}+${def.opsItems} items</div>
+    </div>
+    <div style="padding:10px 14px;">
+      ${overallHtml}
+      <div style="margin-top:6px;border-top:1px solid var(--border);padding-top:4px;">
+        ${maintRow}
+        <div style="border-top:1px dashed var(--border);"></div>
+        ${opsRow}
+      </div>
+      <div style="display:flex;gap:6px;margin-top:8px;">
+        <button class="btn btn-sm" style="flex:1;font-size:10px;${clearBtnStyle}" onclick="${clearEnabled?`ocSet('${def.code}','clear')`:''}" ${clearEnabled?'':'disabled'}>&#x2713; Clear</button>
+        <button class="btn btn-ghost btn-sm" style="flex:0 0 auto;font-size:12px;padding:7px 10px;" onclick="window.open('open.html?ride=${def.code}','_blank')" title="Open inspection form">&#x1F4F2;</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderRideInspCardsFromData(dataMap){
+  const container=document.getElementById('oc-ride-insp-cards');
+  if(!container)return;
+  container.innerHTML=RIDE_INSP_DEFS.map(def=>{
+    const status=dataMap[def.code]||{maint:null,ops:null};
+    return buildRideInspCard(def,status);
+  }).join('');
+}
+
+async function renderRideInspCards(){
+  const container=document.getElementById('oc-ride-insp-cards');
+  if(!container)return;
+
+  // First render: show demo data immediately
+  if(!rideInspLive){
+    renderRideInspCardsFromData(RIDE_INSP_DEMO);
+  }else{
+    // Show loading shimmer
+    container.innerHTML=RIDE_INSP_DEFS.map(def=>`<div style="background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px;"><div style="font-family:var(--cond);font-size:15px;font-weight:700;color:var(--text-bright);margin-bottom:8px;">${def.icon} ${def.name}</div><div style="font-family:var(--mono);font-size:9px;color:var(--text-muted);">Checking Airtable...</div></div>`).join('');
+  }
+
+  // Fetch live data in background
+  try{
+    const results=await Promise.all(RIDE_INSP_DEFS.map(async def=>{
+      const status=await fetchRideInspStatus(def);
+      rideInspCache[def.code]=status;
+      return{code:def.code,status};
+    }));
+    const liveData={};
+    results.forEach(r=>liveData[r.code]=r.status);
+    rideInspLive=true;
+    renderRideInspCardsFromData(liveData);
+  }catch(e){
+    // If fetch fails and we haven't shown live data yet, keep demo
+    if(!rideInspLive) renderRideInspCardsFromData(RIDE_INSP_DEMO);
+  }
+}
+
+function refreshRideInspCards(){
+  rideInspLive=true; // skip demo on manual refresh
+  rideInspCache={};
+  renderRideInspCards();
+  toast('Refreshing inspection status...','ok');
+}
+
 function renderOpeningChecklist(){
   const all=EU_ROT_DEFS;
   const clear=all.filter(d=>ocStates[d.id]?.status==='clear').length;
@@ -2734,7 +2812,7 @@ function showView(name,tab){
     inspections:()=>{renderInspections();},
     auditscore:renderAuditScore,
     throughput:renderThroughput,
-    opening:()=>{renderOpeningChecklist();renderRoleCards();renderZoneAssignments();},
+    opening:()=>{renderRideInspCards();renderOpeningChecklist();renderRoleCards();renderZoneAssignments();},
     emergency:()=>{renderStaffDir();renderMatrix();},
     amendments:()=>{renderAmendments();},
   };
