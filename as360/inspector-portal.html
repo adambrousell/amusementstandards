@@ -54,7 +54,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .form-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
 .checklist-group{margin-bottom:14px;}
 .cg-title{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
-.cg-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);}
+.cg-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid rgba(36,45,62,.4);min-height:52px;}
 .cg-row:last-child{border-bottom:none;}
 .cg-row.disabled{opacity:.35;pointer-events:none;}
 .cg-label{flex:1;font-size:13px;color:var(--text);font-weight:500;}
@@ -164,35 +164,110 @@ var answers={};
 var lotoConfirmed=false;
 var lotoTimestamp=null;
 
-// Electrical Systems (ELV18) section — injected into ride checklists
-var ELV18_SECTION={name:'Electrical Systems (ELV18)',items:[
-  'Fuse ratings correct — no jumpers, no contamination, no bare wires, proper guards installed',
-  'Collector rings and brushes — condition, wear within limits, proper contact maintained',
-  'Lead wires, main disconnect, control panel, sub-panels — condition, integrity, grounding verified',
-  'Lighting — adequate illumination, securely mounted, wiring and plug condition acceptable',
-  'Photo eyes, proximity switches, limit switches and sensors — inspected and tested functional',
-  'Emergency stop switches — all stop and e-stop switches and features tested and operational'
-]};
-
-// Checklist definitions (ride-type inspections include ELV18)
-var PORTAL_CHECKLISTS={
-  'Annual Ride Inspection':{title:'Annual Ride Inspection',sections:[
-    {name:'Structural & Mechanical',items:['Track / guide rail — no abnormal wear','Support structure — no corrosion, cracking, or movement','Vehicle / carrier — paint, body, structural integrity','Restraint devices — wear, function, latch engagement','Brake systems — visual inspection and function test']},
-    {name:'Electrical & Controls',items:['Control panel — all indicators, switches, buttons functional','Safety circuit — all interlocks and sensors tested','Lighting — ride lighting and queue lighting operational','Communication systems — operator radio, PA, intercom','Backup power — UPS or generator tested']},
-    ELV18_SECTION,
-    {name:'Documentation',items:['Maintenance log current','Service bulletin compliance verified','Manufacturer maintenance schedule on track','Incident log reviewed — recurring issues identified','NDT and major inspection dates confirmed current']}
+// ── ASTM F24 CHECKLISTS — EXACT TOM'S ITEMS ──
+var RIDE_CHECKLISTS={
+  'Go-Karts':{title:'Go-Kart Inspection',manufacturer:'Go Karts',sections:[
+    {num:3,name:'Area Inspection',items:[
+      'A. Inspect all entries/exits and hardware for proper operation.',
+      'B. Inspect all ride fencing for presence and condition.',
+      'C. Verify that telephone is operating properly.',
+      'D. Verify that all fire extinguisher(s) is/are present, charged, and tagged.',
+      'E. Inspect all lighting, audio, & video equipment for mounting hardware for security.',
+      'F. Verify presence of safety signage, including height requirements.',
+      'G. Inspect fueling system.',
+      'H. Verify that PA system is working properly.',
+      'I. Inspect all ramps & walkways for security & integrity. (If applicable)'
+    ]},
+    {num:4,name:'Carrier & Drive Unit Inspection',items:[
+      'A. Inspect brake system for any worn, damaged, or misaligned components.',
+      'B. Inspect steering system for any wear, damage, or misalignment.',
+      'C. Inspect fuel system for any leaks & all related components.',
+      'D. Inspect tires for wear & proper inflation.',
+      'E. Inspect body for structural integrity.',
+      'F. Inspect roof, hinges, & latches. (If applicable)',
+      'G. Inspect seating area including safety belts, padding, cushions, etc.',
+      'H. Inspect chassis and/or frame for wear, damage, or adjustments including shafts, axles, bearings, rod ends, & bumpers.',
+      'I. Verify proper signage in cars. (No bumping, gas, brakes, etc.)',
+      'J. Inspect engine & clutch components.',
+      'K. Inspect throttle system components for proper operation.',
+      'L. Inspect drive belts & pulleys.',
+      'M. Verify brakes with car running.'
+    ]},
+    {num:5,name:'Track Structure Inspection',items:[
+      'A. Inspect bumper rail system including all hardware.',
+      'B. Inspect track surface.',
+      'C. Inspect pit gates.',
+      'D. Inspect stop lights & signage.',
+      'E. Inspect fencing & queuing lines.'
+    ]},
+    {num:6,name:'Electrical',items:[
+      'A. Verify remote control safety system for proper operation.',
+      'B. Inspect ride lighting for presence and security (if applicable).',
+      'C. Inspect control panel for condition & legible indicator labels.'
+    ]},
+    {num:7,name:'Lubrication',items:[
+      'A. Refer to lubrication schedule & verify lubrication procedure.'
+    ]},
+    {num:8,name:'Power Up and Testing',items:[
+      'A. Remove Lock Out',
+      'B. Test operation of ride controls, brake, & safety systems.'
+    ]}
   ]},
-  'Water Quality Audit':{title:'Water Quality Audit',sections:[
-    {name:'Chemical Levels',items:['Free chlorine within range (1.0-3.0 ppm)','Combined chlorine below 0.4 ppm','pH within range (7.2-7.8)','Total alkalinity within range (80-120 ppm)','Water temperature recorded']},
-    {name:'Filtration & Circulation',items:['Pump operating within normal PSI range','Skimmers clear and functioning','Return jets operating and properly directed','Filter backwash completed on schedule']},
-    {name:'Visual & Safety',items:['Water clarity — main drain visible from deck','No algae growth on walls, floors, or features','Deck surfaces clean and non-slip','Safety equipment present (ring buoys, reach poles)']}
-  ]},
-  'Emergency Systems Review':{title:'Emergency Systems Review',sections:[
-    {name:'Fire & Emergency Access',items:['Fire lanes clear and unobstructed','Fire extinguishers present, charged, tagged within 12 months','Fire alarm pull stations accessible and unblocked','Emergency vehicle access routes passable']},
-    {name:'Evacuation Routes',items:['All emergency exits operational','Exit paths illuminated (emergency lighting tested)','Assembly points marked and accessible','Evacuation maps posted at key decision points']},
-    ELV18_SECTION
+  'Carousel':{title:'Chance Carousel (MGR) Inspection',manufacturer:'Chance \u00b7 RPM: 4 \u00b7 Direction: CCW',sections:[
+    {num:3,name:'Area Inspection',items:[
+      'A. Inspect all entries/exits and hardware for proper operation.',
+      'B. Inspect all ride fencing for presence and condition.',
+      'C. Verify that telephone is operating properly.',
+      'D. Verify that fire extinguisher is present, charged, and tagged.',
+      'E. Inspect all lighting, audio, & video equipment mounting hardware for security.',
+      'F. Verify presence of safety signage, including height requirements.',
+      'G. Inspect all ramps & walkways for security & integrity. (If applicable)'
+    ]},
+    {num:4,name:'Carrier Inspection',items:[
+      'A. Security to poles for all jumpers, hardware presence & security.',
+      'B. Security to platform for all standers.',
+      'C. Figure condition, paint, fiberglass, & jewels.',
+      'D. Stirrup condition & security.',
+      'E. Safety straps for presence, condition, & security. (If applicable)',
+      'F. Inspect chariots for structural condition & stability.',
+      'G. Inspect horse hangers & hooks for wear.'
+    ]},
+    {num:5,name:'Structure, Platforms, and Sweeps Inspection',items:[
+      'A. Inspect brass poles for cracks.',
+      'B. Inspect framing & platforms for cracks, chaffing, & splitting.',
+      'C. Inspect telescope for excessive wear & security.',
+      'D. Inspect all platform brace rods for presence, condition, & security.',
+      'E. Inspect steel sweeps for condition & security.',
+      'F. Inspect all spreader bars for condition & security.'
+    ]},
+    {num:6,name:'Drive Units',items:[
+      'A. Inspect gears, bearings, & cranks for security & alignment.',
+      'B. Inspect drive mechanisms & brake systems for proper operation.',
+      'C. Inspect drive motors for security & alignment.',
+      'D. Inspect chain for proper adjustment (5/8" deflection on the slack side)',
+      'E. Verify proper oil level in hydraulic unit.',
+      'F. Inspect all hoses & fittings for leaks & condition.',
+      'G. Clean oil cooler & system filter. (As needed)'
+    ]},
+    {num:7,name:'Electrical',items:[
+      'A. Inspect conductors, plugs, sensors, & connection for security & condition.',
+      'B. Inspect control panel for condition & legible indicator labels.',
+      'C. Inspect ride lighting for presence & security.',
+      'D. Inspect commutator and brushes for security & proper operation.'
+    ]},
+    {num:8,name:'Lubrication',items:[
+      'A. Refer to lubrication schedule & verify lubrication procedure.'
+    ]},
+    {num:9,name:'Power Up and Testing',items:[
+      'A. Remove Lock Out/Tag Out',
+      'B. Restore ride power.',
+      'C. Check brakes.',
+      'D. Test operation of ride controls, brake, & safety systems.'
+    ]}
   ]}
 };
+var currentChecklist=null;
+var sectionComments={};
 
 // ── NAVIGATION ──
 function showScreen(id){
@@ -256,32 +331,48 @@ function demoBypass(){
 }
 
 // ── DEMO ASSIGNMENTS DATA ──
-var DEMO_ASSIGNMENTS=[
-  {id:'demo-f019',fields:{Facility:'F-019 \u00b7 FEC \u00b7 New Jersey',Ride:'Go-Karts + Carousel',Inspection_Type:'Annual Ride Inspection',Due_Date:'2026-04-07',status:'due'}},
-  {id:'demo-p037',fields:{Facility:'P-037 \u00b7 Amusement \u00b7 Ohio',Ride:'Full facility',Inspection_Type:'Annual Ride Inspection',Due_Date:'2026-06-15',status:'scheduled'}},
-  {id:'demo-w011',fields:{Facility:'W-011 \u00b7 Water Park \u00b7 Florida',Ride:'Pending assignment',Inspection_Type:'Water Quality Audit',Due_Date:'',status:'unassigned'}}
+var DEMO_FACILITIES=[
+  {id:'f019',facility:'F-019 \u00b7 FEC \u00b7 New Jersey',status:'due',dueDate:'2026-04-07',rides:[
+    {id:'demo-gk',ride:'Go-Karts',checklistKey:'Go-Karts'},
+    {id:'demo-car',ride:'Carousel',checklistKey:'Carousel'}
+  ]},
+  {id:'p037',facility:'P-037 \u00b7 Amusement \u00b7 Ohio',status:'scheduled',dueDate:'2026-06-15',rides:[
+    {id:'demo-p037-full',ride:'Full facility',checklistKey:'Go-Karts'}
+  ]},
+  {id:'w011',facility:'W-011 \u00b7 Water Park \u00b7 Florida',status:'unassigned',dueDate:'',rides:[
+    {id:'demo-w011-pend',ride:'Pending assignment',checklistKey:'Go-Karts'}
+  ]}
 ];
 
 function renderDemoAssignments(){
   var list=document.getElementById('assignments-list');
-  list.innerHTML=DEMO_ASSIGNMENTS.map(function(rec){
-    var f=rec.fields;
-    var badgeColor=rec.fields.status==='due'?'var(--amber)':rec.fields.status==='scheduled'?'var(--accent)':'var(--text-muted)';
-    var badgeBg=rec.fields.status==='due'?'var(--amber-dim)':rec.fields.status==='scheduled'?'var(--accent-dim)':'var(--panel3)';
-    var badgeLabel=rec.fields.status==='due'?'DUE APR 7':rec.fields.status==='scheduled'?'SCHEDULED Q2':'UNASSIGNED';
-    var actionHtml='';
-    if(rec.fields.status==='due'){
-      actionHtml='<button class="btn btn-accent" style="margin-top:8px;font-size:12px;padding:8px 14px;" onclick="openDemoAssignment(\''+rec.id+'\')">Begin Inspection &#x2192;</button>';
-    }
-    return '<div class="assign-card" style="cursor:default;"><div style="display:flex;justify-content:space-between;align-items:center;"><div class="assign-ride">'+f.Ride+'</div><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:'+badgeBg+';color:'+badgeColor+';border:1px solid '+badgeColor+';">'+badgeLabel+'</span></div><div class="assign-meta">'+f.Facility+' &#x2022; '+f.Inspection_Type+'</div>'+actionHtml+'</div>';
-  }).join('');
+  var html='';
+  DEMO_FACILITIES.forEach(function(fac){
+    var badgeColor=fac.status==='due'?'var(--amber)':fac.status==='scheduled'?'var(--accent)':'var(--text-muted)';
+    var badgeBg=fac.status==='due'?'var(--amber-dim)':fac.status==='scheduled'?'var(--accent-dim)':'var(--panel3)';
+    var badgeLabel=fac.status==='due'?'DUE APR 7':fac.status==='scheduled'?'SCHEDULED Q2':'UNASSIGNED';
+    html+='<div class="panel" style="margin-bottom:12px;"><div class="panel-hdr"><div><div class="panel-title">'+fac.facility+'</div></div><span style="font-family:var(--mono);font-size:8px;font-weight:700;padding:3px 8px;border-radius:3px;background:'+badgeBg+';color:'+badgeColor+';border:1px solid '+badgeColor+';">'+badgeLabel+'</span></div>';
+    html+='<div class="panel-body" style="padding:10px 14px;">';
+    fac.rides.forEach(function(r){
+      html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">';
+      html+='<div style="font-family:var(--cond);font-size:14px;font-weight:600;color:var(--text-bright);">'+r.ride+'</div>';
+      if(fac.status==='due'){
+        html+='<button class="btn btn-accent btn-sm" onclick="openDemoRide(\''+r.id+'\',\''+fac.id+'\')">Begin Inspection &#x2192;</button>';
+      }else{
+        html+='<span style="font-family:var(--mono);font-size:9px;color:var(--text-muted);">'+badgeLabel+'</span>';
+      }
+      html+='</div>';
+    });
+    html+='</div></div>';
+  });
+  list.innerHTML=html;
 }
 
-function openDemoAssignment(demoId){
-  var rec=DEMO_ASSIGNMENTS.find(function(r){return r.id===demoId;});
-  if(!rec)return;
-  var f=rec.fields;
-  currentAssignment={id:demoId,facility:f.Facility,ride:f.Ride,type:f.Inspection_Type,dueDate:f.Due_Date};
+function openDemoRide(rideId,facId){
+  var fac=DEMO_FACILITIES.find(function(f){return f.id===facId;});
+  var ride=fac?fac.rides.find(function(r){return r.id===rideId;}):null;
+  if(!fac||!ride)return;
+  currentAssignment={id:rideId,facility:fac.facility,ride:ride.ride,type:ride.checklistKey,dueDate:fac.dueDate};
   renderChecklist();
 }
 
@@ -346,43 +437,68 @@ function confirmLoto(){
 // ── CHECKLIST RENDER ──
 function renderChecklist(){
   answers={};
+  sectionComments={};
   lotoConfirmed=false;
   lotoTimestamp=null;
-  var cl=PORTAL_CHECKLISTS[currentAssignment.type];
-  if(!cl){toast('Unknown inspection type: '+currentAssignment.type,'err');return;}
+  currentChecklist=RIDE_CHECKLISTS[currentAssignment.type];
+  if(!currentChecklist){toast('Unknown ride type: '+currentAssignment.type,'err');return;}
+  var cl=currentChecklist;
   var container=document.getElementById('checklist-container');
   var totalItems=0;
   cl.sections.forEach(function(s){totalItems+=s.items.length;});
 
-  var lotoHtml='<div class="loto-gate" id="loto-gate"><div class="loto-icon">&#x1F512;</div><div class="loto-text">Confirm: Main power source has been locked out and tagged out.<br>Zero electrical / energy / mechanical status verified.</div><button class="loto-confirm-btn" onclick="confirmLoto()">Confirm LOTO &#x2192;</button></div>';
-
-  var sectionsHtml=cl.sections.map(function(sec,si){
-    var rows=sec.items.map(function(item,ii){
-      var key=si+'_'+ii;
-      var opts='';
-      for(var r=1;r<=5;r++){opts+='<div class="cg-opt" onclick="markItem(\''+key+'\','+r+',this)" title="'+r+' — '+RATING_LABELS[r]+'">'+r+'</div>';}
-      return '<div class="cg-row disabled" id="row-'+key+'"><div class="cg-label">'+item+'</div><div class="cg-options">'+opts+'</div></div>';
-    }).join('');
-    var isElv18=sec.name.indexOf('ELV18')>-1?' <span style="font-family:var(--mono);font-size:7px;padding:1px 4px;border-radius:2px;background:var(--red-dim);color:var(--red);border:1px solid rgba(244,63,94,.25);vertical-align:middle;">INTEGRITY 20%</span>':'';
-    return '<div class="checklist-group"><div class="cg-title">'+sec.name+' — '+sec.items.length+' items'+isElv18+'</div>'+rows+'</div>';
-  }).join('');
-
-  var ratingKey='<div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">Rating: <span style="color:var(--red)">1=Hazard</span> <span style="color:#E8636F">2=Deficiency</span> <span style="color:var(--amber)">3=Attention</span> <span style="color:#5CB89A">4=Acceptable</span> <span style="color:var(--green)">5=Excellent</span></div>';
-
+  // Header
   var html='<div class="panel"><div class="panel-hdr"><div>';
-  html+='<div class="panel-title">'+cl.title+'</div>';
-  html+='<div class="panel-sub">'+currentAssignment.facility+' &#x2022; '+currentAssignment.ride+' &#x2022; '+currentInspector.name+'</div>';
+  html+='<div class="panel-title" style="font-size:16px;">'+cl.title+'</div>';
+  html+='<div class="panel-sub" style="margin-top:3px;">'+currentAssignment.facility+' &#x2022; '+currentAssignment.ride+'</div>';
+  html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-top:2px;">'+currentInspector.name+' &#x2022; '+new Date().toLocaleDateString()+' &#x2022; '+cl.manufacturer+'</div>';
   html+='</div></div><div class="panel-body">';
-  html+=lotoHtml;
+
+  // LOTO gate
+  html+='<div class="loto-gate" id="loto-gate"><div class="loto-icon">&#x1F512;</div><div class="loto-text">Confirm: Main power source has been locked out and tagged out.<br>Zero electrical / energy / mechanical status verified.</div><button class="loto-confirm-btn" onclick="confirmLoto()">Confirm LOTO &#x2192;</button></div>';
+
+  // Progress bar + counters
   html+='<div class="form-progress"><div class="form-progress-fill" id="progress-bar" style="width:0%"></div></div>';
-  html+='<div id="progress-text" style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-bottom:8px;">0 / '+totalItems+' answered</div>';
-  html+=ratingKey;
-  html+=sectionsHtml;
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
+  html+='<div id="progress-text" style="font-family:var(--mono);font-size:10px;color:var(--text-dim);">0 / '+totalItems+' answered</div>';
+  html+='<div id="flagged-counter" style="display:none;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--red);">Flagged: 0 items</div>';
+  html+='</div>';
+
+  // Rating key
+  html+='<div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;">Rating: <span style="color:var(--red)">1=Hazard</span> <span style="color:#E8636F">2=Deficiency</span> <span style="color:var(--amber)">3=Attention</span> <span style="color:#5CB89A">4=Acceptable</span> <span style="color:var(--green)">5=Excellent</span></div>';
+
+  // Sections
+  cl.sections.forEach(function(sec,si){
+    html+='<div class="checklist-group">';
+    // Section header
+    html+='<div class="cg-title" style="font-size:10px;padding-bottom:8px;border-bottom:2px solid var(--accent);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;"><span>'+sec.num+' &#x2022; '+sec.name.toUpperCase()+' &#x2014; '+sec.items.length+' ITEM'+(sec.items.length>1?'S':'')+'</span></div>';
+    // Items
+    sec.items.forEach(function(item,ii){
+      var key=si+'_'+ii;
+      var letter=item.substring(0,2);
+      var text=item.substring(3);
+      var opts='';
+      for(var r=1;r<=5;r++){opts+='<div class="cg-opt" onclick="markItem(\''+key+'\','+r+',this)" title="'+r+' \u2014 '+RATING_LABELS[r]+'">'+r+'</div>';}
+      html+='<div class="cg-row disabled" id="row-'+key+'">';
+      html+='<div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);flex-shrink:0;width:22px;">'+letter+'</div>';
+      html+='<div class="cg-label">'+text+'</div>';
+      html+='<div class="cg-options">'+opts+'</div>';
+      html+='</div>';
+    });
+    // Section comments
+    html+='<div style="margin-top:6px;"><textarea id="sec-comment-'+si+'" placeholder="Section comments (optional)" style="width:100%;padding:8px 10px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;font-family:var(--mono);font-size:11px;color:var(--text);resize:vertical;min-height:36px;outline:none;" oninput="sectionComments['+si+']=this.value"></textarea></div>';
+    html+='</div>';
+  });
+
+  // Fail summary
   html+='<div id="fail-summary" style="display:none;background:var(--red-dim);border:1px solid rgba(244,63,94,.3);border-radius:7px;padding:10px 12px;margin-bottom:12px;"><div style="font-family:var(--mono);font-size:9px;color:var(--red);margin-bottom:4px;">ITEMS RATED 1-2 &#x2014; CARs will be auto-generated</div><div id="fail-list" style="font-size:11px;color:var(--text);"></div></div>';
-  html+='<div class="ff"><label>Notes (optional)</label><input type="text" id="form-notes" placeholder="Observations..."></div>';
-  html+='<button class="btn btn-purple" id="submit-btn" onclick="submitInspection()" disabled>Submit Inspection &#x2192;</button>';
+
+  // Notes + submit
+  html+='<div class="ff"><label>Notes (optional)</label><input type="text" id="form-notes" placeholder="Overall observations..."></div>';
+  html+='<button class="btn btn-accent" id="submit-btn" onclick="submitInspection()" disabled style="opacity:.4;">Submit Inspection &#x2192;</button>';
   html+='<button class="btn btn-ghost" onclick="showScreen(\'assignments\')" style="margin-top:8px;">Cancel</button>';
   html+='</div></div>';
+
   container.innerHTML=html;
   showScreen('checklist');
 }
@@ -397,26 +513,37 @@ function markItem(key,val,el){
 }
 
 function updateProgress(){
-  var cl=PORTAL_CHECKLISTS[currentAssignment.type];if(!cl)return;
+  if(!currentChecklist)return;
+  var cl=currentChecklist;
   var total=0,answered=0,fails=[];
   cl.sections.forEach(function(sec,si){sec.items.forEach(function(item,ii){total++;var key=si+'_'+ii;var v=answers[key];if(v){answered++;if(v<=2)fails.push({item:item,rating:v});}});});
   var pct=total>0?Math.round(answered/total*100):0;
   var bar=document.getElementById('progress-bar');if(bar)bar.style.width=pct+'%';
-  var txt=document.getElementById('progress-text');if(txt)txt.textContent=answered+' / '+total+' answered · '+pct+'%';
+  var txt=document.getElementById('progress-text');if(txt)txt.textContent=answered+' / '+total+' answered \u00b7 '+pct+'%';
+  // Flagged counter
+  var fc=document.getElementById('flagged-counter');
+  if(fc){if(fails.length>0){fc.style.display='block';fc.textContent='Flagged: '+fails.length+' item'+(fails.length>1?'s':'');}else{fc.style.display='none';}}
+  // Fail summary
   var fs=document.getElementById('fail-summary');var fl=document.getElementById('fail-list');
-  if(fs&&fl){if(fails.length){fs.style.display='block';fl.innerHTML=fails.map(function(f){return '<div style="padding:2px 0;">&#x2022; '+f.item+' ['+f.rating+']</div>';}).join('');}else{fs.style.display='none';}}
+  if(fs&&fl){if(fails.length){fs.style.display='block';fl.innerHTML=fails.map(function(f){return '<div style="padding:2px 0;">&#x2022; '+f.item+' <span style="font-family:var(--mono);font-size:9px;color:var(--red);">['+f.rating+']</span></div>';}).join('');}else{fs.style.display='none';}}
+  // Submit button
   var btn=document.getElementById('submit-btn');
-  if(btn)btn.disabled=!(answered===total&&total>0&&lotoConfirmed);
+  if(btn){var ready=answered===total&&total>0&&lotoConfirmed;btn.disabled=!ready;btn.style.opacity=ready?'1':'.4';}
 }
 
 // ── SUBMIT ──
 async function submitInspection(){
   if(!lotoConfirmed){toast('LOTO confirmation required','err');return;}
-  var cl=PORTAL_CHECKLISTS[currentAssignment.type];if(!cl)return;
+  if(!currentChecklist)return;
+  var cl=currentChecklist;
   var notes=(document.getElementById('form-notes')||{}).value||'';
   var total=0,pass=0,fail=0,watch=0,failItems=[];var scoresObj={};
-  cl.sections.forEach(function(sec,si){sec.items.forEach(function(item,ii){total++;var key=si+'_'+ii;var v=answers[key];scoresObj[sec.name+'::'+item]=v;if(v>=4)pass++;else if(v===3)watch++;else if(v<=2){fail++;failItems.push(item);}});});
+  cl.sections.forEach(function(sec,si){sec.items.forEach(function(item,ii){total++;var key=si+'_'+ii;var v=answers[key];scoresObj['S'+sec.num+'::'+item]=v;if(v>=4)pass++;else if(v===3)watch++;else if(v<=2){fail++;failItems.push(item);}});});
   if(pass+fail+watch<total){toast('Rate all items','err');return;}
+  // Collect section comments
+  var allComments=[];
+  cl.sections.forEach(function(sec,si){var c=sectionComments[si];if(c&&c.trim())allComments.push('S'+sec.num+': '+c.trim());});
+  var combinedNotes=[notes.trim()].concat(allComments).filter(function(n){return n;}).join(' | ');
   var btn=document.getElementById('submit-btn');
   if(btn){btn.disabled=true;btn.textContent='Submitting...';}
   var now=new Date();
@@ -424,7 +551,7 @@ async function submitInspection(){
     'Inspector_ID':currentInspector.id,
     'Facility':currentAssignment.facility,
     'Ride':currentAssignment.ride,
-    'Inspection_Type':currentAssignment.type,
+    'Inspection_Type':cl.title,
     'Date':now.toISOString().split('T')[0],
     'Scores':JSON.stringify(scoresObj),
     'Failed_Items':failItems.join('; '),
@@ -434,15 +561,16 @@ async function submitInspection(){
     'Total_Items':total,
     'Avg_Score':total>0?(Object.values(answers).reduce(function(a,b){return a+b;},0)/total).toFixed(1):'0',
     'LOTO_Confirmed':lotoTimestamp,
-    'Notes':notes.trim(),
+    'Notes':combinedNotes,
     'Submitted_At':now.toISOString()
   });
-  // Show read-only confirmation
   var passRate=total>0?Math.round(pass/total*100):100;
+  var flaggedHtml=fail>0?'<br><span style="color:var(--red);font-weight:700;">'+fail+' item'+(fail>1?'s':'')+' flagged for CAR</span>':'';
   document.getElementById('confirm-summary').innerHTML=
-    currentAssignment.facility+' &#x2022; '+currentAssignment.ride+'<br>'+
-    currentAssignment.type+'<br>'+
-    passRate+'% pass &#x2022; '+total+' items &#x2022; '+fail+' fail<br>'+
+    currentAssignment.ride+' &#x2014; '+cl.title+'<br>'+
+    currentAssignment.facility+'<br>'+
+    currentInspector.name+'<br>'+
+    passRate+'% pass &#x2022; '+total+' items'+flaggedHtml+'<br>'+
     '<span style="font-family:var(--mono);font-size:9px;color:var(--text-muted);">'+now.toISOString()+'</span>';
   showScreen('confirm');
   toast('Inspection submitted','ok');
