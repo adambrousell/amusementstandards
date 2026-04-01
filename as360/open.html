@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -82,15 +82,17 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
 .form-progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
 .checklist-group{margin-bottom:14px;}
 .cg-title{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
-.cg-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(36,45,62,.4);}
+.cg-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid rgba(36,45,62,.4);min-height:52px;}
 .cg-row:last-child{border-bottom:none;}
+.cg-row.disabled{opacity:.35;pointer-events:none;}
 .cg-label{flex:1;font-size:13px;color:var(--text);font-weight:500;}
 .cg-options{display:flex;gap:6px;flex-shrink:0;}
-.cg-opt{padding:6px 10px;border-radius:5px;font-family:var(--mono);font-size:9px;font-weight:700;cursor:pointer;border:1px solid var(--border2);color:var(--text-dim);background:var(--panel3);transition:all .12s;min-width:44px;min-height:36px;display:flex;align-items:center;justify-content:center;}
-.cg-opt.sel-pass{background:var(--green-dim);border-color:rgba(16,185,129,.4);color:var(--green);}
-.cg-opt.sel-flag{background:var(--amber-dim);border-color:rgba(245,158,11,.4);color:var(--amber);}
-.cg-opt.sel-fail{background:var(--red-dim);border-color:rgba(244,63,94,.4);color:var(--red);}
-.cg-opt.sel-na{background:var(--panel3);border-color:var(--border2);color:var(--text-dim);}
+.cg-opt{padding:6px 7px;border-radius:5px;font-family:var(--mono);font-size:9px;font-weight:700;cursor:pointer;border:1px solid var(--border2);color:var(--text-dim);background:var(--panel3);transition:all .12s;min-width:32px;min-height:36px;display:flex;align-items:center;justify-content:center;}
+.cg-opt.sel-1{background:var(--red-dim);border-color:rgba(244,63,94,.5);color:var(--red);}
+.cg-opt.sel-2{background:rgba(244,63,94,.08);border-color:rgba(244,63,94,.3);color:#E8636F;}
+.cg-opt.sel-3{background:var(--amber-dim);border-color:rgba(245,158,11,.4);color:var(--amber);}
+.cg-opt.sel-4{background:rgba(16,185,129,.08);border-color:rgba(16,185,129,.3);color:#5CB89A;}
+.cg-opt.sel-5{background:var(--green-dim);border-color:rgba(16,185,129,.5);color:var(--green);}
 
 /* ── TOAST ──────────────────────────────────────── */
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;font-family:var(--mono);font-size:11px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center;}
@@ -182,6 +184,7 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
           <div class="pin-dot" id="pd3"></div>
         </div>
         <div id="pin-error" style="font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:12px;min-height:16px;"></div>
+        <div id="demo-pin-hint" style="background:var(--panel2);border:1px solid var(--border);border-radius:7px;padding:8px 14px;max-width:200px;margin:0 auto 16px auto;text-align:center;"><span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--accent);display:block;margin-bottom:4px;">DEMO ACCESS</span><span id="demo-pin-value" style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--text);">PIN: 1234</span></div>
         <div class="pin-grid">
           <div class="pin-key" onclick="pinKey('1')">1</div>
           <div class="pin-key" onclick="pinKey('2')">2</div>
@@ -432,6 +435,8 @@ let pin = '';
 let answers = {};
 let gpsCoords = null;
 let demoMode = false;
+var sectionComments = {};
+var RATING_LABELS = {1:'Immediate Hazard',2:'Serious Deficiency',3:'Needs Attention',4:'Acceptable',5:'Excellent'};
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
@@ -485,6 +490,8 @@ window.selectRole = function(role) {
   var label = role === 'maintenance' ? 'Maintenance' : 'Operations';
   document.getElementById('pin-title').textContent = label + ' PIN';
   document.getElementById('pin-sub').textContent = 'Enter your 4-digit staff PIN';
+  var demoVal = document.getElementById('demo-pin-value');
+  if (demoVal) demoVal.textContent = 'PIN: ' + (role === 'maintenance' ? '1234' : '5678');
   showScreen('pin');
 };
 
@@ -562,13 +569,14 @@ async function validatePin() {
 // ── LOAD CHECKLIST ────────────────────────────────────────────────────────────
 window.loadChecklist = async function() {
   answers = {};
-  const def = currentRide[currentRole];
-  const container = document.getElementById('checklist-container');
-  let html = '';
+  sectionComments = {};
+  var def = currentRide[currentRole];
+  var container = document.getElementById('checklist-container');
+  var html = '';
 
   // If operations role, check for maintenance sign-off
   if (currentRole === 'operations') {
-    const maintOk = await checkMaintenanceSignoff();
+    var maintOk = await checkMaintenanceSignoff();
     if (!maintOk) {
       html += '<div class="blocker"><div class="blocker-title">&#x1F512; Waiting for Maintenance Sign-Off</div><div class="blocker-msg">No maintenance inspection has been submitted for ' + currentRide.name + ' today.<br>A maintenance technician must complete and submit their ASTM F24 pre-opening checklist before operations can proceed.<br><br><span style="font-family:var(--mono);font-size:9px;">Have the mechanic open <strong>open.html?ride=' + currentRide.code + '</strong> and submit the Maintenance checklist.</span></div></div>';
       html += '<button class="btn btn-ghost" onclick="goBack()" style="margin-bottom:8px;">&#x2190; Back</button>';
@@ -581,35 +589,51 @@ window.loadChecklist = async function() {
   }
 
   // Count total items
-  let totalItems = 0;
-  def.sections.forEach(s => totalItems += s.items.length);
+  var totalItems = 0;
+  def.sections.forEach(function(s) { totalItems += s.items.length; });
 
   // Header
   html += '<div class="panel"><div class="panel-hdr"><div>';
-  html += '<div class="panel-title">' + def.title + '</div>';
-  html += '<div class="panel-sub">' + currentUser.name + ' · ' + totalItems + ' items · ' + new Date().toLocaleDateString() + '</div>';
+  html += '<div class="panel-title" style="font-size:16px;">' + def.title + '</div>';
+  html += '<div class="panel-sub" style="margin-top:3px;">' + currentRide.name + ' &#x2022; ' + currentRide.code + '</div>';
+  html += '<div style="font-family:var(--mono);font-size:9px;color:var(--text-muted);margin-top:2px;">' + currentUser.name + ' &#x2022; ' + new Date().toLocaleDateString() + ' &#x2022; ' + totalItems + ' items</div>';
   html += '</div></div><div class="panel-body">';
 
-  // Progress
+  // Progress bar + counters
   html += '<div class="form-progress"><div class="form-progress-fill" id="progress-bar" style="width:0%"></div></div>';
-  html += '<div id="progress-text" style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-bottom:12px;">0 / ' + totalItems + ' answered</div>';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
+  html += '<div id="progress-text" style="font-family:var(--mono);font-size:10px;color:var(--text-dim);">0 / ' + totalItems + ' answered</div>';
+  html += '<div id="flagged-counter" style="display:none;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--red);">Flagged: 0 items</div>';
+  html += '</div>';
+
+  // Rating key
+  html += '<div style="font-family:var(--mono);font-size:8px;color:var(--text-dim);margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;">Rating: <span style="color:var(--red)">1=Hazard</span> <span style="color:#E8636F">2=Deficiency</span> <span style="color:var(--amber)">3=Attention</span> <span style="color:#5CB89A">4=Acceptable</span> <span style="color:var(--green)">5=Excellent</span></div>';
 
   // Sections
-  def.sections.forEach((sec, si) => {
-    html += '<div class="checklist-group"><div class="cg-title">' + sec.name + ' — ' + sec.items.length + ' item' + (sec.items.length > 1 ? 's' : '') + '</div>';
-    sec.items.forEach((item, ii) => {
-      const key = si + '_' + ii;
-      html += '<div class="cg-row" id="row-' + key + '"><div class="cg-label">' + item + '</div><div class="cg-options">';
-      html += '<div class="cg-opt" onclick="mark(\'' + key + '\',\'pass\',this)" title="Pass">&#x2713;</div>';
-      html += '<div class="cg-opt" onclick="mark(\'' + key + '\',\'fail\',this)" title="Fail">&#x2715;</div>';
-      html += '<div class="cg-opt" onclick="mark(\'' + key + '\',\'na\',this)" title="N/A">&#x2014;</div>';
-      html += '</div></div>';
+  def.sections.forEach(function(sec, si) {
+    var secNum = si + 1;
+    html += '<div class="checklist-group">';
+    // Section header divider
+    html += '<div class="cg-title" style="font-size:10px;padding-bottom:8px;border-bottom:2px solid var(--accent);margin-bottom:10px;">' + secNum + ' &#x2022; ' + sec.name.toUpperCase() + ' &#x2014; ' + sec.items.length + ' ITEM' + (sec.items.length > 1 ? 'S' : '') + '</div>';
+    // Items with letter prefixes
+    sec.items.forEach(function(item, ii) {
+      var key = si + '_' + ii;
+      var letter = String.fromCharCode(65 + ii);
+      var opts = '';
+      for (var r = 1; r <= 5; r++) { opts += '<div class="cg-opt" onclick="mark(\'' + key + '\',' + r + ',this)" title="' + r + ' \u2014 ' + RATING_LABELS[r] + '">' + r + '</div>'; }
+      html += '<div class="cg-row disabled" id="row-' + key + '">';
+      html += '<div style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);flex-shrink:0;width:22px;">' + letter + '.</div>';
+      html += '<div class="cg-label">' + item + '</div>';
+      html += '<div class="cg-options">' + opts + '</div>';
+      html += '</div>';
     });
+    // Section comments textarea
+    html += '<div style="margin-top:6px;"><textarea id="sec-comment-' + si + '" placeholder="Section comments (optional)" style="width:100%;padding:8px 10px;background:var(--panel2);border:1px solid var(--border2);border-radius:6px;font-family:var(--mono);font-size:11px;color:var(--text);resize:vertical;min-height:36px;outline:none;" oninput="sectionComments[' + si + ']=this.value"></textarea></div>';
     html += '</div>';
   });
 
   // Fail summary
-  html += '<div class="fail-summary" id="fail-summary"><div class="fs-title">FAILED ITEMS — CARs will be auto-generated</div><div class="fs-list" id="fail-list"></div></div>';
+  html += '<div id="fail-summary" style="display:none;background:var(--red-dim);border:1px solid rgba(244,63,94,.3);border-radius:7px;padding:10px 12px;margin-bottom:12px;"><div style="font-family:var(--mono);font-size:9px;color:var(--red);margin-bottom:4px;">ITEMS RATED 1-2 &#x2014; CARs will be auto-generated</div><div id="fail-list" style="font-size:11px;color:var(--text);"></div></div>';
 
   // Footer warning (ops checklists)
   if (def.footer) {
@@ -617,17 +641,28 @@ window.loadChecklist = async function() {
   }
 
   // Certification
-  const certRole = currentRole === 'maintenance' ? 'maintenance technician' : 'operations supervisor';
+  var certRole = currentRole === 'maintenance' ? 'maintenance technician' : 'operations supervisor';
   html += '<div class="cert-block"><strong>Certification:</strong> I, the undersigned ' + certRole + ', certify that I have personally performed this inspection in accordance with ASTM F24 standards and manufacturer requirements. All items have been evaluated to the best of my professional judgment. Failed items have been documented and will generate Corrective Action Requests (CARs) for follow-up.</div>';
 
   // Notes + Submit
   html += '<div class="ff"><label>Notes (optional)</label><textarea id="form-notes" placeholder="Additional observations..." rows="2"></textarea></div>';
-  html += '<button class="btn btn-accent" id="submit-btn" onclick="submitChecklist()" disabled>Submit Inspection &#x2192;</button>';
+  html += '<button class="btn btn-accent" id="submit-btn" onclick="submitChecklist()" disabled style="opacity:.4;">Submit Inspection &#x2192;</button>';
   html += '<button class="btn btn-ghost" onclick="goBack()" style="margin-top:8px;">Cancel</button>';
 
   html += '</div></div>';
   container.innerHTML = html;
   showScreen('checklist');
+
+  // LOTO gate: all items start disabled, user must confirm LOTO to unlock
+  // Show LOTO gate if maintenance role
+  if (currentRole === 'maintenance') {
+    var lotoHtml = '<div class="loto-gate" id="loto-gate" style="background:var(--panel2);border:2px solid var(--amber);border-radius:10px;padding:16px;margin-bottom:16px;text-align:center;"><div style="font-size:28px;margin-bottom:8px;">&#x1F512;</div><div style="font-family:var(--mono);font-size:11px;color:var(--amber);line-height:1.6;margin-bottom:12px;">Confirm: Main power source has been locked out and tagged out.<br>Zero electrical / energy / mechanical status verified.</div><button onclick="confirmLotoOpen()" style="background:linear-gradient(135deg,var(--amber),#D97706);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-family:var(--cond);font-size:14px;font-weight:700;cursor:pointer;min-height:44px;">Confirm LOTO &#x2192;</button></div>';
+    var panelBody = container.querySelector('.panel-body');
+    if (panelBody) panelBody.insertAdjacentHTML('afterbegin', lotoHtml);
+  } else {
+    // Ops role: unlock all items immediately (no LOTO needed)
+    container.querySelectorAll('.cg-row.disabled').forEach(function(r) { r.classList.remove('disabled'); });
+  }
 }
 
 // ── CHECK MAINTENANCE SIGN-OFF ────────────────────────────────────────────────
@@ -647,51 +682,69 @@ async function checkMaintenanceSignoff() {
   }
 }
 
+// ── LOTO GATE (open.html) ─────────────────────────────────────────────────────
+window.confirmLotoOpen = function() {
+  var gate = document.getElementById('loto-gate');
+  if (gate) { gate.style.borderColor = 'rgba(16,185,129,.4)'; gate.style.background = 'var(--green-dim)'; gate.innerHTML = '<div style="font-size:28px;margin-bottom:8px;">&#x2705;</div><div style="font-family:var(--mono);font-size:11px;color:var(--green);line-height:1.6;">LOTO CONFIRMED &#x2014; ' + new Date().toLocaleTimeString() + '</div>'; }
+  document.querySelectorAll('.cg-row.disabled').forEach(function(r) { r.classList.remove('disabled'); });
+  updateProgress();
+};
+
 // ── MARK ITEM ─────────────────────────────────────────────────────────────────
 window.mark = function(key, val, el) {
+  // Block marking if LOTO not confirmed (maintenance role)
+  if (currentRole === 'maintenance') {
+    var gate = document.getElementById('loto-gate');
+    if (gate && gate.style.borderColor !== 'rgba(16, 185, 129, 0.4)') return;
+  }
   answers[key] = val;
-  const row = document.getElementById('row-' + key);
+  var row = document.getElementById('row-' + key);
   if (row) {
-    row.querySelectorAll('.cg-opt').forEach(o => o.className = 'cg-opt');
+    row.querySelectorAll('.cg-opt').forEach(function(o) { o.className = 'cg-opt'; });
     el.classList.add('sel-' + val);
   }
   updateProgress();
-}
+};
 
 function updateProgress() {
-  const def = currentRide[currentRole];
-  let total = 0, answered = 0, fails = [];
-  def.sections.forEach((sec, si) => {
-    sec.items.forEach((item, ii) => {
+  var def = currentRide[currentRole];
+  var total = 0, answered = 0, fails = [];
+  def.sections.forEach(function(sec, si) {
+    sec.items.forEach(function(item, ii) {
       total++;
-      const key = si + '_' + ii;
-      if (answers[key]) {
+      var key = si + '_' + ii;
+      var v = answers[key];
+      if (v) {
         answered++;
-        if (answers[key] === 'fail') fails.push(item);
+        if (v <= 2) fails.push({ item: item, rating: v });
       }
     });
   });
-  const pct = total > 0 ? Math.round(answered / total * 100) : 0;
-  const bar = document.getElementById('progress-bar');
+  var pct = total > 0 ? Math.round(answered / total * 100) : 0;
+  var bar = document.getElementById('progress-bar');
   if (bar) bar.style.width = pct + '%';
-  const txt = document.getElementById('progress-text');
-  if (txt) txt.textContent = answered + ' / ' + total + ' answered · ' + pct + '%';
+  var txt = document.getElementById('progress-text');
+  if (txt) txt.textContent = answered + ' / ' + total + ' answered \u00b7 ' + pct + '%';
+
+  // Flagged counter
+  var fc = document.getElementById('flagged-counter');
+  if (fc) { if (fails.length > 0) { fc.style.display = 'block'; fc.textContent = 'Flagged: ' + fails.length + ' item' + (fails.length > 1 ? 's' : ''); } else { fc.style.display = 'none'; } }
 
   // Fail summary
-  const fs = document.getElementById('fail-summary');
-  const fl = document.getElementById('fail-list');
+  var fs = document.getElementById('fail-summary');
+  var fl = document.getElementById('fail-list');
   if (fs && fl) {
     if (fails.length) {
       fs.style.display = 'block';
-      fl.innerHTML = fails.map(f => '<div style="padding:2px 0;">&#x2022; ' + f + '</div>').join('');
+      fl.innerHTML = fails.map(function(f) { return '<div style="padding:2px 0;">&#x2022; ' + f.item + ' <span style="font-family:var(--mono);font-size:9px;color:var(--red);">[' + f.rating + ']</span></div>'; }).join('');
     } else {
       fs.style.display = 'none';
     }
   }
 
-  // Enable submit when all answered
-  const btn = document.getElementById('submit-btn');
-  if (btn) btn.disabled = !(answered === total && total > 0);
+  // Submit button: active only when 100%
+  var btn = document.getElementById('submit-btn');
+  if (btn) { var ready = answered === total && total > 0; btn.disabled = !ready; btn.style.opacity = ready ? '1' : '.4'; }
 }
 
 // ── GEOFENCE ──────────────────────────────────────────────────────────────────
@@ -751,25 +804,30 @@ window.submitChecklist = async function() {
     return;
   }
 
-  const def = currentRide[currentRole];
-  const notes = (document.getElementById('form-notes') || {}).value || '';
-  let total = 0, pass = 0, fail = 0, na = 0;
-  const failItems = [];
+  var def = currentRide[currentRole];
+  var notes = (document.getElementById('form-notes') || {}).value || '';
+  // Collect section comments
+  var allComments = [];
+  def.sections.forEach(function(sec, si) { var c = sectionComments[si]; if (c && c.trim()) allComments.push('S' + (si+1) + ': ' + c.trim()); });
+  var combinedNotes = [notes.trim()].concat(allComments).filter(function(n) { return n; }).join(' | ');
 
-  def.sections.forEach((sec, si) => {
-    sec.items.forEach((item, ii) => {
+  var total = 0, pass = 0, fail = 0, watch = 0;
+  var failItems = [];
+
+  def.sections.forEach(function(sec, si) {
+    sec.items.forEach(function(item, ii) {
       total++;
-      const key = si + '_' + ii;
-      const v = answers[key];
-      if (v === 'pass') pass++;
-      else if (v === 'fail') { fail++; failItems.push({ section: sec.name, item: item }); }
-      else if (v === 'na') na++;
+      var key = si + '_' + ii;
+      var v = answers[key];
+      if (v >= 4) pass++;
+      else if (v === 3) watch++;
+      else if (v <= 2 && v >= 1) { fail++; failItems.push({ section: sec.name, item: item }); }
     });
   });
 
-  if (pass + fail + na < total) { toast('Answer all items before submitting', 'err'); return; }
+  if (pass + fail + watch < total) { toast('Rate all items before submitting', 'err'); return; }
 
-  const passRate = (total - na) > 0 ? Math.round(pass / (total - na) * 100) : 100;
+  var passRate = total > 0 ? Math.round(pass / total * 100) : 100;
   const now = new Date();
   const today = now.toISOString().split('T')[0];
   const deviceTimestamp = now.toISOString();
@@ -790,11 +848,11 @@ window.submitChecklist = async function() {
     'Role': currentRole,
     'Completed By': currentUser.name,
     'Total Items': total,
-    'Pass': pass,
-    'Fail': fail,
-    'N/A': na,
+    'Pass (4-5)': pass,
+    'Fail (1-2)': fail,
+    'Watch (3)': watch,
     'Pass Rate': passRate + '%',
-    'Notes': notes.trim(),
+    'Notes': combinedNotes,
     'GPS': gpsStr,
     'Device Timestamp': deviceTimestamp,
     'Submitted At': deviceTimestamp
