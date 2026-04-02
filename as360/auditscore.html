@@ -2,20 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>AuditScore · AS 360</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0C0F14;--surface:#111520;--panel:#161C27;--panel2:#1C2333;--panel3:#222A3A;
-  --border:#242D3E;--border2:#2E3A52;
-  --teal:#0ABFBC;--teal-dim:rgba(10,191,188,.15);
-  --red:#F43F5E;--red-dim:rgba(244,63,94,.15);
-  --amber:#F59E0B;--amber-dim:rgba(245,158,11,.15);
-  --green:#10B981;--green-dim:rgba(16,185,129,.15);<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>AUDITSCORE</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -225,7 +211,7 @@ input,button,textarea,select{font-family:inherit;outline:none;}
 /* ===== LOTO OVERLAY ===== */
 .loto-overlay{
   position:fixed;top:0;left:0;right:0;bottom:0;z-index:500;
-  background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.95);display:none;flex-direction:column;align-items:center;justify-content:center;
   padding:24px;text-align:center;
 }
 .loto-icon{font-size:64px;margin-bottom:16px;}
@@ -493,7 +479,8 @@ var TYPES = {
     configFields: ['auditor','attraction'],
     hasRotation: true,
     hasDemeanor: true,
-    hasTabs: true
+    hasTabs: true,
+    requiresLoto: true
   },
 
   /* ---- TYPE 2: iMSA ---- */
@@ -646,7 +633,8 @@ var TYPES = {
   {id:'h3',phase:4,section:'OLI — Human Context & Fatigue Indicators',text:'Operator demeanor consistent throughout observation (no mood shift)'},
   {id:'h4',phase:4,section:'OLI — Human Context & Fatigue Indicators',text:'No off-task behavior observed (phone, socializing mid-cycle, leaving post)'}
 ],
-    configFields: ['auditor','attraction']
+    configFields: ['auditor','attraction'],
+    requiresLoto: true
   },
 
   /* ---- TYPE 5: TPA (placeholder) ---- */
@@ -711,7 +699,8 @@ var TYPES = {
   {id:'f12',phase:3,section:'Documentation',text:'Loose article bin / storage is present and guests are directed to use it'},
   {id:'f13',phase:3,section:'OLI — Human Context',text:'Staffing schedule / post chart is visible at or near the ride control station'}
 ],
-    configFields: ['auditor','attraction']
+    configFields: ['auditor','attraction'],
+    requiresLoto: true
   },
 
   /* ---- TYPE 6: NMR ---- */
@@ -885,6 +874,11 @@ function beginAudit() {
   }
 
   showScreen('screen-audit');
+
+  // Show LOTO gate for ride-type audits after switching to audit screen
+  if (t.requiresLoto) {
+    showLoto();
+  }
 }
 
 function applyTheme(theme) {
@@ -2123,6 +2117,7 @@ function resetApp() {
   r.style.setProperty('--mono', "'JetBrains Mono', monospace");
 
   // Reset UI
+  document.getElementById('loto-overlay').style.display = 'none';
   document.getElementById('igsa-tabs-container').innerHTML = '';
   document.getElementById('progress-bar-wrap').style.display = 'block';
   renderTypeGrid();
@@ -2264,524 +2259,6 @@ window.addEventListener('online', function() {
   setSyncStatus('ok');
   toast('Back online \u2014 syncing...', 'success');
 });
-</script>
-</body>
-</html>
-
-  --blue:#3B82F6;--blue-dim:rgba(59,130,246,.15);
-  --purple:#8B5CF6;--purple-dim:rgba(139,92,246,.15);
-  --text:#CBD5E1;--text-bright:#E8EDF5;--text-dim:#64748B;--text-muted:#3D4F6A;
-  --mono:'JetBrains Mono',monospace;--sans:'Barlow',sans-serif;--cond:'Barlow Condensed',sans-serif;
-  --accent:#6CA4DC;--accent-dim:rgba(108,164,220,.15);
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html,body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.5;min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;}
-input,button,textarea{font-family:inherit;border:none;outline:none;background:none;color:inherit;}
-button{cursor:pointer;}
-
-/* Topbar */
-.topbar{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
-.topbar .logo-mark{width:30px;height:30px;border-radius:6px;background:linear-gradient(135deg,var(--teal),var(--accent));display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:11px;color:var(--bg);flex-shrink:0;}
-.topbar .brand{font-family:var(--cond);font-weight:700;font-size:16px;color:var(--text-bright);letter-spacing:.5px;}
-.topbar .divider{width:1px;height:20px;background:var(--border2);}
-.topbar .sub-label{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--teal);letter-spacing:1.5px;}
-.topbar .sync-status{margin-left:auto;font-family:var(--mono);font-size:9px;color:var(--text-dim);display:flex;align-items:center;gap:4px;}
-.topbar .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--green);}
-.topbar .sync-dot.offline{background:var(--amber);}
-
-/* Screens */
-.screen{display:none;padding:16px;max-width:600px;margin:0 auto;}
-.screen.active{display:block;}
-
-/* Config screen */
-.config-header{font-family:var(--mono);font-size:14px;color:var(--accent);margin-bottom:20px;text-align:center;letter-spacing:.5px;}
-.config-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;}
-.config-label{font-family:var(--mono);font-size:9px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;}
-.config-value{font-family:var(--sans);font-size:15px;color:var(--text-bright);font-weight:600;}
-.config-input{width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:14px;color:var(--text-bright);font-family:var(--sans);}
-.config-input:focus{border-color:var(--accent);}
-.btn-begin{width:100%;padding:14px;background:var(--accent);color:var(--bg);font-family:var(--cond);font-size:16px;font-weight:700;letter-spacing:1px;border-radius:10px;margin-top:20px;text-transform:uppercase;}
-.btn-begin:active{opacity:.85;}
-
-/* LOTO overlay */
-.loto-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);z-index:200;align-items:center;justify-content:center;padding:24px;}
-.loto-overlay.active{display:flex;}
-.loto-box{background:var(--panel);border:1px solid var(--border2);border-radius:14px;padding:28px 22px;max-width:420px;width:100%;text-align:center;}
-.loto-icon{font-size:48px;margin-bottom:16px;display:block;}
-.loto-heading{font-family:var(--cond);font-size:20px;font-weight:700;color:var(--text-bright);margin-bottom:14px;text-transform:uppercase;letter-spacing:1px;}
-.loto-body{font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:24px;}
-.btn-loto-confirm{width:100%;padding:14px;background:var(--accent);color:var(--bg);font-family:var(--cond);font-size:15px;font-weight:700;letter-spacing:1px;border-radius:10px;text-transform:uppercase;margin-bottom:12px;}
-.btn-loto-confirm:active{opacity:.85;}
-.loto-skip{font-family:var(--mono);font-size:10px;color:var(--text-muted);cursor:pointer;}
-.loto-skip:hover{color:var(--text-dim);}
-
-/* Progress bar */
-.progress-wrap{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;position:sticky;top:52px;z-index:50;}
-.progress-bar-bg{height:6px;background:var(--panel3);border-radius:3px;overflow:hidden;margin-bottom:8px;}
-.progress-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--teal),var(--accent));border-radius:3px;transition:width .3s ease;}
-.progress-text{font-family:var(--mono);font-size:10px;color:var(--text-dim);text-align:center;}
-
-/* Flagged counter */
-#flagged-counter{display:none;text-align:center;font-family:var(--mono);font-size:10px;color:var(--red);background:var(--red-dim);border:1px solid var(--red);border-radius:8px;padding:8px 12px;margin-bottom:12px;}
-#flagged-counter.visible{display:block;}
-
-/* Pillar header */
-.pillar-header{font-family:var(--cond);font-size:13px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:2px;padding:14px 0 8px 4px;border-bottom:1px solid var(--border);margin-bottom:10px;margin-top:16px;}
-.pillar-header:first-of-type{margin-top:0;}
-
-/* Question card */
-.q-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;}
-.q-text{font-size:13px;color:var(--text-bright);margin-bottom:10px;line-height:1.5;}
-.q-num{font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-right:6px;}
-.q-label-strip{font-family:var(--mono);font-size:8px;color:var(--text-muted);margin-bottom:8px;line-height:1.4;}
-.q-scores{display:flex;gap:6px;margin-bottom:0;}
-.q-scores button{flex:1;padding:10px 0;font-family:var(--mono);font-size:14px;font-weight:700;border-radius:8px;background:var(--panel3);color:var(--text-dim);border:1px solid var(--border);transition:all .15s;}
-.q-scores button.sel-red{background:var(--red);color:#fff;border-color:var(--red);}
-.q-scores button.sel-amber{background:var(--amber);color:var(--bg);border-color:var(--amber);}
-.q-scores button.sel-green{background:var(--green);color:var(--bg);border-color:var(--green);}
-.q-extras{display:none;margin-top:12px;}
-.q-extras.open{display:block;}
-.q-extras .note-input{width:100%;background:var(--panel2);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-family:var(--mono);font-size:12px;color:var(--text);margin-bottom:8px;}
-.q-extras .note-input:focus{border-color:var(--accent);}
-.q-extras .photo-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.q-extras .btn-camera{background:var(--panel3);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--text-dim);display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:10px;}
-.q-extras .btn-camera:active{background:var(--border);}
-.q-extras .photo-preview{font-family:var(--mono);font-size:9px;color:var(--green);}
-.q-extras .photo-rec{font-family:var(--mono);font-size:8px;color:var(--amber);margin-bottom:4px;}
-.q-extras .car-status{font-family:var(--mono);font-size:10px;color:var(--red);margin-top:6px;}
-
-/* Submit button */
-.btn-submit{width:100%;padding:14px;background:var(--panel3);color:var(--text-muted);font-family:var(--cond);font-size:16px;font-weight:700;letter-spacing:1px;border-radius:10px;margin-top:20px;margin-bottom:40px;text-transform:uppercase;pointer-events:none;}
-.btn-submit.enabled{background:var(--accent);color:var(--bg);pointer-events:auto;}
-.btn-submit.enabled:active{opacity:.85;}
-
-/* Result screen */
-.result-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:28px 20px;text-align:center;margin-bottom:16px;}
-.result-score{font-family:var(--mono);font-size:64px;font-weight:700;line-height:1;}
-.result-band{font-family:var(--cond);font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-top:8px;}
-.result-meta{font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:12px;line-height:1.8;}
-.pillar-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
-.pillar-mini{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}
-.pillar-mini-label{font-family:var(--cond);font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
-.pillar-mini-score{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--text-bright);}
-.result-complete{font-family:var(--mono);font-size:11px;color:var(--green);text-align:center;margin-bottom:16px;}
-.result-cars{font-family:var(--mono);font-size:10px;color:var(--red);text-align:center;margin-bottom:16px;}
-.btn-new{width:100%;padding:14px;background:var(--panel2);color:var(--text-dim);font-family:var(--cond);font-size:15px;font-weight:700;letter-spacing:1px;border-radius:10px;border:1px solid var(--border);text-transform:uppercase;margin-bottom:40px;}
-.btn-new:active{background:var(--panel3);}
-</style>
-</head>
-<body>
-
-<!-- Topbar -->
-<div class="topbar">
-  <div class="logo-mark">AS</div>
-  <div class="brand">AS 360</div>
-  <div class="divider"></div>
-  <div class="sub-label">AUDITSCORE</div>
-  <div class="sync-status"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">READY</span></div>
-</div>
-
-<!-- LOTO Overlay -->
-<div class="loto-overlay" id="loto-overlay">
-  <div class="loto-box">
-    <span class="loto-icon">&#128274;</span>
-    <div class="loto-heading">LOTO Confirmation Required</div>
-    <div class="loto-body">Confirm that main power has been locked out and tagged out. Zero electrical/energy/mechanical status verified before proceeding.</div>
-    <button class="btn-loto-confirm" onclick="confirmLoto(true)">Confirm LOTO &amp; Begin Audit</button>
-    <div class="loto-skip" onclick="confirmLoto(false)">Skip for observational audits</div>
-  </div>
-</div>
-
-<!-- Screen 1: Config -->
-<div class="screen active" id="screen-config">
-  <div class="config-header">AuditScore &middot; Field Audit</div>
-  <div id="config-fields"></div>
-  <button class="btn-begin" onclick="beginAudit()">Begin Audit</button>
-</div>
-
-<!-- Screen 2: Audit -->
-<div class="screen" id="screen-audit">
-  <div class="progress-wrap">
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
-    <div class="progress-text" id="progress-text">0 / 0 answered &middot; 0%</div>
-  </div>
-  <div id="flagged-counter"></div>
-  <div id="questions-container"></div>
-  <button class="btn-submit" id="btn-submit" onclick="submitAudit()">Submit Audit</button>
-</div>
-
-<!-- Screen 3: Result -->
-<div class="screen" id="screen-result">
-  <div class="result-card">
-    <div class="result-score" id="result-score">0</div>
-    <div class="result-band" id="result-band">--</div>
-    <div class="result-meta" id="result-meta"></div>
-  </div>
-  <div class="pillar-grid" id="pillar-grid"></div>
-  <div class="result-complete" id="result-complete">&#10003; Audit Complete</div>
-  <div class="result-cars" id="result-cars"></div>
-  <button class="btn-new" onclick="location.reload()">New Audit</button>
-</div>
-
-<script>
-var PROXY='https://as360-proxy.amusementstandards.workers.dev/airtable';
-
-var params=(function(){var p={};new URLSearchParams(location.search).forEach(function(v,k){p[k]=v;});return p;})();
-var cfg={park:params.park||'',ride:params.ride||'',type:params.type||'',auditor:params.auditor||''};
-var loto_confirmed=null;
-var loto_timestamp=null;
-var answers={};
-var totalQ=0;
-
-var PILLARS=[
-  {key:'R',name:'READINESS',questions:[
-    'Pre-open checklist completed and signed by qualified operator',
-    'All operator positions staffed per minimum requirements',
-    'Safety briefing delivered to all operators this shift',
-    'Height measurement equipment calibrated and in position',
-    'Communication devices tested — radio check completed',
-    'Emergency procedures posted and current at all stations'
-  ]},
-  {key:'I',name:'INTEGRITY',questions:[
-    'Restraint devices — visual inspection and function test',
-    'Brake systems — pad condition and stopping distance',
-    'Control panel — all indicators, switches, and E-stop functional',
-    'Structural supports — no visible corrosion, cracking, or movement',
-    'Electrical systems — fuse ratings, wiring condition, grounding verified',
-    'Service bulletin compliance — current with manufacturer recommendations'
-  ]},
-  {key:'D',name:'DELIVERY',questions:[
-    'Queue management — wait time posted, line flow organized',
-    'Loading/unloading procedure followed per SOP',
-    'Cycle time consistent with design specification',
-    'Guest communication — safety spiels delivered clearly'
-  ]},
-  {key:'E',name:'ENVIRONMENT',questions:[
-    'Signage — height, safety, and wayfinding signs present and legible',
-    'Lighting — adequate illumination in queue, station, and ride areas',
-    'Walking surfaces — no trip hazards, standing water, or debris',
-    'Perimeter — fencing intact, no unauthorized access points'
-  ]}
-];
-
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
-  document.getElementById('screen-'+id).classList.add('active');
-}
-
-/* Config screen */
-(function initConfig(){
-  var el=document.getElementById('config-fields');
-  var fields=[{key:'park',label:'Park / Facility'},{key:'ride',label:'Ride / Attraction'},{key:'type',label:'Type'},{key:'auditor',label:'Auditor'}];
-  var html='';
-  fields.forEach(function(f){
-    html+='<div class="config-card"><div class="config-label">'+f.label+'</div>';
-    if(cfg[f.key]){
-      html+='<div class="config-value">'+esc(cfg[f.key])+'</div>';
-    } else {
-      html+='<input class="config-input" id="cfg-'+f.key+'" placeholder="Enter '+f.label.toLowerCase()+'...">';
-    }
-    html+='</div>';
-  });
-  el.innerHTML=html;
-})();
-
-function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-
-function needsLoto(t){
-  if(!t) return false;
-  var lower=t.toLowerCase();
-  return /coaster|flat|ride|kart|carousel/.test(lower);
-}
-
-function beginAudit(){
-  ['park','ride','type','auditor'].forEach(function(k){
-    if(!cfg[k]){var el=document.getElementById('cfg-'+k);if(el) cfg[k]=el.value.trim();}
-  });
-  if(!cfg.park||!cfg.ride||!cfg.auditor){alert('Please fill in all fields.');return;}
-  if(needsLoto(cfg.type)){
-    document.getElementById('loto-overlay').classList.add('active');
-  } else {
-    loto_confirmed=null;
-    startAudit();
-  }
-}
-
-function confirmLoto(confirmed){
-  loto_confirmed=confirmed;
-  if(confirmed) loto_timestamp=new Date().toISOString();
-  document.getElementById('loto-overlay').classList.remove('active');
-  startAudit();
-}
-
-function startAudit(){
-  buildQuestions();
-  showScreen('audit');
-}
-
-function buildQuestions(){
-  var container=document.getElementById('questions-container');
-  var html='';
-  var qNum=0;
-  PILLARS.forEach(function(p){
-    html+='<div class="pillar-header">'+p.key+' — '+p.name+'</div>';
-    p.questions.forEach(function(qt,i){
-      qNum++;
-      var qid=p.key+'-'+(i+1);
-      answers[qid]={score:null,note:'',photo:null,car_id:null,pillar:p.key,text:qt};
-      html+='<div class="q-card" id="qcard-'+qid+'">';
-      html+='<div class="q-text"><span class="q-num">'+qNum+'.</span>'+esc(qt)+'</div>';
-      html+='<div class="q-label-strip">1=Hazard &middot; 2=Deficiency &middot; 3=Attention &middot; 4=Acceptable &middot; 5=Excellent</div>';
-      html+='<div class="q-scores" id="qscores-'+qid+'">';
-      for(var s=1;s<=5;s++){
-        html+='<button data-qid="'+qid+'" data-score="'+s+'" onclick="setScore(\''+qid+'\','+s+')">'+s+'</button>';
-      }
-      html+='</div>';
-      html+='<div class="q-extras" id="qextras-'+qid+'">';
-      html+='<div class="photo-rec" id="photo-rec-'+qid+'" style="display:none">Photo recommended</div>';
-      html+='<input class="note-input" id="note-'+qid+'" placeholder="Notes (optional)..." onblur="onNoteBlur(\''+qid+'\')">';
-      html+='<div class="photo-row">';
-      html+='<input type="file" accept="image/*" capture="environment" id="file-'+qid+'" style="display:none" onchange="onPhoto(\''+qid+'\',this)">';
-      html+='<button class="btn-camera" onclick="document.getElementById(\'file-'+qid+'\').click()">&#128247; Photo</button>';
-      html+='<span class="photo-preview" id="preview-'+qid+'"></span>';
-      html+='</div>';
-      html+='<div class="car-status" id="car-'+qid+'"></div>';
-      html+='</div>';
-      html+='</div>';
-    });
-  });
-  totalQ=qNum;
-  container.innerHTML=html;
-  updateProgress();
-}
-
-function setScore(qid,score){
-  answers[qid].score=score;
-  var row=document.getElementById('qscores-'+qid);
-  var btns=row.querySelectorAll('button');
-  btns.forEach(function(b){
-    b.className='';
-    if(parseInt(b.getAttribute('data-score'))===score){
-      if(score<=2) b.className='sel-red';
-      else if(score===3) b.className='sel-amber';
-      else b.className='sel-green';
-    }
-  });
-  var extras=document.getElementById('qextras-'+qid);
-  extras.classList.add('open');
-  var noteEl=document.getElementById('note-'+qid);
-  var recEl=document.getElementById('photo-rec-'+qid);
-  if(score<=2){
-    noteEl.placeholder='Describe finding...';
-    recEl.style.display='block';
-  } else {
-    noteEl.placeholder='Notes (optional)...';
-    recEl.style.display='none';
-  }
-  if(score<=2 && answers[qid].note){
-    autoGenerateCar(qid);
-  }
-  updateProgress();
-}
-
-function onNoteBlur(qid){
-  var val=document.getElementById('note-'+qid).value.trim();
-  answers[qid].note=val;
-  if(answers[qid].score && answers[qid].score<=2 && val && !answers[qid].car_id){
-    autoGenerateCar(qid);
-  }
-  updateProgress();
-}
-
-function onPhoto(qid,input){
-  if(!input.files||!input.files[0]) return;
-  var reader=new FileReader();
-  reader.onload=function(e){
-    answers[qid].photo=e.target.result;
-    document.getElementById('preview-'+qid).textContent='Photo attached';
-  };
-  reader.readAsDataURL(input.files[0]);
-}
-
-function randomAlpha(n){
-  var chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  var r='';for(var i=0;i<n;i++) r+=chars.charAt(Math.floor(Math.random()*chars.length));
-  return r;
-}
-
-function autoGenerateCar(qid){
-  if(answers[qid].car_id) return;
-  var year=new Date().getFullYear();
-  var carId='CAR-'+year+'-'+randomAlpha(4);
-  answers[qid].car_id=carId;
-  document.getElementById('car-'+qid).textContent='CAR '+carId+' queued';
-
-  var severity=answers[qid].score===1?'CRITICAL':'MAJOR';
-  var payload={records:[{fields:{
-    CAR_ID:carId,Ride:cfg.ride,Facility:cfg.park,Section:answers[qid].pillar,
-    Item:answers[qid].text,Rating:answers[qid].score,Severity:severity,
-    Auditor:cfg.auditor,Submitted_At:new Date().toISOString(),Status:'OPEN',Source:'auditscore'
-  }}]};
-  pushAirtable('CAR_Log',payload).catch(function(){
-    var pending=JSON.parse(localStorage.getItem('pending_cars')||'[]');
-    pending.push(payload);
-    localStorage.setItem('pending_cars',JSON.stringify(pending));
-    document.getElementById('car-'+qid).textContent='CAR '+carId+' queued offline';
-    document.getElementById('car-'+qid).style.color='var(--amber)';
-    setSyncOffline();
-  });
-  updateProgress();
-}
-
-function pushAirtable(table,payload){
-  return fetch(PROXY,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','X-Table':table},
-    body:JSON.stringify(payload)
-  }).then(function(r){
-    if(!r.ok) throw new Error('push failed');
-    return r.json();
-  });
-}
-
-function setSyncOffline(){
-  document.getElementById('sync-dot').classList.add('offline');
-  document.getElementById('sync-label').textContent='OFFLINE';
-}
-
-function updateProgress(){
-  var answered=0;var flagged=0;
-  var keys=Object.keys(answers);
-  keys.forEach(function(qid){
-    var a=answers[qid];
-    if(a.score){
-      if(a.score<=2){
-        if(a.note) {answered++;flagged++;}
-      } else {
-        answered++;
-      }
-    }
-  });
-  var pct=totalQ?Math.round(answered/totalQ*100):0;
-  document.getElementById('progress-fill').style.width=pct+'%';
-  document.getElementById('progress-text').textContent=answered+' / '+totalQ+' answered \u00B7 '+pct+'%';
-
-  var fc=document.getElementById('flagged-counter');
-  if(flagged>0){
-    fc.textContent=flagged+' item'+(flagged>1?'s':'')+' flagged for CAR';
-    fc.classList.add('visible');
-  } else {
-    fc.classList.remove('visible');
-  }
-
-  var btn=document.getElementById('btn-submit');
-  if(answered===totalQ&&totalQ>0) btn.classList.add('enabled');
-  else btn.classList.remove('enabled');
-}
-
-function retryPendingCars(){
-  var pending=JSON.parse(localStorage.getItem('pending_cars')||'[]');
-  if(!pending.length) return Promise.resolve();
-  var promises=pending.map(function(p){return pushAirtable('CAR_Log',p).catch(function(){return null;});});
-  return Promise.all(promises).then(function(results){
-    var stillPending=[];
-    results.forEach(function(r,i){if(!r) stillPending.push(pending[i]);});
-    if(stillPending.length) localStorage.setItem('pending_cars',JSON.stringify(stillPending));
-    else localStorage.removeItem('pending_cars');
-  });
-}
-
-function submitAudit(){
-  var btn=document.getElementById('btn-submit');
-  if(!btn.classList.contains('enabled')) return;
-  btn.textContent='Submitting...';
-  btn.classList.remove('enabled');
-
-  retryPendingCars().then(function(){
-    var pillarScores={R:[],I:[],D:[],E:[]};
-    var carCount=0;
-    var keys=Object.keys(answers);
-    keys.forEach(function(qid){
-      var a=answers[qid];
-      pillarScores[a.pillar].push(a.score);
-      if(a.car_id) carCount++;
-    });
-
-    function avg(arr){return arr.reduce(function(a,b){return a+b;},0)/arr.length;}
-    var pR=avg(pillarScores.R);
-    var pI=avg(pillarScores.I);
-    var pD=avg(pillarScores.D);
-    var pE=avg(pillarScores.E);
-
-    var composite=pR*0.30+pI*0.30+pD*0.25+pE*0.15;
-    var compositeScaled=composite*20;
-
-    var answersClean={};
-    keys.forEach(function(qid){
-      var a=answers[qid];
-      answersClean[qid]={score:a.score,note:a.note,photo:a.photo?'[attached]':null,car_id:a.car_id};
-    });
-
-    var payload={records:[{fields:{
-      Park:cfg.park,Ride:cfg.ride,Type:cfg.type||'',Auditor:cfg.auditor,
-      Date:new Date().toISOString().split('T')[0],
-      Pillar_R:Math.round(pR*100)/100,
-      Pillar_I:Math.round(pI*100)/100,
-      Pillar_D:Math.round(pD*100)/100,
-      Pillar_E:Math.round(pE*100)/100,
-      Composite:Math.round(compositeScaled*100)/100,
-      Answers:JSON.stringify(answersClean),
-      CARs_Generated:carCount,
-      LOTO_Confirmed:loto_confirmed,
-      LOTO_Timestamp:loto_timestamp||'',
-      Submitted_At:new Date().toISOString()
-    }}]};
-
-    pushAirtable('AS_AuditScore',payload).then(function(){
-      showResult(compositeScaled,pR,pI,pD,pE,carCount);
-    }).catch(function(){
-      showResult(compositeScaled,pR,pI,pD,pE,carCount);
-    });
-  });
-}
-
-function showResult(composite,pR,pI,pD,pE,carCount){
-  var sc=Math.round(composite);
-  var band,bandColor;
-  if(sc>=75){band='STRONG';bandColor='var(--green)';}
-  else if(sc>=65){band='GOOD';bandColor='var(--accent)';}
-  else if(sc>=50){band='WATCH';bandColor='var(--amber)';}
-  else{band='CRITICAL';bandColor='var(--red)';}
-
-  document.getElementById('result-score').textContent=sc;
-  document.getElementById('result-score').style.color=bandColor;
-  var bandEl=document.getElementById('result-band');
-  bandEl.textContent=band;
-  bandEl.style.color=bandColor;
-
-  document.getElementById('result-meta').innerHTML=
-    'Auditor: '+esc(cfg.auditor)+'<br>'+
-    esc(cfg.ride)+' — '+esc(cfg.park)+'<br>'+
-    new Date().toLocaleString();
-
-  var grid=document.getElementById('pillar-grid');
-  var pillars=[{l:'Readiness',v:pR},{l:'Integrity',v:pI},{l:'Delivery',v:pD},{l:'Environment',v:pE}];
-  var gh='';
-  pillars.forEach(function(p){
-    var sv=Math.round(p.v*20);
-    gh+='<div class="pillar-mini"><div class="pillar-mini-label">'+p.l+'</div><div class="pillar-mini-score">'+sv+'</div></div>';
-  });
-  grid.innerHTML=gh;
-
-  if(carCount>0){
-    document.getElementById('result-cars').textContent=carCount+' CAR'+(carCount>1?'s':'')+' generated';
-    document.getElementById('result-cars').style.display='block';
-  } else {
-    document.getElementById('result-cars').style.display='none';
-  }
-
-  showScreen('result');
-}
 </script>
 </body>
 </html>
