@@ -395,7 +395,10 @@ body{font-family:var(--sans);color:var(--text);display:flex;flex-direction:colum
   </div>
 
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
-    <div class="sec-label" style="margin:0">// ASTM F24 Pre-Operational Inspections</div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div class="sec-label" style="margin:0">// ASTM F24 Pre-Operational Inspections</div>
+      <label style="display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:9px;color:var(--text-muted);white-space:nowrap;cursor:default;">Hold if no maint by:<input type="time" id="ride-insp-cutoff" value="09:00" onchange="rideInspCutoffSet(this.value)" style="background:var(--panel2);border:1px solid var(--border2);border-radius:4px;color:var(--text);font-family:var(--mono);font-size:9px;padding:2px 4px;margin-left:3px;"></label>
+    </div>
     <button class="btn btn-ghost btn-sm" onclick="refreshRideInspCards()" style="font-size:11px;">&#x21bb; Refresh</button>
   </div>
   <div id="oc-ride-insp-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
@@ -1961,10 +1964,28 @@ function buildRideInspCard(def,status){
 function renderRideInspCardsFromData(dataMap){
   const container=document.getElementById('oc-ride-insp-cards');
   if(!container)return;
+  const today=new Date().toISOString().split('T')[0];
   container.innerHTML=RIDE_INSP_DEFS.map(def=>{
     const status=dataMap[def.code]||{maint:null,ops:null};
-    return buildRideInspCard(def,status);
+    const cardHtml=buildRideInspCard(def,status);
+    // Inject cutoff status line after subtitle div, without modifying buildRideInspCard
+    const marker=def.subtitle+' \u00B7 '+def.maintItems+'+'+def.opsItems+' items</div>';
+    return cardHtml.replace(marker,marker+buildRideInspCutoffLine(def,status));
   }).join('');
+  // Hold-lift: if live data shows maint arrived after auto-hold was applied, lift the hold
+  if(rideInspLive){
+    RIDE_INSP_DEFS.forEach(def=>{
+      const flagKey='as360_autoclosed_'+def.code+'_'+today;
+      if(localStorage.getItem(flagKey)!=='1')return;
+      const liftKey='as360_autolift_'+def.code+'_'+today;
+      if(localStorage.getItem(liftKey)==='1')return;
+      const status=dataMap[def.code]||{maint:null,ops:null};
+      if(!status.maint)return;
+      ocSet(def.code,'pending');
+      localStorage.setItem(liftKey,'1');
+      toast(def.name+' \u2014 maint sign-off received \xb7 Hold lifted \xb7 CAR requires manual close','ok');
+    });
+  }
 }
 
 async function renderRideInspCards(){
@@ -1990,6 +2011,7 @@ async function renderRideInspCards(){
     results.forEach(r=>liveData[r.code]=r.status);
     rideInspLive=true;
     renderRideInspCardsFromData(liveData);
+    checkRideInspCutoffs();
   }catch(e){
     // If fetch fails and we haven't shown live data yet, keep demo
     if(!rideInspLive) renderRideInspCardsFromData(RIDE_INSP_DEMO);
@@ -2001,6 +2023,95 @@ function refreshRideInspCards(){
   rideInspCache={};
   renderRideInspCards();
   toast('Refreshing inspection status...','ok');
+}
+
+// ── RIDE INSP CUTOFF / AUTO-HOLD ENGINE ─────────────────────────────────────
+function rideInspCutoffGet(){
+  return localStorage.getItem('as360_open_cutoff')||'09:00';
+}
+function rideInspCutoffSet(val){
+  localStorage.setItem('as360_open_cutoff',val);
+  const el=document.getElementById('ride-insp-cutoff');if(el)el.value=val;
+  if(rideInspLive)renderRideInspCardsFromData(rideInspCache);
+  else renderRideInspCardsFromData(RIDE_INSP_DEMO);
+}
+function buildRideInspCutoffLine(def,status){
+  const cutoff=rideInspCutoffGet();
+  const parts=cutoff.split(':');
+  const cutoffMins=parseInt(parts[0],10)*60+parseInt(parts[1],10);
+  const now=new Date();
+  const nowMins=now.getHours()*60+now.getMinutes();
+  const today=now.toISOString().split('T')[0];
+  const autoFlag=localStorage.getItem('as360_autoclosed_'+def.code+'_'+today);
+  const hasMaint=!!status.maint;
+  if(hasMaint){
+    const mt=fmtInspTime(status.maint?.['Submitted At']);
+    return'<div style="font-family:var(--mono);font-size:8px;color:var(--green);margin-top:3px;">Cutoff: '+cutoff+' \xb7 Maint received '+mt+'</div>';
+  }
+  if(autoFlag==='1'){
+    const carId=localStorage.getItem('as360_autocar_'+def.code+'_'+today)||'';
+    const carLink=carId?' \xb7 <span style="cursor:pointer;text-decoration:underline;" onclick="openAutoCAR(\''+carId+'\')">'+carId+'</span>':'';
+    return'<div style="font-family:var(--mono);font-size:8px;color:var(--red);margin-top:3px;">Cutoff: '+cutoff+' \xb7 PASSED \u2014 hold applied'+carLink+'</div>';
+  }
+  if(nowMins<cutoffMins){
+    const rem=cutoffMins-nowMins;
+    const col=rem<=15?'var(--amber)':'var(--text-muted)';
+    return'<div style="font-family:var(--mono);font-size:8px;color:'+col+';margin-top:3px;">Cutoff: '+cutoff+' \xb7 '+rem+' min remaining</div>';
+  }
+  return'<div style="font-family:var(--mono);font-size:8px;color:var(--red);margin-top:3px;">Cutoff: '+cutoff+' \xb7 PASSED \u2014 hold pending</div>';
+}
+function openAutoCAR(carId){
+  const carTabEl=Array.from(document.querySelectorAll('.nav-tab')).find(t=>t.textContent.includes('CARs'));
+  if(carTabEl)showView('car',carTabEl);
+  carOpenDetail(carId);
+}
+function checkRideInspCutoffs(){
+  if(!rideInspLive)return;
+  const cutoff=rideInspCutoffGet();
+  const parts=cutoff.split(':');
+  const cutoffMins=parseInt(parts[0],10)*60+parseInt(parts[1],10);
+  const now=new Date();
+  const nowMins=now.getHours()*60+now.getMinutes();
+  if(nowMins<cutoffMins)return;
+  const today=now.toISOString().split('T')[0];
+  let triggered=false;
+  RIDE_INSP_DEFS.forEach(def=>{
+    const flagKey='as360_autoclosed_'+def.code+'_'+today;
+    if(localStorage.getItem(flagKey)==='1')return;
+    const status=rideInspCache[def.code]||{maint:null,ops:null};
+    if(status.maint!=null)return;
+    ocSet(def.code,'hold');
+    const carNow=new Date();
+    const car={
+      id:'CAR-'+carNow.getFullYear()+'-'+Date.now().toString(36).toUpperCase().slice(-4),
+      source:'ATR',
+      location:def.name,
+      finding:'Pre-operational inspection not submitted by cutoff time. Ride held pending mechanic sign-off.',
+      findingType:'Documentation',
+      severity:'critical',
+      assignee:'',
+      due:today,
+      stage:'submitted',
+      stageHistory:[{stage:'submitted',at:carNow.toISOString(),by:'System \u2014 Auto'}],
+      xpAwarded:150,
+      status:'open',
+      createdAt:carNow.toISOString(),
+    };
+    cars.unshift(car);save(K.CAR,cars);
+    atPush('CAR_Log',{
+      'CAR ID':car.id,'Source':car.source,'Attraction / Area':car.location,
+      'Finding':car.finding,'Finding Type':car.findingType,'Severity':car.severity,
+      'Assigned To':car.assignee,'Due Date':car.due,'Stage':'submitted',
+      'XP Awarded':car.xpAwarded,'Status':'Open','Opened At':car.createdAt,
+      'Auto Generated':true,'Trigger':'maint_cutoff',
+    });
+    localStorage.setItem(flagKey,'1');
+    localStorage.setItem('as360_autocar_'+def.code+'_'+today,car.id);
+    toast(def.name+' \u2014 no maint sign-off by cutoff \xb7 Hold applied \xb7 CAR opened','err');
+    triggered=true;
+  });
+  if(triggered){renderCARs();updateBadges();refreshDash();}
+  renderRideInspCardsFromData(rideInspCache);
 }
 
 function renderOpeningChecklist(){
@@ -3112,7 +3223,9 @@ function init(){
   setInterval(checkRotations,15000);
   setInterval(voxTick,8000);
   setInterval(()=>{const c=document.getElementById('clock');if(c)c.textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});},1000);
+  setInterval(checkRideInspCutoffs,60000);
   const c=document.getElementById('clock');if(c)c.textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const rict=document.getElementById('ride-insp-cutoff');if(rict)rict.value=rideInspCutoffGet();
 }
 init();
 </script>
