@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLAR Score — Amusement Standards LLC</title>
+<meta name="description" content="Active risk intelligence for solar asset insurance">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --bg-card: #171b25;
+    --bg-card-hover: #1e2332;
+    --border: rgba(255,255,255,0.08);
+    --text-primary: #f0f2f7;
+    --text-secondary: #8b92a5;
+    --text-muted: #5a6070;
+    --teal: #1D9E75;
+    --blue: #378ADD;
+    --purple: #7F77DD;
+    --amber: #BA7517;
+    --coral: #D85A30;
+    --teal-dim: rgba(29,158,117,0.12);
+    --blue-dim: rgba(55,138,221,0.12);
+    --purple-dim: rgba(127,119,221,0.12);
+    --amber-dim: rgba(186,117,23,0.12);
+    --coral-dim: rgba(216,90,48,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Layout ── */
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  section {
+    padding: 88px 0;
+  }
+
+  @media (max-width: 768px) {
+    section { padding: 48px 0; }
+    .container { padding: 0 20px; }
+  }
+
+  /* ── Typography ── */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: clamp(48px, 7vw, 88px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+
+  h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 48px;
+  }
+
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── Nav bar ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+  }
+
+  .nav-logo span {
+    color: var(--teal);
+  }
+
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    background: var(--teal);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .nav-cta:hover { opacity: 0.85; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+  }
+
+  /* ── Hero ── */
+  #hero {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: -100px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(29,158,117,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  #hero::after {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(55,138,221,0.06) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-subhead {
+    font-size: clamp(16px, 2.2vw, 21px);
+    font-weight: 400;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    line-height: 1.5;
+  }
+
+  .stat-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 44px;
+  }
+
+  .stat-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .stat-chip::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: var(--teal);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+    letter-spacing: 0.01em;
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+  }
+
+  .cta-btn svg {
+    transition: transform 0.2s;
+  }
+
+  .cta-btn:hover svg {
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 768px) {
+    #hero { padding-top: 60px; padding-bottom: 60px; }
+    .stat-chips { gap: 8px; }
+    .stat-chip { font-size: 12px; padding: 6px 12px; }
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--text-muted);
+  }
+
+  /* ── Problem section ── */
+  #problem { background: linear-gradient(180deg, var(--bg) 0%, #0d1020 100%); }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .problem-grid { grid-template-columns: 1fr; }
+  }
+
+  .problem-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 28px;
+    transition: border-color 0.2s;
+  }
+
+  .problem-card:hover {
+    border-color: rgba(255,255,255,0.14);
+  }
+
+  .problem-card .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--coral-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+
+  .problem-card blockquote {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    border-left: 2px solid var(--coral);
+    padding-left: 14px;
+    margin-top: 12px;
+  }
+
+  .problem-card .source {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 10px;
+  }
+
+  /* ── SOLAR Score section ── */
+  #score { background: var(--bg); }
+
+  .pillar-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 56px;
+  }
+
+  @media (max-width: 1000px) {
+    .pillar-row {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .pillar-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pillar-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .pillar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    transition: transform 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pillar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .pillar-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .pillar-card.s::before { background: var(--teal); }
+  .pillar-card.o::before { background: var(--blue); }
+  .pillar-card.l::before { background: var(--purple); }
+  .pillar-card.a::before { background: var(--amber); }
+  .pillar-card.r::before { background: var(--coral); }
+
+  .pillar-card:hover.s { border-color: rgba(29,158,117,0.35); }
+  .pillar-card:hover.o { border-color: rgba(55,138,221,0.35); }
+  .pillar-card:hover.l { border-color: rgba(127,119,221,0.35); }
+  .pillar-card:hover.a { border-color: rgba(186,117,23,0.35); }
+  .pillar-card:hover.r { border-color: rgba(216,90,48,0.35); }
+
+  .pillar-letter {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+  }
+
+  .pillar-card.s .pillar-letter { color: var(--teal); }
+  .pillar-card.o .pillar-letter { color: var(--blue); }
+  .pillar-card.l .pillar-letter { color: var(--purple); }
+  .pillar-card.a .pillar-letter { color: var(--amber); }
+  .pillar-card.r .pillar-letter { color: var(--coral); }
+
+  .pillar-name {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+
+  .pillar-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ── Stream grid ── */
+  .streams-heading {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .stream-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 56px;
+  }
+
+  @media (max-width: 640px) {
+    .stream-grid { grid-template-columns: 1fr; }
+  }
+
+  .stream-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .stream-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .stream-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    width: 18px;
+    flex-shrink: 0;
+  }
+
+  .stream-item.s .stream-dot { background: var(--teal); }
+  .stream-item.s .stream-tag { color: var(--teal); }
+  .stream-item.o .stream-dot { background: var(--blue); }
+  .stream-item.o .stream-tag { color: var(--blue); }
+  .stream-item.l .stream-dot { background: var(--purple); }
+  .stream-item.l .stream-tag { color: var(--purple); }
+  .stream-item.a .stream-dot { background: var(--amber); }
+  .stream-item.a .stream-tag { color: var(--amber); }
+  .stream-item.r .stream-dot { background: var(--coral); }
+  .stream-item.r .stream-tag { color: var(--coral); }
+
+  /* ── Score band ── */
+  .score-band-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 36px 40px;
+  }
+
+  .score-band-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .score-band-track {
+    position: relative;
+    height: 14px;
+    border-radius: 100px;
+    background: linear-gradient(to right,
+      #D85A30 0%,
+      #BA7517 28%,
+      #1D9E75 55%,
+      #378ADD 100%
+    );
+    margin-bottom: 8px;
+    overflow: visible;
+  }
+
+  .score-needle {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.5), 0 2px 12px rgba(0,0,0,0.5);
+    transition: left 1.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    left: 0%;
+  }
+
+  .score-needle.animated {
+    left: 68%;
+  }
+
+  .score-band-labels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 16px;
+  }
+
+  .band-seg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .band-seg-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .band-seg-range {
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  .band-seg.critical .band-seg-label { color: var(--coral); }
+  .band-seg.watch .band-seg-label { color: var(--amber); }
+  .band-seg.good .band-seg-label { color: var(--teal); }
+  .band-seg.strong .band-seg-label { color: var(--blue); }
+
+  .score-sample {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .score-number {
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--teal);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .score-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    background: var(--teal-dim);
+    border: 1px solid rgba(29,158,117,0.3);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+
+  .score-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 360px;
+  }
+
+  @media (max-width: 640px) {
+    .score-band-wrap { padding: 24px 20px; }
+  }
+
+  /* ── Solar Landscape section ── */
+  #solar-landscape { background: linear-gradient(180deg, #0d1020 0%, var(--bg) 100%); }
+
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .benefit-grid { grid-template-columns: 1fr; }
+  }
+
+  .benefit-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 30px 28px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .benefit-card:hover {
+    border-color: rgba(255,255,255,0.14);
+    transform: translateY(-2px);
+  }
+
+  .benefit-number {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  .benefit-card p {
+    font-size: 14px;
+    line-height: 1.7;
+    margin-top: 6px;
+  }
+
+  /* ── Pilot section ── */
+  #pilot { background: var(--bg); }
+
+  .pilot-inner {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 60px;
+    align-items: start;
+  }
+
+  @media (max-width: 960px) {
+    .pilot-inner { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  .step-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .step-item:last-child { border-bottom: none; }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--teal-dim);
+    border: 1px solid rgba(29,158,117,0.3);
+    color: var(--teal);
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-content h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0;
+  }
+
+  .step-content p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .pilot-callout {
+    background: linear-gradient(135deg, rgba(29,158,117,0.1) 0%, rgba(55,138,221,0.07) 100%);
+    border: 1px solid rgba(29,158,117,0.25);
+    border-radius: 14px;
+    padding: 36px 32px;
+    position: sticky;
+    top: 80px;
+  }
+
+  .callout-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+
+  .callout-pitch {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.55;
+    margin-bottom: 28px;
+  }
+
+  .callout-pitch strong {
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  .callout-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .callout-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .callout-stat-num {
+    font-size: 26px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .callout-stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ── About section ── */
+  #about { background: linear-gradient(180deg, var(--bg) 0%, #0a0d14 100%); }
+
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .about-inner { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  .about-text p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    max-width: 640px;
+  }
+
+  .badge-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 180px;
+  }
+
+  .badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .badge-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .badge-icon.teal { background: var(--teal-dim); color: var(--teal); }
+  .badge-icon.blue { background: var(--blue-dim); color: var(--blue); }
+  .badge-icon.amber { background: var(--amber-dim); color: var(--amber); }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Footer ── */
+  footer {
+    background: #0a0d14;
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  .footer-logo span { color: var(--teal); }
+
+  .footer-meta {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .footer-meta a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .footer-meta a:hover { color: var(--teal); }
+
+  .footer-confidential {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">AS 360 &mdash; <span>SOLAR Score</span></div>
+  <a href="#pilot" class="nav-cta">Request Pilot</a>
+</nav>
+
+<!-- 1. HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="eyebrow">Amusement Standards LLC &mdash; Solar Vertical</div>
+    <h1>The SOLAR Score</h1>
+    <p class="hero-subhead">Active risk intelligence for solar asset insurance &mdash; built for Solar Landscape</p>
+    <div class="stat-chips">
+      <div class="stat-chip">$6.2B global solar insurance market</div>
+      <div class="stat-chip">9.4% CAGR through 2034</div>
+      <div class="stat-chip">$80M+ single hail claim that hardened the market</div>
+    </div>
+    <a href="#pilot" class="cta-btn">
+      Request Pilot
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- 2. THE PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="section-label">Context</div>
+    <h2>The protection gap</h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="card-icon">&#9650;</div>
+        <h3>Insurers price blind</h3>
+        <p>Solar assets priced on location and capacity only. No operational risk layer exists at the facility level.</p>
+      </div>
+      <div class="problem-card">
+        <div class="card-icon">&#9650;</div>
+        <h3>The data paradox</h3>
+        <blockquote>"We have almost too much data and often conflicting modeling information, creating uncertainty about what data should be trusted."</blockquote>
+        <p class="source">AmWins Broker Council &mdash; kWh Analytics Solar Risk Assessment 2025</p>
+      </div>
+      <div class="problem-card">
+        <div class="card-icon">&#9650;</div>
+        <h3>Poor O&amp;M = no coverage</h3>
+        <p>Assets with inadequate maintenance practices are being declined outright in the hardened 2025 market.</p>
+        <p class="source">Source: WTW Solar Energy Market Update 2025</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. THE SOLAR SCORE -->
+<section id="score">
+  <div class="container">
+    <div class="section-label">The Framework</div>
+    <h2>Five pillars. Twelve streams. One composite score.</h2>
+
+    <div class="pillar-row">
+      <div class="pillar-card s">
+        <div class="pillar-letter">S</div>
+        <div class="pillar-name">Structure</div>
+        <div class="pillar-desc">Racking integrity, mounting torque, ballast compliance, shading obstructions</div>
+      </div>
+      <div class="pillar-card o">
+        <div class="pillar-letter">O</div>
+        <div class="pillar-name">Operation</div>
+        <div class="pillar-desc">O&amp;M vendor quality, monitoring uptime %, work order close rate, response SLAs</div>
+      </div>
+      <div class="pillar-card l">
+        <div class="pillar-letter">L</div>
+        <div class="pillar-name">Legal</div>
+        <div class="pillar-desc">AHJ permit status, NEC compliance, utility interconnect documentation current</div>
+      </div>
+      <div class="pillar-card a">
+        <div class="pillar-letter">A</div>
+        <div class="pillar-name">Asset</div>
+        <div class="pillar-desc">Inverter health, string performance ratio, degradation vs expected, thermal imaging recency</div>
+      </div>
+      <div class="pillar-card r">
+        <div class="pillar-letter">R</div>
+        <div class="pillar-name">Risk</div>
+        <div class="pillar-desc">Fire/weather exposure, vegetation management, ground cover condition, access road</div>
+      </div>
+    </div>
+
+    <p class="streams-heading">12 data streams</p>
+    <div class="stream-grid">
+      <div class="stream-item s">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">S</span>
+        Last physical inspection score
+      </div>
+      <div class="stream-item o">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">O</span>
+        Monitoring uptime % (trailing 90 days)
+      </div>
+      <div class="stream-item a">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">A</span>
+        Performance ratio vs P50 baseline
+      </div>
+      <div class="stream-item a">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">A</span>
+        Thermal imaging recency (IR scan date)
+      </div>
+      <div class="stream-item o">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">O</span>
+        O&amp;M vendor certification tier
+      </div>
+      <div class="stream-item a">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">A</span>
+        Inverter fault frequency
+      </div>
+      <div class="stream-item o">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">O</span>
+        Work order open/close ratio
+      </div>
+      <div class="stream-item r">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">R</span>
+        Vegetation management compliance
+      </div>
+      <div class="stream-item r">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">R</span>
+        Weather event response log
+      </div>
+      <div class="stream-item l">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">L</span>
+        NEC/AHJ permit documentation status
+      </div>
+      <div class="stream-item l">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">L</span>
+        Interconnection agreement current
+      </div>
+      <div class="stream-item r">
+        <span class="stream-dot"></span>
+        <span class="stream-tag">R</span>
+        Insurance claim history (normalized)
+      </div>
+    </div>
+
+    <div class="score-band-wrap" id="score-band-wrap">
+      <p class="score-band-label">Composite score output</p>
+      <div class="score-band-track">
+        <div class="score-needle" id="score-needle"></div>
+      </div>
+      <div class="score-band-labels">
+        <div class="band-seg critical">
+          <span class="band-seg-label">Critical</span>
+          <span class="band-seg-range">0 &ndash; 39</span>
+        </div>
+        <div class="band-seg watch">
+          <span class="band-seg-label">Watch</span>
+          <span class="band-seg-range">40 &ndash; 59</span>
+        </div>
+        <div class="band-seg good">
+          <span class="band-seg-label">Good</span>
+          <span class="band-seg-range">60 &ndash; 79</span>
+        </div>
+        <div class="band-seg strong">
+          <span class="band-seg-label">Strong</span>
+          <span class="band-seg-range">80 &ndash; 100</span>
+        </div>
+      </div>
+      <div class="score-sample">
+        <div class="score-number">74</div>
+        <div class="score-badge">Good</div>
+        <p class="score-desc">Sample composite score — above sector median, eligible for preferred-tier underwriting consideration.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. WHAT IT MEANS FOR SOLAR LANDSCAPE -->
+<section id="solar-landscape">
+  <div class="container">
+    <div class="section-label">For Solar Landscape</div>
+    <h2>Four outcomes. Zero operational disruption.</h2>
+    <div class="benefit-grid">
+      <div class="benefit-card">
+        <div class="benefit-number">01</div>
+        <h3>Active insurance pricing</h3>
+        <p>A SOLAR Score on every asset gives underwriters differentiated data &mdash; translating to premium reduction and coverage access at renewal.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-number">02</div>
+        <h3>Client value-add</h3>
+        <p>Score your real estate partners&rsquo; rooftop assets. No other commercial rooftop developer offers this.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-number">03</div>
+        <h3>Broker leverage</h3>
+        <p>Deliver insurer-facing score reports formatted for Marsh, WTW, or AmWins. Speak the language underwriters are already using: P50, PML, attritional loss frequency.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-number">04</div>
+        <h3>Market position</h3>
+        <p>No standardized operational risk score exists for solar assets. Whoever owns the schema owns the data infrastructure for a $13.8B market by 2034.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. THE PILOT -->
+<section id="pilot">
+  <div class="container">
+    <div class="section-label">Engagement</div>
+    <h2>Score 5 assets. 30 days. No disruption.</h2>
+    <div class="pilot-inner">
+      <div>
+        <ol class="step-list">
+          <li class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h3>Share existing data</h3>
+              <p>Provide O&amp;M reports, monitoring data, and permit docs for 5 facilities</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h3>AS 360 scores each asset</h3>
+              <p>We score each facility against the 12-stream SOLAR Score framework</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h3>Receive insurer-ready reports</h3>
+              <p>Score reports formatted for your broker &mdash; Marsh, WTW, or AmWins</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h3>Benchmark against sector medians</h3>
+              <p>Compare the 5 assets against each other and industry reference data</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <h3>Present findings to BD team</h3>
+              <p>Identify insurance pricing opportunity and define the path to full-fleet scoring</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="pilot-callout">
+        <div class="callout-eyebrow">The pitch</div>
+        <p class="callout-pitch">Solar Landscape owns <strong>800MW</strong> of rooftop assets across <strong>20 states</strong> with no standardized operational risk score. We built one &mdash; and we can pilot it on <strong>5 of your facilities in 30 days.</strong></p>
+        <div class="callout-stats">
+          <div class="callout-stat">
+            <span class="callout-stat-num">800MW</span>
+            <span class="callout-stat-label">rooftop assets</span>
+          </div>
+          <div class="callout-stat">
+            <span class="callout-stat-num">20</span>
+            <span class="callout-stat-label">states</span>
+          </div>
+          <div class="callout-stat">
+            <span class="callout-stat-num">30</span>
+            <span class="callout-stat-label">day pilot window</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. ABOUT AS 360 -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">About</div>
+    <h2>Built by AS 360</h2>
+    <div class="about-inner">
+      <div class="about-text">
+        <p>Amusement Standards LLC built the AS 360 platform &mdash; a composite operational risk scoring system for the attractions industry. The RIDE Score, SPLASH Score, and PLAY Score cover 37 data streams across physical asset classes with no prior risk infrastructure. The SOLAR Score applies the same architecture to solar. Both companies are headquartered in Asbury Park, NJ.</p>
+      </div>
+      <div class="badge-stack">
+        <div class="badge">
+          <div class="badge-icon teal">&#9632;</div>
+          AS 360 Platform
+        </div>
+        <div class="badge">
+          <div class="badge-icon blue">&#9632;</div>
+          Amusement Standards LLC
+        </div>
+        <div class="badge">
+          <div class="badge-icon amber">&#9632;</div>
+          Asbury Park, NJ
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">Amusement Standards LLC &mdash; <span>SOLAR Score</span></div>
+      <p class="footer-meta">
+        <a href="https://amusementstandards.com" target="_blank" rel="noopener">amusementstandards.com</a>
+        &nbsp;&middot;&nbsp;
+        Adam Brousell, Founder &amp; Director of Data Analytics &amp; Risk Intelligence
+      </p>
+      <div class="footer-confidential">This pitch document is confidential and prepared for Solar Landscape.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Score needle animation on scroll into view
+  (function() {
+    var needle = document.getElementById('score-needle');
+    var wrap = document.getElementById('score-band-wrap');
+    if (!needle || !wrap) return;
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          // Small delay before animating in
+          setTimeout(function() {
+            needle.classList.add('animated');
+          }, 300);
+          observer.unobserve(wrap);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    observer.observe(wrap);
+  })();
+</script>
+
+</body>
+</html>
