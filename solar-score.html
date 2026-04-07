@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLAR Score — Operational Risk Intelligence for Solar Asset Insurance | Amusement Standards LLC</title>
+<meta name="description" content="A composite operational risk scoring system for commercial solar assets, built for active insurance underwriting.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ===================================================================
+   CUSTOM PROPERTIES
+   =================================================================== */
+:root {
+  --bg:               #0d1117;
+  --bg-surface:       #161b22;
+  --bg-card:          #1c2128;
+  --border:           rgba(255,255,255,0.08);
+  --text-primary:     #e6edf3;
+  --text-secondary:   #8b949e;
+  --text-muted:       #484f58;
+  --teal:             #1D9E75;
+  --blue:             #378ADD;
+  --purple:           #7F77DD;
+  --amber:            #BA7517;
+  --coral:            #D85A30;
+  --score-strong:     #1D9E75;
+  --score-good:       #378ADD;
+  --score-watch:      #BA7517;
+  --score-critical:   #D85A30;
+  --accent:           #1D9E75;
+}
+
+/* ===================================================================
+   RESET + BASE
+   =================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===================================================================
+   LAYOUT
+   =================================================================== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section { padding: 96px 0; }
+
+/* ===================================================================
+   NAVIGATION
+   =================================================================== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 52px;
+  background: rgba(13,17,23,0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+
+.nav-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  gap: 3px;
+}
+
+.nav-logo-main {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.nav-logo-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: color 0.15s;
+}
+
+.nav-links a:hover { color: var(--text-primary); }
+.nav-links a.active { color: var(--accent); }
+
+/* ===================================================================
+   SHARED TYPOGRAPHY
+   =================================================================== */
+.section-h2 {
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  margin-bottom: 36px;
+}
+
+.section-sub {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-top: -22px;
+  margin-bottom: 40px;
+  line-height: 1.55;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+/* ===================================================================
+   SECTION 1 — HERO
+   =================================================================== */
+#hero {
+  background: var(--bg);
+  padding-top: 124px;
+  padding-bottom: 96px;
+}
+
+.hero-tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 16px;
+}
+
+.hero-h1 {
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+
+.hero-subhead {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  max-width: 620px;
+  line-height: 1.6;
+  margin-bottom: 36px;
+}
+
+.metric-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.metric-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  gap: 6px;
+}
+
+.metric-chip strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.hero-body {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 700px;
+  margin-bottom: 36px;
+  border-left: 2px solid var(--border);
+  padding-left: 18px;
+}
+
+.cta-strip {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.btn-primary:hover { opacity: 0.85; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.btn-secondary:hover {
+  color: var(--text-primary);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* ===================================================================
+   SECTION 2 — PROBLEM
+   =================================================================== */
+#problem { background: var(--bg-surface); }
+
+.problem-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.problem-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 26px 22px;
+}
+
+.problem-card-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.problem-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.problem-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.problem-card blockquote {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-style: italic;
+  border-left: 2px solid var(--coral);
+  padding-left: 12px;
+  margin: 10px 0;
+  line-height: 1.65;
+}
+
+.problem-source {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* ===================================================================
+   SECTION 3 — METHODOLOGY
+   =================================================================== */
+#methodology { background: var(--bg); }
+
+.pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.pillar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 16px 22px;
+  position: relative;
+}
+
+.pillar-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 0 0 10px 10px;
+}
+
+.pillar-card.s::after { background: var(--teal); }
+.pillar-card.o::after { background: var(--blue); }
+.pillar-card.l::after { background: var(--purple); }
+.pillar-card.a::after { background: var(--amber); }
+.pillar-card.r::after { background: var(--coral); }
+
+.pillar-letter {
+  font-size: 48px;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: -0.03em;
+}
+
+.pillar-card.s .pillar-letter { color: var(--teal); }
+.pillar-card.o .pillar-letter { color: var(--blue); }
+.pillar-card.l .pillar-letter { color: var(--purple); }
+.pillar-card.a .pillar-letter { color: var(--amber); }
+.pillar-card.r .pillar-letter { color: var(--coral); }
+
+.pillar-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 7px;
+}
+
+.pillar-weight {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+
+.pillar-card.s .pillar-weight { background: rgba(29,158,117,0.12);  color: var(--teal);   }
+.pillar-card.o .pillar-weight { background: rgba(55,138,221,0.12);   color: var(--blue);   }
+.pillar-card.l .pillar-weight { background: rgba(127,119,221,0.12);  color: var(--purple); }
+.pillar-card.a .pillar-weight { background: rgba(186,117,23,0.12);   color: var(--amber);  }
+.pillar-card.r .pillar-weight { background: rgba(216,90,48,0.12);    color: var(--coral);  }
+
+.pillar-streams {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pillar-streams li {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding-left: 10px;
+  position: relative;
+}
+
+.pillar-streams li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+}
+
+.weighting-rationale {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px 30px;
+}
+
+.weighting-rationale p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.weighting-rationale p + p { margin-top: 16px; }
+
+/* ===================================================================
+   SECTION 4 — SCORING ENGINE
+   =================================================================== */
+#scoring { background: var(--bg-surface); }
+
+.score-band {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+
+.band-segment {
+  padding: 20px 16px;
+  border-right: 1px solid rgba(0,0,0,0.25);
+}
+
+.band-segment:last-child { border-right: none; }
+
+.band-segment.critical { background: rgba(216,90,48,0.12); }
+.band-segment.watch    { background: rgba(186,117,23,0.12); }
+.band-segment.good     { background: rgba(55,138,221,0.1);  }
+.band-segment.strong   { background: rgba(29,158,117,0.1);  }
+
+.band-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.band-segment.critical .band-label { color: var(--coral); }
+.band-segment.watch    .band-label { color: var(--amber); }
+.band-segment.good     .band-label { color: var(--blue);  }
+.band-segment.strong   .band-label { color: var(--teal);  }
+
+.band-range {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.band-implication {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* Animated facility card */
+.facility-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px 30px;
+}
+
+.facility-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.facility-name {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+}
+
+.facility-score-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.facility-score-num {
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--blue);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  min-width: 64px;
+  display: inline-block;
+}
+
+.facility-score-band {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: 0.02em;
+}
+
+.facility-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: right;
+  line-height: 1.8;
+}
+
+.pillar-bars { margin-bottom: 22px; }
+
+.pillar-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+
+.pillar-bar-row:last-child { margin-bottom: 0; }
+
+.pillar-bar-letter {
+  font-size: 11px;
+  font-weight: 600;
+  width: 14px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.pillar-bar-letter.s { color: var(--teal);   }
+.pillar-bar-letter.o { color: var(--blue);   }
+.pillar-bar-letter.l { color: var(--purple); }
+.pillar-bar-letter.a { color: var(--amber);  }
+.pillar-bar-letter.r { color: var(--coral);  }
+
+.pillar-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--bg);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pillar-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  width: 0%;
+}
+
+.pillar-bar-fill.s { background: var(--teal);   }
+.pillar-bar-fill.o { background: var(--blue);   }
+.pillar-bar-fill.l { background: var(--purple); }
+.pillar-bar-fill.a { background: var(--amber);  }
+.pillar-bar-fill.r { background: var(--coral);  }
+
+.pillar-bar-val {
+  font-size: 11px;
+  color: var(--text-muted);
+  width: 22px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.facility-flag {
+  background: rgba(186,117,23,0.07);
+  border: 1px solid rgba(186,117,23,0.22);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.facility-flag strong {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+/* ===================================================================
+   SECTION 5 — STANDARDS
+   =================================================================== */
+#standards { background: var(--bg); }
+
+.standards-grid {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.standards-header {
+  display: grid;
+  grid-template-columns: 130px 1fr 1fr;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 11px 20px;
+  gap: 16px;
+}
+
+.standards-header span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.standards-row {
+  display: grid;
+  grid-template-columns: 130px 1fr 1fr;
+  gap: 16px;
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+
+.standards-row:last-child { border-bottom: none; }
+.standards-row:hover { background: var(--bg-card); }
+
+.std-col-id {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.5;
+}
+
+.std-col-scope {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.std-col-integration {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.standards-note {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 26px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* ===================================================================
+   SECTION 6 — TRAJECTORY
+   =================================================================== */
+#trajectory { background: var(--bg-surface); }
+
+.trajectory-callout {
+  border-left: 3px solid var(--teal);
+  background: var(--bg-card);
+  border-radius: 0 10px 10px 0;
+  padding: 20px 24px;
+  margin-bottom: 36px;
+}
+
+.trajectory-callout p {
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.75;
+}
+
+.trajectory-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.trajectory-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 20px;
+}
+
+.traj-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.traj-tag.improving { color: var(--teal);  }
+.traj-tag.stable    { color: var(--blue);  }
+.traj-tag.declining { color: var(--coral); }
+
+.trajectory-card h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.trajectory-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.fico-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+}
+
+.fico-block p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* ===================================================================
+   SECTION 7 — PILOT
+   =================================================================== */
+#pilot { background: var(--bg); }
+
+.pilot-sub {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 44px;
+  margin-top: -22px;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 52px;
+  margin-bottom: 40px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 16px;
+  top: 18px;
+  bottom: 18px;
+  width: 1px;
+  background: var(--border);
+}
+
+.timeline-step {
+  position: relative;
+  padding-bottom: 34px;
+}
+
+.timeline-step:last-child { padding-bottom: 0; }
+
+.timeline-num {
+  position: absolute;
+  left: -48px;
+  top: 3px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.timeline-step-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.step-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.step-days {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.step-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.pilot-callout {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--teal);
+  border-radius: 0 10px 10px 0;
+  padding: 22px 26px;
+}
+
+.pilot-callout p {
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.65;
+}
+
+.pilot-callout strong { color: var(--teal); }
+
+/* ===================================================================
+   SECTION 8 — ABOUT
+   =================================================================== */
+#about { background: var(--bg-surface); }
+
+.about-inner {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 48px;
+  align-items: start;
+  margin-bottom: 36px;
+}
+
+.about-body p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.85;
+}
+
+.stat-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+.stat-num {
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.about-attribution {
+  font-size: 13px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+.about-attribution a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.about-attribution a:hover { color: var(--accent); }
+
+/* ===================================================================
+   FOOTER
+   =================================================================== */
+footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+}
+
+.footer-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-confidential {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.footer-copyright {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.footer-copyright a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.footer-copyright a:hover { color: var(--accent); }
+
+.footer-standards {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ===================================================================
+   RESPONSIVE — 768px
+   =================================================================== */
+@media (max-width: 768px) {
+  section { padding: 48px 0; }
+
+  #hero {
+    padding-top: 80px;
+    padding-bottom: 48px;
+  }
+
+  .hero-h1    { font-size: 28px; }
+  .hero-subhead { font-size: 16px; }
+  .section-h2 { font-size: 22px; }
+
+  .problem-cards      { grid-template-columns: 1fr; }
+  .pillar-grid        { grid-template-columns: repeat(2, 1fr); }
+  .score-band         { grid-template-columns: repeat(2, 1fr); }
+  .trajectory-cards   { grid-template-columns: 1fr; }
+  .about-inner        { grid-template-columns: 1fr; gap: 32px; }
+
+  /* Standards: hide integration column on small screens */
+  .standards-header  { grid-template-columns: 110px 1fr; }
+  .standards-row     { grid-template-columns: 110px 1fr; }
+  .std-col-integration       { display: none; }
+  .standards-header span:last-child { display: none; }
+
+  .nav-links { display: none; }
+
+  .facility-header { flex-direction: column; }
+  .facility-meta   { text-align: left; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     NAVIGATION
+     ================================================================ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <span class="nav-logo-main">SOLAR Score</span>
+      <span class="nav-logo-sub">by AS 360</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#methodology">Methodology</a></li>
+      <li><a href="#streams">Streams</a></li>
+      <li><a href="#scoring">Scoring</a></li>
+      <li><a href="#standards">Standards</a></li>
+      <li><a href="#pilot">Pilot</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ================================================================
+     SECTION 1 — HERO
+     ================================================================ -->
+<section id="hero">
+  <div class="container">
+    <p class="hero-tag">Amusement Standards LLC &mdash; Solar Risk Intelligence</p>
+    <h1 class="hero-h1">The SOLAR Score</h1>
+    <p class="hero-subhead">A composite operational risk scoring system for commercial solar assets &mdash; built for active insurance underwriting</p>
+
+    <div class="metric-strip">
+      <div class="metric-chip"><strong>$6.2B</strong> &mdash; global solar insurance market 2025</div>
+      <div class="metric-chip"><strong>9.4% CAGR</strong> &mdash; projected through 2034</div>
+      <div class="metric-chip"><strong>73%</strong> &mdash; of solar loss dollars driven by hail, per kWh Analytics 2025</div>
+    </div>
+
+    <p class="hero-body">The solar insurance market has hardened significantly since 2019. Insurers are reporting attritional losses driven by human error, mechanical breakdown, and poor O&amp;M practices &mdash; not just natural catastrophe events. The underwriting problem is not lack of data; it is lack of a standardized operational risk framework that translates field-level asset conditions into insurer-ready signals. The SOLAR Score is that framework.</p>
+
+    <div class="cta-strip">
+      <a href="#methodology" class="btn-primary">View Score Methodology</a>
+      <a href="#" class="btn-secondary">Download Pilot Proposal</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 2 — THE PROBLEM
+     ================================================================ -->
+<section id="problem">
+  <div class="container">
+    <p class="section-label">The underwriting challenge</p>
+    <h2 class="section-h2">Why underwriters are flying blind on solar</h2>
+
+    <div class="problem-cards">
+
+      <div class="problem-card">
+        <div class="problem-card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <path d="M14 3.5L25.5 24H2.5L14 3.5Z" stroke="#D85A30" stroke-width="1.5" stroke-linejoin="round" fill="rgba(216,90,48,0.1)"/>
+            <line x1="14" y1="11" x2="14" y2="17" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="14" cy="20.5" r="1" fill="#D85A30"/>
+          </svg>
+        </div>
+        <h3>The attritional loss problem</h3>
+        <p>The hardened market was triggered not just by catastrophic nat-cat events like the $80M Texas hail claim, but by mounting attritional losses &mdash; minor, frequent events from O&amp;M negligence, workmanship failures, and electrical breakdown. These losses are preventable and undetectable without facility-level operational data.</p>
+        <span class="problem-source">Source: PV Tech / Gallagher 2023</span>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <rect x="3"  y="19" width="5" height="6" rx="1" fill="rgba(186,117,23,0.15)" stroke="#BA7517" stroke-width="1.3"/>
+            <rect x="10" y="14" width="5" height="11" rx="1" fill="rgba(186,117,23,0.15)" stroke="#BA7517" stroke-width="1.3"/>
+            <rect x="17" y="9"  width="5" height="16" rx="1" fill="rgba(186,117,23,0.15)" stroke="#BA7517" stroke-width="1.3"/>
+            <circle cx="23.5" cy="5.5" r="3" fill="var(--bg-card)" stroke="#BA7517" stroke-width="1.3"/>
+            <line x1="22.5" y1="5.5" x2="24.5" y2="5.5" stroke="#BA7517" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="23.5" y1="4.5" x2="23.5" y2="6.5" stroke="#BA7517" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>The data paradox</h3>
+        <blockquote>"We have almost too much data and often conflicting modeling information, creating uncertainty about what data should be trusted." &mdash; AmWins Broker Representative, kWh Analytics 2025 Broker Council</blockquote>
+        <p>Portfolio-level performance data exists. Facility-level operational risk scores do not.</p>
+        <span class="problem-source">Source: kWh Analytics 2025 Solar Risk Assessment</span>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <path d="M14 14L5 8" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M14 14L23 8" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M5 8L3.5 4.5" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M23 8L24.5 4.5" stroke="#D85A30" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="14" cy="14" r="2.5" fill="var(--bg-card)" stroke="#8b949e" stroke-width="1.2"/>
+            <line x1="14" y1="16.5" x2="14" y2="23" stroke="#8b949e" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>The O&amp;M differentiation gap</h3>
+        <p>Insurers in hardened markets are increasingly selective. Assets with strong, documented O&amp;M practices access better coverage at lower premiums. Assets without are being declined outright. No standardized scoring methodology exists to communicate this distinction to underwriters.</p>
+        <span class="problem-source">Source: WTW Renewable Energy Market Review 2025</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 3 — METHODOLOGY
+     ================================================================ -->
+<section id="methodology">
+  <div class="container">
+    <p class="section-label">Scoring framework</p>
+    <h2 class="section-h2">SOLAR Score methodology</h2>
+    <p class="section-sub">Five pillars. Twelve data streams. One composite score on a 0&ndash;100 scale.</p>
+
+    <div class="pillar-grid">
+
+      <!-- S — Structure -->
+      <div class="pillar-card s">
+        <div class="pillar-letter">S</div>
+        <div class="pillar-name">Structure</div>
+        <div class="pillar-weight">20% of composite</div>
+        <ul class="pillar-streams">
+          <li>Racking integrity score (IEC 62446-1 &sect;8 compliance)</li>
+          <li>Mounting torque verification (last inspection date + pass/fail)</li>
+          <li>Ballast compliance status (roof-mounted systems)</li>
+          <li>Penetration seal condition (water intrusion risk)</li>
+        </ul>
+      </div>
+
+      <!-- O — Operation -->
+      <div class="pillar-card o">
+        <div class="pillar-letter">O</div>
+        <div class="pillar-name">Operation</div>
+        <div class="pillar-weight">25% of composite</div>
+        <ul class="pillar-streams">
+          <li>O&amp;M vendor certification tier (NABCEP-certified vs uncertified)</li>
+          <li>Monitoring system uptime % (trailing 90 days)</li>
+          <li>Work order open/close ratio (open WOs older than 30 days flagged)</li>
+          <li>Mean time to respond on priority alerts (hours)</li>
+        </ul>
+      </div>
+
+      <!-- L — Legal -->
+      <div class="pillar-card l">
+        <div class="pillar-letter">L</div>
+        <div class="pillar-name">Legal</div>
+        <div class="pillar-weight">15% of composite</div>
+        <ul class="pillar-streams">
+          <li>AHJ permit documentation status (current / expired / missing)</li>
+          <li>NEC Article 690 compliance last verified (date + inspector credential)</li>
+          <li>Utility interconnection agreement current (yes/no + expiration date)</li>
+        </ul>
+      </div>
+
+      <!-- A — Asset -->
+      <div class="pillar-card a">
+        <div class="pillar-letter">A</div>
+        <div class="pillar-name">Asset</div>
+        <div class="pillar-weight">25% of composite</div>
+        <ul class="pillar-streams">
+          <li>Performance ratio vs P50 baseline (trailing 12 months)</li>
+          <li>Inverter fault frequency (faults per MW per quarter)</li>
+          <li>IEC 62446-3 thermographic inspection recency (months since last IR scan)</li>
+          <li>String-level degradation vs expected (% deviation from nameplate)</li>
+        </ul>
+      </div>
+
+      <!-- R — Risk -->
+      <div class="pillar-card r">
+        <div class="pillar-letter">R</div>
+        <div class="pillar-name">Risk</div>
+        <div class="pillar-weight">15% of composite</div>
+        <ul class="pillar-streams">
+          <li>Climate hazard exposure index (hail, wildfire, wind &mdash; zip code mapped)</li>
+          <li>Vegetation management compliance (last clearance date vs standard)</li>
+          <li>Insurance claim history normalized (claims per MW per 5-year period)</li>
+          <li>Site access road condition (emergency response access graded 1&ndash;5)</li>
+        </ul>
+      </div>
+
+    </div><!-- /pillar-grid -->
+
+    <span id="streams" style="display:block;height:0;"></span>
+
+    <div class="weighting-rationale">
+      <p>Operation and Asset carry the highest weights (25% each) because insurer loss data identifies O&amp;M negligence and inverter failure as the primary drivers of attritional losses in the commercial solar segment. Structure and Risk carry equal weight (20% and 15%) reflecting the importance of physical integrity and nat-cat exposure in the commercial rooftop context, where roof membrane damage from racking failure is a significant liability pathway.</p>
+      <p>Legal carries 15% &mdash; not because compliance is unimportant, but because AHJ and NEC documentation failures are typically curable within 30 days and should not permanently suppress a facility's composite score.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 4 — SCORING ENGINE
+     ================================================================ -->
+<section id="scoring">
+  <div class="container">
+    <p class="section-label">Output definition</p>
+    <h2 class="section-h2">Score output and band definitions</h2>
+
+    <div class="score-band" role="table" aria-label="SOLAR Score band definitions">
+
+      <div class="band-segment critical">
+        <div class="band-label">Critical</div>
+        <div class="band-range">0 &ndash; 39</div>
+        <div class="band-implication">Facility exhibits documented O&amp;M gaps, compliance deficiencies, or structural risks that materially elevate attritional loss probability. Underwriters should apply enhanced deductibles or condition coverage on corrective action.</div>
+      </div>
+
+      <div class="band-segment watch">
+        <div class="band-label">Watch</div>
+        <div class="band-range">40 &ndash; 59</div>
+        <div class="band-implication">Facility is operational but shows indicators of maintenance lag, documentation gaps, or underperformance vs baseline. Risk engineering review recommended before renewal.</div>
+      </div>
+
+      <div class="band-segment good">
+        <div class="band-label">Good</div>
+        <div class="band-range">60 &ndash; 79</div>
+        <div class="band-implication">Facility demonstrates adequate operational discipline and compliance posture. Eligible for standard market terms. Score trajectory over 2+ audit cycles unlocks preferred tier consideration.</div>
+      </div>
+
+      <div class="band-segment strong">
+        <div class="band-label">Strong</div>
+        <div class="band-range">80 &ndash; 100</div>
+        <div class="band-implication">Facility exhibits best-in-class O&amp;M practices, current documentation, and performance at or above P50 baseline. Eligible for preferred underwriting terms and reduced deductibles.</div>
+      </div>
+
+    </div><!-- /score-band -->
+
+    <!-- Animated facility card -->
+    <div class="facility-card" id="facility-card">
+      <div class="facility-header">
+        <div>
+          <div class="facility-name">Rooftop Array &mdash; Newark, NJ (2.4 MW)</div>
+          <div class="facility-score-row">
+            <span class="facility-score-num" id="score-counter">0</span>
+            <span class="facility-score-band">&mdash; GOOD</span>
+          </div>
+        </div>
+        <div class="facility-meta">
+          Last Scored: March 2026<br>
+          Next Review: September 2026
+        </div>
+      </div>
+
+      <div class="pillar-bars">
+        <div class="pillar-bar-row">
+          <span class="pillar-bar-letter s">S</span>
+          <div class="pillar-bar-track"><div class="pillar-bar-fill s" id="bar-s"></div></div>
+          <span class="pillar-bar-val">81</span>
+        </div>
+        <div class="pillar-bar-row">
+          <span class="pillar-bar-letter o">O</span>
+          <div class="pillar-bar-track"><div class="pillar-bar-fill o" id="bar-o"></div></div>
+          <span class="pillar-bar-val">78</span>
+        </div>
+        <div class="pillar-bar-row">
+          <span class="pillar-bar-letter l">L</span>
+          <div class="pillar-bar-track"><div class="pillar-bar-fill l" id="bar-l"></div></div>
+          <span class="pillar-bar-val">69</span>
+        </div>
+        <div class="pillar-bar-row">
+          <span class="pillar-bar-letter a">A</span>
+          <div class="pillar-bar-track"><div class="pillar-bar-fill a" id="bar-a"></div></div>
+          <span class="pillar-bar-val">72</span>
+        </div>
+        <div class="pillar-bar-row">
+          <span class="pillar-bar-letter r">R</span>
+          <div class="pillar-bar-track"><div class="pillar-bar-fill r" id="bar-r"></div></div>
+          <span class="pillar-bar-val">65</span>
+        </div>
+      </div>
+
+      <div class="facility-flag">
+        <strong>Insurer Flag:</strong> IEC 62446-3 thermographic inspection overdue &mdash; 18 months since last IR scan. Recommend scheduling before renewal.
+      </div>
+    </div><!-- /facility-card -->
+
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 5 — STANDARDS
+     ================================================================ -->
+<section id="standards">
+  <div class="container">
+    <p class="section-label">Regulatory alignment</p>
+    <h2 class="section-h2">Standards and regulatory alignment</h2>
+
+    <div class="standards-grid" role="table" aria-label="Standards alignment table">
+
+      <div class="standards-header" role="row">
+        <span role="columnheader">Standard</span>
+        <span role="columnheader">Scope</span>
+        <span role="columnheader">SOLAR Score Integration</span>
+      </div>
+
+      <div class="standards-row" role="row">
+        <div class="std-col-id">IEC 62446-1</div>
+        <div class="std-col-scope">PV system documentation, commissioning tests, grid-connected inspection criteria</div>
+        <div class="std-col-integration">Structure pillar &sect;8, Legal pillar permit documentation, Asset pillar string testing recency</div>
+      </div>
+
+      <div class="standards-row" role="row">
+        <div class="std-col-id">IEC 62446-2</div>
+        <div class="std-col-scope">Maintenance requirements for grid-connected PV systems</div>
+        <div class="std-col-integration">Operation pillar O&amp;M compliance, work order tracking, inspection interval verification</div>
+      </div>
+
+      <div class="standards-row" role="row">
+        <div class="std-col-id">IEC TS 62446-3</div>
+        <div class="std-col-scope">Outdoor infrared thermography standards for PV modules and plants</div>
+        <div class="std-col-integration">Asset pillar IR scan recency and CoA classification (Class 1/2/3 anomalies)</div>
+      </div>
+
+      <div class="standards-row" role="row">
+        <div class="std-col-id">IEC TS 62446-4</div>
+        <div class="std-col-scope">Electroluminescence imaging (standardized 2025)</div>
+        <div class="std-col-integration">Asset pillar &mdash; advanced inspection stream (future integration Q3 2026)</div>
+      </div>
+
+      <div class="standards-row" role="row">
+        <div class="std-col-id">NEC Art. 690</div>
+        <div class="std-col-scope">US national electrical code for solar PV systems</div>
+        <div class="std-col-integration">Legal pillar NEC compliance verification date and inspector credential</div>
+      </div>
+
+      <div class="standards-row" role="row">
+        <div class="std-col-id">NABCEP PV-O&amp;M</div>
+        <div class="std-col-scope">North American Board of Certified Energy Practitioners O&amp;M certification</div>
+        <div class="std-col-integration">Operation pillar O&amp;M vendor certification tier (NABCEP-certified = highest tier)</div>
+      </div>
+
+      <div class="standards-row" role="row">
+        <div class="std-col-id">UL 2703</div>
+        <div class="std-col-scope">Standard for racking and mounting systems</div>
+        <div class="std-col-integration">Structure pillar racking integrity and mounting verification</div>
+      </div>
+
+      <div class="standards-row" role="row">
+        <div class="std-col-id">ASTM E1934</div>
+        <div class="std-col-scope">Standard guide for IR thermography of electrical equipment</div>
+        <div class="std-col-integration">Asset pillar IR inspection protocol verification</div>
+      </div>
+
+    </div><!-- /standards-grid -->
+
+    <div class="standards-note">
+      The SOLAR Score is not a pass/fail compliance tool. It is a composite risk signal that incorporates standards-based inspection data alongside operational telemetry and documentation status. Facilities that meet IEC 62446 documentation requirements but demonstrate poor monitoring uptime or chronic work order backlogs will score accordingly. The composite captures operational reality &mdash; not just paperwork compliance.
+    </div>
+
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 6 — TRAJECTORY
+     ================================================================ -->
+<section id="trajectory">
+  <div class="container">
+    <p class="section-label">Longitudinal signal</p>
+    <h2 class="section-h2">Score trajectory &mdash; the longitudinal advantage</h2>
+
+    <div class="trajectory-callout">
+      <p>A single SOLAR Score is a snapshot. Two scores separated by 6&ndash;12 months are a trend. Three scores are actuarial evidence. The SOLAR Score is designed to be scored on a semi-annual cadence, building a longitudinal operational risk dataset &mdash; the first of its kind for the commercial solar segment.</p>
+    </div>
+
+    <div class="trajectory-cards">
+
+      <div class="trajectory-card">
+        <div class="traj-tag improving">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M2 8L5 2L8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Improving
+        </div>
+        <h3>Improving trajectory &rarr; preferred tier</h3>
+        <p>A facility that moves from WATCH to GOOD to STRONG across three scoring cycles demonstrates documented operational improvement &mdash; qualifying for enhanced underwriting terms at renewal.</p>
+      </div>
+
+      <div class="trajectory-card">
+        <div class="traj-tag stable">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M2 5H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          Stable
+        </div>
+        <h3>Flat trajectory &rarr; standard renewal</h3>
+        <p>A facility that maintains GOOD across multiple cycles with no significant pillar deterioration represents stable, predictable risk &mdash; priced accordingly.</p>
+      </div>
+
+      <div class="trajectory-card">
+        <div class="traj-tag declining">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M2 2L5 8L8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Declining
+        </div>
+        <h3>Declining trajectory &rarr; early warning</h3>
+        <p>A facility whose score drops across two consecutive cycles signals emerging operational risk before a claim event occurs. Insurers can condition renewal, require engineering review, or adjust deductibles proactively.</p>
+      </div>
+
+    </div><!-- /trajectory-cards -->
+
+    <div class="fico-block">
+      <p>The analogy to consumer credit scoring is intentional. A FICO score is not useful because it captures a moment &mdash; it is useful because lenders have decades of longitudinal data correlating score trajectory with default probability. The SOLAR Score is building that same dataset for solar asset operational risk. Early adopters &mdash; both asset owners and insurers &mdash; benefit from being part of the foundational data set.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 7 — PILOT
+     ================================================================ -->
+<section id="pilot">
+  <div class="container">
+    <p class="section-label">Engagement</p>
+    <h2 class="section-h2">Pilot program &mdash; Solar Landscape</h2>
+    <p class="pilot-sub">Score 5 assets. 30 days. No operational disruption.</p>
+
+    <div class="timeline">
+
+      <div class="timeline-step">
+        <div class="timeline-num">1</div>
+        <div class="timeline-step-header">
+          <span class="step-title">Data intake</span>
+          <span class="step-days">Days 1&ndash;5</span>
+        </div>
+        <p class="step-body">Solar Landscape shares existing O&amp;M reports, monitoring platform exports, permit documentation, and interconnection agreements for 5 designated facilities. AS 360 executes a Data Processing Agreement before intake.</p>
+      </div>
+
+      <div class="timeline-step">
+        <div class="timeline-num">2</div>
+        <div class="timeline-step-header">
+          <span class="step-title">Remote scoring</span>
+          <span class="step-days">Days 6&ndash;18</span>
+        </div>
+        <p class="step-body">AS 360 scores each facility against all 12 SOLAR Score streams using submitted documentation, public AHJ records, NOAA climate hazard data, and satellite vegetation imagery. No site visits required for initial scoring cycle.</p>
+      </div>
+
+      <div class="timeline-step">
+        <div class="timeline-num">3</div>
+        <div class="timeline-step-header">
+          <span class="step-title">Gap analysis</span>
+          <span class="step-days">Days 19&ndash;22</span>
+        </div>
+        <p class="step-body">Each facility receives a pillar-level gap report identifying the specific streams driving score suppression. Corrective action recommendations are prioritized by insurance impact, not by remediation cost.</p>
+      </div>
+
+      <div class="timeline-step">
+        <div class="timeline-num">4</div>
+        <div class="timeline-step-header">
+          <span class="step-title">Insurer-ready reporting</span>
+          <span class="step-days">Days 23&ndash;27</span>
+        </div>
+        <p class="step-body">Five score reports formatted for submission to Solar Landscape's insurance broker. Reports include composite score, pillar breakdown, standards alignment status, and trajectory projection.</p>
+      </div>
+
+      <div class="timeline-step">
+        <div class="timeline-num">5</div>
+        <div class="timeline-step-header">
+          <span class="step-title">BD presentation</span>
+          <span class="step-days">Day 30</span>
+        </div>
+        <p class="step-body">AS 360 presents pilot findings to Tom Coyne and the Solar Landscape BD team. Discussion: how the SOLAR Score integrates into Solar Landscape's client onboarding, asset management workflow, and insurer relationship.</p>
+      </div>
+
+    </div><!-- /timeline -->
+
+    <div class="pilot-callout">
+      <p>Solar Landscape owns <strong>800MW</strong> of rooftop assets across <strong>20 states</strong>. There is no standardized operational risk score on any of them. The pilot changes that &mdash; in <strong>30 days, at zero cost to operations.</strong></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 8 — ABOUT
+     ================================================================ -->
+<section id="about">
+  <div class="container">
+    <p class="section-label">About</p>
+    <h2 class="section-h2">About Amusement Standards LLC</h2>
+
+    <div class="about-inner">
+
+      <div class="about-body">
+        <p>Amusement Standards LLC built the AS 360 platform &mdash; a composite operational risk scoring system for the attractions industry. The RIDE Score (dry attractions, 15 data streams), SPLASH Score (aquatics, 12 streams), and PLAY Score (entertainment centers, 10 streams) cover 37 total data streams across physical asset classes with no prior standardized risk infrastructure. AS 360 is actively under evaluation by specialty insurers in the attractions segment. The SOLAR Score applies the same scoring architecture, weighting methodology, and insurer-reporting framework to commercial solar assets.</p>
+      </div>
+
+      <div class="stat-stack">
+        <div class="stat-card">
+          <div class="stat-num">37</div>
+          <div class="stat-label">total data streams across AS 360 platform</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">composite scores (RIDE / SPLASH / PLAY)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">0</div>
+          <div class="stat-label">existing facility-level operational risk scores for commercial solar &mdash; before SOLAR Score</div>
+        </div>
+      </div>
+
+    </div><!-- /about-inner -->
+
+    <div class="about-attribution">
+      Adam Brousell, Founder &amp; Director of Data Analytics &amp; Risk Intelligence &mdash;
+      <a href="https://amusementstandards.com" target="_blank" rel="noopener">amusementstandards.com</a>
+      &mdash; Asbury Park, NJ
+    </div>
+
+  </div>
+</section>
+
+<!-- ================================================================
+     FOOTER
+     ================================================================ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <p class="footer-confidential">SOLAR Score is a product of Amusement Standards LLC. This document is confidential and prepared for Solar Landscape, Asbury Park NJ.</p>
+      <p class="footer-copyright">
+        &copy; 2026 Amusement Standards LLC &nbsp;&middot;&nbsp;
+        <a href="https://amusementstandards.com" target="_blank" rel="noopener">amusementstandards.com</a>
+      </p>
+      <p class="footer-standards">Standards references: IEC 62446-1/2/3/4, NEC Article 690, NABCEP, UL 2703, ASTM E1934</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── easing ─────────────────────────────────────────────────────── */
+  function easeOutQuad(t) {
+    return t * (2 - t);
+  }
+
+  /* ── animate score counter ──────────────────────────────────────── */
+  function animateCounter(el, from, to, duration) {
+    var startTs = null;
+    function step(ts) {
+      if (!startTs) startTs = ts;
+      var elapsed  = ts - startTs;
+      var progress = Math.min(elapsed / duration, 1);
+      el.textContent = Math.round(from + (to - from) * easeOutQuad(progress));
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ── animate pillar bar width ───────────────────────────────────── */
+  function animateBar(el, targetPct, duration) {
+    var startTs = null;
+    function step(ts) {
+      if (!startTs) startTs = ts;
+      var elapsed  = ts - startTs;
+      var progress = Math.min(elapsed / duration, 1);
+      el.style.width = (targetPct * easeOutQuad(progress)).toFixed(2) + '%';
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ── facility card animation ────────────────────────────────────── */
+  var facilityCard  = document.getElementById('facility-card');
+  var scoreCounter  = document.getElementById('score-counter');
+  var barS          = document.getElementById('bar-s');
+  var barO          = document.getElementById('bar-o');
+  var barL          = document.getElementById('bar-l');
+  var barA          = document.getElementById('bar-a');
+  var barR          = document.getElementById('bar-r');
+  var scoreAnimated = false;
+
+  if (facilityCard && scoreCounter && barS && barO && barL && barA && barR) {
+    var cardObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !scoreAnimated) {
+          scoreAnimated = true;
+          animateCounter(scoreCounter, 0, 74, 1200);
+          animateBar(barS, 81, 1200);
+          animateBar(barO, 78, 1200);
+          animateBar(barL, 69, 1200);
+          animateBar(barA, 72, 1200);
+          animateBar(barR, 65, 1200);
+          cardObserver.unobserve(facilityCard);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    cardObserver.observe(facilityCard);
+  }
+
+  /* ── scroll-spy nav ─────────────────────────────────────────────── */
+  var navLinks = document.querySelectorAll('.nav-links a');
+
+  var sectionIds = ['hero', 'problem', 'methodology', 'scoring', 'standards', 'trajectory', 'pilot', 'about'];
+
+  var sectionEls = sectionIds.map(function (id) {
+    return document.getElementById(id);
+  }).filter(Boolean);
+
+  function setActiveLink(activeId) {
+    navLinks.forEach(function (link) {
+      var href = link.getAttribute('href');
+      link.classList.remove('active');
+      // #streams anchor lives inside #methodology — both should activate "Methodology"
+      if (href === '#' + activeId) {
+        link.classList.add('active');
+      }
+      if (activeId === 'methodology' && href === '#streams') {
+        link.classList.add('active');
+      }
+    });
+  }
+
+  var spyObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        setActiveLink(entry.target.id);
+      }
+    });
+  }, {
+    rootMargin: '-40% 0px -55% 0px',
+    threshold: 0
+  });
+
+  sectionEls.forEach(function (el) {
+    spyObserver.observe(el);
+  });
+
+})();
+</script>
+
+</body>
+</html>
