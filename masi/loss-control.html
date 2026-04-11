@@ -99,8 +99,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     </div>
   </div>
   <div class="tabs" id="tabs">
-    <div class="tab active" onclick="showView(&#39;overview&#39;)">Overview</div>
-    <div class="tab" onclick="showView(&#39;inspections&#39;)">Inspections</div>
+    <div class="tab active" onclick="showView(&#39;inspections&#39;)">Inspections</div>
     <div class="tab" onclick="showView(&#39;forms&#39;)">Forms Library</div>
     <div class="tab" onclick="showView(&#39;inspectors&#39;)">Inspectors</div>
     <div class="tab" onclick="showView(&#39;schedule&#39;)">Schedule</div>
@@ -110,65 +109,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
 
 <div class="panels">
 
-  <!-- OVERVIEW -->
-  <div class="panel active" id="view-overview" style="display: block;">
-    <div class="ey">Loss Control Module</div>
-    <div class="ttl">Field Inspection Platform</div>
-    <div class="body">Built for loss control teams. Nothing more, nothing less.</div>
-
-    <div class="note-warn">
-      <div class="note-hd">What This Is Not</div>
-      <div class="note-body">No claims data. No loss runs. No insured-facing portal. No remediation tracking. Your underwriting and production stacks stay untouched. This module lives exclusively in loss control.</div>
-    </div>
-
-    <div class="stat-row">
-      <div class="stat">
-        <div class="stat-num" id="stat-inspections">12</div>
-        <div class="stat-label">Active Inspections</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="stat-forms">6</div>
-        <div class="stat-label">Forms in Library</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="stat-inspectors">4</div>
-        <div class="stat-label">Field Inspectors</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num" id="stat-reports">8</div>
-        <div class="stat-label">Reports This Month</div>
-      </div>
-    </div>
-
-    <div class="section-divider"></div>
-
-    <div class="ey">Quick Access</div>
-    <div class="g3" style="margin-top:8px">
-      <div class="card" style="cursor:pointer" onclick="showView(&#39;inspections&#39;)">
-        <div class="card-label">Queue</div>
-        <div class="card-title">Open Inspections</div>
-        <div class="card-body">View all active and upcoming field inspections, filter by status, and assign inspectors.</div>
-      </div>
-      <div class="card" style="cursor:pointer" onclick="showView(&#39;forms&#39;)">
-        <div class="card-label">Library</div>
-        <div class="card-title">Inspection Forms</div>
-        <div class="card-body">Browse and deploy a la carte inspection forms by facility type — grounds, FEC, aquatic, and more.</div>
-      </div>
-      <div class="card" style="cursor:pointer" onclick="showView(&#39;reports&#39;)">
-        <div class="card-label">Output</div>
-        <div class="card-title">Reports &amp; Notifications</div>
-        <div class="card-body">Configure auto-email triggers when inspection status changes. Underwriter notifications built in.</div>
-      </div>
-    </div>
-
-    <div class="note" style="margin-top:24px">
-      <div class="note-hd">Positioning</div>
-      <div class="note-body">This workspace is scoped to exactly what Tom Jones described on the April MASI call: an inspection-only system for the loss control team. No overlap with underwriting, production, or claims. You're paying for what you use.</div>
-    </div>
-  </div>
-
   <!-- INSPECTIONS -->
-  <div class="panel" id="view-inspections" style="display: none;">
+  <div class="panel active" id="view-inspections" style="display: block;">
     <div class="ey">Field Operations</div>
     <div class="ttl">Inspections</div>
     <div class="body">All active and completed field inspections. Filter by status, facility, or inspector.</div>
@@ -527,7 +469,7 @@ function showView(viewId){
   var panel=document.getElementById('view-'+viewId);
   if(panel){panel.classList.add('active');panel.style.display='block';panel.scrollTop=0}
   var tabs=document.querySelectorAll('.tab');
-  var tabMap={overview:0,inspections:1,forms:2,inspectors:3,schedule:4,reports:5};
+  var tabMap={inspections:0,forms:1,inspectors:2,schedule:3,reports:4};
   if(tabMap[viewId]!==undefined&&tabs[tabMap[viewId]]){tabs[tabMap[viewId]].classList.add('active')}
 }
 </script>
