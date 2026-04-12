@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Inspector Portal &middot; AS 360</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>MASI Field Inspection</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#1A1E25;--surface:#22272E;--surface2:#2D333B;--border:#373E47;
@@ -14,796 +14,1302 @@
   --warn:#D29922;--warn-bg:rgba(210,153,34,.06);--warn-b:rgba(210,153,34,.2);
   --red:#F85149;--red-bg:rgba(248,81,73,.06);--red-b:rgba(248,81,73,.2);
   --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
-  --panel:#22272E;--panel2:#2D333B;--panel3:#343B45;--border2:#444C56;
-  --cond:'Barlow Condensed',sans-serif;
-  --text-bright:#E6EDF3;--text-dim:#6E7681;--text-muted:#484F58;
-  --accent-dim:rgba(108,164,220,.15);
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;background:var(--bg);}
-body{font-family:var(--sans);color:var(--text2);display:flex;flex-direction:column;min-height:100vh;}
-.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:0 18px;height:48px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:100;}
-.hdr-brand{display:flex;align-items:center;gap:10px;}
-.hdr-logo{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.02em;}
-.hdr-logo span{color:var(--accent);font-weight:700;}
-.hdr-divider{width:1px;height:16px;background:var(--border);}
-.hdr-prepared{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.02em;}
-#inspector-badge{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.3px;text-align:right;}
-.main{flex:1;overflow-y:auto;padding:14px;max-width:640px;margin:0 auto;width:100%;}
-.main.wide{max-width:1200px;}
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px;}
-.panel-hdr{padding:12px 14px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.panel-title{font-family:var(--cond);font-size:16px;font-weight:700;color:var(--text-bright);}
-.panel-sub{font-size:13px;color:var(--text-dim);margin-top:3px;}
-.panel-body{padding:14px;}
-.sec-label{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px;margin-top:4px;}
-.btn{padding:13px 18px;border:none;border-radius:6px;font-family:var(--cond);font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:all .15s;min-height:48px;width:100%;text-align:center;}
-.btn-accent{background:var(--accent);color:#fff;}
-.btn-accent:hover{opacity:.9;}
-.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text3);}
-.btn-ghost:hover{border-color:var(--accent);color:var(--text2);}
-.btn:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.5);}
-.btn-sm{padding:10px 14px;font-size:13px;border-radius:6px;min-height:48px;width:auto;}
-.ff{margin-bottom:12px;}
-.ff label{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;}
-.ff input,.ff select,.ff textarea{width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:15px;color:var(--text);-webkit-appearance:none;min-height:48px;}
-.ff input:focus,.ff select:focus,.ff textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
-.ff input[type="password"]{letter-spacing:2px;}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:12px 20px;border-radius:6px;font-family:var(--mono);font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center;}
-.toast.ok{background:var(--good-bg);color:var(--good);border:1px solid var(--good-b);}
-.toast.err{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b);}
-.toast.show{opacity:1;}
-.screen{display:none;}
-.screen.active{display:block;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--text2);font-size:16px}
+.screen{display:none}
+.screen.active{display:block}
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;height:48px;display:flex;align-items:center;position:sticky;top:0;z-index:100}
+.hdr-logo{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.02em}
+.hdr-logo span{color:var(--accent)}
+.main{padding:16px;margin:0 auto;width:100%;padding-bottom:100px}
+#screen-login,#screen-assignments,#screen-confirm{max-width:720px;margin:0 auto}
+#screen-survey{max-width:1200px;margin:0 auto}
+/* Cards & Panels */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:12px}
+.card-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px}
+.card-sub{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:2px}
+/* Form Fields */
+.ff{margin-bottom:14px}
+.ff label{font-family:var(--mono);font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
+.ff input{width:100%;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:16px;color:var(--text);-webkit-appearance:none;min-height:50px}
+.ff input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-l)}
+.ff input[type="password"]{letter-spacing:3px}
+/* Buttons */
+.btn{display:block;width:100%;padding:16px;border:none;border-radius:6px;font-family:var(--sans);font-size:16px;font-weight:700;cursor:pointer;text-align:center;min-height:54px;transition:opacity .15s}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover{opacity:.9}
+.btn-accent:disabled{opacity:.4;cursor:not-allowed}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text3)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--text2)}
+.btn-sm{padding:10px 16px;font-size:14px;min-height:44px;width:auto;display:inline-block}
+/* Assignment cards */
+.assign{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .15s;display:flex;justify-content:space-between;align-items:center;min-height:64px}
+.assign:hover{border-color:var(--accent)}
+.assign-name{font-size:16px;font-weight:600;color:var(--text)}
+.assign-meta{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:4px}
+.assign-due{font-family:var(--mono);font-size:11px;font-weight:700;flex-shrink:0}
+.assign-due.overdue{color:var(--red)}
+.assign-due.soon{color:var(--warn)}
+.assign-due.ok{color:var(--good)}
+/* Badges */
+.badge{font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:.03em}
+.badge-good{background:var(--good-bg);color:var(--good);border:1px solid var(--good-b)}
+.badge-warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-b)}
+.badge-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+.badge-accent{background:var(--accent-l);color:var(--accent);border:1px solid var(--accent-b)}
 
-/* Assignments */
-.assign-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s;min-height:48px;}
-.assign-card:hover{border-color:var(--accent);}
-.assign-fac{font-family:var(--cond);font-size:18px;font-weight:700;color:var(--text-bright);}
-.assign-addr{font-size:13px;color:var(--text-dim);margin-top:4px;}
-.assign-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-family:var(--mono);font-size:12px;}
-.assign-due{font-weight:700;}
-.assign-due.overdue{color:var(--red);}
-.assign-due.today{color:var(--warn);}
-.assign-due.upcoming{color:var(--good);}
-.assign-count{color:var(--text-dim);}
+/* ── SURVEY OVERVIEW HEADER ── */
+.sv-overview{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:14px}
+.sv-overview-title{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.sv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 18px}
+.sv-field label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:3px}
+.sv-field .val{font-size:14px;color:var(--text);font-weight:500}
+.sv-status-badge{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-b);letter-spacing:.04em}
 
-/* Survey layout */
-.survey-wrap{display:block;}
-.survey-rail{display:none;}
-.survey-pane{flex:1;min-width:0;}
-.module-block{margin-bottom:24px;}
-.module-banner{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:14px;}
-.module-banner-title{font-family:var(--cond);font-size:17px;font-weight:700;color:var(--text-bright);}
-.module-banner-meta{font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-top:3px;}
-.module-notes{font-size:13px;color:var(--text-dim);background:var(--surface2);border-left:3px solid var(--accent);padding:10px 12px;margin-bottom:14px;border-radius:3px;line-height:1.55;}
-.module-notes>div{margin-bottom:4px;}
-.module-notes>div:last-child{margin-bottom:0;}
-.sec-header{padding:8px 0 8px;border-bottom:2px solid var(--accent);margin:18px 0 10px;font-family:var(--cond);font-size:15px;font-weight:700;color:var(--text-bright);letter-spacing:.5px;}
-.cl-item{padding:14px 0;border-bottom:1px solid rgba(55,62,71,.5);}
-.cl-item:last-child{border-bottom:none;}
-.cl-item-text{font-size:14px;color:var(--text);margin-bottom:12px;line-height:1.5;}
-.cl-answers{display:flex;gap:8px;}
-.cl-answer{flex:1;padding:14px 8px;border-radius:6px;font-family:var(--cond);font-size:15px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);text-align:center;min-height:48px;letter-spacing:.5px;}
-.cl-answer.sel-yes{background:var(--good-bg);border-color:var(--good-b);color:var(--good);}
-.cl-answer.sel-no{background:var(--red-bg);border-color:var(--red-b);color:var(--red);}
-.cl-answer.sel-na{background:var(--warn-bg);border-color:var(--warn-b);color:var(--warn);}
-.cl-detail{max-height:0;overflow:hidden;transition:max-height .25s ease;}
-.cl-detail.open{max-height:900px;}
-.cl-detail-inner{padding:12px 0 4px;}
+/* ── SURVEY LAYOUT (rail + pane) ── */
+.survey-layout{display:flex;gap:16px;align-items:flex-start}
+.survey-rail{width:300px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px 10px;position:sticky;top:62px;max-height:calc(100vh - 80px);overflow-y:auto}
+.survey-pane{flex:1;min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:18px}
 
-.submit-bar{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--border);padding:12px 14px;margin:20px -14px -14px;display:flex;gap:12px;align-items:center;z-index:10;}
-.submit-bar .submit-info{flex:1;font-family:var(--mono);font-size:12px;color:var(--text-dim);line-height:1.4;}
-.submit-bar button{flex-shrink:0;width:auto;min-width:180px;}
+/* Rail tree */
+.rail-root{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);padding:4px 6px 10px 6px;border-bottom:1px solid var(--border);margin-bottom:8px}
+.rail-property-report{font-family:var(--sans);font-size:14px;font-weight:700;color:var(--text);padding:8px 6px 6px 6px}
+.rail-category{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text2);padding:8px 6px 4px 10px;margin-top:4px}
+.rail-category::before{content:'• ';color:var(--accent)}
+.rail-subgroup{font-family:var(--sans);font-size:12px;font-weight:600;color:var(--text3);padding:6px 6px 3px 26px;text-transform:uppercase;letter-spacing:.05em}
+.rail-leaf{display:flex;justify-content:space-between;align-items:center;padding:9px 10px 9px 26px;margin:2px 0;border-radius:4px;cursor:pointer;font-size:13px;color:var(--text2);border:1px solid transparent;min-height:38px;transition:all .12s}
+.rail-leaf.nested{padding-left:42px}
+.rail-leaf:hover{background:var(--surface2);color:var(--text)}
+.rail-leaf.active{background:var(--accent-l);border-color:var(--accent-b);color:var(--accent);font-weight:600}
+.rail-leaf-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rail-leaf-count{font-family:var(--mono);font-size:10px;color:var(--text3);flex-shrink:0;margin-left:8px;display:flex;align-items:center;gap:5px}
+.rail-leaf.active .rail-leaf-count{color:var(--accent)}
+.rail-dot{display:inline-block;width:7px;height:7px;border-radius:50%}
+.rail-dot.red{background:var(--red)}
+.rail-dot.yellow{background:var(--warn)}
+.rail-dot.green{background:var(--good)}
 
-.jump-bar{margin-bottom:14px;}
+/* Per-card header */
+.card-header-bar{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;margin-bottom:14px;border-bottom:2px solid var(--accent)}
+.card-header-title{font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text);letter-spacing:-.01em}
+.card-header-count{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent);background:var(--accent-l);padding:6px 12px;border-radius:4px;border:1px solid var(--accent-b)}
+.card-notes{background:var(--surface2);border-left:3px solid var(--warn);padding:10px 14px;margin-bottom:14px;border-radius:3px}
+.card-notes>div{font-family:var(--mono);font-size:12px;color:var(--warn);line-height:1.5;margin-bottom:4px}
+.card-notes>div:last-child{margin-bottom:0}
 
-@media (min-width:768px){
-  .survey-wrap{display:flex;gap:16px;align-items:flex-start;}
-  .survey-rail{display:block;width:260px;flex-shrink:0;position:sticky;top:62px;max-height:calc(100vh - 80px);overflow-y:auto;padding:4px;}
-  .rail-module{padding:11px 12px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;cursor:pointer;background:var(--surface);}
-  .rail-module.active{border-color:var(--accent);background:var(--accent-l);}
-  .rail-module-title{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);}
-  .rail-module-meta{font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-top:3px;display:flex;justify-content:space-between;align-items:center;}
-  .rail-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle;}
-  .rail-dot.red{background:var(--red);}
-  .rail-dot.yellow{background:var(--warn);}
-  .rail-dot.green{background:var(--good);}
-  .rail-sections{margin-top:8px;padding-left:10px;border-left:1px solid var(--border2);display:none;}
-  .rail-module.active .rail-sections{display:block;}
-  .rail-section{font-size:12px;color:var(--text-dim);padding:5px 0;cursor:pointer;}
-  .rail-section:hover{color:var(--accent);}
-  .module-block.hidden{display:none;}
-  .module-banner{display:none;}
-  .jump-bar{display:none;}
-  .submit-bar{margin-left:-14px;margin-right:-14px;}
+/* Section headers */
+.sec-hdr{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--accent);text-transform:uppercase;padding:12px 0 8px;border-bottom:2px solid var(--accent);margin-bottom:8px;margin-top:20px}
+.sec-hdr:first-child{margin-top:4px}
+
+/* Checklist items */
+.chk-item{padding:14px 0;border-bottom:1px solid var(--border)}
+.chk-item:last-child{border-bottom:none}
+.chk-label{font-size:15px;color:var(--text);line-height:1.5;margin-bottom:10px;font-weight:500}
+.chk-radios{display:flex;gap:8px}
+.chk-radio{flex:1;min-height:48px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-family:var(--mono);font-size:14px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text3);transition:all .12s;-webkit-user-select:none;user-select:none}
+.chk-radio.sel-yes{background:var(--good-bg);border-color:var(--good-b);color:var(--good)}
+.chk-radio.sel-no{background:var(--red-bg);border-color:var(--red-b);color:var(--red)}
+.chk-radio.sel-na{background:var(--accent-l);border-color:var(--accent-b);color:var(--accent)}
+/* No-expand (shown when No is selected) */
+.no-expand{display:none;padding:12px 0 4px;margin-top:8px;border-top:1px solid var(--border)}
+.no-expand.open{display:block}
+.no-expand label{font-family:var(--mono);font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:6px}
+.no-expand select{width:100%;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:15px;color:var(--text);-webkit-appearance:none;appearance:none;min-height:50px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236E7681' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.no-expand select:focus{outline:none;border-color:var(--accent)}
+.no-expand textarea{width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:15px;color:var(--text);resize:vertical;min-height:60px;margin-top:8px}
+.no-expand textarea:focus{outline:none;border-color:var(--accent)}
+.no-expand .photo-btn{display:inline-block;padding:10px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:12px;color:var(--text3);cursor:pointer;margin-top:8px;min-height:44px}
+.no-expand .photo-btn:hover{border-color:var(--accent)}
+.no-expand .photo-preview{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:6px}
+/* Sticky submit */
+.sticky-submit{position:fixed;bottom:0;left:0;right:0;padding:12px 16px;background:var(--surface);border-top:1px solid var(--border);z-index:50}
+.sticky-submit .btn{max-width:1200px;margin:0 auto}
+/* Progress (legacy, not used in survey screen) */
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:12px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+.progress-text{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:16px}
+/* Error */
+.err-msg{font-family:var(--mono);font-size:12px;color:var(--red);text-align:center;margin-top:8px;min-height:18px}
+/* Toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:12px 20px;border-radius:6px;font-family:var(--mono);font-size:12px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.ok{background:var(--good-bg);color:var(--good);border:1px solid var(--good-b)}
+.toast.err{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
+.toast.show{opacity:1}
+
+@media (max-width:767px){
+  .survey-layout{flex-direction:column}
+  .survey-rail{width:100%;position:static;max-height:400px}
+  .sv-grid{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <div class="hdr-brand">
-    <div class="hdr-logo">Amusement <span>Standards</span></div>
-    <div class="hdr-divider"></div>
-    <div class="hdr-prepared">Inspector Portal</div>
-  </div>
-  <div id="inspector-badge"></div>
+  <div class="hdr-logo">MASI <span>Field Inspection</span></div>
 </div>
 
-<div class="main" id="main">
+<div class="main">
+
+  <!-- SCREEN 1: LOGIN -->
   <div class="screen active" id="screen-login">
-    <div class="panel">
-      <div class="panel-hdr"><div>
-        <div class="panel-title">Inspector Login</div>
-        <div class="panel-sub">Sign in to view assigned inspections</div>
-      </div></div>
-      <div class="panel-body">
-        <div class="ff"><label>Email</label><input type="email" id="login-email" placeholder="you@company.com" autocomplete="email"></div>
-        <div class="ff"><label>Password</label><input type="password" id="login-password" autocomplete="current-password"></div>
-        <button class="btn btn-accent" id="login-btn" onclick="doLogin()">Log In &rarr;</button>
-        <div id="login-error" style="font-family:var(--mono);font-size:12px;color:var(--red);margin-top:12px;min-height:16px;text-align:center;"></div>
-        <div id="login-retry" style="display:none;margin-top:10px;"><button class="btn btn-ghost" onclick="doLogin()">Retry</button></div>
-      </div>
+    <div class="card">
+      <div class="card-title">Inspector Login</div>
+      <div class="card-sub" style="margin-bottom:16px">Enter credentials to access assigned inspections</div>
+      <div class="ff"><label>Email</label><input type="email" id="login-email" placeholder="inspector@company.com" autocomplete="email"></div>
+      <div class="ff"><label>Password</label><input type="password" id="login-password" placeholder="&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;&#x2022;" autocomplete="current-password"></div>
+      <button class="btn btn-accent" id="login-btn" onclick="doLogin()">Log In</button>
+      <div class="err-msg" id="login-error"></div>
     </div>
   </div>
 
+  <!-- SCREEN 2: ASSIGNMENTS -->
   <div class="screen" id="screen-assignments">
-    <div class="sec-label">// Your Assigned Inspections</div>
+    <div style="margin-bottom:14px">
+      <div style="font-size:18px;font-weight:600;color:var(--text)">Your Assignments</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:2px" id="inspector-name-display"></div>
+    </div>
     <div id="assignments-list"></div>
   </div>
 
+  <!-- SCREEN 3: SURVEY -->
   <div class="screen" id="screen-survey">
-    <div id="survey-container"></div>
-  </div>
-
-  <div class="screen" id="screen-confirm">
-    <div class="panel" style="text-align:center;">
-      <div class="panel-body" style="padding:32px 16px;">
-        <div style="font-size:48px;margin-bottom:12px;">&#x2705;</div>
-        <div class="panel-title" style="margin-bottom:6px;">Inspection Submitted</div>
-        <div class="panel-sub" id="confirm-summary"></div>
-        <div style="margin-top:20px;">
-          <button class="btn btn-ghost" onclick="backToAssignments()">Back to Assignments</button>
-        </div>
-      </div>
+    <div style="margin-bottom:10px">
+      <button class="btn-ghost btn-sm" onclick="showScreen('assignments')" style="padding:8px 14px;border:1px solid var(--border);border-radius:6px;background:none;color:var(--text3);font-family:var(--mono);font-size:12px;cursor:pointer">&larr; Back to Assignments</button>
+    </div>
+    <div id="survey-overview"></div>
+    <div class="survey-layout">
+      <div class="survey-rail" id="survey-rail"></div>
+      <div class="survey-pane" id="survey-pane"></div>
+    </div>
+    <div style="height:80px"></div>
+    <div class="sticky-submit">
+      <button class="btn btn-accent" id="submit-btn" onclick="submitInspection()" disabled>Submit Inspection</button>
     </div>
   </div>
+
+  <!-- SCREEN 4: CONFIRMATION -->
+  <div class="screen" id="screen-confirm">
+    <div class="card" style="text-align:center;padding:32px 16px">
+      <div style="font-size:48px;margin-bottom:12px">&#x2705;</div>
+      <div class="card-title" style="font-size:20px;margin-bottom:8px">Inspection Submitted</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:8px" id="confirm-summary"></div>
+      <div style="font-size:13px;color:var(--text3);margin-bottom:20px">Tom and underwriting have been notified.</div>
+      <button class="btn btn-ghost" onclick="showScreen('assignments')">Back to Assignments</button>
+    </div>
+  </div>
+
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-var CONFIG = {
-  WORKER_URL: 'https://as360-proxy.amusementstandards.workers.dev/airtable',
-  BASE_ID: 'appcqRLU10wvA2OCA',
-  TABLES: {
-    INSPECTORS: 'Inspectors',
-    INSPECTIONS: 'Inspections',
-    CHECKLIST_MODULES: 'Checklist Modules',
-    FACILITIES: 'Facilities',
-    CARS: 'CARs'
-  }
+// ═══════════════════════════════════════════════════════════════════════════
+// MASI Field Inspection — standalone demo build
+// No Airtable, no network calls, no external APIs.
+// Login is hardcoded demo-only. Submit writes to localStorage.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ── DEMO METADATA (Thunder Road FEC) ──
+var DEMO_FACILITY={
+  name:'Thunder Road FEC',
+  address:'1234 Main St, Asbury Park, NJ',
+  inspectionId:'INS-2026-0001',
+  dateRequested:'2026-04-05',
+  dueDate:'2026-04-20',
+  status:'IN FIELD'
 };
 
-var SEVERITY_OPTIONS = [
-  {v:1, label:'Locked out / cannot be used'},
-  {v:2, label:'Carrier notification required'},
-  {v:3, label:'Correct within 30 days before next setup or use'},
-  {v:4, label:'Correct within agreed timeframe'},
-  {v:5, label:'Recommendation only'}
+// ── HARDCODED DEMO ACCOUNTS ──
+var DEMO_ACCOUNTS={
+  'adam@amusementstandards.com':{pw:'asbury2026',name:'Adam Brousell',id:'INS-0001'},
+  'noel@masi.com':{pw:'inspect2026',name:'Noel Rhodes',id:'INS-0002'},
+  'demo@masi.com':{pw:'masi2026',name:'Demo Inspector',id:'DEMO-001'}
+};
+
+// ── STATE ──
+var STATE={
+  inspector:null,
+  current:null
+};
+
+// ── SEVERITY OPTIONS (shown only when NO is selected) ──
+var SEVERITY_OPTIONS=[
+  'Locked out / cannot be used',
+  'Carrier notification required',
+  'Correct within 30 days before next setup or use',
+  'Correct within agreed timeframe',
+  'Recommendation only'
 ];
 
-var state = {
-  inspector: null,
-  inspections: [],
-  facilityCache: {},
-  moduleCache: {},
-  current: null
+// ═══════════════════════════════════════════════════════════════════════════
+// CHECKLIST DEFINITIONS
+// ═══════════════════════════════════════════════════════════════════════════
+
+// ── GO-KART CHECKLIST (verbatim from Go_Karts_Detail.doc) ──
+var CHECKLIST_GOKART={
+  railLabel:'Go-Karts',
+  version:'v1',
+  title:'GO-KART INSPECTION DETAIL',
+  formType:'Go-Karts',
+  notes:[
+    'NOTE #1: All replacement fasteners must be of size and grade specified by manufacturer.',
+    'NOTE #2: Always refer to the ride prints and/or manual for specific information not listed on this daily inspection sheet.'
+  ],
+  sections:[
+    {num:1,name:'Lock Out / Tag Out',items:[
+      'Rides with individual self powered units require special consideration when using Lock Out/Tag Out procedures.'
+    ]},
+    {num:2,name:'Personal Protection Equipment',items:[
+      'Utilize all necessary personal protection equipment.'
+    ]},
+    {num:3,name:'Area Inspection',items:[
+      'A. Inspect all entries/exits and hardware for proper operation.',
+      'B. Inspect all ride fencing for presence and condition.',
+      'C. Verify that telephone is operating properly.',
+      'D. Verify that all fire extinguisher(s) is/are present, charged, and tagged.',
+      'E. Inspect all lighting, audio, & video equipment for mounting hardware for security.',
+      'F. Verify presence of safety signage, including height requirements.',
+      'G. Inspect fueling system.',
+      'H. Verify that PA system is working properly.',
+      'I. Inspect all ramps & walkways for security & integrity. (If applicable)'
+    ]},
+    {num:4,name:'Carrier & Drive Unit Inspection',items:[
+      'A. Inspect brake system for any worn, damaged, or misaligned components.',
+      'B. Inspect steering system for any wear, damage, or misalignment.',
+      'C. Inspect fuel system for any leaks & all related components.',
+      'D. Inspect tires for wear & proper inflation.',
+      'E. Inspect body for structural integrity.',
+      'F. Inspect roof, hinges, & latches. (If applicable)',
+      'G. Inspect seating area including safety belts, padding, cushions, etc.',
+      'H. Inspect chassis and/or frame for wear, damage, or adjustments including shafts, axles, bearings, rod ends, & bumpers.',
+      'I. Verify proper signage in cars. (No bumping, gas, brakes, etc.)',
+      'J. Inspect engine & clutch components.',
+      'K. Inspect throttle system components for proper operation.',
+      'L. Inspect drive belts & pulleys.',
+      'M. Verify brakes with car running.'
+    ]},
+    {num:5,name:'Track Structure Inspection',items:[
+      'A. Inspect bumper rail system including all hardware.',
+      'B. Inspect track surface.',
+      'C. Inspect pit gates.',
+      'D. Inspect stop lights & signage.',
+      'E. Inspect fencing & queuing lines.'
+    ]},
+    {num:6,name:'Electrical',items:[
+      'A. Verify remote control safety system for proper operation.',
+      'B. Inspect ride lighting for presence and security (if applicable).',
+      'C. Inspect control panel for condition & legible indicator labels.'
+    ]},
+    {num:7,name:'Lubrication',items:[
+      'Refer to lubrication schedule & verify lubrication procedure.'
+    ]},
+    {num:8,name:'Power Up and Testing',items:[
+      'A. Remove Lock Out',
+      'B. Test operation of ride controls, brake, & safety systems.'
+    ]}
+  ]
 };
 
-// ── API HELPERS ──
-function apiUrl(table, pathExtra, qs){
-  var u = CONFIG.WORKER_URL + '/' + encodeURIComponent(table);
-  if(pathExtra) u += '/' + pathExtra;
-  u += '?base=' + CONFIG.BASE_ID;
-  if(qs) u += '&' + qs;
-  return u;
-}
-async function apiGet(table, pathExtra, qs){
-  var res = await fetch(apiUrl(table, pathExtra, qs), {headers:{'Content-Type':'application/json'}});
-  if(!res.ok) throw new Error('HTTP ' + res.status);
-  return res.json();
-}
-async function apiPatch(table, recordId, fields){
-  var res = await fetch(apiUrl(table, recordId), {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({fields:fields})});
-  if(!res.ok) throw new Error('HTTP ' + res.status);
-  return res.json();
-}
-async function apiPost(table, fields){
-  var res = await fetch(apiUrl(table), {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({fields:fields})});
-  if(!res.ok) throw new Error('HTTP ' + res.status);
-  return res.json();
-}
+// ── CAROUSEL CHECKLIST (verbatim from Chance_Carousel_Detail.doc) ──
+var CHECKLIST_CAROUSEL={
+  railLabel:'Carousel',
+  version:'v1',
+  title:'CHANCE MGR INSPECTION DETAIL',
+  formType:'Carousel',
+  notes:[
+    'NOTE #1: All replacement fasteners must be of size and grade specified by manufacturer.',
+    'NOTE #2: Always refer to the ride prints and/or manual for specific information not listed on this daily inspection sheet.'
+  ],
+  sections:[
+    {num:1,name:'Lock Out / Tag Out',items:[
+      'LOCK OUT/TAG OUT main power source. Remember to maintain "Zero Electrical/Energy/Mechanical" status before inspecting the ride.'
+    ]},
+    {num:2,name:'Personal Protection Equipment',items:[
+      'Utilize all necessary personal protection equipment.'
+    ]},
+    {num:3,name:'Area Inspection',items:[
+      'A. Inspect all entries/exits and hardware for proper operation.',
+      'B. Inspect all ride fencing for presence and condition.',
+      'C. Verify that telephone is operating properly.',
+      'D. Verify that fire extinguisher is present, charged, and tagged.',
+      'E. Inspect all lighting, audio, & video equipment mounting hardware for security.',
+      'F. Verify presence of safety signage, including height requirements.',
+      'G. Inspect all ramps & walkways for security & integrity. (If applicable)'
+    ]},
+    {num:4,name:'Carrier Inspection',items:[
+      'A. Security to poles for all jumpers, hardware presence & security.',
+      'B. Security to platform for all standers.',
+      'C. Figure condition, paint, fiberglass, & jewels.',
+      'D. Stirrup condition & security.',
+      'E. Safety straps for presence, condition, & security. (If applicable)',
+      'F. Inspect chariots for structural condition & stability.',
+      'G. Inspect horse hangers & hooks for wear.'
+    ]},
+    {num:5,name:'Structure, Platforms, and Sweeps Inspection',items:[
+      'A. Inspect brass poles for cracks.',
+      'B. Inspect framing & platforms for cracks, chaffing, & splitting.',
+      'C. Inspect telescope for excessive wear & security.',
+      'D. Inspect all platform brace rods for presence, condition, & security.',
+      'E. Inspect steel sweeps for condition & security.',
+      'F. Inspect all spreader bars for condition & security.'
+    ]},
+    {num:6,name:'Drive Units',items:[
+      'A. Inspect gears, bearings, & cranks for security & alignment.',
+      'B. Inspect drive mechanisms & brake systems for proper operation.',
+      'C. Inspect drive motors for security & alignment.',
+      'D. Inspect chain for proper adjustment (5/8" deflection on the slack side)',
+      'E. Verify proper oil level in hydraulic unit.',
+      'F. Inspect all hoses & fittings for leaks & condition.',
+      'G. Clean oil cooler & system filter. (As needed)'
+    ]},
+    {num:7,name:'Electrical',items:[
+      'A. Inspect conductors, plugs, sensors, & connection for security & condition.',
+      'B. Inspect control panel for condition & legible indicator labels.',
+      'C. Inspect ride lighting for presence & security.',
+      'D. Inspect commutator and brushes for security & proper operation.'
+    ]},
+    {num:8,name:'Lubrication',items:[
+      'Refer to lubrication schedule & verify lubrication procedure.'
+    ]},
+    {num:9,name:'Power Up and Testing',items:[
+      'A. Remove Lock Out/Tag Out',
+      'B. Restore ride power.',
+      'C. Check brakes.',
+      'D. Test operation of ride controls, brake, & safety systems.'
+    ]}
+  ]
+};
 
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
-  var el = document.getElementById('screen-' + id);
-  if(el) el.classList.add('active');
-  var main = document.getElementById('main');
-  if(id === 'survey') main.classList.add('wide'); else main.classList.remove('wide');
-  window.scrollTo(0, 0);
-}
+// ── NEW: TRAMPOLINE COURT (31 items) ──
+var CHECKLIST_TRAMPOLINE={
+  railLabel:'Trampoline Court',version:'v1',title:'Trampoline Court',formType:'Trampoline Court',
+  notes:[
+    'NOTE #1: All trampoline beds, springs, and pads must be inspected pre-open and at shift change.',
+    'NOTE #2: Refer to ASTM F2970 for trampoline court operation and supervision standards.'
+  ],
+  sections:[
+    {num:1,name:'Pre-Open Equipment Check',items:[
+      'A. All trampoline beds free of tears, holes, and worn stitching.',
+      'B. All springs intact, attached, and free of rust or deformation.',
+      'C. Spring pads fully covering all springs and frame edges.',
+      'D. Frame padding intact with no exposed metal.',
+      'E. Wall padding intact and securely attached.'
+    ]},
+    {num:2,name:'Court Environment',items:[
+      'A. Court surface free of debris, liquids, and personal items.',
+      'B. Foam pit foam at proper depth, free of compacted areas.',
+      'C. Foam pit netting intact (if applicable).',
+      'D. Dodgeball and added equipment in good condition.',
+      'E. Lighting adequate and fixtures secured overhead.'
+    ]},
+    {num:3,name:'Egress & Life Safety',items:[
+      'A. Emergency exits unlocked, unobstructed, clearly marked.',
+      'B. Emergency lighting tested and functional.',
+      'C. Fire extinguisher present, charged, inspection tag current.',
+      'D. First aid station stocked and accessible.'
+    ]},
+    {num:4,name:'Guest Controls',items:[
+      'A. Waivers signed and on file for all jumpers.',
+      'B. Grip socks required and worn by all jumpers.',
+      'C. Posted rules visible at court entry (one jumper per bed, no double-bouncing, no flips unless designated).',
+      'D. Height/age separation enforced for toddler court.',
+      'E. Court capacity posted and enforced.'
+    ]},
+    {num:5,name:'Supervision',items:[
+      'A. Court monitor present per manufacturer ratio (typically 1:32 or stricter).',
+      'B. Monitors trained on rule enforcement and emergency response.',
+      'C. Monitors positioned with full court visibility.',
+      'D. Monitor rotation schedule maintained.'
+    ]},
+    {num:6,name:'Incident Response',items:[
+      'A. Incident log present and current.',
+      'B. Staff trained on spinal injury protocol.',
+      'C. AED accessible and inspection current.',
+      'D. Emergency contact procedures posted.'
+    ]},
+    {num:7,name:'Post-Shift',items:[
+      'A. Court walked and cleared.',
+      'B. Equipment returned to storage.',
+      'C. Damaged equipment tagged out.',
+      'D. Incident and equipment issues logged before close.'
+    ]}
+  ]
+};
 
-function toast(msg, type){
-  var el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className = 'toast ' + (type || 'ok') + ' show';
-  setTimeout(function(){ el.classList.remove('show'); }, 3200);
-}
+// ── NEW: INFLATABLE ZONE (28 items) ──
+var CHECKLIST_INFLATABLE={
+  railLabel:'Inflatable Zone',version:'v1',title:'Inflatable Zone',formType:'Inflatable Zone',
+  notes:[
+    'NOTE #1: All inflatables must be inspected pre-open per manufacturer guidance and ASTM F2374.',
+    'NOTE #2: Wind speed and weather conditions must be monitored for any outdoor units.'
+  ],
+  sections:[
+    {num:1,name:'Pre-Open Inflation Check',items:[
+      'A. All units fully inflated to manufacturer pressure.',
+      'B. Blowers operating without unusual noise or vibration.',
+      'C. Blower intakes free of obstruction.',
+      'D. Power cords intact, GFCI protected, routed away from foot traffic.',
+      'E. Tie-downs/anchors secured per manufacturer spec.'
+    ]},
+    {num:2,name:'Unit Condition',items:[
+      'A. No visible tears, punctures, or seam separations.',
+      'B. Netting and mesh walls intact.',
+      'C. Slide surfaces free of damage.',
+      'D. Entry/exit areas padded and clear.',
+      'E. Internal obstacles (if applicable) secured and intact.'
+    ]},
+    {num:3,name:'Environment',items:[
+      'A. Surrounding floor surface clean, dry, and free of hazards.',
+      'B. Adequate clearance maintained around each unit.',
+      'C. Lighting adequate.',
+      'D. Wind speed within manufacturer limit (outdoor units).'
+    ]},
+    {num:4,name:'Egress & Life Safety',items:[
+      'A. Emergency exits unobstructed.',
+      'B. Emergency lighting functional.',
+      'C. Fire extinguisher present and current.',
+      'D. Emergency deflation procedure posted and staff trained.'
+    ]},
+    {num:5,name:'Guest Controls',items:[
+      'A. Socks required and enforced.',
+      'B. Posted rules visible (no shoes, no jewelry, no food/drink, no climbing on walls).',
+      'C. Age/size separation enforced where applicable.',
+      'D. Per-unit capacity posted and enforced.'
+    ]},
+    {num:6,name:'Supervision',items:[
+      'A. Attendant present at each active unit or zone per manufacturer ratio.',
+      'B. Attendants trained on rule enforcement and emergency procedures.',
+      'C. Attendants positioned for full visibility of unit interior and exits.'
+    ]},
+    {num:7,name:'Post-Shift',items:[
+      'A. Units inspected for damage.',
+      'B. Damaged units tagged out.',
+      'C. Incidents logged before close.'
+    ]}
+  ]
+};
+
+// ── NEW: CLIMBING WALL (22 items) ──
+var CHECKLIST_CLIMBING={
+  railLabel:'Climbing Wall',version:'v1',title:'Climbing Wall',formType:'Climbing Wall',
+  notes:[
+    'NOTE #1: All harnesses, ropes, and auto-belay devices must be inspected pre-shift.',
+    'NOTE #2: Refer to ASTM F2959 and manufacturer guidance for auto-belay service intervals.'
+  ],
+  sections:[
+    {num:1,name:'Pre-Shift Equipment Check',items:[
+      'A. All harnesses inspected, no fraying, cuts, or hardware damage.',
+      'B. All auto-belays within service interval and functioning.',
+      'C. Auto-belay lanyards inspected end-to-end.',
+      'D. Helmets (if used) inspected for cracks and proper fit hardware.'
+    ]},
+    {num:2,name:'Wall & Holds',items:[
+      'A. Climbing holds secure, no spinners or loose bolts.',
+      'B. Wall surface free of cracks, delamination, or damage.',
+      'C. Crash mats in place at base, no gaps or compression damage.',
+      'D. Top anchors visually inspected.'
+    ]},
+    {num:3,name:'Egress & Life Safety',items:[
+      'A. Emergency exits unobstructed.',
+      'B. Emergency lighting functional.',
+      'C. Fire extinguisher present and current.',
+      'D. First aid station accessible.'
+    ]},
+    {num:4,name:'Guest Controls',items:[
+      'A. Waivers signed and on file.',
+      'B. Posted rules visible (no climbing without harness, one climber per route, no climbing above next climber).',
+      'C. Weight limits posted and enforced per auto-belay spec.',
+      'D. Closed-toe footwear required.'
+    ]},
+    {num:5,name:'Supervision',items:[
+      'A. Attendant present and monitoring active climbers.',
+      'B. Attendant trained on harness fitting and auto-belay clip-in verification.',
+      'C. Clip-in checked by staff before every climb.'
+    ]},
+    {num:6,name:'Post-Shift',items:[
+      'A. Equipment inspected and stored.',
+      'B. Damaged equipment tagged out.',
+      'C. Incidents logged before close.'
+    ]}
+  ]
+};
+
+// ── NEW: ESCAPE ROOM (16 items) ──
+var CHECKLIST_ESCAPE={
+  railLabel:'Escape Room',version:'v1',title:'Escape Room',formType:'Escape Room',
+  notes:[
+    'NOTE #1: Egress must be possible at all times without solving puzzles.',
+    'NOTE #2: All electrical props must be GFCI protected and inspected weekly.'
+  ],
+  sections:[
+    {num:1,name:'Egress & Life Safety',items:[
+      'A. Emergency exit accessible from inside room without key, code, or puzzle solution.',
+      'B. Emergency exit clearly marked and illuminated.',
+      'C. Emergency lighting functional.',
+      'D. Fire extinguisher present and current.',
+      'E. Smoke detector functional.'
+    ]},
+    {num:2,name:'Room Environment',items:[
+      'A. Floor surface clean and free of trip hazards.',
+      'B. Props secured, no sharp edges or pinch points.',
+      'C. Electrical props GFCI protected, cords intact.',
+      'D. Lighting adequate for safe movement.'
+    ]},
+    {num:3,name:'Guest Communication',items:[
+      'A. Two-way communication with game master functional (camera, intercom, or both).',
+      'B. Guest briefing delivered before room start (egress, panic button, no climbing).',
+      'C. Panic button or exit procedure posted inside room.'
+    ]},
+    {num:4,name:'Supervision',items:[
+      'A. Game master monitoring room throughout session.',
+      'B. Game master trained on emergency entry and evacuation.'
+    ]},
+    {num:5,name:'Post-Shift',items:[
+      'A. Room reset and inspected.',
+      'B. Incidents and prop issues logged before close.'
+    ]}
+  ]
+};
+
+// ── NEW: MINI GOLF (INDOOR) (20 items) ──
+var CHECKLIST_MINIGOLF={
+  railLabel:'Mini Golf (Indoor)',version:'v1',title:'Mini Golf (Indoor)',formType:'Mini Golf',
+  notes:[
+    'NOTE #1: All putters and balls inspected at shift change.'
+  ],
+  sections:[
+    {num:1,name:'Equipment',items:[
+      'A. Putters intact, no cracked shafts or loose heads.',
+      'B. Balls inspected, damaged balls removed.',
+      'C. Scorecards and pencils available.'
+    ]},
+    {num:2,name:'Course Condition',items:[
+      'A. Turf intact, no lifted edges or trip hazards.',
+      'B. Obstacles and props secure.',
+      'C. Water features (if any) clean and contained.',
+      'D. Bridges and ramps stable.',
+      'E. Lighting adequate throughout course.'
+    ]},
+    {num:3,name:'Egress & Life Safety',items:[
+      'A. Emergency exits unobstructed.',
+      'B. Emergency lighting functional.',
+      'C. Fire extinguisher present and current.'
+    ]},
+    {num:4,name:'Guest Controls',items:[
+      'A. Posted rules visible (no running, no climbing on obstacles, putter stays below waist).',
+      'B. Group size and spacing enforced.',
+      'C. Closed-toe or appropriate footwear.'
+    ]},
+    {num:5,name:'Supervision',items:[
+      'A. Course monitored by staff.',
+      'B. Staff trained on rule enforcement and incident response.'
+    ]},
+    {num:6,name:'Post-Shift',items:[
+      'A. Equipment returned and counted.',
+      'B. Course walked and cleared.',
+      'C. Damaged equipment tagged out.',
+      'D. Incidents logged before close.'
+    ]}
+  ]
+};
+
+// ── NEW: ARCADE / REDEMPTION FLOOR (20 items) ──
+var CHECKLIST_ARCADE={
+  railLabel:'Arcade / Redemption Floor',version:'v1',title:'Arcade / Redemption Floor',formType:'Arcade',
+  notes:[
+    'NOTE #1: Redemption inventory and game cabinets inspected daily.'
+  ],
+  sections:[
+    {num:1,name:'Cabinet & Machine Condition',items:[
+      'A. All cabinets stable, no loose panels or exposed wiring.',
+      'B. Glass and screens intact.',
+      'C. Coin/card readers functional.',
+      'D. Ticket dispensers functional and stocked.'
+    ]},
+    {num:2,name:'Electrical',items:[
+      'A. Power cords intact and routed safely.',
+      'B. GFCI protection where required.',
+      'C. No daisy-chained power strips.'
+    ]},
+    {num:3,name:'Floor & Egress',items:[
+      'A. Aisles clear and minimum width maintained.',
+      'B. Floor surface clean, dry, and free of hazards.',
+      'C. Emergency exits unobstructed and clearly marked.',
+      'D. Emergency lighting functional.',
+      'E. Fire extinguisher present and current.'
+    ]},
+    {num:4,name:'Redemption Counter',items:[
+      'A. Counter and prize area organized.',
+      'B. Small prizes secured from choking-age guests.',
+      'C. Posted rules visible.'
+    ]},
+    {num:5,name:'Supervision',items:[
+      'A. Floor staff present and visible.',
+      'B. Staff trained on incident response and lost child protocol.'
+    ]},
+    {num:6,name:'Post-Shift',items:[
+      'A. Floor walked and cleared.',
+      'B. Damaged machines tagged out.',
+      'C. Incidents logged before close.'
+    ]}
+  ]
+};
+
+// ── NEW: BUILDING & EGRESS (28 items) ──
+var CHECKLIST_BUILDING={
+  railLabel:'Building & Egress',version:'v1',title:'Building & Egress',formType:'Building & Egress',
+  notes:[
+    'NOTE #1: Facility-level life safety inspection. Performed at open and close.'
+  ],
+  sections:[
+    {num:1,name:'Emergency Egress',items:[
+      'A. All emergency exits unlocked during operating hours.',
+      'B. All emergency exits unobstructed inside and outside.',
+      'C. Exit signage illuminated and visible.',
+      'D. Exit pathways clear and marked.',
+      'E. Panic hardware functional on all exit doors.'
+    ]},
+    {num:2,name:'Emergency Lighting',items:[
+      'A. Emergency lighting tested and functional.',
+      'B. Battery backup operational.',
+      'C. No burned-out bulbs in exit/egress paths.'
+    ]},
+    {num:3,name:'Fire Protection',items:[
+      'A. All fire extinguishers present, charged, inspection tag current.',
+      'B. Sprinkler system valves open and tagged (if applicable).',
+      'C. Fire alarm panel showing normal status.',
+      'D. Pull stations accessible and unobstructed.',
+      'E. Fire department connection accessible (exterior).'
+    ]},
+    {num:4,name:'Electrical',items:[
+      'A. Electrical panels accessible, 36" clearance maintained.',
+      'B. Panel directories current.',
+      'C. No exposed wiring or open junction boxes.',
+      'D. GFCI protection in wet areas.'
+    ]},
+    {num:5,name:'HVAC & Mechanical',items:[
+      'A. Mechanical room secured and unobstructed.',
+      'B. No fuel, paint, or storage in mechanical spaces.',
+      'C. Filters within service interval.'
+    ]},
+    {num:6,name:'Flooring & Walking Surfaces',items:[
+      'A. Floor surfaces free of trip hazards, lifted tile, or torn carpet.',
+      'B. Wet floor signage available and used as needed.',
+      'C. Stairways clear, handrails secure.'
+    ]},
+    {num:7,name:'Ceiling & Structure',items:[
+      'A. Ceiling tiles in place, no water staining or damage.',
+      'B. No visible structural damage.'
+    ]},
+    {num:8,name:'Posted Occupancy',items:[
+      'A. Occupancy load posted at each assembly area.',
+      'B. Occupancy not exceeded.',
+      'C. Permits and certificates current and posted.'
+    ]}
+  ]
+};
+
+// ── NEW: QUEUE MANAGEMENT (14 items) ──
+var CHECKLIST_QUEUE={
+  railLabel:'Queue Management',version:'v1',title:'Queue Management',formType:'Queue Management',
+  notes:[
+    'NOTE #1: Queue lines inspected throughout operating hours, especially during peak.'
+  ],
+  sections:[
+    {num:1,name:'Queue Structure',items:[
+      'A. Stanchions, rails, and barriers stable and intact.',
+      'B. Queue pathways clear of trip hazards.',
+      'C. Queue width meets minimum egress standards.',
+      'D. No pinch points or sharp edges.'
+    ]},
+    {num:2,name:'Shade & Environment',items:[
+      'A. Shade structures secure.',
+      'B. Ventilation adequate in enclosed queues.',
+      'C. Drinking water accessible during heat events.'
+    ]},
+    {num:3,name:'Guest Communication',items:[
+      'A. Posted wait times accurate (if displayed).',
+      'B. Height requirements posted at queue entry.',
+      'C. Rider rules and restrictions posted.'
+    ]},
+    {num:4,name:'Supervision',items:[
+      'A. Queue monitored by staff.',
+      'B. Line-jumping and crowding managed.',
+      'C. Lost child / separated guest protocol known by queue staff.',
+      'D. Emergency egress from queue possible at all points.'
+    ]}
+  ]
+};
+
+// ── NEW: RESTROOMS & HYGIENE (13 items) ──
+var CHECKLIST_RESTROOMS={
+  railLabel:'Restrooms & Hygiene',version:'v1',title:'Restrooms & Hygiene',formType:'Restrooms',
+  notes:[
+    'NOTE #1: Restrooms inspected at minimum every 2 hours during operating hours.'
+  ],
+  sections:[
+    {num:1,name:'Cleanliness',items:[
+      'A. Floors clean and dry.',
+      'B. Fixtures clean and functional.',
+      'C. Trash receptacles emptied and not overflowing.'
+    ]},
+    {num:2,name:'Supplies',items:[
+      'A. Soap stocked at all sinks.',
+      'B. Hand drying (paper or air) functional.',
+      'C. Toilet paper stocked at all stalls.'
+    ]},
+    {num:3,name:'Safety',items:[
+      'A. Wet floor signage used when cleaning.',
+      'B. No standing water or leaks.',
+      'C. Lighting functional.',
+      'D. Emergency call/assistance device functional (ADA stalls).'
+    ]},
+    {num:4,name:'Accessibility',items:[
+      'A. ADA stall unobstructed and functional.',
+      'B. Baby changing station clean and stable (if present).',
+      'C. Diaper disposal available.'
+    ]}
+  ]
+};
+
+// ── NEW: FOOD SERVICE AREA (24 items) ──
+var CHECKLIST_FOODSERVICE={
+  railLabel:'Food Service Area',version:'v1',title:'Food Service Area',formType:'Food Service',
+  notes:[
+    'NOTE #1: Coordinate with health department inspection schedule. This is a loss-control supplement, not a substitute.'
+  ],
+  sections:[
+    {num:1,name:'Kitchen — Fire Safety',items:[
+      'A. Hood suppression system inspection current.',
+      'B. Hood and filters cleaned per schedule.',
+      'C. Class K extinguisher present and current.',
+      'D. Cooking equipment maintained, no excessive grease buildup.'
+    ]},
+    {num:2,name:'Kitchen — Slips & Falls',items:[
+      'A. Floor surface clean, dry, and slip-resistant.',
+      'B. Wet floor signage used.',
+      'C. Mats in place at prep and dish areas.'
+    ]},
+    {num:3,name:'Kitchen — Electrical & Gas',items:[
+      'A. Equipment cords intact.',
+      'B. Gas shutoff accessible and labeled.',
+      'C. No extension cords in permanent use.'
+    ]},
+    {num:4,name:'Food Safety',items:[
+      'A. Hand sink accessible and stocked.',
+      'B. Cold holding equipment within temperature.',
+      'C. Hot holding equipment within temperature.',
+      'D. Health permit current and posted.'
+    ]},
+    {num:5,name:'Service Counter',items:[
+      'A. Counter clean and organized.',
+      'B. Allergen information available on request.',
+      'C. Posted prices visible.'
+    ]},
+    {num:6,name:'Dining Area',items:[
+      'A. Tables and seating stable.',
+      'B. Floor clean and free of hazards.',
+      'C. High chairs (if provided) stable and clean.',
+      'D. Trash receptacles available and not overflowing.'
+    ]},
+    {num:7,name:'Storage',items:[
+      'A. Dry storage organized, off floor.',
+      'B. Chemical storage separated from food storage.',
+      'C. No expired product in service.'
+    ]}
+  ]
+};
+
+// ── NEW: PARKING & INGRESS (18 items) ──
+var CHECKLIST_PARKING={
+  railLabel:'Parking & Ingress',version:'v1',title:'Parking & Ingress',formType:'Parking & Ingress',
+  notes:[
+    'NOTE #1: Parking lot inspected at open and after weather events.'
+  ],
+  sections:[
+    {num:1,name:'Surface Condition',items:[
+      'A. Pavement free of significant cracks, potholes, or upheaval.',
+      'B. Striping visible.',
+      'C. Wheel stops in place where used.',
+      'D. No standing water or ice.'
+    ]},
+    {num:2,name:'Lighting',items:[
+      'A. All parking lot lights functional.',
+      'B. Pedestrian path lighting functional.'
+    ]},
+    {num:3,name:'Signage',items:[
+      'A. ADA parking signage present and compliant.',
+      'B. Directional signage clear.',
+      'C. Speed limit posted.'
+    ]},
+    {num:4,name:'Pedestrian Safety',items:[
+      'A. Crosswalks marked.',
+      'B. Pedestrian path separated from drive lanes where possible.',
+      'C. Bollards or barriers protecting building entry from vehicle traffic.'
+    ]},
+    {num:5,name:'Accessibility',items:[
+      'A. ADA spaces present in required count.',
+      'B. Accessible route from ADA spaces to entry, no barriers.',
+      'C. Curb cuts present and intact.'
+    ]},
+    {num:6,name:'Exterior',items:[
+      'A. Building exterior lighting functional.',
+      'B. Trash and debris cleared from entry area.',
+      'C. Smoking area (if designated) properly located and equipped.'
+    ]}
+  ]
+};
+
+// ── CARDS REGISTRY (keyed by stable id used in rail + items map) ──
+var CARDS={
+  'parking-ingress':CHECKLIST_PARKING,
+  'building-egress':CHECKLIST_BUILDING,
+  'queue-management':CHECKLIST_QUEUE,
+  'restrooms-hygiene':CHECKLIST_RESTROOMS,
+  'trampoline-court':CHECKLIST_TRAMPOLINE,
+  'inflatable-zone':CHECKLIST_INFLATABLE,
+  'climbing-wall':CHECKLIST_CLIMBING,
+  'escape-room':CHECKLIST_ESCAPE,
+  'mini-golf':CHECKLIST_MINIGOLF,
+  'arcade':CHECKLIST_ARCADE,
+  'food-service':CHECKLIST_FOODSERVICE,
+  'go-karts':CHECKLIST_GOKART,
+  'carousel':CHECKLIST_CAROUSEL
+};
+
+// ── TAXONOMY TREE (left rail) ──
+// Shape: {label, children:[{leaf}|{label, children:[{leaf}]}]}
+var TAXONOMY=[
+  {label:'Grounds/Premises',children:[
+    {leaf:'parking-ingress'}
+  ]},
+  {label:'Family Entertainment Center',children:[
+    {leaf:'building-egress'},
+    {label:'Customer Exposure Area',children:[
+      {leaf:'queue-management'}
+    ]},
+    {leaf:'restrooms-hygiene'},
+    {label:'Attractions',children:[
+      {leaf:'trampoline-court'},
+      {leaf:'inflatable-zone'},
+      {leaf:'climbing-wall'},
+      {leaf:'escape-room'},
+      {leaf:'mini-golf'},
+      {leaf:'arcade'}
+    ]}
+  ]},
+  {label:'Restaurant',children:[
+    {leaf:'food-service'}
+  ]},
+  {label:'Amusement Ride Device',children:[
+    {leaf:'go-karts'},
+    {leaf:'carousel'}
+  ]}
+];
+
+// Default active card = first leaf in taxonomy (parking-ingress)
+var DEFAULT_ACTIVE_CARD='trampoline-court';
+
+// ═══════════════════════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════════════════════
 
 function esc(s){
-  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+  return String(s==null?'':s).replace(/[&<>"']/g,function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
   });
 }
 
-// ── LOGIN ──
-async function doLogin(){
-  var email = (document.getElementById('login-email').value || '').trim();
-  var pw = (document.getElementById('login-password').value || '').trim();
-  var errEl = document.getElementById('login-error');
-  var retryEl = document.getElementById('login-retry');
-  errEl.textContent = '';
-  retryEl.style.display = 'none';
-  if(!email || !pw){ errEl.textContent = 'Enter email and password.'; return; }
-  var btn = document.getElementById('login-btn');
-  btn.disabled = true; btn.textContent = 'Signing in...';
-  var emailLower = email.toLowerCase().replace(/'/g, "\\'");
-  var pwEsc = pw.replace(/'/g, "\\'");
-  var formula = "AND(LOWER({Email})='" + emailLower + "',{Password}='" + pwEsc + "',{Status}='Active')";
-  try {
-    var data = await apiGet(CONFIG.TABLES.INSPECTORS, null, 'filterByFormula=' + encodeURIComponent(formula));
-    document.getElementById('login-password').value = '';
-    pw = null; pwEsc = null;
-    var recs = data.records || [];
-    if(recs.length === 1){
-      var r = recs[0];
-      state.inspector = {
-        recordId: r.id,
-        name: r.fields.Name || email,
-        inspectorId: r.fields['Inspector ID'] || ''
-      };
-      document.getElementById('inspector-badge').textContent = state.inspector.name + (state.inspector.inspectorId ? ' · ' + state.inspector.inspectorId : '');
-      toast('Welcome, ' + state.inspector.name, 'ok');
-      btn.disabled = false; btn.textContent = 'Log In \u2192';
-      loadAssignments();
-    } else if(recs.length === 0){
-      errEl.textContent = 'Invalid credentials.';
-      btn.disabled = false; btn.textContent = 'Log In \u2192';
-    } else {
-      errEl.textContent = 'Account error \u2014 contact administrator.';
-      btn.disabled = false; btn.textContent = 'Log In \u2192';
-    }
-  } catch(e){
-    errEl.textContent = 'Cannot reach server. Check connection and retry.';
-    retryEl.style.display = 'block';
-    btn.disabled = false; btn.textContent = 'Log In \u2192';
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  var el=document.getElementById('screen-'+id);
+  if(el)el.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function toast(msg,type){
+  var el=document.getElementById('toast');
+  el.textContent=msg;
+  el.className='toast '+(type||'ok')+' show';
+  setTimeout(function(){el.classList.remove('show');},3000);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// LOGIN (hardcoded demo accounts — no network)
+// ═══════════════════════════════════════════════════════════════════════════
+
+function doLogin(){
+  var email=(document.getElementById('login-email').value||'').trim().toLowerCase();
+  var pw=(document.getElementById('login-password').value||'').trim();
+  var err=document.getElementById('login-error');
+  err.textContent='';
+  if(!email||!pw){err.textContent='Enter email and password';return;}
+  var acct=DEMO_ACCOUNTS[email];
+  if(acct&&pw===acct.pw){
+    STATE.inspector={id:acct.id,name:acct.name};
+    // Clear password field after use
+    document.getElementById('login-password').value='';
+    toast('Welcome, '+STATE.inspector.name,'ok');
+    loadAssignments();
+  }else{
+    err.textContent='Invalid credentials';
   }
 }
 
-// ── ASSIGNMENTS ──
-async function loadAssignments(){
+// ═══════════════════════════════════════════════════════════════════════════
+// ASSIGNMENTS (single hardcoded entry: Thunder Road FEC)
+// ═══════════════════════════════════════════════════════════════════════════
+
+function loadAssignments(){
   showScreen('assignments');
-  var list = document.getElementById('assignments-list');
-  list.innerHTML = '<div class="panel"><div class="panel-body" style="text-align:center;color:var(--text-dim);font-family:var(--mono);font-size:13px;">Loading assignments\u2026</div></div>';
-  var inspectorId = state.inspector.recordId;
-  var primaryFormula = "AND(FIND('" + inspectorId + "',ARRAYJOIN({Inspector}))>0,OR({Status}='SCHEDULED',{Status}='ASSIGNED',{Status}='IN FIELD'))";
-  var recs = [];
-  try {
-    var data = await apiGet(CONFIG.TABLES.INSPECTIONS, null, 'filterByFormula=' + encodeURIComponent(primaryFormula));
-    recs = data.records || [];
-    if(recs.length === 0){
-      // Fallback: fetch by status only, filter client-side by linked Inspector array
-      var fallbackFormula = "OR({Status}='SCHEDULED',{Status}='ASSIGNED',{Status}='IN FIELD')";
-      try {
-        var data2 = await apiGet(CONFIG.TABLES.INSPECTIONS, null, 'filterByFormula=' + encodeURIComponent(fallbackFormula));
-        recs = (data2.records || []).filter(function(r){
-          var arr = r.fields.Inspector || [];
-          return arr.indexOf && arr.indexOf(inspectorId) >= 0;
-        });
-      } catch(e2){ /* ignore */ }
-    }
-  } catch(e){
-    list.innerHTML = '<div class="panel"><div class="panel-body" style="text-align:center;color:var(--red);font-family:var(--mono);font-size:13px;">Failed to load assignments.</div></div>';
-    return;
-  }
-  state.inspections = recs;
-  if(recs.length === 0){
-    list.innerHTML = '<div class="panel"><div class="panel-body" style="text-align:center;padding:32px 20px;"><div style="font-size:32px;margin-bottom:10px;">&#x1F4CB;</div><div style="color:var(--text-dim);font-size:13px;line-height:1.5;">No assignments scheduled.<br>Check back when your dispatcher schedules an inspection.</div></div></div>';
-    return;
-  }
-  // Fetch facility records for each
-  var facIds = {};
-  recs.forEach(function(r){
-    var arr = r.fields.Facility || [];
-    if(arr.length) facIds[arr[0]] = 1;
-  });
-  var facList = Object.keys(facIds).filter(function(id){ return !state.facilityCache[id]; });
-  await Promise.all(facList.map(function(id){
-    return apiGet(CONFIG.TABLES.FACILITIES, id).then(function(f){
-      state.facilityCache[id] = f.fields || {};
-    }).catch(function(){});
-  }));
-  renderAssignments();
+  var nameEl=document.getElementById('inspector-name-display');
+  if(nameEl)nameEl.textContent=STATE.inspector.name+' \u00b7 '+STATE.inspector.id;
+  var list=document.getElementById('assignments-list');
+  var html='<div class="assign" onclick="openSurvey()">';
+  html+='<div><div class="assign-name">'+esc(DEMO_FACILITY.name)+'</div>';
+  html+='<div class="assign-meta">'+esc(DEMO_FACILITY.inspectionId)+' \u00b7 '+esc(DEMO_FACILITY.address)+'</div></div>';
+  html+='<div class="assign-due soon">DUE '+esc(DEMO_FACILITY.dueDate)+'</div></div>';
+  list.innerHTML=html;
 }
 
-function renderAssignments(){
-  var list = document.getElementById('assignments-list');
-  var today = new Date(); today.setHours(0,0,0,0);
-  var html = '';
-  state.inspections.forEach(function(r){
-    var f = r.fields;
-    var facId = (f.Facility || [])[0];
-    var fac = facId ? state.facilityCache[facId] : null;
-    var facName = fac ? (fac.Name || 'Facility') : 'Facility';
-    var addr = fac ? [fac.Address, fac.City, fac.State].filter(function(x){return x;}).join(', ') : '';
-    var due = f['Scheduled Date'] || '';
-    var dueClass = 'upcoming', dueLabel = 'Due ' + due;
-    if(due){
-      var d = new Date(due); d.setHours(0,0,0,0);
-      if(d < today){ dueClass = 'overdue'; dueLabel = 'OVERDUE \u00b7 ' + due; }
-      else if(d.getTime() === today.getTime()){ dueClass = 'today'; dueLabel = 'DUE TODAY'; }
-      else { dueLabel = 'Due ' + due; }
+function openSurvey(){
+  STATE.current={
+    activeCardId:DEFAULT_ACTIVE_CARD,
+    items:{}
+  };
+  // Restore draft if present
+  try{
+    var raw=localStorage.getItem('draft_'+DEMO_FACILITY.inspectionId);
+    if(raw){
+      var parsed=JSON.parse(raw);
+      if(parsed&&parsed.items)STATE.current.items=parsed.items;
     }
-    var modCount = (f['Checklist Modules'] || []).length;
-    html += '<div class="assign-card" onclick="openAssignment(\'' + r.id + '\')">';
-    html += '<div class="assign-fac">' + esc(facName) + '</div>';
-    if(addr) html += '<div class="assign-addr">' + esc(addr) + '</div>';
-    html += '<div class="assign-row"><span class="assign-due ' + dueClass + '">' + esc(dueLabel) + '</span><span class="assign-count">' + modCount + ' form' + (modCount === 1 ? '' : 's') + '</span></div>';
-    html += '</div>';
-  });
-  list.innerHTML = html;
-}
-
-// ── OPEN ASSIGNMENT ──
-async function openAssignment(recordId){
-  var rec = state.inspections.filter(function(r){return r.id === recordId;})[0];
-  if(!rec){ toast('Assignment not found', 'err'); return; }
-  var f = rec.fields;
-  var facId = (f.Facility || [])[0];
-  var moduleIds = f['Checklist Modules'] || [];
-  if(moduleIds.length === 0){ toast('No checklist modules attached to this inspection', 'err'); return; }
+  }catch(e){}
+  renderSurvey();
   showScreen('survey');
-  document.getElementById('survey-container').innerHTML = '<div class="panel"><div class="panel-body" style="text-align:center;color:var(--text-dim);font-family:var(--mono);font-size:13px;">Loading checklists\u2026</div></div>';
-  try {
-    var modsToFetch = moduleIds.filter(function(id){ return !state.moduleCache[id]; });
-    await Promise.all(modsToFetch.map(function(id){
-      return apiGet(CONFIG.TABLES.CHECKLIST_MODULES, id).then(function(m){
-        var parsed = null;
-        try { parsed = JSON.parse(m.fields['Sections JSON'] || '{}'); } catch(e){ parsed = null; }
-        state.moduleCache[id] = {
-          recordId: id,
-          moduleId: m.fields['Module ID'] || '',
-          attractionType: m.fields['Attraction Type'] || '',
-          version: m.fields['Version'] || '',
-          title: (parsed && parsed.title) || m.fields['Attraction Type'] || 'Checklist',
-          notes: (parsed && parsed.notes) || [],
-          sections: (parsed && parsed.sections) || []
-        };
-      });
-    }));
-    var modules = moduleIds.map(function(id){ return state.moduleCache[id]; }).filter(function(m){ return m; });
-    state.current = {
-      inspectionRecordId: rec.id,
-      inspectionId: f['Inspection ID'] || rec.id,
-      facilityRecordId: facId,
-      facility: facId ? state.facilityCache[facId] : {},
-      modules: modules,
-      items: {},
-      activeModuleIdx: 0
-    };
-    restoreDraft();
-    renderSurvey();
-  } catch(e){
-    document.getElementById('survey-container').innerHTML = '<div class="panel"><div class="panel-body" style="text-align:center;color:var(--red);font-family:var(--mono);font-size:13px;">Failed to load checklist modules.</div></div>';
-  }
 }
 
-function itemKey(mIdx, sIdx, iIdx){
-  return state.current.modules[mIdx].recordId + '::' + sIdx + '::' + iIdx;
-}
+// ═══════════════════════════════════════════════════════════════════════════
+// SURVEY RENDER
+// ═══════════════════════════════════════════════════════════════════════════
 
-// ── DRAFT AUTOSAVE ──
-function draftKey(){ return 'inspection_draft_' + state.current.inspectionRecordId; }
-function saveDraft(){
-  if(!state.current) return;
-  try {
-    var slim = {};
-    Object.keys(state.current.items).forEach(function(k){
-      var it = state.current.items[k];
-      slim[k] = {
-        answer: it.answer || null,
-        severity: it.severity || null,
-        comment: it.comment || '',
-        photo: it.photo ? 'captured' : null
-      };
-    });
-    localStorage.setItem(draftKey(), JSON.stringify({items: slim, lastSaved: Date.now()}));
-  } catch(e){}
-}
-function restoreDraft(){
-  try {
-    var raw = localStorage.getItem(draftKey());
-    if(!raw) return;
-    var parsed = JSON.parse(raw);
-    if(parsed && parsed.items) state.current.items = parsed.items;
-  } catch(e){}
-}
-function clearDraft(){
-  try { localStorage.removeItem(draftKey()); } catch(e){}
-}
-
-// ── RENDER SURVEY ──
 function renderSurvey(){
-  var c = state.current;
-  var container = document.getElementById('survey-container');
-  var facName = (c.facility && c.facility.Name) || 'Facility';
-  var facAddr = c.facility ? [c.facility.Address, c.facility.City, c.facility.State].filter(function(x){return x;}).join(', ') : '';
+  document.getElementById('survey-overview').innerHTML=buildOverviewHTML();
+  document.getElementById('survey-rail').innerHTML=buildRailHTML();
+  renderActiveCard();
+  updateCounters();
+  updateSubmitButton();
+}
 
-  var html = '';
-  html += '<div class="panel"><div class="panel-hdr"><div>';
-  html += '<div class="panel-title" style="font-size:18px;">' + esc(facName) + '</div>';
-  html += '<div class="panel-sub">' + esc(facAddr || c.inspectionId) + (facAddr ? ' \u00b7 ' + esc(c.inspectionId) : '') + '</div>';
-  html += '</div><button class="btn btn-ghost btn-sm" onclick="backToAssignments()">\u2190 Back</button></div>';
-  html += '<div class="panel-body">';
+function buildOverviewHTML(){
+  var insp=STATE.inspector||{name:'—',id:'—'};
+  var html='<div class="sv-overview">';
+  html+='<div class="sv-overview-title">Survey Overview</div>';
+  html+='<div class="sv-grid">';
+  html+='<div class="sv-field"><label>Facility</label><div class="val">'+esc(DEMO_FACILITY.name)+'</div></div>';
+  html+='<div class="sv-field"><label>Address</label><div class="val">'+esc(DEMO_FACILITY.address)+'</div></div>';
+  html+='<div class="sv-field"><label>Inspection ID</label><div class="val">'+esc(DEMO_FACILITY.inspectionId)+'</div></div>';
+  html+='<div class="sv-field"><label>Date Requested</label><div class="val">'+esc(DEMO_FACILITY.dateRequested)+'</div></div>';
+  html+='<div class="sv-field"><label>Due Date</label><div class="val">'+esc(DEMO_FACILITY.dueDate)+'</div></div>';
+  html+='<div class="sv-field"><label>Status</label><div class="val"><span class="sv-status-badge">'+esc(DEMO_FACILITY.status)+'</span></div></div>';
+  html+='<div class="sv-field"><label>Inspector</label><div class="val">'+esc(insp.name)+'</div></div>';
+  html+='</div></div>';
+  return html;
+}
 
-  // Phone jump dropdown
-  html += '<div class="jump-bar ff"><label>Jump To Section</label><select id="jump-select" onchange="jumpTo(this.value)">';
-  html += '<option value="">\u2014 Select \u2014</option>';
-  c.modules.forEach(function(m, mi){
-    m.sections.forEach(function(s, si){
-      html += '<option value="' + mi + '-' + si + '">' + esc(m.attractionType) + ' \u00b7 ' + esc(s.name) + '</option>';
-    });
-  });
-  html += '</select></div>';
-
-  html += '<div class="survey-wrap">';
-
-  // LEFT RAIL (tablet only)
-  html += '<div class="survey-rail" id="survey-rail">';
-  html += '<div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:1.5px;margin-bottom:8px;">// SURVEY</div>';
-  html += '<div style="font-family:var(--cond);font-size:16px;font-weight:700;color:var(--text-bright);margin-bottom:10px;line-height:1.25;">' + esc(facName) + '</div>';
-  c.modules.forEach(function(m, mi){
-    html += '<div class="rail-module' + (mi === c.activeModuleIdx ? ' active' : '') + '" data-idx="' + mi + '" onclick="setActiveModule(' + mi + ')">';
-    html += '<div class="rail-module-title">' + esc(m.attractionType || m.title) + '</div>';
-    html += '<div class="rail-module-meta"><span>' + esc(m.version) + '</span><span id="rail-count-' + mi + '"></span></div>';
-    html += '<div class="rail-sections">';
-    m.sections.forEach(function(s, si){
-      html += '<div class="rail-section" onclick="event.stopPropagation();jumpTo(\'' + mi + '-' + si + '\')">' + esc(s.name) + '</div>';
-    });
-    html += '</div>';
-    html += '</div>';
-  });
-  html += '</div>';
-
-  // RIGHT PANE
-  html += '<div class="survey-pane" id="survey-pane">';
-  c.modules.forEach(function(m, mi){
-    var hiddenClass = mi === c.activeModuleIdx ? '' : ' hidden';
-    html += '<div class="module-block' + hiddenClass + '" id="module-block-' + mi + '">';
-    html += '<div class="module-banner"><div class="module-banner-title">' + esc(m.title) + '</div><div class="module-banner-meta">' + esc(m.attractionType) + ' \u00b7 ' + esc(m.version) + '</div></div>';
-    if(m.notes && m.notes.length){
-      html += '<div class="module-notes">';
-      m.notes.forEach(function(n){ html += '<div>' + esc(n) + '</div>'; });
-      html += '</div>';
-    }
-    m.sections.forEach(function(s, si){
-      html += '<div class="sec-header" id="anchor-' + mi + '-' + si + '">' + (si + 1) + '. ' + esc((s.name || '').toUpperCase()) + '</div>';
-      (s.items || []).forEach(function(item, ii){
-        var k = itemKey(mi, si, ii);
-        var it = c.items[k] || {};
-        html += '<div class="cl-item">';
-        html += '<div class="cl-item-text">' + esc(item) + '</div>';
-        html += '<div class="cl-answers">';
-        html += '<div class="cl-answer' + (it.answer === 'yes' ? ' sel-yes' : '') + '" id="ans-yes-' + k + '" onclick="setAnswer(\'' + k + '\',\'yes\')">YES</div>';
-        html += '<div class="cl-answer' + (it.answer === 'no' ? ' sel-no' : '') + '" id="ans-no-' + k + '" onclick="setAnswer(\'' + k + '\',\'no\')">NO</div>';
-        html += '<div class="cl-answer' + (it.answer === 'na' ? ' sel-na' : '') + '" id="ans-na-' + k + '" onclick="setAnswer(\'' + k + '\',\'na\')">N/A</div>';
-        html += '</div>';
-        html += '<div class="cl-detail' + (it.answer ? ' open' : '') + '" id="detail-' + k + '"><div class="cl-detail-inner">';
-        // Severity (NO only)
-        html += '<div id="sev-wrap-' + k + '" style="display:' + (it.answer === 'no' ? 'block' : 'none') + ';margin-bottom:10px;">';
-        html += '<label style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;">Severity *</label>';
-        html += '<select onchange="setSeverity(\'' + k + '\',this.value)" style="width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:14px;color:var(--text);min-height:48px;">';
-        html += '<option value="">\u2014 Select severity \u2014</option>';
-        SEVERITY_OPTIONS.forEach(function(opt){
-          html += '<option value="' + opt.v + '"' + (it.severity == opt.v ? ' selected' : '') + '>' + opt.v + ' \u00b7 ' + esc(opt.label) + '</option>';
+function buildRailHTML(){
+  var html='';
+  html+='<div class="rail-root">Survey Overview</div>';
+  html+='<div class="rail-property-report">Property Report</div>';
+  TAXONOMY.forEach(function(cat){
+    html+='<div class="rail-category">'+esc(cat.label)+'</div>';
+    cat.children.forEach(function(child){
+      if(child.leaf){
+        html+=buildLeafHTML(child.leaf,false);
+      }else{
+        html+='<div class="rail-subgroup">'+esc(child.label)+'</div>';
+        child.children.forEach(function(grand){
+          html+=buildLeafHTML(grand.leaf,true);
         });
-        html += '</select></div>';
-        // Comment
-        html += '<label style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;">Comment</label>';
-        html += '<textarea placeholder="Optional notes\u2026" rows="2" oninput="setComment(\'' + k + '\',this.value)" style="width:100%;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:13px;color:var(--text);resize:vertical;min-height:48px;">' + esc(it.comment || '') + '</textarea>';
-        // Photo (NO only)
-        html += '<div id="photo-wrap-' + k + '" style="display:' + (it.answer === 'no' ? 'block' : 'none') + ';margin-top:10px;">';
-        html += '<label style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;">Photo Evidence</label>';
-        html += '<button class="btn btn-ghost btn-sm" onclick="document.getElementById(\'photo-' + k + '\').click()">&#x1F4F7; Attach Photo</button>';
-        html += '<input type="file" id="photo-' + k + '" accept="image/*" capture="camera" style="display:none;" onchange="setPhoto(\'' + k + '\',this)">';
-        html += '<span id="photo-label-' + k + '" style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-left:10px;">' + (it.photo ? '\u2713 Attached' : '') + '</span>';
-        html += '</div>';
-        html += '</div></div>'; // detail-inner, cl-detail
-        html += '</div>'; // cl-item
-      });
+      }
     });
-    html += '</div>'; // module-block
   });
-
-  // Submit bar
-  html += '<div class="submit-bar"><div class="submit-info" id="submit-info">\u2014</div>';
-  html += '<button class="btn btn-accent" id="submit-btn" onclick="submitInspection()" disabled>Submit Inspection \u2192</button></div>';
-
-  html += '</div>'; // survey-pane
-  html += '</div>'; // survey-wrap
-  html += '</div></div>'; // panel-body, panel
-
-  container.innerHTML = html;
-  updateValidation();
-  updateRailCounts();
+  return html;
 }
 
-function setActiveModule(idx){
-  state.current.activeModuleIdx = idx;
-  document.querySelectorAll('.rail-module').forEach(function(el){
-    el.classList.toggle('active', parseInt(el.getAttribute('data-idx'), 10) === idx);
-  });
-  document.querySelectorAll('.module-block').forEach(function(el, i){
-    el.classList.toggle('hidden', i !== idx);
-  });
+function buildLeafHTML(cardId,nested){
+  var card=CARDS[cardId];
+  if(!card)return '';
+  var c=countCard(cardId);
+  var active=(STATE.current&&STATE.current.activeCardId===cardId)?' active':'';
+  var nestedCls=nested?' nested':'';
+  var dot=railDotClass(c);
+  var html='<div class="rail-leaf'+active+nestedCls+'" id="rail-leaf-'+cardId+'" onclick="setActiveCard(\''+cardId+'\')">';
+  html+='<span class="rail-leaf-name">'+esc(card.railLabel)+'</span>';
+  html+='<span class="rail-leaf-count"><span class="rail-dot '+dot+'" id="rail-dot-'+cardId+'"></span><span id="rail-count-'+cardId+'">'+c.answered+'/'+c.total+'</span></span>';
+  html+='</div>';
+  return html;
 }
 
-function jumpTo(val){
-  if(!val) return;
-  var parts = val.split('-');
-  var mi = parseInt(parts[0], 10); var si = parseInt(parts[1], 10);
-  if(window.innerWidth >= 768) setActiveModule(mi);
-  var el = document.getElementById('anchor-' + mi + '-' + si);
-  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+function railDotClass(c){
+  if(c.total===0)return 'red';
+  if(c.answered===c.total)return 'green';
+  if(c.answered>0)return 'yellow';
+  return 'red';
 }
 
-function setAnswer(k, ans){
-  var it = state.current.items[k] || {};
-  it.answer = ans;
-  if(ans !== 'no'){ it.severity = null; it.photo = null; }
-  state.current.items[k] = it;
+function countCard(cardId){
+  var card=CARDS[cardId];
+  var total=0,answered=0;
+  if(!card)return {total:0,answered:0};
+  card.sections.forEach(function(sec,si){
+    sec.items.forEach(function(item,ii){
+      total++;
+      var key=cardId+'::'+si+'::'+ii;
+      var it=STATE.current&&STATE.current.items[key];
+      if(it&&it.answer){
+        if(it.answer==='no'){
+          if(it.severity)answered++;
+        }else{
+          answered++;
+        }
+      }
+    });
+  });
+  return {total:total,answered:answered};
+}
+
+function renderActiveCard(){
+  var cardId=STATE.current.activeCardId;
+  var card=CARDS[cardId];
+  var pane=document.getElementById('survey-pane');
+  if(!card){pane.innerHTML='<div style="color:var(--text3);font-family:var(--mono);font-size:12px">No card selected</div>';return;}
+  var c=countCard(cardId);
+  var html='';
+  // Per-card header
+  html+='<div class="card-header-bar">';
+  html+='<div class="card-header-title">'+esc(card.railLabel)+' \u2014 '+esc(card.version)+'</div>';
+  html+='<div class="card-header-count" id="card-count">'+c.answered+'/'+c.total+'</div>';
+  html+='</div>';
+  // Notes
+  if(card.notes&&card.notes.length){
+    html+='<div class="card-notes">';
+    card.notes.forEach(function(n){html+='<div>'+esc(n)+'</div>';});
+    html+='</div>';
+  }
+  // Sections
+  card.sections.forEach(function(sec,si){
+    html+='<div class="sec-hdr">'+sec.num+'. '+esc(sec.name)+'</div>';
+    sec.items.forEach(function(item,ii){
+      var key=cardId+'::'+si+'::'+ii;
+      var it=STATE.current.items[key]||{};
+      html+='<div class="chk-item" id="item-'+key+'">';
+      html+='<div class="chk-label">'+esc(item)+'</div>';
+      html+='<div class="chk-radios">';
+      html+='<div class="chk-radio'+(it.answer==='yes'?' sel-yes':'')+'" id="rad-yes-'+key+'" onclick="markAnswer(\''+key+'\',\'yes\')">YES</div>';
+      html+='<div class="chk-radio'+(it.answer==='no'?' sel-no':'')+'" id="rad-no-'+key+'" onclick="markAnswer(\''+key+'\',\'no\')">NO</div>';
+      html+='<div class="chk-radio'+(it.answer==='na'?' sel-na':'')+'" id="rad-na-'+key+'" onclick="markAnswer(\''+key+'\',\'na\')">N/A</div>';
+      html+='</div>';
+      html+='<div class="no-expand'+(it.answer==='no'?' open':'')+'" id="expand-'+key+'">';
+      html+='<label>Severity (required)</label>';
+      html+='<select id="sev-'+key+'" onchange="onSeverity(\''+key+'\',this.value)">';
+      html+='<option value="">Select severity...</option>';
+      SEVERITY_OPTIONS.forEach(function(opt,oi){
+        var v=oi+1;
+        var sel=(it.severity==v)?' selected':'';
+        html+='<option value="'+v+'"'+sel+'>'+v+' \u00b7 '+esc(opt)+'</option>';
+      });
+      html+='</select>';
+      html+='<label style="margin-top:10px">Comment (optional)</label>';
+      html+='<textarea id="comment-'+key+'" placeholder="Describe finding..." oninput="onComment(\''+key+'\',this.value)">'+esc(it.comment||'')+'</textarea>';
+      html+='<label style="margin-top:10px">Photo (optional)</label>';
+      html+='<div><span class="photo-btn" onclick="document.getElementById(\'photo-'+key+'\').click()">Attach Photo</span>';
+      html+='<input type="file" id="photo-'+key+'" accept="image/*" capture="camera" style="display:none" onchange="onPhoto(\''+key+'\',this)"></div>';
+      html+='<div class="photo-preview" id="photo-preview-'+key+'">'+(it.photo?'\u2713 Attached':'')+'</div>';
+      html+='</div>';
+      html+='</div>';
+    });
+  });
+  pane.innerHTML=html;
+}
+
+function setActiveCard(cardId){
+  if(!CARDS[cardId])return;
+  STATE.current.activeCardId=cardId;
+  document.querySelectorAll('.rail-leaf').forEach(function(el){el.classList.remove('active');});
+  var rl=document.getElementById('rail-leaf-'+cardId);
+  if(rl)rl.classList.add('active');
+  renderActiveCard();
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// ITEM INTERACTIONS
+// ═══════════════════════════════════════════════════════════════════════════
+
+function markAnswer(key,val){
+  var it=STATE.current.items[key]||{};
+  it.answer=val;
+  if(val!=='no'){it.severity=null;}
+  STATE.current.items[key]=it;
   ['yes','no','na'].forEach(function(a){
-    var el = document.getElementById('ans-' + a + '-' + k);
-    if(el) el.classList.remove('sel-yes','sel-no','sel-na');
+    var el=document.getElementById('rad-'+a+'-'+key);
+    if(el)el.classList.remove('sel-yes','sel-no','sel-na');
   });
-  var selEl = document.getElementById('ans-' + ans + '-' + k);
-  if(selEl) selEl.classList.add('sel-' + ans);
-  var detail = document.getElementById('detail-' + k);
-  if(detail) detail.classList.add('open');
-  var sev = document.getElementById('sev-wrap-' + k);
-  if(sev) sev.style.display = ans === 'no' ? 'block' : 'none';
-  var pw = document.getElementById('photo-wrap-' + k);
-  if(pw) pw.style.display = ans === 'no' ? 'block' : 'none';
+  var selEl=document.getElementById('rad-'+val+'-'+key);
+  if(selEl)selEl.classList.add('sel-'+val);
+  var expand=document.getElementById('expand-'+key);
+  if(expand){
+    if(val==='no')expand.classList.add('open');
+    else expand.classList.remove('open');
+  }
   saveDraft();
-  updateValidation();
-  updateRailCounts();
+  updateCounters();
+  updateSubmitButton();
 }
 
-function setSeverity(k, v){
-  var it = state.current.items[k] || {};
-  it.severity = v ? parseInt(v, 10) : null;
-  state.current.items[k] = it;
+function onSeverity(key,val){
+  var it=STATE.current.items[key]||{};
+  it.severity=val?parseInt(val,10):null;
+  STATE.current.items[key]=it;
   saveDraft();
-  updateValidation();
-  updateRailCounts();
+  updateCounters();
+  updateSubmitButton();
 }
 
-function setComment(k, v){
-  var it = state.current.items[k] || {};
-  it.comment = v;
-  state.current.items[k] = it;
+function onComment(key,val){
+  var it=STATE.current.items[key]||{};
+  it.comment=val;
+  STATE.current.items[key]=it;
   saveDraft();
 }
 
-function setPhoto(k, input){
-  if(!input.files || !input.files[0]) return;
-  var file = input.files[0];
-  var reader = new FileReader();
-  reader.onload = function(e){
-    var it = state.current.items[k] || {};
-    it.photo = e.target.result;
-    state.current.items[k] = it;
-    var lbl = document.getElementById('photo-label-' + k);
-    if(lbl) lbl.textContent = '\u2713 ' + file.name.substring(0, 24);
+function onPhoto(key,input){
+  if(!input.files||!input.files[0])return;
+  var file=input.files[0];
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var it=STATE.current.items[key]||{};
+    it.photo=e.target.result;
+    STATE.current.items[key]=it;
+    var prev=document.getElementById('photo-preview-'+key);
+    if(prev)prev.textContent='\u2713 '+file.name.substring(0,28);
     saveDraft();
   };
   reader.readAsDataURL(file);
 }
 
-function countModule(mi){
-  var m = state.current.modules[mi];
-  var total = 0, answered = 0, noMissingSev = 0;
-  m.sections.forEach(function(s, si){
-    (s.items || []).forEach(function(_, ii){
-      total++;
-      var it = state.current.items[itemKey(mi, si, ii)];
-      if(it && it.answer){
-        answered++;
-        if(it.answer === 'no' && !it.severity) noMissingSev++;
-      }
-    });
-  });
-  return {total: total, answered: answered, noMissingSev: noMissingSev};
-}
-
-function updateRailCounts(){
-  state.current.modules.forEach(function(m, mi){
-    var c = countModule(mi);
-    var el = document.getElementById('rail-count-' + mi);
-    if(el){
-      var dot = 'red';
-      if(c.answered === c.total && c.noMissingSev === 0 && c.total > 0) dot = 'green';
-      else if(c.answered > 0) dot = 'yellow';
-      el.innerHTML = '<span class="rail-dot ' + dot + '"></span>' + c.answered + '/' + c.total;
-    }
+function updateCounters(){
+  // Active card header
+  var activeId=STATE.current.activeCardId;
+  var ac=countCard(activeId);
+  var el=document.getElementById('card-count');
+  if(el)el.textContent=ac.answered+'/'+ac.total;
+  // Rail counts + dots for all cards
+  Object.keys(CARDS).forEach(function(cardId){
+    var c=countCard(cardId);
+    var ce=document.getElementById('rail-count-'+cardId);
+    if(ce)ce.textContent=c.answered+'/'+c.total;
+    var de=document.getElementById('rail-dot-'+cardId);
+    if(de)de.className='rail-dot '+railDotClass(c);
   });
 }
 
-function updateValidation(){
-  var unanswered = 0, noMissingSev = 0, total = 0;
-  state.current.modules.forEach(function(m, mi){
-    var c = countModule(mi);
-    total += c.total;
-    unanswered += (c.total - c.answered);
-    noMissingSev += c.noMissingSev;
+function updateSubmitButton(){
+  var total=0,answered=0;
+  Object.keys(CARDS).forEach(function(cardId){
+    var c=countCard(cardId);
+    total+=c.total;
+    answered+=c.answered;
   });
-  var btn = document.getElementById('submit-btn');
-  var info = document.getElementById('submit-info');
-  var ok = unanswered === 0 && noMissingSev === 0 && total > 0;
-  if(btn) btn.disabled = !ok;
-  if(info){
-    if(ok){
-      info.textContent = 'Ready to submit \u00b7 ' + total + ' items';
-    } else {
-      var msgs = [];
-      if(unanswered) msgs.push(unanswered + ' item' + (unanswered === 1 ? '' : 's') + ' unanswered');
-      if(noMissingSev) msgs.push(noMissingSev + ' NO missing severity');
-      info.textContent = msgs.join(' \u00b7 ') || (total + ' items total');
-    }
+  var btn=document.getElementById('submit-btn');
+  if(btn){
+    btn.disabled=!(answered>=1);
+    btn.textContent='Submit Inspection ('+answered+'/'+total+')';
   }
 }
 
-// ── SUBMIT ──
-async function submitInspection(){
-  var c = state.current;
-  var items = [];
-  c.modules.forEach(function(m, mi){
-    m.sections.forEach(function(s, si){
-      (s.items || []).forEach(function(text, ii){
-        var it = c.items[itemKey(mi, si, ii)] || {};
-        items.push({
-          module_id: m.moduleId,
-          section: s.name,
-          item: text,
-          answer: it.answer || null,
-          severity: it.severity || null,
-          comment: it.comment || '',
-          photo: it.photo ? 'captured' : null
+// ═══════════════════════════════════════════════════════════════════════════
+// DRAFT AUTO-SAVE (localStorage, photos stripped to flag)
+// ═══════════════════════════════════════════════════════════════════════════
+
+function saveDraft(){
+  try{
+    var slim={};
+    Object.keys(STATE.current.items).forEach(function(k){
+      var it=STATE.current.items[k];
+      slim[k]={
+        answer:it.answer||null,
+        severity:it.severity||null,
+        comment:it.comment||'',
+        photo:it.photo?'captured':null
+      };
+    });
+    localStorage.setItem('draft_'+DEMO_FACILITY.inspectionId,JSON.stringify({items:slim,lastSaved:Date.now()}));
+  }catch(e){}
+}
+
+function clearDraft(){
+  try{localStorage.removeItem('draft_'+DEMO_FACILITY.inspectionId);}catch(e){}
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// SUBMIT (localStorage only — no network)
+// ═══════════════════════════════════════════════════════════════════════════
+
+function submitInspection(){
+  var payload={
+    inspector:STATE.inspector,
+    facility:DEMO_FACILITY.name,
+    address:DEMO_FACILITY.address,
+    inspectionId:DEMO_FACILITY.inspectionId,
+    dateRequested:DEMO_FACILITY.dateRequested,
+    dueDate:DEMO_FACILITY.dueDate,
+    submittedAt:new Date().toISOString(),
+    cards:[]
+  };
+  var yesC=0,noC=0,naC=0;
+  Object.keys(CARDS).forEach(function(cardId){
+    var card=CARDS[cardId];
+    var cardItems=[];
+    card.sections.forEach(function(sec,si){
+      sec.items.forEach(function(item,ii){
+        var key=cardId+'::'+si+'::'+ii;
+        var it=STATE.current.items[key]||{};
+        if(it.answer==='yes')yesC++;
+        else if(it.answer==='no')noC++;
+        else if(it.answer==='na')naC++;
+        cardItems.push({
+          section:sec.num+'. '+sec.name,
+          item:item,
+          answer:it.answer||null,
+          severity:(it.answer==='no'&&it.severity)?SEVERITY_OPTIONS[it.severity-1]:'',
+          severityCode:(it.answer==='no'&&it.severity)?it.severity:null,
+          comment:it.comment||'',
+          photo:it.photo?'attached':null
         });
       });
     });
+    payload.cards.push({
+      cardId:cardId,
+      railLabel:card.railLabel,
+      version:card.version,
+      items:cardItems
+    });
   });
-  var bad = items.filter(function(x){ return !x.answer || (x.answer === 'no' && !x.severity); });
-  if(bad.length){ toast('Incomplete \u2014 ' + bad.length + ' item' + (bad.length === 1 ? '' : 's') + ' need attention', 'err'); return; }
-
-  var btn = document.getElementById('submit-btn');
-  btn.disabled = true; btn.textContent = 'Submitting\u2026';
-  var now = new Date();
-  var inspectionUpdate = {
-    'Items JSON': JSON.stringify(items),
-    'Status': 'SUBMITTED',
-    'Submitted At': now.toISOString()
-  };
-
-  try {
-    await apiPatch(CONFIG.TABLES.INSPECTIONS, c.inspectionRecordId, inspectionUpdate);
-    // CARs for sev 1-2
-    var sevFails = items.filter(function(x){ return x.answer === 'no' && (x.severity === 1 || x.severity === 2); });
-    var carIds = [];
-    if(sevFails.length){
-      var startSeq = await nextCarSequence();
-      for(var i = 0; i < sevFails.length; i++){
-        var sf = sevFails[i];
-        var carId;
-        if(startSeq === null){
-          carId = 'CAR-' + now.getFullYear() + '-T' + (Math.floor(now.getTime() / 1000) + i);
-        } else {
-          var seq = String(startSeq + i);
-          while(seq.length < 4) seq = '0' + seq;
-          carId = 'CAR-' + now.getFullYear() + '-' + seq;
-        }
-        var dueDays = sf.severity === 1 ? 0 : 7;
-        var due = new Date(now); due.setDate(due.getDate() + dueDays);
-        var carFields = {
-          'CAR ID': carId,
-          'Inspection': [c.inspectionRecordId],
-          'Item Text': sf.item,
-          'Severity': sf.severity,
-          'Assigned Inspector': state.inspector.name,
-          'Opened Date': now.toISOString().split('T')[0],
-          'Due Date': due.toISOString().split('T')[0],
-          'Status': 'OPEN'
-        };
-        if(c.facilityRecordId) carFields['Facility'] = [c.facilityRecordId];
-        try {
-          await apiPost(CONFIG.TABLES.CARS, carFields);
-          carIds.push(carId);
-        } catch(ce){ /* non-fatal */ }
-      }
-    }
+  payload.totals={yes:yesC,no:noC,na:naC,total:yesC+noC+naC};
+  try{
+    localStorage.setItem('submission_'+DEMO_FACILITY.inspectionId+'_'+Date.now(),JSON.stringify(payload));
     clearDraft();
-    drainPendingQueue();
-    var facName = (c.facility && c.facility.Name) || 'Facility';
-    document.getElementById('confirm-summary').innerHTML =
-      esc(c.inspectionId) + '<br>' +
-      esc(facName) + '<br>' +
-      items.length + ' items submitted' +
-      (carIds.length ? '<br><span style="color:var(--red);font-weight:700;">' + carIds.length + ' CAR' + (carIds.length === 1 ? '' : 's') + ' generated</span>' : '') +
-      '<br><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);">Tom and underwriting have been notified</span>';
-    showScreen('confirm');
-    toast('Inspection submitted', 'ok');
-  } catch(e){
-    // Queue for retry
-    var queue = [];
-    try { queue = JSON.parse(localStorage.getItem('pending_submissions') || '[]'); } catch(_){}
-    queue.push({
-      inspectionRecordId: c.inspectionRecordId,
-      update: inspectionUpdate,
-      ts: Date.now()
-    });
-    try { localStorage.setItem('pending_submissions', JSON.stringify(queue)); } catch(_){}
-    toast('Submit failed \u2014 saved locally. Will retry on next online.', 'err');
-    btn.disabled = false; btn.textContent = 'Submit Inspection \u2192';
-  }
+  }catch(e){}
+  var summary=document.getElementById('confirm-summary');
+  summary.innerHTML=esc(DEMO_FACILITY.name)+' \u00b7 '+esc(DEMO_FACILITY.inspectionId)+'<br>'
+    +esc(STATE.inspector.name)+'<br>'
+    +'<span style="font-family:var(--mono);font-size:12px">YES: '+yesC+' \u00b7 NO: '+noC+' \u00b7 N/A: '+naC+' \u00b7 Total: '+(yesC+noC+naC)+'</span>';
+  showScreen('confirm');
+  toast('Inspection submitted','ok');
 }
-
-async function nextCarSequence(){
-  try {
-    var data = await apiGet(CONFIG.TABLES.CARS);
-    var max = 0;
-    (data.records || []).forEach(function(r){
-      var id = r.fields['CAR ID'] || '';
-      var m = /CAR-\d{4}-(\d+)$/.exec(id);
-      if(m){ var n = parseInt(m[1], 10); if(n > max) max = n; }
-    });
-    return max + 1;
-  } catch(e){ return null; }
-}
-
-async function drainPendingQueue(){
-  if(!navigator.onLine) return;
-  var queue = [];
-  try { queue = JSON.parse(localStorage.getItem('pending_submissions') || '[]'); } catch(_){ return; }
-  if(!queue.length) return;
-  var remaining = [];
-  for(var i = 0; i < queue.length; i++){
-    try {
-      await apiPatch(CONFIG.TABLES.INSPECTIONS, queue[i].inspectionRecordId, queue[i].update);
-    } catch(e){ remaining.push(queue[i]); }
-  }
-  try { localStorage.setItem('pending_submissions', JSON.stringify(remaining)); } catch(_){}
-}
-
-function backToAssignments(){
-  state.current = null;
-  loadAssignments();
-}
-
-// Startup
-if(navigator.onLine) drainPendingQueue();
-window.addEventListener('online', drainPendingQueue);
 </script>
-</body>
-</html>
+</body></html>
