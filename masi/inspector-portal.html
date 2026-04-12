@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)https://amusementstandards.com/masi/loss-control.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loss Control Workspace · Amusement Standards</title>
-<link href="./loss-control-workspace_files/css2" rel="stylesheet">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Inspector Portal &middot; AS 360</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#1A1E25;--surface:#22272E;--surface2:#2D333B;--border:#373E47;
@@ -13,1949 +14,796 @@
   --warn:#D29922;--warn-bg:rgba(210,153,34,.06);--warn-b:rgba(210,153,34,.2);
   --red:#F85149;--red-bg:rgba(248,81,73,.06);--red-b:rgba(248,81,73,.2);
   --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
+  --panel:#22272E;--panel2:#2D333B;--panel3:#343B45;--border2:#444C56;
+  --cond:'Barlow Condensed',sans-serif;
+  --text-bright:#E6EDF3;--text-dim:#6E7681;--text-muted:#484F58;
+  --accent-dim:rgba(108,164,220,.15);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--bg);color:var(--text2)}
-.hdr{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border)}
-.hdr-top{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:44px}
-.hdr-brand{display:flex;align-items:center;gap:10px}
-.hdr-logo{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.02em}
-.hdr-logo span{color:var(--accent);font-weight:700}
-.hdr-divider{width:1px;height:16px;background:var(--border)}
-.hdr-prepared{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.02em}
-.hdr-meta{font-family:var(--mono);font-size:9px;color:var(--text3);display:flex;align-items:center;gap:12px}
-.tabs{display:flex;padding:0 16px;height:36px;gap:0;border-bottom:1px solid var(--border);background:var(--surface)}
-.tab{padding:0 10px;font-family:var(--sans);font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;display:flex;align-items:center;border-bottom:2px solid transparent;transition:all .1s;white-space:nowrap}
-.tab:hover{color:var(--text2)}
-.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
-.panels{position:fixed;top:82px;left:0;right:0;bottom:0;overflow:hidden}
-.panel{position:absolute;inset:0;overflow-y:auto;padding:20px 40px 30px;display:none;max-width:1200px;margin:0 auto;background:var(--bg)}
-.panel.active{display:block}
-.panel::-webkit-scrollbar{width:5px}
-.panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.ey{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;color:var(--accent);margin-bottom:4px;text-transform:uppercase}
-.ttl{font-family:var(--sans);font-size:26px;font-weight:700;color:var(--text);line-height:1.15;letter-spacing:-.02em;margin-bottom:8px}
-.body{font-size:13px;line-height:1.65;color:var(--text2);max-width:680px;margin-bottom:16px}
-.body strong{color:var(--text)}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
-.g6{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px;transition:box-shadow .15s}
-.card:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.card-label{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.04em;color:var(--accent);margin-bottom:4px;text-transform:uppercase}
-.card-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
-.card-body{font-size:11.5px;color:var(--text2);line-height:1.5}
-.stat-row{display:flex;gap:8px;margin-bottom:24px}
-.stat{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:14px;text-align:center}
-.stat-num{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--text);line-height:1}
-.stat-label{font-size:10px;color:var(--text3);margin-top:4px;line-height:1.3}
-.note{background:var(--accent-l);border:1px solid var(--accent-b);border-radius:6px;padding:10px 14px;margin-top:12px}
-.note-hd{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--accent);margin-bottom:3px}
-.note-body{font-size:11px;color:var(--text2);line-height:1.5}
-.note-warn{background:var(--warn-bg);border:1px solid var(--warn-b);border-radius:6px;padding:12px 16px;margin-bottom:20px}
-.note-warn .note-hd{color:var(--warn)}
-.tbl{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden}
-.tbl th{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);background:var(--surface2);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
-.tbl td{font-size:12px;color:var(--text2);padding:10px 12px;border-bottom:1px solid var(--border)}
-.tbl tr:last-child td{border-bottom:none}
-.tbl tr:hover td{background:var(--surface2)}
-.badge{font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.03em}
-.badge-good{background:var(--good-bg);color:var(--good);border:1px solid var(--good-b)}
-.badge-warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-b)}
-.badge-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b)}
-.badge-accent{background:var(--accent-l);color:var(--accent);border:1px solid var(--accent-b)}
-.form-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:18px;display:flex;flex-direction:column;gap:8px;cursor:pointer;transition:all .15s;border-top:3px solid var(--accent)}
-.form-card:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(0,0,0,.08)}
-.form-card-icon{font-size:22px;margin-bottom:2px}
-.form-card-name{font-size:14px;font-weight:700;color:var(--text)}
-.form-card-desc{font-size:11px;color:var(--text2);line-height:1.45}
-.form-card-meta{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:auto;padding-top:8px;border-top:1px solid var(--border)}
-.empty-state{text-align:center;padding:48px 20px;background:var(--surface);border:1px solid var(--border);border-radius:6px}
-.empty-state-icon{font-size:36px;margin-bottom:12px;display:block;opacity:.5}
-.empty-state-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px}
-.empty-state-body{font-size:12px;color:var(--text3);max-width:400px;margin:0 auto;line-height:1.6}
-.section-divider{height:1px;background:var(--border);margin:24px 0}
-.facility-detail-hdr{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:14px}
-.facility-back-btn{font-family:var(--mono);font-size:10px;color:var(--accent);cursor:pointer;padding:4px 0;margin-bottom:12px;display:inline-block;border:none;background:none}
-.facility-back-btn:hover{text-decoration:underline}
-.facility-collapsible{background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:8px;overflow:hidden}
-.facility-collapsible-hdr{padding:10px 14px;background:var(--surface2);cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid transparent}
-.facility-collapsible-hdr:hover{background:var(--border)}
-.facility-collapsible-hdr .fc-title{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;color:var(--text);text-transform:uppercase}
-.facility-collapsible-hdr .fc-arrow{font-size:10px;color:var(--text3);transition:transform .15s}
-.facility-collapsible.open .facility-collapsible-hdr{border-bottom-color:var(--border)}
-.facility-collapsible.open .fc-arrow{transform:rotate(90deg)}
-.facility-collapsible-body{display:none;padding:12px 14px}
-.facility-collapsible.open .facility-collapsible-body{display:block}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;width:90%;max-width:480px;max-height:80vh;overflow-y:auto}
-.modal-title{font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text);margin-bottom:12px}
-.modal-field{margin-bottom:10px}
-.modal-field label{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:4px}
-.modal-field input,.modal-field select,.modal-field textarea{width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:13px;color:var(--text);outline:none}
-.modal-field textarea{resize:vertical;min-height:60px}
-.modal-actions{display:flex;gap:8px;margin-top:14px}
-.btn-primary{padding:9px 18px;border:none;border-radius:6px;font-family:var(--sans);font-size:13px;font-weight:700;cursor:pointer;background:var(--accent);color:#fff}
-.btn-primary:hover{opacity:.9}
-.btn-secondary{padding:9px 18px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--text3)}
-.btn-secondary:hover{border-color:var(--accent);color:var(--text2)}
-.btn-sm-action{padding:4px 10px;border:1px solid var(--border);border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:600;cursor:pointer;background:var(--surface2);color:var(--accent);white-space:nowrap}
-.btn-sm-action:hover{border-color:var(--accent);background:var(--accent-l)}
-.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
-.filter-bar select{padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:12px;color:var(--text);outline:none;cursor:pointer;min-width:140px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;min-height:320px}
-.cal-hdr{background:var(--surface2);padding:8px 6px;font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3);text-align:center;text-transform:uppercase;letter-spacing:.06em}
-.cal-day{background:var(--surface);padding:8px 6px;min-height:110px;vertical-align:top}
-.cal-day-num{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:6px}
-.cal-day.today .cal-day-num{color:var(--accent);font-weight:700}
-.cal-card{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:5px 7px;margin-bottom:4px;font-size:10px;color:var(--text);cursor:default;line-height:1.3}
-.cal-card-fac{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cal-card-meta{font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:2px}
-.toggle{position:relative;width:34px;height:18px;display:inline-block;cursor:pointer}
-.toggle input{opacity:0;width:0;height:0}
-.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:9px;transition:.2s}
-.toggle-slider:before{content:'';position:absolute;height:14px;width:14px;left:2px;bottom:2px;background:var(--text3);border-radius:50%;transition:.2s}
-.toggle input:checked+.toggle-slider{background:var(--good)}
-.toggle input:checked+.toggle-slider:before{transform:translateX(16px);background:#fff}
-/* Routing matrix */
-.matrix-tbl{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:8px}
-.matrix-tbl th{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text3);background:var(--surface2);padding:6px 8px;text-align:center;border-bottom:1px solid var(--border)}
-.matrix-tbl th:first-child{text-align:left}
-.matrix-tbl td{font-size:11px;color:var(--text2);padding:6px 8px;border-bottom:1px solid var(--border);text-align:center}
-.matrix-tbl td:first-child{text-align:left;font-family:var(--mono);font-size:9px}
-.matrix-tbl tr:last-child td{border-bottom:none}
-.matrix-tbl input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:var(--accent)}
-/* Sub-tab toggle */
-.subtab-bar{display:flex;gap:0;margin-bottom:14px;border-bottom:1px solid var(--border)}
-.subtab{padding:6px 14px;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent}
-.subtab:hover{color:var(--text2)}
-.subtab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
-@media print{
-  body *{visibility:hidden}
-  #printArea,#printArea *{visibility:visible}
-  #printArea{position:absolute;left:0;top:0;width:100%;background:#fff;color:#000;padding:20px}
-  #printArea .print-section{break-inside:avoid;margin-bottom:12px}
-  #printArea table{width:100%;border-collapse:collapse}
-  #printArea th,#printArea td{border:1px solid #ccc;padding:6px 8px;text-align:left;font-size:11px}
-  #printArea h2{font-size:16px;margin-bottom:8px}
-  #printArea h3{font-size:13px;margin:8px 0 4px}
-  #printArea .print-checkbox{display:inline-block;width:12px;height:12px;border:1px solid #666;margin-right:6px;vertical-align:middle}
-  #printArea .print-sig{border-top:1px solid #000;width:250px;margin-top:40px;padding-top:4px;font-size:11px}
-  #printArea .page-break{page-break-before:always}
-  #printArea .cover-page{page-break-after:always}
-  #printArea .barcode-lg svg{max-width:300px;height:60px}
-  #printArea .barcode-sm svg{max-width:150px;height:30px}
-  #printArea .bubble{font-size:14px;letter-spacing:4px}
-}
-@media(max-width:900px){
-  .tabs{padding:0 12px;overflow-x:auto}.tab{padding:0 12px;font-size:10px}
-  .panel{padding:20px 16px 40px}
-  .g2,.g3,.g4,.g6{grid-template-columns:1fr}
-  .stat-row{flex-wrap:wrap}
-  .hdr-top{padding:0 16px}.hdr-prepared{display:none}
-  .cal-grid{grid-template-columns:repeat(3,1fr)}
-  .filter-bar{flex-direction:column}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--bg);}
+body{font-family:var(--sans);color:var(--text2);display:flex;flex-direction:column;min-height:100vh;}
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:0 18px;height:48px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:100;}
+.hdr-brand{display:flex;align-items:center;gap:10px;}
+.hdr-logo{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.02em;}
+.hdr-logo span{color:var(--accent);font-weight:700;}
+.hdr-divider{width:1px;height:16px;background:var(--border);}
+.hdr-prepared{font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.02em;}
+#inspector-badge{font-family:var(--mono);font-size:11px;color:var(--text-dim);letter-spacing:.3px;text-align:right;}
+.main{flex:1;overflow-y:auto;padding:14px;max-width:640px;margin:0 auto;width:100%;}
+.main.wide{max-width:1200px;}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px;}
+.panel-hdr{padding:12px 14px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.panel-title{font-family:var(--cond);font-size:16px;font-weight:700;color:var(--text-bright);}
+.panel-sub{font-size:13px;color:var(--text-dim);margin-top:3px;}
+.panel-body{padding:14px;}
+.sec-label{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px;margin-top:4px;}
+.btn{padding:13px 18px;border:none;border-radius:6px;font-family:var(--cond);font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:all .15s;min-height:48px;width:100%;text-align:center;}
+.btn-accent{background:var(--accent);color:#fff;}
+.btn-accent:hover{opacity:.9;}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text3);}
+.btn-ghost:hover{border-color:var(--accent);color:var(--text2);}
+.btn:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.5);}
+.btn-sm{padding:10px 14px;font-size:13px;border-radius:6px;min-height:48px;width:auto;}
+.ff{margin-bottom:12px;}
+.ff label{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;}
+.ff input,.ff select,.ff textarea{width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:15px;color:var(--text);-webkit-appearance:none;min-height:48px;}
+.ff input:focus,.ff select:focus,.ff textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
+.ff input[type="password"]{letter-spacing:2px;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:12px 20px;border-radius:6px;font-family:var(--mono);font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center;}
+.toast.ok{background:var(--good-bg);color:var(--good);border:1px solid var(--good-b);}
+.toast.err{background:var(--red-bg);color:var(--red);border:1px solid var(--red-b);}
+.toast.show{opacity:1;}
+.screen{display:none;}
+.screen.active{display:block;}
+
+/* Assignments */
+.assign-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s;min-height:48px;}
+.assign-card:hover{border-color:var(--accent);}
+.assign-fac{font-family:var(--cond);font-size:18px;font-weight:700;color:var(--text-bright);}
+.assign-addr{font-size:13px;color:var(--text-dim);margin-top:4px;}
+.assign-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-family:var(--mono);font-size:12px;}
+.assign-due{font-weight:700;}
+.assign-due.overdue{color:var(--red);}
+.assign-due.today{color:var(--warn);}
+.assign-due.upcoming{color:var(--good);}
+.assign-count{color:var(--text-dim);}
+
+/* Survey layout */
+.survey-wrap{display:block;}
+.survey-rail{display:none;}
+.survey-pane{flex:1;min-width:0;}
+.module-block{margin-bottom:24px;}
+.module-banner{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px;margin-bottom:14px;}
+.module-banner-title{font-family:var(--cond);font-size:17px;font-weight:700;color:var(--text-bright);}
+.module-banner-meta{font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-top:3px;}
+.module-notes{font-size:13px;color:var(--text-dim);background:var(--surface2);border-left:3px solid var(--accent);padding:10px 12px;margin-bottom:14px;border-radius:3px;line-height:1.55;}
+.module-notes>div{margin-bottom:4px;}
+.module-notes>div:last-child{margin-bottom:0;}
+.sec-header{padding:8px 0 8px;border-bottom:2px solid var(--accent);margin:18px 0 10px;font-family:var(--cond);font-size:15px;font-weight:700;color:var(--text-bright);letter-spacing:.5px;}
+.cl-item{padding:14px 0;border-bottom:1px solid rgba(55,62,71,.5);}
+.cl-item:last-child{border-bottom:none;}
+.cl-item-text{font-size:14px;color:var(--text);margin-bottom:12px;line-height:1.5;}
+.cl-answers{display:flex;gap:8px;}
+.cl-answer{flex:1;padding:14px 8px;border-radius:6px;font-family:var(--cond);font-size:15px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);text-align:center;min-height:48px;letter-spacing:.5px;}
+.cl-answer.sel-yes{background:var(--good-bg);border-color:var(--good-b);color:var(--good);}
+.cl-answer.sel-no{background:var(--red-bg);border-color:var(--red-b);color:var(--red);}
+.cl-answer.sel-na{background:var(--warn-bg);border-color:var(--warn-b);color:var(--warn);}
+.cl-detail{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.cl-detail.open{max-height:900px;}
+.cl-detail-inner{padding:12px 0 4px;}
+
+.submit-bar{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--border);padding:12px 14px;margin:20px -14px -14px;display:flex;gap:12px;align-items:center;z-index:10;}
+.submit-bar .submit-info{flex:1;font-family:var(--mono);font-size:12px;color:var(--text-dim);line-height:1.4;}
+.submit-bar button{flex-shrink:0;width:auto;min-width:180px;}
+
+.jump-bar{margin-bottom:14px;}
+
+@media (min-width:768px){
+  .survey-wrap{display:flex;gap:16px;align-items:flex-start;}
+  .survey-rail{display:block;width:260px;flex-shrink:0;position:sticky;top:62px;max-height:calc(100vh - 80px);overflow-y:auto;padding:4px;}
+  .rail-module{padding:11px 12px;border:1px solid var(--border);border-radius:6px;margin-bottom:8px;cursor:pointer;background:var(--surface);}
+  .rail-module.active{border-color:var(--accent);background:var(--accent-l);}
+  .rail-module-title{font-family:var(--cond);font-size:14px;font-weight:700;color:var(--text-bright);}
+  .rail-module-meta{font-family:var(--mono);font-size:11px;color:var(--text-dim);margin-top:3px;display:flex;justify-content:space-between;align-items:center;}
+  .rail-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+  .rail-dot.red{background:var(--red);}
+  .rail-dot.yellow{background:var(--warn);}
+  .rail-dot.green{background:var(--good);}
+  .rail-sections{margin-top:8px;padding-left:10px;border-left:1px solid var(--border2);display:none;}
+  .rail-module.active .rail-sections{display:block;}
+  .rail-section{font-size:12px;color:var(--text-dim);padding:5px 0;cursor:pointer;}
+  .rail-section:hover{color:var(--accent);}
+  .module-block.hidden{display:none;}
+  .module-banner{display:none;}
+  .jump-bar{display:none;}
+  .submit-bar{margin-left:-14px;margin-right:-14px;}
 }
 </style>
 </head>
 <body>
+
 <div class="hdr">
-  <div class="hdr-top">
-    <div class="hdr-brand">
-      <div class="hdr-logo">Amusement <span>Standards</span></div>
-      <div class="hdr-divider"></div>
-      <div class="hdr-prepared">Loss Control Workspace · Prepared for McGowan Allied Specialty Insurance</div>
-    </div>
-    <div class="hdr-meta">
-      <span id="sync-indicator" style="font-family:var(--mono);font-size:9px"></span>
-      <span>Lead Assessor: Adam Brousell</span>
+  <div class="hdr-brand">
+    <div class="hdr-logo">Amusement <span>Standards</span></div>
+    <div class="hdr-divider"></div>
+    <div class="hdr-prepared">Inspector Portal</div>
+  </div>
+  <div id="inspector-badge"></div>
+</div>
+
+<div class="main" id="main">
+  <div class="screen active" id="screen-login">
+    <div class="panel">
+      <div class="panel-hdr"><div>
+        <div class="panel-title">Inspector Login</div>
+        <div class="panel-sub">Sign in to view assigned inspections</div>
+      </div></div>
+      <div class="panel-body">
+        <div class="ff"><label>Email</label><input type="email" id="login-email" placeholder="you@company.com" autocomplete="email"></div>
+        <div class="ff"><label>Password</label><input type="password" id="login-password" autocomplete="current-password"></div>
+        <button class="btn btn-accent" id="login-btn" onclick="doLogin()">Log In &rarr;</button>
+        <div id="login-error" style="font-family:var(--mono);font-size:12px;color:var(--red);margin-top:12px;min-height:16px;text-align:center;"></div>
+        <div id="login-retry" style="display:none;margin-top:10px;"><button class="btn btn-ghost" onclick="doLogin()">Retry</button></div>
+      </div>
     </div>
   </div>
-  <div class="tabs" id="tabs">
-    <div class="tab active" onclick="showView('inspections')">Inspections</div>
-    <div class="tab" onclick="showView('facilities')">Facilities</div>
-    <div class="tab" onclick="showView('facility-builder')">Facility Builder</div>
-    <div class="tab" onclick="showView('checklists')">Checklists</div>
-    <div class="tab" onclick="showView('inspectors')">Inspectors</div>
-    <div class="tab" onclick="showView('schedule')">Schedule</div>
-    <div class="tab" onclick="showView('reports')">Reports</div>
-    <div class="tab" onclick="showView('mailback')">Mail-Back</div>
+
+  <div class="screen" id="screen-assignments">
+    <div class="sec-label">// Your Assigned Inspections</div>
+    <div id="assignments-list"></div>
+  </div>
+
+  <div class="screen" id="screen-survey">
+    <div id="survey-container"></div>
+  </div>
+
+  <div class="screen" id="screen-confirm">
+    <div class="panel" style="text-align:center;">
+      <div class="panel-body" style="padding:32px 16px;">
+        <div style="font-size:48px;margin-bottom:12px;">&#x2705;</div>
+        <div class="panel-title" style="margin-bottom:6px;">Inspection Submitted</div>
+        <div class="panel-sub" id="confirm-summary"></div>
+        <div style="margin-top:20px;">
+          <button class="btn btn-ghost" onclick="backToAssignments()">Back to Assignments</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="panels">
-
-  <!-- INSPECTIONS -->
-  <div class="panel active" id="view-inspections" style="display:block;">
-    <div class="ey">Field Operations</div>
-    <div class="ttl">Inspections</div>
-    <div class="body">Active and completed field inspections. Use filters to narrow by status, inspector, or checklist type.</div>
-    <div id="inspections-stats" class="stat-row"></div>
-    <div class="filter-bar" id="inspections-filter-bar">
-      <select id="filter-status" onchange="renderInspections()">
-        <option value="">All Statuses</option>
-        <option value="SCHEDULED">Scheduled</option>
-        <option value="ASSIGNED">Assigned</option>
-        <option value="MAIL OUT">Mail Out</option>
-        <option value="IN FIELD">In Field</option>
-        <option value="SUBMITTED">Submitted</option>
-        <option value="UNDER REVIEW">Under Review</option>
-        <option value="DELIVERED">Delivered</option>
-        <option value="AWAITING REMEDIATION">Awaiting Remediation</option>
-        <option value="CLOSED">Closed</option>
-        <option value="OVERDUE">Overdue</option>
-      </select>
-      <select id="filter-inspector" onchange="renderInspections()"></select>
-      <select id="filter-form" onchange="renderInspections()"></select>
-    </div>
-    <table class="tbl" id="inspections-tbl">
-      <thead><tr><th>Inspection ID</th><th>Facility</th><th>Inspector</th><th>Date</th><th>Checklist</th><th>Status</th><th></th></tr></thead>
-      <tbody id="inspectionTable"></tbody>
-    </table>
-    <div class="note" style="margin-top:16px">
-      <div class="note-hd">Inspection ID Format</div>
-      <div class="note-body">INS-YYYY-NNNN — auto-generated on dispatch. Each inspection maps to one or more checklist modules, one facility, one inspector.</div>
-    </div>
-  </div>
-
-  <!-- FACILITIES -->
-  <div class="panel" id="view-facilities" style="display:none;">
-    <div id="facilities-list-view">
-      <div class="ey">Account Overview</div>
-      <div class="ttl">Facilities</div>
-      <div class="body">Insured facilities in the MASI loss control book. Click a row to view account detail.</div>
-      <div class="note-warn" style="margin-bottom:16px">
-        <div class="note-hd">PILOT DATA</div>
-        <div class="note-body">Facility records are pre-populated for pilot scoping. Live data connects once Inspector_Assignments are linked to facility records.</div>
-      </div>
-      <table class="tbl" id="facilitiesTable"></table>
-    </div>
-    <div id="facility-detail-view" style="display:none">
-      <div id="facility-detail-content"></div>
-    </div>
-  </div>
-
-  <!-- FACILITY BUILDER -->
-  <div class="panel" id="view-facility-builder" style="display:none;">
-    <div class="ey">Intake</div>
-    <div class="ttl">Facility Builder</div>
-    <div class="body">Upload a facility document (SOV worksheet, intake form, or attraction list) to auto-build a Facility Profile. Each attraction is matched to active checklist modules for inspection dispatch.</div>
-    <div id="fb-dropzone" style="border:2px dashed var(--border);border-radius:6px;padding:36px 16px;text-align:center;cursor:pointer;transition:all .15s;background:var(--surface);min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:14px" onclick="document.getElementById('fb-file-input').click()">
-      <div style="font-family:var(--mono);font-size:24px;margin-bottom:8px;color:var(--text3);line-height:1">+</div>
-      <div style="font-size:14px;color:var(--text);font-weight:600">Drop facility document here</div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px">.xlsx, .docx, .pdf, .txt accepted</div>
-      <input type="file" id="fb-file-input" accept=".xlsx,.docx,.pdf,.txt" style="display:none" onchange="fbFileSelected(this)">
-    </div>
-    <div id="fb-status" style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:8px;min-height:0;text-align:center"></div>
-    <!-- Editor (shown after parse) -->
-    <div id="fb-editor" style="display:none;margin-top:14px">
-      <div class="card" style="border-top:3px solid var(--accent)">
-        <div class="card-label">Facility Profile Editor</div>
-        <div style="display:flex;gap:10px;margin-bottom:10px">
-          <div style="flex:1"><label style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:4px">Facility Name</label><input type="text" id="fb-facility-name" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:13px;color:var(--text);outline:none" placeholder="e.g. Thunder Road FEC"></div>
-          <div style="flex:1"><label style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:4px">Location</label><input type="text" id="fb-facility-location" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:13px;color:var(--text);outline:none" placeholder="e.g. Tampa, FL"></div>
-        </div>
-        <table class="tbl" id="fb-attractions-tbl">
-          <thead><tr><th>Attraction</th><th>Manufacturer</th><th>Type</th><th>Matched Modules</th><th></th></tr></thead>
-          <tbody id="fb-attractions-tbody"></tbody>
-        </table>
-        <div style="display:flex;gap:8px;margin-top:12px">
-          <button class="btn-primary" onclick="fbSaveCurrentProfile()">Save Facility Profile</button>
-          <button class="btn-secondary" onclick="fbClearEditor()">Discard</button>
-        </div>
-      </div>
-    </div>
-    <!-- Saved Profiles -->
-    <div style="margin-top:20px">
-      <div class="ey">Saved Profiles</div>
-      <table class="tbl" id="fb-profiles-tbl">
-        <thead><tr><th>Facility</th><th>Location</th><th>Attractions</th><th>Source File</th><th>Created</th><th></th></tr></thead>
-        <tbody id="fb-profiles-tbody"></tbody>
-      </table>
-      <div id="fb-empty" class="empty-state" style="display:none">
-        <span class="empty-state-icon">---</span>
-        <div class="empty-state-title">No Facility Profiles</div>
-        <div class="empty-state-body">Upload a facility document above to create your first profile.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CHECKLISTS -->
-  <div class="panel" id="view-checklists" style="display:none;">
-    <div class="ey">Checklist Management</div>
-    <div class="ttl">Checklists</div>
-    <div class="body">Upload and version inspection checklists. Active versions are deployed to the Inspector Portal for field use.</div>
-    <div id="cl-dropzone" style="border:2px dashed var(--border);border-radius:6px;padding:36px 16px;text-align:center;cursor:pointer;transition:all .15s;background:var(--surface);min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:14px" onclick="document.getElementById('cl-file-input').click()">
-      <div style="font-family:var(--mono);font-size:24px;margin-bottom:8px;color:var(--text3);line-height:1">+</div>
-      <div style="font-size:14px;color:var(--text);font-weight:600">Drop inspection document here</div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px">.doc, .docx, .pdf, .txt accepted</div>
-      <input type="file" id="cl-file-input" accept=".doc,.docx,.pdf,.txt" style="display:none" onchange="clFileSelected(this)">
-    </div>
-    <div id="cl-file-info" style="display:none;margin-top:10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 14px">
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:8px">
-          <span id="cl-file-name" style="font-size:13px;font-weight:600;color:var(--text)"></span>
-          <span id="cl-file-size" style="font-family:var(--mono);font-size:9px;color:var(--text3)"></span>
-        </div>
-        <div style="font-family:var(--mono);font-size:9px;color:var(--accent)" id="cl-parse-status">Ready to parse</div>
-      </div>
-    </div>
-    <div id="cl-upload-status" style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:8px;min-height:0;text-align:center"></div>
-    <div id="cl-preview-panel" style="display:none;margin-top:12px;background:var(--surface);border:1px solid var(--accent-b);border-radius:6px;overflow:hidden">
-      <div style="padding:12px 14px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
-        <div style="font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;color:var(--accent);text-transform:uppercase">Parse Preview</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <span id="cl-preview-items" style="font-family:var(--mono);font-size:9px;color:var(--text3)"></span>
-          <span id="cl-preview-version" class="badge badge-accent"></span>
-        </div>
-      </div>
-      <div style="padding:14px">
-        <div style="margin-bottom:10px">
-          <label style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:5px">Attraction Type</label>
-          <select id="cl-type-select" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:13px;color:var(--text);outline:none;cursor:pointer">
-            <option value="">Select attraction type...</option>
-            <option value="Go-Karts">Go-Karts</option>
-            <option value="Carousel">Carousel</option>
-            <option value="Amusement Device">Amusement Device</option>
-            <option value="Aquatic">Aquatic</option>
-            <option value="FEC">FEC</option>
-            <option value="Grounds/Premise">Grounds / Premise</option>
-          </select>
-        </div>
-        <div id="cl-preview-sections" style="margin-top:10px;max-height:300px;overflow-y:auto"></div>
-        <div id="cl-preview-sig" style="display:none;margin-top:8px;padding:8px 10px;background:var(--surface2);border-radius:4px;font-family:var(--mono);font-size:9px;color:var(--text3)"></div>
-        <div style="display:flex;gap:8px;margin-top:14px">
-          <button id="cl-confirm-btn" class="btn-primary" onclick="clConfirmSave()" style="flex:1">Confirm &amp; Save</button>
-          <button class="btn-secondary" onclick="clDiscardPreview()" style="flex:1">Discard</button>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top:16px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div class="ey" style="margin-bottom:0">Uploaded Versions</div>
-        <div id="cl-version-count" style="font-family:var(--mono);font-size:9px;color:var(--text3)">0 checklists</div>
-      </div>
-      <table class="tbl" id="cl-version-table">
-        <thead><tr><th>Attraction Type</th><th>Version</th><th>Uploaded By</th><th>Upload Date</th><th>Items</th><th>Active</th><th></th></tr></thead>
-        <tbody id="cl-version-tbody"></tbody>
-      </table>
-      <div id="cl-empty-state" class="empty-state" style="display:none">
-        <span class="empty-state-icon">---</span>
-        <div class="empty-state-title">No Checklists Uploaded</div>
-        <div class="empty-state-body">Upload a .docx checklist document above to create your first versioned template.</div>
-      </div>
-    </div>
-    <div class="note" style="margin-top:16px">
-      <div class="note-hd">Version Control</div>
-      <div class="note-body">Only one version per attraction type can be active at a time. Toggling a new version active automatically deactivates the prior version. Active checklists are deployed to the Inspector Portal.</div>
-    </div>
-  </div>
-
-  <!-- INSPECTORS -->
-  <div class="panel" id="view-inspectors" style="display:none;">
-    <div class="ey">Field Team</div>
-    <div class="ttl">Inspectors</div>
-    <div class="body">Rostered inspectors and vendors authorized to conduct field inspections.</div>
-    <div class="subtab-bar" id="insp-subtabs">
-      <div class="subtab active" onclick="switchInspSubtab('inspectors')">Inspectors</div>
-      <div class="subtab" onclick="switchInspSubtab('vendors')">Vendors</div>
-    </div>
-    <div id="insp-subtab-inspectors">
-      <div style="margin-bottom:12px"><button class="btn-primary" onclick="openModal('modal-add-inspector')">Add Inspector</button></div>
-      <table class="tbl" id="inspectors-tbl">
-        <thead><tr><th>Name</th><th>Territory</th><th>Certifications</th><th>Credential Expiry</th><th>Vendor</th><th>Portal Access</th><th>Delivery Mode</th><th>Active Inspections</th><th>Status</th><th></th></tr></thead>
-        <tbody id="inspectorTable"></tbody>
-      </table>
-    </div>
-    <div id="insp-subtab-vendors" style="display:none">
-      <table class="tbl" id="vendors-tbl">
-        <thead><tr><th>Vendor</th><th>Primary Contact</th><th>Email</th><th>Phone</th><th>Inspectors</th><th>Active Inspections</th></tr></thead>
-        <tbody id="vendorTable"></tbody>
-      </table>
-    </div>
-    <div class="note" style="margin-top:16px">
-      <div class="note-hd">Credentialing</div>
-      <div class="note-body">All inspectors carry current NAARSO, AIMS, or equivalent certification. Credential verification is on file and available to MASI loss control on request.</div>
-    </div>
-  </div>
-
-  <!-- SCHEDULE -->
-  <div class="panel" id="view-schedule" style="display:none;">
-    <div class="ey">Planning</div>
-    <div class="ttl">Schedule</div>
-    <div class="body">Weekly inspection calendar. Cards are generated from the inspections data.</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-sm-action" onclick="schedWeekNav(-1)">&larr; Previous</button>
-        <span id="sched-week-label" style="font-family:var(--mono);font-size:11px;color:var(--text);font-weight:600"></span>
-        <button class="btn-sm-action" onclick="schedWeekNav(1)">Next &rarr;</button>
-      </div>
-      <button class="btn-primary" onclick="openModal('modal-new-inspection')">New Inspection</button>
-    </div>
-    <div id="sched-calendar"></div>
-    <div class="note" style="margin-top:16px">
-      <div class="note-hd">Scheduling</div>
-      <div class="note-body">Inspections are prioritized by policy renewal date and days since last inspection. The system suggests dispatch order; the team confirms or overrides.</div>
-    </div>
-  </div>
-
-  <!-- REPORTS -->
-  <div class="panel" id="view-reports" style="display:none;">
-    <div class="ey">Output</div>
-    <div class="ttl">Reports &amp; Notifications</div>
-    <div class="body">Inspection reports, email routing matrix, and corrective action tracking.</div>
-    <div class="g2" style="margin-top:16px;margin-bottom:20px">
-      <div class="card" style="border-top:3px solid var(--accent)">
-        <div class="card-label">Email Routing Matrix</div>
-        <div class="card-title">Status &rarr; Recipient</div>
-        <div class="card-body" style="margin-bottom:8px">Check which recipients get notified on each status transition.</div>
-        <div id="routing-matrix-container" style="overflow-x:auto"></div>
-      </div>
-      <div class="card" style="border-top:3px solid var(--accent)">
-        <div class="card-label">Severity Codes</div>
-        <div class="card-title">Finding Classification</div>
-        <div class="card-body" style="margin-bottom:10px">Standard severity codes used across all inspections.</div>
-        <div style="display:flex;flex-direction:column;gap:4px">
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-red">SEV 1</span><span style="font-size:11px;color:var(--text)">Locked out, cannot be used</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-red">SEV 2</span><span style="font-size:11px;color:var(--text)">Carrier notification required</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-warn">SEV 3</span><span style="font-size:11px;color:var(--text)">Correct within 30 days before next setup or use</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-accent">SEV 4</span><span style="font-size:11px;color:var(--text)">Correct within agreed timeframe</span></div>
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-good">SEV 5</span><span style="font-size:11px;color:var(--text)">Recommendation only</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="ey">Recent Reports</div>
-    <table class="tbl" style="margin-top:8px">
-      <thead><tr><th>Report ID</th><th>Facility</th><th>Type</th><th>Generated</th><th>Status</th><th></th></tr></thead>
-      <tbody id="reportTable"></tbody>
-    </table>
-    <div class="section-divider"></div>
-    <div class="ey">Corrective Action Requests</div>
-    <table class="tbl" style="margin-top:8px">
-      <thead><tr><th>CAR ID</th><th>Facility</th><th>Ride/Attraction</th><th>Finding</th><th>Severity</th><th>Assigned To</th><th>Due Date</th><th>Status</th><th></th></tr></thead>
-      <tbody id="carTable"></tbody>
-    </table>
-    <div class="note" style="margin-top:16px">
-      <div class="note-hd">Report Format</div>
-      <div class="note-body">Completed inspections auto-generate a report with photo documentation, finding classifications, and a summary cover page. Reports are stored in the workspace and emailed to configured recipients.</div>
-    </div>
-  </div>
-
-  <!-- MAIL-BACK -->
-  <div class="panel" id="view-mailback" style="display:none;">
-    <div class="ey">Paper Operations</div>
-    <div class="ttl">Mail-Back</div>
-    <div class="body">Generate printable mail-back packets for paper-based inspections. Barcoded cover sheets enable scan-back reassembly.</div>
-    <div class="subtab-bar" id="mb-subtabs">
-      <div class="subtab active" onclick="switchMbSubtab('outbound')">Outbound</div>
-      <div class="subtab" onclick="switchMbSubtab('inbound')">Inbound</div>
-    </div>
-    <div id="mb-subtab-outbound">
-      <div class="ey">Outbound Packets</div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:12px">Inspections available for mail-back packet generation.</div>
-      <table class="tbl">
-        <thead><tr><th>ID</th><th>Facility</th><th>Inspector</th><th>Date</th><th>Modules</th><th></th></tr></thead>
-        <tbody id="mb-outbound-tbody"></tbody>
-      </table>
-    </div>
-    <div id="mb-subtab-inbound" style="display:none">
-      <div class="ey">Scan-Back Receiver (Stub)</div>
-      <div class="note-warn" style="margin-bottom:14px">
-        <div class="note-hd">POST-PILOT</div>
-        <div class="note-body">OCR pipeline is post-pilot. This receiver validates barcoded cover sheets and matches to existing inspection records. Field extraction will be wired in production.</div>
-      </div>
-      <div class="modal-field"><label>Scanned Data</label><textarea id="mb-scan-input" rows="6" placeholder="Paste decoded barcode line + scanned text here. First line must be: INS-ID|page|checksum" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:12px;color:var(--text);outline:none;resize:vertical"></textarea></div>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:4px;line-height:1.6">Line 1: INS-ID|page|checksum<br>To add field-discovered attractions, add lines in this format:<br><span style="color:var(--warn)">DISCOVERY: name | manufacturer | type | yes/no | severity | findings</span><br>Example: DISCOVERY: Zamperla Kiddie Coaster | Zamperla | Amusement Device | no | | </div>
-      <button class="btn-primary" onclick="mbValidateScan()" style="margin-top:8px">Validate &amp; Match</button>
-      <div id="mb-scan-error" style="font-family:var(--mono);font-size:10px;color:var(--red);margin-top:8px;min-height:0"></div>
-      <div id="mb-scan-result" style="display:none;margin-top:12px"></div>
-    </div>
-  </div>
-
-</div>
-
-<!-- MODALS -->
-<div class="modal-overlay" id="modal-assign-inspector"><div class="modal">
-  <div class="modal-title">Assign Inspector</div>
-  <div class="modal-field"><label>Inspection</label><input type="text" id="assign-ins-id" readonly></div>
-  <div class="modal-field"><label>Inspector</label><select id="assign-ins-inspector"></select></div>
-  <div class="modal-actions"><button class="btn-primary" onclick="confirmAssignInspector()">Confirm</button><button class="btn-secondary" onclick="closeModal('modal-assign-inspector')">Cancel</button></div>
-</div></div>
-
-<div class="modal-overlay" id="modal-add-inspector"><div class="modal">
-  <div class="modal-title">Add Inspector</div>
-  <div class="modal-field"><label>Full Name</label><input type="text" id="add-insp-name" placeholder="e.g. J. Smith"></div>
-  <div class="modal-field"><label>Territory</label><input type="text" id="add-insp-territory" placeholder="e.g. FL, TX"></div>
-  <div class="modal-field"><label>Certifications</label><input type="text" id="add-insp-certs" placeholder="e.g. NAARSO Level I"></div>
-  <div class="modal-field"><label>Credential Expiry</label><input type="date" id="add-insp-expiry"></div>
-  <div class="modal-field"><label>Email</label><input type="email" id="add-insp-email" placeholder="inspector@company.com"></div>
-  <div class="modal-field"><label>Vendor</label><select id="add-insp-vendor"></select></div>
-  <div class="modal-actions"><button class="btn-primary" onclick="confirmAddInspector()">Add Inspector</button><button class="btn-secondary" onclick="closeModal('modal-add-inspector')">Cancel</button></div>
-</div></div>
-
-<div class="modal-overlay" id="modal-assign-to-inspection"><div class="modal">
-  <div class="modal-title">Assign to Inspection</div>
-  <div class="modal-field"><label>Inspector</label><input type="text" id="assign-to-insp-name" readonly></div>
-  <div class="modal-field"><label>Inspection (Scheduled Only)</label><select id="assign-to-insp-select"></select></div>
-  <div class="modal-actions"><button class="btn-primary" onclick="confirmAssignToInspection()">Confirm</button><button class="btn-secondary" onclick="closeModal('modal-assign-to-inspection')">Cancel</button></div>
-</div></div>
-
-<div class="modal-overlay" id="modal-new-inspection"><div class="modal">
-  <div class="modal-title">New Inspection</div>
-  <div class="modal-field"><label>Facility Name</label><input type="text" id="new-insp-facility" placeholder="Facility name"></div>
-  <div class="modal-field"><label>Facility Profile (optional)</label><select id="new-insp-profile" onchange="prefillModulesFromProfile()"><option value="">— None / Manual —</option></select></div>
-  <div class="modal-field"><label>Checklist Modules (select one or more)</label><select id="new-insp-modules" multiple style="min-height:100px"></select></div>
-  <div class="modal-field"><label>Inspector</label><select id="new-insp-inspector"></select></div>
-  <div class="modal-field"><label>Date</label><input type="date" id="new-insp-date"></div>
-  <div id="new-insp-checklist-info" style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:8px"></div>
-  <div class="modal-actions"><button class="btn-primary" onclick="confirmNewInspection()">Create Inspection</button><button class="btn-secondary" onclick="closeModal('modal-new-inspection')">Cancel</button></div>
-</div></div>
-
-<div class="modal-overlay" id="modal-add-item"><div class="modal">
-  <div class="modal-title">Add Item (Ad-Hoc)</div>
-  <input type="hidden" id="add-item-insp-id">
-  <div class="modal-field"><label>Section</label><select id="add-item-section"></select></div>
-  <div class="modal-field"><label>Item Text</label><input type="text" id="add-item-text" placeholder="Describe finding..."></div>
-  <div class="modal-field"><label>Disposition</label><select id="add-item-disposition"><option value="FAIL">Fail</option><option value="PASS">Pass</option><option value="N/A">N/A</option></select></div>
-  <div class="modal-field" id="add-item-severity-field"><label>Severity (if Fail)</label><select id="add-item-severity"><option value="1">1 — Locked out</option><option value="2">2 — Carrier notification</option><option value="3">3 — Correct within 30 days</option><option value="4">4 — Agreed timeframe</option><option value="5">5 — Recommendation</option></select></div>
-  <div class="modal-field" id="add-item-explanation-field"><label>Explanation <span style="color:var(--red)">*</span></label><textarea id="add-item-explanation" placeholder="Required for FAIL items..."></textarea></div>
-  <div class="modal-actions"><button class="btn-primary" onclick="confirmAddItem()">Add Item</button><button class="btn-secondary" onclick="closeModal('modal-add-item')">Cancel</button></div>
-</div></div>
-
-<div class="modal-overlay" id="modal-add-form"><div class="modal">
-  <div class="modal-title">Add Form to Inspection</div>
-  <input type="hidden" id="add-form-insp-id">
-  <div class="modal-field"><label>Available Checklist Modules</label><select id="add-form-module"></select></div>
-  <div class="modal-actions"><button class="btn-primary" onclick="confirmAddForm()">Add Module</button><button class="btn-secondary" onclick="closeModal('modal-add-form')">Cancel</button></div>
-</div></div>
-
-<div class="modal-overlay" id="modal-report-detail"><div class="modal" style="max-width:600px">
-  <div class="modal-title" id="report-detail-title"></div>
-  <div id="report-detail-body"></div>
-  <div class="modal-actions"><button class="btn-primary" onclick="printReport()">Print Report</button><button class="btn-secondary" onclick="closeModal('modal-report-detail')">Close</button></div>
-</div></div>
-
-<div class="modal-overlay" id="modal-close-car"><div class="modal">
-  <div class="modal-title" id="close-car-modal-title">Close CAR</div>
-  <div class="modal-field"><label>CAR ID</label><input type="text" id="close-car-id" readonly></div>
-  <div class="modal-field" id="close-car-reviewer-field" style="display:none"><label>Reviewer Name</label><input type="text" id="close-car-reviewer" placeholder="Your name"></div>
-  <div class="modal-field"><label>Resolution / Review Notes</label><textarea id="close-car-notes" placeholder="Describe the corrective action taken..."></textarea></div>
-  <div class="modal-actions"><button class="btn-primary" id="close-car-submit-btn" onclick="confirmCloseCar()">Close CAR</button><button class="btn-secondary" onclick="closeModal('modal-close-car')">Cancel</button></div>
-</div></div>
-
-<div class="modal-overlay" id="modal-submit-remediation"><div class="modal">
-  <div class="modal-title">Submit Remediation</div>
-  <div class="modal-field"><label>CAR ID</label><input type="text" id="remediation-car-id" readonly></div>
-  <div class="modal-field"><label>Remediation Notes</label><textarea id="remediation-notes" placeholder="Describe corrective action taken..."></textarea></div>
-  <div class="modal-field"><label>Photo Filename (if applicable)</label><input type="text" id="remediation-photo" placeholder="e.g. fix_photo_001.jpg"></div>
-  <div class="modal-actions"><button class="btn-primary" onclick="confirmSubmitRemediation()">Submit</button><button class="btn-secondary" onclick="closeModal('modal-submit-remediation')">Cancel</button></div>
-</div></div>
-
-<div id="printArea" style="display:none"></div>
+<div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════
-//  DATA LAYER
-// ═══════════════════════════════════════
-var LS={get:function(k,d){try{return JSON.parse(localStorage.getItem(k))||d;}catch(e){return d;}},set:function(k,v){localStorage.setItem(k,JSON.stringify(v));}};
+var CONFIG = {
+  WORKER_URL: 'https://as360-proxy.amusementstandards.workers.dev/airtable',
+  BASE_ID: 'appcqRLU10wvA2OCA',
+  TABLES: {
+    INSPECTORS: 'Inspectors',
+    INSPECTIONS: 'Inspections',
+    CHECKLIST_MODULES: 'Checklist Modules',
+    FACILITIES: 'Facilities',
+    CARS: 'CARs'
+  }
+};
 
-// ITEM 4 — Coexistence constants
-var WORKER_URL='https://as360-proxy.amusementstandards.workers.dev/airtable';
-var ASSIGNMENTS_TABLE='Inspector_Assignments';
-
-// ITEM 1 — Facility Profiles
-function fbGetProfiles(){return LS.get('as360_facility_profiles',[]);}
-function fbSaveProfiles(arr){LS.set('as360_facility_profiles',arr);}
-
-// ITEM 2 — Mail-Back inbound storage
-function mbGetInbound(){return LS.get('as360_mailback_inbound',[]);}
-function mbSaveInbound(arr){LS.set('as360_mailback_inbound',arr);}
-
-// FIX 7 — Vendors
-var SEED_VENDORS=[
-  {id:'V-001',name:'Amusement Standards',primaryContact:'Adam Brousell',email:'adam@amusementstandards.com',phone:'(732) 555-0100'},
-  {id:'V-002',name:'SafePark Inspections',primaryContact:'Maria Lopez',email:'mlopez@safepark.com',phone:'(407) 555-0234'}
+var SEVERITY_OPTIONS = [
+  {v:1, label:'Locked out / cannot be used'},
+  {v:2, label:'Carrier notification required'},
+  {v:3, label:'Correct within 30 days before next setup or use'},
+  {v:4, label:'Correct within agreed timeframe'},
+  {v:5, label:'Recommendation only'}
 ];
-function getVendors(){return LS.get('as360_vendors',SEED_VENDORS);}
 
-// FIX 1+5 — Seed inspections with items[] and expanded statuses
-var SEED_INSPECTIONS=[
-  {id:'INS-2026-0047',facility:'Thunder Road FEC',inspector:'T. Jones',date:'2026-04-14',form:'FEC',status:'SCHEDULED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]},
-  {id:'INS-2026-0046',facility:'Splash Kingdom Waterpark',inspector:'T. Jones',date:'2026-04-12',form:'Aquatic',status:'IN FIELD',vendorId:'V-001',checklistModules:[],items:[
-    {id:'i-046-1',checklistModuleId:null,sectionName:'Aquatic',itemText:'Lazy river return current exceeds PHTA flow-rate guideline',disposition:'FAIL',explanation:'Current measured at 4.2 ft/s, exceeding PHTA max of 3.5 ft/s at return inlet.',severity:3,photos:[],addedAdHoc:false},
-    {id:'i-046-2',checklistModuleId:null,sectionName:'Aquatic',itemText:'Lifeguard rotation board not posted at station 2',disposition:'FAIL',explanation:'Board was removed during maintenance and not replaced. Station unmanned during observation.',severity:4,photos:[],addedAdHoc:false}
-  ],discoveredAttractions:[{id:'disc-seed-1',name:'New Zamperla Kiddie Coaster',manufacturer:'Zamperla',type:'Amusement Device',inspectedToday:false,checklistMode:null,moduleKey:null,adhocFindings:'',adhocAnswer:null,adhocSeverity:null,addedInField:true}]},
-  {id:'INS-2026-0045',facility:'Adventure Park USA',inspector:'R. Sandoval',date:'2026-04-10',form:'Amusement Device',status:'SUBMITTED',vendorId:'V-001',checklistModules:[],items:[
-    {id:'i-045-1',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Wildcat coaster lap bar hydraulic pressure below spec on car 3',disposition:'FAIL',explanation:'Hydraulic gauge reads 1800 PSI vs required 2200 PSI minimum. Car 3 locked out pending repair.',severity:1,photos:[],addedAdHoc:false},
-    {id:'i-045-2',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Ropes course carabiner inspection tags expired (6 units)',disposition:'FAIL',explanation:'6 carabiners missing current annual inspection tags. Last tagged Oct 2024.',severity:2,photos:[],addedAdHoc:false},
-    {id:'i-045-3',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Emergency exit path obstructed behind arcade building',disposition:'FAIL',explanation:'Dumpsters and pallets blocking designated emergency egress route behind arcade.',severity:3,photos:[],addedAdHoc:false},
-    {id:'i-045-4',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Go-kart track barrier bolt shear on turn 2 outside rail',disposition:'FAIL',explanation:'3 bolts sheared on outside barrier rail at turn 2. Rail loose on impact.',severity:2,photos:[],addedAdHoc:false}
-  ],discoveredAttractions:[]},
-  {id:'INS-2026-0044',facility:'Heritage Carousel Gardens',inspector:'A. Nguyen',date:'2026-04-08',form:'Carousel',status:'DELIVERED',vendorId:'V-001',checklistModules:[],items:[
-    {id:'i-044-1',checklistModuleId:null,sectionName:'Carousel',itemText:'Chariot seat cushion minor wear',disposition:'FAIL',explanation:'Surface wear on chariot 3 seat cushion, cosmetic only, no structural concern.',severity:5,photos:[],addedAdHoc:false}
-  ],discoveredAttractions:[]},
-  {id:'INS-2026-0043',facility:'Skyzone Trampoline — Austin',inspector:'K. Williams',date:'2026-04-06',form:'FEC',status:'CLOSED',vendorId:'V-002',checklistModules:[],items:[
-    {id:'i-043-1',checklistModuleId:null,sectionName:'FEC',itemText:'Trampoline pad edge wear on court 7',disposition:'FAIL',explanation:'Edge padding worn through to foam on court 7 north side. Replacement ordered.',severity:3,photos:[],addedAdHoc:false},
-    {id:'i-043-2',checklistModuleId:null,sectionName:'FEC',itemText:'Emergency lighting test log gap — Feb missing',disposition:'FAIL',explanation:'Monthly emergency lighting test log has no entry for February 2026.',severity:4,photos:[],addedAdHoc:false}
-  ],discoveredAttractions:[]},
-  {id:'INS-2026-0042',facility:'Putt-Putt Fun Center — Orlando',inspector:'L. Davis',date:'2026-04-04',form:'Grounds/Premise',status:'CLOSED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]},
-  {id:'INS-2026-0041',facility:'Cedar Point',inspector:'T. Jones',date:'2026-04-16',form:'Amusement Device',status:'SCHEDULED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]},
-  {id:'INS-2026-0040',facility:'Six Flags Great Adventure',inspector:'R. Sandoval',date:'2026-04-18',form:'Amusement Device',status:'ASSIGNED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]}
-];
-function getInspections(){var d=LS.get('as360_inspections',null);if(!d){d=SEED_INSPECTIONS;LS.set('as360_inspections',d);}return d;}
-function saveInspections(arr){LS.set('as360_inspections',arr);}
-// FIX 1 — derived findings getter for backward compat
-function getFindings(insp){return (insp.items||[]).filter(function(i){return i.disposition==='FAIL';});}
+var state = {
+  inspector: null,
+  inspections: [],
+  facilityCache: {},
+  moduleCache: {},
+  current: null
+};
 
-// FIX 7 — Inspectors with vendorId
-var SEED_INSPECTORS=[
-  {name:'T. Jones',territory:'FL, TX, OH',certs:'NAARSO Level II · AIMS',expiry:'2027-01-15',email:'tjones@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:true,deliveryMode:'Phone'},
-  {name:'R. Sandoval',territory:'NJ, MD, PA',certs:'NAARSO Level I · ASTM F24',expiry:'2026-06-30',email:'rsandoval@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:false,deliveryMode:'Phone'},
-  {name:'A. Nguyen',territory:'CA, AZ',certs:'NAARSO Level I · CPO',expiry:'2026-11-20',email:'anguyen@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:false,deliveryMode:'Both'},
-  {name:'K. Williams',territory:'TX, LA',certs:'AIMS · AFO',expiry:'2026-08-10',email:'kwilliams@as360.com',status:'ACTIVE',vendorId:'V-002',portalAccess:false,deliveryMode:'Paper'},
-  {name:'L. Davis',territory:'FL, GA',certs:'NAARSO Level I',expiry:'2026-05-01',email:'ldavis@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:false,deliveryMode:'Paper'}
-];
-function getInspectors(){var d=LS.get('as360_inspectors',null);if(!d){d=SEED_INSPECTORS;LS.set('as360_inspectors',d);}return d;}
-function saveInspectors(arr){LS.set('as360_inspectors',arr);}
-
-// FIX 8 — CARs derived from inspections on first load
-function getCars(){
-  var d=LS.get('as360_cars',null);
-  if(!d){d=deriveSeedCars();LS.set('as360_cars',d);}
-  return d;
+// ── API HELPERS ──
+function apiUrl(table, pathExtra, qs){
+  var u = CONFIG.WORKER_URL + '/' + encodeURIComponent(table);
+  if(pathExtra) u += '/' + pathExtra;
+  u += '?base=' + CONFIG.BASE_ID;
+  if(qs) u += '&' + qs;
+  return u;
 }
-function saveCars(arr){LS.set('as360_cars',arr);}
-function deriveSeedCars(){
-  var cars=[];var all=getInspections();var carNum=40;
-  all.forEach(function(ins){
-    var fails=getFindings(ins).filter(function(it){return it.severity<=3;});
-    fails.forEach(function(f){
-      carNum++;
-      var due=new Date(ins.date+'T00:00:00');
-      if(f.severity===1)due=new Date(due);
-      else if(f.severity===2)due.setDate(due.getDate()+7);
-      else due.setDate(due.getDate()+30);
-      cars.push({id:'CAR-2026-'+String(carNum).padStart(4,'0'),facility:ins.facility,ride:f.sectionName||ins.form,finding:f.itemText,severity:f.severity,assignedTo:ins.inspector,dueDate:due.toISOString().split('T')[0],status:'OPEN',resolution:'',remediationNotes:'',remediationPhoto:'',reviewer:''});
+async function apiGet(table, pathExtra, qs){
+  var res = await fetch(apiUrl(table, pathExtra, qs), {headers:{'Content-Type':'application/json'}});
+  if(!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+async function apiPatch(table, recordId, fields){
+  var res = await fetch(apiUrl(table, recordId), {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({fields:fields})});
+  if(!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+async function apiPost(table, fields){
+  var res = await fetch(apiUrl(table), {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({fields:fields})});
+  if(!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  var el = document.getElementById('screen-' + id);
+  if(el) el.classList.add('active');
+  var main = document.getElementById('main');
+  if(id === 'survey') main.classList.add('wide'); else main.classList.remove('wide');
+  window.scrollTo(0, 0);
+}
+
+function toast(msg, type){
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast ' + (type || 'ok') + ' show';
+  setTimeout(function(){ el.classList.remove('show'); }, 3200);
+}
+
+function esc(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+// ── LOGIN ──
+async function doLogin(){
+  var email = (document.getElementById('login-email').value || '').trim();
+  var pw = (document.getElementById('login-password').value || '').trim();
+  var errEl = document.getElementById('login-error');
+  var retryEl = document.getElementById('login-retry');
+  errEl.textContent = '';
+  retryEl.style.display = 'none';
+  if(!email || !pw){ errEl.textContent = 'Enter email and password.'; return; }
+  var btn = document.getElementById('login-btn');
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  var emailLower = email.toLowerCase().replace(/'/g, "\\'");
+  var pwEsc = pw.replace(/'/g, "\\'");
+  var formula = "AND(LOWER({Email})='" + emailLower + "',{Password}='" + pwEsc + "',{Status}='Active')";
+  try {
+    var data = await apiGet(CONFIG.TABLES.INSPECTORS, null, 'filterByFormula=' + encodeURIComponent(formula));
+    document.getElementById('login-password').value = '';
+    pw = null; pwEsc = null;
+    var recs = data.records || [];
+    if(recs.length === 1){
+      var r = recs[0];
+      state.inspector = {
+        recordId: r.id,
+        name: r.fields.Name || email,
+        inspectorId: r.fields['Inspector ID'] || ''
+      };
+      document.getElementById('inspector-badge').textContent = state.inspector.name + (state.inspector.inspectorId ? ' · ' + state.inspector.inspectorId : '');
+      toast('Welcome, ' + state.inspector.name, 'ok');
+      btn.disabled = false; btn.textContent = 'Log In \u2192';
+      loadAssignments();
+    } else if(recs.length === 0){
+      errEl.textContent = 'Invalid credentials.';
+      btn.disabled = false; btn.textContent = 'Log In \u2192';
+    } else {
+      errEl.textContent = 'Account error \u2014 contact administrator.';
+      btn.disabled = false; btn.textContent = 'Log In \u2192';
+    }
+  } catch(e){
+    errEl.textContent = 'Cannot reach server. Check connection and retry.';
+    retryEl.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Log In \u2192';
+  }
+}
+
+// ── ASSIGNMENTS ──
+async function loadAssignments(){
+  showScreen('assignments');
+  var list = document.getElementById('assignments-list');
+  list.innerHTML = '<div class="panel"><div class="panel-body" style="text-align:center;color:var(--text-dim);font-family:var(--mono);font-size:13px;">Loading assignments\u2026</div></div>';
+  var inspectorId = state.inspector.recordId;
+  var primaryFormula = "AND(FIND('" + inspectorId + "',ARRAYJOIN({Inspector}))>0,OR({Status}='SCHEDULED',{Status}='ASSIGNED',{Status}='IN FIELD'))";
+  var recs = [];
+  try {
+    var data = await apiGet(CONFIG.TABLES.INSPECTIONS, null, 'filterByFormula=' + encodeURIComponent(primaryFormula));
+    recs = data.records || [];
+    if(recs.length === 0){
+      // Fallback: fetch by status only, filter client-side by linked Inspector array
+      var fallbackFormula = "OR({Status}='SCHEDULED',{Status}='ASSIGNED',{Status}='IN FIELD')";
+      try {
+        var data2 = await apiGet(CONFIG.TABLES.INSPECTIONS, null, 'filterByFormula=' + encodeURIComponent(fallbackFormula));
+        recs = (data2.records || []).filter(function(r){
+          var arr = r.fields.Inspector || [];
+          return arr.indexOf && arr.indexOf(inspectorId) >= 0;
+        });
+      } catch(e2){ /* ignore */ }
+    }
+  } catch(e){
+    list.innerHTML = '<div class="panel"><div class="panel-body" style="text-align:center;color:var(--red);font-family:var(--mono);font-size:13px;">Failed to load assignments.</div></div>';
+    return;
+  }
+  state.inspections = recs;
+  if(recs.length === 0){
+    list.innerHTML = '<div class="panel"><div class="panel-body" style="text-align:center;padding:32px 20px;"><div style="font-size:32px;margin-bottom:10px;">&#x1F4CB;</div><div style="color:var(--text-dim);font-size:13px;line-height:1.5;">No assignments scheduled.<br>Check back when your dispatcher schedules an inspection.</div></div></div>';
+    return;
+  }
+  // Fetch facility records for each
+  var facIds = {};
+  recs.forEach(function(r){
+    var arr = r.fields.Facility || [];
+    if(arr.length) facIds[arr[0]] = 1;
+  });
+  var facList = Object.keys(facIds).filter(function(id){ return !state.facilityCache[id]; });
+  await Promise.all(facList.map(function(id){
+    return apiGet(CONFIG.TABLES.FACILITIES, id).then(function(f){
+      state.facilityCache[id] = f.fields || {};
+    }).catch(function(){});
+  }));
+  renderAssignments();
+}
+
+function renderAssignments(){
+  var list = document.getElementById('assignments-list');
+  var today = new Date(); today.setHours(0,0,0,0);
+  var html = '';
+  state.inspections.forEach(function(r){
+    var f = r.fields;
+    var facId = (f.Facility || [])[0];
+    var fac = facId ? state.facilityCache[facId] : null;
+    var facName = fac ? (fac.Name || 'Facility') : 'Facility';
+    var addr = fac ? [fac.Address, fac.City, fac.State].filter(function(x){return x;}).join(', ') : '';
+    var due = f['Scheduled Date'] || '';
+    var dueClass = 'upcoming', dueLabel = 'Due ' + due;
+    if(due){
+      var d = new Date(due); d.setHours(0,0,0,0);
+      if(d < today){ dueClass = 'overdue'; dueLabel = 'OVERDUE \u00b7 ' + due; }
+      else if(d.getTime() === today.getTime()){ dueClass = 'today'; dueLabel = 'DUE TODAY'; }
+      else { dueLabel = 'Due ' + due; }
+    }
+    var modCount = (f['Checklist Modules'] || []).length;
+    html += '<div class="assign-card" onclick="openAssignment(\'' + r.id + '\')">';
+    html += '<div class="assign-fac">' + esc(facName) + '</div>';
+    if(addr) html += '<div class="assign-addr">' + esc(addr) + '</div>';
+    html += '<div class="assign-row"><span class="assign-due ' + dueClass + '">' + esc(dueLabel) + '</span><span class="assign-count">' + modCount + ' form' + (modCount === 1 ? '' : 's') + '</span></div>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+// ── OPEN ASSIGNMENT ──
+async function openAssignment(recordId){
+  var rec = state.inspections.filter(function(r){return r.id === recordId;})[0];
+  if(!rec){ toast('Assignment not found', 'err'); return; }
+  var f = rec.fields;
+  var facId = (f.Facility || [])[0];
+  var moduleIds = f['Checklist Modules'] || [];
+  if(moduleIds.length === 0){ toast('No checklist modules attached to this inspection', 'err'); return; }
+  showScreen('survey');
+  document.getElementById('survey-container').innerHTML = '<div class="panel"><div class="panel-body" style="text-align:center;color:var(--text-dim);font-family:var(--mono);font-size:13px;">Loading checklists\u2026</div></div>';
+  try {
+    var modsToFetch = moduleIds.filter(function(id){ return !state.moduleCache[id]; });
+    await Promise.all(modsToFetch.map(function(id){
+      return apiGet(CONFIG.TABLES.CHECKLIST_MODULES, id).then(function(m){
+        var parsed = null;
+        try { parsed = JSON.parse(m.fields['Sections JSON'] || '{}'); } catch(e){ parsed = null; }
+        state.moduleCache[id] = {
+          recordId: id,
+          moduleId: m.fields['Module ID'] || '',
+          attractionType: m.fields['Attraction Type'] || '',
+          version: m.fields['Version'] || '',
+          title: (parsed && parsed.title) || m.fields['Attraction Type'] || 'Checklist',
+          notes: (parsed && parsed.notes) || [],
+          sections: (parsed && parsed.sections) || []
+        };
+      });
+    }));
+    var modules = moduleIds.map(function(id){ return state.moduleCache[id]; }).filter(function(m){ return m; });
+    state.current = {
+      inspectionRecordId: rec.id,
+      inspectionId: f['Inspection ID'] || rec.id,
+      facilityRecordId: facId,
+      facility: facId ? state.facilityCache[facId] : {},
+      modules: modules,
+      items: {},
+      activeModuleIdx: 0
+    };
+    restoreDraft();
+    renderSurvey();
+  } catch(e){
+    document.getElementById('survey-container').innerHTML = '<div class="panel"><div class="panel-body" style="text-align:center;color:var(--red);font-family:var(--mono);font-size:13px;">Failed to load checklist modules.</div></div>';
+  }
+}
+
+function itemKey(mIdx, sIdx, iIdx){
+  return state.current.modules[mIdx].recordId + '::' + sIdx + '::' + iIdx;
+}
+
+// ── DRAFT AUTOSAVE ──
+function draftKey(){ return 'inspection_draft_' + state.current.inspectionRecordId; }
+function saveDraft(){
+  if(!state.current) return;
+  try {
+    var slim = {};
+    Object.keys(state.current.items).forEach(function(k){
+      var it = state.current.items[k];
+      slim[k] = {
+        answer: it.answer || null,
+        severity: it.severity || null,
+        comment: it.comment || '',
+        photo: it.photo ? 'captured' : null
+      };
+    });
+    localStorage.setItem(draftKey(), JSON.stringify({items: slim, lastSaved: Date.now()}));
+  } catch(e){}
+}
+function restoreDraft(){
+  try {
+    var raw = localStorage.getItem(draftKey());
+    if(!raw) return;
+    var parsed = JSON.parse(raw);
+    if(parsed && parsed.items) state.current.items = parsed.items;
+  } catch(e){}
+}
+function clearDraft(){
+  try { localStorage.removeItem(draftKey()); } catch(e){}
+}
+
+// ── RENDER SURVEY ──
+function renderSurvey(){
+  var c = state.current;
+  var container = document.getElementById('survey-container');
+  var facName = (c.facility && c.facility.Name) || 'Facility';
+  var facAddr = c.facility ? [c.facility.Address, c.facility.City, c.facility.State].filter(function(x){return x;}).join(', ') : '';
+
+  var html = '';
+  html += '<div class="panel"><div class="panel-hdr"><div>';
+  html += '<div class="panel-title" style="font-size:18px;">' + esc(facName) + '</div>';
+  html += '<div class="panel-sub">' + esc(facAddr || c.inspectionId) + (facAddr ? ' \u00b7 ' + esc(c.inspectionId) : '') + '</div>';
+  html += '</div><button class="btn btn-ghost btn-sm" onclick="backToAssignments()">\u2190 Back</button></div>';
+  html += '<div class="panel-body">';
+
+  // Phone jump dropdown
+  html += '<div class="jump-bar ff"><label>Jump To Section</label><select id="jump-select" onchange="jumpTo(this.value)">';
+  html += '<option value="">\u2014 Select \u2014</option>';
+  c.modules.forEach(function(m, mi){
+    m.sections.forEach(function(s, si){
+      html += '<option value="' + mi + '-' + si + '">' + esc(m.attractionType) + ' \u00b7 ' + esc(s.name) + '</option>';
     });
   });
-  return cars;
+  html += '</select></div>';
+
+  html += '<div class="survey-wrap">';
+
+  // LEFT RAIL (tablet only)
+  html += '<div class="survey-rail" id="survey-rail">';
+  html += '<div style="font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:1.5px;margin-bottom:8px;">// SURVEY</div>';
+  html += '<div style="font-family:var(--cond);font-size:16px;font-weight:700;color:var(--text-bright);margin-bottom:10px;line-height:1.25;">' + esc(facName) + '</div>';
+  c.modules.forEach(function(m, mi){
+    html += '<div class="rail-module' + (mi === c.activeModuleIdx ? ' active' : '') + '" data-idx="' + mi + '" onclick="setActiveModule(' + mi + ')">';
+    html += '<div class="rail-module-title">' + esc(m.attractionType || m.title) + '</div>';
+    html += '<div class="rail-module-meta"><span>' + esc(m.version) + '</span><span id="rail-count-' + mi + '"></span></div>';
+    html += '<div class="rail-sections">';
+    m.sections.forEach(function(s, si){
+      html += '<div class="rail-section" onclick="event.stopPropagation();jumpTo(\'' + mi + '-' + si + '\')">' + esc(s.name) + '</div>';
+    });
+    html += '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // RIGHT PANE
+  html += '<div class="survey-pane" id="survey-pane">';
+  c.modules.forEach(function(m, mi){
+    var hiddenClass = mi === c.activeModuleIdx ? '' : ' hidden';
+    html += '<div class="module-block' + hiddenClass + '" id="module-block-' + mi + '">';
+    html += '<div class="module-banner"><div class="module-banner-title">' + esc(m.title) + '</div><div class="module-banner-meta">' + esc(m.attractionType) + ' \u00b7 ' + esc(m.version) + '</div></div>';
+    if(m.notes && m.notes.length){
+      html += '<div class="module-notes">';
+      m.notes.forEach(function(n){ html += '<div>' + esc(n) + '</div>'; });
+      html += '</div>';
+    }
+    m.sections.forEach(function(s, si){
+      html += '<div class="sec-header" id="anchor-' + mi + '-' + si + '">' + (si + 1) + '. ' + esc((s.name || '').toUpperCase()) + '</div>';
+      (s.items || []).forEach(function(item, ii){
+        var k = itemKey(mi, si, ii);
+        var it = c.items[k] || {};
+        html += '<div class="cl-item">';
+        html += '<div class="cl-item-text">' + esc(item) + '</div>';
+        html += '<div class="cl-answers">';
+        html += '<div class="cl-answer' + (it.answer === 'yes' ? ' sel-yes' : '') + '" id="ans-yes-' + k + '" onclick="setAnswer(\'' + k + '\',\'yes\')">YES</div>';
+        html += '<div class="cl-answer' + (it.answer === 'no' ? ' sel-no' : '') + '" id="ans-no-' + k + '" onclick="setAnswer(\'' + k + '\',\'no\')">NO</div>';
+        html += '<div class="cl-answer' + (it.answer === 'na' ? ' sel-na' : '') + '" id="ans-na-' + k + '" onclick="setAnswer(\'' + k + '\',\'na\')">N/A</div>';
+        html += '</div>';
+        html += '<div class="cl-detail' + (it.answer ? ' open' : '') + '" id="detail-' + k + '"><div class="cl-detail-inner">';
+        // Severity (NO only)
+        html += '<div id="sev-wrap-' + k + '" style="display:' + (it.answer === 'no' ? 'block' : 'none') + ';margin-bottom:10px;">';
+        html += '<label style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;">Severity *</label>';
+        html += '<select onchange="setSeverity(\'' + k + '\',this.value)" style="width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:14px;color:var(--text);min-height:48px;">';
+        html += '<option value="">\u2014 Select severity \u2014</option>';
+        SEVERITY_OPTIONS.forEach(function(opt){
+          html += '<option value="' + opt.v + '"' + (it.severity == opt.v ? ' selected' : '') + '>' + opt.v + ' \u00b7 ' + esc(opt.label) + '</option>';
+        });
+        html += '</select></div>';
+        // Comment
+        html += '<label style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;">Comment</label>';
+        html += '<textarea placeholder="Optional notes\u2026" rows="2" oninput="setComment(\'' + k + '\',this.value)" style="width:100%;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:13px;color:var(--text);resize:vertical;min-height:48px;">' + esc(it.comment || '') + '</textarea>';
+        // Photo (NO only)
+        html += '<div id="photo-wrap-' + k + '" style="display:' + (it.answer === 'no' ? 'block' : 'none') + ';margin-top:10px;">';
+        html += '<label style="font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);display:block;margin-bottom:5px;">Photo Evidence</label>';
+        html += '<button class="btn btn-ghost btn-sm" onclick="document.getElementById(\'photo-' + k + '\').click()">&#x1F4F7; Attach Photo</button>';
+        html += '<input type="file" id="photo-' + k + '" accept="image/*" capture="camera" style="display:none;" onchange="setPhoto(\'' + k + '\',this)">';
+        html += '<span id="photo-label-' + k + '" style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-left:10px;">' + (it.photo ? '\u2713 Attached' : '') + '</span>';
+        html += '</div>';
+        html += '</div></div>'; // detail-inner, cl-detail
+        html += '</div>'; // cl-item
+      });
+    });
+    html += '</div>'; // module-block
+  });
+
+  // Submit bar
+  html += '<div class="submit-bar"><div class="submit-info" id="submit-info">\u2014</div>';
+  html += '<button class="btn btn-accent" id="submit-btn" onclick="submitInspection()" disabled>Submit Inspection \u2192</button></div>';
+
+  html += '</div>'; // survey-pane
+  html += '</div>'; // survey-wrap
+  html += '</div></div>'; // panel-body, panel
+
+  container.innerHTML = html;
+  updateValidation();
+  updateRailCounts();
 }
 
-var SEED_REPORTS=[
-  {id:'RPT-2026-0031',facility:'Heritage Carousel Gardens',type:'Carousel',generated:'2026-04-09',status:'DELIVERED',inspectionId:'INS-2026-0044'},
-  {id:'RPT-2026-0030',facility:'Skyzone Trampoline — Austin',type:'FEC',generated:'2026-04-07',status:'DELIVERED',inspectionId:'INS-2026-0043'},
-  {id:'RPT-2026-0029',facility:'Putt-Putt Fun Center — Orlando',type:'Grounds/Premise',generated:'2026-04-05',status:'DELIVERED',inspectionId:'INS-2026-0042'}
-];
-function getReports(){return LS.get('as360_reports',SEED_REPORTS);}
-function saveReports(arr){LS.set('as360_reports',arr);}
-
-// FIX 6 — Routing matrix
-var ALL_STATUSES=['SCHEDULED','ASSIGNED','MAIL OUT','IN FIELD','SUBMITTED','UNDER REVIEW','DELIVERED','AWAITING REMEDIATION','CLOSED'];
-var ALL_RECIPIENTS=['Tom Jones','Noel Rhodes','Underwriting Desk','Production','Vendor'];
-function getRoutingMatrix(){
-  var d=LS.get('as360_routing_matrix',null);
-  if(!d){
-    d={};ALL_STATUSES.forEach(function(s){d[s]={};ALL_RECIPIENTS.forEach(function(r){d[s][r]=(s==='SUBMITTED'||s==='DELIVERED')?true:(r==='Tom Jones'||r==='Noel Rhodes');});});
-    d['SUBMITTED']['Underwriting Desk']=true;d['DELIVERED']['Underwriting Desk']=true;
-    LS.set('as360_routing_matrix',d);
-  }else{
-    // Backfill any new statuses added after first load
-    var changed=false;
-    ALL_STATUSES.forEach(function(s){if(!d[s]){d[s]={};ALL_RECIPIENTS.forEach(function(r){d[s][r]=(r==='Tom Jones'||r==='Noel Rhodes');});changed=true;}});
-    if(changed)LS.set('as360_routing_matrix',d);
-  }
-  return d;
-}
-function saveRoutingMatrix(m){LS.set('as360_routing_matrix',m);}
-
-// FIX 9 — Facilities without score, with vendorId
-var FACILITIES_DATA=[
-  {id:'thunder-road',name:'Thunder Road FEC',type:'FEC',location:'Tampa, FL',address:'4201 W Hillsborough Ave, Tampa, FL 33614',contact:'Mike Rayburn, GM',phone:'(813) 555-0142',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 14, 2026',openCars:3,status:'active',
-    locations:['Go-Kart Track A','Go-Kart Track B','Laser Tag Arena','Arcade Floor','Mini Golf Course','Party Rooms'],
-    surveys:[{date:'Apr 14, 2026',type:'FEC',inspector:'T. Jones',status:'IN PROGRESS'},{date:'Jan 22, 2026',type:'FEC',inspector:'T. Jones',status:'COMPLETE'},{date:'Oct 5, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'},{date:'Jul 12, 2025',type:'FEC',inspector:'T. Jones',status:'COMPLETE'}],
-    cars:[{id:'CAR-2026-0041',item:'Go-kart brake pad wear exceeds manufacturer threshold',severity:'SEV 2',opened:'Apr 14, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2026-0042',item:'Emergency stop signage missing on Track B pit lane',severity:'SEV 3',opened:'Apr 14, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2026-0039',item:'Laser tag arena exit lighting below code minimum',severity:'SEV 3',opened:'Jan 22, 2026',status:'OPEN',daysOpen:83}],
-    comms:[{date:'Apr 14, 2026',type:'Inspection Scheduled',recipient:'Underwriting Desk',method:'Email'},{date:'Jan 23, 2026',type:'Inspection Complete',recipient:'Tom Jones',method:'Email'}],
-    account:{policyNumber:'MASI-LC-2026-0019',effectiveDate:'Jan 1, 2026',expirationDate:'Jan 1, 2027',premiumTier:'Standard',naicsCode:'713990',annualRevenue:'$2.1M',employeeCount:'45 (seasonal peak: 82)',priorCarrier:'Granite State Insurance',yearsInsured:'3'}
-  },
-  {id:'splash-kingdom',name:'Splash Kingdom Waterpark',type:'Waterpark',location:'Canton, TX',address:'18814 FM 3054, Canton, TX 75103',contact:'Dana Whitfield, Ops Director',phone:'(903) 555-0287',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 12, 2026',openCars:2,status:'active',
-    locations:['Wave Pool','Lazy River','Speed Slides (3)','Kiddie Splash Zone','Cabana Area','Pump House / Mechanical'],
-    surveys:[{date:'Apr 12, 2026',type:'Aquatic',inspector:'T. Jones',status:'IN PROGRESS'},{date:'Nov 18, 2025',type:'Aquatic',inspector:'K. Williams',status:'COMPLETE'},{date:'Jun 1, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'}],
-    cars:[{id:'CAR-2026-0038',item:'Lazy river return current exceeds PHTA flow-rate guideline',severity:'SEV 3',opened:'Apr 12, 2026',status:'OPEN',daysOpen:0}],
-    comms:[{date:'Apr 12, 2026',type:'Inspection Scheduled',recipient:'Tom Jones',method:'Email'}],
-    account:{policyNumber:'MASI-LC-2026-0034',effectiveDate:'Mar 1, 2026',expirationDate:'Mar 1, 2027',premiumTier:'Elevated',naicsCode:'713920',annualRevenue:'$4.7M',employeeCount:'38 (seasonal peak: 155)',priorCarrier:'Scottsdale Indemnity',yearsInsured:'2'}
-  },
-  {id:'adventure-park',name:'Adventure Park USA',type:'Amusement Park',location:'New Market, MD',address:'11113 W Old Baltimore Rd, New Market, MD 21774',contact:'Steve Bartlett, Safety Mgr',phone:'(301) 555-0193',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 10, 2026',openCars:4,status:'review',
-    locations:['Coaster \u2014 Wildcat','Go-Kart Track','Miniature Golf','Batting Cages','Laser Tag','Ropes Course','Arcade'],
-    surveys:[{date:'Apr 10, 2026',type:'Amusement Device',inspector:'R. Sandoval',status:'IN PROGRESS'},{date:'Dec 4, 2025',type:'Amusement Device',inspector:'R. Sandoval',status:'COMPLETE'},{date:'Aug 15, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'}],
-    cars:[{id:'CAR-2026-0044',item:'Wildcat coaster lap bar hydraulic pressure below spec on car 3',severity:'SEV 1',opened:'Apr 10, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2026-0045',item:'Ropes course carabiner inspection tags expired (6 units)',severity:'SEV 2',opened:'Apr 10, 2026',status:'OPEN',daysOpen:0}],
-    comms:[{date:'Apr 10, 2026',type:'Inspection Scheduled',recipient:'Underwriting Desk',method:'Email'}],
-    account:{policyNumber:'MASI-LC-2026-0008',effectiveDate:'Jun 1, 2025',expirationDate:'Jun 1, 2026',premiumTier:'High',naicsCode:'713110',annualRevenue:'$6.3M',employeeCount:'62 (seasonal peak: 210)',priorCarrier:'Evanston Insurance',yearsInsured:'4'}
-  },
-  {id:'heritage-carousel',name:'Heritage Carousel Gardens',type:'Carousel Park',location:'Pasadena, CA',address:'1700 E Walnut St, Pasadena, CA 91106',contact:'Linda Chen, Director',phone:'(626) 555-0318',vendorId:'V-002',underwriter:'Noah Reynolds',lastInspection:'Apr 8, 2026',openCars:0,status:'current',
-    locations:['Historic Carousel (1926 Dentzel)','Kiddie Train','Pony Ride Circuit','Picnic Pavilion','Gift Shop'],
-    surveys:[{date:'Apr 8, 2026',type:'Carousel',inspector:'A. Nguyen',status:'COMPLETE'},{date:'Jan 15, 2026',type:'Carousel',inspector:'A. Nguyen',status:'COMPLETE'},{date:'Sep 20, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'}],
-    cars:[],
-    comms:[{date:'Apr 9, 2026',type:'Report PDF Generated',recipient:'Tom Jones',method:'Email'}],
-    account:{policyNumber:'MASI-LC-2026-0052',effectiveDate:'Sep 1, 2025',expirationDate:'Sep 1, 2026',premiumTier:'Preferred',naicsCode:'713110',annualRevenue:'$890K',employeeCount:'12 (seasonal peak: 28)',priorCarrier:'Philadelphia Indemnity',yearsInsured:'7'}
-  }
-];
-
-// ═══════════════════════════════════════
-//  TAB / VIEW SWITCHING
-// ═══════════════════════════════════════
-function showView(viewId){
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
-  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');p.style.display='none'});
-  var panel=document.getElementById('view-'+viewId);
-  if(panel){panel.classList.add('active');panel.style.display='block';panel.scrollTop=0}
-  var tabs=document.querySelectorAll('.tab');
-  var tabMap={inspections:0,facilities:1,'facility-builder':2,checklists:3,inspectors:4,schedule:5,reports:6,mailback:7};
-  if(viewId==='facilities'){renderFacilitiesList();var lv=document.getElementById('facilities-list-view');var dv=document.getElementById('facility-detail-view');if(lv)lv.style.display='block';if(dv)dv.style.display='none';}
-  if(viewId==='inspections')renderInspections();
-  if(viewId==='facility-builder')fbRenderProfilesTable();
-  if(viewId==='checklists')clRenderTable();
-  if(viewId==='inspectors'){renderInspectors();renderVendors();}
-  if(viewId==='schedule')renderSchedule();
-  if(viewId==='reports'){renderReports();renderCars();renderRoutingMatrix();}
-  if(viewId==='mailback')renderMailback();
-  if(tabMap[viewId]!==undefined&&tabs[tabMap[viewId]]){tabs[tabMap[viewId]].classList.add('active')}
-}
-function openModal(id){var el=document.getElementById(id);if(el)el.classList.add('open');}
-function closeModal(id){var el=document.getElementById(id);if(el)el.classList.remove('open');}
-
-// FIX 5 — badge class for expanded statuses
-function badgeClass(s){
-  if(s==='CLOSED'||s==='DELIVERED')return 'badge-good';
-  if(s==='IN FIELD'||s==='SUBMITTED'||s==='UNDER REVIEW'||s==='AWAITING REMEDIATION'||s==='MAIL OUT')return 'badge-warn';
-  if(s==='OVERDUE')return 'badge-red';
-  return 'badge-accent'; // SCHEDULED, ASSIGNED
+function setActiveModule(idx){
+  state.current.activeModuleIdx = idx;
+  document.querySelectorAll('.rail-module').forEach(function(el){
+    el.classList.toggle('active', parseInt(el.getAttribute('data-idx'), 10) === idx);
+  });
+  document.querySelectorAll('.module-block').forEach(function(el, i){
+    el.classList.toggle('hidden', i !== idx);
+  });
 }
 
-// FIX 2 — Validate inspection for submit
-function validateInspectionForSubmit(insp){
-  var errors=[];
-  (insp.items||[]).forEach(function(it){
-    if(it.disposition==='FAIL'&&(!it.explanation||!it.explanation.trim())){
-      errors.push('FAIL item missing explanation: "'+it.itemText.substring(0,40)+'..."');
+function jumpTo(val){
+  if(!val) return;
+  var parts = val.split('-');
+  var mi = parseInt(parts[0], 10); var si = parseInt(parts[1], 10);
+  if(window.innerWidth >= 768) setActiveModule(mi);
+  var el = document.getElementById('anchor-' + mi + '-' + si);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function setAnswer(k, ans){
+  var it = state.current.items[k] || {};
+  it.answer = ans;
+  if(ans !== 'no'){ it.severity = null; it.photo = null; }
+  state.current.items[k] = it;
+  ['yes','no','na'].forEach(function(a){
+    var el = document.getElementById('ans-' + a + '-' + k);
+    if(el) el.classList.remove('sel-yes','sel-no','sel-na');
+  });
+  var selEl = document.getElementById('ans-' + ans + '-' + k);
+  if(selEl) selEl.classList.add('sel-' + ans);
+  var detail = document.getElementById('detail-' + k);
+  if(detail) detail.classList.add('open');
+  var sev = document.getElementById('sev-wrap-' + k);
+  if(sev) sev.style.display = ans === 'no' ? 'block' : 'none';
+  var pw = document.getElementById('photo-wrap-' + k);
+  if(pw) pw.style.display = ans === 'no' ? 'block' : 'none';
+  saveDraft();
+  updateValidation();
+  updateRailCounts();
+}
+
+function setSeverity(k, v){
+  var it = state.current.items[k] || {};
+  it.severity = v ? parseInt(v, 10) : null;
+  state.current.items[k] = it;
+  saveDraft();
+  updateValidation();
+  updateRailCounts();
+}
+
+function setComment(k, v){
+  var it = state.current.items[k] || {};
+  it.comment = v;
+  state.current.items[k] = it;
+  saveDraft();
+}
+
+function setPhoto(k, input){
+  if(!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var it = state.current.items[k] || {};
+    it.photo = e.target.result;
+    state.current.items[k] = it;
+    var lbl = document.getElementById('photo-label-' + k);
+    if(lbl) lbl.textContent = '\u2713 ' + file.name.substring(0, 24);
+    saveDraft();
+  };
+  reader.readAsDataURL(file);
+}
+
+function countModule(mi){
+  var m = state.current.modules[mi];
+  var total = 0, answered = 0, noMissingSev = 0;
+  m.sections.forEach(function(s, si){
+    (s.items || []).forEach(function(_, ii){
+      total++;
+      var it = state.current.items[itemKey(mi, si, ii)];
+      if(it && it.answer){
+        answered++;
+        if(it.answer === 'no' && !it.severity) noMissingSev++;
+      }
+    });
+  });
+  return {total: total, answered: answered, noMissingSev: noMissingSev};
+}
+
+function updateRailCounts(){
+  state.current.modules.forEach(function(m, mi){
+    var c = countModule(mi);
+    var el = document.getElementById('rail-count-' + mi);
+    if(el){
+      var dot = 'red';
+      if(c.answered === c.total && c.noMissingSev === 0 && c.total > 0) dot = 'green';
+      else if(c.answered > 0) dot = 'yellow';
+      el.innerHTML = '<span class="rail-dot ' + dot + '"></span>' + c.answered + '/' + c.total;
     }
   });
-  return {valid:errors.length===0,errors:errors};
 }
 
-// FIX 6 — Fire email routing on status change
-function fireStatusEmail(inspection,newStatus){
-  var matrix=getRoutingMatrix();
-  var row=matrix[newStatus];
-  if(!row)return;
-  ALL_RECIPIENTS.forEach(function(r){
-    if(row[r]){
-      console.log('--- EMAIL NOTIFICATION ---');
-      console.log('To: '+r);
-      console.log('Subject: ['+newStatus+'] '+inspection.id+' — '+inspection.facility);
-      console.log('Body: Inspection '+inspection.id+' status changed to '+newStatus+'.\n  Facility: '+inspection.facility+'\n  Inspector: '+inspection.inspector+'\n  Date: '+inspection.date);
-      console.log('--------------------------');
+function updateValidation(){
+  var unanswered = 0, noMissingSev = 0, total = 0;
+  state.current.modules.forEach(function(m, mi){
+    var c = countModule(mi);
+    total += c.total;
+    unanswered += (c.total - c.answered);
+    noMissingSev += c.noMissingSev;
+  });
+  var btn = document.getElementById('submit-btn');
+  var info = document.getElementById('submit-info');
+  var ok = unanswered === 0 && noMissingSev === 0 && total > 0;
+  if(btn) btn.disabled = !ok;
+  if(info){
+    if(ok){
+      info.textContent = 'Ready to submit \u00b7 ' + total + ' items';
+    } else {
+      var msgs = [];
+      if(unanswered) msgs.push(unanswered + ' item' + (unanswered === 1 ? '' : 's') + ' unanswered');
+      if(noMissingSev) msgs.push(noMissingSev + ' NO missing severity');
+      info.textContent = msgs.join(' \u00b7 ') || (total + ' items total');
     }
-  });
-}
-
-// FIX 8 — Auto-generate CARs on SUBMITTED
-function autoGenerateCars(inspection){
-  var fails=(inspection.items||[]).filter(function(i){return i.disposition==='FAIL'&&i.severity&&i.severity<=3;});
-  if(fails.length===0)return;
-  var cars=getCars();var maxNum=0;
-  cars.forEach(function(c){var n=parseInt(c.id.split('-')[2]);if(n>maxNum)maxNum=n;});
-  fails.forEach(function(f){
-    maxNum++;
-    var due=new Date(inspection.date+'T00:00:00');
-    if(f.severity===1)due=new Date(due);
-    else if(f.severity===2)due.setDate(due.getDate()+7);
-    else due.setDate(due.getDate()+30);
-    cars.push({id:'CAR-2026-'+String(maxNum).padStart(4,'0'),facility:inspection.facility,ride:f.sectionName||inspection.form,finding:f.itemText,severity:f.severity,assignedTo:inspection.inspector,dueDate:due.toISOString().split('T')[0],status:'OPEN',resolution:'',remediationNotes:'',remediationPhoto:'',reviewer:''});
-  });
-  saveCars(cars);
-}
-
-// FIX 5 — Status change handler
-function changeInspectionStatus(insId,newStatus){
-  var all=getInspections();
-  var ins=all.find(function(r){return r.id===insId;});
-  if(!ins)return;
-  // FIX 2 — Block SUBMITTED if FAIL items lack explanations
-  if(newStatus==='SUBMITTED'){
-    var v=validateInspectionForSubmit(ins);
-    if(!v.valid){alert('Cannot submit:\n'+v.errors.join('\n'));return;}
   }
-  ins.status=newStatus;
-  saveInspections(all);
-  // FIX 8 — auto CARs on SUBMITTED
-  if(newStatus==='SUBMITTED')autoGenerateCars(ins);
-  // FIX 6 — email routing
-  fireStatusEmail(ins,newStatus);
-  renderInspections();
 }
 
-// ═══════════════════════════════════════
-//  INSPECTIONS TAB
-// ═══════════════════════════════════════
-var inspExpandedRow=null;
-function renderInspections(){
-  var all=getInspections();var inspectors=getInspectors();var vendors=getVendors();
-  var fInsp=document.getElementById('filter-inspector');var fForm=document.getElementById('filter-form');
-  var curInsp=fInsp?fInsp.value:'';var curForm=fForm?fForm.value:'';
-  if(fInsp){var names={};all.forEach(function(r){names[r.inspector]=1;});var h='<option value="">All Inspectors</option>';Object.keys(names).sort().forEach(function(n){h+='<option value="'+n+'"'+(curInsp===n?' selected':'')+'>'+n+'</option>';});fInsp.innerHTML=h;}
-  if(fForm){var forms={};all.forEach(function(r){forms[r.form]=1;});var h2='<option value="">All Types</option>';Object.keys(forms).sort().forEach(function(f){h2+='<option value="'+f+'"'+(curForm===f?' selected':'')+'>'+f+'</option>';});fForm.innerHTML=h2;}
-  var fs=document.getElementById('filter-status');var statusF=fs?fs.value:'';var inspF=fInsp?fInsp.value:'';var formF=fForm?fForm.value:'';
-  var filtered=all.filter(function(r){if(statusF&&r.status!==statusF)return false;if(inspF&&r.inspector!==inspF)return false;if(formF&&r.form!==formF)return false;return true;});
-  // FIX 5 — Grouped stats
-  var active=0,inReview=0,closed=0,overdue=0;
-  all.forEach(function(r){if(r.status==='SCHEDULED'||r.status==='ASSIGNED'||r.status==='IN FIELD')active++;else if(r.status==='SUBMITTED'||r.status==='UNDER REVIEW')inReview++;else if(r.status==='DELIVERED'||r.status==='CLOSED')closed++;else if(r.status==='OVERDUE')overdue++;else if(r.status==='AWAITING REMEDIATION')active++;});
-  var se=document.getElementById('inspections-stats');
-  if(se)se.innerHTML='<div class="stat"><div class="stat-num" style="color:var(--accent)">'+active+'</div><div class="stat-label">Active</div></div><div class="stat"><div class="stat-num" style="color:var(--warn)">'+inReview+'</div><div class="stat-label">In Review</div></div><div class="stat"><div class="stat-num" style="color:var(--good)">'+closed+'</div><div class="stat-label">Closed</div></div><div class="stat"><div class="stat-num" style="color:var(--red)">'+overdue+'</div><div class="stat-label">Overdue</div></div>';
-  var tbody=document.getElementById('inspectionTable');if(!tbody)return;
-  var html='';
-  filtered.forEach(function(r){
-    var today=new Date().toISOString().split('T')[0];var daysUntil=Math.ceil((new Date(r.date)-new Date(today))/86400000);
-    var findings=getFindings(r);
-    html+='<tr style="cursor:pointer" onclick="toggleInspDetail(\''+r.id+'\')">';
-    html+='<td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+r.id+'</td>';
-    html+='<td>'+r.facility+'</td><td>'+r.inspector+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:11px">'+formatDate(r.date)+'</td>';
-    html+='<td>'+r.form+'</td>';
-    var discBadge=(r.discoveredAttractions&&r.discoveredAttractions.length>0)?' <span class="badge badge-warn">+'+r.discoveredAttractions.length+' FOUND</span>':'';
-    html+='<td><span class="badge '+badgeClass(r.status)+'">'+r.status+'</span>'+discBadge+'</td>';
-    html+='<td>'+(r.status==='SCHEDULED'?'<button class="btn-sm-action" onclick="event.stopPropagation();openAssignInspector(\''+r.id+'\')">Assign Inspector</button>':'')+'</td>';
-    html+='</tr>';
-    // FIX 5 — nextAction
-    var na={'SCHEDULED':'Dispatch inspector to facility','ASSIGNED':'Inspector en route','IN FIELD':'Awaiting inspector submission','SUBMITTED':'Review findings and approve','UNDER REVIEW':'Pending final approval','DELIVERED':'Report delivered to client','AWAITING REMEDIATION':'Waiting for corrective actions','CLOSED':'Inspection complete — all items resolved','OVERDUE':'Requires immediate attention'};
-    // Detail row — FIX 1 uses items, FIX 3 adds +Add Item, FIX 4b adds +Add Form
-    var itemsHtml='<span style="font-family:var(--mono);font-size:10px;color:var(--text3)">No items recorded</span>';
-    if(r.items&&r.items.length>0){
-      itemsHtml='<div style="display:flex;flex-direction:column;gap:3px;max-height:200px;overflow-y:auto">';
-      r.items.forEach(function(it){
-        if(it.disposition==='FAIL'){
-          var sc=it.severity<=2?'badge-red':it.severity===3?'badge-warn':it.severity===4?'badge-accent':'badge-good';
-          itemsHtml+='<div style="display:flex;align-items:center;gap:6px"><span class="badge '+sc+'">SEV '+it.severity+'</span><span style="font-size:11px">'+escHtml(it.itemText)+'</span>';
-          if(it.addedAdHoc)itemsHtml+=' <span class="badge badge-accent">AD-HOC</span>';
-          if(!it.explanation||!it.explanation.trim())itemsHtml+=' <span style="color:var(--red);font-size:10px">* explanation required</span>';
-          itemsHtml+='</div>';
-        }else if(it.disposition==='PASS'){
-          itemsHtml+='<div style="display:flex;align-items:center;gap:6px"><span class="badge badge-good">PASS</span><span style="font-size:11px;color:var(--text3)">'+escHtml(it.itemText)+'</span>'+(it.addedAdHoc?' <span class="badge badge-accent">AD-HOC</span>':'')+'</div>';
-        }else if(it.disposition==='N/A'){
-          itemsHtml+='<div style="display:flex;align-items:center;gap:6px"><span style="font-family:var(--mono);font-size:8px;color:var(--text3)">N/A</span><span style="font-size:11px;color:var(--text3)">'+escHtml(it.itemText)+'</span></div>';
+// ── SUBMIT ──
+async function submitInspection(){
+  var c = state.current;
+  var items = [];
+  c.modules.forEach(function(m, mi){
+    m.sections.forEach(function(s, si){
+      (s.items || []).forEach(function(text, ii){
+        var it = c.items[itemKey(mi, si, ii)] || {};
+        items.push({
+          module_id: m.moduleId,
+          section: s.name,
+          item: text,
+          answer: it.answer || null,
+          severity: it.severity || null,
+          comment: it.comment || '',
+          photo: it.photo ? 'captured' : null
+        });
+      });
+    });
+  });
+  var bad = items.filter(function(x){ return !x.answer || (x.answer === 'no' && !x.severity); });
+  if(bad.length){ toast('Incomplete \u2014 ' + bad.length + ' item' + (bad.length === 1 ? '' : 's') + ' need attention', 'err'); return; }
+
+  var btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Submitting\u2026';
+  var now = new Date();
+  var inspectionUpdate = {
+    'Items JSON': JSON.stringify(items),
+    'Status': 'SUBMITTED',
+    'Submitted At': now.toISOString()
+  };
+
+  try {
+    await apiPatch(CONFIG.TABLES.INSPECTIONS, c.inspectionRecordId, inspectionUpdate);
+    // CARs for sev 1-2
+    var sevFails = items.filter(function(x){ return x.answer === 'no' && (x.severity === 1 || x.severity === 2); });
+    var carIds = [];
+    if(sevFails.length){
+      var startSeq = await nextCarSequence();
+      for(var i = 0; i < sevFails.length; i++){
+        var sf = sevFails[i];
+        var carId;
+        if(startSeq === null){
+          carId = 'CAR-' + now.getFullYear() + '-T' + (Math.floor(now.getTime() / 1000) + i);
+        } else {
+          var seq = String(startSeq + i);
+          while(seq.length < 4) seq = '0' + seq;
+          carId = 'CAR-' + now.getFullYear() + '-' + seq;
         }
-      });
-      itemsHtml+='</div>';
-    }
-    // FIX 4b — forms display
-    var modulesHtml='';
-    if(r.checklistModules&&r.checklistModules.length>0){
-      var mods=clGetAll();
-      modulesHtml='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:8px;margin-bottom:4px">FORMS</div><div style="font-size:11px;color:var(--text)">';
-      r.checklistModules.forEach(function(mid,idx){
-        var m=mods.find(function(c){return c.id===mid;});
-        if(m)modulesHtml+=(idx>0?' · ':'')+m.type+' '+m.version;
-      });
-      modulesHtml+='</div>';
-    }
-    var canAddItems=r.status!=='DELIVERED'&&r.status!=='CLOSED';
-    var insp=inspectors.find(function(x){return x.name===r.inspector;});var contact=insp?insp.email:'—';
-    html+='<tr id="insp-detail-'+r.id+'" style="display:none"><td colspan="7" style="padding:0;background:var(--surface2)"><div style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:16px">';
-    html+='<div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:6px">ITEMS ('+r.items.length+')</div>'+itemsHtml;
-    if(canAddItems)html+='<div style="margin-top:8px;display:flex;gap:6px"><button class="btn-sm-action" onclick="event.stopPropagation();openAddItem(\''+r.id+'\')">+ Add Item</button><button class="btn-sm-action" onclick="event.stopPropagation();openAddForm(\''+r.id+'\')">+ Add Form</button></div>';
-    html+='<div style="margin-top:6px"><button class="btn-sm-action" onclick="event.stopPropagation();generateCrashKit(\''+r.id+'\')">Crash Kit PDF</button></div>';
-    // Discoveries section
-    if(r.discoveredAttractions&&r.discoveredAttractions.length>0){
-      html+='<div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border)"><div style="font-family:var(--mono);font-size:9px;color:var(--warn);margin-bottom:6px">DISCOVERIES ('+r.discoveredAttractions.length+')</div>';
-      r.discoveredAttractions.forEach(function(d){
-        var dBadge=d.inspectedToday?'<span class="badge badge-good">INSPECTED IN FIELD</span>':'<span class="badge badge-warn">NEEDS FOLLOW-UP</span>';
-        html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)">';
-        html+='<div><span style="font-size:12px;font-weight:600;color:var(--text)">'+escHtml(d.name)+'</span>';
-        if(d.manufacturer)html+=' <span style="font-family:var(--mono);font-size:9px;color:var(--text3)">'+escHtml(d.manufacturer)+'</span>';
-        html+=' <span style="font-family:var(--mono);font-size:9px;color:var(--text3)">'+escHtml(d.type)+'</span> '+dBadge+'</div>';
-        html+='<button class="btn-sm-action" onclick="event.stopPropagation();addDiscoveryToProfile(\''+r.id+'\',\''+d.id+'\')">Add to Facility Profile</button>';
-        html+='</div>';
-      });
-      html+='</div>';
-    }
-    // TODO: Real sync from Inspector_Log → loss-control inspections (separate sync layer needed)
-    html+='</div>';
-    html+='<div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">INSPECTOR CONTACT</div><div style="font-size:11px;color:var(--text)">'+r.inspector+' &middot; '+contact+'</div>';
-    html+=modulesHtml;
-    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:10px;margin-bottom:4px">NEXT ACTION</div><div style="font-size:11px;color:var(--text)">'+(na[r.status]||'—')+'</div>';
-    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:10px;margin-bottom:4px">DAYS UNTIL DUE</div><div style="font-size:11px;color:var(--text);font-weight:700">'+(r.status==='CLOSED'||r.status==='DELIVERED'?'—':daysUntil+'d')+'</div>';
-    html+='</div></div></td></tr>';
-  });
-  tbody.innerHTML=html;
-}
-function toggleInspDetail(id){var row=document.getElementById('insp-detail-'+id);if(!row)return;if(inspExpandedRow&&inspExpandedRow!==id){var prev=document.getElementById('insp-detail-'+inspExpandedRow);if(prev)prev.style.display='none';}row.style.display=row.style.display==='none'?'':'none';inspExpandedRow=row.style.display===''?id:null;}
-function openAssignInspector(insId){document.getElementById('assign-ins-id').value=insId;var sel=document.getElementById('assign-ins-inspector');sel.innerHTML=getInspectors().map(function(i){return '<option value="'+i.name+'">'+i.name+'</option>';}).join('');openModal('modal-assign-inspector');}
-function confirmAssignInspector(){var insId=document.getElementById('assign-ins-id').value;var name=document.getElementById('assign-ins-inspector').value;if(!insId||!name)return;var all=getInspections();var ins=all.find(function(r){return r.id===insId;});if(ins){ins.inspector=name;ins.status='ASSIGNED';fireStatusEmail(ins,'ASSIGNED');}saveInspections(all);closeModal('modal-assign-inspector');renderInspections();}
-
-// FIX 3 — Add Item modal
-function openAddItem(insId){
-  document.getElementById('add-item-insp-id').value=insId;
-  var ins=getInspections().find(function(r){return r.id===insId;});
-  var secSet={};(ins.items||[]).forEach(function(it){if(it.sectionName)secSet[it.sectionName]=1;});
-  secSet[ins.form]=1;
-  var sel=document.getElementById('add-item-section');
-  sel.innerHTML=Object.keys(secSet).map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');
-  document.getElementById('add-item-text').value='';
-  document.getElementById('add-item-disposition').value='FAIL';
-  document.getElementById('add-item-explanation').value='';
-  openModal('modal-add-item');
-}
-function confirmAddItem(){
-  var insId=document.getElementById('add-item-insp-id').value;
-  var section=document.getElementById('add-item-section').value;
-  var text=document.getElementById('add-item-text').value.trim();
-  var disp=document.getElementById('add-item-disposition').value;
-  var sev=disp==='FAIL'?parseInt(document.getElementById('add-item-severity').value):null;
-  var expl=document.getElementById('add-item-explanation').value.trim();
-  if(!text)return;
-  if(disp==='FAIL'&&!expl){alert('Explanation required for FAIL items.');return;}
-  var all=getInspections();var ins=all.find(function(r){return r.id===insId;});
-  if(!ins)return;
-  if(!ins.items)ins.items=[];
-  ins.items.push({id:'i-adhoc-'+Date.now(),checklistModuleId:null,sectionName:section,itemText:text,disposition:disp,explanation:expl,severity:sev,photos:[],addedAdHoc:true});
-  saveInspections(all);closeModal('modal-add-item');renderInspections();
-}
-
-// FIX 4b — Add Form mid-inspection
-function openAddForm(insId){
-  document.getElementById('add-form-insp-id').value=insId;
-  var ins=getInspections().find(function(r){return r.id===insId;});
-  var existing=ins.checklistModules||[];
-  var active=clGetAll().filter(function(c){return c.active&&existing.indexOf(c.id)===-1;});
-  var sel=document.getElementById('add-form-module');
-  sel.innerHTML=active.length===0?'<option value="">No additional modules available</option>':active.map(function(c){return '<option value="'+c.id+'">'+c.type+' '+c.version+' ('+c.itemCount+' items)</option>';}).join('');
-  openModal('modal-add-form');
-}
-function confirmAddForm(){
-  var insId=document.getElementById('add-form-insp-id').value;
-  var modId=document.getElementById('add-form-module').value;
-  if(!modId)return;
-  var all=getInspections();var ins=all.find(function(r){return r.id===insId;});
-  if(!ins)return;
-  if(!ins.checklistModules)ins.checklistModules=[];
-  ins.checklistModules.push(modId);
-  var mod=clGetAll().find(function(c){return c.id===modId;});
-  if(mod&&mod.sections){
-    if(!ins.items)ins.items=[];
-    mod.sections.forEach(function(sec){
-      sec.items.forEach(function(itemText){
-        ins.items.push({id:'i-mod-'+Date.now()+'-'+Math.random().toString(36).substr(2,4),checklistModuleId:modId,sectionName:sec.name,itemText:itemText,disposition:null,explanation:'',severity:null,photos:[],addedAdHoc:false});
-      });
-    });
-  }
-  saveInspections(all);closeModal('modal-add-form');renderInspections();
-}
-
-// ═══════════════════════════════════════
-//  FACILITIES TAB
-// ═══════════════════════════════════════
-function renderFacilitiesList(){
-  var el=document.getElementById('facilitiesTable');if(!el)return;var vendors=getVendors();
-  var statusBadge=function(s){return s==='current'?'<span class="badge badge-good">CURRENT</span>':s==='review'?'<span class="badge badge-warn">REVIEW</span>':'<span class="badge badge-accent">ACTIVE</span>';};
-  var carsBadge=function(n){return n===0?'<span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span>':'<span style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+(n>=3?'var(--red)':'var(--warn)')+'">'+n+'</span>';};
-  var html='<thead><tr><th>Facility</th><th>Type</th><th>Location</th><th>Vendor</th><th>Last Inspection</th><th>Open CARs</th><th>Status</th></tr></thead><tbody>';
-  var staticNames={};
-  FACILITIES_DATA.forEach(function(f){
-    staticNames[f.name]=true;
-    var vn=vendors.find(function(v){return v.id===f.vendorId;});
-    html+='<tr style="cursor:pointer" onclick="openFacility(\''+f.id+'\')"><td style="font-weight:600;color:var(--text)">'+f.name+'</td><td style="font-family:var(--mono);font-size:10px">'+f.type+'</td><td>'+f.location+'</td><td style="font-size:11px">'+(vn?vn.name:'—')+'</td><td style="font-family:var(--mono);font-size:11px">'+f.lastInspection+'</td><td style="text-align:center">'+carsBadge(f.openCars)+'</td><td>'+statusBadge(f.status)+'</td></tr>';
-  });
-  // Item 9 — Append facility profiles from Facility Builder that are not already in FACILITIES_DATA
-  var profiles=fbGetProfiles();
-  profiles.forEach(function(p){
-    if(staticNames[p.facilityName])return;
-    // Derive type from most common attraction type
-    var typeCounts={};
-    (p.attractions||[]).forEach(function(a){if(a.type)typeCounts[a.type]=(typeCounts[a.type]||0)+1;});
-    var typeKeys=Object.keys(typeCounts);
-    var derivedType='Mixed';
-    if(typeKeys.length===1)derivedType=typeKeys[0];
-    else if(typeKeys.length>1){var max=0;typeKeys.forEach(function(k){if(typeCounts[k]>max){max=typeCounts[k];derivedType=k;}});}
-    html+='<tr style="border-left:3px solid var(--accent)"><td style="font-weight:600;color:var(--text)">'+escHtml(p.facilityName)+'</td><td style="font-family:var(--mono);font-size:10px">'+escHtml(derivedType)+' <span class="badge badge-accent" style="margin-left:4px">FROM BUILDER</span></td><td>'+escHtml(p.location||'—')+'</td><td style="font-size:11px">—</td><td style="font-family:var(--mono);font-size:11px">—</td><td style="text-align:center"><span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span></td><td><span class="badge badge-accent">ACTIVE</span></td></tr>';
-  });
-  el.innerHTML=html+'</tbody>';
-}
-function openFacility(facId){
-  var f=FACILITIES_DATA.find(function(x){return x.id===facId;});if(!f)return;
-  var vendors=getVendors();var vn=vendors.find(function(v){return v.id===f.vendorId;});
-  document.getElementById('facilities-list-view').style.display='none';
-  var dv=document.getElementById('facility-detail-view');dv.style.display='block';
-  var dc=document.getElementById('facility-detail-content');var html='';
-  html+='<button class="facility-back-btn" onclick="closeFacility()">\u2190 Back to Facilities</button>';
-  html+='<div class="facility-detail-hdr"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">';
-  html+='<div><div style="font-family:var(--sans);font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px">'+f.name+'</div><div style="font-size:12px;color:var(--text2)">'+f.address+'</div><div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px">Contact: '+f.contact+' \u00b7 '+f.phone+'</div></div>';
-  html+='<div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;color:var(--text3)">VENDOR</div><div style="font-size:12px;color:var(--text);font-weight:600">'+(vn?vn.name:'—')+'</div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:8px">UNDERWRITER</div><div style="font-size:12px;color:var(--text);font-weight:600">'+f.underwriter+'</div></div>';
-  html+='</div></div>';
-  // FIX 9 — Survey table without Score column
-  var sections=[
-    {id:'fc-locations',title:'Locations ('+f.locations.length+')',open:true,body:function(){var h='';f.locations.forEach(function(loc){h+='<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2)">'+loc+'</div>';});return h;}},
-    {id:'fc-surveys',title:'Survey History ('+f.surveys.length+')',open:false,body:function(){var sb=function(s){return s==='COMPLETE'?'badge-good':s==='IN PROGRESS'?'badge-warn':'badge-accent';};var h='<table class="tbl"><thead><tr><th>Date</th><th>Type</th><th>Inspector</th><th>Status</th></tr></thead><tbody>';f.surveys.forEach(function(s){h+='<tr><td style="font-family:var(--mono);font-size:11px">'+s.date+'</td><td>'+s.type+'</td><td>'+s.inspector+'</td><td><span class="badge '+sb(s.status)+'">'+s.status+'</span></td></tr>';});h+='</tbody></table>';return h;}},
-    {id:'fc-cars',title:'Recommendations / Open CARs ('+f.cars.length+')',open:false,body:function(){if(f.cars.length===0)return '<div style="font-family:var(--mono);font-size:11px;color:var(--good);padding:8px 0">\u2713 No open CARs</div>';var h='<table class="tbl"><thead><tr><th>CAR ID</th><th>Item</th><th>Severity</th><th>Opened</th><th>Status</th><th>Days Open</th></tr></thead><tbody>';f.cars.forEach(function(c){var sb=c.severity==='SEV 1'||c.severity==='SEV 2'?'badge-red':'badge-warn';h+='<tr><td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+c.id+'</td><td style="font-size:11px">'+c.item+'</td><td><span class="badge '+sb+'">'+c.severity+'</span></td><td style="font-family:var(--mono);font-size:11px">'+c.opened+'</td><td><span class="badge badge-warn">'+c.status+'</span></td><td style="font-family:var(--mono);font-size:11px;text-align:center">'+c.daysOpen+'</td></tr>';});h+='</tbody></table>';return h;}},
-    {id:'fc-comms',title:'Communications ('+f.comms.length+')',open:false,body:function(){var h='<table class="tbl"><thead><tr><th>Date</th><th>Type</th><th>Recipient</th><th>Method</th></tr></thead><tbody>';f.comms.forEach(function(c){h+='<tr><td style="font-family:var(--mono);font-size:11px">'+c.date+'</td><td>'+c.type+'</td><td>'+c.recipient+'</td><td style="font-family:var(--mono);font-size:10px">'+c.method+'</td></tr>';});h+='</tbody></table>';return h;}},
-    {id:'fc-account',title:'Additional Account Information',open:false,body:function(){var a=f.account;var kvs=[['Policy Number',a.policyNumber],['Effective Date',a.effectiveDate],['Expiration Date',a.expirationDate],['Premium Tier',a.premiumTier],['NAICS Code',a.naicsCode],['Annual Revenue',a.annualRevenue],['Employee Count',a.employeeCount],['Prior Carrier',a.priorCarrier],['Years Insured',a.yearsInsured]];var h='';kvs.forEach(function(kv){h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--mono);font-size:10px;color:var(--text3)">'+kv[0]+'</span><span style="font-size:12px;color:var(--text);font-weight:600">'+kv[1]+'</span></div>';});return h;}}
-  ];
-  sections.forEach(function(s){html+='<div class="facility-collapsible'+(s.open?' open':'')+'" id="'+s.id+'"><div class="facility-collapsible-hdr" onclick="toggleFacilityPanel(\''+s.id+'\')"><span class="fc-title">'+s.title+'</span><span class="fc-arrow">\u25B6</span></div><div class="facility-collapsible-body">'+s.body()+'</div></div>';});
-  dc.innerHTML=html;
-}
-function closeFacility(){document.getElementById('facility-detail-view').style.display='none';document.getElementById('facilities-list-view').style.display='block';}
-function toggleFacilityPanel(panelId){var el=document.getElementById(panelId);if(el)el.classList.toggle('open');}
-
-// ═══════════════════════════════════════
-//  CHECKLISTS TAB (parser engine untouched)
-// ═══════════════════════════════════════
-var CL_STORAGE_KEY='as360_checklist_library';var clPendingFile=null;var clParsedResult=null;var clExpandedRow=null;
-function clGetAll(){return LS.get(CL_STORAGE_KEY,[]);}
-function clSaveAll(arr){LS.set(CL_STORAGE_KEY,arr);}
-function clNextVersion(type){var all=clGetAll();var max=0;all.forEach(function(c){if(c.type===type){var n=parseInt(c.version.replace('v',''));if(n>max)max=n;}});return 'v'+(max+1);}
-function clCountItems(sections){var n=0;sections.forEach(function(s){n+=s.items.length;});return n;}
-(function(){document.addEventListener('DOMContentLoaded',function(){clRenderTable();var dz=document.getElementById('cl-dropzone');if(!dz)return;dz.addEventListener('dragover',function(e){e.preventDefault();e.stopPropagation();dz.style.borderColor='var(--accent)';dz.style.background='var(--accent-l)';});dz.addEventListener('dragleave',function(e){e.preventDefault();e.stopPropagation();dz.style.borderColor='var(--border)';dz.style.background='var(--surface)';});dz.addEventListener('drop',function(e){e.preventDefault();e.stopPropagation();dz.style.borderColor='var(--border)';dz.style.background='var(--surface)';if(e.dataTransfer.files.length>0)clHandleFile(e.dataTransfer.files[0]);});});})();
-function clFileSelected(input){if(input.files&&input.files[0])clHandleFile(input.files[0]);}
-function clSetStatus(msg,color){var el=document.getElementById('cl-upload-status');if(el){el.textContent=msg;el.style.color=color||'var(--text3)';el.style.minHeight=msg?'20px':'0';}}
-function clSetParseStatus(msg){var el=document.getElementById('cl-parse-status');if(el)el.textContent=msg;}
-function clHandleFile(file){var name=file.name.toLowerCase();var validExts=['.doc','.docx','.pdf','.txt'];var isValid=validExts.some(function(ext){return name.endsWith(ext);});if(!isValid){clSetStatus('Unsupported file type — accepts .doc, .docx, .pdf, .txt','var(--red)');return;}clPendingFile=file;clParsedResult=null;document.getElementById('cl-preview-panel').style.display='none';document.getElementById('cl-file-info').style.display='block';document.getElementById('cl-file-name').textContent=file.name;document.getElementById('cl-file-size').textContent=(file.size/1024).toFixed(1)+' KB';clSetStatus('','var(--text3)');clSetParseStatus('Parsing...');if(name.endsWith('.txt'))clParseTxt(file);else if(name.endsWith('.pdf'))clParsePdf(file);else clParseDocx(file);}
-function clParseTxt(file){var reader=new FileReader();reader.onload=function(e){clShowPreview(clStructureText(e.target.result),file.name);};reader.onerror=function(){clSetStatus('Could not extract text from this file — try saving as .docx','var(--red)');clSetParseStatus('Error');};reader.readAsText(file);}
-function clParseDocx(file){var doIt=function(){clSetParseStatus('Parsing with mammoth.js...');var reader=new FileReader();reader.onload=function(e){mammoth.convertToHtml({arrayBuffer:e.target.result}).then(function(result){return mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(raw){var boldSections=[];var div=document.createElement('div');div.innerHTML=result.value;var children=div.children;for(var i=0;i<children.length;i++){var el=children[i];if(el.querySelector('strong,b')){var t=(el.textContent||'').trim();if(t&&t.length<120)boldSections.push(t);}}clShowPreview(clStructureText(raw.value,boldSections),file.name);});}).catch(function(err){if(file.name.toLowerCase().endsWith('.doc')){clSetStatus('Legacy .doc could not be parsed — save as .docx and re-upload','var(--red)');clSetParseStatus('Error');document.getElementById('cl-preview-panel').style.display='none';}else{clSetStatus('Parse error: '+err.message,'var(--red)');clSetParseStatus('Error');}});};reader.readAsArrayBuffer(file);};if(typeof mammoth==='undefined'){clSetParseStatus('Loading mammoth.js...');var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';s.onload=doIt;s.onerror=function(){clSetStatus('Failed to load mammoth.js — check network','var(--red)');clSetParseStatus('Error');};document.head.appendChild(s);}else doIt();}
-function clParsePdf(file){var doIt=function(){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';clSetParseStatus('Extracting PDF text...');var reader=new FileReader();reader.onload=function(e){var typedarray=new Uint8Array(e.target.result);pdfjsLib.getDocument({data:typedarray}).promise.then(function(pdf){var pages=[];var done=0;for(var p=1;p<=pdf.numPages;p++){(function(pageNum){pdf.getPage(pageNum).then(function(page){page.getTextContent().then(function(content){var text=content.items.map(function(item){return item.str;}).join(' ');pages[pageNum-1]=text;done++;if(done===pdf.numPages)clShowPreview(clStructureText(pages.join('\n')),file.name);});})})(p);}}).catch(function(){clSetStatus('Could not extract text from this file — try saving as .docx','var(--red)');clSetParseStatus('Error');});};reader.readAsArrayBuffer(file);};if(typeof pdfjsLib==='undefined'){clSetParseStatus('Loading PDF.js...');var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';s.onload=doIt;s.onerror=function(){clSetStatus('Failed to load PDF.js — check network','var(--red)');clSetParseStatus('Error');};document.head.appendChild(s);}else doIt();}
-function clStructureText(rawText,boldLines){
-boldLines=boldLines||[];
-var lines=rawText.split(/\r?\n/).map(function(l){return l.trim();});
-var sections=[];
-var currentSection=null;
-var signatureLines=[];
-var firstSectionFound=false;
-var boldSet={};
-boldLines.forEach(function(b){boldSet[b]=true;});
-
-// Noise / filter patterns
-var noiseRe=/^(NOTE\s*#?\d+|Page\s+\d+|^\s*$)/i;
-var narrativeOnly=/^Refer to lubrication schedule/i;
-var sigRe=/^(Inspector\s*:|Sign|certif|Date\s*:|I have visually inspected|I certify|\(Sign\)|\(Print\))/i;
-var commentsRe=/^Comments\s*:\s*_*$/i;
-var metadataFieldRe=/^(Ride Name|Manufacture|Manufacturer|Serial|Year|RPM|Direction|Duration|Vehicle|Carrier Capacity|# of)/i;
-var docTitleRe=/^[A-Z][A-Z\s]+(INSPECTION|DETAIL|CHECKLIST|REPORT)$/;
-
-// Discard document title — first non-empty line if it matches title pattern
-var titleLineIdx=-1;
-for(var ti=0;ti<Math.min(lines.length,5);ti++){
-  if(lines[ti]&&docTitleRe.test(lines[ti])){titleLineIdx=ti;break;}
-}
-
-// ── isSectionHeader with lookahead ──
-function isSectionHeader(line,allLines,idx){
-  var trimmed=line.trim();
-  // Hard rejections
-  if(trimmed.length<3||trimmed.length>70)return false;
-  if(/_{3,}/.test(trimmed))return false;
-  if(/^_*\s*[A-Z]\.\s/.test(trimmed))return false;
-  // Metadata field: "Label: value" where value has lowercase
-  if(/:/.test(trimmed)){
-    var afterColon=(trimmed.split(':')[1]||'').trim();
-    if(afterColon.length>0&&/[a-z0-9_]/.test(afterColon))return false;
-    // Bare "DATE:" with nothing or underscores after is caught by underscore rule above
-  }
-  if(/^(NOTE|Note|Comments?|Date\s*:|DATE|Inspector|Sign|I have|I certify)/i.test(trimmed))return false;
-  if(metadataFieldRe.test(trimmed))return false;
-
-  // Accept: numbered header "3. Area Inspection", "5. Structure, Platforms..."
-  var numMatch=trimmed.match(/^(\d+)[\.\)]\s+(.+)$/);
-  if(numMatch){
-    var afterNum=numMatch[2].trim();
-    var wc=afterNum.split(/\s+/).length;
-    if(wc>8)return false;
-    if(/\.$/.test(afterNum)&&wc>4)return false;
-    return true;
-  }
-
-  // Accept: all-caps header "CARRIER INSPECTION", "DRIVE UNITS" — 2-6 words
-  if(/^[A-Z][A-Z\s&\/,()]+$/.test(trimmed)){
-    var wc2=trimmed.split(/\s+/).length;
-    if(wc2>=2&&wc2<=6)return true;
-    return false;
-  }
-
-  // Accept: title-case standalone "Area Inspection", "Drive Units", "Power Up and Testing"
-  // 2-7 words, first word capitalized, no ending punctuation, lookahead confirms items follow
-  if(/^[A-Z][a-z]/.test(trimmed)&&!/[\.!?]$/.test(trimmed)){
-    var wc3=trimmed.split(/\s+/).length;
-    if(wc3>=2&&wc3<=7){
-      // Lookahead: check next 5 lines for an item pattern
-      for(var j=idx+1;j<Math.min(idx+6,allLines.length);j++){
-        var nxt=(allLines[j]||'').trim();
-        if(/^_+\s*[A-Z]\.\s/.test(nxt)||/^[A-Z]\.\s/.test(nxt))return true;
+        var dueDays = sf.severity === 1 ? 0 : 7;
+        var due = new Date(now); due.setDate(due.getDate() + dueDays);
+        var carFields = {
+          'CAR ID': carId,
+          'Inspection': [c.inspectionRecordId],
+          'Item Text': sf.item,
+          'Severity': sf.severity,
+          'Assigned Inspector': state.inspector.name,
+          'Opened Date': now.toISOString().split('T')[0],
+          'Due Date': due.toISOString().split('T')[0],
+          'Status': 'OPEN'
+        };
+        if(c.facilityRecordId) carFields['Facility'] = [c.facilityRecordId];
+        try {
+          await apiPost(CONFIG.TABLES.CARS, carFields);
+          carIds.push(carId);
+        } catch(ce){ /* non-fatal */ }
       }
-      return false;
     }
-  }
-
-  // Accept: bold-source line
-  if(boldSet[trimmed])return true;
-  return false;
-}
-
-// ── isChecklistItem ──
-function isChecklistItem(line){
-  if(!line||line.length<3)return false;
-  if(/^_+\s*[A-Z]\.\s/.test(line))return true;
-  if(/^[A-Za-z]\.\s/.test(line))return true;
-  if(/^_{3,}/.test(line))return true;
-  if(/^[\u2610\u2611\u2612\u2713\u2717\u25A1\u25A0\u25CB\u25CF\[\]]\s/.test(line))return true;
-  if(/^[\u2022\u2023\u2043\u25E6\-\*]\s/.test(line))return true;
-  return false;
-}
-
-// ── cleanItem ──
-function cleanItem(text){
-  text=text.replace(/^_+\s*/,'');
-  return text.replace(/^[\u2610\u2611\u2612\u25A1\u25A0\u25CB\u25CF\[\]]\s*/,'').trim();
-}
-
-// Signature block starts at 75% of doc
-var sigStartIdx=Math.floor(lines.length*0.75);
-
-for(var i=0;i<lines.length;i++){
-  var line=lines[i];
-  if(!line)continue;
-  // Skip document title line
-  if(i===titleLineIdx)continue;
-  // Noise
-  if(noiseRe.test(line))continue;
-  if(narrativeOnly.test(line))continue;
-  // Signature block (expanded pattern, earlier threshold)
-  if(i>=sigStartIdx&&sigRe.test(line)){signatureLines.push(line);continue;}
-  // Comments field
-  if(commentsRe.test(line)){if(currentSection)currentSection.hasComments=true;continue;}
-  // Metadata field rejection (before section detection)
-  if(metadataFieldRe.test(line))continue;
-  if(/:/.test(line)){var av=(line.split(':')[1]||'').trim();if(av.length>0&&/[a-z0-9_]/.test(av)&&!firstSectionFound)continue;}
-  // Section header detection (with lookahead)
-  if(isSectionHeader(line,lines,i)){
-    firstSectionFound=true;
-    currentSection={name:line.replace(/^\d+[\.\)\s]*/,'').replace(/:$/,'').trim(),items:[],hasComments:false};
-    sections.push(currentSection);
-    continue;
-  }
-  // Preamble: numbered procedural items before first section
-  if(!firstSectionFound&&/^\d+[\.\)]\s+\S/.test(line)){
-    if(!currentSection||currentSection.name!=='Preamble'){
-      currentSection={name:'Preamble',items:[],hasComments:false};
-      sections.push(currentSection);
-    }
-    var preambleText=line.replace(/^\d+[\.\)]\s*/,'').trim();
-    if(preambleText.length>2)currentSection.items.push(preambleText);
-    continue;
-  }
-  // Item detection
-  if(isChecklistItem(line)){
-    var cleaned=cleanItem(line);
-    if(cleaned.length>2&&currentSection){currentSection.items.push(cleaned);}
-    else if(cleaned.length>2){currentSection={name:'General',items:[cleaned],hasComments:false};sections.push(currentSection);}
-    continue;
-  }
-  // Fallback: add as content
-  if(currentSection&&line.length>5)currentSection.items.push(line);
-  else if(!currentSection&&line.length>10&&firstSectionFound){currentSection={name:'General',items:[line],hasComments:false};sections.push(currentSection);}
-}
-return {sections:sections.filter(function(s){return s.items.length>0;}),signatureLines:signatureLines};
-}
-function clGuessType(fileName){var n=(fileName||'').toLowerCase();var map={'go-kart':'Go-Karts','gokart':'Go-Karts','kart':'Go-Karts','carousel':'Carousel','merry':'Carousel','aquatic':'Aquatic','water':'Aquatic','pool':'Aquatic','fec':'FEC','trampoline':'FEC','amusement':'Amusement Device','ride':'Amusement Device','coaster':'Amusement Device','grounds':'Grounds/Premise','premise':'Grounds/Premise','parking':'Grounds/Premise'};var keys=Object.keys(map);for(var i=0;i<keys.length;i++){if(n.indexOf(keys[i])!==-1)return map[keys[i]];}return '';}
-function clShowPreview(result,fileName){clParsedResult=result;clParsedResult.fileName=fileName;var sections=result.sections;var totalItems=clCountItems(sections);if(totalItems===0){clSetStatus('No checklist items found — check file format','var(--red)');clSetParseStatus('0 items');document.getElementById('cl-preview-panel').style.display='none';return;}clSetStatus('','var(--text3)');clSetParseStatus(totalItems+' items found');var guess=clGuessType(fileName);if(!guess&&sections.length>0)guess=clGuessType(sections[0].name);var typeSelect=document.getElementById('cl-type-select');if(typeSelect&&guess)typeSelect.value=guess;var previewType=typeSelect?typeSelect.value:'';var versionLabel=previewType?clNextVersion(previewType):'v?';document.getElementById('cl-preview-version').textContent=versionLabel;document.getElementById('cl-preview-items').textContent=totalItems+' items · '+sections.length+' sections';typeSelect.onchange=function(){document.getElementById('cl-preview-version').textContent=this.value?clNextVersion(this.value):'v?';};var secDiv=document.getElementById('cl-preview-sections');var html='';sections.forEach(function(sec,si){html+='<div style="margin-bottom:10px"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text);padding:5px 0;border-bottom:2px solid var(--accent);margin-bottom:4px;display:flex;justify-content:space-between"><span>'+(si+1)+' · '+escHtml(sec.name).toUpperCase()+'</span><span style="color:var(--text3);font-weight:400">'+sec.items.length+' item'+(sec.items.length!==1?'s':'')+(sec.hasComments?' · comments':'')+'</span></div>';sec.items.forEach(function(item){html+='<div style="padding:3px 0 3px 12px;font-size:11px;color:var(--text2);border-bottom:1px solid var(--border)">'+escHtml(item)+'</div>';});html+='</div>';});secDiv.innerHTML=html;var sigDiv=document.getElementById('cl-preview-sig');if(result.signatureLines.length>0){sigDiv.style.display='block';sigDiv.innerHTML='<strong>Signature block detected:</strong> '+result.signatureLines.map(function(l){return escHtml(l);}).join(' · ');}else sigDiv.style.display='none';document.getElementById('cl-preview-panel').style.display='block';}
-function clConfirmSave(){if(!clParsedResult||!clParsedResult.sections.length)return;var typeSelect=document.getElementById('cl-type-select');var type=typeSelect?typeSelect.value:'';if(!type){clSetStatus('Select an attraction type before saving','var(--red)');return;}var version=clNextVersion(type);var record={id:'cl-'+Date.now(),type:type,version:version,uploadedBy:'Noel Rhodes',uploadDate:new Date().toISOString().split('T')[0],itemCount:clCountItems(clParsedResult.sections),active:false,sections:clParsedResult.sections,signatureLines:clParsedResult.signatureLines||[],fileName:clParsedResult.fileName||'unknown'};var all=clGetAll();all.forEach(function(c){if(c.type===type)c.active=false;});record.active=true;all.push(record);clSaveAll(all);clRenderTable();clDiscardPreview();}
-function clDiscardPreview(){clPendingFile=null;clParsedResult=null;document.getElementById('cl-file-info').style.display='none';document.getElementById('cl-preview-panel').style.display='none';document.getElementById('cl-file-input').value='';var typeSelect=document.getElementById('cl-type-select');if(typeSelect){typeSelect.value='';typeSelect.onchange=null;}clSetStatus('','var(--text3)');clSetParseStatus('Ready to parse');}
-function clRenderTable(){var all=clGetAll();var tbody=document.getElementById('cl-version-tbody');var empty=document.getElementById('cl-empty-state');var countEl=document.getElementById('cl-version-count');var tbl=document.getElementById('cl-version-table');if(!tbody)return;if(countEl)countEl.textContent=all.length+' checklist'+(all.length!==1?'s':'');if(all.length===0){if(tbl)tbl.style.display='none';if(empty)empty.style.display='block';return;}if(tbl)tbl.style.display='';if(empty)empty.style.display='none';var sorted=all.slice().sort(function(a,b){if(a.type<b.type)return -1;if(a.type>b.type)return 1;return parseInt(b.version.replace('v',''))-parseInt(a.version.replace('v',''));});var html='';sorted.forEach(function(c){var toggleHtml='<label class="toggle" onclick="event.stopPropagation()"><input type="checkbox"'+(c.active?' checked':'')+' onchange="clToggleActive(\''+c.id+'\')"><span class="toggle-slider"></span></label>';html+='<tr style="cursor:pointer" onclick="clTogglePreview(\''+c.id+'\')"><td style="font-weight:600;color:var(--text)">'+c.type+'</td><td style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:700">'+c.version+'</td><td>'+c.uploadedBy+'</td><td style="font-family:var(--mono);font-size:11px">'+c.uploadDate+'</td><td style="font-family:var(--mono);font-size:11px;text-align:center;font-weight:700">'+c.itemCount+'</td><td>'+toggleHtml+'</td><td>'+(c.active?'<button class="btn-sm-action" onclick="event.stopPropagation();clGeneratePDF(\''+c.id+'\')">Crash Kit PDF</button>':'')+'</td></tr>';html+='<tr id="cl-preview-row-'+c.id+'" style="display:none"><td colspan="7" style="padding:0;background:var(--surface2)"><div style="padding:14px">'+clRenderPreviewContent(c)+'</div></td></tr>';});tbody.innerHTML=html;}
-function clRenderPreviewContent(checklist){var html='<div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:10px">'+checklist.type+' · '+checklist.version+' · '+checklist.fileName+'</div>';checklist.sections.forEach(function(sec,si){html+='<div style="margin-bottom:12px"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text);padding:6px 0;border-bottom:2px solid var(--accent);margin-bottom:6px;display:flex;justify-content:space-between"><span>'+(si+1)+' · '+sec.name.toUpperCase()+'</span><span style="font-weight:400;color:var(--text3)">'+sec.items.length+' item'+(sec.items.length!==1?'s':'')+(sec.hasComments?' · comments field':'')+'</span></div>';sec.items.forEach(function(item){html+='<div style="padding:4px 0 4px 12px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">'+escHtml(item)+'</div>';});html+='</div>';});if(checklist.signatureLines&&checklist.signatureLines.length>0)html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);padding:6px 0;border-top:1px solid var(--border)">Signature block: '+checklist.signatureLines.map(function(l){return escHtml(l);}).join(' · ')+'</div>';return html;}
-function clTogglePreview(id){var row=document.getElementById('cl-preview-row-'+id);if(!row)return;if(clExpandedRow&&clExpandedRow!==id){var prev=document.getElementById('cl-preview-row-'+clExpandedRow);if(prev)prev.style.display='none';}row.style.display=row.style.display==='none'?'':'none';clExpandedRow=row.style.display===''?id:null;}
-function clToggleActive(id){var all=clGetAll();var target=all.find(function(c){return c.id===id;});if(!target)return;if(target.active)target.active=false;else{all.forEach(function(c){if(c.type===target.type)c.active=false;});target.active=true;}clSaveAll(all);clRenderTable();}
-function clGeneratePDF(id){var all=clGetAll();var cl=all.find(function(c){return c.id===id;});if(!cl)return;var pa=document.getElementById('printArea');var html='<div id="printArea"><h2>'+cl.type+' Inspection Checklist — '+cl.version+'</h2><table style="margin-bottom:16px"><tr><td style="width:33%"><strong>Facility:</strong> ______________________</td><td style="width:33%"><strong>Inspector:</strong> ______________________</td><td><strong>Date:</strong> ______________</td></tr><tr><td><strong>Job ID:</strong> ______________________</td><td colspan="2"></td></tr></table>';cl.sections.forEach(function(sec,si){html+='<div class="print-section"><h3>'+(si+1)+'. '+sec.name+'</h3><table><thead><tr><th style="width:60%">Item</th><th style="width:8%">Pass</th><th style="width:8%">Fail</th><th style="width:8%">N/A</th><th style="width:16%">Notes</th></tr></thead><tbody>';sec.items.forEach(function(item){html+='<tr><td>'+escHtml(item)+'</td><td style="text-align:center"><span class="print-checkbox"></span></td><td style="text-align:center"><span class="print-checkbox"></span></td><td style="text-align:center"><span class="print-checkbox"></span></td><td></td></tr>';});html+='</tbody></table><div style="margin-top:6px"><strong>Section Comments:</strong> _____________________________________________</div></div>';});html+='<div style="margin-top:30px;margin-bottom:20px;font-style:italic;line-height:1.5">I have visually inspected the '+escHtml(cl.type)+' as indicated above and have checked all items as directed by the above checklist. I certify that by my signature below this ride is ready for operational testing procedures.</div>';html+='<table style="margin-top:10px;border:none"><tr><td style="border:none;padding:4px 0"><strong>Inspector Name (Print):</strong> _________________________________</td></tr><tr><td style="border:none;padding:4px 0"><strong>Inspector Signature:</strong> _________________________________&nbsp;&nbsp;&nbsp;&nbsp;<strong>Date:</strong> _____________</td></tr></table>';html+='<div style="margin-top:20px;font-size:10px"><strong>Primary:</strong> Noel Rhodes, [address placeholder]<br><strong>Secondary:</strong> Adam Brousell, Asbury Park NJ</div></div>';pa.innerHTML=html;pa.style.display='block';setTimeout(function(){window.print();pa.style.display='none';},200);}
-
-// ═══════════════════════════════════════
-//  INSPECTORS TAB + FIX 7 Vendors
-// ═══════════════════════════════════════
-function switchInspSubtab(which){
-  document.querySelectorAll('#insp-subtabs .subtab').forEach(function(t){t.classList.remove('active');});
-  if(which==='inspectors'){document.getElementById('insp-subtab-inspectors').style.display='';document.getElementById('insp-subtab-vendors').style.display='none';document.querySelectorAll('#insp-subtabs .subtab')[0].classList.add('active');}
-  else{document.getElementById('insp-subtab-inspectors').style.display='none';document.getElementById('insp-subtab-vendors').style.display='';document.querySelectorAll('#insp-subtabs .subtab')[1].classList.add('active');}
-}
-function renderInspectors(){
-  var inspectors=getInspectors();var inspections=getInspections();var vendors=getVendors();
-  var tbody=document.getElementById('inspectorTable');if(!tbody)return;
-  var today=new Date();var warn90=new Date(today);warn90.setDate(warn90.getDate()+90);var html='';
-  inspectors.forEach(function(insp){
-    var activeCount=inspections.filter(function(r){return r.inspector===insp.name&&r.status!=='CLOSED'&&r.status!=='DELIVERED';}).length;
-    var expDate=new Date(insp.expiry);var expiryBadge=expDate<today?'badge-red':expDate<warn90?'badge-warn':'badge-good';var expiryLabel=expDate<today?'EXPIRED':expDate<warn90?'EXPIRING':'VALID';
-    var vn=vendors.find(function(v){return v.id===insp.vendorId;});
-    // Item 5 — Portal Access cell
-    var portalCell=insp.portalAccess?'<span class="badge badge-good">\u2713 Active</span>':'<span class="badge badge-accent">\u2717 Not Provisioned</span> <button class="btn-sm-action" onclick="provisionInspectorAccess(\''+escAttr(insp.name)+'\')">Provision</button>';
-    // Item 6 — Delivery Mode cell
-    var dm=insp.deliveryMode||'Phone';
-    var dmBadgeClass=dm==='Paper'?'badge-warn':dm==='Both'?'badge-good':'badge-accent';
-    var deliveryCell='<span class="badge '+dmBadgeClass+'" style="cursor:pointer" onclick="cycleDeliveryMode(\''+escAttr(insp.name)+'\')" title="Click to cycle">'+dm.toUpperCase()+'</span>';
-    html+='<tr><td style="font-weight:600;color:var(--text)">'+insp.name+'</td><td>'+insp.territory+'</td><td style="font-family:var(--mono);font-size:10px">'+insp.certs+'</td>';
-    html+='<td><span class="badge '+expiryBadge+'">'+expiryLabel+'</span> <span style="font-family:var(--mono);font-size:10px;color:var(--text3)">'+insp.expiry+'</span></td>';
-    html+='<td style="font-size:11px">'+(vn?vn.name:'—')+'</td>';
-    html+='<td>'+portalCell+'</td>';
-    html+='<td>'+deliveryCell+'</td>';
-    html+='<td style="text-align:center"><a href="#" style="font-family:var(--mono);font-weight:700;color:var(--accent);text-decoration:none" onclick="event.preventDefault();filterInspByName(\''+insp.name+'\')">'+activeCount+'</a></td>';
-    html+='<td><span class="badge badge-good">'+insp.status+'</span></td>';
-    html+='<td><button class="btn-sm-action" onclick="openAssignToInspection(\''+escAttr(insp.name)+'\')">Assign to Inspection</button></td></tr>';
-  });
-  tbody.innerHTML=html;
-}
-
-// Item 5 — Provision portal access for inspector
-function provisionInspectorAccess(inspectorName){
-  var inspectors=getInspectors();
-  var insp=inspectors.find(function(i){return i.name===inspectorName;});
-  if(!insp)return;
-  insp.portalAccess=true;
-  saveInspectors(inspectors);
-  alert('Provisioning credentials for '+insp.name+'.\n\nAdam: manually create their record in Airtable Inspector_Credentials with email '+insp.email+' and a temporary password. Send credentials to inspector via email.');
-  renderInspectors();
-}
-
-// Item 6 — Cycle delivery mode: Phone → Paper → Both → Phone
-function cycleDeliveryMode(inspectorName){
-  var inspectors=getInspectors();
-  var insp=inspectors.find(function(i){return i.name===inspectorName;});
-  if(!insp)return;
-  var current=insp.deliveryMode||'Phone';
-  insp.deliveryMode=current==='Phone'?'Paper':current==='Paper'?'Both':'Phone';
-  saveInspectors(inspectors);
-  renderInspectors();
-}
-function renderVendors(){
-  var vendors=getVendors();var inspectors=getInspectors();var inspections=getInspections();
-  var tbody=document.getElementById('vendorTable');if(!tbody)return;var html='';
-  vendors.forEach(function(v){
-    var inspCount=inspectors.filter(function(i){return i.vendorId===v.id;}).length;
-    var activeIns=inspections.filter(function(r){var insp=inspectors.find(function(i){return i.name===r.inspector;});return insp&&insp.vendorId===v.id&&r.status!=='CLOSED'&&r.status!=='DELIVERED';}).length;
-    html+='<tr><td style="font-weight:600;color:var(--text)">'+v.name+'</td><td>'+v.primaryContact+'</td><td style="font-family:var(--mono);font-size:10px">'+v.email+'</td><td style="font-family:var(--mono);font-size:10px">'+v.phone+'</td><td style="text-align:center;font-family:var(--mono);font-weight:700">'+inspCount+'</td><td style="text-align:center;font-family:var(--mono);font-weight:700">'+activeIns+'</td></tr>';
-  });
-  tbody.innerHTML=html;
-}
-function filterInspByName(name){showView('inspections');var sel=document.getElementById('filter-inspector');if(sel){sel.value=name;renderInspections();}}
-function confirmAddInspector(){
-  var name=document.getElementById('add-insp-name').value.trim();if(!name)return;
-  var inspectors=getInspectors();
-  inspectors.push({name:name,territory:document.getElementById('add-insp-territory').value.trim()||'—',certs:document.getElementById('add-insp-certs').value.trim()||'—',expiry:document.getElementById('add-insp-expiry').value||'2027-01-01',email:document.getElementById('add-insp-email').value.trim()||'—',status:'ACTIVE',vendorId:document.getElementById('add-insp-vendor').value||'V-001',portalAccess:false,deliveryMode:'Phone'});
-  saveInspectors(inspectors);closeModal('modal-add-inspector');
-  ['add-insp-name','add-insp-territory','add-insp-certs','add-insp-expiry','add-insp-email'].forEach(function(id){document.getElementById(id).value='';});
-  renderInspectors();
-}
-function openAssignToInspection(name){
-  document.getElementById('assign-to-insp-name').value=name;
-  var sel=document.getElementById('assign-to-insp-select');
-  var scheduled=getInspections().filter(function(r){return r.status==='SCHEDULED';});
-  sel.innerHTML=scheduled.length===0?'<option value="">No scheduled inspections</option>':scheduled.map(function(r){return '<option value="'+r.id+'">'+r.id+' — '+r.facility+'</option>';}).join('');
-  openModal('modal-assign-to-inspection');
-}
-function confirmAssignToInspection(){var name=document.getElementById('assign-to-insp-name').value;var insId=document.getElementById('assign-to-insp-select').value;if(!name||!insId)return;var all=getInspections();var ins=all.find(function(r){return r.id===insId;});if(ins){ins.inspector=name;ins.status='ASSIGNED';fireStatusEmail(ins,'ASSIGNED');}saveInspections(all);closeModal('modal-assign-to-inspection');renderInspectors();}
-
-// ═══════════════════════════════════════
-//  SCHEDULE TAB — FIX 4a multi-module
-// ═══════════════════════════════════════
-var schedWeekOffset=0;
-function getWeekDates(offset){var today=new Date();var day=today.getDay();var mondayOffset=day===0?-6:1-day;var monday=new Date(today);monday.setDate(today.getDate()+mondayOffset+(offset*7));var dates=[];for(var i=0;i<7;i++){var d=new Date(monday);d.setDate(monday.getDate()+i);dates.push(d);}return dates;}
-function renderSchedule(){
-  var dates=getWeekDates(schedWeekOffset);var label=document.getElementById('sched-week-label');
-  if(label)label.textContent=formatDateShort(dates[0])+' — '+formatDateShort(dates[6]);
-  var cal=document.getElementById('sched-calendar');if(!cal)return;
-  var inspections=getInspections();var dayNames=['MON','TUE','WED','THU','FRI','SAT','SUN'];var today=new Date().toISOString().split('T')[0];
-  var html='<div class="cal-grid">';dayNames.forEach(function(d){html+='<div class="cal-hdr">'+d+'</div>';});
-  dates.forEach(function(d){var ds=d.toISOString().split('T')[0];html+='<div class="cal-day'+(ds===today?' today':'')+'"><div class="cal-day-num">'+d.getDate()+'</div>';inspections.forEach(function(ins){if(ins.date===ds){var bc=badgeClass(ins.status)==='badge-good'?'var(--good-b)':badgeClass(ins.status)==='badge-warn'?'var(--warn-b)':badgeClass(ins.status)==='badge-red'?'var(--red-b)':'var(--accent-b)';html+='<div class="cal-card" style="border-left:3px solid '+bc+'"><div class="cal-card-fac">'+ins.facility+'</div><div class="cal-card-meta">'+ins.inspector+' · '+ins.form+'</div></div>';}});html+='</div>';});
-  html+='</div>';cal.innerHTML=html;
-  // FIX 4a — Populate module multi-select + inspector dropdown
-  var modSel=document.getElementById('new-insp-modules');
-  if(modSel){var active=clGetAll().filter(function(c){return c.active;});modSel.innerHTML=active.map(function(c){return '<option value="'+c.id+'">'+c.type+' '+c.version+' ('+c.itemCount+' items)</option>';}).join('');}
-  var inspSel=document.getElementById('new-insp-inspector');
-  if(inspSel){inspSel.innerHTML='<option value="">Select inspector...</option>'+getInspectors().map(function(i){return '<option value="'+i.name+'">'+i.name+'</option>';}).join('');}
-  // Populate vendor dropdown in add inspector modal
-  var vendSel=document.getElementById('add-insp-vendor');
-  if(vendSel){vendSel.innerHTML=getVendors().map(function(v){return '<option value="'+v.id+'">'+v.name+'</option>';}).join('');}
-  // Populate facility profile dropdown
-  var profSel=document.getElementById('new-insp-profile');
-  if(profSel){var profs=fbGetProfiles();profSel.innerHTML='<option value="">— None / Manual —</option>'+profs.map(function(p){return '<option value="'+p.id+'">'+escHtml(p.facilityName)+' ('+p.attractions.length+' attractions)</option>';}).join('');}
-}
-function schedWeekNav(dir){schedWeekOffset+=dir;renderSchedule();}
-function confirmNewInspection(){
-  var facility=document.getElementById('new-insp-facility').value.trim();
-  var modSel=document.getElementById('new-insp-modules');
-  var selectedModules=[];if(modSel){for(var i=0;i<modSel.options.length;i++){if(modSel.options[i].selected)selectedModules.push(modSel.options[i].value);}}
-  var inspector=document.getElementById('new-insp-inspector').value;
-  var date=document.getElementById('new-insp-date').value;
-  if(!facility||selectedModules.length===0||!inspector||!date)return;
-  var all=getInspections();var maxNum=0;all.forEach(function(r){var n=parseInt(r.id.split('-')[2]);if(n>maxNum)maxNum=n;});
-  var newId='INS-2026-'+String(maxNum+1).padStart(4,'0');
-  // Derive form label from first module
-  var mods=clGetAll();var firstMod=mods.find(function(c){return c.id===selectedModules[0];});
-  var formLabel=firstMod?firstMod.type:'Inspection';
-  if(selectedModules.length>1)formLabel+=' +'+( selectedModules.length-1);
-  // FIX 4a — Expand modules into items
-  var items=[];
-  selectedModules.forEach(function(mid){
-    var mod=mods.find(function(c){return c.id===mid;});
-    if(mod&&mod.sections){mod.sections.forEach(function(sec){sec.items.forEach(function(itemText){items.push({id:'i-new-'+Date.now()+'-'+Math.random().toString(36).substr(2,4),checklistModuleId:mid,sectionName:sec.name,itemText:itemText,disposition:null,explanation:'',severity:null,photos:[],addedAdHoc:false});});});}
-  });
-  var ins={id:newId,facility:facility,inspector:inspector,date:date,form:formLabel,status:'SCHEDULED',vendorId:'V-001',checklistModules:selectedModules,items:items,discoveredAttractions:[]};
-  all.push(ins);saveInspections(all);
-  // ITEM 4 — Sync to Airtable
-  try{fetch(WORKER_URL+'/'+ASSIGNMENTS_TABLE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fields:{Assignment_ID:newId,Facility:facility,Inspection_Type:formLabel,Inspector_Name:inspector,Due_Date:date,Checklist_Module_IDs:selectedModules.join(','),Status:'SCHEDULED'}})}).then(function(r){if(!r.ok)throw new Error('sync failed');updateSyncIndicator('synced');}).catch(function(){queueOfflineSync({fields:{Assignment_ID:newId,Facility:facility,Inspection_Type:formLabel,Inspector_Name:inspector,Due_Date:date,Checklist_Module_IDs:selectedModules.join(','),Status:'SCHEDULED'}});updateSyncIndicator('pending');});}catch(e){queueOfflineSync({fields:{Assignment_ID:newId,Facility:facility,Inspection_Type:formLabel,Inspector_Name:inspector,Due_Date:date,Checklist_Module_IDs:selectedModules.join(','),Status:'SCHEDULED'}});updateSyncIndicator('pending');}
-  fireStatusEmail(ins,'SCHEDULED');
-  closeModal('modal-new-inspection');
-  document.getElementById('new-insp-facility').value='';document.getElementById('new-insp-date').value='';
-  renderSchedule();
-}
-
-// ═══════════════════════════════════════
-//  REPORTS TAB — FIX 6 Routing Matrix
-// ═══════════════════════════════════════
-function renderRoutingMatrix(){
-  var container=document.getElementById('routing-matrix-container');if(!container)return;
-  var matrix=getRoutingMatrix();
-  var html='<table class="matrix-tbl"><thead><tr><th>Status</th>';
-  ALL_RECIPIENTS.forEach(function(r){html+='<th>'+r+'</th>';});
-  html+='</tr></thead><tbody>';
-  ALL_STATUSES.forEach(function(s){
-    html+='<tr><td>'+s+'</td>';
-    ALL_RECIPIENTS.forEach(function(r){
-      var checked=matrix[s]&&matrix[s][r];
-      html+='<td><input type="checkbox"'+(checked?' checked':'')+' onchange="updateRouting(\''+escAttr(s)+'\',\''+escAttr(r)+'\',this.checked)"></td>';
+    clearDraft();
+    drainPendingQueue();
+    var facName = (c.facility && c.facility.Name) || 'Facility';
+    document.getElementById('confirm-summary').innerHTML =
+      esc(c.inspectionId) + '<br>' +
+      esc(facName) + '<br>' +
+      items.length + ' items submitted' +
+      (carIds.length ? '<br><span style="color:var(--red);font-weight:700;">' + carIds.length + ' CAR' + (carIds.length === 1 ? '' : 's') + ' generated</span>' : '') +
+      '<br><span style="font-family:var(--mono);font-size:11px;color:var(--text-muted);">Tom and underwriting have been notified</span>';
+    showScreen('confirm');
+    toast('Inspection submitted', 'ok');
+  } catch(e){
+    // Queue for retry
+    var queue = [];
+    try { queue = JSON.parse(localStorage.getItem('pending_submissions') || '[]'); } catch(_){}
+    queue.push({
+      inspectionRecordId: c.inspectionRecordId,
+      update: inspectionUpdate,
+      ts: Date.now()
     });
-    html+='</tr>';
-  });
-  html+='</tbody></table>';container.innerHTML=html;
-}
-function updateRouting(status,recipient,on){var m=getRoutingMatrix();if(!m[status])m[status]={};m[status][recipient]=on;saveRoutingMatrix(m);toast('Routing updated: '+status+' → '+recipient+(on?' ✓':' ✗'),'ok');}
-
-function renderReports(){
-  var reports=getReports();var tbody=document.getElementById('reportTable');if(!tbody)return;var html='';
-  reports.forEach(function(r){html+='<tr><td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+r.id+'</td><td>'+r.facility+'</td><td>'+r.type+'</td><td style="font-family:var(--mono);font-size:11px">'+r.generated+'</td><td><span class="badge badge-good">'+r.status+'</span></td><td><button class="btn-sm-action" onclick="openReportDetail(\''+r.id+'\')">View Report</button></td></tr>';});
-  tbody.innerHTML=html;
-}
-function openReportDetail(rptId){
-  var rpt=getReports().find(function(r){return r.id===rptId;});if(!rpt)return;
-  document.getElementById('report-detail-title').textContent=rpt.id+' — '+rpt.facility;
-  var ins=getInspections().find(function(i){return i.id===rpt.inspectionId;});
-  var html='<div style="margin-bottom:12px"><div style="font-family:var(--mono);font-size:9px;color:var(--text3)">FACILITY</div><div style="font-size:13px;color:var(--text);font-weight:600">'+rpt.facility+'</div></div>';
-  html+='<div style="margin-bottom:12px"><div style="font-family:var(--mono);font-size:9px;color:var(--text3)">TYPE</div><div style="font-size:13px;color:var(--text)">'+rpt.type+'</div></div>';
-  html+='<div style="margin-bottom:12px"><div style="font-family:var(--mono);font-size:9px;color:var(--text3)">GENERATED</div><div style="font-size:13px;color:var(--text)">'+rpt.generated+'</div></div>';
-  // FIX 1 — read from items
-  var findings=ins?getFindings(ins):[];
-  if(findings.length>0){
-    html+='<div class="section-divider"></div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:8px">FINDINGS BY SEVERITY</div>';
-    var bySev={};findings.forEach(function(f){if(!bySev[f.severity])bySev[f.severity]=[];bySev[f.severity].push(f);});
-    [1,2,3,4,5].forEach(function(s){if(!bySev[s])return;var sc=s<=2?'badge-red':s===3?'badge-warn':s===4?'badge-accent':'badge-good';html+='<div style="margin-bottom:8px"><span class="badge '+sc+'">SEV '+s+'</span>';bySev[s].forEach(function(f){html+='<div style="font-size:12px;color:var(--text2);padding:4px 0 4px 12px">'+escHtml(f.itemText)+'</div>';});html+='</div>';});
-  }else{html+='<div class="section-divider"></div><div style="font-family:var(--mono);font-size:10px;color:var(--good)">No findings recorded.</div>';}
-  if(ins){html+='<div class="section-divider"></div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">INSPECTOR</div><div style="font-size:13px;color:var(--text)">'+ins.inspector+'</div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:8px;margin-bottom:4px">STATUS</div><div style="font-size:13px;color:var(--text)">'+ins.status+'</div>';}
-  document.getElementById('report-detail-body').innerHTML=html;openModal('modal-report-detail');
-}
-function printReport(){var title=document.getElementById('report-detail-title').textContent;var body=document.getElementById('report-detail-body').innerHTML;var pa=document.getElementById('printArea');pa.innerHTML='<div id="printArea"><h2>'+escHtml(title)+'</h2>'+body+'</div>';pa.style.display='block';setTimeout(function(){window.print();pa.style.display='none';},200);}
-
-// FIX 10 — CARs with remediation + review
-function renderCars(){
-  var cars=getCars();var tbody=document.getElementById('carTable');if(!tbody)return;var html='';
-  cars.forEach(function(c){
-    var sevBadge=c.severity<=2?'badge-red':c.severity===3?'badge-warn':'badge-accent';
-    var statusBadge=c.status==='CLOSED'?'badge-good':c.status==='IN REMEDIATION'?'badge-warn':'badge-red';
-    html+='<tr><td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+c.id+'</td><td>'+c.facility+'</td><td>'+c.ride+'</td><td style="font-size:11px">'+c.finding+'</td><td><span class="badge '+sevBadge+'">SEV '+c.severity+'</span></td><td>'+c.assignedTo+'</td><td style="font-family:var(--mono);font-size:11px">'+c.dueDate+'</td><td><span class="badge '+statusBadge+'">'+c.status+'</span></td>';
-    html+='<td>';
-    if(c.status==='OPEN')html+='<button class="btn-sm-action" onclick="openSubmitRemediation(\''+c.id+'\')">Submit Remediation</button>';
-    else if(c.status==='IN REMEDIATION')html+='<button class="btn-sm-action" onclick="openReviewClose(\''+c.id+'\')">Review &amp; Close</button>';
-    else html+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3)">Closed</span>';
-    html+='</td></tr>';
-  });
-  tbody.innerHTML=html;
-}
-function openSubmitRemediation(carId){document.getElementById('remediation-car-id').value=carId;document.getElementById('remediation-notes').value='';document.getElementById('remediation-photo').value='';openModal('modal-submit-remediation');}
-function confirmSubmitRemediation(){
-  var carId=document.getElementById('remediation-car-id').value;var notes=document.getElementById('remediation-notes').value.trim();if(!notes)return;
-  var cars=getCars();var car=cars.find(function(c){return c.id===carId;});
-  if(car){car.status='IN REMEDIATION';car.remediationNotes=notes;car.remediationPhoto=document.getElementById('remediation-photo').value.trim();}
-  saveCars(cars);closeModal('modal-submit-remediation');renderCars();
-}
-function openReviewClose(carId){
-  document.getElementById('close-car-id').value=carId;document.getElementById('close-car-notes').value='';
-  document.getElementById('close-car-modal-title').textContent='Review & Close CAR';
-  document.getElementById('close-car-reviewer-field').style.display='';
-  document.getElementById('close-car-reviewer').value='';
-  document.getElementById('close-car-submit-btn').textContent='Review & Close';
-  openModal('modal-close-car');
-}
-function confirmCloseCar(){
-  var carId=document.getElementById('close-car-id').value;var notes=document.getElementById('close-car-notes').value.trim();if(!notes)return;
-  var reviewer=document.getElementById('close-car-reviewer').value.trim();
-  var cars=getCars();var car=cars.find(function(c){return c.id===carId;});
-  if(car){car.status='CLOSED';car.resolution=notes;car.reviewer=reviewer||'';}
-  saveCars(cars);closeModal('modal-close-car');renderCars();
-}
-
-// ═══════════════════════════════════════
-//  JSBARCODE LOADER (Items 2+3)
-// ═══════════════════════════════════════
-function loadJsBarcode(cb){
-  if(typeof JsBarcode!=='undefined'){cb();return;}
-  var s=document.createElement('script');
-  s.src='https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js';
-  s.onload=cb;
-  s.onerror=function(){console.error('Failed to load JsBarcode');cb();};
-  document.head.appendChild(s);
-}
-function renderBarcodeSvg(text,w,h){
-  var svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  try{JsBarcode(svg,text,{format:'CODE128',width:w||2,height:h||50,displayValue:true,fontSize:12});}catch(e){svg.textContent=text;}
-  return svg.outerHTML;
-}
-
-// ═══════════════════════════════════════
-//  ITEM 1 — FACILITY BUILDER
-// ═══════════════════════════════════════
-var fbCurrentAttractions=[];
-var fbCurrentFileName='';
-var fbEditingProfileId=null;
-
-function fbFileSelected(input){if(input.files&&input.files[0])fbHandleFile(input.files[0]);}
-function fbSetStatus(msg,color){var el=document.getElementById('fb-status');if(el){el.textContent=msg;el.style.color=color||'var(--text3)';}}
-
-// Drag-and-drop for facility builder
-(function(){document.addEventListener('DOMContentLoaded',function(){
-  var dz=document.getElementById('fb-dropzone');if(!dz)return;
-  dz.addEventListener('dragover',function(e){e.preventDefault();e.stopPropagation();dz.style.borderColor='var(--accent)';dz.style.background='var(--accent-l)';});
-  dz.addEventListener('dragleave',function(e){e.preventDefault();e.stopPropagation();dz.style.borderColor='var(--border)';dz.style.background='var(--surface)';});
-  dz.addEventListener('drop',function(e){e.preventDefault();e.stopPropagation();dz.style.borderColor='var(--border)';dz.style.background='var(--surface)';if(e.dataTransfer.files.length>0)fbHandleFile(e.dataTransfer.files[0]);});
-});})();
-
-function fbHandleFile(file){
-  var name=file.name.toLowerCase();
-  fbCurrentFileName=file.name;
-  fbSetStatus('Parsing...','var(--accent)');
-  if(name.endsWith('.xlsx')||name.endsWith('.xls')){fbParseXlsx(file);}
-  else if(name.endsWith('.docx')||name.endsWith('.doc')){fbParseDocx(file);}
-  else if(name.endsWith('.pdf')){fbParsePdf(file);}
-  else if(name.endsWith('.txt')){fbParseTxt(file);}
-  else{fbSetStatus('Unsupported file type','var(--red)');}
-}
-
-function fbParseTxt(file){
-  var reader=new FileReader();
-  reader.onload=function(e){fbShowEditor(fbExtractAttractionsFromText(e.target.result));};
-  reader.readAsText(file);
-}
-function fbParseDocx(file){
-  var doIt=function(){var reader=new FileReader();reader.onload=function(e){mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(r){fbShowEditor(fbExtractAttractionsFromText(r.value));}).catch(function(){fbSetStatus('Could not parse document','var(--red)');});};reader.readAsArrayBuffer(file);};
-  if(typeof mammoth==='undefined'){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';s.onload=doIt;s.onerror=function(){fbSetStatus('Failed to load mammoth.js','var(--red)');};document.head.appendChild(s);}else doIt();
-}
-function fbParsePdf(file){
-  var doIt=function(){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';var reader=new FileReader();reader.onload=function(e){var arr=new Uint8Array(e.target.result);pdfjsLib.getDocument({data:arr}).promise.then(function(pdf){var pages=[];var done=0;for(var p=1;p<=pdf.numPages;p++){(function(pn){pdf.getPage(pn).then(function(page){page.getTextContent().then(function(c){pages[pn-1]=c.items.map(function(i){return i.str;}).join(' ');done++;if(done===pdf.numPages)fbShowEditor(fbExtractAttractionsFromText(pages.join('\n')));});})})(p);}}).catch(function(){fbSetStatus('Could not parse PDF','var(--red)');});};reader.readAsArrayBuffer(file);};
-  if(typeof pdfjsLib==='undefined'){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';s.onload=doIt;s.onerror=function(){fbSetStatus('Failed to load PDF.js','var(--red)');};document.head.appendChild(s);}else doIt();
-}
-function fbParseXlsx(file){
-  var doIt=function(){var reader=new FileReader();reader.onload=function(e){try{var wb=XLSX.read(e.target.result,{type:'array'});fbShowEditor(fbExtractAttractionsFromXlsx(wb));}catch(ex){fbSetStatus('Could not parse spreadsheet: '+ex.message,'var(--red)');}};reader.readAsArrayBuffer(file);};
-  if(typeof XLSX==='undefined'){fbSetStatus('Loading SheetJS...','var(--accent)');var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';s.onload=doIt;s.onerror=function(){fbSetStatus('Failed to load SheetJS','var(--red)');};document.head.appendChild(s);}else doIt();
-}
-
-function fbExtractAttractionsFromText(rawText){
-  var allLines=rawText.split(/\r?\n/).map(function(l){return l.trim();});
-  // Pass 1 — find a list-start delimiter and discard everything at/before it
-  var delimRe=/^(attractions?|rides?|equipment|devices?|amusements?|attractions list|ride list|equipment list)\s*:?\s*$/i;
-  var startIdx=-1;
-  for(var di=0;di<allLines.length;di++){if(delimRe.test(allLines[di])){startIdx=di;break;}}
-  var lines=(startIdx>=0?allLines.slice(startIdx+1):allLines).filter(function(l){return l.length>=3&&l.length<=80;});
-  var results=[];
-  var seen={};
-  // Existing skip patterns (kept)
-  var skipRe=/^(page|note|date|inspector|sign|comment|section|chapter|\d+\/\d+)/i;
-  // Pass 2 — tightened skip rules
-  var contactLabelRe=/^(contact|phone|email|manager|owner|operator|gm|underwriter)\s*:/i;
-  var facilityTailRe=/\b(FEC|Park|Parks|Center|Centre|Gardens|World|Adventure|Adventures|Land|Lands|Resort|Pier|Beach|Mountain|Valley|Springs|Place|Plaza|Arena|Stadium)\s*$/;
-  var stateRe=/,\s*(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\s*\d{0,5}\s*$/;
-  var headerColonRe=/^[A-Z][A-Za-z\s]{0,30}:\s*$/;
-  var addrRe=/^\d+\s+\w+.*\b(St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Dr|Drive|Ln|Lane|Way|Ct|Court|Pl|Place|Pkwy|Parkway|Hwy|Highway)\b/;
-  var phoneRe=/\(\d{3}\)\s*\d{3}-\d{4}|\d{3}-\d{3}-\d{4}/;
-  var emailRe=/\S+@\S+\.\S+/;
-  var dateRe=/\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}|\d{4}-\d{2}-\d{2}/;
-  // Leading-label stripper (applied after accept)
-  var labelStripRe=/^(attraction|ride|device|equipment)\s*:\s*/i;
-  lines.forEach(function(line){
-    if(skipRe.test(line))return;
-    if(contactLabelRe.test(line))return;
-    if(facilityTailRe.test(line))return;
-    if(stateRe.test(line))return;
-    if(headerColonRe.test(line))return;
-    if(addrRe.test(line))return;
-    if(phoneRe.test(line))return;
-    if(emailRe.test(line))return;
-    if(dateRe.test(line))return;
-    if(/^[A-Z]{2,}$/.test(line)&&line.length>15)return;
-    if(/_{3,}/.test(line))return;
-    if(/^\d+[\.\)]\s*$/.test(line))return;
-    var isAllCaps=line===line.toUpperCase();
-    if(isAllCaps&&line.split(/\s+/).length>6)return;
-    // Pass 3 — existing accept rules
-    if(/^[A-Z]/.test(line)||/^[\u2022\-\*]\s/.test(line)||/^\d+[\.\)]\s+\S/.test(line)){
-      // Pass 4 — clean, strip leading label, dedupe
-      var clean=line.replace(/^[\u2022\-\*\d\.\)]+\s*/,'').trim();
-      clean=clean.replace(labelStripRe,'').trim();
-      if(clean.length<3)return;
-      var key=clean.toLowerCase();
-      if(seen[key])return;
-      seen[key]=1;
-      results.push({name:clean,manufacturer:'',type:''});
-    }
-  });
-  return results;
-}
-
-function fbExtractAttractionsFromXlsx(workbook){
-  var results=[];
-  var sheet=workbook.Sheets[workbook.SheetNames[0]];
-  var data=XLSX.utils.sheet_to_json(sheet,{header:1});
-  if(data.length<2)return results;
-  var headerRow=-1;var colMap={name:-1,manufacturer:-1,type:-1};
-  for(var r=0;r<Math.min(data.length,10);r++){
-    var row=data[r];if(!row)continue;
-    for(var c=0;c<row.length;c++){
-      var val=String(row[c]||'').toLowerCase();
-      if(val.match(/\b(name|attraction|ride)\b/)&&colMap.name===-1){colMap.name=c;headerRow=r;}
-      if(val.match(/\b(manufacturer|mfg|make)\b/))colMap.manufacturer=c;
-      if(val.match(/\b(type|category|class)\b/))colMap.type=c;
-    }
-    if(headerRow>=0)break;
+    try { localStorage.setItem('pending_submissions', JSON.stringify(queue)); } catch(_){}
+    toast('Submit failed \u2014 saved locally. Will retry on next online.', 'err');
+    btn.disabled = false; btn.textContent = 'Submit Inspection \u2192';
   }
-  if(headerRow===-1&&data.length>1){colMap.name=0;headerRow=0;}
-  for(var i=headerRow+1;i<data.length;i++){
-    var row=data[i];if(!row)continue;
-    var n=String(row[colMap.name]||'').trim();
-    if(!n||n.length<2)continue;
-    results.push({name:n,manufacturer:colMap.manufacturer>=0?String(row[colMap.manufacturer]||'').trim():'',type:colMap.type>=0?String(row[colMap.type]||'').trim():''});
-  }
-  return results;
 }
 
-function fbMatchModule(attractionName,manufacturer){
-  var combined=((attractionName||'')+' '+(manufacturer||'')).toLowerCase();
-  var active=clGetAll().filter(function(c){return c.active;});
-  var keywords={'Carousel':['carousel','merry-go','merry go'],'Go-Karts':['kart','go-kart','gokart'],'Amusement Device':['coaster','roller'],'Aquatic':['water','slide','pool','lazy river','wave'],'FEC':['arcade','laser tag','trampoline','mini golf','putt'],'Grounds/Premise':['parking','grounds','walkway']};
-  // Manufacturer override: Chance → Carousel
-  if(/\bchance\b/i.test(combined)){var ch=active.filter(function(c){return c.type==='Carousel';});if(ch.length>0)return ch.map(function(c){return c.id;});}
-  var matches=[];
-  Object.keys(keywords).forEach(function(type){
-    keywords[type].forEach(function(kw){
-      if(combined.indexOf(kw)!==-1){
-        active.forEach(function(c){if(c.type===type&&matches.indexOf(c.id)===-1)matches.push(c.id);});
-      }
+async function nextCarSequence(){
+  try {
+    var data = await apiGet(CONFIG.TABLES.CARS);
+    var max = 0;
+    (data.records || []).forEach(function(r){
+      var id = r.fields['CAR ID'] || '';
+      var m = /CAR-\d{4}-(\d+)$/.exec(id);
+      if(m){ var n = parseInt(m[1], 10); if(n > max) max = n; }
     });
-  });
-  return matches;
+    return max + 1;
+  } catch(e){ return null; }
 }
 
-function fbShowEditor(attractions){
-  fbCurrentAttractions=attractions.map(function(a){
-    var mods=fbMatchModule(a.name,a.manufacturer);
-    return {name:a.name,manufacturer:a.manufacturer,type:a.type||'',moduleIds:mods,unmatched:mods.length===0};
-  });
-  fbEditingProfileId=null;
-  fbSetStatus('','var(--text3)');
-  document.getElementById('fb-editor').style.display='block';
-  document.getElementById('fb-facility-name').value='';
-  document.getElementById('fb-facility-location').value='';
-  fbRenderAttractionsEditor();
-}
-
-function fbRenderAttractionsEditor(){
-  var tbody=document.getElementById('fb-attractions-tbody');if(!tbody)return;
-  var mods=clGetAll().filter(function(c){return c.active;});
-  var html='';
-  fbCurrentAttractions.forEach(function(a,idx){
-    var modNames=a.moduleIds.map(function(mid){var m=mods.find(function(c){return c.id===mid;});return m?m.type+' '+m.version:'?';}).join(', ')||'<span style="color:var(--red)">Unmatched</span>';
-    html+='<tr'+(a.unmatched?' style="background:var(--red-bg)"':'')+'>';
-    html+='<td style="font-weight:600;color:var(--text)">'+escHtml(a.name)+'</td>';
-    html+='<td>'+escHtml(a.manufacturer)+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:10px">'+escHtml(a.type)+'</td>';
-    html+='<td style="font-size:11px">'+modNames+'</td>';
-    html+='<td><button class="btn-sm-action" onclick="fbRemoveAttraction('+idx+')">Remove</button></td></tr>';
-  });
-  tbody.innerHTML=html;
-}
-
-function fbRemoveAttraction(idx){fbCurrentAttractions.splice(idx,1);fbRenderAttractionsEditor();}
-
-function fbSaveCurrentProfile(){
-  var name=document.getElementById('fb-facility-name').value.trim();
-  var loc=document.getElementById('fb-facility-location').value.trim();
-  if(!name){fbSetStatus('Enter a facility name','var(--red)');return;}
-  if(fbCurrentAttractions.length===0){fbSetStatus('No attractions to save','var(--red)');return;}
-  var profiles=fbGetProfiles();
-  var profile={id:fbEditingProfileId||('fp-'+Date.now()),facilityName:name,location:loc,sourceFileName:fbCurrentFileName,parsedAt:new Date().toISOString().split('T')[0],createdBy:'Noel Rhodes',attractions:fbCurrentAttractions};
-  if(fbEditingProfileId){var idx=profiles.findIndex(function(p){return p.id===fbEditingProfileId;});if(idx>=0)profiles[idx]=profile;else profiles.push(profile);}
-  else{profiles.push(profile);}
-  fbSaveProfiles(profiles);
-  fbClearEditor();
-  fbRenderProfilesTable();
-  fbSetStatus('Profile saved','var(--good)');
-}
-
-function fbClearEditor(){
-  document.getElementById('fb-editor').style.display='none';
-  fbCurrentAttractions=[];fbEditingProfileId=null;fbCurrentFileName='';
-  document.getElementById('fb-file-input').value='';
-}
-
-function fbRenderProfilesTable(){
-  var profiles=fbGetProfiles();
-  var tbody=document.getElementById('fb-profiles-tbody');
-  var empty=document.getElementById('fb-empty');
-  var tbl=document.getElementById('fb-profiles-tbl');
-  if(!tbody)return;
-  if(profiles.length===0){if(tbl)tbl.style.display='none';if(empty)empty.style.display='block';return;}
-  if(tbl)tbl.style.display='';if(empty)empty.style.display='none';
-  var html='';
-  profiles.forEach(function(p){
-    html+='<tr>';
-    html+='<td style="font-weight:600;color:var(--text)">'+escHtml(p.facilityName)+'</td>';
-    html+='<td>'+escHtml(p.location)+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:11px;text-align:center">'+p.attractions.length+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:10px">'+escHtml(p.sourceFileName)+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:11px">'+p.parsedAt+'</td>';
-    // Field-update indicator
-    var fieldBadge='';
-    if(p.lastFieldUpdate&&p.fieldUpdateCount>0){
-      var daysSince=Math.floor((new Date()-new Date(p.lastFieldUpdate))/(86400000));
-      if(daysSince<=30)fieldBadge=' <span class="badge badge-warn">+'+p.fieldUpdateCount+' from field</span>';
-    }
-    html+='<td><button class="btn-sm-action" onclick="fbOpenProfile(\''+p.id+'\')">Edit</button>'+fieldBadge+'</td>';
-    html+='</tr>';
-  });
-  tbody.innerHTML=html;
-}
-
-function fbOpenProfile(profileId){
-  var profiles=fbGetProfiles();
-  var p=profiles.find(function(x){return x.id===profileId;});
-  if(!p)return;
-  fbEditingProfileId=p.id;
-  fbCurrentAttractions=p.attractions.slice();
-  fbCurrentFileName=p.sourceFileName;
-  document.getElementById('fb-editor').style.display='block';
-  document.getElementById('fb-facility-name').value=p.facilityName;
-  document.getElementById('fb-facility-location').value=p.location;
-  fbRenderAttractionsEditor();
-}
-
-function addDiscoveryToProfile(insId,discId){
-  var all=getInspections();var ins=all.find(function(r){return r.id===insId;});
-  if(!ins)return;
-  var disc=(ins.discoveredAttractions||[]).find(function(d){return d.id===discId;});
-  if(!disc)return;
-  var profiles=fbGetProfiles();
-  var profile=profiles.find(function(p){return p.facilityName===ins.facility;});
-  if(!profile){
-    if(!confirm('No facility profile exists for "'+ins.facility+'". Create one?'))return;
-    profile={id:'fp-'+Date.now(),facilityName:ins.facility,location:'',sourceFileName:'field-discovery',parsedAt:new Date().toISOString().split('T')[0],createdBy:'Noel Rhodes',attractions:[],lastFieldUpdate:null,fieldUpdateCount:0};
-    profiles.push(profile);
+async function drainPendingQueue(){
+  if(!navigator.onLine) return;
+  var queue = [];
+  try { queue = JSON.parse(localStorage.getItem('pending_submissions') || '[]'); } catch(_){ return; }
+  if(!queue.length) return;
+  var remaining = [];
+  for(var i = 0; i < queue.length; i++){
+    try {
+      await apiPatch(CONFIG.TABLES.INSPECTIONS, queue[i].inspectionRecordId, queue[i].update);
+    } catch(e){ remaining.push(queue[i]); }
   }
-  var mods=fbMatchModule(disc.name,disc.manufacturer);
-  profile.attractions.push({name:disc.name,manufacturer:disc.manufacturer||'',type:disc.type||'',moduleIds:mods,unmatched:mods.length===0});
-  profile.lastFieldUpdate=new Date().toISOString().split('T')[0];
-  profile.fieldUpdateCount=(profile.fieldUpdateCount||0)+1;
-  fbSaveProfiles(profiles);
-  toast('Added "'+disc.name+'" to '+ins.facility+' profile','ok');
+  try { localStorage.setItem('pending_submissions', JSON.stringify(remaining)); } catch(_){}
 }
 
-function toast(msg,type){
-  // Simple inline toast for loss-control (reuse if exists)
-  console.log('[TOAST] '+msg);
-  var existing=document.getElementById('lc-toast');
-  if(!existing){existing=document.createElement('div');existing.id='lc-toast';existing.style.cssText='position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:6px;font-family:var(--mono);font-size:11px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90vw;text-align:center';document.body.appendChild(existing);}
-  existing.textContent=msg;
-  existing.style.background=type==='ok'?'var(--good-bg)':'var(--red-bg)';
-  existing.style.color=type==='ok'?'var(--good)':'var(--red)';
-  existing.style.border='1px solid '+(type==='ok'?'var(--good-b)':'var(--red-b)');
-  existing.style.opacity='1';
-  setTimeout(function(){existing.style.opacity='0';},3000);
+function backToAssignments(){
+  state.current = null;
+  loadAssignments();
 }
 
-function prefillModulesFromProfile(){
-  var sel=document.getElementById('new-insp-profile');
-  var modSel=document.getElementById('new-insp-modules');
-  var facInput=document.getElementById('new-insp-facility');
-  if(!sel||!modSel)return;
-  var profId=sel.value;
-  if(!profId)return;
-  var profiles=fbGetProfiles();
-  var p=profiles.find(function(x){return x.id===profId;});
-  if(!p)return;
-  if(facInput&&!facInput.value.trim())facInput.value=p.facilityName;
-  var allModIds={};
-  p.attractions.forEach(function(a){a.moduleIds.forEach(function(mid){allModIds[mid]=true;});});
-  for(var i=0;i<modSel.options.length;i++){
-    modSel.options[i].selected=!!allModIds[modSel.options[i].value];
-  }
-}
-
-// ═══════════════════════════════════════
-//  ITEM 2 — MAIL-BACK
-// ═══════════════════════════════════════
-function switchMbSubtab(which){
-  document.querySelectorAll('#mb-subtabs .subtab').forEach(function(t){t.classList.remove('active');});
-  if(which==='outbound'){document.getElementById('mb-subtab-outbound').style.display='';document.getElementById('mb-subtab-inbound').style.display='none';document.querySelectorAll('#mb-subtabs .subtab')[0].classList.add('active');}
-  else{document.getElementById('mb-subtab-outbound').style.display='none';document.getElementById('mb-subtab-inbound').style.display='';document.querySelectorAll('#mb-subtabs .subtab')[1].classList.add('active');}
-}
-
-function renderMailback(){
-  var all=getInspections().filter(function(r){return r.status==='SCHEDULED'||r.status==='ASSIGNED';});
-  var tbody=document.getElementById('mb-outbound-tbody');if(!tbody)return;
-  var mods=clGetAll();
-  var html='';
-  all.forEach(function(ins){
-    var modNames=(ins.checklistModules||[]).map(function(mid){var m=mods.find(function(c){return c.id===mid;});return m?m.type+' '+m.version:'—';}).join(', ')||ins.form;
-    html+='<tr><td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+ins.id+'</td><td>'+ins.facility+'</td><td>'+ins.inspector+'</td><td style="font-family:var(--mono);font-size:11px">'+formatDate(ins.date)+'</td><td style="font-size:11px">'+modNames+'</td><td><div style="display:flex;gap:6px"><button class="btn-sm-action" onclick="mbGenerateOutboundPacket(\''+ins.id+'\')">Print Packet</button><button class="btn-sm-action" onclick="mbMarkMailed(\''+ins.id+'\')">Mark Mailed</button></div></td></tr>';
-  });
-  if(all.length===0)html='<tr><td colspan="6" style="text-align:center;color:var(--text3);font-family:var(--mono);font-size:10px;padding:20px">No scheduled/assigned inspections</td></tr>';
-  tbody.innerHTML=html;
-}
-
-function mbMarkMailed(insId){
-  var all=getInspections();var ins=all.find(function(r){return r.id===insId;});
-  if(!ins)return;
-  ins.status='MAIL OUT';
-  saveInspections(all);
-  fireStatusEmail(ins,'MAIL OUT');
-  renderMailback();
-  toast('Marked as mailed: '+insId+' → status MAIL OUT','ok');
-}
-
-function mbGenerateOutboundPacket(insId){
-  loadJsBarcode(function(){
-    var ins=getInspections().find(function(r){return r.id===insId;});if(!ins)return;
-    var mods=(ins.checklistModules||[]).map(function(mid){return clGetAll().find(function(c){return c.id===mid;});}).filter(Boolean);
-    var pa=document.getElementById('printArea');
-    var bc=renderBarcodeSvg(ins.id,2,60);
-    var bcSm=renderBarcodeSvg(ins.id,1,30);
-    // Severity legend
-    var sevLegend='<table style="margin-top:10px;font-size:10px"><tr><th>Code</th><th>Meaning</th></tr><tr><td>SEV 1</td><td>Locked out, cannot be used</td></tr><tr><td>SEV 2</td><td>Carrier notification required</td></tr><tr><td>SEV 3</td><td>Correct within 30 days</td></tr><tr><td>SEV 4</td><td>Correct within agreed timeframe</td></tr><tr><td>SEV 5</td><td>Recommendation only</td></tr></table>';
-    var html='<div id="printArea">';
-    // Cover page
-    html+='<div class="cover-page"><h2>MAIL-BACK INSPECTION PACKET</h2><div class="barcode-lg">'+bc+'</div>';
-    html+='<table style="margin:16px 0"><tr><td><strong>Facility:</strong> '+escHtml(ins.facility)+'</td></tr><tr><td><strong>Inspector:</strong> '+escHtml(ins.inspector)+'</td></tr><tr><td><strong>Due Date:</strong> '+ins.date+'</td></tr><tr><td><strong>Inspection ID:</strong> '+ins.id+'</td></tr></table>';
-    html+=sevLegend;
-    html+='<div style="margin-top:20px;padding:12px;border:2px solid #000"><strong>MAIL COMPLETED PACKET TO:</strong><br>Noel Rhodes<br>[Address Placeholder]<br>Amusement Standards</div>';
-    html+='</div>';
-    // Module pages
-    if(mods.length>0){
-      mods.forEach(function(mod){
-        html+='<div class="page-break"><h3>'+escHtml(mod.type)+' — '+mod.version+'</h3>';
-        mod.sections.forEach(function(sec){
-          html+='<h3>'+escHtml(sec.name)+'</h3><table><thead><tr><th style="width:55%">Item</th><th style="width:15%">YES / NO / N/A</th><th style="width:30%">Comments</th></tr></thead><tbody>';
-          sec.items.forEach(function(item){
-            html+='<tr><td>'+escHtml(item)+'</td><td class="bubble" style="text-align:center">\u25CB YES&nbsp;&nbsp;\u25CB NO&nbsp;&nbsp;\u25CB N/A</td><td></td></tr>';
-          });
-          html+='</tbody></table>';
-        });
-        html+='<div style="margin-top:8px"><strong>Section Comments:</strong> ________________________________________</div></div>';
-      });
-    }else{
-      html+='<div class="page-break"><h3>'+escHtml(ins.form)+'</h3><p>No checklist modules attached. Use blank inspection form.</p></div>';
-    }
-    // Attractions Not Listed page
-    html+='<div class="page-break">';
-    html+='<h2>ATTRACTIONS FOUND ON SITE NOT LISTED IN THIS PACKET</h2>';
-    html+='<p style="font-size:11px;margin-bottom:16px;line-height:1.5">Use this page to flag any ride, attraction, or unit you encountered that wasn\'t on the inspection sheets above. The office will follow up.</p>';
-    for(var ai=1;ai<=4;ai++){
-      html+='<div style="border:1px solid #999;border-radius:4px;padding:10px;margin-bottom:12px">';
-      html+='<div style="font-weight:700;margin-bottom:6px">'+ai+'.</div>';
-      html+='<div style="margin-bottom:4px"><strong>Name:</strong> ___________________________________________________________</div>';
-      html+='<div style="margin-bottom:4px"><strong>Manufacturer:</strong> ________________________&nbsp;&nbsp;&nbsp;&nbsp;<strong>Type:</strong> ________________________</div>';
-      html+='<div style="margin-bottom:4px"><strong>Inspected today?</strong>&nbsp;&nbsp;\u25CB YES&nbsp;&nbsp;\u25CB NO</div>';
-      html+='<div style="margin-bottom:2px"><strong>If YES, findings:</strong></div>';
-      html+='<div style="border-bottom:1px solid #999;margin-bottom:4px;height:14px"></div>';
-      html+='<div style="border-bottom:1px solid #999;margin-bottom:4px;height:14px"></div>';
-      html+='<div style="border-bottom:1px solid #999;margin-bottom:6px;height:14px"></div>';
-      html+='<div><strong>Severity (circle one):</strong>&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;&nbsp;N/A</div>';
-      html+='</div>';
-    }
-    html+='<div style="margin-top:12px;font-size:9px;text-align:center">'+bcSm+'<br>'+ins.id+'</div>';
-    html+='</div>';
-    // Footer note
-    html+='<div style="margin-top:20px;font-size:9px;text-align:center">'+bcSm+'<br>'+ins.id+'</div>';
-    html+='</div>';
-    pa.innerHTML=html;pa.style.display='block';
-    setTimeout(function(){window.print();pa.style.display='none';},200);
-  });
-}
-
-function mbChecksum(insId){
-  var sum=0;for(var i=0;i<insId.length;i++)sum+=insId.charCodeAt(i);
-  return (sum%256).toString(16).padStart(2,'0');
-}
-
-function mbValidateScan(){
-  var input=document.getElementById('mb-scan-input');
-  var errEl=document.getElementById('mb-scan-error');
-  var resultEl=document.getElementById('mb-scan-result');
-  if(!input)return;
-  errEl.textContent='';resultEl.style.display='none';
-  var lines=input.value.trim().split('\n');
-  if(lines.length===0||!lines[0]){errEl.textContent='No data entered';return;}
-  var parts=lines[0].split('|');
-  if(parts.length<3){errEl.textContent='First line must be: INS-ID|page|checksum';return;}
-  var insId=parts[0].trim();var page=parts[1].trim();var checksum=parts[2].trim();
-  var expected=mbChecksum(insId);
-  if(checksum!==expected){errEl.textContent='Checksum mismatch — packet may be tampered or wrong file (expected '+expected+', got '+checksum+')';return;}
-  var ins=getInspections().find(function(r){return r.id===insId;});
-  if(!ins){errEl.textContent='No inspection found with ID: '+insId;return;}
-  // Save to inbound log
-  var inbound=mbGetInbound();
-  inbound.push({scanId:'scan-'+Date.now(),insId:insId,page:page,checksum:checksum,validatedAt:new Date().toISOString(),applied:false,rawText:input.value});
-  mbSaveInbound(inbound);
-  // Show result
-  resultEl.style.display='block';
-  resultEl.innerHTML='<div class="card" style="border-top:3px solid var(--good)"><div class="card-label">Match Found</div><div class="card-title">'+ins.id+' — '+escHtml(ins.facility)+'</div><div class="card-body">Inspector: '+escHtml(ins.inspector)+' · Date: '+ins.date+' · Status: '+ins.status+'<br>Page: '+escHtml(page)+' · Checksum: '+checksum+' (valid)</div><div style="margin-top:10px"><button class="btn-primary" onclick="mbApplyScan(\''+ins.id+'\')">Apply to Inspection (Stub)</button></div></div>';
-}
-
-function mbApplyScan(insId){
-  var all=getInspections();var ins=all.find(function(r){return r.id===insId;});
-  if(!ins)return;
-  (ins.items||[]).forEach(function(it){if(!it.disposition){it.disposition='PASS';it.explanation='Submitted via mail-back scan';}});
-  // Parse DISCOVERY lines from scan text
-  var scanInput=document.getElementById('mb-scan-input');
-  var discCount=0;
-  if(scanInput){
-    var scanLines=scanInput.value.split('\n');
-    scanLines.forEach(function(line){
-      var trimmed=line.trim();
-      if(!/^DISCOVERY:\s*/i.test(trimmed))return;
-      var payload=trimmed.replace(/^DISCOVERY:\s*/i,'');
-      var parts=payload.split('|').map(function(p){return p.trim();});
-      if(parts.length<3||!parts[0])return;
-      var dName=parts[0];var dMfg=parts[1]||'';var dType=parts[2]||'Other';
-      var dInspected=(parts[3]||'').toLowerCase()==='yes';
-      var dSev=parseInt(parts[4])||null;
-      var dFindings=parts[5]||'';
-      if(!ins.discoveredAttractions)ins.discoveredAttractions=[];
-      ins.discoveredAttractions.push({id:'disc-mb-'+Date.now()+'-'+(discCount++),name:dName,manufacturer:dMfg,type:dType,inspectedToday:dInspected,checklistMode:dInspected?'adhoc':null,moduleKey:null,adhocFindings:dFindings,adhocAnswer:dInspected?(dSev?'no':'yes'):null,adhocSeverity:dSev,addedInField:true});
-    });
-  }
-  ins.status='SUBMITTED';
-  saveInspections(all);
-  autoGenerateCars(ins);
-  fireStatusEmail(ins,'SUBMITTED');
-  // Update inbound log
-  var inbound=mbGetInbound();inbound.forEach(function(e){if(e.insId===insId)e.applied=true;});mbSaveInbound(inbound);
-  var resultEl=document.getElementById('mb-scan-result');
-  var discMsg=discCount>0?' · '+discCount+' discoveries parsed':'';
-  if(resultEl)resultEl.innerHTML='<div class="card" style="border-top:3px solid var(--good)"><div class="card-label">Applied</div><div class="card-body" style="color:var(--good)">Mail-back applied to '+insId+discMsg+' — real OCR pending</div></div>';
-}
-
-// ═══════════════════════════════════════
-//  ITEM 3 — CRASH KIT (per-inspection)
-// ═══════════════════════════════════════
-function generateCrashKit(inspectionId){
-  loadJsBarcode(function(){
-    var ins=getInspections().find(function(r){return r.id===inspectionId;});if(!ins)return;
-    var fac=FACILITIES_DATA.find(function(f){return f.name===ins.facility;});
-    var mods=(ins.checklistModules||[]).map(function(mid){return clGetAll().find(function(c){return c.id===mid;});}).filter(Boolean);
-    var pa=document.getElementById('printArea');
-    var bc=renderBarcodeSvg(ins.id,2,60);
-    var bcSm=renderBarcodeSvg(ins.id,1,30);
-    var facAddr=fac?(fac.address||''):'';
-    var modSummary=mods.map(function(m){return m.type+' '+m.version;}).join(', ')||ins.form;
-    var html='<div id="printArea">';
-    // Cover page
-    html+='<div class="cover-page">';
-    html+='<h2>CRASH KIT — FIELD INSPECTION PACKET</h2>';
-    html+='<div class="barcode-lg">'+bc+'</div>';
-    html+='<table style="margin:12px 0"><tr><td><strong>Facility:</strong> '+escHtml(ins.facility)+'</td></tr>';
-    if(facAddr)html+='<tr><td><strong>Address:</strong> '+escHtml(facAddr)+'</td></tr>';
-    html+='<tr><td><strong>Inspector:</strong> '+escHtml(ins.inspector)+'</td></tr>';
-    html+='<tr><td><strong>Date:</strong> '+ins.date+'</td></tr>';
-    html+='<tr><td><strong>Modules:</strong> '+escHtml(modSummary)+'</td></tr></table>';
-    // Severity legend
-    html+='<table style="margin-top:10px;font-size:10px"><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody>';
-    html+='<tr><td>SEV 1</td><td>Locked out, cannot be used</td></tr>';
-    html+='<tr><td>SEV 2</td><td>Carrier notification required</td></tr>';
-    html+='<tr><td>SEV 3</td><td>Correct within 30 days before next setup or use</td></tr>';
-    html+='<tr><td>SEV 4</td><td>Correct within agreed timeframe</td></tr>';
-    html+='<tr><td>SEV 5</td><td>Recommendation only</td></tr></tbody></table>';
-    html+='</div>';
-    // Module pages
-    mods.forEach(function(mod){
-      html+='<div class="page-break"><h3>'+escHtml(mod.type)+' — '+mod.version+'</h3>';
-      mod.sections.forEach(function(sec,si){
-        html+='<h3>'+(si+1)+'. '+escHtml(sec.name)+'</h3>';
-        html+='<table><thead><tr><th style="width:5%">#</th><th style="width:55%">Item</th><th style="width:8%">Pass</th><th style="width:8%">Fail</th><th style="width:8%">N/A</th><th style="width:16%">Notes</th></tr></thead><tbody>';
-        sec.items.forEach(function(item,ii){
-          html+='<tr><td>'+(ii+1)+'</td><td>'+escHtml(item)+'</td><td style="text-align:center"><span class="print-checkbox"></span></td><td style="text-align:center"><span class="print-checkbox"></span></td><td style="text-align:center"><span class="print-checkbox"></span></td><td></td></tr>';
-        });
-        html+='</tbody></table>';
-        html+='<div style="margin-top:6px"><strong>Section Comments:</strong> _____________________________________________</div>';
-      });
-      html+='</div>';
-    });
-    // Recommendations page
-    html+='<div class="page-break"><h3>Recommendations</h3><table><thead><tr><th>#</th><th>Item</th><th>Severity</th><th>Description</th><th>Due Date</th></tr></thead><tbody>';
-    for(var ri=1;ri<=5;ri++){html+='<tr><td>'+ri+'</td><td></td><td></td><td></td><td></td></tr>';}
-    html+='</tbody></table></div>';
-    // Sign-off page
-    html+='<div class="page-break">';
-    html+='<div style="margin-top:30px;margin-bottom:20px;font-style:italic;line-height:1.5">I have visually inspected the '+escHtml(ins.facility)+' as indicated above and have checked all items as directed by the above checklist. I certify that by my signature below this inspection is complete.</div>';
-    html+='<table style="border:none"><tr><td style="border:none;padding:4px 0"><strong>Inspector Name (Print):</strong> _________________________________</td></tr>';
-    html+='<tr><td style="border:none;padding:4px 0"><strong>Inspector Signature:</strong> _________________________________&nbsp;&nbsp;&nbsp;&nbsp;<strong>Date:</strong> _____________</td></tr></table>';
-    html+='<div style="margin-top:20px;font-size:9px;text-align:center">'+bcSm+'<br>'+ins.id+'</div>';
-    html+='</div>';
-    html+='</div>';
-    pa.innerHTML=html;pa.style.display='block';
-    setTimeout(function(){window.print();pa.style.display='none';},200);
-  });
-}
-
-// ═══════════════════════════════════════
-//  ITEM 4 — COEXISTENCE HELPERS
-// ═══════════════════════════════════════
-function queueOfflineSync(payload){
-  var q=LS.get('as360_pending_sync',[]);
-  q.push(payload);
-  LS.set('as360_pending_sync',q);
-}
-
-function updateSyncIndicator(state){
-  var el=document.getElementById('sync-indicator');if(!el)return;
-  if(state==='synced'){el.style.color='var(--good)';el.innerHTML='\u2B24 Synced '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});}
-  else if(state==='pending'){var q=LS.get('as360_pending_sync',[]);el.style.color='var(--warn)';el.innerHTML='\u2B24 '+q.length+' pending';}
-  else{el.style.color='var(--red)';el.innerHTML='\u2B24 Offline';}
-}
-
-function retryPendingSync(){
-  var q=LS.get('as360_pending_sync',[]);
-  if(q.length===0){updateSyncIndicator('synced');return;}
-  updateSyncIndicator('pending');
-  var remaining=[];var done=0;
-  q.forEach(function(payload){
-    fetch(WORKER_URL+'/'+ASSIGNMENTS_TABLE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(function(r){
-      if(!r.ok)remaining.push(payload);
-      done++;if(done===q.length){LS.set('as360_pending_sync',remaining);updateSyncIndicator(remaining.length>0?'pending':'synced');}
-    }).catch(function(){
-      remaining.push(payload);done++;if(done===q.length){LS.set('as360_pending_sync',remaining);updateSyncIndicator('pending');}
-    });
-  });
-}
-
-// ═══════════════════════════════════════
-//  HELPERS
-// ═══════════════════════════════════════
-function escHtml(str){var d=document.createElement('div');d.textContent=str;return d.innerHTML;}
-function escAttr(str){return str.replace(/'/g,"\\'").replace(/"/g,'&quot;');}
-function formatDate(iso){var d=new Date(iso+'T00:00:00');var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();}
-function formatDateShort(d){var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return months[d.getMonth()]+' '+d.getDate();}
-
-// ═══════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════
-document.addEventListener('DOMContentLoaded',function(){renderInspections();clRenderTable();retryPendingSync();});
+// Startup
+if(navigator.onLine) drainPendingQueue();
+window.addEventListener('online', drainPendingQueue);
 </script>
-
-</body></html>
+</body>
+</html>
