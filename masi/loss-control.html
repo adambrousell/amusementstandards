@@ -176,12 +176,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
   <div class="tabs" id="tabs">
     <div class="tab active" onclick="showView('inspections')">Inspections</div>
     <div class="tab" onclick="showView('facilities')">Facilities</div>
-    <div class="tab" onclick="showView('facility-builder')">Facility Builder</div>
     <div class="tab" onclick="showView('checklists')">Checklists</div>
     <div class="tab" onclick="showView('inspectors')">Inspectors</div>
-    <div class="tab" onclick="showView('schedule')">Schedule</div>
     <div class="tab" onclick="showView('reports')">Reports</div>
-    <div class="tab" onclick="showView('mailback')">Mail-Back</div>
   </div>
 </div>
 
@@ -193,29 +190,54 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     <div class="ttl">Inspections</div>
     <div class="body">Active and completed field inspections. Use filters to narrow by status, inspector, or checklist type.</div>
     <div id="inspections-stats" class="stat-row"></div>
-    <div class="filter-bar" id="inspections-filter-bar">
-      <select id="filter-status" onchange="renderInspections()">
-        <option value="">All Statuses</option>
-        <option value="SCHEDULED">Scheduled</option>
-        <option value="ASSIGNED">Assigned</option>
-        <option value="IN FIELD">In Field</option>
-        <option value="SUBMITTED">Submitted</option>
-        <option value="UNDER REVIEW">Under Review</option>
-        <option value="DELIVERED">Delivered</option>
-        <option value="AWAITING REMEDIATION">Awaiting Remediation</option>
-        <option value="CLOSED">Closed</option>
-        <option value="OVERDUE">Overdue</option>
-      </select>
-      <select id="filter-inspector" onchange="renderInspections()"></select>
-      <select id="filter-form" onchange="renderInspections()"></select>
+    <div class="subtab-bar" id="insp-mode-tabs" style="margin-bottom:12px">
+      <div class="subtab active" onclick="switchInspMode('list')">List</div>
+      <div class="subtab" onclick="switchInspMode('calendar')">Calendar</div>
     </div>
-    <table class="tbl" id="inspections-tbl">
-      <thead><tr><th>Inspection ID</th><th>Facility</th><th>Inspector</th><th>Date</th><th>Checklist</th><th>Status</th><th></th></tr></thead>
-      <tbody id="inspectionTable"></tbody>
-    </table>
-    <div class="note" style="margin-top:16px">
-      <div class="note-hd">Inspection ID Format</div>
-      <div class="note-body">INS-YYYY-NNNN — auto-generated on dispatch. Each inspection maps to one or more checklist modules, one facility, one inspector.</div>
+    <div id="insp-mode-list">
+      <div class="filter-bar" id="inspections-filter-bar">
+        <select id="filter-status" onchange="renderInspections()">
+          <option value="">All Statuses</option>
+          <option value="SCHEDULED">Scheduled</option>
+          <option value="ASSIGNED">Assigned</option>
+          <option value="MAIL OUT">Mail Out</option>
+          <option value="IN FIELD">In Field</option>
+          <option value="SUBMITTED">Submitted</option>
+          <option value="UNDER REVIEW">Under Review</option>
+          <option value="DELIVERED">Delivered</option>
+          <option value="AWAITING REMEDIATION">Awaiting Remediation</option>
+          <option value="CLOSED">Closed</option>
+          <option value="OVERDUE">Overdue</option>
+        </select>
+        <select id="filter-inspector" onchange="renderInspections()"></select>
+        <select id="filter-form" onchange="renderInspections()"></select>
+      </div>
+      <table class="tbl" id="inspections-tbl">
+        <thead><tr><th>Inspection ID</th><th>Facility</th><th>Inspector</th><th>Date</th><th>Checklist</th><th>Status</th><th></th></tr></thead>
+        <tbody id="inspectionTable"></tbody>
+      </table>
+      <div class="note" style="margin-top:16px">
+        <div class="note-hd">Inspection ID Format</div>
+        <div class="note-body">INS-YYYY-NNNN — auto-generated on dispatch. Each inspection maps to one or more checklist modules, one facility, one inspector.</div>
+      </div>
+    </div>
+    <div id="insp-mode-calendar" style="display:none">
+      <div class="ey">Planning</div>
+      <div class="ttl">Schedule</div>
+      <div class="body">Weekly inspection calendar. Cards are generated from the inspections data.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn-sm-action" onclick="schedWeekNav(-1)">&larr; Previous</button>
+          <span id="sched-week-label" style="font-family:var(--mono);font-size:11px;color:var(--text);font-weight:600"></span>
+          <button class="btn-sm-action" onclick="schedWeekNav(1)">Next &rarr;</button>
+        </div>
+        <button class="btn-primary" onclick="openModal('modal-new-inspection')">New Inspection</button>
+      </div>
+      <div id="sched-calendar"></div>
+      <div class="note" style="margin-top:16px">
+        <div class="note-hd">Scheduling</div>
+        <div class="note-body">Inspections are prioritized by policy renewal date and days since last inspection. The system suggests dispatch order; the team confirms or overrides.</div>
+      </div>
     </div>
   </div>
 
@@ -229,57 +251,59 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
         <div class="note-hd">PILOT DATA</div>
         <div class="note-body">Facility records are pre-populated for pilot scoping. Live data connects once Inspector_Assignments are linked to facility records.</div>
       </div>
+      <div style="margin-bottom:12px"><button class="btn-primary" onclick="fbOpenBuilder()">+ New Facility</button></div>
       <table class="tbl" id="facilitiesTable"></table>
     </div>
     <div id="facility-detail-view" style="display:none">
       <div id="facility-detail-content"></div>
     </div>
+    <div id="facility-builder-view" style="display:none">
+      <div class="ey">Intake</div>
+      <div class="ttl">Facility Builder</div>
+      <div class="body">Upload a facility document (SOV worksheet, intake form, or attraction list) to auto-build a Facility Profile. Each attraction is matched to active checklist modules for inspection dispatch.</div>
+      <div id="fb-dropzone" style="border:2px dashed var(--border);border-radius:6px;padding:36px 16px;text-align:center;cursor:pointer;transition:all .15s;background:var(--surface);min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:14px" onclick="document.getElementById('fb-file-input').click()">
+        <div style="font-family:var(--mono);font-size:24px;margin-bottom:8px;color:var(--text3);line-height:1">+</div>
+        <div style="font-size:14px;color:var(--text);font-weight:600">Drop facility document here</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px">.xlsx, .docx, .pdf, .txt accepted</div>
+        <input type="file" id="fb-file-input" accept=".xlsx,.docx,.pdf,.txt" style="display:none" onchange="fbFileSelected(this)">
+      </div>
+      <div id="fb-status" style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:8px;min-height:0;text-align:center"></div>
+      <!-- Editor (shown after parse) -->
+      <div id="fb-editor" style="display:none;margin-top:14px">
+        <div class="card" style="border-top:3px solid var(--accent)">
+          <div class="card-label">Facility Profile Editor</div>
+          <div style="display:flex;gap:10px;margin-bottom:10px">
+            <div style="flex:1"><label style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:4px">Facility Name</label><input type="text" id="fb-facility-name" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:13px;color:var(--text);outline:none" placeholder="e.g. Thunder Road FEC"></div>
+            <div style="flex:1"><label style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:4px">Location</label><input type="text" id="fb-facility-location" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:13px;color:var(--text);outline:none" placeholder="e.g. Tampa, FL"></div>
+          </div>
+          <table class="tbl" id="fb-attractions-tbl">
+            <thead><tr><th>Attraction</th><th>Manufacturer</th><th>Type</th><th>Matched Modules</th><th></th></tr></thead>
+            <tbody id="fb-attractions-tbody"></tbody>
+          </table>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn-primary" onclick="fbSaveCurrentProfile();fbCloseBuilder()">Save Facility Profile</button>
+            <button class="btn-secondary" onclick="fbClearEditor();fbCloseBuilder()">Discard</button>
+          </div>
+        </div>
+      </div>
+      <!-- Saved Profiles -->
+      <div style="margin-top:20px">
+        <div class="ey">Saved Profiles</div>
+        <table class="tbl" id="fb-profiles-tbl">
+          <thead><tr><th>Facility</th><th>Location</th><th>Attractions</th><th>Source File</th><th>Created</th><th></th></tr></thead>
+          <tbody id="fb-profiles-tbody"></tbody>
+        </table>
+        <div id="fb-empty" class="empty-state" style="display:none">
+          <span class="empty-state-icon">---</span>
+          <div class="empty-state-title">No Facility Profiles</div>
+          <div class="empty-state-body">Upload a facility document above to create your first profile.</div>
+        </div>
+      </div>
+      <div style="margin-top:16px"><button class="btn-secondary" onclick="fbCloseBuilder()">&larr; Back to Facilities</button></div>
+    </div>
   </div>
 
-  <!-- FACILITY BUILDER -->
-  <div class="panel" id="view-facility-builder" style="display:none;">
-    <div class="ey">Intake</div>
-    <div class="ttl">Facility Builder</div>
-    <div class="body">Upload a facility document (SOV worksheet, intake form, or attraction list) to auto-build a Facility Profile. Each attraction is matched to active checklist modules for inspection dispatch.</div>
-    <div id="fb-dropzone" style="border:2px dashed var(--border);border-radius:6px;padding:36px 16px;text-align:center;cursor:pointer;transition:all .15s;background:var(--surface);min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:14px" onclick="document.getElementById('fb-file-input').click()">
-      <div style="font-family:var(--mono);font-size:24px;margin-bottom:8px;color:var(--text3);line-height:1">+</div>
-      <div style="font-size:14px;color:var(--text);font-weight:600">Drop facility document here</div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px">.xlsx, .docx, .pdf, .txt accepted</div>
-      <input type="file" id="fb-file-input" accept=".xlsx,.docx,.pdf,.txt" style="display:none" onchange="fbFileSelected(this)">
-    </div>
-    <div id="fb-status" style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:8px;min-height:0;text-align:center"></div>
-    <!-- Editor (shown after parse) -->
-    <div id="fb-editor" style="display:none;margin-top:14px">
-      <div class="card" style="border-top:3px solid var(--accent)">
-        <div class="card-label">Facility Profile Editor</div>
-        <div style="display:flex;gap:10px;margin-bottom:10px">
-          <div style="flex:1"><label style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:4px">Facility Name</label><input type="text" id="fb-facility-name" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:13px;color:var(--text);outline:none" placeholder="e.g. Thunder Road FEC"></div>
-          <div style="flex:1"><label style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);display:block;margin-bottom:4px">Location</label><input type="text" id="fb-facility-location" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:13px;color:var(--text);outline:none" placeholder="e.g. Tampa, FL"></div>
-        </div>
-        <table class="tbl" id="fb-attractions-tbl">
-          <thead><tr><th>Attraction</th><th>Manufacturer</th><th>Type</th><th>Matched Modules</th><th></th></tr></thead>
-          <tbody id="fb-attractions-tbody"></tbody>
-        </table>
-        <div style="display:flex;gap:8px;margin-top:12px">
-          <button class="btn-primary" onclick="fbSaveCurrentProfile()">Save Facility Profile</button>
-          <button class="btn-secondary" onclick="fbClearEditor()">Discard</button>
-        </div>
-      </div>
-    </div>
-    <!-- Saved Profiles -->
-    <div style="margin-top:20px">
-      <div class="ey">Saved Profiles</div>
-      <table class="tbl" id="fb-profiles-tbl">
-        <thead><tr><th>Facility</th><th>Location</th><th>Attractions</th><th>Source File</th><th>Created</th><th></th></tr></thead>
-        <tbody id="fb-profiles-tbody"></tbody>
-      </table>
-      <div id="fb-empty" class="empty-state" style="display:none">
-        <span class="empty-state-icon">---</span>
-        <div class="empty-state-title">No Facility Profiles</div>
-        <div class="empty-state-body">Upload a facility document above to create your first profile.</div>
-      </div>
-    </div>
-  </div>
+  <!-- FACILITY BUILDER: relocated into #view-facilities as #facility-builder-view -->
 
   <!-- CHECKLISTS -->
   <div class="panel" id="view-checklists" style="display:none;">
@@ -360,11 +384,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     <div class="subtab-bar" id="insp-subtabs">
       <div class="subtab active" onclick="switchInspSubtab('inspectors')">Inspectors</div>
       <div class="subtab" onclick="switchInspSubtab('vendors')">Vendors</div>
+      <div class="subtab" onclick="switchInspSubtab('mailback')">Mail-Back</div>
     </div>
     <div id="insp-subtab-inspectors">
       <div style="margin-bottom:12px"><button class="btn-primary" onclick="openModal('modal-add-inspector')">Add Inspector</button></div>
       <table class="tbl" id="inspectors-tbl">
-        <thead><tr><th>Name</th><th>Territory</th><th>Certifications</th><th>Credential Expiry</th><th>Vendor</th><th>Active Inspections</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Name</th><th>Territory</th><th>Certifications</th><th>Credential Expiry</th><th>Vendor</th><th>Portal Access</th><th>Delivery Mode</th><th>Active Inspections</th><th>Status</th><th></th></tr></thead>
         <tbody id="inspectorTable"></tbody>
       </table>
     </div>
@@ -378,27 +403,38 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
       <div class="note-hd">Credentialing</div>
       <div class="note-body">All inspectors carry current NAARSO, AIMS, or equivalent certification. Credential verification is on file and available to MASI loss control on request.</div>
     </div>
+    <div id="insp-subtab-mailback" style="display:none">
+      <div class="ey">Paper Operations</div>
+      <div class="ttl">Mail-Back</div>
+      <div class="body">Generate printable mail-back packets for paper-based inspections. Barcoded cover sheets enable scan-back reassembly.</div>
+      <div class="subtab-bar" id="mb-subtabs">
+        <div class="subtab active" onclick="switchMbSubtab('outbound')">Outbound</div>
+        <div class="subtab" onclick="switchMbSubtab('inbound')">Inbound</div>
+      </div>
+      <div id="mb-subtab-outbound">
+        <div class="ey">Outbound Packets</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:12px">Inspections available for mail-back packet generation.</div>
+        <table class="tbl">
+          <thead><tr><th>ID</th><th>Facility</th><th>Inspector</th><th>Date</th><th>Modules</th><th></th></tr></thead>
+          <tbody id="mb-outbound-tbody"></tbody>
+        </table>
+      </div>
+      <div id="mb-subtab-inbound" style="display:none">
+        <div class="ey">Scan-Back Receiver (Stub)</div>
+        <div class="note-warn" style="margin-bottom:14px">
+          <div class="note-hd">POST-PILOT</div>
+          <div class="note-body">OCR pipeline is post-pilot. This receiver validates barcoded cover sheets and matches to existing inspection records. Field extraction will be wired in production.</div>
+        </div>
+        <div class="modal-field"><label>Scanned Data</label><textarea id="mb-scan-input" rows="6" placeholder="Paste decoded barcode line + scanned text here. First line must be: INS-ID|page|checksum" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:12px;color:var(--text);outline:none;resize:vertical"></textarea></div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:4px;line-height:1.6">Line 1: INS-ID|page|checksum<br>To add field-discovered attractions, add lines in this format:<br><span style="color:var(--warn)">DISCOVERY: name | manufacturer | type | yes/no | severity | findings</span><br>Example: DISCOVERY: Zamperla Kiddie Coaster | Zamperla | Amusement Device | no | | </div>
+        <button class="btn-primary" onclick="mbValidateScan()" style="margin-top:8px">Validate &amp; Match</button>
+        <div id="mb-scan-error" style="font-family:var(--mono);font-size:10px;color:var(--red);margin-top:8px;min-height:0"></div>
+        <div id="mb-scan-result" style="display:none;margin-top:12px"></div>
+      </div>
+    </div>
   </div>
 
-  <!-- SCHEDULE -->
-  <div class="panel" id="view-schedule" style="display:none;">
-    <div class="ey">Planning</div>
-    <div class="ttl">Schedule</div>
-    <div class="body">Weekly inspection calendar. Cards are generated from the inspections data.</div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn-sm-action" onclick="schedWeekNav(-1)">&larr; Previous</button>
-        <span id="sched-week-label" style="font-family:var(--mono);font-size:11px;color:var(--text);font-weight:600"></span>
-        <button class="btn-sm-action" onclick="schedWeekNav(1)">Next &rarr;</button>
-      </div>
-      <button class="btn-primary" onclick="openModal('modal-new-inspection')">New Inspection</button>
-    </div>
-    <div id="sched-calendar"></div>
-    <div class="note" style="margin-top:16px">
-      <div class="note-hd">Scheduling</div>
-      <div class="note-body">Inspections are prioritized by policy renewal date and days since last inspection. The system suggests dispatch order; the team confirms or overrides.</div>
-    </div>
-  </div>
+  <!-- SCHEDULE: relocated into #view-inspections as #insp-mode-calendar -->
 
   <!-- REPORTS -->
   <div class="panel" id="view-reports" style="display:none;">
@@ -442,36 +478,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     </div>
   </div>
 
-  <!-- MAIL-BACK -->
-  <div class="panel" id="view-mailback" style="display:none;">
-    <div class="ey">Paper Operations</div>
-    <div class="ttl">Mail-Back</div>
-    <div class="body">Generate printable mail-back packets for paper-based inspections. Barcoded cover sheets enable scan-back reassembly.</div>
-    <div class="subtab-bar" id="mb-subtabs">
-      <div class="subtab active" onclick="switchMbSubtab('outbound')">Outbound</div>
-      <div class="subtab" onclick="switchMbSubtab('inbound')">Inbound</div>
-    </div>
-    <div id="mb-subtab-outbound">
-      <div class="ey">Outbound Packets</div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:12px">Inspections available for mail-back packet generation.</div>
-      <table class="tbl">
-        <thead><tr><th>ID</th><th>Facility</th><th>Inspector</th><th>Date</th><th>Modules</th><th></th></tr></thead>
-        <tbody id="mb-outbound-tbody"></tbody>
-      </table>
-    </div>
-    <div id="mb-subtab-inbound" style="display:none">
-      <div class="ey">Scan-Back Receiver (Stub)</div>
-      <div class="note-warn" style="margin-bottom:14px">
-        <div class="note-hd">POST-PILOT</div>
-        <div class="note-body">OCR pipeline is post-pilot. This receiver validates barcoded cover sheets and matches to existing inspection records. Field extraction will be wired in production.</div>
-      </div>
-      <div class="modal-field"><label>Scanned Data</label><textarea id="mb-scan-input" rows="6" placeholder="Paste decoded barcode line + scanned text here. First line must be: INS-ID|page|checksum" style="width:100%;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:12px;color:var(--text);outline:none;resize:vertical"></textarea></div>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:4px;line-height:1.6">Line 1: INS-ID|page|checksum<br>To add field-discovered attractions, add lines in this format:<br><span style="color:var(--warn)">DISCOVERY: name | manufacturer | type | yes/no | severity | findings</span><br>Example: DISCOVERY: Zamperla Kiddie Coaster | Zamperla | Amusement Device | no | | </div>
-      <button class="btn-primary" onclick="mbValidateScan()" style="margin-top:8px">Validate &amp; Match</button>
-      <div id="mb-scan-error" style="font-family:var(--mono);font-size:10px;color:var(--red);margin-top:8px;min-height:0"></div>
-      <div id="mb-scan-result" style="display:none;margin-top:12px"></div>
-    </div>
-  </div>
+  <!-- MAIL-BACK: relocated into #view-inspectors as #insp-subtab-mailback -->
 
 </div>
 
@@ -610,11 +617,11 @@ function getFindings(insp){return (insp.items||[]).filter(function(i){return i.d
 
 // FIX 7 — Inspectors with vendorId
 var SEED_INSPECTORS=[
-  {name:'T. Jones',territory:'FL, TX, OH',certs:'NAARSO Level II · AIMS',expiry:'2027-01-15',email:'tjones@as360.com',status:'ACTIVE',vendorId:'V-001'},
-  {name:'R. Sandoval',territory:'NJ, MD, PA',certs:'NAARSO Level I · ASTM F24',expiry:'2026-06-30',email:'rsandoval@as360.com',status:'ACTIVE',vendorId:'V-001'},
-  {name:'A. Nguyen',territory:'CA, AZ',certs:'NAARSO Level I · CPO',expiry:'2026-11-20',email:'anguyen@as360.com',status:'ACTIVE',vendorId:'V-001'},
-  {name:'K. Williams',territory:'TX, LA',certs:'AIMS · AFO',expiry:'2026-08-10',email:'kwilliams@as360.com',status:'ACTIVE',vendorId:'V-002'},
-  {name:'L. Davis',territory:'FL, GA',certs:'NAARSO Level I',expiry:'2026-05-01',email:'ldavis@as360.com',status:'ACTIVE',vendorId:'V-001'}
+  {name:'T. Jones',territory:'FL, TX, OH',certs:'NAARSO Level II · AIMS',expiry:'2027-01-15',email:'tjones@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:true,deliveryMode:'Phone'},
+  {name:'R. Sandoval',territory:'NJ, MD, PA',certs:'NAARSO Level I · ASTM F24',expiry:'2026-06-30',email:'rsandoval@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:false,deliveryMode:'Phone'},
+  {name:'A. Nguyen',territory:'CA, AZ',certs:'NAARSO Level I · CPO',expiry:'2026-11-20',email:'anguyen@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:false,deliveryMode:'Both'},
+  {name:'K. Williams',territory:'TX, LA',certs:'AIMS · AFO',expiry:'2026-08-10',email:'kwilliams@as360.com',status:'ACTIVE',vendorId:'V-002',portalAccess:false,deliveryMode:'Paper'},
+  {name:'L. Davis',territory:'FL, GA',certs:'NAARSO Level I',expiry:'2026-05-01',email:'ldavis@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:false,deliveryMode:'Paper'}
 ];
 function getInspectors(){var d=LS.get('as360_inspectors',null);if(!d){d=SEED_INSPECTORS;LS.set('as360_inspectors',d);}return d;}
 function saveInspectors(arr){LS.set('as360_inspectors',arr);}
@@ -651,7 +658,7 @@ function getReports(){return LS.get('as360_reports',SEED_REPORTS);}
 function saveReports(arr){LS.set('as360_reports',arr);}
 
 // FIX 6 — Routing matrix
-var ALL_STATUSES=['SCHEDULED','ASSIGNED','IN FIELD','SUBMITTED','UNDER REVIEW','DELIVERED','AWAITING REMEDIATION','CLOSED'];
+var ALL_STATUSES=['SCHEDULED','ASSIGNED','MAIL OUT','IN FIELD','SUBMITTED','UNDER REVIEW','DELIVERED','AWAITING REMEDIATION','CLOSED'];
 var ALL_RECIPIENTS=['Tom Jones','Noel Rhodes','Underwriting Desk','Production','Vendor'];
 function getRoutingMatrix(){
   var d=LS.get('as360_routing_matrix',null);
@@ -659,6 +666,11 @@ function getRoutingMatrix(){
     d={};ALL_STATUSES.forEach(function(s){d[s]={};ALL_RECIPIENTS.forEach(function(r){d[s][r]=(s==='SUBMITTED'||s==='DELIVERED')?true:(r==='Tom Jones'||r==='Noel Rhodes');});});
     d['SUBMITTED']['Underwriting Desk']=true;d['DELIVERED']['Underwriting Desk']=true;
     LS.set('as360_routing_matrix',d);
+  }else{
+    // Backfill any new statuses added after first load
+    var changed=false;
+    ALL_STATUSES.forEach(function(s){if(!d[s]){d[s]={};ALL_RECIPIENTS.forEach(function(r){d[s][r]=(r==='Tom Jones'||r==='Noel Rhodes');});changed=true;}});
+    if(changed)LS.set('as360_routing_matrix',d);
   }
   return d;
 }
@@ -700,21 +712,46 @@ var FACILITIES_DATA=[
 //  TAB / VIEW SWITCHING
 // ═══════════════════════════════════════
 function showView(viewId){
+  // Retired-id remap: facility-builder/schedule/mailback now live as sub-panels inside
+  // facilities/inspections/inspectors respectively. Preserve external callers.
+  var originalId=viewId;
+  var subAction=null;
+  if(viewId==='facility-builder'){viewId='facilities';subAction='builder';}
+  else if(viewId==='schedule'){viewId='inspections';subAction='calendar';}
+  else if(viewId==='mailback'){viewId='inspectors';subAction='mailback';}
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
   document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');p.style.display='none'});
   var panel=document.getElementById('view-'+viewId);
   if(panel){panel.classList.add('active');panel.style.display='block';panel.scrollTop=0}
   var tabs=document.querySelectorAll('.tab');
-  var tabMap={inspections:0,facilities:1,'facility-builder':2,checklists:3,inspectors:4,schedule:5,reports:6,mailback:7};
-  if(viewId==='facilities'){renderFacilitiesList();var lv=document.getElementById('facilities-list-view');var dv=document.getElementById('facility-detail-view');if(lv)lv.style.display='block';if(dv)dv.style.display='none';}
-  if(viewId==='inspections')renderInspections();
-  if(viewId==='facility-builder')fbRenderProfilesTable();
+  var tabMap={inspections:0,facilities:1,'facility-builder':1,checklists:2,inspectors:3,reports:4,schedule:0,mailback:3};
+  if(viewId==='facilities'){
+    renderFacilitiesList();
+    var lv=document.getElementById('facilities-list-view');
+    var dv=document.getElementById('facility-detail-view');
+    var bv=document.getElementById('facility-builder-view');
+    if(subAction==='builder'){
+      if(lv)lv.style.display='none';
+      if(dv)dv.style.display='none';
+      if(bv)bv.style.display='';
+      fbRenderProfilesTable();
+    }else{
+      if(lv)lv.style.display='block';
+      if(dv)dv.style.display='none';
+      if(bv)bv.style.display='none';
+    }
+  }
+  if(viewId==='inspections'){
+    renderInspections();
+    if(subAction==='calendar')switchInspMode('calendar');
+  }
   if(viewId==='checklists')clRenderTable();
-  if(viewId==='inspectors'){renderInspectors();renderVendors();}
-  if(viewId==='schedule')renderSchedule();
+  if(viewId==='inspectors'){
+    renderInspectors();renderVendors();
+    if(subAction==='mailback')switchInspSubtab('mailback');
+  }
   if(viewId==='reports'){renderReports();renderCars();renderRoutingMatrix();}
-  if(viewId==='mailback')renderMailback();
-  if(tabMap[viewId]!==undefined&&tabs[tabMap[viewId]]){tabs[tabMap[viewId]].classList.add('active')}
+  if(tabMap[originalId]!==undefined&&tabs[tabMap[originalId]]){tabs[tabMap[originalId]].classList.add('active')}
 }
 function openModal(id){var el=document.getElementById(id);if(el)el.classList.add('open');}
 function closeModal(id){var el=document.getElementById(id);if(el)el.classList.remove('open');}
@@ -722,7 +759,7 @@ function closeModal(id){var el=document.getElementById(id);if(el)el.classList.re
 // FIX 5 — badge class for expanded statuses
 function badgeClass(s){
   if(s==='CLOSED'||s==='DELIVERED')return 'badge-good';
-  if(s==='IN FIELD'||s==='SUBMITTED'||s==='UNDER REVIEW'||s==='AWAITING REMEDIATION')return 'badge-warn';
+  if(s==='IN FIELD'||s==='SUBMITTED'||s==='UNDER REVIEW'||s==='AWAITING REMEDIATION'||s==='MAIL OUT')return 'badge-warn';
   if(s==='OVERDUE')return 'badge-red';
   return 'badge-accent'; // SCHEDULED, ASSIGNED
 }
@@ -954,9 +991,24 @@ function renderFacilitiesList(){
   var statusBadge=function(s){return s==='current'?'<span class="badge badge-good">CURRENT</span>':s==='review'?'<span class="badge badge-warn">REVIEW</span>':'<span class="badge badge-accent">ACTIVE</span>';};
   var carsBadge=function(n){return n===0?'<span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span>':'<span style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+(n>=3?'var(--red)':'var(--warn)')+'">'+n+'</span>';};
   var html='<thead><tr><th>Facility</th><th>Type</th><th>Location</th><th>Vendor</th><th>Last Inspection</th><th>Open CARs</th><th>Status</th></tr></thead><tbody>';
+  var staticNames={};
   FACILITIES_DATA.forEach(function(f){
+    staticNames[f.name]=true;
     var vn=vendors.find(function(v){return v.id===f.vendorId;});
     html+='<tr style="cursor:pointer" onclick="openFacility(\''+f.id+'\')"><td style="font-weight:600;color:var(--text)">'+f.name+'</td><td style="font-family:var(--mono);font-size:10px">'+f.type+'</td><td>'+f.location+'</td><td style="font-size:11px">'+(vn?vn.name:'—')+'</td><td style="font-family:var(--mono);font-size:11px">'+f.lastInspection+'</td><td style="text-align:center">'+carsBadge(f.openCars)+'</td><td>'+statusBadge(f.status)+'</td></tr>';
+  });
+  // Item 9 — Append facility profiles from Facility Builder that are not already in FACILITIES_DATA
+  var profiles=fbGetProfiles();
+  profiles.forEach(function(p){
+    if(staticNames[p.facilityName])return;
+    // Derive type from most common attraction type
+    var typeCounts={};
+    (p.attractions||[]).forEach(function(a){if(a.type)typeCounts[a.type]=(typeCounts[a.type]||0)+1;});
+    var typeKeys=Object.keys(typeCounts);
+    var derivedType='Mixed';
+    if(typeKeys.length===1)derivedType=typeKeys[0];
+    else if(typeKeys.length>1){var max=0;typeKeys.forEach(function(k){if(typeCounts[k]>max){max=typeCounts[k];derivedType=k;}});}
+    html+='<tr style="border-left:3px solid var(--accent)"><td style="font-weight:600;color:var(--text)">'+escHtml(p.facilityName)+'</td><td style="font-family:var(--mono);font-size:10px">'+escHtml(derivedType)+' <span class="badge badge-accent" style="margin-left:4px">FROM BUILDER</span></td><td>'+escHtml(p.location||'—')+'</td><td style="font-size:11px">—</td><td style="font-family:var(--mono);font-size:11px">—</td><td style="text-align:center"><span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span></td><td><span class="badge badge-accent">ACTIVE</span></td></tr>';
   });
   el.innerHTML=html+'</tbody>';
 }
@@ -1156,9 +1208,48 @@ function clGeneratePDF(id){var all=clGetAll();var cl=all.find(function(c){return
 //  INSPECTORS TAB + FIX 7 Vendors
 // ═══════════════════════════════════════
 function switchInspSubtab(which){
-  document.querySelectorAll('#insp-subtabs .subtab').forEach(function(t){t.classList.remove('active');});
-  if(which==='inspectors'){document.getElementById('insp-subtab-inspectors').style.display='';document.getElementById('insp-subtab-vendors').style.display='none';document.querySelectorAll('#insp-subtabs .subtab')[0].classList.add('active');}
-  else{document.getElementById('insp-subtab-inspectors').style.display='none';document.getElementById('insp-subtab-vendors').style.display='';document.querySelectorAll('#insp-subtabs .subtab')[1].classList.add('active');}
+  var ids=['inspectors','vendors','mailback'];
+  var tabs=document.querySelectorAll('#insp-subtabs .subtab');
+  tabs.forEach(function(t){t.classList.remove('active');});
+  ids.forEach(function(id,i){
+    var el=document.getElementById('insp-subtab-'+id);
+    if(el)el.style.display=(id===which?'':'none');
+    if(id===which&&tabs[i])tabs[i].classList.add('active');
+  });
+  if(which==='mailback')renderMailback();
+}
+function switchInspMode(mode){
+  var listEl=document.getElementById('insp-mode-list');
+  var calEl=document.getElementById('insp-mode-calendar');
+  var tabs=document.querySelectorAll('#insp-mode-tabs .subtab');
+  tabs.forEach(function(t){t.classList.remove('active');});
+  if(mode==='calendar'){
+    if(listEl)listEl.style.display='none';
+    if(calEl)calEl.style.display='';
+    if(tabs[1])tabs[1].classList.add('active');
+    renderSchedule();
+  }else{
+    if(listEl)listEl.style.display='';
+    if(calEl)calEl.style.display='none';
+    if(tabs[0])tabs[0].classList.add('active');
+    renderInspections();
+  }
+}
+function fbOpenBuilder(){
+  var lv=document.getElementById('facilities-list-view');
+  var dv=document.getElementById('facility-detail-view');
+  var bv=document.getElementById('facility-builder-view');
+  if(lv)lv.style.display='none';
+  if(dv)dv.style.display='none';
+  if(bv)bv.style.display='';
+  fbRenderProfilesTable();
+}
+function fbCloseBuilder(){
+  var lv=document.getElementById('facilities-list-view');
+  var bv=document.getElementById('facility-builder-view');
+  if(bv)bv.style.display='none';
+  if(lv)lv.style.display='';
+  renderFacilitiesList();
 }
 function renderInspectors(){
   var inspectors=getInspectors();var inspections=getInspections();var vendors=getVendors();
@@ -1168,14 +1259,44 @@ function renderInspectors(){
     var activeCount=inspections.filter(function(r){return r.inspector===insp.name&&r.status!=='CLOSED'&&r.status!=='DELIVERED';}).length;
     var expDate=new Date(insp.expiry);var expiryBadge=expDate<today?'badge-red':expDate<warn90?'badge-warn':'badge-good';var expiryLabel=expDate<today?'EXPIRED':expDate<warn90?'EXPIRING':'VALID';
     var vn=vendors.find(function(v){return v.id===insp.vendorId;});
+    // Item 5 — Portal Access cell
+    var portalCell=insp.portalAccess?'<span class="badge badge-good">\u2713 Active</span>':'<span class="badge badge-accent">\u2717 Not Provisioned</span> <button class="btn-sm-action" onclick="provisionInspectorAccess(\''+escAttr(insp.name)+'\')">Provision</button>';
+    // Item 6 — Delivery Mode cell
+    var dm=insp.deliveryMode||'Phone';
+    var dmBadgeClass=dm==='Paper'?'badge-warn':dm==='Both'?'badge-good':'badge-accent';
+    var deliveryCell='<span class="badge '+dmBadgeClass+'" style="cursor:pointer" onclick="cycleDeliveryMode(\''+escAttr(insp.name)+'\')" title="Click to cycle">'+dm.toUpperCase()+'</span>';
     html+='<tr><td style="font-weight:600;color:var(--text)">'+insp.name+'</td><td>'+insp.territory+'</td><td style="font-family:var(--mono);font-size:10px">'+insp.certs+'</td>';
     html+='<td><span class="badge '+expiryBadge+'">'+expiryLabel+'</span> <span style="font-family:var(--mono);font-size:10px;color:var(--text3)">'+insp.expiry+'</span></td>';
     html+='<td style="font-size:11px">'+(vn?vn.name:'—')+'</td>';
+    html+='<td>'+portalCell+'</td>';
+    html+='<td>'+deliveryCell+'</td>';
     html+='<td style="text-align:center"><a href="#" style="font-family:var(--mono);font-weight:700;color:var(--accent);text-decoration:none" onclick="event.preventDefault();filterInspByName(\''+insp.name+'\')">'+activeCount+'</a></td>';
     html+='<td><span class="badge badge-good">'+insp.status+'</span></td>';
     html+='<td><button class="btn-sm-action" onclick="openAssignToInspection(\''+escAttr(insp.name)+'\')">Assign to Inspection</button></td></tr>';
   });
   tbody.innerHTML=html;
+}
+
+// Item 5 — Provision portal access for inspector
+function provisionInspectorAccess(inspectorName){
+  var inspectors=getInspectors();
+  var insp=inspectors.find(function(i){return i.name===inspectorName;});
+  if(!insp)return;
+  insp.portalAccess=true;
+  saveInspectors(inspectors);
+  alert('Provisioning credentials for '+insp.name+'.\n\nAdam: manually create their record in Airtable Inspector_Credentials with email '+insp.email+' and a temporary password. Send credentials to inspector via email.');
+  renderInspectors();
+}
+
+// Item 6 — Cycle delivery mode: Phone → Paper → Both → Phone
+function cycleDeliveryMode(inspectorName){
+  var inspectors=getInspectors();
+  var insp=inspectors.find(function(i){return i.name===inspectorName;});
+  if(!insp)return;
+  var current=insp.deliveryMode||'Phone';
+  insp.deliveryMode=current==='Phone'?'Paper':current==='Paper'?'Both':'Phone';
+  saveInspectors(inspectors);
+  renderInspectors();
 }
 function renderVendors(){
   var vendors=getVendors();var inspectors=getInspectors();var inspections=getInspections();
@@ -1191,7 +1312,7 @@ function filterInspByName(name){showView('inspections');var sel=document.getElem
 function confirmAddInspector(){
   var name=document.getElementById('add-insp-name').value.trim();if(!name)return;
   var inspectors=getInspectors();
-  inspectors.push({name:name,territory:document.getElementById('add-insp-territory').value.trim()||'—',certs:document.getElementById('add-insp-certs').value.trim()||'—',expiry:document.getElementById('add-insp-expiry').value||'2027-01-01',email:document.getElementById('add-insp-email').value.trim()||'—',status:'ACTIVE',vendorId:document.getElementById('add-insp-vendor').value||'V-001'});
+  inspectors.push({name:name,territory:document.getElementById('add-insp-territory').value.trim()||'—',certs:document.getElementById('add-insp-certs').value.trim()||'—',expiry:document.getElementById('add-insp-expiry').value||'2027-01-01',email:document.getElementById('add-insp-email').value.trim()||'—',status:'ACTIVE',vendorId:document.getElementById('add-insp-vendor').value||'V-001',portalAccess:false,deliveryMode:'Phone'});
   saveInspectors(inspectors);closeModal('modal-add-inspector');
   ['add-insp-name','add-insp-territory','add-insp-certs','add-insp-expiry','add-insp-email'].forEach(function(id){document.getElementById(id).value='';});
   renderInspectors();
@@ -1279,7 +1400,7 @@ function renderRoutingMatrix(){
   });
   html+='</tbody></table>';container.innerHTML=html;
 }
-function updateRouting(status,recipient,on){var m=getRoutingMatrix();if(!m[status])m[status]={};m[status][recipient]=on;saveRoutingMatrix(m);}
+function updateRouting(status,recipient,on){var m=getRoutingMatrix();if(!m[status])m[status]={};m[status][recipient]=on;saveRoutingMatrix(m);toast('Routing updated: '+status+' → '+recipient+(on?' ✓':' ✗'),'ok');}
 
 function renderReports(){
   var reports=getReports();var tbody=document.getElementById('reportTable');if(!tbody)return;var html='';
@@ -1408,19 +1529,52 @@ function fbParseXlsx(file){
 }
 
 function fbExtractAttractionsFromText(rawText){
-  var lines=rawText.split(/\r?\n/).map(function(l){return l.trim();}).filter(function(l){return l.length>=3&&l.length<=80;});
+  var allLines=rawText.split(/\r?\n/).map(function(l){return l.trim();});
+  // Pass 1 — find a list-start delimiter and discard everything at/before it
+  var delimRe=/^(attractions?|rides?|equipment|devices?|amusements?|attractions list|ride list|equipment list)\s*:?\s*$/i;
+  var startIdx=-1;
+  for(var di=0;di<allLines.length;di++){if(delimRe.test(allLines[di])){startIdx=di;break;}}
+  var lines=(startIdx>=0?allLines.slice(startIdx+1):allLines).filter(function(l){return l.length>=3&&l.length<=80;});
   var results=[];
+  var seen={};
+  // Existing skip patterns (kept)
   var skipRe=/^(page|note|date|inspector|sign|comment|section|chapter|\d+\/\d+)/i;
+  // Pass 2 — tightened skip rules
+  var contactLabelRe=/^(contact|phone|email|manager|owner|operator|gm|underwriter)\s*:/i;
+  var facilityTailRe=/\b(FEC|Park|Parks|Center|Centre|Gardens|World|Adventure|Adventures|Land|Lands|Resort|Pier|Beach|Mountain|Valley|Springs|Place|Plaza|Arena|Stadium)\s*$/;
+  var stateRe=/,\s*(AL|AK|AZ|AR|CA|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|LA|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\s*\d{0,5}\s*$/;
+  var headerColonRe=/^[A-Z][A-Za-z\s]{0,30}:\s*$/;
+  var addrRe=/^\d+\s+\w+.*\b(St|Street|Ave|Avenue|Rd|Road|Blvd|Boulevard|Dr|Drive|Ln|Lane|Way|Ct|Court|Pl|Place|Pkwy|Parkway|Hwy|Highway)\b/;
+  var phoneRe=/\(\d{3}\)\s*\d{3}-\d{4}|\d{3}-\d{3}-\d{4}/;
+  var emailRe=/\S+@\S+\.\S+/;
+  var dateRe=/\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}|\d{4}-\d{2}-\d{2}/;
+  // Leading-label stripper (applied after accept)
+  var labelStripRe=/^(attraction|ride|device|equipment)\s*:\s*/i;
   lines.forEach(function(line){
     if(skipRe.test(line))return;
+    if(contactLabelRe.test(line))return;
+    if(facilityTailRe.test(line))return;
+    if(stateRe.test(line))return;
+    if(headerColonRe.test(line))return;
+    if(addrRe.test(line))return;
+    if(phoneRe.test(line))return;
+    if(emailRe.test(line))return;
+    if(dateRe.test(line))return;
     if(/^[A-Z]{2,}$/.test(line)&&line.length>15)return;
     if(/_{3,}/.test(line))return;
     if(/^\d+[\.\)]\s*$/.test(line))return;
     var isAllCaps=line===line.toUpperCase();
     if(isAllCaps&&line.split(/\s+/).length>6)return;
+    // Pass 3 — existing accept rules
     if(/^[A-Z]/.test(line)||/^[\u2022\-\*]\s/.test(line)||/^\d+[\.\)]\s+\S/.test(line)){
+      // Pass 4 — clean, strip leading label, dedupe
       var clean=line.replace(/^[\u2022\-\*\d\.\)]+\s*/,'').trim();
-      if(clean.length>=3)results.push({name:clean,manufacturer:'',type:''});
+      clean=clean.replace(labelStripRe,'').trim();
+      if(clean.length<3)return;
+      var key=clean.toLowerCase();
+      if(seen[key])return;
+      seen[key]=1;
+      results.push({name:clean,manufacturer:'',type:''});
     }
   });
   return results;
@@ -1629,10 +1783,20 @@ function renderMailback(){
   var html='';
   all.forEach(function(ins){
     var modNames=(ins.checklistModules||[]).map(function(mid){var m=mods.find(function(c){return c.id===mid;});return m?m.type+' '+m.version:'—';}).join(', ')||ins.form;
-    html+='<tr><td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+ins.id+'</td><td>'+ins.facility+'</td><td>'+ins.inspector+'</td><td style="font-family:var(--mono);font-size:11px">'+formatDate(ins.date)+'</td><td style="font-size:11px">'+modNames+'</td><td><button class="btn-sm-action" onclick="mbGenerateOutboundPacket(\''+ins.id+'\')">Print Mail-Back Packet</button></td></tr>';
+    html+='<tr><td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+ins.id+'</td><td>'+ins.facility+'</td><td>'+ins.inspector+'</td><td style="font-family:var(--mono);font-size:11px">'+formatDate(ins.date)+'</td><td style="font-size:11px">'+modNames+'</td><td><div style="display:flex;gap:6px"><button class="btn-sm-action" onclick="mbGenerateOutboundPacket(\''+ins.id+'\')">Print Packet</button><button class="btn-sm-action" onclick="mbMarkMailed(\''+ins.id+'\')">Mark Mailed</button></div></td></tr>';
   });
   if(all.length===0)html='<tr><td colspan="6" style="text-align:center;color:var(--text3);font-family:var(--mono);font-size:10px;padding:20px">No scheduled/assigned inspections</td></tr>';
   tbody.innerHTML=html;
+}
+
+function mbMarkMailed(insId){
+  var all=getInspections();var ins=all.find(function(r){return r.id===insId;});
+  if(!ins)return;
+  ins.status='MAIL OUT';
+  saveInspections(all);
+  fireStatusEmail(ins,'MAIL OUT');
+  renderMailback();
+  toast('Marked as mailed: '+insId+' → status MAIL OUT','ok');
 }
 
 function mbGenerateOutboundPacket(insId){
