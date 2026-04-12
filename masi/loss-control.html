@@ -175,9 +175,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
   </div>
   <div class="tabs" id="tabs">
     <div class="tab active" onclick="showView('inspections')">Inspections</div>
+    <div class="tab" onclick="showView('cars')">CARs</div>
     <div class="tab" onclick="showView('facilities')">Facilities</div>
     <div class="tab" onclick="showView('checklists')">Checklists</div>
     <div class="tab" onclick="showView('inspectors')">Inspectors</div>
+    <div class="tab" onclick="showView('access')">Access</div>
     <div class="tab" onclick="showView('reports')">Reports</div>
   </div>
 </div>
@@ -213,7 +215,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
         <select id="filter-form" onchange="renderInspections()"></select>
       </div>
       <table class="tbl" id="inspections-tbl">
-        <thead><tr><th>Inspection ID</th><th>Facility</th><th>Inspector</th><th>Date</th><th>Checklist</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Inspection ID</th><th>Facility</th><th>Inspector</th><th>Date</th><th>Checklist</th><th title="Corrective Action Request">Open CARs</th><th>Status</th><th></th></tr></thead>
         <tbody id="inspectionTable"></tbody>
       </table>
       <div class="note" style="margin-top:16px">
@@ -361,7 +363,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
         <div id="cl-version-count" style="font-family:var(--mono);font-size:9px;color:var(--text3)">0 checklists</div>
       </div>
       <table class="tbl" id="cl-version-table">
-        <thead><tr><th>Attraction Type</th><th>Version</th><th>Uploaded By</th><th>Upload Date</th><th>Items</th><th>Active</th><th></th></tr></thead>
+        <thead><tr><th>Attraction Type</th><th>Version</th><th>Uploaded By</th><th>Upload Date</th><th>Items</th><th>Active</th><th>Last Deployed</th><th></th></tr></thead>
         <tbody id="cl-version-tbody"></tbody>
       </table>
       <div id="cl-empty-state" class="empty-state" style="display:none">
@@ -369,6 +371,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
         <div class="empty-state-title">No Checklists Uploaded</div>
         <div class="empty-state-body">Upload a .docx checklist document above to create your first versioned template.</div>
       </div>
+    </div>
+    <div class="note" style="margin-top:12px">
+      <div class="note-body" style="font-family:var(--mono);font-size:10px;color:var(--text3);font-style:italic">Item counts reflect the active version deployed to the Inspector Portal.</div>
     </div>
     <div class="note" style="margin-top:16px">
       <div class="note-hd">Version Control</div>
@@ -389,7 +394,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     <div id="insp-subtab-inspectors">
       <div style="margin-bottom:12px"><button class="btn-primary" onclick="openModal('modal-add-inspector')">Add Inspector</button></div>
       <table class="tbl" id="inspectors-tbl">
-        <thead><tr><th>Name</th><th>Territory</th><th>Certifications</th><th>Credential Expiry</th><th>Vendor</th><th>Portal Access</th><th>Delivery Mode</th><th>Active Inspections</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Name</th><th>Territory</th><th>Certifications</th><th>Credential Expiry</th><th>Vendor</th><th>Portal Access</th><th>Delivery Mode</th><th>Active Inspections</th><th title="Corrective Action Request">Open CARs</th><th>Status</th><th></th></tr></thead>
         <tbody id="inspectorTable"></tbody>
       </table>
     </div>
@@ -436,21 +441,62 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
 
   <!-- SCHEDULE: relocated into #view-inspections as #insp-mode-calendar -->
 
+  <!-- CARS (promoted from Reports sub-section per FIX 6) -->
+  <div class="panel" id="view-cars" style="display:none;">
+    <div class="ey">Risk Operations</div>
+    <div class="ttl"><span title="Corrective Action Request">Corrective Action Requests</span></div>
+    <div class="body">Active risk findings generated from inspections. Each open CAR represents an exposure on a policy.</div>
+    <div id="cars-stats" class="stat-row"></div>
+    <div class="filter-bar" id="cars-filter-bar">
+      <select id="car-filter-severity" onchange="renderCars()">
+        <option value="">All Severities</option>
+        <option value="1">SEV 1</option>
+        <option value="2">SEV 2</option>
+        <option value="3">SEV 3</option>
+        <option value="4">SEV 4</option>
+        <option value="5">SEV 5</option>
+      </select>
+      <select id="car-filter-facility" onchange="renderCars()"></select>
+      <select id="car-filter-inspector" onchange="renderCars()"></select>
+      <select id="car-filter-status" onchange="renderCars()">
+        <option value="">All Statuses</option>
+        <option value="OPEN">Open</option>
+        <option value="IN REMEDIATION">In Remediation</option>
+        <option value="CLOSED">Closed</option>
+      </select>
+    </div>
+    <table class="tbl" style="margin-top:8px">
+      <thead><tr><th title="Corrective Action Request">CAR ID</th><th>Facility</th><th>Ride/Attraction</th><th>Finding</th><th>Severity</th><th>Assigned To</th><th>Due Date</th><th>Status</th><th></th></tr></thead>
+      <tbody id="carTable"></tbody>
+    </table>
+    <div class="note" style="margin-top:16px">
+      <div class="note-hd">About CARs</div>
+      <div class="note-body">CARs are generated from inspection findings. Each open CAR represents an active risk on a policy. Aging CARs trigger underwriting escalation.</div>
+    </div>
+  </div>
+
+  <!-- ACCESS (permissions matrix, promoted from Reports per FIX 6) -->
+  <div class="panel" id="view-access" style="display:none;">
+    <div class="ey">Permissions</div>
+    <div class="ttl">Access Control</div>
+    <div class="body">Who receives notifications on status transitions, and who can perform CAR workflow actions.</div>
+    <div class="card" style="border-top:3px solid var(--accent);margin-top:16px">
+      <div class="card-label">Routing &amp; Permissions Matrix</div>
+      <div class="card-title">Status &rarr; Recipient &middot; Action &rarr; User</div>
+      <div class="card-body" style="margin-bottom:8px">Status rows configure email routing. Action rows (bottom) configure workflow permissions.</div>
+      <div id="routing-matrix-container" style="overflow-x:auto"></div>
+    </div>
+  </div>
+
   <!-- REPORTS -->
   <div class="panel" id="view-reports" style="display:none;">
     <div class="ey">Output</div>
     <div class="ttl">Reports &amp; Notifications</div>
-    <div class="body">Inspection reports, email routing matrix, and corrective action tracking.</div>
+    <div class="body">Inspection reports and severity reference.</div>
     <div class="g2" style="margin-top:16px;margin-bottom:20px">
       <div class="card" style="border-top:3px solid var(--accent)">
-        <div class="card-label">Email Routing Matrix</div>
-        <div class="card-title">Status &rarr; Recipient</div>
-        <div class="card-body" style="margin-bottom:8px">Check which recipients get notified on each status transition.</div>
-        <div id="routing-matrix-container" style="overflow-x:auto"></div>
-      </div>
-      <div class="card" style="border-top:3px solid var(--accent)">
         <div class="card-label">Severity Codes</div>
-        <div class="card-title">Finding Classification</div>
+        <div class="card-title">Severity Scale (1 = most critical)</div>
         <div class="card-body" style="margin-bottom:10px">Standard severity codes used across all inspections.</div>
         <div style="display:flex;flex-direction:column;gap:4px">
           <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-red">SEV 1</span><span style="font-size:11px;color:var(--text)">Locked out, cannot be used</span></div>
@@ -465,12 +511,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     <table class="tbl" style="margin-top:8px">
       <thead><tr><th>Report ID</th><th>Facility</th><th>Type</th><th>Generated</th><th>Status</th><th></th></tr></thead>
       <tbody id="reportTable"></tbody>
-    </table>
-    <div class="section-divider"></div>
-    <div class="ey">Corrective Action Requests</div>
-    <table class="tbl" style="margin-top:8px">
-      <thead><tr><th>CAR ID</th><th>Facility</th><th>Ride/Attraction</th><th>Finding</th><th>Severity</th><th>Assigned To</th><th>Due Date</th><th>Status</th><th></th></tr></thead>
-      <tbody id="carTable"></tbody>
     </table>
     <div class="note" style="margin-top:16px">
       <div class="note-hd">Report Format</div>
@@ -566,13 +606,56 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
 //  DATA LAYER
 // ═══════════════════════════════════════
 var LS={get:function(k,d){try{return JSON.parse(localStorage.getItem(k))||d;}catch(e){return d;}},set:function(k,v){localStorage.setItem(k,JSON.stringify(v));}};
+// Seed-version migration: wipe stale caches so 10-fix seed edits take effect on existing demos
+(function(){
+  var SEED_VERSION='2026-04-12-fix-10pass';
+  try{
+    if(localStorage.getItem('as360_seed_version')!==SEED_VERSION){
+      ['as360_inspections','as360_cars','as360_inspectors','as360_facility_profiles','as360_checklist_library','as360_routing_matrix'].forEach(function(k){localStorage.removeItem(k);});
+      localStorage.setItem('as360_seed_version',SEED_VERSION);
+    }
+  }catch(e){}
+})();
 
 // ITEM 4 — Coexistence constants
 var WORKER_URL='https://as360-proxy.amusementstandards.workers.dev/airtable';
 var ASSIGNMENTS_TABLE='Inspector_Assignments';
 
 // ITEM 1 — Facility Profiles
-function fbGetProfiles(){return LS.get('as360_facility_profiles',[]);}
+// FIX 5 — Seed Thunder Road FEC profile on first load; user can delete and empty state returns
+function fbGetProfiles(){
+  var stored=LS.get('as360_facility_profiles',null);
+  if(stored===null){
+    var seed=[{
+      id:'fp-thunder-road-seed',
+      facilityName:'Thunder Road FEC',
+      location:'Asbury Park, NJ',
+      type:'FEC',
+      profileStatus:'Active',
+      sourceFileName:'thunder-road-intake.pdf',
+      parsedAt:'2026-04-08',
+      createdBy:'Noel Rhodes',
+      attractions:[
+        {name:'Go-Kart Track A',type:'Ride',manufacturer:'J&J Amusements',matchedModules:['Go-Karts']},
+        {name:'Go-Kart Track B',type:'Ride',manufacturer:'J&J Amusements',matchedModules:['Go-Karts']},
+        {name:'Laser Tag Arena',type:'FEC',manufacturer:'',matchedModules:['FEC']},
+        {name:'Arcade Floor',type:'FEC',manufacturer:'',matchedModules:['FEC']},
+        {name:'Mini Golf Course',type:'FEC',manufacturer:'',matchedModules:['FEC']},
+        {name:'Trampoline Court',type:'FEC',manufacturer:'',matchedModules:['FEC']},
+        {name:'Climbing Wall',type:'FEC',manufacturer:'',matchedModules:['FEC']},
+        {name:'Party Rooms',type:'FEC',manufacturer:'',matchedModules:[]},
+        {name:'Building & Egress',type:'Facility',manufacturer:'',matchedModules:[]},
+        {name:'Restrooms & Hygiene',type:'Facility',manufacturer:'',matchedModules:[]},
+        {name:'Parking & Ingress',type:'Facility',manufacturer:'',matchedModules:[]},
+        {name:'Food Service Area',type:'Facility',manufacturer:'',matchedModules:[]},
+        {name:'Queue Management',type:'Facility',manufacturer:'',matchedModules:[]}
+      ]
+    }];
+    LS.set('as360_facility_profiles',seed);
+    return seed;
+  }
+  return stored;
+}
 function fbSaveProfiles(arr){LS.set('as360_facility_profiles',arr);}
 
 // ITEM 2 — Mail-Back inbound storage
@@ -588,16 +671,16 @@ function getVendors(){return LS.get('as360_vendors',SEED_VENDORS);}
 
 // FIX 1+5 — Seed inspections with items[] and expanded statuses
 var SEED_INSPECTIONS=[
-  {id:'INS-2026-0047',facility:'Thunder Road FEC',inspector:'T. Jones',date:'2026-04-14',form:'FEC',status:'SCHEDULED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]},
-  {id:'INS-2026-0046',facility:'Splash Kingdom Waterpark',inspector:'T. Jones',date:'2026-04-12',form:'Aquatic',status:'IN FIELD',vendorId:'V-001',checklistModules:[],items:[
+  {id:'INS-2026-0047',facility:'Thunder Road FEC',inspector:'M. Reyes',date:'2026-04-14',form:'FEC',status:'SCHEDULED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]},
+  {id:'INS-2026-0046',facility:'Splash Kingdom Waterpark',inspector:'M. Reyes',date:'2026-04-12',form:'Aquatic',status:'IN FIELD',vendorId:'V-001',checklistModules:[],items:[
     {id:'i-046-1',checklistModuleId:null,sectionName:'Aquatic',itemText:'Lazy river return current exceeds PHTA flow-rate guideline',disposition:'FAIL',explanation:'Current measured at 4.2 ft/s, exceeding PHTA max of 3.5 ft/s at return inlet.',severity:3,photos:[],addedAdHoc:false},
-    {id:'i-046-2',checklistModuleId:null,sectionName:'Aquatic',itemText:'Lifeguard rotation board not posted at station 2',disposition:'FAIL',explanation:'Board was removed during maintenance and not replaced. Station unmanned during observation.',severity:4,photos:[],addedAdHoc:false}
+    {id:'i-046-2',checklistModuleId:null,sectionName:'Aquatic',itemText:'Lifeguard rotation board not posted at station 2',disposition:'FAIL',explanation:'Board was removed during maintenance and not replaced. Station unmanned during observation.',severity:3,photos:[],addedAdHoc:false}
   ],discoveredAttractions:[{id:'disc-seed-1',name:'New Zamperla Kiddie Coaster',manufacturer:'Zamperla',type:'Amusement Device',inspectedToday:false,checklistMode:null,moduleKey:null,adhocFindings:'',adhocAnswer:null,adhocSeverity:null,addedInField:true}]},
   {id:'INS-2026-0045',facility:'Adventure Park USA',inspector:'R. Sandoval',date:'2026-04-10',form:'Amusement Device',status:'SUBMITTED',vendorId:'V-001',checklistModules:[],items:[
     {id:'i-045-1',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Wildcat coaster lap bar hydraulic pressure below spec on car 3',disposition:'FAIL',explanation:'Hydraulic gauge reads 1800 PSI vs required 2200 PSI minimum. Car 3 locked out pending repair.',severity:1,photos:[],addedAdHoc:false},
     {id:'i-045-2',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Ropes course carabiner inspection tags expired (6 units)',disposition:'FAIL',explanation:'6 carabiners missing current annual inspection tags. Last tagged Oct 2024.',severity:2,photos:[],addedAdHoc:false},
     {id:'i-045-3',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Emergency exit path obstructed behind arcade building',disposition:'FAIL',explanation:'Dumpsters and pallets blocking designated emergency egress route behind arcade.',severity:3,photos:[],addedAdHoc:false},
-    {id:'i-045-4',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Go-kart track barrier bolt shear on turn 2 outside rail',disposition:'FAIL',explanation:'3 bolts sheared on outside barrier rail at turn 2. Rail loose on impact.',severity:2,photos:[],addedAdHoc:false}
+    {id:'i-045-4',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Go-kart track barrier bolt shear on turn 2 outside rail',disposition:'FAIL',explanation:'3 bolts sheared on outside barrier rail at turn 2. Rail loose on impact.',severity:4,photos:[],addedAdHoc:false}
   ],discoveredAttractions:[]},
   {id:'INS-2026-0044',facility:'Heritage Carousel Gardens',inspector:'A. Nguyen',date:'2026-04-08',form:'Carousel',status:'DELIVERED',vendorId:'V-001',checklistModules:[],items:[
     {id:'i-044-1',checklistModuleId:null,sectionName:'Carousel',itemText:'Chariot seat cushion minor wear',disposition:'FAIL',explanation:'Surface wear on chariot 3 seat cushion, cosmetic only, no structural concern.',severity:5,photos:[],addedAdHoc:false}
@@ -607,8 +690,8 @@ var SEED_INSPECTIONS=[
     {id:'i-043-2',checklistModuleId:null,sectionName:'FEC',itemText:'Emergency lighting test log gap — Feb missing',disposition:'FAIL',explanation:'Monthly emergency lighting test log has no entry for February 2026.',severity:4,photos:[],addedAdHoc:false}
   ],discoveredAttractions:[]},
   {id:'INS-2026-0042',facility:'Putt-Putt Fun Center — Orlando',inspector:'L. Davis',date:'2026-04-04',form:'Grounds/Premise',status:'CLOSED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]},
-  {id:'INS-2026-0041',facility:'Cedar Point',inspector:'T. Jones',date:'2026-04-16',form:'Amusement Device',status:'SCHEDULED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]},
-  {id:'INS-2026-0040',facility:'Six Flags Great Adventure',inspector:'R. Sandoval',date:'2026-04-18',form:'Amusement Device',status:'ASSIGNED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]}
+  {id:'INS-2026-0041',facility:'Lakeside Amusement Park',inspector:'M. Reyes',date:'2026-04-16',form:'Amusement Device',status:'SCHEDULED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]},
+  {id:'INS-2026-0040',facility:'Coastal Thrills Park',inspector:'R. Sandoval',date:'2026-04-18',form:'Amusement Device',status:'ASSIGNED',vendorId:'V-001',checklistModules:[],items:[],discoveredAttractions:[]}
 ];
 function getInspections(){var d=LS.get('as360_inspections',null);if(!d){d=SEED_INSPECTIONS;LS.set('as360_inspections',d);}return d;}
 function saveInspections(arr){LS.set('as360_inspections',arr);}
@@ -617,7 +700,7 @@ function getFindings(insp){return (insp.items||[]).filter(function(i){return i.d
 
 // FIX 7 — Inspectors with vendorId
 var SEED_INSPECTORS=[
-  {name:'T. Jones',territory:'FL, TX, OH',certs:'NAARSO Level II · AIMS',expiry:'2027-01-15',email:'tjones@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:true,deliveryMode:'Phone'},
+  {name:'M. Reyes',territory:'NJ, NY, PA',certs:'NAARSO Level II \u00b7 AIMS',expiry:'2027-03-15',email:'mreyes@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:true,deliveryMode:'Phone'},
   {name:'R. Sandoval',territory:'NJ, MD, PA',certs:'NAARSO Level I · ASTM F24',expiry:'2026-06-30',email:'rsandoval@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:false,deliveryMode:'Phone'},
   {name:'A. Nguyen',territory:'CA, AZ',certs:'NAARSO Level I · CPO',expiry:'2026-11-20',email:'anguyen@as360.com',status:'ACTIVE',vendorId:'V-001',portalAccess:false,deliveryMode:'Both'},
   {name:'K. Williams',territory:'TX, LA',certs:'AIMS · AFO',expiry:'2026-08-10',email:'kwilliams@as360.com',status:'ACTIVE',vendorId:'V-002',portalAccess:false,deliveryMode:'Paper'},
@@ -678,21 +761,21 @@ function saveRoutingMatrix(m){LS.set('as360_routing_matrix',m);}
 
 // FIX 9 — Facilities without score, with vendorId
 var FACILITIES_DATA=[
-  {id:'thunder-road',name:'Thunder Road FEC',type:'FEC',location:'Tampa, FL',address:'4201 W Hillsborough Ave, Tampa, FL 33614',contact:'Mike Rayburn, GM',phone:'(813) 555-0142',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 14, 2026',openCars:3,status:'active',
+  {id:'thunder-road',name:'Thunder Road FEC',type:'FEC',location:'Tampa, FL',address:'4201 W Hillsborough Ave, Tampa, FL 33614',contact:'Mike Rayburn, GM',phone:'(813) 555-0142',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 14, 2026',openCars:0,status:'active',
     locations:['Go-Kart Track A','Go-Kart Track B','Laser Tag Arena','Arcade Floor','Mini Golf Course','Party Rooms'],
-    surveys:[{date:'Apr 14, 2026',type:'FEC',inspector:'T. Jones',status:'IN PROGRESS'},{date:'Jan 22, 2026',type:'FEC',inspector:'T. Jones',status:'COMPLETE'},{date:'Oct 5, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'},{date:'Jul 12, 2025',type:'FEC',inspector:'T. Jones',status:'COMPLETE'}],
+    surveys:[{date:'Apr 14, 2026',type:'FEC',inspector:'M. Reyes',status:'IN PROGRESS'},{date:'Jan 22, 2026',type:'FEC',inspector:'M. Reyes',status:'COMPLETE'},{date:'Oct 5, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'},{date:'Jul 12, 2025',type:'FEC',inspector:'M. Reyes',status:'COMPLETE'}],
     cars:[{id:'CAR-2026-0041',item:'Go-kart brake pad wear exceeds manufacturer threshold',severity:'SEV 2',opened:'Apr 14, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2026-0042',item:'Emergency stop signage missing on Track B pit lane',severity:'SEV 3',opened:'Apr 14, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2026-0039',item:'Laser tag arena exit lighting below code minimum',severity:'SEV 3',opened:'Jan 22, 2026',status:'OPEN',daysOpen:83}],
     comms:[{date:'Apr 14, 2026',type:'Inspection Scheduled',recipient:'Underwriting Desk',method:'Email'},{date:'Jan 23, 2026',type:'Inspection Complete',recipient:'Tom Jones',method:'Email'}],
     account:{policyNumber:'MASI-LC-2026-0019',effectiveDate:'Jan 1, 2026',expirationDate:'Jan 1, 2027',premiumTier:'Standard',naicsCode:'713990',annualRevenue:'$2.1M',employeeCount:'45 (seasonal peak: 82)',priorCarrier:'Granite State Insurance',yearsInsured:'3'}
   },
   {id:'splash-kingdom',name:'Splash Kingdom Waterpark',type:'Waterpark',location:'Canton, TX',address:'18814 FM 3054, Canton, TX 75103',contact:'Dana Whitfield, Ops Director',phone:'(903) 555-0287',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 12, 2026',openCars:2,status:'active',
     locations:['Wave Pool','Lazy River','Speed Slides (3)','Kiddie Splash Zone','Cabana Area','Pump House / Mechanical'],
-    surveys:[{date:'Apr 12, 2026',type:'Aquatic',inspector:'T. Jones',status:'IN PROGRESS'},{date:'Nov 18, 2025',type:'Aquatic',inspector:'K. Williams',status:'COMPLETE'},{date:'Jun 1, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'}],
+    surveys:[{date:'Apr 12, 2026',type:'Aquatic',inspector:'M. Reyes',status:'IN PROGRESS'},{date:'Nov 18, 2025',type:'Aquatic',inspector:'K. Williams',status:'COMPLETE'},{date:'Jun 1, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'}],
     cars:[{id:'CAR-2026-0038',item:'Lazy river return current exceeds PHTA flow-rate guideline',severity:'SEV 3',opened:'Apr 12, 2026',status:'OPEN',daysOpen:0}],
     comms:[{date:'Apr 12, 2026',type:'Inspection Scheduled',recipient:'Tom Jones',method:'Email'}],
     account:{policyNumber:'MASI-LC-2026-0034',effectiveDate:'Mar 1, 2026',expirationDate:'Mar 1, 2027',premiumTier:'Elevated',naicsCode:'713920',annualRevenue:'$4.7M',employeeCount:'38 (seasonal peak: 155)',priorCarrier:'Scottsdale Indemnity',yearsInsured:'2'}
   },
-  {id:'adventure-park',name:'Adventure Park USA',type:'Amusement Park',location:'New Market, MD',address:'11113 W Old Baltimore Rd, New Market, MD 21774',contact:'Steve Bartlett, Safety Mgr',phone:'(301) 555-0193',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 10, 2026',openCars:4,status:'review',
+  {id:'adventure-park',name:'Adventure Park USA',type:'Amusement Park',location:'New Market, MD',address:'11113 W Old Baltimore Rd, New Market, MD 21774',contact:'Steve Bartlett, Safety Mgr',phone:'(301) 555-0193',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 10, 2026',openCars:3,status:'review',
     locations:['Coaster \u2014 Wildcat','Go-Kart Track','Miniature Golf','Batting Cages','Laser Tag','Ropes Course','Arcade'],
     surveys:[{date:'Apr 10, 2026',type:'Amusement Device',inspector:'R. Sandoval',status:'IN PROGRESS'},{date:'Dec 4, 2025',type:'Amusement Device',inspector:'R. Sandoval',status:'COMPLETE'},{date:'Aug 15, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'}],
     cars:[{id:'CAR-2026-0044',item:'Wildcat coaster lap bar hydraulic pressure below spec on car 3',severity:'SEV 1',opened:'Apr 10, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2026-0045',item:'Ropes course carabiner inspection tags expired (6 units)',severity:'SEV 2',opened:'Apr 10, 2026',status:'OPEN',daysOpen:0}],
@@ -724,7 +807,8 @@ function showView(viewId){
   var panel=document.getElementById('view-'+viewId);
   if(panel){panel.classList.add('active');panel.style.display='block';panel.scrollTop=0}
   var tabs=document.querySelectorAll('.tab');
-  var tabMap={inspections:0,facilities:1,'facility-builder':1,checklists:2,inspectors:3,reports:4,schedule:0,mailback:3};
+  // FIX 6 — New 7-tab layout: Inspections | CARs | Facilities | Checklists | Inspectors | Access | Reports
+  var tabMap={inspections:0,cars:1,facilities:2,'facility-builder':2,checklists:3,inspectors:4,access:5,reports:6,schedule:0,mailback:4};
   if(viewId==='facilities'){
     renderFacilitiesList();
     var lv=document.getElementById('facilities-list-view');
@@ -745,12 +829,14 @@ function showView(viewId){
     renderInspections();
     if(subAction==='calendar')switchInspMode('calendar');
   }
+  if(viewId==='cars')renderCars();
   if(viewId==='checklists')clRenderTable();
   if(viewId==='inspectors'){
     renderInspectors();renderVendors();
     if(subAction==='mailback')switchInspSubtab('mailback');
   }
-  if(viewId==='reports'){renderReports();renderCars();renderRoutingMatrix();}
+  if(viewId==='access')renderRoutingMatrix();
+  if(viewId==='reports')renderReports();
   if(tabMap[originalId]!==undefined&&tabs[tabMap[originalId]]){tabs[tabMap[originalId]].classList.add('active')}
 }
 function openModal(id){var el=document.getElementById(id);if(el)el.classList.add('open');}
@@ -839,11 +925,16 @@ function renderInspections(){
   if(fForm){var forms={};all.forEach(function(r){forms[r.form]=1;});var h2='<option value="">All Types</option>';Object.keys(forms).sort().forEach(function(f){h2+='<option value="'+f+'"'+(curForm===f?' selected':'')+'>'+f+'</option>';});fForm.innerHTML=h2;}
   var fs=document.getElementById('filter-status');var statusF=fs?fs.value:'';var inspF=fInsp?fInsp.value:'';var formF=fForm?fForm.value:'';
   var filtered=all.filter(function(r){if(statusF&&r.status!==statusF)return false;if(inspF&&r.inspector!==inspF)return false;if(formF&&r.form!==formF)return false;return true;});
-  // FIX 5 — Grouped stats
-  var active=0,inReview=0,closed=0,overdue=0;
-  all.forEach(function(r){if(r.status==='SCHEDULED'||r.status==='ASSIGNED'||r.status==='IN FIELD')active++;else if(r.status==='SUBMITTED'||r.status==='UNDER REVIEW')inReview++;else if(r.status==='DELIVERED'||r.status==='CLOSED')closed++;else if(r.status==='OVERDUE')overdue++;else if(r.status==='AWAITING REMEDIATION')active++;});
+  // FIX 3 — 4 status buckets matching actual row statuses
+  var sched=0,inField=0,submitted=0,closedCt=0;
+  all.forEach(function(r){
+    if(r.status==='SCHEDULED'||r.status==='ASSIGNED')sched++;
+    else if(r.status==='IN FIELD'||r.status==='MAIL OUT')inField++;
+    else if(r.status==='SUBMITTED'||r.status==='UNDER REVIEW'||r.status==='DELIVERED')submitted++;
+    else if(r.status==='CLOSED')closedCt++;
+  });
   var se=document.getElementById('inspections-stats');
-  if(se)se.innerHTML='<div class="stat"><div class="stat-num" style="color:var(--accent)">'+active+'</div><div class="stat-label">Active</div></div><div class="stat"><div class="stat-num" style="color:var(--warn)">'+inReview+'</div><div class="stat-label">In Review</div></div><div class="stat"><div class="stat-num" style="color:var(--good)">'+closed+'</div><div class="stat-label">Closed</div></div><div class="stat"><div class="stat-num" style="color:var(--red)">'+overdue+'</div><div class="stat-label">Overdue</div></div>';
+  if(se)se.innerHTML='<div class="stat"><div class="stat-num" style="color:var(--accent)">'+sched+'</div><div class="stat-label">Scheduled</div></div><div class="stat"><div class="stat-num" style="color:var(--warn)">'+inField+'</div><div class="stat-label">In Field</div></div><div class="stat"><div class="stat-num" style="color:var(--accent)">'+submitted+'</div><div class="stat-label">Submitted</div></div><div class="stat"><div class="stat-num" style="color:var(--good)">'+closedCt+'</div><div class="stat-label">Closed</div></div>';
   var tbody=document.getElementById('inspectionTable');if(!tbody)return;
   var html='';
   filtered.forEach(function(r){
@@ -854,6 +945,10 @@ function renderInspections(){
     html+='<td>'+r.facility+'</td><td>'+r.inspector+'</td>';
     html+='<td style="font-family:var(--mono);font-size:11px">'+formatDate(r.date)+'</td>';
     html+='<td>'+r.form+'</td>';
+    // FIX 6 — Open CARs column: count FAIL items with severity<=3 for this inspection, click navigates to CARs tab filtered by facility
+    var insCarCount=(r.items||[]).filter(function(it){return it.disposition==='FAIL'&&it.severity<=3;}).length;
+    var insCarCell=insCarCount===0?'<span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span>':'<a href="#" style="font-family:var(--mono);font-size:11px;font-weight:700;color:var(--red);text-decoration:none" onclick="event.preventDefault();event.stopPropagation();filterCarsByFacility(\''+escAttr(r.facility)+'\')">'+insCarCount+'</a>';
+    html+='<td style="text-align:center">'+insCarCell+'</td>';
     var discBadge=(r.discoveredAttractions&&r.discoveredAttractions.length>0)?' <span class="badge badge-warn">+'+r.discoveredAttractions.length+' FOUND</span>':'';
     html+='<td><span class="badge '+badgeClass(r.status)+'">'+r.status+'</span>'+discBadge+'</td>';
     html+='<td>'+(r.status==='SCHEDULED'?'<button class="btn-sm-action" onclick="event.stopPropagation();openAssignInspector(\''+r.id+'\')">Assign Inspector</button>':'')+'</td>';
@@ -892,7 +987,7 @@ function renderInspections(){
     }
     var canAddItems=r.status!=='DELIVERED'&&r.status!=='CLOSED';
     var insp=inspectors.find(function(x){return x.name===r.inspector;});var contact=insp?insp.email:'—';
-    html+='<tr id="insp-detail-'+r.id+'" style="display:none"><td colspan="7" style="padding:0;background:var(--surface2)"><div style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:16px">';
+    html+='<tr id="insp-detail-'+r.id+'" style="display:none"><td colspan="8" style="padding:0;background:var(--surface2)"><div style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:16px">';
     html+='<div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:6px">ITEMS ('+r.items.length+')</div>'+itemsHtml;
     if(canAddItems)html+='<div style="margin-top:8px;display:flex;gap:6px"><button class="btn-sm-action" onclick="event.stopPropagation();openAddItem(\''+r.id+'\')">+ Add Item</button><button class="btn-sm-action" onclick="event.stopPropagation();openAddForm(\''+r.id+'\')">+ Add Form</button></div>';
     html+='<div style="margin-top:6px"><button class="btn-sm-action" onclick="event.stopPropagation();generateCrashKit(\''+r.id+'\')">Crash Kit PDF</button></div>';
@@ -989,13 +1084,14 @@ function confirmAddForm(){
 function renderFacilitiesList(){
   var el=document.getElementById('facilitiesTable');if(!el)return;var vendors=getVendors();
   var statusBadge=function(s){return s==='current'?'<span class="badge badge-good">CURRENT</span>':s==='review'?'<span class="badge badge-warn">REVIEW</span>':'<span class="badge badge-accent">ACTIVE</span>';};
-  var carsBadge=function(n){return n===0?'<span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span>':'<span style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+(n>=3?'var(--red)':'var(--warn)')+'">'+n+'</span>';};
-  var html='<thead><tr><th>Facility</th><th>Type</th><th>Location</th><th>Vendor</th><th>Last Inspection</th><th>Open CARs</th><th>Status</th></tr></thead><tbody>';
+  // FIX 6 — Clickable Open CARs cell that navigates to CARs tab pre-filtered by facility
+  var carsBadge=function(n,facName){if(n===0)return '<span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span>';var color=n>=3?'var(--red)':'var(--warn)';return '<a href="#" style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+color+';text-decoration:none" onclick="event.preventDefault();event.stopPropagation();filterCarsByFacility(\''+escAttr(facName)+'\')">'+n+'</a>';};
+  var html='<thead><tr><th>Facility</th><th>Type</th><th>Location</th><th>Vendor</th><th>Last Inspection</th><th title="Corrective Action Request">Open CARs</th><th>Status</th></tr></thead><tbody>';
   var staticNames={};
   FACILITIES_DATA.forEach(function(f){
     staticNames[f.name]=true;
     var vn=vendors.find(function(v){return v.id===f.vendorId;});
-    html+='<tr style="cursor:pointer" onclick="openFacility(\''+f.id+'\')"><td style="font-weight:600;color:var(--text)">'+f.name+'</td><td style="font-family:var(--mono);font-size:10px">'+f.type+'</td><td>'+f.location+'</td><td style="font-size:11px">'+(vn?vn.name:'—')+'</td><td style="font-family:var(--mono);font-size:11px">'+f.lastInspection+'</td><td style="text-align:center">'+carsBadge(f.openCars)+'</td><td>'+statusBadge(f.status)+'</td></tr>';
+    html+='<tr style="cursor:pointer" onclick="openFacility(\''+f.id+'\')"><td style="font-weight:600;color:var(--text)">'+f.name+'</td><td style="font-family:var(--mono);font-size:10px">'+f.type+'</td><td>'+f.location+'</td><td style="font-size:11px">'+(vn?vn.name:'—')+'</td><td style="font-family:var(--mono);font-size:11px">'+f.lastInspection+'</td><td style="text-align:center">'+carsBadge(f.openCars,f.name)+'</td><td>'+statusBadge(f.status)+'</td></tr>';
   });
   // Item 9 — Append facility profiles from Facility Builder that are not already in FACILITIES_DATA
   var profiles=fbGetProfiles();
@@ -1041,7 +1137,20 @@ function toggleFacilityPanel(panelId){var el=document.getElementById(panelId);if
 //  CHECKLISTS TAB (parser engine untouched)
 // ═══════════════════════════════════════
 var CL_STORAGE_KEY='as360_checklist_library';var clPendingFile=null;var clParsedResult=null;var clExpandedRow=null;
-function clGetAll(){return LS.get(CL_STORAGE_KEY,[]);}
+// FIX 4 + FIX 10 — Seed checklist library on first load with accurate item counts + deploy timestamps
+function clGetAll(){
+  var stored=LS.get(CL_STORAGE_KEY,null);
+  if(stored===null){
+    var seed=[
+      {id:'cl-seed-carousel-v2',type:'Carousel',version:'v2',uploadedBy:'Noel Rhodes',uploadDate:'2026-04-12',itemCount:38,active:true,sections:[],signatureLines:[],fileName:'chance-mgr-carousel-v2.docx',lastDeployed:'2026-04-12 10:14'},
+      {id:'cl-seed-carousel-v1',type:'Carousel',version:'v1',uploadedBy:'Noel Rhodes',uploadDate:'2025-10-01',itemCount:46,active:false,sections:[],signatureLines:[],fileName:'chance-mgr-carousel-v1.docx',lastDeployed:''},
+      {id:'cl-seed-gokart-v1',type:'Go-Karts',version:'v1',uploadedBy:'Noel Rhodes',uploadDate:'2026-04-12',itemCount:35,active:true,sections:[],signatureLines:[],fileName:'go-kart-daily-v1.docx',lastDeployed:'2026-04-12 10:14'}
+    ];
+    LS.set(CL_STORAGE_KEY,seed);
+    return seed;
+  }
+  return stored;
+}
 function clSaveAll(arr){LS.set(CL_STORAGE_KEY,arr);}
 function clNextVersion(type){var all=clGetAll();var max=0;all.forEach(function(c){if(c.type===type){var n=parseInt(c.version.replace('v',''));if(n>max)max=n;}});return 'v'+(max+1);}
 function clCountItems(sections){var n=0;sections.forEach(function(s){n+=s.items.length;});return n;}
@@ -1198,7 +1307,7 @@ function clGuessType(fileName){var n=(fileName||'').toLowerCase();var map={'go-k
 function clShowPreview(result,fileName){clParsedResult=result;clParsedResult.fileName=fileName;var sections=result.sections;var totalItems=clCountItems(sections);if(totalItems===0){clSetStatus('No checklist items found — check file format','var(--red)');clSetParseStatus('0 items');document.getElementById('cl-preview-panel').style.display='none';return;}clSetStatus('','var(--text3)');clSetParseStatus(totalItems+' items found');var guess=clGuessType(fileName);if(!guess&&sections.length>0)guess=clGuessType(sections[0].name);var typeSelect=document.getElementById('cl-type-select');if(typeSelect&&guess)typeSelect.value=guess;var previewType=typeSelect?typeSelect.value:'';var versionLabel=previewType?clNextVersion(previewType):'v?';document.getElementById('cl-preview-version').textContent=versionLabel;document.getElementById('cl-preview-items').textContent=totalItems+' items · '+sections.length+' sections';typeSelect.onchange=function(){document.getElementById('cl-preview-version').textContent=this.value?clNextVersion(this.value):'v?';};var secDiv=document.getElementById('cl-preview-sections');var html='';sections.forEach(function(sec,si){html+='<div style="margin-bottom:10px"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text);padding:5px 0;border-bottom:2px solid var(--accent);margin-bottom:4px;display:flex;justify-content:space-between"><span>'+(si+1)+' · '+escHtml(sec.name).toUpperCase()+'</span><span style="color:var(--text3);font-weight:400">'+sec.items.length+' item'+(sec.items.length!==1?'s':'')+(sec.hasComments?' · comments':'')+'</span></div>';sec.items.forEach(function(item){html+='<div style="padding:3px 0 3px 12px;font-size:11px;color:var(--text2);border-bottom:1px solid var(--border)">'+escHtml(item)+'</div>';});html+='</div>';});secDiv.innerHTML=html;var sigDiv=document.getElementById('cl-preview-sig');if(result.signatureLines.length>0){sigDiv.style.display='block';sigDiv.innerHTML='<strong>Signature block detected:</strong> '+result.signatureLines.map(function(l){return escHtml(l);}).join(' · ');}else sigDiv.style.display='none';document.getElementById('cl-preview-panel').style.display='block';}
 function clConfirmSave(){if(!clParsedResult||!clParsedResult.sections.length)return;var typeSelect=document.getElementById('cl-type-select');var type=typeSelect?typeSelect.value:'';if(!type){clSetStatus('Select an attraction type before saving','var(--red)');return;}var version=clNextVersion(type);var record={id:'cl-'+Date.now(),type:type,version:version,uploadedBy:'Noel Rhodes',uploadDate:new Date().toISOString().split('T')[0],itemCount:clCountItems(clParsedResult.sections),active:false,sections:clParsedResult.sections,signatureLines:clParsedResult.signatureLines||[],fileName:clParsedResult.fileName||'unknown'};var all=clGetAll();all.forEach(function(c){if(c.type===type)c.active=false;});record.active=true;all.push(record);clSaveAll(all);clRenderTable();clDiscardPreview();}
 function clDiscardPreview(){clPendingFile=null;clParsedResult=null;document.getElementById('cl-file-info').style.display='none';document.getElementById('cl-preview-panel').style.display='none';document.getElementById('cl-file-input').value='';var typeSelect=document.getElementById('cl-type-select');if(typeSelect){typeSelect.value='';typeSelect.onchange=null;}clSetStatus('','var(--text3)');clSetParseStatus('Ready to parse');}
-function clRenderTable(){var all=clGetAll();var tbody=document.getElementById('cl-version-tbody');var empty=document.getElementById('cl-empty-state');var countEl=document.getElementById('cl-version-count');var tbl=document.getElementById('cl-version-table');if(!tbody)return;if(countEl)countEl.textContent=all.length+' checklist'+(all.length!==1?'s':'');if(all.length===0){if(tbl)tbl.style.display='none';if(empty)empty.style.display='block';return;}if(tbl)tbl.style.display='';if(empty)empty.style.display='none';var sorted=all.slice().sort(function(a,b){if(a.type<b.type)return -1;if(a.type>b.type)return 1;return parseInt(b.version.replace('v',''))-parseInt(a.version.replace('v',''));});var html='';sorted.forEach(function(c){var toggleHtml='<label class="toggle" onclick="event.stopPropagation()"><input type="checkbox"'+(c.active?' checked':'')+' onchange="clToggleActive(\''+c.id+'\')"><span class="toggle-slider"></span></label>';html+='<tr style="cursor:pointer" onclick="clTogglePreview(\''+c.id+'\')"><td style="font-weight:600;color:var(--text)">'+c.type+'</td><td style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:700">'+c.version+'</td><td>'+c.uploadedBy+'</td><td style="font-family:var(--mono);font-size:11px">'+c.uploadDate+'</td><td style="font-family:var(--mono);font-size:11px;text-align:center;font-weight:700">'+c.itemCount+'</td><td>'+toggleHtml+'</td><td>'+(c.active?'<button class="btn-sm-action" onclick="event.stopPropagation();clGeneratePDF(\''+c.id+'\')">Crash Kit PDF</button>':'')+'</td></tr>';html+='<tr id="cl-preview-row-'+c.id+'" style="display:none"><td colspan="7" style="padding:0;background:var(--surface2)"><div style="padding:14px">'+clRenderPreviewContent(c)+'</div></td></tr>';});tbody.innerHTML=html;}
+function clRenderTable(){var all=clGetAll();var tbody=document.getElementById('cl-version-tbody');var empty=document.getElementById('cl-empty-state');var countEl=document.getElementById('cl-version-count');var tbl=document.getElementById('cl-version-table');if(!tbody)return;if(countEl)countEl.textContent=all.length+' checklist'+(all.length!==1?'s':'');if(all.length===0){if(tbl)tbl.style.display='none';if(empty)empty.style.display='block';return;}if(tbl)tbl.style.display='';if(empty)empty.style.display='none';var sorted=all.slice().sort(function(a,b){if(a.type<b.type)return -1;if(a.type>b.type)return 1;return parseInt(b.version.replace('v',''))-parseInt(a.version.replace('v',''));});var html='';sorted.forEach(function(c){var toggleHtml='<label class="toggle" onclick="event.stopPropagation()"><input type="checkbox"'+(c.active?' checked':'')+' onchange="clToggleActive(\''+c.id+'\')"><span class="toggle-slider"></span></label>';var lastDeployedCell=c.lastDeployed?'<td style="font-family:var(--mono);font-size:11px">'+escHtml(c.lastDeployed)+'</td>':'<td style="font-family:var(--mono);font-size:11px;color:var(--text3);text-align:center">\u2014</td>';html+='<tr style="cursor:pointer" onclick="clTogglePreview(\''+c.id+'\')"><td style="font-weight:600;color:var(--text)">'+c.type+'</td><td style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:700">'+c.version+'</td><td>'+c.uploadedBy+'</td><td style="font-family:var(--mono);font-size:11px">'+c.uploadDate+'</td><td style="font-family:var(--mono);font-size:11px;text-align:center;font-weight:700">'+c.itemCount+'</td><td>'+toggleHtml+'</td>'+lastDeployedCell+'<td>'+(c.active?'<button class="btn-sm-action" title="Printable backup checklist for field use when portal is unavailable" onclick="event.stopPropagation();clGeneratePDF(\''+c.id+'\')">Field Print Backup</button>':'')+'</td></tr>';html+='<tr id="cl-preview-row-'+c.id+'" style="display:none"><td colspan="8" style="padding:0;background:var(--surface2)"><div style="padding:14px">'+clRenderPreviewContent(c)+'</div></td></tr>';});tbody.innerHTML=html;}
 function clRenderPreviewContent(checklist){var html='<div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:10px">'+checklist.type+' · '+checklist.version+' · '+checklist.fileName+'</div>';checklist.sections.forEach(function(sec,si){html+='<div style="margin-bottom:12px"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text);padding:6px 0;border-bottom:2px solid var(--accent);margin-bottom:6px;display:flex;justify-content:space-between"><span>'+(si+1)+' · '+sec.name.toUpperCase()+'</span><span style="font-weight:400;color:var(--text3)">'+sec.items.length+' item'+(sec.items.length!==1?'s':'')+(sec.hasComments?' · comments field':'')+'</span></div>';sec.items.forEach(function(item){html+='<div style="padding:4px 0 4px 12px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">'+escHtml(item)+'</div>';});html+='</div>';});if(checklist.signatureLines&&checklist.signatureLines.length>0)html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);padding:6px 0;border-top:1px solid var(--border)">Signature block: '+checklist.signatureLines.map(function(l){return escHtml(l);}).join(' · ')+'</div>';return html;}
 function clTogglePreview(id){var row=document.getElementById('cl-preview-row-'+id);if(!row)return;if(clExpandedRow&&clExpandedRow!==id){var prev=document.getElementById('cl-preview-row-'+clExpandedRow);if(prev)prev.style.display='none';}row.style.display=row.style.display==='none'?'':'none';clExpandedRow=row.style.display===''?id:null;}
 function clToggleActive(id){var all=clGetAll();var target=all.find(function(c){return c.id===id;});if(!target)return;if(target.active)target.active=false;else{all.forEach(function(c){if(c.type===target.type)c.active=false;});target.active=true;}clSaveAll(all);clRenderTable();}
@@ -1252,25 +1361,31 @@ function fbCloseBuilder(){
   renderFacilitiesList();
 }
 function renderInspectors(){
-  var inspectors=getInspectors();var inspections=getInspections();var vendors=getVendors();
+  var inspectors=getInspectors();var inspections=getInspections();var vendors=getVendors();var cars=getCars();
   var tbody=document.getElementById('inspectorTable');if(!tbody)return;
   var today=new Date();var warn90=new Date(today);warn90.setDate(warn90.getDate()+90);var html='';
   inspectors.forEach(function(insp){
     var activeCount=inspections.filter(function(r){return r.inspector===insp.name&&r.status!=='CLOSED'&&r.status!=='DELIVERED';}).length;
+    // FIX 6 — Open CARs per inspector (excludes closed)
+    var openCarCount=cars.filter(function(c){return c.assignedTo===insp.name&&c.status!=='CLOSED';}).length;
     var expDate=new Date(insp.expiry);var expiryBadge=expDate<today?'badge-red':expDate<warn90?'badge-warn':'badge-good';var expiryLabel=expDate<today?'EXPIRED':expDate<warn90?'EXPIRING':'VALID';
     var vn=vendors.find(function(v){return v.id===insp.vendorId;});
-    // Item 5 — Portal Access cell
-    var portalCell=insp.portalAccess?'<span class="badge badge-good">\u2713 Active</span>':'<span class="badge badge-accent">\u2717 Not Provisioned</span> <button class="btn-sm-action" onclick="provisionInspectorAccess(\''+escAttr(insp.name)+'\')">Provision</button>';
-    // Item 6 — Delivery Mode cell
+    // FIX 7 — Portal Access cell: "Not Invited" + "Send Portal Invite"
+    var portalCell=insp.portalAccess?'<span class="badge badge-good">\u2713 Active</span>':'<span class="badge badge-accent">\u2717 Not Invited</span> <button class="btn-sm-action" onclick="provisionInspectorAccess(\''+escAttr(insp.name)+'\')">Send Portal Invite</button>';
+    // Delivery Mode cell — FIX 9 adds PHONE tooltip
     var dm=insp.deliveryMode||'Phone';
     var dmBadgeClass=dm==='Paper'?'badge-warn':dm==='Both'?'badge-good':'badge-accent';
-    var deliveryCell='<span class="badge '+dmBadgeClass+'" style="cursor:pointer" onclick="cycleDeliveryMode(\''+escAttr(insp.name)+'\')" title="Click to cycle">'+dm.toUpperCase()+'</span>';
+    var dmTitle=dm==='Phone'?'Mobile inspector portal access':(dm==='Paper'?'Paper mail-back packet':'Mobile portal + paper backup');
+    var deliveryCell='<span class="badge '+dmBadgeClass+'" style="cursor:pointer" onclick="cycleDeliveryMode(\''+escAttr(insp.name)+'\')" title="'+dmTitle+'">'+dm.toUpperCase()+'</span>';
+    // FIX 6 — Open CARs cell: clickable, filters CARs tab by inspector
+    var openCarCell=openCarCount===0?'<span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span>':'<a href="#" style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--red);text-decoration:none" onclick="event.preventDefault();filterCarsByInspector(\''+escAttr(insp.name)+'\')">'+openCarCount+'</a>';
     html+='<tr><td style="font-weight:600;color:var(--text)">'+insp.name+'</td><td>'+insp.territory+'</td><td style="font-family:var(--mono);font-size:10px">'+insp.certs+'</td>';
     html+='<td><span class="badge '+expiryBadge+'">'+expiryLabel+'</span> <span style="font-family:var(--mono);font-size:10px;color:var(--text3)">'+insp.expiry+'</span></td>';
     html+='<td style="font-size:11px">'+(vn?vn.name:'—')+'</td>';
     html+='<td>'+portalCell+'</td>';
     html+='<td>'+deliveryCell+'</td>';
     html+='<td style="text-align:center"><a href="#" style="font-family:var(--mono);font-weight:700;color:var(--accent);text-decoration:none" onclick="event.preventDefault();filterInspByName(\''+insp.name+'\')">'+activeCount+'</a></td>';
+    html+='<td style="text-align:center">'+openCarCell+'</td>';
     html+='<td><span class="badge badge-good">'+insp.status+'</span></td>';
     html+='<td><button class="btn-sm-action" onclick="openAssignToInspection(\''+escAttr(insp.name)+'\')">Assign to Inspection</button></td></tr>';
   });
@@ -1387,7 +1502,7 @@ function confirmNewInspection(){
 function renderRoutingMatrix(){
   var container=document.getElementById('routing-matrix-container');if(!container)return;
   var matrix=getRoutingMatrix();
-  var html='<table class="matrix-tbl"><thead><tr><th>Status</th>';
+  var html='<table class="matrix-tbl"><thead><tr><th>Status / Action</th>';
   ALL_RECIPIENTS.forEach(function(r){html+='<th>'+r+'</th>';});
   html+='</tr></thead><tbody>';
   ALL_STATUSES.forEach(function(s){
@@ -1398,8 +1513,27 @@ function renderRoutingMatrix(){
     });
     html+='</tr>';
   });
+  // FIX 6 — Append 4 CAR permission rows (below existing status routing rows)
+  // Default checks: Tom/Noel on all 4; Underwriting on CLOSE CAR + OVERRIDE SEVERITY only; Production/Vendor unchecked.
+  var CAR_PERMISSIONS=[
+    {label:'OPEN CAR',defaults:{'Tom Jones':true,'Noel Rhodes':true,'Underwriting Desk':false,'Production':false,'Vendor':false}},
+    {label:'ASSIGN CAR',defaults:{'Tom Jones':true,'Noel Rhodes':true,'Underwriting Desk':false,'Production':false,'Vendor':false}},
+    {label:'CLOSE CAR',defaults:{'Tom Jones':true,'Noel Rhodes':true,'Underwriting Desk':true,'Production':false,'Vendor':false}},
+    {label:'OVERRIDE SEVERITY',defaults:{'Tom Jones':true,'Noel Rhodes':true,'Underwriting Desk':true,'Production':false,'Vendor':false}}
+  ];
+  html+='<tr><td colspan="'+(ALL_RECIPIENTS.length+1)+'" style="background:var(--surface2);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);padding:8px 10px">CAR Workflow Permissions</td></tr>';
+  CAR_PERMISSIONS.forEach(function(p){
+    html+='<tr><td>'+p.label+'</td>';
+    ALL_RECIPIENTS.forEach(function(r){
+      var on=!!p.defaults[r];
+      html+='<td><input type="checkbox"'+(on?' checked':'')+' onchange="updatePermission(\''+escAttr(p.label)+'\',\''+escAttr(r)+'\',this.checked)"></td>';
+    });
+    html+='</tr>';
+  });
   html+='</tbody></table>';container.innerHTML=html;
 }
+// FIX 6 — Permission checkbox stub (visual-only for demo; can wire to storage later)
+function updatePermission(action,user,on){toast('Permission updated: '+action+' → '+user+(on?' \u2713':' \u2717'),'ok');}
 function updateRouting(status,recipient,on){var m=getRoutingMatrix();if(!m[status])m[status]={};m[status][recipient]=on;saveRoutingMatrix(m);toast('Routing updated: '+status+' → '+recipient+(on?' ✓':' ✗'),'ok');}
 
 function renderReports(){
@@ -1426,10 +1560,46 @@ function openReportDetail(rptId){
 }
 function printReport(){var title=document.getElementById('report-detail-title').textContent;var body=document.getElementById('report-detail-body').innerHTML;var pa=document.getElementById('printArea');pa.innerHTML='<div id="printArea"><h2>'+escHtml(title)+'</h2>'+body+'</div>';pa.style.display='block';setTimeout(function(){window.print();pa.style.display='none';},200);}
 
-// FIX 10 — CARs with remediation + review
+// FIX 6 — CARs promoted to primary tab: counter cards, filters, table, callout
 function renderCars(){
-  var cars=getCars();var tbody=document.getElementById('carTable');if(!tbody)return;var html='';
+  var cars=getCars();
+  // Populate facility + inspector filter options (once per render, preserving selection)
+  var ff=document.getElementById('car-filter-facility');
+  var fi=document.getElementById('car-filter-inspector');
+  var curFac=ff?ff.value:'';var curInsp=fi?fi.value:'';
+  if(ff){var facs={};cars.forEach(function(c){facs[c.facility]=1;});var fh='<option value="">All Facilities</option>';Object.keys(facs).sort().forEach(function(n){fh+='<option value="'+escHtml(n)+'"'+(curFac===n?' selected':'')+'>'+escHtml(n)+'</option>';});ff.innerHTML=fh;}
+  if(fi){var insps={};cars.forEach(function(c){insps[c.assignedTo]=1;});var ih='<option value="">All Inspectors</option>';Object.keys(insps).sort().forEach(function(n){ih+='<option value="'+escHtml(n)+'"'+(curInsp===n?' selected':'')+'>'+escHtml(n)+'</option>';});fi.innerHTML=ih;}
+  var sev=document.getElementById('car-filter-severity');var sevF=sev?sev.value:'';
+  var stat=document.getElementById('car-filter-status');var statF=stat?stat.value:'';
+  var facF=ff?ff.value:'';var inspF=fi?fi.value:'';
+  var filtered=cars.filter(function(c){
+    if(sevF&&String(c.severity)!==sevF)return false;
+    if(facF&&c.facility!==facF)return false;
+    if(inspF&&c.assignedTo!==inspF)return false;
+    if(statF&&c.status!==statF)return false;
+    return true;
+  });
+  // FIX 6 — 6 counter cards
+  var today=new Date().toISOString().split('T')[0];
+  var openCt=0,assignedCt=0,remedCt=0,awaitingCt=0,closedCt=0,overdueCt=0;
   cars.forEach(function(c){
+    if(c.status==='OPEN')openCt++;
+    else if(c.status==='ASSIGNED')assignedCt++;
+    else if(c.status==='IN REMEDIATION')remedCt++;
+    else if(c.status==='AWAITING VERIFICATION')awaitingCt++;
+    else if(c.status==='CLOSED')closedCt++;
+    if(c.status!=='CLOSED'&&c.dueDate&&c.dueDate<today)overdueCt++;
+  });
+  var statsEl=document.getElementById('cars-stats');
+  if(statsEl)statsEl.innerHTML=
+    '<div class="stat"><div class="stat-num" style="color:var(--red)">'+openCt+'</div><div class="stat-label">Open</div></div>'+
+    '<div class="stat"><div class="stat-num" style="color:var(--accent)">'+assignedCt+'</div><div class="stat-label">Assigned</div></div>'+
+    '<div class="stat"><div class="stat-num" style="color:var(--warn)">'+remedCt+'</div><div class="stat-label">In Remediation</div></div>'+
+    '<div class="stat"><div class="stat-num" style="color:var(--warn)">'+awaitingCt+'</div><div class="stat-label">Awaiting Verification</div></div>'+
+    '<div class="stat"><div class="stat-num" style="color:var(--good)">'+closedCt+'</div><div class="stat-label">Closed</div></div>'+
+    '<div class="stat"><div class="stat-num" style="color:var(--red)">'+overdueCt+'</div><div class="stat-label">Overdue</div></div>';
+  var tbody=document.getElementById('carTable');if(!tbody)return;var html='';
+  filtered.forEach(function(c){
     var sevBadge=c.severity<=2?'badge-red':c.severity===3?'badge-warn':'badge-accent';
     var statusBadge=c.status==='CLOSED'?'badge-good':c.status==='IN REMEDIATION'?'badge-warn':'badge-red';
     html+='<tr><td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+c.id+'</td><td>'+c.facility+'</td><td>'+c.ride+'</td><td style="font-size:11px">'+c.finding+'</td><td><span class="badge '+sevBadge+'">SEV '+c.severity+'</span></td><td>'+c.assignedTo+'</td><td style="font-family:var(--mono);font-size:11px">'+c.dueDate+'</td><td><span class="badge '+statusBadge+'">'+c.status+'</span></td>';
@@ -1439,7 +1609,17 @@ function renderCars(){
     else html+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3)">Closed</span>';
     html+='</td></tr>';
   });
+  if(filtered.length===0)html='<tr><td colspan="9" style="text-align:center;color:var(--text3);font-family:var(--mono);font-size:10px;padding:20px">No CARs match current filters</td></tr>';
   tbody.innerHTML=html;
+}
+// FIX 6 — Cross-tab link helpers
+function filterCarsByFacility(facName){
+  showView('cars');
+  setTimeout(function(){var ff=document.getElementById('car-filter-facility');if(ff){ff.value=facName;}renderCars();},0);
+}
+function filterCarsByInspector(inspName){
+  showView('cars');
+  setTimeout(function(){var fi=document.getElementById('car-filter-inspector');if(fi){fi.value=inspName;}renderCars();},0);
 }
 function openSubmitRemediation(carId){document.getElementById('remediation-car-id').value=carId;document.getElementById('remediation-notes').value='';document.getElementById('remediation-photo').value='';openModal('modal-submit-remediation');}
 function confirmSubmitRemediation(){
