@@ -88,7 +88,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
 .facility-collapsible.open .fc-arrow{transform:rotate(90deg)}
 .facility-collapsible-body{display:none;padding:12px 14px}
 .facility-collapsible.open .facility-collapsible-body{display:block}
-/* Modal */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;width:90%;max-width:480px;max-height:80vh;overflow-y:auto}
@@ -104,10 +103,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
 .btn-secondary:hover{border-color:var(--accent);color:var(--text2)}
 .btn-sm-action{padding:4px 10px;border:1px solid var(--border);border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:600;cursor:pointer;background:var(--surface2);color:var(--accent);white-space:nowrap}
 .btn-sm-action:hover{border-color:var(--accent);background:var(--accent-l)}
-/* Filter bar */
 .filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .filter-bar select{padding:6px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:12px;color:var(--text);outline:none;cursor:pointer;min-width:140px}
-/* Calendar */
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden;min-height:320px}
 .cal-hdr{background:var(--surface2);padding:8px 6px;font-family:var(--mono);font-size:9px;font-weight:600;color:var(--text3);text-align:center;text-transform:uppercase;letter-spacing:.06em}
 .cal-day{background:var(--surface);padding:8px 6px;min-height:110px;vertical-align:top}
@@ -116,14 +113,25 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
 .cal-card{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:5px 7px;margin-bottom:4px;font-size:10px;color:var(--text);cursor:default;line-height:1.3}
 .cal-card-fac{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cal-card-meta{font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:2px}
-/* Toggle switch */
 .toggle{position:relative;width:34px;height:18px;display:inline-block;cursor:pointer}
 .toggle input{opacity:0;width:0;height:0}
 .toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:9px;transition:.2s}
 .toggle-slider:before{content:'';position:absolute;height:14px;width:14px;left:2px;bottom:2px;background:var(--text3);border-radius:50%;transition:.2s}
 .toggle input:checked+.toggle-slider{background:var(--good)}
 .toggle input:checked+.toggle-slider:before{transform:translateX(16px);background:#fff}
-/* Print */
+/* Routing matrix */
+.matrix-tbl{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:8px}
+.matrix-tbl th{font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text3);background:var(--surface2);padding:6px 8px;text-align:center;border-bottom:1px solid var(--border)}
+.matrix-tbl th:first-child{text-align:left}
+.matrix-tbl td{font-size:11px;color:var(--text2);padding:6px 8px;border-bottom:1px solid var(--border);text-align:center}
+.matrix-tbl td:first-child{text-align:left;font-family:var(--mono);font-size:9px}
+.matrix-tbl tr:last-child td{border-bottom:none}
+.matrix-tbl input[type=checkbox]{width:14px;height:14px;cursor:pointer;accent-color:var(--accent)}
+/* Sub-tab toggle */
+.subtab-bar{display:flex;gap:0;margin-bottom:14px;border-bottom:1px solid var(--border)}
+.subtab{padding:6px 14px;font-family:var(--sans);font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent}
+.subtab:hover{color:var(--text2)}
+.subtab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
 @media print{
   body *{visibility:hidden}
   #printArea,#printArea *{visibility:visible}
@@ -171,48 +179,39 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
 
 <div class="panels">
 
-  <!-- ══════════ INSPECTIONS ══════════ -->
+  <!-- INSPECTIONS -->
   <div class="panel active" id="view-inspections" style="display:block;">
     <div class="ey">Field Operations</div>
     <div class="ttl">Inspections</div>
     <div class="body">Active and completed field inspections. Use filters to narrow by status, inspector, or checklist type.</div>
-
     <div id="inspections-stats" class="stat-row"></div>
-
     <div class="filter-bar" id="inspections-filter-bar">
       <select id="filter-status" onchange="renderInspections()">
         <option value="">All Statuses</option>
         <option value="SCHEDULED">Scheduled</option>
-        <option value="IN PROGRESS">In Progress</option>
-        <option value="COMPLETE">Complete</option>
+        <option value="ASSIGNED">Assigned</option>
+        <option value="IN FIELD">In Field</option>
+        <option value="SUBMITTED">Submitted</option>
+        <option value="UNDER REVIEW">Under Review</option>
+        <option value="DELIVERED">Delivered</option>
+        <option value="AWAITING REMEDIATION">Awaiting Remediation</option>
+        <option value="CLOSED">Closed</option>
         <option value="OVERDUE">Overdue</option>
       </select>
       <select id="filter-inspector" onchange="renderInspections()"></select>
       <select id="filter-form" onchange="renderInspections()"></select>
     </div>
-
     <table class="tbl" id="inspections-tbl">
-      <thead>
-        <tr>
-          <th>Inspection ID</th>
-          <th>Facility</th>
-          <th>Inspector</th>
-          <th>Date</th>
-          <th>Checklist</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
+      <thead><tr><th>Inspection ID</th><th>Facility</th><th>Inspector</th><th>Date</th><th>Checklist</th><th>Status</th><th></th></tr></thead>
       <tbody id="inspectionTable"></tbody>
     </table>
-
     <div class="note" style="margin-top:16px">
       <div class="note-hd">Inspection ID Format</div>
-      <div class="note-body">INS-YYYY-NNNN — auto-generated on dispatch. Each inspection maps to one checklist type, one facility, one inspector.</div>
+      <div class="note-body">INS-YYYY-NNNN — auto-generated on dispatch. Each inspection maps to one or more checklist modules, one facility, one inspector.</div>
     </div>
   </div>
 
-  <!-- ══════════ FACILITIES ══════════ -->
+  <!-- FACILITIES -->
   <div class="panel" id="view-facilities" style="display:none;">
     <div id="facilities-list-view">
       <div class="ey">Account Overview</div>
@@ -229,20 +228,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     </div>
   </div>
 
-  <!-- ══════════ CHECKLISTS ══════════ -->
+  <!-- CHECKLISTS -->
   <div class="panel" id="view-checklists" style="display:none;">
     <div class="ey">Checklist Management</div>
     <div class="ttl">Checklists</div>
     <div class="body">Upload and version inspection checklists. Active versions are deployed to the Inspector Portal for field use.</div>
-
-    <!-- Drop Zone -->
     <div id="cl-dropzone" style="border:2px dashed var(--border);border-radius:6px;padding:36px 16px;text-align:center;cursor:pointer;transition:all .15s;background:var(--surface);min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:14px" onclick="document.getElementById('cl-file-input').click()">
       <div style="font-family:var(--mono);font-size:24px;margin-bottom:8px;color:var(--text3);line-height:1">+</div>
       <div style="font-size:14px;color:var(--text);font-weight:600">Drop inspection document here</div>
       <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px">.doc, .docx, .pdf, .txt accepted</div>
       <input type="file" id="cl-file-input" accept=".doc,.docx,.pdf,.txt" style="display:none" onchange="clFileSelected(this)">
     </div>
-    <!-- File info (shown after drop, before parse) -->
     <div id="cl-file-info" style="display:none;margin-top:10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 14px">
       <div style="display:flex;align-items:center;justify-content:space-between">
         <div style="display:flex;align-items:center;gap:8px">
@@ -252,9 +248,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
         <div style="font-family:var(--mono);font-size:9px;color:var(--accent)" id="cl-parse-status">Ready to parse</div>
       </div>
     </div>
-    <!-- Error display -->
     <div id="cl-upload-status" style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:8px;min-height:0;text-align:center"></div>
-    <!-- Preview panel (shown after parse, before save) -->
     <div id="cl-preview-panel" style="display:none;margin-top:12px;background:var(--surface);border:1px solid var(--accent-b);border-radius:6px;overflow:hidden">
       <div style="padding:12px 14px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
         <div style="font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;color:var(--accent);text-transform:uppercase">Parse Preview</div>
@@ -284,25 +278,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
         </div>
       </div>
     </div>
-
-    <!-- Version Table -->
     <div style="margin-top:16px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
         <div class="ey" style="margin-bottom:0">Uploaded Versions</div>
         <div id="cl-version-count" style="font-family:var(--mono);font-size:9px;color:var(--text3)">0 checklists</div>
       </div>
       <table class="tbl" id="cl-version-table">
-        <thead>
-          <tr>
-            <th>Attraction Type</th>
-            <th>Version</th>
-            <th>Uploaded By</th>
-            <th>Upload Date</th>
-            <th>Items</th>
-            <th>Active</th>
-            <th></th>
-          </tr>
-        </thead>
+        <thead><tr><th>Attraction Type</th><th>Version</th><th>Uploaded By</th><th>Upload Date</th><th>Items</th><th>Active</th><th></th></tr></thead>
         <tbody id="cl-version-tbody"></tbody>
       </table>
       <div id="cl-empty-state" class="empty-state" style="display:none">
@@ -311,50 +293,45 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
         <div class="empty-state-body">Upload a .docx checklist document above to create your first versioned template.</div>
       </div>
     </div>
-
     <div class="note" style="margin-top:16px">
       <div class="note-hd">Version Control</div>
       <div class="note-body">Only one version per attraction type can be active at a time. Toggling a new version active automatically deactivates the prior version. Active checklists are deployed to the Inspector Portal.</div>
     </div>
   </div>
 
-  <!-- ══════════ INSPECTORS ══════════ -->
+  <!-- INSPECTORS -->
   <div class="panel" id="view-inspectors" style="display:none;">
     <div class="ey">Field Team</div>
     <div class="ttl">Inspectors</div>
-    <div class="body">Rostered inspectors authorized to conduct field inspections. Each inspector is credentialed, background-checked, and checklist-type certified.</div>
-
-    <div style="margin-bottom:12px">
-      <button class="btn-primary" onclick="openModal('modal-add-inspector')">Add Inspector</button>
+    <div class="body">Rostered inspectors and vendors authorized to conduct field inspections.</div>
+    <div class="subtab-bar" id="insp-subtabs">
+      <div class="subtab active" onclick="switchInspSubtab('inspectors')">Inspectors</div>
+      <div class="subtab" onclick="switchInspSubtab('vendors')">Vendors</div>
     </div>
-
-    <table class="tbl" id="inspectors-tbl">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Territory</th>
-          <th>Certifications</th>
-          <th>Credential Expiry</th>
-          <th>Active Inspections</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="inspectorTable"></tbody>
-    </table>
-
+    <div id="insp-subtab-inspectors">
+      <div style="margin-bottom:12px"><button class="btn-primary" onclick="openModal('modal-add-inspector')">Add Inspector</button></div>
+      <table class="tbl" id="inspectors-tbl">
+        <thead><tr><th>Name</th><th>Territory</th><th>Certifications</th><th>Credential Expiry</th><th>Vendor</th><th>Active Inspections</th><th>Status</th><th></th></tr></thead>
+        <tbody id="inspectorTable"></tbody>
+      </table>
+    </div>
+    <div id="insp-subtab-vendors" style="display:none">
+      <table class="tbl" id="vendors-tbl">
+        <thead><tr><th>Vendor</th><th>Primary Contact</th><th>Email</th><th>Phone</th><th>Inspectors</th><th>Active Inspections</th></tr></thead>
+        <tbody id="vendorTable"></tbody>
+      </table>
+    </div>
     <div class="note" style="margin-top:16px">
       <div class="note-hd">Credentialing</div>
-      <div class="note-body">All inspectors carry current NAARSO, AIMS, or equivalent certification. Credential verification is on file with Amusement Standards and available to MASI loss control on request.</div>
+      <div class="note-body">All inspectors carry current NAARSO, AIMS, or equivalent certification. Credential verification is on file and available to MASI loss control on request.</div>
     </div>
   </div>
 
-  <!-- ══════════ SCHEDULE ══════════ -->
+  <!-- SCHEDULE -->
   <div class="panel" id="view-schedule" style="display:none;">
     <div class="ey">Planning</div>
     <div class="ttl">Schedule</div>
     <div class="body">Weekly inspection calendar. Cards are generated from the inspections data.</div>
-
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
       <div style="display:flex;gap:8px;align-items:center">
         <button class="btn-sm-action" onclick="schedWeekNav(-1)">&larr; Previous</button>
@@ -363,112 +340,49 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
       </div>
       <button class="btn-primary" onclick="openModal('modal-new-inspection')">New Inspection</button>
     </div>
-
     <div id="sched-calendar"></div>
-
     <div class="note" style="margin-top:16px">
       <div class="note-hd">Scheduling</div>
       <div class="note-body">Inspections are prioritized by policy renewal date and days since last inspection. The system suggests dispatch order; the team confirms or overrides.</div>
     </div>
   </div>
 
-  <!-- ══════════ REPORTS ══════════ -->
+  <!-- REPORTS -->
   <div class="panel" id="view-reports" style="display:none;">
     <div class="ey">Output</div>
     <div class="ttl">Reports &amp; Notifications</div>
-    <div class="body">Inspection reports, email notification triggers, and corrective action tracking.</div>
-
-    <div class="g3" style="margin-top:16px;margin-bottom:20px">
+    <div class="body">Inspection reports, email routing matrix, and corrective action tracking.</div>
+    <div class="g2" style="margin-top:16px;margin-bottom:20px">
       <div class="card" style="border-top:3px solid var(--accent)">
-        <div class="card-label">Auto-Email Triggers</div>
-        <div class="card-title">Status Change Notifications</div>
-        <div class="card-body" style="margin-bottom:10px">Status transitions that send email to the underwriting desk.</div>
-        <div id="email-toggles-container" style="display:flex;flex-direction:column;gap:6px"></div>
-      </div>
-      <div class="card" style="border-top:3px solid var(--accent)">
-        <div class="card-label">Recipients</div>
-        <div class="card-title">Notification Routing</div>
-        <div class="card-body" style="margin-bottom:10px">Emails triggered by status changes are sent to these contacts.</div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:var(--surface2);border-radius:4px">
-            <div>
-              <div style="font-size:11px;font-weight:600;color:var(--text)">Tom Jones</div>
-              <div style="font-family:var(--mono);font-size:9px;color:var(--text3)">Loss Control Manager</div>
-            </div>
-            <span class="badge badge-accent">ALL</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:var(--surface2);border-radius:4px">
-            <div>
-              <div style="font-size:11px;font-weight:600;color:var(--text)">Underwriting Desk</div>
-              <div style="font-family:var(--mono);font-size:9px;color:var(--text3)">underwriting@mcgowanallied.com</div>
-            </div>
-            <span class="badge badge-warn">CRITICAL ONLY</span>
-          </div>
-        </div>
+        <div class="card-label">Email Routing Matrix</div>
+        <div class="card-title">Status &rarr; Recipient</div>
+        <div class="card-body" style="margin-bottom:8px">Check which recipients get notified on each status transition.</div>
+        <div id="routing-matrix-container" style="overflow-x:auto"></div>
       </div>
       <div class="card" style="border-top:3px solid var(--accent)">
         <div class="card-label">Severity Codes</div>
         <div class="card-title">Finding Classification</div>
         <div class="card-body" style="margin-bottom:10px">Standard severity codes used across all inspections.</div>
         <div style="display:flex;flex-direction:column;gap:4px">
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px">
-            <span class="badge badge-red">SEV 1</span>
-            <span style="font-size:11px;color:var(--text)">Locked out, cannot be used</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px">
-            <span class="badge badge-red">SEV 2</span>
-            <span style="font-size:11px;color:var(--text)">Carrier notification required</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px">
-            <span class="badge badge-warn">SEV 3</span>
-            <span style="font-size:11px;color:var(--text)">Correct within 30 days before next setup or use</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px">
-            <span class="badge badge-accent">SEV 4</span>
-            <span style="font-size:11px;color:var(--text)">Correct within agreed timeframe</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px">
-            <span class="badge badge-good">SEV 5</span>
-            <span style="font-size:11px;color:var(--text)">Recommendation only</span>
-          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-red">SEV 1</span><span style="font-size:11px;color:var(--text)">Locked out, cannot be used</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-red">SEV 2</span><span style="font-size:11px;color:var(--text)">Carrier notification required</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-warn">SEV 3</span><span style="font-size:11px;color:var(--text)">Correct within 30 days before next setup or use</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-accent">SEV 4</span><span style="font-size:11px;color:var(--text)">Correct within agreed timeframe</span></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--surface2);border-radius:4px"><span class="badge badge-good">SEV 5</span><span style="font-size:11px;color:var(--text)">Recommendation only</span></div>
         </div>
       </div>
     </div>
-
     <div class="ey">Recent Reports</div>
     <table class="tbl" style="margin-top:8px">
-      <thead>
-        <tr>
-          <th>Report ID</th>
-          <th>Facility</th>
-          <th>Type</th>
-          <th>Generated</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
+      <thead><tr><th>Report ID</th><th>Facility</th><th>Type</th><th>Generated</th><th>Status</th><th></th></tr></thead>
       <tbody id="reportTable"></tbody>
     </table>
-
     <div class="section-divider"></div>
     <div class="ey">Corrective Action Requests</div>
     <table class="tbl" style="margin-top:8px">
-      <thead>
-        <tr>
-          <th>CAR ID</th>
-          <th>Facility</th>
-          <th>Ride/Attraction</th>
-          <th>Finding</th>
-          <th>Severity</th>
-          <th>Assigned To</th>
-          <th>Due Date</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
+      <thead><tr><th>CAR ID</th><th>Facility</th><th>Ride/Attraction</th><th>Finding</th><th>Severity</th><th>Assigned To</th><th>Due Date</th><th>Status</th><th></th></tr></thead>
       <tbody id="carTable"></tbody>
     </table>
-
     <div class="note" style="margin-top:16px">
       <div class="note-hd">Report Format</div>
       <div class="note-body">Completed inspections auto-generate a report with photo documentation, finding classifications, and a summary cover page. Reports are stored in the workspace and emailed to configured recipients.</div>
@@ -477,185 +391,160 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
 
 </div>
 
-<!-- ══════════ MODALS ══════════ -->
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-assign-inspector"><div class="modal">
+  <div class="modal-title">Assign Inspector</div>
+  <div class="modal-field"><label>Inspection</label><input type="text" id="assign-ins-id" readonly></div>
+  <div class="modal-field"><label>Inspector</label><select id="assign-ins-inspector"></select></div>
+  <div class="modal-actions"><button class="btn-primary" onclick="confirmAssignInspector()">Confirm</button><button class="btn-secondary" onclick="closeModal('modal-assign-inspector')">Cancel</button></div>
+</div></div>
 
-<!-- Assign Inspector Modal -->
-<div class="modal-overlay" id="modal-assign-inspector">
-  <div class="modal">
-    <div class="modal-title">Assign Inspector</div>
-    <div class="modal-field">
-      <label>Inspection</label>
-      <input type="text" id="assign-ins-id" readonly>
-    </div>
-    <div class="modal-field">
-      <label>Inspector</label>
-      <select id="assign-ins-inspector"></select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-primary" onclick="confirmAssignInspector()">Confirm</button>
-      <button class="btn-secondary" onclick="closeModal('modal-assign-inspector')">Cancel</button>
-    </div>
-  </div>
-</div>
+<div class="modal-overlay" id="modal-add-inspector"><div class="modal">
+  <div class="modal-title">Add Inspector</div>
+  <div class="modal-field"><label>Full Name</label><input type="text" id="add-insp-name" placeholder="e.g. J. Smith"></div>
+  <div class="modal-field"><label>Territory</label><input type="text" id="add-insp-territory" placeholder="e.g. FL, TX"></div>
+  <div class="modal-field"><label>Certifications</label><input type="text" id="add-insp-certs" placeholder="e.g. NAARSO Level I"></div>
+  <div class="modal-field"><label>Credential Expiry</label><input type="date" id="add-insp-expiry"></div>
+  <div class="modal-field"><label>Email</label><input type="email" id="add-insp-email" placeholder="inspector@company.com"></div>
+  <div class="modal-field"><label>Vendor</label><select id="add-insp-vendor"></select></div>
+  <div class="modal-actions"><button class="btn-primary" onclick="confirmAddInspector()">Add Inspector</button><button class="btn-secondary" onclick="closeModal('modal-add-inspector')">Cancel</button></div>
+</div></div>
 
-<!-- Add Inspector Modal -->
-<div class="modal-overlay" id="modal-add-inspector">
-  <div class="modal">
-    <div class="modal-title">Add Inspector</div>
-    <div class="modal-field"><label>Full Name</label><input type="text" id="add-insp-name" placeholder="e.g. J. Smith"></div>
-    <div class="modal-field"><label>Territory</label><input type="text" id="add-insp-territory" placeholder="e.g. FL, TX"></div>
-    <div class="modal-field"><label>Certifications</label><input type="text" id="add-insp-certs" placeholder="e.g. NAARSO Level I"></div>
-    <div class="modal-field"><label>Credential Expiry</label><input type="date" id="add-insp-expiry"></div>
-    <div class="modal-field"><label>Email</label><input type="email" id="add-insp-email" placeholder="inspector@company.com"></div>
-    <div class="modal-actions">
-      <button class="btn-primary" onclick="confirmAddInspector()">Add Inspector</button>
-      <button class="btn-secondary" onclick="closeModal('modal-add-inspector')">Cancel</button>
-    </div>
-  </div>
-</div>
+<div class="modal-overlay" id="modal-assign-to-inspection"><div class="modal">
+  <div class="modal-title">Assign to Inspection</div>
+  <div class="modal-field"><label>Inspector</label><input type="text" id="assign-to-insp-name" readonly></div>
+  <div class="modal-field"><label>Inspection (Scheduled Only)</label><select id="assign-to-insp-select"></select></div>
+  <div class="modal-actions"><button class="btn-primary" onclick="confirmAssignToInspection()">Confirm</button><button class="btn-secondary" onclick="closeModal('modal-assign-to-inspection')">Cancel</button></div>
+</div></div>
 
-<!-- Assign Inspector to Inspection Modal -->
-<div class="modal-overlay" id="modal-assign-to-inspection">
-  <div class="modal">
-    <div class="modal-title">Assign to Inspection</div>
-    <div class="modal-field">
-      <label>Inspector</label>
-      <input type="text" id="assign-to-insp-name" readonly>
-    </div>
-    <div class="modal-field">
-      <label>Inspection (Scheduled Only)</label>
-      <select id="assign-to-insp-select"></select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-primary" onclick="confirmAssignToInspection()">Confirm</button>
-      <button class="btn-secondary" onclick="closeModal('modal-assign-to-inspection')">Cancel</button>
-    </div>
-  </div>
-</div>
+<div class="modal-overlay" id="modal-new-inspection"><div class="modal">
+  <div class="modal-title">New Inspection</div>
+  <div class="modal-field"><label>Facility Name</label><input type="text" id="new-insp-facility" placeholder="Facility name"></div>
+  <div class="modal-field"><label>Checklist Modules (select one or more)</label><select id="new-insp-modules" multiple style="min-height:100px"></select></div>
+  <div class="modal-field"><label>Inspector</label><select id="new-insp-inspector"></select></div>
+  <div class="modal-field"><label>Date</label><input type="date" id="new-insp-date"></div>
+  <div id="new-insp-checklist-info" style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:8px"></div>
+  <div class="modal-actions"><button class="btn-primary" onclick="confirmNewInspection()">Create Inspection</button><button class="btn-secondary" onclick="closeModal('modal-new-inspection')">Cancel</button></div>
+</div></div>
 
-<!-- New Inspection Modal -->
-<div class="modal-overlay" id="modal-new-inspection">
-  <div class="modal">
-    <div class="modal-title">New Inspection</div>
-    <div class="modal-field"><label>Facility Name</label><input type="text" id="new-insp-facility" placeholder="Facility name"></div>
-    <div class="modal-field">
-      <label>Attraction Type</label>
-      <select id="new-insp-type">
-        <option value="">Select type...</option>
-        <option value="Go-Karts">Go-Karts</option>
-        <option value="Carousel">Carousel</option>
-        <option value="Amusement Device">Amusement Device</option>
-        <option value="Aquatic">Aquatic</option>
-        <option value="FEC">FEC</option>
-        <option value="Grounds/Premise">Grounds / Premise</option>
-      </select>
-    </div>
-    <div class="modal-field">
-      <label>Inspector</label>
-      <select id="new-insp-inspector"></select>
-    </div>
-    <div class="modal-field"><label>Date</label><input type="date" id="new-insp-date"></div>
-    <div id="new-insp-checklist-info" style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:8px"></div>
-    <div class="modal-actions">
-      <button class="btn-primary" onclick="confirmNewInspection()">Create Inspection</button>
-      <button class="btn-secondary" onclick="closeModal('modal-new-inspection')">Cancel</button>
-    </div>
-  </div>
-</div>
+<div class="modal-overlay" id="modal-add-item"><div class="modal">
+  <div class="modal-title">Add Item (Ad-Hoc)</div>
+  <input type="hidden" id="add-item-insp-id">
+  <div class="modal-field"><label>Section</label><select id="add-item-section"></select></div>
+  <div class="modal-field"><label>Item Text</label><input type="text" id="add-item-text" placeholder="Describe finding..."></div>
+  <div class="modal-field"><label>Disposition</label><select id="add-item-disposition"><option value="FAIL">Fail</option><option value="PASS">Pass</option><option value="N/A">N/A</option></select></div>
+  <div class="modal-field" id="add-item-severity-field"><label>Severity (if Fail)</label><select id="add-item-severity"><option value="1">1 — Locked out</option><option value="2">2 — Carrier notification</option><option value="3">3 — Correct within 30 days</option><option value="4">4 — Agreed timeframe</option><option value="5">5 — Recommendation</option></select></div>
+  <div class="modal-field" id="add-item-explanation-field"><label>Explanation <span style="color:var(--red)">*</span></label><textarea id="add-item-explanation" placeholder="Required for FAIL items..."></textarea></div>
+  <div class="modal-actions"><button class="btn-primary" onclick="confirmAddItem()">Add Item</button><button class="btn-secondary" onclick="closeModal('modal-add-item')">Cancel</button></div>
+</div></div>
 
-<!-- Report Detail Modal -->
-<div class="modal-overlay" id="modal-report-detail">
-  <div class="modal" style="max-width:600px">
-    <div class="modal-title" id="report-detail-title"></div>
-    <div id="report-detail-body"></div>
-    <div class="modal-actions">
-      <button class="btn-primary" onclick="printReport()">Print Report</button>
-      <button class="btn-secondary" onclick="closeModal('modal-report-detail')">Close</button>
-    </div>
-  </div>
-</div>
+<div class="modal-overlay" id="modal-add-form"><div class="modal">
+  <div class="modal-title">Add Form to Inspection</div>
+  <input type="hidden" id="add-form-insp-id">
+  <div class="modal-field"><label>Available Checklist Modules</label><select id="add-form-module"></select></div>
+  <div class="modal-actions"><button class="btn-primary" onclick="confirmAddForm()">Add Module</button><button class="btn-secondary" onclick="closeModal('modal-add-form')">Cancel</button></div>
+</div></div>
 
-<!-- Close CAR Modal -->
-<div class="modal-overlay" id="modal-close-car">
-  <div class="modal">
-    <div class="modal-title">Close CAR</div>
-    <div class="modal-field">
-      <label>CAR ID</label>
-      <input type="text" id="close-car-id" readonly>
-    </div>
-    <div class="modal-field">
-      <label>Resolution Notes</label>
-      <textarea id="close-car-notes" placeholder="Describe the corrective action taken..."></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-primary" onclick="confirmCloseCar()">Close CAR</button>
-      <button class="btn-secondary" onclick="closeModal('modal-close-car')">Cancel</button>
-    </div>
-  </div>
-</div>
+<div class="modal-overlay" id="modal-report-detail"><div class="modal" style="max-width:600px">
+  <div class="modal-title" id="report-detail-title"></div>
+  <div id="report-detail-body"></div>
+  <div class="modal-actions"><button class="btn-primary" onclick="printReport()">Print Report</button><button class="btn-secondary" onclick="closeModal('modal-report-detail')">Close</button></div>
+</div></div>
 
-<!-- Print Area (hidden, used for browser print) -->
+<div class="modal-overlay" id="modal-close-car"><div class="modal">
+  <div class="modal-title" id="close-car-modal-title">Close CAR</div>
+  <div class="modal-field"><label>CAR ID</label><input type="text" id="close-car-id" readonly></div>
+  <div class="modal-field" id="close-car-reviewer-field" style="display:none"><label>Reviewer Name</label><input type="text" id="close-car-reviewer" placeholder="Your name"></div>
+  <div class="modal-field"><label>Resolution / Review Notes</label><textarea id="close-car-notes" placeholder="Describe the corrective action taken..."></textarea></div>
+  <div class="modal-actions"><button class="btn-primary" id="close-car-submit-btn" onclick="confirmCloseCar()">Close CAR</button><button class="btn-secondary" onclick="closeModal('modal-close-car')">Cancel</button></div>
+</div></div>
+
+<div class="modal-overlay" id="modal-submit-remediation"><div class="modal">
+  <div class="modal-title">Submit Remediation</div>
+  <div class="modal-field"><label>CAR ID</label><input type="text" id="remediation-car-id" readonly></div>
+  <div class="modal-field"><label>Remediation Notes</label><textarea id="remediation-notes" placeholder="Describe corrective action taken..."></textarea></div>
+  <div class="modal-field"><label>Photo Filename (if applicable)</label><input type="text" id="remediation-photo" placeholder="e.g. fix_photo_001.jpg"></div>
+  <div class="modal-actions"><button class="btn-primary" onclick="confirmSubmitRemediation()">Submit</button><button class="btn-secondary" onclick="closeModal('modal-submit-remediation')">Cancel</button></div>
+</div></div>
+
 <div id="printArea" style="display:none"></div>
 
 <script>
 // ═══════════════════════════════════════
-//  DATA LAYER — localStorage backed
+//  DATA LAYER
 // ═══════════════════════════════════════
-var LS={
-  get:function(k,d){try{return JSON.parse(localStorage.getItem(k))||d;}catch(e){return d;}},
-  set:function(k,v){localStorage.setItem(k,JSON.stringify(v));}
-};
+var LS={get:function(k,d){try{return JSON.parse(localStorage.getItem(k))||d;}catch(e){return d;}},set:function(k,v){localStorage.setItem(k,JSON.stringify(v));}};
 
-// ── Seed inspections ──
+// FIX 7 — Vendors
+var SEED_VENDORS=[
+  {id:'V-001',name:'Amusement Standards',primaryContact:'Adam Brousell',email:'adam@amusementstandards.com',phone:'(732) 555-0100'},
+  {id:'V-002',name:'SafePark Inspections',primaryContact:'Maria Lopez',email:'mlopez@safepark.com',phone:'(407) 555-0234'}
+];
+function getVendors(){return LS.get('as360_vendors',SEED_VENDORS);}
+
+// FIX 1+5 — Seed inspections with items[] and expanded statuses
 var SEED_INSPECTIONS=[
-  {id:'INS-2026-0047',facility:'Thunder Road FEC',inspector:'T. Jones',date:'2026-04-14',form:'FEC',status:'SCHEDULED',findings:[]},
-  {id:'INS-2026-0046',facility:'Splash Kingdom Waterpark',inspector:'T. Jones',date:'2026-04-12',form:'Aquatic',status:'IN PROGRESS',findings:[{item:'Lazy river return current exceeds PHTA flow-rate guideline',severity:3},{item:'Lifeguard rotation board not posted at station 2',severity:4}]},
-  {id:'INS-2026-0045',facility:'Adventure Park USA',inspector:'R. Sandoval',date:'2026-04-10',form:'Amusement Device',status:'IN PROGRESS',findings:[{item:'Wildcat coaster lap bar hydraulic pressure below spec on car 3',severity:1},{item:'Ropes course carabiner inspection tags expired (6 units)',severity:2},{item:'Emergency exit path obstructed behind arcade building',severity:3},{item:'Go-kart track barrier bolt shear on turn 2 outside rail',severity:2}]},
-  {id:'INS-2026-0044',facility:'Heritage Carousel Gardens',inspector:'A. Nguyen',date:'2026-04-08',form:'Carousel',status:'COMPLETE',findings:[{item:'Chariot seat cushion minor wear',severity:5}]},
-  {id:'INS-2026-0043',facility:'Skyzone Trampoline — Austin',inspector:'K. Williams',date:'2026-04-06',form:'FEC',status:'COMPLETE',findings:[{item:'Trampoline pad edge wear on court 7',severity:3},{item:'Emergency lighting test log gap — Feb missing',severity:4}]},
-  {id:'INS-2026-0042',facility:'Putt-Putt Fun Center — Orlando',inspector:'L. Davis',date:'2026-04-04',form:'Grounds/Premise',status:'COMPLETE',findings:[]},
-  {id:'INS-2026-0041',facility:'Cedar Point',inspector:'T. Jones',date:'2026-04-16',form:'Amusement Device',status:'SCHEDULED',findings:[]},
-  {id:'INS-2026-0040',facility:'Six Flags Great Adventure',inspector:'R. Sandoval',date:'2026-04-18',form:'Amusement Device',status:'SCHEDULED',findings:[]}
+  {id:'INS-2026-0047',facility:'Thunder Road FEC',inspector:'T. Jones',date:'2026-04-14',form:'FEC',status:'SCHEDULED',vendorId:'V-001',checklistModules:[],items:[]},
+  {id:'INS-2026-0046',facility:'Splash Kingdom Waterpark',inspector:'T. Jones',date:'2026-04-12',form:'Aquatic',status:'IN FIELD',vendorId:'V-001',checklistModules:[],items:[
+    {id:'i-046-1',checklistModuleId:null,sectionName:'Aquatic',itemText:'Lazy river return current exceeds PHTA flow-rate guideline',disposition:'FAIL',explanation:'Current measured at 4.2 ft/s, exceeding PHTA max of 3.5 ft/s at return inlet.',severity:3,photos:[],addedAdHoc:false},
+    {id:'i-046-2',checklistModuleId:null,sectionName:'Aquatic',itemText:'Lifeguard rotation board not posted at station 2',disposition:'FAIL',explanation:'Board was removed during maintenance and not replaced. Station unmanned during observation.',severity:4,photos:[],addedAdHoc:false}
+  ]},
+  {id:'INS-2026-0045',facility:'Adventure Park USA',inspector:'R. Sandoval',date:'2026-04-10',form:'Amusement Device',status:'SUBMITTED',vendorId:'V-001',checklistModules:[],items:[
+    {id:'i-045-1',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Wildcat coaster lap bar hydraulic pressure below spec on car 3',disposition:'FAIL',explanation:'Hydraulic gauge reads 1800 PSI vs required 2200 PSI minimum. Car 3 locked out pending repair.',severity:1,photos:[],addedAdHoc:false},
+    {id:'i-045-2',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Ropes course carabiner inspection tags expired (6 units)',disposition:'FAIL',explanation:'6 carabiners missing current annual inspection tags. Last tagged Oct 2024.',severity:2,photos:[],addedAdHoc:false},
+    {id:'i-045-3',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Emergency exit path obstructed behind arcade building',disposition:'FAIL',explanation:'Dumpsters and pallets blocking designated emergency egress route behind arcade.',severity:3,photos:[],addedAdHoc:false},
+    {id:'i-045-4',checklistModuleId:null,sectionName:'Amusement Device',itemText:'Go-kart track barrier bolt shear on turn 2 outside rail',disposition:'FAIL',explanation:'3 bolts sheared on outside barrier rail at turn 2. Rail loose on impact.',severity:2,photos:[],addedAdHoc:false}
+  ]},
+  {id:'INS-2026-0044',facility:'Heritage Carousel Gardens',inspector:'A. Nguyen',date:'2026-04-08',form:'Carousel',status:'DELIVERED',vendorId:'V-001',checklistModules:[],items:[
+    {id:'i-044-1',checklistModuleId:null,sectionName:'Carousel',itemText:'Chariot seat cushion minor wear',disposition:'FAIL',explanation:'Surface wear on chariot 3 seat cushion, cosmetic only, no structural concern.',severity:5,photos:[],addedAdHoc:false}
+  ]},
+  {id:'INS-2026-0043',facility:'Skyzone Trampoline — Austin',inspector:'K. Williams',date:'2026-04-06',form:'FEC',status:'CLOSED',vendorId:'V-002',checklistModules:[],items:[
+    {id:'i-043-1',checklistModuleId:null,sectionName:'FEC',itemText:'Trampoline pad edge wear on court 7',disposition:'FAIL',explanation:'Edge padding worn through to foam on court 7 north side. Replacement ordered.',severity:3,photos:[],addedAdHoc:false},
+    {id:'i-043-2',checklistModuleId:null,sectionName:'FEC',itemText:'Emergency lighting test log gap — Feb missing',disposition:'FAIL',explanation:'Monthly emergency lighting test log has no entry for February 2026.',severity:4,photos:[],addedAdHoc:false}
+  ]},
+  {id:'INS-2026-0042',facility:'Putt-Putt Fun Center — Orlando',inspector:'L. Davis',date:'2026-04-04',form:'Grounds/Premise',status:'CLOSED',vendorId:'V-001',checklistModules:[],items:[]},
+  {id:'INS-2026-0041',facility:'Cedar Point',inspector:'T. Jones',date:'2026-04-16',form:'Amusement Device',status:'SCHEDULED',vendorId:'V-001',checklistModules:[],items:[]},
+  {id:'INS-2026-0040',facility:'Six Flags Great Adventure',inspector:'R. Sandoval',date:'2026-04-18',form:'Amusement Device',status:'ASSIGNED',vendorId:'V-001',checklistModules:[],items:[]}
 ];
-
-function getInspections(){
-  var d=LS.get('as360_inspections',null);
-  if(!d){d=SEED_INSPECTIONS;LS.set('as360_inspections',d);}
-  return d;
-}
+function getInspections(){var d=LS.get('as360_inspections',null);if(!d){d=SEED_INSPECTIONS;LS.set('as360_inspections',d);}return d;}
 function saveInspections(arr){LS.set('as360_inspections',arr);}
+// FIX 1 — derived findings getter for backward compat
+function getFindings(insp){return (insp.items||[]).filter(function(i){return i.disposition==='FAIL';});}
 
-// ── Seed inspectors ──
+// FIX 7 — Inspectors with vendorId
 var SEED_INSPECTORS=[
-  {name:'T. Jones',territory:'FL, TX, OH',certs:'NAARSO Level II · AIMS',expiry:'2027-01-15',email:'tjones@as360.com',status:'ACTIVE'},
-  {name:'R. Sandoval',territory:'NJ, MD, PA',certs:'NAARSO Level I · ASTM F24',expiry:'2026-06-30',email:'rsandoval@as360.com',status:'ACTIVE'},
-  {name:'A. Nguyen',territory:'CA, AZ',certs:'NAARSO Level I · CPO',expiry:'2026-11-20',email:'anguyen@as360.com',status:'ACTIVE'},
-  {name:'K. Williams',territory:'TX, LA',certs:'AIMS · AFO',expiry:'2026-08-10',email:'kwilliams@as360.com',status:'ACTIVE'},
-  {name:'L. Davis',territory:'FL, GA',certs:'NAARSO Level I',expiry:'2026-05-01',email:'ldavis@as360.com',status:'ACTIVE'}
+  {name:'T. Jones',territory:'FL, TX, OH',certs:'NAARSO Level II · AIMS',expiry:'2027-01-15',email:'tjones@as360.com',status:'ACTIVE',vendorId:'V-001'},
+  {name:'R. Sandoval',territory:'NJ, MD, PA',certs:'NAARSO Level I · ASTM F24',expiry:'2026-06-30',email:'rsandoval@as360.com',status:'ACTIVE',vendorId:'V-001'},
+  {name:'A. Nguyen',territory:'CA, AZ',certs:'NAARSO Level I · CPO',expiry:'2026-11-20',email:'anguyen@as360.com',status:'ACTIVE',vendorId:'V-001'},
+  {name:'K. Williams',territory:'TX, LA',certs:'AIMS · AFO',expiry:'2026-08-10',email:'kwilliams@as360.com',status:'ACTIVE',vendorId:'V-002'},
+  {name:'L. Davis',territory:'FL, GA',certs:'NAARSO Level I',expiry:'2026-05-01',email:'ldavis@as360.com',status:'ACTIVE',vendorId:'V-001'}
 ];
-function getInspectors(){
-  var d=LS.get('as360_inspectors',null);
-  if(!d){d=SEED_INSPECTORS;LS.set('as360_inspectors',d);}
-  return d;
-}
+function getInspectors(){var d=LS.get('as360_inspectors',null);if(!d){d=SEED_INSPECTORS;LS.set('as360_inspectors',d);}return d;}
 function saveInspectors(arr){LS.set('as360_inspectors',arr);}
 
-// ── Seed CARs ──
-var SEED_CARS=[
-  {id:'CAR-2026-0041',facility:'Thunder Road FEC',ride:'Go-Kart Track A',finding:'Go-kart brake pad wear exceeds manufacturer threshold',severity:2,assignedTo:'T. Jones',dueDate:'2026-05-14',status:'OPEN',resolution:''},
-  {id:'CAR-2026-0042',facility:'Thunder Road FEC',ride:'Go-Kart Track B',finding:'Emergency stop signage missing on Track B pit lane',severity:3,assignedTo:'T. Jones',dueDate:'2026-05-14',status:'OPEN',resolution:''},
-  {id:'CAR-2026-0044',facility:'Adventure Park USA',ride:'Wildcat Coaster',finding:'Wildcat coaster lap bar hydraulic pressure below spec on car 3',severity:1,assignedTo:'R. Sandoval',dueDate:'2026-04-11',status:'OPEN',resolution:''},
-  {id:'CAR-2026-0045',facility:'Adventure Park USA',ride:'Ropes Course',finding:'Ropes course carabiner inspection tags expired (6 units)',severity:2,assignedTo:'R. Sandoval',dueDate:'2026-04-25',status:'OPEN',resolution:''},
-  {id:'CAR-2026-0038',facility:'Splash Kingdom Waterpark',ride:'Lazy River',finding:'Lazy river return current exceeds PHTA flow-rate guideline',severity:3,assignedTo:'T. Jones',dueDate:'2026-05-12',status:'IN REMEDIATION',resolution:''}
-];
+// FIX 8 — CARs derived from inspections on first load
 function getCars(){
   var d=LS.get('as360_cars',null);
-  if(!d){d=SEED_CARS;LS.set('as360_cars',d);}
+  if(!d){d=deriveSeedCars();LS.set('as360_cars',d);}
   return d;
 }
 function saveCars(arr){LS.set('as360_cars',arr);}
+function deriveSeedCars(){
+  var cars=[];var all=getInspections();var carNum=40;
+  all.forEach(function(ins){
+    var fails=getFindings(ins).filter(function(it){return it.severity<=3;});
+    fails.forEach(function(f){
+      carNum++;
+      var due=new Date(ins.date+'T00:00:00');
+      if(f.severity===1)due=new Date(due);
+      else if(f.severity===2)due.setDate(due.getDate()+7);
+      else due.setDate(due.getDate()+30);
+      cars.push({id:'CAR-2026-'+String(carNum).padStart(4,'0'),facility:ins.facility,ride:f.sectionName||ins.form,finding:f.itemText,severity:f.severity,assignedTo:ins.inspector,dueDate:due.toISOString().split('T')[0],status:'OPEN',resolution:'',remediationNotes:'',remediationPhoto:'',reviewer:''});
+    });
+  });
+  return cars;
+}
 
-// ── Seed reports ──
 var SEED_REPORTS=[
   {id:'RPT-2026-0031',facility:'Heritage Carousel Gardens',type:'Carousel',generated:'2026-04-09',status:'DELIVERED',inspectionId:'INS-2026-0044'},
   {id:'RPT-2026-0030',facility:'Skyzone Trampoline — Austin',type:'FEC',generated:'2026-04-07',status:'DELIVERED',inspectionId:'INS-2026-0043'},
@@ -664,46 +553,49 @@ var SEED_REPORTS=[
 function getReports(){return LS.get('as360_reports',SEED_REPORTS);}
 function saveReports(arr){LS.set('as360_reports',arr);}
 
-// ── Email toggle state ──
-var EMAIL_TRIGGERS=['Inspection Scheduled','Inspection Complete','Finding Flagged — Critical','Report PDF Generated','Inspection Overdue'];
-function getEmailToggles(){
-  var d=LS.get('as360_email_toggles',null);
-  if(!d){d={};EMAIL_TRIGGERS.forEach(function(t,i){d[t]=i<4;});LS.set('as360_email_toggles',d);}
+// FIX 6 — Routing matrix
+var ALL_STATUSES=['SCHEDULED','ASSIGNED','IN FIELD','SUBMITTED','UNDER REVIEW','DELIVERED','AWAITING REMEDIATION','CLOSED'];
+var ALL_RECIPIENTS=['Tom Jones','Noel Rhodes','Underwriting Desk','Production','Vendor'];
+function getRoutingMatrix(){
+  var d=LS.get('as360_routing_matrix',null);
+  if(!d){
+    d={};ALL_STATUSES.forEach(function(s){d[s]={};ALL_RECIPIENTS.forEach(function(r){d[s][r]=(s==='SUBMITTED'||s==='DELIVERED')?true:(r==='Tom Jones'||r==='Noel Rhodes');});});
+    d['SUBMITTED']['Underwriting Desk']=true;d['DELIVERED']['Underwriting Desk']=true;
+    LS.set('as360_routing_matrix',d);
+  }
   return d;
 }
-function saveEmailToggles(obj){LS.set('as360_email_toggles',obj);}
+function saveRoutingMatrix(m){LS.set('as360_routing_matrix',m);}
 
-// ═══════════════════════════════════════
-//  FACILITIES DATA (unchanged)
-// ═══════════════════════════════════════
+// FIX 9 — Facilities without score, with vendorId
 var FACILITIES_DATA=[
-  {id:'thunder-road',name:'Thunder Road FEC',type:'FEC',location:'Tampa, FL',address:'4201 W Hillsborough Ave, Tampa, FL 33614',contact:'Mike Rayburn, GM',phone:'(813) 555-0142',vendor:'Amusement Standards',underwriter:'Noah Reynolds',lastInspection:'Apr 14, 2026',openCars:3,status:'active',
+  {id:'thunder-road',name:'Thunder Road FEC',type:'FEC',location:'Tampa, FL',address:'4201 W Hillsborough Ave, Tampa, FL 33614',contact:'Mike Rayburn, GM',phone:'(813) 555-0142',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 14, 2026',openCars:3,status:'active',
     locations:['Go-Kart Track A','Go-Kart Track B','Laser Tag Arena','Arcade Floor','Mini Golf Course','Party Rooms'],
-    surveys:[{date:'Apr 14, 2026',type:'FEC',inspector:'T. Jones',score:'72%',status:'IN PROGRESS'},{date:'Jan 22, 2026',type:'FEC',inspector:'T. Jones',score:'78%',status:'COMPLETE'},{date:'Oct 5, 2025',type:'Grounds/Premise',inspector:'L. Davis',score:'85%',status:'COMPLETE'},{date:'Jul 12, 2025',type:'FEC',inspector:'T. Jones',score:'74%',status:'COMPLETE'}],
+    surveys:[{date:'Apr 14, 2026',type:'FEC',inspector:'T. Jones',status:'IN PROGRESS'},{date:'Jan 22, 2026',type:'FEC',inspector:'T. Jones',status:'COMPLETE'},{date:'Oct 5, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'},{date:'Jul 12, 2025',type:'FEC',inspector:'T. Jones',status:'COMPLETE'}],
     cars:[{id:'CAR-2026-0041',item:'Go-kart brake pad wear exceeds manufacturer threshold',severity:'SEV 2',opened:'Apr 14, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2026-0042',item:'Emergency stop signage missing on Track B pit lane',severity:'SEV 3',opened:'Apr 14, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2026-0039',item:'Laser tag arena exit lighting below code minimum',severity:'SEV 3',opened:'Jan 22, 2026',status:'OPEN',daysOpen:83}],
-    comms:[{date:'Apr 14, 2026',type:'Inspection Scheduled',recipient:'Underwriting Desk',method:'Email'},{date:'Jan 23, 2026',type:'Inspection Complete',recipient:'Tom Jones',method:'Email'},{date:'Jan 23, 2026',type:'Finding Flagged \u2014 Critical',recipient:'Underwriting Desk',method:'Email'},{date:'Oct 6, 2025',type:'Report PDF Generated',recipient:'Tom Jones',method:'Email'}],
-    account:{policyNumber:'MASI-LC-2026-0019',effectiveDate:'Jan 1, 2026',expirationDate:'Jan 1, 2027',premiumTier:'Standard',naicsCode:'713990 \u2014 All Other Amusement & Recreation',annualRevenue:'$2.1M',employeeCount:'45 (seasonal peak: 82)',priorCarrier:'Granite State Insurance',yearsInsured:'3'}
+    comms:[{date:'Apr 14, 2026',type:'Inspection Scheduled',recipient:'Underwriting Desk',method:'Email'},{date:'Jan 23, 2026',type:'Inspection Complete',recipient:'Tom Jones',method:'Email'}],
+    account:{policyNumber:'MASI-LC-2026-0019',effectiveDate:'Jan 1, 2026',expirationDate:'Jan 1, 2027',premiumTier:'Standard',naicsCode:'713990',annualRevenue:'$2.1M',employeeCount:'45 (seasonal peak: 82)',priorCarrier:'Granite State Insurance',yearsInsured:'3'}
   },
-  {id:'splash-kingdom',name:'Splash Kingdom Waterpark',type:'Waterpark',location:'Canton, TX',address:'18814 FM 3054, Canton, TX 75103',contact:'Dana Whitfield, Ops Director',phone:'(903) 555-0287',vendor:'Amusement Standards',underwriter:'Noah Reynolds',lastInspection:'Apr 12, 2026',openCars:2,status:'active',
+  {id:'splash-kingdom',name:'Splash Kingdom Waterpark',type:'Waterpark',location:'Canton, TX',address:'18814 FM 3054, Canton, TX 75103',contact:'Dana Whitfield, Ops Director',phone:'(903) 555-0287',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 12, 2026',openCars:2,status:'active',
     locations:['Wave Pool','Lazy River','Speed Slides (3)','Kiddie Splash Zone','Cabana Area','Pump House / Mechanical'],
-    surveys:[{date:'Apr 12, 2026',type:'Aquatic',inspector:'T. Jones',score:'80%',status:'IN PROGRESS'},{date:'Nov 18, 2025',type:'Aquatic',inspector:'K. Williams',score:'83%',status:'COMPLETE'},{date:'Jun 1, 2025',type:'Grounds/Premise',inspector:'L. Davis',score:'88%',status:'COMPLETE'},{date:'May 20, 2025',type:'Aquatic',inspector:'K. Williams',score:'79%',status:'COMPLETE'},{date:'Mar 3, 2025',type:'Aquatic',inspector:'T. Jones',score:'76%',status:'COMPLETE'}],
-    cars:[{id:'CAR-2026-0038',item:'Lazy river return current exceeds PHTA flow-rate guideline',severity:'SEV 3',opened:'Apr 12, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2025-0112',item:'Speed slide #2 joint sealant deterioration at 40-ft mark',severity:'SEV 2',opened:'Nov 18, 2025',status:'OPEN',daysOpen:145}],
-    comms:[{date:'Apr 12, 2026',type:'Inspection Scheduled',recipient:'Tom Jones',method:'Email'},{date:'Nov 19, 2025',type:'Inspection Complete',recipient:'Tom Jones',method:'Email'},{date:'Nov 19, 2025',type:'Finding Flagged \u2014 Critical',recipient:'Underwriting Desk',method:'Email'},{date:'Jun 2, 2025',type:'Report PDF Generated',recipient:'Tom Jones',method:'Email'},{date:'May 21, 2025',type:'Inspection Complete',recipient:'Tom Jones',method:'Email'}],
-    account:{policyNumber:'MASI-LC-2026-0034',effectiveDate:'Mar 1, 2026',expirationDate:'Mar 1, 2027',premiumTier:'Elevated',naicsCode:'713920 \u2014 Skiing Facilities (incl. Water Parks)',annualRevenue:'$4.7M',employeeCount:'38 (seasonal peak: 155)',priorCarrier:'Scottsdale Indemnity',yearsInsured:'2'}
+    surveys:[{date:'Apr 12, 2026',type:'Aquatic',inspector:'T. Jones',status:'IN PROGRESS'},{date:'Nov 18, 2025',type:'Aquatic',inspector:'K. Williams',status:'COMPLETE'},{date:'Jun 1, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'}],
+    cars:[{id:'CAR-2026-0038',item:'Lazy river return current exceeds PHTA flow-rate guideline',severity:'SEV 3',opened:'Apr 12, 2026',status:'OPEN',daysOpen:0}],
+    comms:[{date:'Apr 12, 2026',type:'Inspection Scheduled',recipient:'Tom Jones',method:'Email'}],
+    account:{policyNumber:'MASI-LC-2026-0034',effectiveDate:'Mar 1, 2026',expirationDate:'Mar 1, 2027',premiumTier:'Elevated',naicsCode:'713920',annualRevenue:'$4.7M',employeeCount:'38 (seasonal peak: 155)',priorCarrier:'Scottsdale Indemnity',yearsInsured:'2'}
   },
-  {id:'adventure-park',name:'Adventure Park USA',type:'Amusement Park',location:'New Market, MD',address:'11113 W Old Baltimore Rd, New Market, MD 21774',contact:'Steve Bartlett, Safety Mgr',phone:'(301) 555-0193',vendor:'Amusement Standards',underwriter:'Noah Reynolds',lastInspection:'Apr 10, 2026',openCars:4,status:'review',
+  {id:'adventure-park',name:'Adventure Park USA',type:'Amusement Park',location:'New Market, MD',address:'11113 W Old Baltimore Rd, New Market, MD 21774',contact:'Steve Bartlett, Safety Mgr',phone:'(301) 555-0193',vendorId:'V-001',underwriter:'Noah Reynolds',lastInspection:'Apr 10, 2026',openCars:4,status:'review',
     locations:['Coaster \u2014 Wildcat','Go-Kart Track','Miniature Golf','Batting Cages','Laser Tag','Ropes Course','Arcade'],
-    surveys:[{date:'Apr 10, 2026',type:'Amusement Device',inspector:'R. Sandoval',score:'68%',status:'IN PROGRESS'},{date:'Dec 4, 2025',type:'Amusement Device',inspector:'R. Sandoval',score:'71%',status:'COMPLETE'},{date:'Aug 15, 2025',type:'Grounds/Premise',inspector:'L. Davis',score:'82%',status:'COMPLETE'},{date:'May 30, 2025',type:'Amusement Device',inspector:'R. Sandoval',score:'65%',status:'COMPLETE'}],
-    cars:[{id:'CAR-2026-0044',item:'Wildcat coaster lap bar hydraulic pressure below spec on car 3',severity:'SEV 1',opened:'Apr 10, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2026-0045',item:'Ropes course carabiner inspection tags expired (6 units)',severity:'SEV 2',opened:'Apr 10, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2025-0098',item:'Emergency exit path obstructed behind arcade building',severity:'SEV 3',opened:'Dec 4, 2025',status:'OPEN',daysOpen:129},{id:'CAR-2025-0099',item:'Go-kart track barrier bolt shear on turn 2 outside rail',severity:'SEV 2',opened:'Dec 4, 2025',status:'OPEN',daysOpen:129}],
-    comms:[{date:'Apr 10, 2026',type:'Inspection Scheduled',recipient:'Underwriting Desk',method:'Email'},{date:'Apr 10, 2026',type:'Finding Flagged \u2014 Critical',recipient:'Underwriting Desk',method:'Email'},{date:'Dec 5, 2025',type:'Inspection Complete',recipient:'Tom Jones',method:'Email'},{date:'Aug 16, 2025',type:'Report PDF Generated',recipient:'Tom Jones',method:'Email'},{date:'May 31, 2025',type:'Inspection Complete',recipient:'Tom Jones',method:'Email'}],
-    account:{policyNumber:'MASI-LC-2026-0008',effectiveDate:'Jun 1, 2025',expirationDate:'Jun 1, 2026',premiumTier:'High',naicsCode:'713110 \u2014 Amusement and Theme Parks',annualRevenue:'$6.3M',employeeCount:'62 (seasonal peak: 210)',priorCarrier:'Evanston Insurance',yearsInsured:'4'}
+    surveys:[{date:'Apr 10, 2026',type:'Amusement Device',inspector:'R. Sandoval',status:'IN PROGRESS'},{date:'Dec 4, 2025',type:'Amusement Device',inspector:'R. Sandoval',status:'COMPLETE'},{date:'Aug 15, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'}],
+    cars:[{id:'CAR-2026-0044',item:'Wildcat coaster lap bar hydraulic pressure below spec on car 3',severity:'SEV 1',opened:'Apr 10, 2026',status:'OPEN',daysOpen:0},{id:'CAR-2026-0045',item:'Ropes course carabiner inspection tags expired (6 units)',severity:'SEV 2',opened:'Apr 10, 2026',status:'OPEN',daysOpen:0}],
+    comms:[{date:'Apr 10, 2026',type:'Inspection Scheduled',recipient:'Underwriting Desk',method:'Email'}],
+    account:{policyNumber:'MASI-LC-2026-0008',effectiveDate:'Jun 1, 2025',expirationDate:'Jun 1, 2026',premiumTier:'High',naicsCode:'713110',annualRevenue:'$6.3M',employeeCount:'62 (seasonal peak: 210)',priorCarrier:'Evanston Insurance',yearsInsured:'4'}
   },
-  {id:'heritage-carousel',name:'Heritage Carousel Gardens',type:'Carousel Park',location:'Pasadena, CA',address:'1700 E Walnut St, Pasadena, CA 91106',contact:'Linda Chen, Director',phone:'(626) 555-0318',vendor:'Amusement Standards',underwriter:'Noah Reynolds',lastInspection:'Apr 8, 2026',openCars:0,status:'current',
+  {id:'heritage-carousel',name:'Heritage Carousel Gardens',type:'Carousel Park',location:'Pasadena, CA',address:'1700 E Walnut St, Pasadena, CA 91106',contact:'Linda Chen, Director',phone:'(626) 555-0318',vendorId:'V-002',underwriter:'Noah Reynolds',lastInspection:'Apr 8, 2026',openCars:0,status:'current',
     locations:['Historic Carousel (1926 Dentzel)','Kiddie Train','Pony Ride Circuit','Picnic Pavilion','Gift Shop'],
-    surveys:[{date:'Apr 8, 2026',type:'Carousel',inspector:'A. Nguyen',score:'94%',status:'COMPLETE'},{date:'Jan 15, 2026',type:'Carousel',inspector:'A. Nguyen',score:'92%',status:'COMPLETE'},{date:'Sep 20, 2025',type:'Grounds/Premise',inspector:'L. Davis',score:'96%',status:'COMPLETE'}],
+    surveys:[{date:'Apr 8, 2026',type:'Carousel',inspector:'A. Nguyen',status:'COMPLETE'},{date:'Jan 15, 2026',type:'Carousel',inspector:'A. Nguyen',status:'COMPLETE'},{date:'Sep 20, 2025',type:'Grounds/Premise',inspector:'L. Davis',status:'COMPLETE'}],
     cars:[],
-    comms:[{date:'Apr 9, 2026',type:'Report PDF Generated',recipient:'Tom Jones',method:'Email'},{date:'Apr 8, 2026',type:'Inspection Complete',recipient:'Tom Jones',method:'Email'},{date:'Jan 16, 2026',type:'Report PDF Generated',recipient:'Tom Jones',method:'Email'}],
-    account:{policyNumber:'MASI-LC-2026-0052',effectiveDate:'Sep 1, 2025',expirationDate:'Sep 1, 2026',premiumTier:'Preferred',naicsCode:'713110 \u2014 Amusement and Theme Parks',annualRevenue:'$890K',employeeCount:'12 (seasonal peak: 28)',priorCarrier:'Philadelphia Indemnity',yearsInsured:'7'}
+    comms:[{date:'Apr 9, 2026',type:'Report PDF Generated',recipient:'Tom Jones',method:'Email'}],
+    account:{policyNumber:'MASI-LC-2026-0052',effectiveDate:'Sep 1, 2025',expirationDate:'Sep 1, 2026',premiumTier:'Preferred',naicsCode:'713110',annualRevenue:'$890K',employeeCount:'12 (seasonal peak: 28)',priorCarrier:'Philadelphia Indemnity',yearsInsured:'7'}
   }
 ];
 
@@ -720,980 +612,474 @@ function showView(viewId){
   if(viewId==='facilities'){renderFacilitiesList();var lv=document.getElementById('facilities-list-view');var dv=document.getElementById('facility-detail-view');if(lv)lv.style.display='block';if(dv)dv.style.display='none';}
   if(viewId==='inspections')renderInspections();
   if(viewId==='checklists')clRenderTable();
-  if(viewId==='inspectors')renderInspectors();
+  if(viewId==='inspectors'){renderInspectors();renderVendors();}
   if(viewId==='schedule')renderSchedule();
-  if(viewId==='reports'){renderReports();renderCars();renderEmailToggles();}
+  if(viewId==='reports'){renderReports();renderCars();renderRoutingMatrix();}
   if(tabMap[viewId]!==undefined&&tabs[tabMap[viewId]]){tabs[tabMap[viewId]].classList.add('active')}
 }
-
-// ═══════════════════════════════════════
-//  MODAL HELPERS
-// ═══════════════════════════════════════
 function openModal(id){var el=document.getElementById(id);if(el)el.classList.add('open');}
 function closeModal(id){var el=document.getElementById(id);if(el)el.classList.remove('open');}
+
+// FIX 5 — badge class for expanded statuses
+function badgeClass(s){
+  if(s==='CLOSED'||s==='DELIVERED')return 'badge-good';
+  if(s==='IN FIELD'||s==='SUBMITTED'||s==='UNDER REVIEW'||s==='AWAITING REMEDIATION')return 'badge-warn';
+  if(s==='OVERDUE')return 'badge-red';
+  return 'badge-accent'; // SCHEDULED, ASSIGNED
+}
+
+// FIX 2 — Validate inspection for submit
+function validateInspectionForSubmit(insp){
+  var errors=[];
+  (insp.items||[]).forEach(function(it){
+    if(it.disposition==='FAIL'&&(!it.explanation||!it.explanation.trim())){
+      errors.push('FAIL item missing explanation: "'+it.itemText.substring(0,40)+'..."');
+    }
+  });
+  return {valid:errors.length===0,errors:errors};
+}
+
+// FIX 6 — Fire email routing on status change
+function fireStatusEmail(inspection,newStatus){
+  var matrix=getRoutingMatrix();
+  var row=matrix[newStatus];
+  if(!row)return;
+  ALL_RECIPIENTS.forEach(function(r){
+    if(row[r]){
+      console.log('--- EMAIL NOTIFICATION ---');
+      console.log('To: '+r);
+      console.log('Subject: ['+newStatus+'] '+inspection.id+' — '+inspection.facility);
+      console.log('Body: Inspection '+inspection.id+' status changed to '+newStatus+'.\n  Facility: '+inspection.facility+'\n  Inspector: '+inspection.inspector+'\n  Date: '+inspection.date);
+      console.log('--------------------------');
+    }
+  });
+}
+
+// FIX 8 — Auto-generate CARs on SUBMITTED
+function autoGenerateCars(inspection){
+  var fails=(inspection.items||[]).filter(function(i){return i.disposition==='FAIL'&&i.severity&&i.severity<=3;});
+  if(fails.length===0)return;
+  var cars=getCars();var maxNum=0;
+  cars.forEach(function(c){var n=parseInt(c.id.split('-')[2]);if(n>maxNum)maxNum=n;});
+  fails.forEach(function(f){
+    maxNum++;
+    var due=new Date(inspection.date+'T00:00:00');
+    if(f.severity===1)due=new Date(due);
+    else if(f.severity===2)due.setDate(due.getDate()+7);
+    else due.setDate(due.getDate()+30);
+    cars.push({id:'CAR-2026-'+String(maxNum).padStart(4,'0'),facility:inspection.facility,ride:f.sectionName||inspection.form,finding:f.itemText,severity:f.severity,assignedTo:inspection.inspector,dueDate:due.toISOString().split('T')[0],status:'OPEN',resolution:'',remediationNotes:'',remediationPhoto:'',reviewer:''});
+  });
+  saveCars(cars);
+}
+
+// FIX 5 — Status change handler
+function changeInspectionStatus(insId,newStatus){
+  var all=getInspections();
+  var ins=all.find(function(r){return r.id===insId;});
+  if(!ins)return;
+  // FIX 2 — Block SUBMITTED if FAIL items lack explanations
+  if(newStatus==='SUBMITTED'){
+    var v=validateInspectionForSubmit(ins);
+    if(!v.valid){alert('Cannot submit:\n'+v.errors.join('\n'));return;}
+  }
+  ins.status=newStatus;
+  saveInspections(all);
+  // FIX 8 — auto CARs on SUBMITTED
+  if(newStatus==='SUBMITTED')autoGenerateCars(ins);
+  // FIX 6 — email routing
+  fireStatusEmail(ins,newStatus);
+  renderInspections();
+}
 
 // ═══════════════════════════════════════
 //  INSPECTIONS TAB
 // ═══════════════════════════════════════
 var inspExpandedRow=null;
-
 function renderInspections(){
-  var all=getInspections();
-  var inspectors=getInspectors();
-  // Populate filter dropdowns
-  var fInsp=document.getElementById('filter-inspector');
-  var fForm=document.getElementById('filter-form');
-  var curInsp=fInsp?fInsp.value:'';
-  var curForm=fForm?fForm.value:'';
-  if(fInsp){
-    var names={};all.forEach(function(r){names[r.inspector]=1;});
-    var h='<option value="">All Inspectors</option>';
-    Object.keys(names).sort().forEach(function(n){h+='<option value="'+n+'"'+(curInsp===n?' selected':'')+'>'+n+'</option>';});
-    fInsp.innerHTML=h;
-  }
-  if(fForm){
-    var forms={};all.forEach(function(r){forms[r.form]=1;});
-    var h2='<option value="">All Types</option>';
-    Object.keys(forms).sort().forEach(function(f){h2+='<option value="'+f+'"'+(curForm===f?' selected':'')+'>'+f+'</option>';});
-    fForm.innerHTML=h2;
-  }
-  // Apply filters
-  var fs=document.getElementById('filter-status');
-  var statusF=fs?fs.value:'';
-  var inspF=fInsp?fInsp.value:'';
-  var formF=fForm?fForm.value:'';
-  var filtered=all.filter(function(r){
-    if(statusF&&r.status!==statusF)return false;
-    if(inspF&&r.inspector!==inspF)return false;
-    if(formF&&r.form!==formF)return false;
-    return true;
-  });
-  // Stats
-  var stats={SCHEDULED:0,'IN PROGRESS':0,COMPLETE:0,OVERDUE:0};
-  all.forEach(function(r){if(stats[r.status]!==undefined)stats[r.status]++;});
+  var all=getInspections();var inspectors=getInspectors();var vendors=getVendors();
+  var fInsp=document.getElementById('filter-inspector');var fForm=document.getElementById('filter-form');
+  var curInsp=fInsp?fInsp.value:'';var curForm=fForm?fForm.value:'';
+  if(fInsp){var names={};all.forEach(function(r){names[r.inspector]=1;});var h='<option value="">All Inspectors</option>';Object.keys(names).sort().forEach(function(n){h+='<option value="'+n+'"'+(curInsp===n?' selected':'')+'>'+n+'</option>';});fInsp.innerHTML=h;}
+  if(fForm){var forms={};all.forEach(function(r){forms[r.form]=1;});var h2='<option value="">All Types</option>';Object.keys(forms).sort().forEach(function(f){h2+='<option value="'+f+'"'+(curForm===f?' selected':'')+'>'+f+'</option>';});fForm.innerHTML=h2;}
+  var fs=document.getElementById('filter-status');var statusF=fs?fs.value:'';var inspF=fInsp?fInsp.value:'';var formF=fForm?fForm.value:'';
+  var filtered=all.filter(function(r){if(statusF&&r.status!==statusF)return false;if(inspF&&r.inspector!==inspF)return false;if(formF&&r.form!==formF)return false;return true;});
+  // FIX 5 — Grouped stats
+  var active=0,inReview=0,closed=0,overdue=0;
+  all.forEach(function(r){if(r.status==='SCHEDULED'||r.status==='ASSIGNED'||r.status==='IN FIELD')active++;else if(r.status==='SUBMITTED'||r.status==='UNDER REVIEW')inReview++;else if(r.status==='DELIVERED'||r.status==='CLOSED')closed++;else if(r.status==='OVERDUE')overdue++;else if(r.status==='AWAITING REMEDIATION')active++;});
   var se=document.getElementById('inspections-stats');
-  if(se)se.innerHTML='<div class="stat"><div class="stat-num" style="color:var(--accent)">'+stats.SCHEDULED+'</div><div class="stat-label">Scheduled</div></div><div class="stat"><div class="stat-num" style="color:var(--warn)">'+stats['IN PROGRESS']+'</div><div class="stat-label">In Progress</div></div><div class="stat"><div class="stat-num" style="color:var(--good)">'+stats.COMPLETE+'</div><div class="stat-label">Complete</div></div><div class="stat"><div class="stat-num" style="color:var(--red)">'+stats.OVERDUE+'</div><div class="stat-label">Overdue</div></div>';
-  // Table
-  var tbody=document.getElementById('inspectionTable');
-  if(!tbody)return;
-  var badgeClass=function(s){return s==='COMPLETE'?'badge-good':s==='IN PROGRESS'?'badge-warn':s==='OVERDUE'?'badge-red':'badge-accent';};
+  if(se)se.innerHTML='<div class="stat"><div class="stat-num" style="color:var(--accent)">'+active+'</div><div class="stat-label">Active</div></div><div class="stat"><div class="stat-num" style="color:var(--warn)">'+inReview+'</div><div class="stat-label">In Review</div></div><div class="stat"><div class="stat-num" style="color:var(--good)">'+closed+'</div><div class="stat-label">Closed</div></div><div class="stat"><div class="stat-num" style="color:var(--red)">'+overdue+'</div><div class="stat-label">Overdue</div></div>';
+  var tbody=document.getElementById('inspectionTable');if(!tbody)return;
   var html='';
   filtered.forEach(function(r){
-    var today=new Date().toISOString().split('T')[0];
-    var daysUntil=Math.ceil((new Date(r.date)-new Date(today))/(86400000));
+    var today=new Date().toISOString().split('T')[0];var daysUntil=Math.ceil((new Date(r.date)-new Date(today))/86400000);
+    var findings=getFindings(r);
     html+='<tr style="cursor:pointer" onclick="toggleInspDetail(\''+r.id+'\')">';
     html+='<td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+r.id+'</td>';
-    html+='<td>'+r.facility+'</td>';
-    html+='<td>'+r.inspector+'</td>';
+    html+='<td>'+r.facility+'</td><td>'+r.inspector+'</td>';
     html+='<td style="font-family:var(--mono);font-size:11px">'+formatDate(r.date)+'</td>';
     html+='<td>'+r.form+'</td>';
     html+='<td><span class="badge '+badgeClass(r.status)+'">'+r.status+'</span></td>';
     html+='<td>'+(r.status==='SCHEDULED'?'<button class="btn-sm-action" onclick="event.stopPropagation();openAssignInspector(\''+r.id+'\')">Assign Inspector</button>':'')+'</td>';
     html+='</tr>';
-    // Detail row
-    var findingsHtml='<span style="font-family:var(--mono);font-size:10px;color:var(--text3)">No findings recorded</span>';
-    if(r.findings&&r.findings.length>0){
-      findingsHtml='<div style="display:flex;flex-direction:column;gap:3px">';
-      r.findings.forEach(function(f){
-        var sc=f.severity<=2?'badge-red':f.severity===3?'badge-warn':f.severity===4?'badge-accent':'badge-good';
-        findingsHtml+='<div style="display:flex;align-items:center;gap:8px"><span class="badge '+sc+'">SEV '+f.severity+'</span><span style="font-size:11px">'+escHtml(f.item)+'</span></div>';
+    // FIX 5 — nextAction
+    var na={'SCHEDULED':'Dispatch inspector to facility','ASSIGNED':'Inspector en route','IN FIELD':'Awaiting inspector submission','SUBMITTED':'Review findings and approve','UNDER REVIEW':'Pending final approval','DELIVERED':'Report delivered to client','AWAITING REMEDIATION':'Waiting for corrective actions','CLOSED':'Inspection complete — all items resolved','OVERDUE':'Requires immediate attention'};
+    // Detail row — FIX 1 uses items, FIX 3 adds +Add Item, FIX 4b adds +Add Form
+    var itemsHtml='<span style="font-family:var(--mono);font-size:10px;color:var(--text3)">No items recorded</span>';
+    if(r.items&&r.items.length>0){
+      itemsHtml='<div style="display:flex;flex-direction:column;gap:3px;max-height:200px;overflow-y:auto">';
+      r.items.forEach(function(it){
+        if(it.disposition==='FAIL'){
+          var sc=it.severity<=2?'badge-red':it.severity===3?'badge-warn':it.severity===4?'badge-accent':'badge-good';
+          itemsHtml+='<div style="display:flex;align-items:center;gap:6px"><span class="badge '+sc+'">SEV '+it.severity+'</span><span style="font-size:11px">'+escHtml(it.itemText)+'</span>';
+          if(it.addedAdHoc)itemsHtml+=' <span class="badge badge-accent">AD-HOC</span>';
+          if(!it.explanation||!it.explanation.trim())itemsHtml+=' <span style="color:var(--red);font-size:10px">* explanation required</span>';
+          itemsHtml+='</div>';
+        }else if(it.disposition==='PASS'){
+          itemsHtml+='<div style="display:flex;align-items:center;gap:6px"><span class="badge badge-good">PASS</span><span style="font-size:11px;color:var(--text3)">'+escHtml(it.itemText)+'</span>'+(it.addedAdHoc?' <span class="badge badge-accent">AD-HOC</span>':'')+'</div>';
+        }else if(it.disposition==='N/A'){
+          itemsHtml+='<div style="display:flex;align-items:center;gap:6px"><span style="font-family:var(--mono);font-size:8px;color:var(--text3)">N/A</span><span style="font-size:11px;color:var(--text3)">'+escHtml(it.itemText)+'</span></div>';
+        }
       });
-      findingsHtml+='</div>';
+      itemsHtml+='</div>';
     }
-    var insp=inspectors.find(function(x){return x.name===r.inspector;});
-    var contact=insp?insp.email:'—';
-    var nextAction=r.status==='SCHEDULED'?'Dispatch inspector to facility':r.status==='IN PROGRESS'?'Awaiting inspector submission':r.status==='COMPLETE'?'Generate report / review findings':'Requires immediate attention';
+    // FIX 4b — forms display
+    var modulesHtml='';
+    if(r.checklistModules&&r.checklistModules.length>0){
+      var mods=clGetAll();
+      modulesHtml='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:8px;margin-bottom:4px">FORMS</div><div style="font-size:11px;color:var(--text)">';
+      r.checklistModules.forEach(function(mid,idx){
+        var m=mods.find(function(c){return c.id===mid;});
+        if(m)modulesHtml+=(idx>0?' · ':'')+m.type+' '+m.version;
+      });
+      modulesHtml+='</div>';
+    }
+    var canAddItems=r.status!=='DELIVERED'&&r.status!=='CLOSED';
+    var insp=inspectors.find(function(x){return x.name===r.inspector;});var contact=insp?insp.email:'—';
     html+='<tr id="insp-detail-'+r.id+'" style="display:none"><td colspan="7" style="padding:0;background:var(--surface2)"><div style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:16px">';
-    html+='<div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:6px">FINDINGS</div>'+findingsHtml+'</div>';
+    html+='<div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:6px">ITEMS ('+r.items.length+')</div>'+itemsHtml;
+    if(canAddItems)html+='<div style="margin-top:8px;display:flex;gap:6px"><button class="btn-sm-action" onclick="event.stopPropagation();openAddItem(\''+r.id+'\')">+ Add Item</button><button class="btn-sm-action" onclick="event.stopPropagation();openAddForm(\''+r.id+'\')">+ Add Form</button></div>';
+    html+='</div>';
     html+='<div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">INSPECTOR CONTACT</div><div style="font-size:11px;color:var(--text)">'+r.inspector+' &middot; '+contact+'</div>';
-    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:10px;margin-bottom:4px">NEXT ACTION</div><div style="font-size:11px;color:var(--text)">'+nextAction+'</div>';
-    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:10px;margin-bottom:4px">DAYS UNTIL DUE</div><div style="font-size:11px;color:var(--text);font-weight:700">'+(r.status==='COMPLETE'?'—':daysUntil+'d')+'</div>';
+    html+=modulesHtml;
+    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:10px;margin-bottom:4px">NEXT ACTION</div><div style="font-size:11px;color:var(--text)">'+(na[r.status]||'—')+'</div>';
+    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:10px;margin-bottom:4px">DAYS UNTIL DUE</div><div style="font-size:11px;color:var(--text);font-weight:700">'+(r.status==='CLOSED'||r.status==='DELIVERED'?'—':daysUntil+'d')+'</div>';
     html+='</div></div></td></tr>';
   });
   tbody.innerHTML=html;
 }
+function toggleInspDetail(id){var row=document.getElementById('insp-detail-'+id);if(!row)return;if(inspExpandedRow&&inspExpandedRow!==id){var prev=document.getElementById('insp-detail-'+inspExpandedRow);if(prev)prev.style.display='none';}row.style.display=row.style.display==='none'?'':'none';inspExpandedRow=row.style.display===''?id:null;}
+function openAssignInspector(insId){document.getElementById('assign-ins-id').value=insId;var sel=document.getElementById('assign-ins-inspector');sel.innerHTML=getInspectors().map(function(i){return '<option value="'+i.name+'">'+i.name+'</option>';}).join('');openModal('modal-assign-inspector');}
+function confirmAssignInspector(){var insId=document.getElementById('assign-ins-id').value;var name=document.getElementById('assign-ins-inspector').value;if(!insId||!name)return;var all=getInspections();var ins=all.find(function(r){return r.id===insId;});if(ins){ins.inspector=name;ins.status='ASSIGNED';fireStatusEmail(ins,'ASSIGNED');}saveInspections(all);closeModal('modal-assign-inspector');renderInspections();}
 
-function toggleInspDetail(id){
-  var row=document.getElementById('insp-detail-'+id);
-  if(!row)return;
-  if(inspExpandedRow&&inspExpandedRow!==id){var prev=document.getElementById('insp-detail-'+inspExpandedRow);if(prev)prev.style.display='none';}
-  row.style.display=row.style.display==='none'?'':'none';
-  inspExpandedRow=row.style.display===''?id:null;
+// FIX 3 — Add Item modal
+function openAddItem(insId){
+  document.getElementById('add-item-insp-id').value=insId;
+  var ins=getInspections().find(function(r){return r.id===insId;});
+  var secSet={};(ins.items||[]).forEach(function(it){if(it.sectionName)secSet[it.sectionName]=1;});
+  secSet[ins.form]=1;
+  var sel=document.getElementById('add-item-section');
+  sel.innerHTML=Object.keys(secSet).map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('');
+  document.getElementById('add-item-text').value='';
+  document.getElementById('add-item-disposition').value='FAIL';
+  document.getElementById('add-item-explanation').value='';
+  openModal('modal-add-item');
+}
+function confirmAddItem(){
+  var insId=document.getElementById('add-item-insp-id').value;
+  var section=document.getElementById('add-item-section').value;
+  var text=document.getElementById('add-item-text').value.trim();
+  var disp=document.getElementById('add-item-disposition').value;
+  var sev=disp==='FAIL'?parseInt(document.getElementById('add-item-severity').value):null;
+  var expl=document.getElementById('add-item-explanation').value.trim();
+  if(!text)return;
+  if(disp==='FAIL'&&!expl){alert('Explanation required for FAIL items.');return;}
+  var all=getInspections();var ins=all.find(function(r){return r.id===insId;});
+  if(!ins)return;
+  if(!ins.items)ins.items=[];
+  ins.items.push({id:'i-adhoc-'+Date.now(),checklistModuleId:null,sectionName:section,itemText:text,disposition:disp,explanation:expl,severity:sev,photos:[],addedAdHoc:true});
+  saveInspections(all);closeModal('modal-add-item');renderInspections();
 }
 
-function openAssignInspector(insId){
-  document.getElementById('assign-ins-id').value=insId;
-  var sel=document.getElementById('assign-ins-inspector');
-  var inspectors=getInspectors();
-  sel.innerHTML=inspectors.map(function(i){return '<option value="'+i.name+'">'+i.name+'</option>';}).join('');
-  openModal('modal-assign-inspector');
+// FIX 4b — Add Form mid-inspection
+function openAddForm(insId){
+  document.getElementById('add-form-insp-id').value=insId;
+  var ins=getInspections().find(function(r){return r.id===insId;});
+  var existing=ins.checklistModules||[];
+  var active=clGetAll().filter(function(c){return c.active&&existing.indexOf(c.id)===-1;});
+  var sel=document.getElementById('add-form-module');
+  sel.innerHTML=active.length===0?'<option value="">No additional modules available</option>':active.map(function(c){return '<option value="'+c.id+'">'+c.type+' '+c.version+' ('+c.itemCount+' items)</option>';}).join('');
+  openModal('modal-add-form');
 }
-
-function confirmAssignInspector(){
-  var insId=document.getElementById('assign-ins-id').value;
-  var name=document.getElementById('assign-ins-inspector').value;
-  if(!insId||!name)return;
-  var all=getInspections();
-  var ins=all.find(function(r){return r.id===insId;});
-  if(ins)ins.inspector=name;
-  saveInspections(all);
-  closeModal('modal-assign-inspector');
-  renderInspections();
+function confirmAddForm(){
+  var insId=document.getElementById('add-form-insp-id').value;
+  var modId=document.getElementById('add-form-module').value;
+  if(!modId)return;
+  var all=getInspections();var ins=all.find(function(r){return r.id===insId;});
+  if(!ins)return;
+  if(!ins.checklistModules)ins.checklistModules=[];
+  ins.checklistModules.push(modId);
+  var mod=clGetAll().find(function(c){return c.id===modId;});
+  if(mod&&mod.sections){
+    if(!ins.items)ins.items=[];
+    mod.sections.forEach(function(sec){
+      sec.items.forEach(function(itemText){
+        ins.items.push({id:'i-mod-'+Date.now()+'-'+Math.random().toString(36).substr(2,4),checklistModuleId:modId,sectionName:sec.name,itemText:itemText,disposition:null,explanation:'',severity:null,photos:[],addedAdHoc:false});
+      });
+    });
+  }
+  saveInspections(all);closeModal('modal-add-form');renderInspections();
 }
 
 // ═══════════════════════════════════════
 //  FACILITIES TAB
 // ═══════════════════════════════════════
 function renderFacilitiesList(){
-  var el=document.getElementById('facilitiesTable');
-  if(!el)return;
+  var el=document.getElementById('facilitiesTable');if(!el)return;var vendors=getVendors();
   var statusBadge=function(s){return s==='current'?'<span class="badge badge-good">CURRENT</span>':s==='review'?'<span class="badge badge-warn">REVIEW</span>':'<span class="badge badge-accent">ACTIVE</span>';};
   var carsBadge=function(n){return n===0?'<span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span>':'<span style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+(n>=3?'var(--red)':'var(--warn)')+'">'+n+'</span>';};
-  var html='<thead><tr><th>Facility</th><th>Type</th><th>Location</th><th>Last Inspection</th><th>Open CARs</th><th>Status</th></tr></thead><tbody>';
+  var html='<thead><tr><th>Facility</th><th>Type</th><th>Location</th><th>Vendor</th><th>Last Inspection</th><th>Open CARs</th><th>Status</th></tr></thead><tbody>';
   FACILITIES_DATA.forEach(function(f){
-    html+='<tr style="cursor:pointer" onclick="openFacility(\''+f.id+'\')">';
-    html+='<td style="font-weight:600;color:var(--text)">'+f.name+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:10px">'+f.type+'</td>';
-    html+='<td>'+f.location+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:11px">'+f.lastInspection+'</td>';
-    html+='<td style="text-align:center">'+carsBadge(f.openCars)+'</td>';
-    html+='<td>'+statusBadge(f.status)+'</td>';
-    html+='</tr>';
+    var vn=vendors.find(function(v){return v.id===f.vendorId;});
+    html+='<tr style="cursor:pointer" onclick="openFacility(\''+f.id+'\')"><td style="font-weight:600;color:var(--text)">'+f.name+'</td><td style="font-family:var(--mono);font-size:10px">'+f.type+'</td><td>'+f.location+'</td><td style="font-size:11px">'+(vn?vn.name:'—')+'</td><td style="font-family:var(--mono);font-size:11px">'+f.lastInspection+'</td><td style="text-align:center">'+carsBadge(f.openCars)+'</td><td>'+statusBadge(f.status)+'</td></tr>';
   });
-  html+='</tbody>';
-  el.innerHTML=html;
+  el.innerHTML=html+'</tbody>';
 }
-
 function openFacility(facId){
-  var f=FACILITIES_DATA.find(function(x){return x.id===facId;});
-  if(!f)return;
+  var f=FACILITIES_DATA.find(function(x){return x.id===facId;});if(!f)return;
+  var vendors=getVendors();var vn=vendors.find(function(v){return v.id===f.vendorId;});
   document.getElementById('facilities-list-view').style.display='none';
-  var dv=document.getElementById('facility-detail-view');
-  dv.style.display='block';
-  var dc=document.getElementById('facility-detail-content');
-  var html='';
+  var dv=document.getElementById('facility-detail-view');dv.style.display='block';
+  var dc=document.getElementById('facility-detail-content');var html='';
   html+='<button class="facility-back-btn" onclick="closeFacility()">\u2190 Back to Facilities</button>';
-  html+='<div class="facility-detail-hdr">';
-  html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">';
-  html+='<div><div style="font-family:var(--sans);font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px">'+f.name+'</div>';
-  html+='<div style="font-size:12px;color:var(--text2)">'+f.address+'</div>';
-  html+='<div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px">Contact: '+f.contact+' \u00b7 '+f.phone+'</div></div>';
-  html+='<div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;color:var(--text3)">VENDOR</div><div style="font-size:12px;color:var(--text);font-weight:600">'+f.vendor+'</div>';
-  html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:8px">UNDERWRITER</div><div style="font-size:12px;color:var(--text);font-weight:600">'+f.underwriter+'</div></div>';
+  html+='<div class="facility-detail-hdr"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">';
+  html+='<div><div style="font-family:var(--sans);font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px">'+f.name+'</div><div style="font-size:12px;color:var(--text2)">'+f.address+'</div><div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px">Contact: '+f.contact+' \u00b7 '+f.phone+'</div></div>';
+  html+='<div style="text-align:right"><div style="font-family:var(--mono);font-size:9px;color:var(--text3)">VENDOR</div><div style="font-size:12px;color:var(--text);font-weight:600">'+(vn?vn.name:'—')+'</div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:8px">UNDERWRITER</div><div style="font-size:12px;color:var(--text);font-weight:600">'+f.underwriter+'</div></div>';
   html+='</div></div>';
-  // Sections
+  // FIX 9 — Survey table without Score column
   var sections=[
     {id:'fc-locations',title:'Locations ('+f.locations.length+')',open:true,body:function(){var h='';f.locations.forEach(function(loc){h+='<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--text2)">'+loc+'</div>';});return h;}},
-    {id:'fc-surveys',title:'Survey History ('+f.surveys.length+')',open:false,body:function(){var sb=function(s){return s==='COMPLETE'?'badge-good':s==='IN PROGRESS'?'badge-warn':'badge-accent';};var h='<table class="tbl"><thead><tr><th>Date</th><th>Type</th><th>Inspector</th><th>Score</th><th>Status</th></tr></thead><tbody>';f.surveys.forEach(function(s){h+='<tr><td style="font-family:var(--mono);font-size:11px">'+s.date+'</td><td>'+s.type+'</td><td>'+s.inspector+'</td><td style="font-family:var(--mono);font-size:11px;font-weight:700">'+s.score+'</td><td><span class="badge '+sb(s.status)+'">'+s.status+'</span></td></tr>';});h+='</tbody></table>';return h;}},
+    {id:'fc-surveys',title:'Survey History ('+f.surveys.length+')',open:false,body:function(){var sb=function(s){return s==='COMPLETE'?'badge-good':s==='IN PROGRESS'?'badge-warn':'badge-accent';};var h='<table class="tbl"><thead><tr><th>Date</th><th>Type</th><th>Inspector</th><th>Status</th></tr></thead><tbody>';f.surveys.forEach(function(s){h+='<tr><td style="font-family:var(--mono);font-size:11px">'+s.date+'</td><td>'+s.type+'</td><td>'+s.inspector+'</td><td><span class="badge '+sb(s.status)+'">'+s.status+'</span></td></tr>';});h+='</tbody></table>';return h;}},
     {id:'fc-cars',title:'Recommendations / Open CARs ('+f.cars.length+')',open:false,body:function(){if(f.cars.length===0)return '<div style="font-family:var(--mono);font-size:11px;color:var(--good);padding:8px 0">\u2713 No open CARs</div>';var h='<table class="tbl"><thead><tr><th>CAR ID</th><th>Item</th><th>Severity</th><th>Opened</th><th>Status</th><th>Days Open</th></tr></thead><tbody>';f.cars.forEach(function(c){var sb=c.severity==='SEV 1'||c.severity==='SEV 2'?'badge-red':'badge-warn';h+='<tr><td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+c.id+'</td><td style="font-size:11px">'+c.item+'</td><td><span class="badge '+sb+'">'+c.severity+'</span></td><td style="font-family:var(--mono);font-size:11px">'+c.opened+'</td><td><span class="badge badge-warn">'+c.status+'</span></td><td style="font-family:var(--mono);font-size:11px;text-align:center">'+c.daysOpen+'</td></tr>';});h+='</tbody></table>';return h;}},
     {id:'fc-comms',title:'Communications ('+f.comms.length+')',open:false,body:function(){var h='<table class="tbl"><thead><tr><th>Date</th><th>Type</th><th>Recipient</th><th>Method</th></tr></thead><tbody>';f.comms.forEach(function(c){h+='<tr><td style="font-family:var(--mono);font-size:11px">'+c.date+'</td><td>'+c.type+'</td><td>'+c.recipient+'</td><td style="font-family:var(--mono);font-size:10px">'+c.method+'</td></tr>';});h+='</tbody></table>';return h;}},
     {id:'fc-account',title:'Additional Account Information',open:false,body:function(){var a=f.account;var kvs=[['Policy Number',a.policyNumber],['Effective Date',a.effectiveDate],['Expiration Date',a.expirationDate],['Premium Tier',a.premiumTier],['NAICS Code',a.naicsCode],['Annual Revenue',a.annualRevenue],['Employee Count',a.employeeCount],['Prior Carrier',a.priorCarrier],['Years Insured',a.yearsInsured]];var h='';kvs.forEach(function(kv){h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)"><span style="font-family:var(--mono);font-size:10px;color:var(--text3)">'+kv[0]+'</span><span style="font-size:12px;color:var(--text);font-weight:600">'+kv[1]+'</span></div>';});return h;}}
   ];
-  sections.forEach(function(s){
-    html+='<div class="facility-collapsible'+(s.open?' open':'')+'" id="'+s.id+'">';
-    html+='<div class="facility-collapsible-hdr" onclick="toggleFacilityPanel(\''+s.id+'\')"><span class="fc-title">'+s.title+'</span><span class="fc-arrow">\u25B6</span></div>';
-    html+='<div class="facility-collapsible-body">'+s.body()+'</div></div>';
-  });
+  sections.forEach(function(s){html+='<div class="facility-collapsible'+(s.open?' open':'')+'" id="'+s.id+'"><div class="facility-collapsible-hdr" onclick="toggleFacilityPanel(\''+s.id+'\')"><span class="fc-title">'+s.title+'</span><span class="fc-arrow">\u25B6</span></div><div class="facility-collapsible-body">'+s.body()+'</div></div>';});
   dc.innerHTML=html;
 }
-
-function closeFacility(){
-  document.getElementById('facility-detail-view').style.display='none';
-  document.getElementById('facilities-list-view').style.display='block';
-}
-
-function toggleFacilityPanel(panelId){
-  var el=document.getElementById(panelId);
-  if(el)el.classList.toggle('open');
-}
+function closeFacility(){document.getElementById('facility-detail-view').style.display='none';document.getElementById('facilities-list-view').style.display='block';}
+function toggleFacilityPanel(panelId){var el=document.getElementById(panelId);if(el)el.classList.toggle('open');}
 
 // ═══════════════════════════════════════
-//  CHECKLISTS TAB
+//  CHECKLISTS TAB (parser engine untouched)
 // ═══════════════════════════════════════
-var CL_STORAGE_KEY='as360_checklist_library';
-var clPendingFile=null;
-var clParsedResult=null; // {sections, signatureLines, fileName}
-var clExpandedRow=null;
-
+var CL_STORAGE_KEY='as360_checklist_library';var clPendingFile=null;var clParsedResult=null;var clExpandedRow=null;
 function clGetAll(){return LS.get(CL_STORAGE_KEY,[]);}
 function clSaveAll(arr){LS.set(CL_STORAGE_KEY,arr);}
-
-function clNextVersion(type){
-  var all=clGetAll();var max=0;
-  all.forEach(function(c){if(c.type===type){var n=parseInt(c.version.replace('v',''));if(n>max)max=n;}});
-  return 'v'+(max+1);
-}
-
+function clNextVersion(type){var all=clGetAll();var max=0;all.forEach(function(c){if(c.type===type){var n=parseInt(c.version.replace('v',''));if(n>max)max=n;}});return 'v'+(max+1);}
 function clCountItems(sections){var n=0;sections.forEach(function(s){n+=s.items.length;});return n;}
-
-// ── Drag-and-drop setup ──
-(function(){
-  document.addEventListener('DOMContentLoaded',function(){
-    clRenderTable();
-    var dz=document.getElementById('cl-dropzone');
-    if(!dz)return;
-    dz.addEventListener('dragover',function(e){
-      e.preventDefault();e.stopPropagation();
-      dz.style.borderColor='var(--accent)';
-      dz.style.background='var(--accent-l)';
-    });
-    dz.addEventListener('dragleave',function(e){
-      e.preventDefault();e.stopPropagation();
-      dz.style.borderColor='var(--border)';
-      dz.style.background='var(--surface)';
-    });
-    dz.addEventListener('drop',function(e){
-      e.preventDefault();e.stopPropagation();
-      dz.style.borderColor='var(--border)';
-      dz.style.background='var(--surface)';
-      if(e.dataTransfer.files.length>0)clHandleFile(e.dataTransfer.files[0]);
-    });
-  });
-})();
-
+(function(){document.addEventListener('DOMContentLoaded',function(){clRenderTable();var dz=document.getElementById('cl-dropzone');if(!dz)return;dz.addEventListener('dragover',function(e){e.preventDefault();e.stopPropagation();dz.style.borderColor='var(--accent)';dz.style.background='var(--accent-l)';});dz.addEventListener('dragleave',function(e){e.preventDefault();e.stopPropagation();dz.style.borderColor='var(--border)';dz.style.background='var(--surface)';});dz.addEventListener('drop',function(e){e.preventDefault();e.stopPropagation();dz.style.borderColor='var(--border)';dz.style.background='var(--surface)';if(e.dataTransfer.files.length>0)clHandleFile(e.dataTransfer.files[0]);});});})();
 function clFileSelected(input){if(input.files&&input.files[0])clHandleFile(input.files[0]);}
-
-function clSetStatus(msg,color){
-  var el=document.getElementById('cl-upload-status');
-  if(el){el.textContent=msg;el.style.color=color||'var(--text3)';el.style.minHeight=msg?'20px':'0';}
-}
-
-function clSetParseStatus(msg){
-  var el=document.getElementById('cl-parse-status');
-  if(el)el.textContent=msg;
-}
-
-// ── File handler — accepts .doc .docx .pdf .txt ──
-function clHandleFile(file){
-  var name=file.name.toLowerCase();
-  var validExts=['.doc','.docx','.pdf','.txt'];
-  var isValid=validExts.some(function(ext){return name.endsWith(ext);});
-  if(!isValid){clSetStatus('Unsupported file type — accepts .doc, .docx, .pdf, .txt','var(--red)');return;}
-  clPendingFile=file;
-  clParsedResult=null;
-  document.getElementById('cl-preview-panel').style.display='none';
-  document.getElementById('cl-file-info').style.display='block';
-  document.getElementById('cl-file-name').textContent=file.name;
-  document.getElementById('cl-file-size').textContent=(file.size/1024).toFixed(1)+' KB';
-  clSetStatus('','var(--text3)');
-  clSetParseStatus('Parsing...');
-  // Route to correct parser
-  if(name.endsWith('.txt')){
-    clParseTxt(file);
-  }else if(name.endsWith('.pdf')){
-    clParsePdf(file);
-  }else{
-    // .doc or .docx — use mammoth
-    clParseDocx(file);
-  }
-}
-
-// ── .TXT parser ──
-function clParseTxt(file){
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var text=e.target.result;
-    var result=clStructureText(text);
-    clShowPreview(result,file.name);
-  };
-  reader.onerror=function(){clSetStatus('Could not extract text from this file — try saving as .docx','var(--red)');clSetParseStatus('Error');};
-  reader.readAsText(file);
-}
-
-// ── .DOCX / .DOC parser (mammoth.js) ──
-function clParseDocx(file){
-  var doIt=function(){
-    clSetParseStatus('Parsing with mammoth.js...');
-    var reader=new FileReader();
-    reader.onload=function(e){
-      mammoth.convertToHtml({arrayBuffer:e.target.result}).then(function(result){
-        // Extract raw text with bold markers for section detection
-        return mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(raw){
-          // Also get HTML to detect bold
-          var boldSections=[];
-          var div=document.createElement('div');div.innerHTML=result.value;
-          var children=div.children;
-          for(var i=0;i<children.length;i++){
-            var el=children[i];
-            if(el.querySelector('strong,b')){
-              var t=(el.textContent||'').trim();
-              if(t&&t.length<120)boldSections.push(t);
-            }
-          }
-          var structured=clStructureText(raw.value,boldSections);
-          clShowPreview(structured,file.name);
-        });
-      }).catch(function(err){
-        if(file.name.toLowerCase().endsWith('.doc')){
-          clSetStatus('Legacy .doc could not be parsed — save as .docx and re-upload','var(--red)');
-          clSetParseStatus('Error');
-          document.getElementById('cl-preview-panel').style.display='none';
-        }else{
-          clSetStatus('Parse error: '+err.message,'var(--red)');
-          clSetParseStatus('Error');
-        }
-      });
-    };
-    reader.readAsArrayBuffer(file);
-  };
-  if(typeof mammoth==='undefined'){
-    clSetParseStatus('Loading mammoth.js...');
-    var s=document.createElement('script');
-    s.src='https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';
-    s.onload=doIt;
-    s.onerror=function(){clSetStatus('Failed to load mammoth.js — check network','var(--red)');clSetParseStatus('Error');};
-    document.head.appendChild(s);
-  }else{doIt();}
-}
-
-// ── .PDF parser (PDF.js) ──
-function clParsePdf(file){
-  var doIt=function(){
-    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    clSetParseStatus('Extracting PDF text...');
-    var reader=new FileReader();
-    reader.onload=function(e){
-      var typedarray=new Uint8Array(e.target.result);
-      pdfjsLib.getDocument({data:typedarray}).promise.then(function(pdf){
-        var pages=[];
-        var done=0;
-        for(var p=1;p<=pdf.numPages;p++){
-          (function(pageNum){
-            pdf.getPage(pageNum).then(function(page){
-              page.getTextContent().then(function(content){
-                var text=content.items.map(function(item){return item.str;}).join(' ');
-                pages[pageNum-1]=text;
-                done++;
-                if(done===pdf.numPages){
-                  var fullText=pages.join('\n');
-                  var result=clStructureText(fullText);
-                  clShowPreview(result,file.name);
-                }
-              });
-            });
-          })(p);
-        }
-      }).catch(function(err){
-        clSetStatus('Could not extract text from this file — try saving as .docx','var(--red)');
-        clSetParseStatus('Error');
-      });
-    };
-    reader.readAsArrayBuffer(file);
-  };
-  if(typeof pdfjsLib==='undefined'){
-    clSetParseStatus('Loading PDF.js...');
-    var s=document.createElement('script');
-    s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-    s.onload=doIt;
-    s.onerror=function(){clSetStatus('Failed to load PDF.js — check network','var(--red)');clSetParseStatus('Error');};
-    document.head.appendChild(s);
-  }else{doIt();}
-}
+function clSetStatus(msg,color){var el=document.getElementById('cl-upload-status');if(el){el.textContent=msg;el.style.color=color||'var(--text3)';el.style.minHeight=msg?'20px':'0';}}
+function clSetParseStatus(msg){var el=document.getElementById('cl-parse-status');if(el)el.textContent=msg;}
+function clHandleFile(file){var name=file.name.toLowerCase();var validExts=['.doc','.docx','.pdf','.txt'];var isValid=validExts.some(function(ext){return name.endsWith(ext);});if(!isValid){clSetStatus('Unsupported file type — accepts .doc, .docx, .pdf, .txt','var(--red)');return;}clPendingFile=file;clParsedResult=null;document.getElementById('cl-preview-panel').style.display='none';document.getElementById('cl-file-info').style.display='block';document.getElementById('cl-file-name').textContent=file.name;document.getElementById('cl-file-size').textContent=(file.size/1024).toFixed(1)+' KB';clSetStatus('','var(--text3)');clSetParseStatus('Parsing...');if(name.endsWith('.txt'))clParseTxt(file);else if(name.endsWith('.pdf'))clParsePdf(file);else clParseDocx(file);}
+function clParseTxt(file){var reader=new FileReader();reader.onload=function(e){clShowPreview(clStructureText(e.target.result),file.name);};reader.onerror=function(){clSetStatus('Could not extract text from this file — try saving as .docx','var(--red)');clSetParseStatus('Error');};reader.readAsText(file);}
+function clParseDocx(file){var doIt=function(){clSetParseStatus('Parsing with mammoth.js...');var reader=new FileReader();reader.onload=function(e){mammoth.convertToHtml({arrayBuffer:e.target.result}).then(function(result){return mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(raw){var boldSections=[];var div=document.createElement('div');div.innerHTML=result.value;var children=div.children;for(var i=0;i<children.length;i++){var el=children[i];if(el.querySelector('strong,b')){var t=(el.textContent||'').trim();if(t&&t.length<120)boldSections.push(t);}}clShowPreview(clStructureText(raw.value,boldSections),file.name);});}).catch(function(err){if(file.name.toLowerCase().endsWith('.doc')){clSetStatus('Legacy .doc could not be parsed — save as .docx and re-upload','var(--red)');clSetParseStatus('Error');document.getElementById('cl-preview-panel').style.display='none';}else{clSetStatus('Parse error: '+err.message,'var(--red)');clSetParseStatus('Error');}});};reader.readAsArrayBuffer(file);};if(typeof mammoth==='undefined'){clSetParseStatus('Loading mammoth.js...');var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';s.onload=doIt;s.onerror=function(){clSetStatus('Failed to load mammoth.js — check network','var(--red)');clSetParseStatus('Error');};document.head.appendChild(s);}else doIt();}
+function clParsePdf(file){var doIt=function(){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';clSetParseStatus('Extracting PDF text...');var reader=new FileReader();reader.onload=function(e){var typedarray=new Uint8Array(e.target.result);pdfjsLib.getDocument({data:typedarray}).promise.then(function(pdf){var pages=[];var done=0;for(var p=1;p<=pdf.numPages;p++){(function(pageNum){pdf.getPage(pageNum).then(function(page){page.getTextContent().then(function(content){var text=content.items.map(function(item){return item.str;}).join(' ');pages[pageNum-1]=text;done++;if(done===pdf.numPages)clShowPreview(clStructureText(pages.join('\n')),file.name);});})})(p);}}).catch(function(){clSetStatus('Could not extract text from this file — try saving as .docx','var(--red)');clSetParseStatus('Error');});};reader.readAsArrayBuffer(file);};if(typeof pdfjsLib==='undefined'){clSetParseStatus('Loading PDF.js...');var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';s.onload=doIt;s.onerror=function(){clSetStatus('Failed to load PDF.js — check network','var(--red)');clSetParseStatus('Error');};document.head.appendChild(s);}else doIt();}
+function clStructureText(rawText,boldLines){boldLines=boldLines||[];var lines=rawText.split(/\r?\n/).map(function(l){return l.trim();});var sections=[];var currentSection=null;var signatureLines=[];var boldSet={};boldLines.forEach(function(b){boldSet[b]=true;});var noiseRe=/^(NOTE\s*#?\d+|Page\s+\d+|^\s*$)/i;var narrativeOnly=/^Refer to lubrication schedule/i;var sigRe=/^(Inspector\s*:|Sign|certif|Date\s*:)/i;var commentsRe=/^Comments\s*:\s*_*$/i;function isSectionHeader(line){if(!line||line.length>120)return false;var stripped=line.replace(/[\d\.\)\:\s\-]/g,'');if(stripped.length>=3&&stripped===stripped.toUpperCase()&&/[A-Z]/.test(stripped))return true;if(/^[^a-z]*:$/.test(line)&&line.length<80)return true;if(/^\d+[\.\)]\s/.test(line)&&!/^[A-Z]\.\s/.test(line))return true;if(boldSet[line])return true;return false;}function isChecklistItem(line){if(!line||line.length<3)return false;if(/^[A-Za-z]\.\s/.test(line))return true;if(/^_{3,}/.test(line))return true;if(/^[\u2610\u2611\u2612\u2713\u2717\u25A1\u25A0\u25CB\u25CF\[\]]\s/.test(line))return true;if(/^[\u2022\u2023\u2043\u25E6\-\*]\s/.test(line))return true;return false;}function cleanItem(text){return text.replace(/^_{3,}\s*/,'').replace(/^[\u2610\u2611\u2612\u25A1\u25A0\u25CB\u25CF\[\]]\s*/,'').trim();}var sigStartIdx=Math.floor(lines.length*0.85);for(var i=0;i<lines.length;i++){var line=lines[i];if(!line)continue;if(noiseRe.test(line))continue;if(narrativeOnly.test(line))continue;if(i>=sigStartIdx&&sigRe.test(line)){signatureLines.push(line);continue;}if(commentsRe.test(line)){if(currentSection)currentSection.hasComments=true;continue;}if(isSectionHeader(line)){currentSection={name:line.replace(/^\d+[\.\)\s]*/,'').replace(/:$/,'').trim(),items:[],hasComments:false};sections.push(currentSection);continue;}if(isChecklistItem(line)){var cleaned=cleanItem(line);if(cleaned.length>2&&currentSection)currentSection.items.push(cleaned);else if(cleaned.length>2){currentSection={name:'General',items:[cleaned],hasComments:false};sections.push(currentSection);}continue;}if(currentSection&&line.length>5)currentSection.items.push(line);else if(!currentSection&&line.length>10){currentSection={name:'General',items:[line],hasComments:false};sections.push(currentSection);}}return {sections:sections.filter(function(s){return s.items.length>0;}),signatureLines:signatureLines};}
+function clGuessType(fileName){var n=(fileName||'').toLowerCase();var map={'go-kart':'Go-Karts','gokart':'Go-Karts','kart':'Go-Karts','carousel':'Carousel','merry':'Carousel','aquatic':'Aquatic','water':'Aquatic','pool':'Aquatic','fec':'FEC','trampoline':'FEC','amusement':'Amusement Device','ride':'Amusement Device','coaster':'Amusement Device','grounds':'Grounds/Premise','premise':'Grounds/Premise','parking':'Grounds/Premise'};var keys=Object.keys(map);for(var i=0;i<keys.length;i++){if(n.indexOf(keys[i])!==-1)return map[keys[i]];}return '';}
+function clShowPreview(result,fileName){clParsedResult=result;clParsedResult.fileName=fileName;var sections=result.sections;var totalItems=clCountItems(sections);if(totalItems===0){clSetStatus('No checklist items found — check file format','var(--red)');clSetParseStatus('0 items');document.getElementById('cl-preview-panel').style.display='none';return;}clSetStatus('','var(--text3)');clSetParseStatus(totalItems+' items found');var guess=clGuessType(fileName);if(!guess&&sections.length>0)guess=clGuessType(sections[0].name);var typeSelect=document.getElementById('cl-type-select');if(typeSelect&&guess)typeSelect.value=guess;var previewType=typeSelect?typeSelect.value:'';var versionLabel=previewType?clNextVersion(previewType):'v?';document.getElementById('cl-preview-version').textContent=versionLabel;document.getElementById('cl-preview-items').textContent=totalItems+' items · '+sections.length+' sections';typeSelect.onchange=function(){document.getElementById('cl-preview-version').textContent=this.value?clNextVersion(this.value):'v?';};var secDiv=document.getElementById('cl-preview-sections');var html='';sections.forEach(function(sec,si){html+='<div style="margin-bottom:10px"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text);padding:5px 0;border-bottom:2px solid var(--accent);margin-bottom:4px;display:flex;justify-content:space-between"><span>'+(si+1)+' · '+escHtml(sec.name).toUpperCase()+'</span><span style="color:var(--text3);font-weight:400">'+sec.items.length+' item'+(sec.items.length!==1?'s':'')+(sec.hasComments?' · comments':'')+'</span></div>';sec.items.forEach(function(item){html+='<div style="padding:3px 0 3px 12px;font-size:11px;color:var(--text2);border-bottom:1px solid var(--border)">'+escHtml(item)+'</div>';});html+='</div>';});secDiv.innerHTML=html;var sigDiv=document.getElementById('cl-preview-sig');if(result.signatureLines.length>0){sigDiv.style.display='block';sigDiv.innerHTML='<strong>Signature block detected:</strong> '+result.signatureLines.map(function(l){return escHtml(l);}).join(' · ');}else sigDiv.style.display='none';document.getElementById('cl-preview-panel').style.display='block';}
+function clConfirmSave(){if(!clParsedResult||!clParsedResult.sections.length)return;var typeSelect=document.getElementById('cl-type-select');var type=typeSelect?typeSelect.value:'';if(!type){clSetStatus('Select an attraction type before saving','var(--red)');return;}var version=clNextVersion(type);var record={id:'cl-'+Date.now(),type:type,version:version,uploadedBy:'Noel Rhodes',uploadDate:new Date().toISOString().split('T')[0],itemCount:clCountItems(clParsedResult.sections),active:false,sections:clParsedResult.sections,signatureLines:clParsedResult.signatureLines||[],fileName:clParsedResult.fileName||'unknown'};var all=clGetAll();all.forEach(function(c){if(c.type===type)c.active=false;});record.active=true;all.push(record);clSaveAll(all);clRenderTable();clDiscardPreview();}
+function clDiscardPreview(){clPendingFile=null;clParsedResult=null;document.getElementById('cl-file-info').style.display='none';document.getElementById('cl-preview-panel').style.display='none';document.getElementById('cl-file-input').value='';var typeSelect=document.getElementById('cl-type-select');if(typeSelect){typeSelect.value='';typeSelect.onchange=null;}clSetStatus('','var(--text3)');clSetParseStatus('Ready to parse');}
+function clRenderTable(){var all=clGetAll();var tbody=document.getElementById('cl-version-tbody');var empty=document.getElementById('cl-empty-state');var countEl=document.getElementById('cl-version-count');var tbl=document.getElementById('cl-version-table');if(!tbody)return;if(countEl)countEl.textContent=all.length+' checklist'+(all.length!==1?'s':'');if(all.length===0){if(tbl)tbl.style.display='none';if(empty)empty.style.display='block';return;}if(tbl)tbl.style.display='';if(empty)empty.style.display='none';var sorted=all.slice().sort(function(a,b){if(a.type<b.type)return -1;if(a.type>b.type)return 1;return parseInt(b.version.replace('v',''))-parseInt(a.version.replace('v',''));});var html='';sorted.forEach(function(c){var toggleHtml='<label class="toggle" onclick="event.stopPropagation()"><input type="checkbox"'+(c.active?' checked':'')+' onchange="clToggleActive(\''+c.id+'\')"><span class="toggle-slider"></span></label>';html+='<tr style="cursor:pointer" onclick="clTogglePreview(\''+c.id+'\')"><td style="font-weight:600;color:var(--text)">'+c.type+'</td><td style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:700">'+c.version+'</td><td>'+c.uploadedBy+'</td><td style="font-family:var(--mono);font-size:11px">'+c.uploadDate+'</td><td style="font-family:var(--mono);font-size:11px;text-align:center;font-weight:700">'+c.itemCount+'</td><td>'+toggleHtml+'</td><td>'+(c.active?'<button class="btn-sm-action" onclick="event.stopPropagation();clGeneratePDF(\''+c.id+'\')">Crash Kit PDF</button>':'')+'</td></tr>';html+='<tr id="cl-preview-row-'+c.id+'" style="display:none"><td colspan="7" style="padding:0;background:var(--surface2)"><div style="padding:14px">'+clRenderPreviewContent(c)+'</div></td></tr>';});tbody.innerHTML=html;}
+function clRenderPreviewContent(checklist){var html='<div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:10px">'+checklist.type+' · '+checklist.version+' · '+checklist.fileName+'</div>';checklist.sections.forEach(function(sec,si){html+='<div style="margin-bottom:12px"><div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text);padding:6px 0;border-bottom:2px solid var(--accent);margin-bottom:6px;display:flex;justify-content:space-between"><span>'+(si+1)+' · '+sec.name.toUpperCase()+'</span><span style="font-weight:400;color:var(--text3)">'+sec.items.length+' item'+(sec.items.length!==1?'s':'')+(sec.hasComments?' · comments field':'')+'</span></div>';sec.items.forEach(function(item){html+='<div style="padding:4px 0 4px 12px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">'+escHtml(item)+'</div>';});html+='</div>';});if(checklist.signatureLines&&checklist.signatureLines.length>0)html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);padding:6px 0;border-top:1px solid var(--border)">Signature block: '+checklist.signatureLines.map(function(l){return escHtml(l);}).join(' · ')+'</div>';return html;}
+function clTogglePreview(id){var row=document.getElementById('cl-preview-row-'+id);if(!row)return;if(clExpandedRow&&clExpandedRow!==id){var prev=document.getElementById('cl-preview-row-'+clExpandedRow);if(prev)prev.style.display='none';}row.style.display=row.style.display==='none'?'':'none';clExpandedRow=row.style.display===''?id:null;}
+function clToggleActive(id){var all=clGetAll();var target=all.find(function(c){return c.id===id;});if(!target)return;if(target.active)target.active=false;else{all.forEach(function(c){if(c.type===target.type)c.active=false;});target.active=true;}clSaveAll(all);clRenderTable();}
+function clGeneratePDF(id){var all=clGetAll();var cl=all.find(function(c){return c.id===id;});if(!cl)return;var pa=document.getElementById('printArea');var html='<div id="printArea"><h2>'+cl.type+' Inspection Checklist — '+cl.version+'</h2><table style="margin-bottom:16px"><tr><td style="width:33%"><strong>Facility:</strong> ______________________</td><td style="width:33%"><strong>Inspector:</strong> ______________________</td><td><strong>Date:</strong> ______________</td></tr><tr><td><strong>Job ID:</strong> ______________________</td><td colspan="2"></td></tr></table>';cl.sections.forEach(function(sec,si){html+='<div class="print-section"><h3>'+(si+1)+'. '+sec.name+'</h3><table><thead><tr><th style="width:60%">Item</th><th style="width:8%">Pass</th><th style="width:8%">Fail</th><th style="width:8%">N/A</th><th style="width:16%">Notes</th></tr></thead><tbody>';sec.items.forEach(function(item){html+='<tr><td>'+escHtml(item)+'</td><td style="text-align:center"><span class="print-checkbox"></span></td><td style="text-align:center"><span class="print-checkbox"></span></td><td style="text-align:center"><span class="print-checkbox"></span></td><td></td></tr>';});html+='</tbody></table><div style="margin-top:6px"><strong>Section Comments:</strong> _____________________________________________</div></div>';});html+='<div style="margin-top:24px"><strong>Signature:</strong></div><div class="print-sig">Inspector Signature / Date</div><div style="margin-top:20px;font-size:10px"><strong>Primary:</strong> Noel Rhodes, [address placeholder]<br><strong>Secondary:</strong> Adam Brousell, Asbury Park NJ</div></div>';pa.innerHTML=html;pa.style.display='block';setTimeout(function(){window.print();pa.style.display='none';},200);}
 
 // ═══════════════════════════════════════
-//  TEXT STRUCTURING ENGINE
+//  INSPECTORS TAB + FIX 7 Vendors
 // ═══════════════════════════════════════
-function clStructureText(rawText,boldLines){
-  boldLines=boldLines||[];
-  var lines=rawText.split(/\r?\n/).map(function(l){return l.trim();});
-  var sections=[];
-  var currentSection=null;
-  var signatureLines=[];
-  var boldSet={};
-  boldLines.forEach(function(b){boldSet[b]=true;});
-
-  // Noise patterns
-  var noiseRe=/^(NOTE\s*#?\d+|Page\s+\d+|^\s*$)/i;
-  var narrativeOnly=/^Refer to lubrication schedule/i;
-
-  // Signature block patterns
-  var sigRe=/^(Inspector\s*:|Sign|certif|Date\s*:)/i;
-
-  // Comments field pattern
-  var commentsRe=/^Comments\s*:\s*_*$/i;
-
-  // Section header patterns
-  function isSectionHeader(line){
-    if(!line||line.length>120)return false;
-    // All-caps line (at least 3 chars, mostly uppercase letters)
-    var stripped=line.replace(/[\d\.\)\:\s\-]/g,'');
-    if(stripped.length>=3&&stripped===stripped.toUpperCase()&&/[A-Z]/.test(stripped))return true;
-    // Ends with colon
-    if(/^[^a-z]*:$/.test(line)&&line.length<80)return true;
-    // Numbered header: "1." "2)" etc, not starting with letter-dot
-    if(/^\d+[\.\)]\s/.test(line)&&!/^[A-Z]\.\s/.test(line))return true;
-    // Bold in source
-    if(boldSet[line])return true;
-    return false;
-  }
-
-  // Item patterns
-  function isChecklistItem(line){
-    if(!line||line.length<3)return false;
-    // Letter-dot-space: "A. " "B. "
-    if(/^[A-Za-z]\.\s/.test(line))return true;
-    // Starts with underscore blanks
-    if(/^_{3,}/.test(line))return true;
-    // Checkbox symbols
-    if(/^[\u2610\u2611\u2612\u2713\u2717\u25A1\u25A0\u25CB\u25CF\[\]]\s/.test(line))return true;
-    // Bullet
-    if(/^[\u2022\u2023\u2043\u25E6\-\*]\s/.test(line))return true;
-    return false;
-  }
-
-  function cleanItem(text){
-    // Strip leading underscores/blanks
-    return text.replace(/^_{3,}\s*/,'').replace(/^[\u2610\u2611\u2612\u25A1\u25A0\u25CB\u25CF\[\]]\s*/,'').trim();
-  }
-
-  // Detect where signature block begins (last 15% of lines)
-  var sigStartIdx=Math.floor(lines.length*0.85);
-
-  for(var i=0;i<lines.length;i++){
-    var line=lines[i];
-    if(!line)continue;
-
-    // Noise removal
-    if(noiseRe.test(line))continue;
-    if(narrativeOnly.test(line))continue;
-
-    // Signature block detection (near bottom)
-    if(i>=sigStartIdx&&sigRe.test(line)){
-      signatureLines.push(line);
-      continue;
-    }
-
-    // Comments field detection
-    if(commentsRe.test(line)){
-      if(currentSection)currentSection.hasComments=true;
-      continue;
-    }
-
-    // Section header detection
-    if(isSectionHeader(line)){
-      currentSection={name:line.replace(/^\d+[\.\)\s]*/,'').replace(/:$/,'').trim(),items:[],hasComments:false};
-      sections.push(currentSection);
-      continue;
-    }
-
-    // Item detection
-    if(isChecklistItem(line)){
-      var cleaned=cleanItem(line);
-      if(cleaned.length>2&&currentSection){
-        currentSection.items.push(cleaned);
-      }else if(cleaned.length>2){
-        currentSection={name:'General',items:[cleaned],hasComments:false};
-        sections.push(currentSection);
-      }
-      continue;
-    }
-
-    // Regular text line — add as item if in a section and long enough
-    if(currentSection&&line.length>5){
-      currentSection.items.push(line);
-    }else if(!currentSection&&line.length>10){
-      currentSection={name:'General',items:[line],hasComments:false};
-      sections.push(currentSection);
-    }
-  }
-
-  // Remove empty sections
-  sections=sections.filter(function(s){return s.items.length>0;});
-
-  return {sections:sections,signatureLines:signatureLines};
+function switchInspSubtab(which){
+  document.querySelectorAll('#insp-subtabs .subtab').forEach(function(t){t.classList.remove('active');});
+  if(which==='inspectors'){document.getElementById('insp-subtab-inspectors').style.display='';document.getElementById('insp-subtab-vendors').style.display='none';document.querySelectorAll('#insp-subtabs .subtab')[0].classList.add('active');}
+  else{document.getElementById('insp-subtab-inspectors').style.display='none';document.getElementById('insp-subtab-vendors').style.display='';document.querySelectorAll('#insp-subtabs .subtab')[1].classList.add('active');}
 }
-
-// ═══════════════════════════════════════
-//  PREVIEW BEFORE SAVE
-// ═══════════════════════════════════════
-function clGuessType(fileName){
-  var n=(fileName||'').toLowerCase();
-  var map={'go-kart':'Go-Karts','gokart':'Go-Karts','kart':'Go-Karts','carousel':'Carousel','merry':'Carousel','aquatic':'Aquatic','water':'Aquatic','pool':'Aquatic','fec':'FEC','trampoline':'FEC','amusement':'Amusement Device','ride':'Amusement Device','coaster':'Amusement Device','grounds':'Grounds/Premise','premise':'Grounds/Premise','parking':'Grounds/Premise'};
-  var keys=Object.keys(map);
-  for(var i=0;i<keys.length;i++){if(n.indexOf(keys[i])!==-1)return map[keys[i]];}
-  return '';
-}
-
-function clShowPreview(result,fileName){
-  clParsedResult=result;
-  clParsedResult.fileName=fileName;
-  var sections=result.sections;
-  var totalItems=clCountItems(sections);
-
-  if(totalItems===0){
-    clSetStatus('No checklist items found — check file format','var(--red)');
-    clSetParseStatus('0 items');
-    document.getElementById('cl-preview-panel').style.display='none';
-    return;
-  }
-
-  clSetStatus('','var(--text3)');
-  clSetParseStatus(totalItems+' items found');
-
-  // Guess attraction type from filename
-  var guess=clGuessType(fileName);
-  // Also try first section name
-  if(!guess&&sections.length>0)guess=clGuessType(sections[0].name);
-  var typeSelect=document.getElementById('cl-type-select');
-  if(typeSelect&&guess){typeSelect.value=guess;}
-
-  // Version preview
-  var previewType=typeSelect?typeSelect.value:'';
-  var versionLabel=previewType?clNextVersion(previewType):'v?';
-  document.getElementById('cl-preview-version').textContent=versionLabel;
-  document.getElementById('cl-preview-items').textContent=totalItems+' items · '+sections.length+' sections';
-
-  // Update version label when type changes
-  typeSelect.onchange=function(){
-    var v=this.value?clNextVersion(this.value):'v?';
-    document.getElementById('cl-preview-version').textContent=v;
-  };
-
-  // Render section breakdown
-  var secDiv=document.getElementById('cl-preview-sections');
-  var html='';
-  sections.forEach(function(sec,si){
-    html+='<div style="margin-bottom:10px">';
-    html+='<div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text);padding:5px 0;border-bottom:2px solid var(--accent);margin-bottom:4px;display:flex;justify-content:space-between">';
-    html+='<span>'+(si+1)+' · '+escHtml(sec.name).toUpperCase()+'</span>';
-    html+='<span style="color:var(--text3);font-weight:400">'+sec.items.length+' item'+(sec.items.length!==1?'s':'')+(sec.hasComments?' · comments':'')+'</span>';
-    html+='</div>';
-    sec.items.forEach(function(item){
-      html+='<div style="padding:3px 0 3px 12px;font-size:11px;color:var(--text2);border-bottom:1px solid var(--border)">'+escHtml(item)+'</div>';
-    });
-    html+='</div>';
-  });
-  secDiv.innerHTML=html;
-
-  // Signature lines
-  var sigDiv=document.getElementById('cl-preview-sig');
-  if(result.signatureLines.length>0){
-    sigDiv.style.display='block';
-    sigDiv.innerHTML='<strong>Signature block detected:</strong> '+result.signatureLines.map(function(l){return escHtml(l);}).join(' · ');
-  }else{sigDiv.style.display='none';}
-
-  document.getElementById('cl-preview-panel').style.display='block';
-}
-
-// ── Confirm save ──
-function clConfirmSave(){
-  if(!clParsedResult||!clParsedResult.sections.length)return;
-  var typeSelect=document.getElementById('cl-type-select');
-  var type=typeSelect?typeSelect.value:'';
-  if(!type){clSetStatus('Select an attraction type before saving','var(--red)');return;}
-
-  var version=clNextVersion(type);
-  var record={
-    id:'cl-'+Date.now(),
-    type:type,
-    version:version,
-    uploadedBy:'Noel Rhodes',
-    uploadDate:new Date().toISOString().split('T')[0],
-    itemCount:clCountItems(clParsedResult.sections),
-    active:false,
-    sections:clParsedResult.sections,
-    signatureLines:clParsedResult.signatureLines||[],
-    fileName:clParsedResult.fileName||'unknown'
-  };
-  var all=clGetAll();
-  all.forEach(function(c){if(c.type===type)c.active=false;});
-  record.active=true;
-  all.push(record);
-  clSaveAll(all);
-  clRenderTable();
-  clDiscardPreview();
-}
-
-// ── Discard ──
-function clDiscardPreview(){
-  clPendingFile=null;
-  clParsedResult=null;
-  document.getElementById('cl-file-info').style.display='none';
-  document.getElementById('cl-preview-panel').style.display='none';
-  document.getElementById('cl-file-input').value='';
-  var typeSelect=document.getElementById('cl-type-select');
-  if(typeSelect){typeSelect.value='';typeSelect.onchange=null;}
-  clSetStatus('','var(--text3)');
-  clSetParseStatus('Ready to parse');
-}
-
-function clRenderTable(){
-  var all=clGetAll();
-  var tbody=document.getElementById('cl-version-tbody');
-  var empty=document.getElementById('cl-empty-state');
-  var countEl=document.getElementById('cl-version-count');
-  var tbl=document.getElementById('cl-version-table');
-  if(!tbody)return;
-  if(countEl)countEl.textContent=all.length+' checklist'+(all.length!==1?'s':'');
-  if(all.length===0){if(tbl)tbl.style.display='none';if(empty)empty.style.display='block';return;}
-  if(tbl)tbl.style.display='';if(empty)empty.style.display='none';
-  var sorted=all.slice().sort(function(a,b){if(a.type<b.type)return -1;if(a.type>b.type)return 1;return parseInt(b.version.replace('v',''))-parseInt(a.version.replace('v',''));});
-  var html='';
-  sorted.forEach(function(c){
-    var toggleHtml='<label class="toggle" onclick="event.stopPropagation()"><input type="checkbox"'+(c.active?' checked':'')+' onchange="clToggleActive(\''+c.id+'\')"><span class="toggle-slider"></span></label>';
-    html+='<tr style="cursor:pointer" onclick="clTogglePreview(\''+c.id+'\')">';
-    html+='<td style="font-weight:600;color:var(--text)">'+c.type+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:700">'+c.version+'</td>';
-    html+='<td>'+c.uploadedBy+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:11px">'+c.uploadDate+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:11px;text-align:center;font-weight:700">'+c.itemCount+'</td>';
-    html+='<td>'+toggleHtml+'</td>';
-    html+='<td>'+(c.active?'<button class="btn-sm-action" onclick="event.stopPropagation();clGeneratePDF(\''+c.id+'\')">Crash Kit PDF</button>':'')+'</td>';
-    html+='</tr>';
-    // Preview row
-    html+='<tr id="cl-preview-row-'+c.id+'" style="display:none"><td colspan="7" style="padding:0;background:var(--surface2)"><div style="padding:14px">'+clRenderPreviewContent(c)+'</div></td></tr>';
-  });
-  tbody.innerHTML=html;
-}
-
-function clRenderPreviewContent(checklist){
-  var html='<div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:10px">'+checklist.type+' · '+checklist.version+' · '+checklist.fileName+'</div>';
-  checklist.sections.forEach(function(sec,si){
-    html+='<div style="margin-bottom:12px">';
-    html+='<div style="font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text);padding:6px 0;border-bottom:2px solid var(--accent);margin-bottom:6px;display:flex;justify-content:space-between">';
-    html+='<span>'+(si+1)+' · '+sec.name.toUpperCase()+'</span>';
-    html+='<span style="font-weight:400;color:var(--text3)">'+sec.items.length+' item'+(sec.items.length!==1?'s':'')+(sec.hasComments?' · comments field':'')+'</span></div>';
-    sec.items.forEach(function(item){html+='<div style="padding:4px 0 4px 12px;font-size:12px;color:var(--text2);border-bottom:1px solid var(--border)">'+escHtml(item)+'</div>';});
-    html+='</div>';
-  });
-  if(checklist.signatureLines&&checklist.signatureLines.length>0){
-    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);padding:6px 0;border-top:1px solid var(--border)">Signature block: '+checklist.signatureLines.map(function(l){return escHtml(l);}).join(' · ')+'</div>';
-  }
-  return html;
-}
-
-function clTogglePreview(id){
-  var row=document.getElementById('cl-preview-row-'+id);
-  if(!row)return;
-  if(clExpandedRow&&clExpandedRow!==id){var prev=document.getElementById('cl-preview-row-'+clExpandedRow);if(prev)prev.style.display='none';}
-  row.style.display=row.style.display==='none'?'':'none';
-  clExpandedRow=row.style.display===''?id:null;
-}
-
-function clToggleActive(id){
-  var all=clGetAll();var target=all.find(function(c){return c.id===id;});
-  if(!target)return;
-  if(target.active){target.active=false;}
-  else{all.forEach(function(c){if(c.type===target.type)c.active=false;});target.active=true;}
-  clSaveAll(all);clRenderTable();
-}
-
-function clGeneratePDF(id){
-  var all=clGetAll();var cl=all.find(function(c){return c.id===id;});
-  if(!cl)return;
-  var pa=document.getElementById('printArea');
-  var html='<div id="printArea">';
-  html+='<h2>'+cl.type+' Inspection Checklist — '+cl.version+'</h2>';
-  html+='<table style="margin-bottom:16px"><tr><td style="width:33%"><strong>Facility:</strong> ______________________</td><td style="width:33%"><strong>Inspector:</strong> ______________________</td><td><strong>Date:</strong> ______________</td></tr><tr><td><strong>Job ID:</strong> ______________________</td><td colspan="2"></td></tr></table>';
-  cl.sections.forEach(function(sec,si){
-    html+='<div class="print-section"><h3>'+(si+1)+'. '+sec.name+'</h3><table><thead><tr><th style="width:60%">Item</th><th style="width:8%">Pass</th><th style="width:8%">Fail</th><th style="width:8%">N/A</th><th style="width:16%">Notes</th></tr></thead><tbody>';
-    sec.items.forEach(function(item){
-      html+='<tr><td>'+escHtml(item)+'</td><td style="text-align:center"><span class="print-checkbox"></span></td><td style="text-align:center"><span class="print-checkbox"></span></td><td style="text-align:center"><span class="print-checkbox"></span></td><td></td></tr>';
-    });
-    html+='</tbody></table>';
-    html+='<div style="margin-top:6px"><strong>Section Comments:</strong> _____________________________________________</div></div>';
-  });
-  html+='<div style="margin-top:24px"><strong>Signature:</strong></div><div class="print-sig">Inspector Signature / Date</div>';
-  html+='<div style="margin-top:20px;font-size:10px"><strong>Primary:</strong> Noel Rhodes, [address placeholder]<br><strong>Secondary:</strong> Adam Brousell, Asbury Park NJ</div>';
-  html+='</div>';
-  pa.innerHTML=html;
-  pa.style.display='block';
-  setTimeout(function(){window.print();pa.style.display='none';},200);
-}
-
-// ═══════════════════════════════════════
-//  INSPECTORS TAB
-// ═══════════════════════════════════════
 function renderInspectors(){
-  var inspectors=getInspectors();
-  var inspections=getInspections();
-  var tbody=document.getElementById('inspectorTable');
-  if(!tbody)return;
-  var today=new Date();
-  var warn90=new Date(today);warn90.setDate(warn90.getDate()+90);
-  var html='';
+  var inspectors=getInspectors();var inspections=getInspections();var vendors=getVendors();
+  var tbody=document.getElementById('inspectorTable');if(!tbody)return;
+  var today=new Date();var warn90=new Date(today);warn90.setDate(warn90.getDate()+90);var html='';
   inspectors.forEach(function(insp){
-    var activeCount=inspections.filter(function(r){return r.inspector===insp.name&&(r.status==='SCHEDULED'||r.status==='IN PROGRESS');}).length;
-    var expDate=new Date(insp.expiry);
-    var expiryBadge=expDate<today?'badge-red':expDate<warn90?'badge-warn':'badge-good';
-    var expiryLabel=expDate<today?'EXPIRED':expDate<warn90?'EXPIRING':'VALID';
-    html+='<tr>';
-    html+='<td style="font-weight:600;color:var(--text)">'+insp.name+'</td>';
-    html+='<td>'+insp.territory+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:10px">'+insp.certs+'</td>';
+    var activeCount=inspections.filter(function(r){return r.inspector===insp.name&&r.status!=='CLOSED'&&r.status!=='DELIVERED';}).length;
+    var expDate=new Date(insp.expiry);var expiryBadge=expDate<today?'badge-red':expDate<warn90?'badge-warn':'badge-good';var expiryLabel=expDate<today?'EXPIRED':expDate<warn90?'EXPIRING':'VALID';
+    var vn=vendors.find(function(v){return v.id===insp.vendorId;});
+    html+='<tr><td style="font-weight:600;color:var(--text)">'+insp.name+'</td><td>'+insp.territory+'</td><td style="font-family:var(--mono);font-size:10px">'+insp.certs+'</td>';
     html+='<td><span class="badge '+expiryBadge+'">'+expiryLabel+'</span> <span style="font-family:var(--mono);font-size:10px;color:var(--text3)">'+insp.expiry+'</span></td>';
+    html+='<td style="font-size:11px">'+(vn?vn.name:'—')+'</td>';
     html+='<td style="text-align:center"><a href="#" style="font-family:var(--mono);font-weight:700;color:var(--accent);text-decoration:none" onclick="event.preventDefault();filterInspByName(\''+insp.name+'\')">'+activeCount+'</a></td>';
     html+='<td><span class="badge badge-good">'+insp.status+'</span></td>';
-    html+='<td><button class="btn-sm-action" onclick="openAssignToInspection(\''+escAttr(insp.name)+'\')">Assign to Inspection</button></td>';
-    html+='</tr>';
+    html+='<td><button class="btn-sm-action" onclick="openAssignToInspection(\''+escAttr(insp.name)+'\')">Assign to Inspection</button></td></tr>';
   });
   tbody.innerHTML=html;
 }
-
-function filterInspByName(name){
-  showView('inspections');
-  var sel=document.getElementById('filter-inspector');
-  if(sel){sel.value=name;renderInspections();}
+function renderVendors(){
+  var vendors=getVendors();var inspectors=getInspectors();var inspections=getInspections();
+  var tbody=document.getElementById('vendorTable');if(!tbody)return;var html='';
+  vendors.forEach(function(v){
+    var inspCount=inspectors.filter(function(i){return i.vendorId===v.id;}).length;
+    var activeIns=inspections.filter(function(r){var insp=inspectors.find(function(i){return i.name===r.inspector;});return insp&&insp.vendorId===v.id&&r.status!=='CLOSED'&&r.status!=='DELIVERED';}).length;
+    html+='<tr><td style="font-weight:600;color:var(--text)">'+v.name+'</td><td>'+v.primaryContact+'</td><td style="font-family:var(--mono);font-size:10px">'+v.email+'</td><td style="font-family:var(--mono);font-size:10px">'+v.phone+'</td><td style="text-align:center;font-family:var(--mono);font-weight:700">'+inspCount+'</td><td style="text-align:center;font-family:var(--mono);font-weight:700">'+activeIns+'</td></tr>';
+  });
+  tbody.innerHTML=html;
 }
-
+function filterInspByName(name){showView('inspections');var sel=document.getElementById('filter-inspector');if(sel){sel.value=name;renderInspections();}}
 function confirmAddInspector(){
-  var name=document.getElementById('add-insp-name').value.trim();
-  var territory=document.getElementById('add-insp-territory').value.trim();
-  var certs=document.getElementById('add-insp-certs').value.trim();
-  var expiry=document.getElementById('add-insp-expiry').value;
-  var email=document.getElementById('add-insp-email').value.trim();
-  if(!name){return;}
+  var name=document.getElementById('add-insp-name').value.trim();if(!name)return;
   var inspectors=getInspectors();
-  inspectors.push({name:name,territory:territory||'—',certs:certs||'—',expiry:expiry||'2027-01-01',email:email||'—',status:'ACTIVE'});
-  saveInspectors(inspectors);
-  closeModal('modal-add-inspector');
-  document.getElementById('add-insp-name').value='';
-  document.getElementById('add-insp-territory').value='';
-  document.getElementById('add-insp-certs').value='';
-  document.getElementById('add-insp-expiry').value='';
-  document.getElementById('add-insp-email').value='';
+  inspectors.push({name:name,territory:document.getElementById('add-insp-territory').value.trim()||'—',certs:document.getElementById('add-insp-certs').value.trim()||'—',expiry:document.getElementById('add-insp-expiry').value||'2027-01-01',email:document.getElementById('add-insp-email').value.trim()||'—',status:'ACTIVE',vendorId:document.getElementById('add-insp-vendor').value||'V-001'});
+  saveInspectors(inspectors);closeModal('modal-add-inspector');
+  ['add-insp-name','add-insp-territory','add-insp-certs','add-insp-expiry','add-insp-email'].forEach(function(id){document.getElementById(id).value='';});
   renderInspectors();
 }
-
 function openAssignToInspection(name){
   document.getElementById('assign-to-insp-name').value=name;
   var sel=document.getElementById('assign-to-insp-select');
-  var inspections=getInspections().filter(function(r){return r.status==='SCHEDULED';});
-  sel.innerHTML=inspections.length===0?'<option value="">No scheduled inspections</option>':inspections.map(function(r){return '<option value="'+r.id+'">'+r.id+' — '+r.facility+'</option>';}).join('');
+  var scheduled=getInspections().filter(function(r){return r.status==='SCHEDULED';});
+  sel.innerHTML=scheduled.length===0?'<option value="">No scheduled inspections</option>':scheduled.map(function(r){return '<option value="'+r.id+'">'+r.id+' — '+r.facility+'</option>';}).join('');
   openModal('modal-assign-to-inspection');
 }
-
-function confirmAssignToInspection(){
-  var name=document.getElementById('assign-to-insp-name').value;
-  var insId=document.getElementById('assign-to-insp-select').value;
-  if(!name||!insId)return;
-  var all=getInspections();
-  var ins=all.find(function(r){return r.id===insId;});
-  if(ins)ins.inspector=name;
-  saveInspections(all);
-  closeModal('modal-assign-to-inspection');
-  renderInspectors();
-}
+function confirmAssignToInspection(){var name=document.getElementById('assign-to-insp-name').value;var insId=document.getElementById('assign-to-insp-select').value;if(!name||!insId)return;var all=getInspections();var ins=all.find(function(r){return r.id===insId;});if(ins){ins.inspector=name;ins.status='ASSIGNED';fireStatusEmail(ins,'ASSIGNED');}saveInspections(all);closeModal('modal-assign-to-inspection');renderInspectors();}
 
 // ═══════════════════════════════════════
-//  SCHEDULE TAB
+//  SCHEDULE TAB — FIX 4a multi-module
 // ═══════════════════════════════════════
 var schedWeekOffset=0;
-
-function getWeekDates(offset){
-  var today=new Date();
-  var day=today.getDay();
-  var mondayOffset=day===0?-6:1-day;
-  var monday=new Date(today);
-  monday.setDate(today.getDate()+mondayOffset+(offset*7));
-  var dates=[];
-  for(var i=0;i<7;i++){var d=new Date(monday);d.setDate(monday.getDate()+i);dates.push(d);}
-  return dates;
-}
-
+function getWeekDates(offset){var today=new Date();var day=today.getDay();var mondayOffset=day===0?-6:1-day;var monday=new Date(today);monday.setDate(today.getDate()+mondayOffset+(offset*7));var dates=[];for(var i=0;i<7;i++){var d=new Date(monday);d.setDate(monday.getDate()+i);dates.push(d);}return dates;}
 function renderSchedule(){
-  var dates=getWeekDates(schedWeekOffset);
-  var label=document.getElementById('sched-week-label');
+  var dates=getWeekDates(schedWeekOffset);var label=document.getElementById('sched-week-label');
   if(label)label.textContent=formatDateShort(dates[0])+' — '+formatDateShort(dates[6]);
-  var cal=document.getElementById('sched-calendar');
-  if(!cal)return;
-  var inspections=getInspections();
-  var dayNames=['MON','TUE','WED','THU','FRI','SAT','SUN'];
-  var today=new Date().toISOString().split('T')[0];
-  var html='<div class="cal-grid">';
-  dayNames.forEach(function(d){html+='<div class="cal-hdr">'+d+'</div>';});
-  dates.forEach(function(d){
-    var ds=d.toISOString().split('T')[0];
-    var isToday=ds===today;
-    html+='<div class="cal-day'+(isToday?' today':'')+'">';
-    html+='<div class="cal-day-num">'+d.getDate()+'</div>';
-    inspections.forEach(function(ins){
-      if(ins.date===ds){
-        var bc=ins.status==='COMPLETE'?'var(--good-b)':ins.status==='IN PROGRESS'?'var(--warn-b)':'var(--accent-b)';
-        html+='<div class="cal-card" style="border-left:3px solid '+bc+'">';
-        html+='<div class="cal-card-fac">'+ins.facility+'</div>';
-        html+='<div class="cal-card-meta">'+ins.inspector+' · '+ins.form+'</div>';
-        html+='</div>';
-      }
-    });
-    html+='</div>';
-  });
-  html+='</div>';
-  cal.innerHTML=html;
-  // Populate inspector dropdown in new inspection modal
-  var sel=document.getElementById('new-insp-inspector');
-  if(sel){
-    var inspectors=getInspectors();
-    sel.innerHTML='<option value="">Select inspector...</option>'+inspectors.map(function(i){return '<option value="'+i.name+'">'+i.name+'</option>';}).join('');
-  }
+  var cal=document.getElementById('sched-calendar');if(!cal)return;
+  var inspections=getInspections();var dayNames=['MON','TUE','WED','THU','FRI','SAT','SUN'];var today=new Date().toISOString().split('T')[0];
+  var html='<div class="cal-grid">';dayNames.forEach(function(d){html+='<div class="cal-hdr">'+d+'</div>';});
+  dates.forEach(function(d){var ds=d.toISOString().split('T')[0];html+='<div class="cal-day'+(ds===today?' today':'')+'"><div class="cal-day-num">'+d.getDate()+'</div>';inspections.forEach(function(ins){if(ins.date===ds){var bc=badgeClass(ins.status)==='badge-good'?'var(--good-b)':badgeClass(ins.status)==='badge-warn'?'var(--warn-b)':badgeClass(ins.status)==='badge-red'?'var(--red-b)':'var(--accent-b)';html+='<div class="cal-card" style="border-left:3px solid '+bc+'"><div class="cal-card-fac">'+ins.facility+'</div><div class="cal-card-meta">'+ins.inspector+' · '+ins.form+'</div></div>';}});html+='</div>';});
+  html+='</div>';cal.innerHTML=html;
+  // FIX 4a — Populate module multi-select + inspector dropdown
+  var modSel=document.getElementById('new-insp-modules');
+  if(modSel){var active=clGetAll().filter(function(c){return c.active;});modSel.innerHTML=active.map(function(c){return '<option value="'+c.id+'">'+c.type+' '+c.version+' ('+c.itemCount+' items)</option>';}).join('');}
+  var inspSel=document.getElementById('new-insp-inspector');
+  if(inspSel){inspSel.innerHTML='<option value="">Select inspector...</option>'+getInspectors().map(function(i){return '<option value="'+i.name+'">'+i.name+'</option>';}).join('');}
+  // Populate vendor dropdown in add inspector modal
+  var vendSel=document.getElementById('add-insp-vendor');
+  if(vendSel){vendSel.innerHTML=getVendors().map(function(v){return '<option value="'+v.id+'">'+v.name+'</option>';}).join('');}
 }
-
 function schedWeekNav(dir){schedWeekOffset+=dir;renderSchedule();}
-
 function confirmNewInspection(){
   var facility=document.getElementById('new-insp-facility').value.trim();
-  var type=document.getElementById('new-insp-type').value;
+  var modSel=document.getElementById('new-insp-modules');
+  var selectedModules=[];if(modSel){for(var i=0;i<modSel.options.length;i++){if(modSel.options[i].selected)selectedModules.push(modSel.options[i].value);}}
   var inspector=document.getElementById('new-insp-inspector').value;
   var date=document.getElementById('new-insp-date').value;
-  if(!facility||!type||!inspector||!date)return;
-  var all=getInspections();
-  var maxNum=0;
-  all.forEach(function(r){var n=parseInt(r.id.split('-')[2]);if(n>maxNum)maxNum=n;});
+  if(!facility||selectedModules.length===0||!inspector||!date)return;
+  var all=getInspections();var maxNum=0;all.forEach(function(r){var n=parseInt(r.id.split('-')[2]);if(n>maxNum)maxNum=n;});
   var newId='INS-2026-'+String(maxNum+1).padStart(4,'0');
-  all.push({id:newId,facility:facility,inspector:inspector,date:date,form:type,status:'SCHEDULED',findings:[]});
-  saveInspections(all);
-  // Check for active checklist
-  var checklists=clGetAll();
-  var active=checklists.find(function(c){return c.type===type&&c.active;});
-  var info=document.getElementById('new-insp-checklist-info');
-  if(info)info.textContent=active?'Active checklist: '+active.version:'No active checklist for this type';
-  // Mock email
-  console.log('--- EMAIL NOTIFICATION ---');
-  console.log('To: Tom Jones <tjones@as360.com>, Underwriting Desk <underwriting@mcgowanallied.com>');
-  console.log('Subject: Inspection Scheduled — '+newId+' — '+facility);
-  console.log('Body: A new '+type+' inspection has been scheduled.\n  Facility: '+facility+'\n  Inspector: '+inspector+'\n  Date: '+date+'\n  Inspection ID: '+newId+(active?'\n  Checklist: '+active.type+' '+active.version:''));
-  console.log('--------------------------');
+  // Derive form label from first module
+  var mods=clGetAll();var firstMod=mods.find(function(c){return c.id===selectedModules[0];});
+  var formLabel=firstMod?firstMod.type:'Inspection';
+  if(selectedModules.length>1)formLabel+=' +'+( selectedModules.length-1);
+  // FIX 4a — Expand modules into items
+  var items=[];
+  selectedModules.forEach(function(mid){
+    var mod=mods.find(function(c){return c.id===mid;});
+    if(mod&&mod.sections){mod.sections.forEach(function(sec){sec.items.forEach(function(itemText){items.push({id:'i-new-'+Date.now()+'-'+Math.random().toString(36).substr(2,4),checklistModuleId:mid,sectionName:sec.name,itemText:itemText,disposition:null,explanation:'',severity:null,photos:[],addedAdHoc:false});});});}
+  });
+  var ins={id:newId,facility:facility,inspector:inspector,date:date,form:formLabel,status:'SCHEDULED',vendorId:'V-001',checklistModules:selectedModules,items:items};
+  all.push(ins);saveInspections(all);
+  fireStatusEmail(ins,'SCHEDULED');
   closeModal('modal-new-inspection');
-  document.getElementById('new-insp-facility').value='';
-  document.getElementById('new-insp-type').value='';
-  document.getElementById('new-insp-date').value='';
+  document.getElementById('new-insp-facility').value='';document.getElementById('new-insp-date').value='';
   renderSchedule();
 }
 
-// Auto-select checklist info when type changes
-document.addEventListener('DOMContentLoaded',function(){
-  var typeSelect=document.getElementById('new-insp-type');
-  if(typeSelect){
-    typeSelect.addEventListener('change',function(){
-      var info=document.getElementById('new-insp-checklist-info');
-      if(!this.value){if(info)info.textContent='';return;}
-      var checklists=clGetAll();
-      var active=checklists.find(function(c){return c.type===typeSelect.value&&c.active;});
-      if(info)info.textContent=active?'Active checklist: '+active.type+' '+active.version:'No active checklist for '+this.value;
+// ═══════════════════════════════════════
+//  REPORTS TAB — FIX 6 Routing Matrix
+// ═══════════════════════════════════════
+function renderRoutingMatrix(){
+  var container=document.getElementById('routing-matrix-container');if(!container)return;
+  var matrix=getRoutingMatrix();
+  var html='<table class="matrix-tbl"><thead><tr><th>Status</th>';
+  ALL_RECIPIENTS.forEach(function(r){html+='<th>'+r+'</th>';});
+  html+='</tr></thead><tbody>';
+  ALL_STATUSES.forEach(function(s){
+    html+='<tr><td>'+s+'</td>';
+    ALL_RECIPIENTS.forEach(function(r){
+      var checked=matrix[s]&&matrix[s][r];
+      html+='<td><input type="checkbox"'+(checked?' checked':'')+' onchange="updateRouting(\''+escAttr(s)+'\',\''+escAttr(r)+'\',this.checked)"></td>';
     });
-  }
-});
-
-// ═══════════════════════════════════════
-//  REPORTS TAB
-// ═══════════════════════════════════════
-function renderEmailToggles(){
-  var container=document.getElementById('email-toggles-container');
-  if(!container)return;
-  var toggles=getEmailToggles();
-  var html='';
-  EMAIL_TRIGGERS.forEach(function(t){
-    var isOn=toggles[t];
-    html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:var(--surface2);border-radius:4px">';
-    html+='<span style="font-size:11px;color:var(--text)">'+t+'</span>';
-    html+='<label class="toggle"><input type="checkbox"'+(isOn?' checked':'')+' onchange="toggleEmail(\''+escAttr(t)+'\',this.checked)"><span class="toggle-slider"></span></label>';
-    html+='</div>';
-  });
-  container.innerHTML=html;
-}
-
-function toggleEmail(trigger,on){
-  var t=getEmailToggles();t[trigger]=on;saveEmailToggles(t);
-}
-
-function renderReports(){
-  var reports=getReports();
-  var tbody=document.getElementById('reportTable');
-  if(!tbody)return;
-  var html='';
-  reports.forEach(function(r){
-    html+='<tr>';
-    html+='<td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+r.id+'</td>';
-    html+='<td>'+r.facility+'</td>';
-    html+='<td>'+r.type+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:11px">'+r.generated+'</td>';
-    html+='<td><span class="badge badge-good">'+r.status+'</span></td>';
-    html+='<td><button class="btn-sm-action" onclick="openReportDetail(\''+r.id+'\')">View Report</button></td>';
     html+='</tr>';
   });
+  html+='</tbody></table>';container.innerHTML=html;
+}
+function updateRouting(status,recipient,on){var m=getRoutingMatrix();if(!m[status])m[status]={};m[status][recipient]=on;saveRoutingMatrix(m);}
+
+function renderReports(){
+  var reports=getReports();var tbody=document.getElementById('reportTable');if(!tbody)return;var html='';
+  reports.forEach(function(r){html+='<tr><td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+r.id+'</td><td>'+r.facility+'</td><td>'+r.type+'</td><td style="font-family:var(--mono);font-size:11px">'+r.generated+'</td><td><span class="badge badge-good">'+r.status+'</span></td><td><button class="btn-sm-action" onclick="openReportDetail(\''+r.id+'\')">View Report</button></td></tr>';});
   tbody.innerHTML=html;
 }
-
 function openReportDetail(rptId){
-  var reports=getReports();
-  var rpt=reports.find(function(r){return r.id===rptId;});
-  if(!rpt)return;
+  var rpt=getReports().find(function(r){return r.id===rptId;});if(!rpt)return;
   document.getElementById('report-detail-title').textContent=rpt.id+' — '+rpt.facility;
-  var inspections=getInspections();
-  var ins=inspections.find(function(i){return i.id===rpt.inspectionId;});
+  var ins=getInspections().find(function(i){return i.id===rpt.inspectionId;});
   var html='<div style="margin-bottom:12px"><div style="font-family:var(--mono);font-size:9px;color:var(--text3)">FACILITY</div><div style="font-size:13px;color:var(--text);font-weight:600">'+rpt.facility+'</div></div>';
   html+='<div style="margin-bottom:12px"><div style="font-family:var(--mono);font-size:9px;color:var(--text3)">TYPE</div><div style="font-size:13px;color:var(--text)">'+rpt.type+'</div></div>';
   html+='<div style="margin-bottom:12px"><div style="font-family:var(--mono);font-size:9px;color:var(--text3)">GENERATED</div><div style="font-size:13px;color:var(--text)">'+rpt.generated+'</div></div>';
-  if(ins&&ins.findings&&ins.findings.length>0){
+  // FIX 1 — read from items
+  var findings=ins?getFindings(ins):[];
+  if(findings.length>0){
     html+='<div class="section-divider"></div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:8px">FINDINGS BY SEVERITY</div>';
-    var bySev={};ins.findings.forEach(function(f){if(!bySev[f.severity])bySev[f.severity]=[];bySev[f.severity].push(f);});
-    [1,2,3,4,5].forEach(function(s){
-      if(!bySev[s])return;
-      var sc=s<=2?'badge-red':s===3?'badge-warn':s===4?'badge-accent':'badge-good';
-      html+='<div style="margin-bottom:8px"><span class="badge '+sc+'">SEV '+s+'</span>';
-      bySev[s].forEach(function(f){html+='<div style="font-size:12px;color:var(--text2);padding:4px 0 4px 12px">'+escHtml(f.item)+'</div>';});
-      html+='</div>';
-    });
-  }else{
-    html+='<div class="section-divider"></div><div style="font-family:var(--mono);font-size:10px;color:var(--good)">No findings recorded for this inspection.</div>';
-  }
-  if(ins){
-    html+='<div class="section-divider"></div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">INSPECTOR</div><div style="font-size:13px;color:var(--text)">'+ins.inspector+'</div>';
-    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:8px;margin-bottom:4px">STATUS</div><div style="font-size:13px;color:var(--text)">'+ins.status+'</div>';
-  }
-  document.getElementById('report-detail-body').innerHTML=html;
-  openModal('modal-report-detail');
+    var bySev={};findings.forEach(function(f){if(!bySev[f.severity])bySev[f.severity]=[];bySev[f.severity].push(f);});
+    [1,2,3,4,5].forEach(function(s){if(!bySev[s])return;var sc=s<=2?'badge-red':s===3?'badge-warn':s===4?'badge-accent':'badge-good';html+='<div style="margin-bottom:8px"><span class="badge '+sc+'">SEV '+s+'</span>';bySev[s].forEach(function(f){html+='<div style="font-size:12px;color:var(--text2);padding:4px 0 4px 12px">'+escHtml(f.itemText)+'</div>';});html+='</div>';});
+  }else{html+='<div class="section-divider"></div><div style="font-family:var(--mono);font-size:10px;color:var(--good)">No findings recorded.</div>';}
+  if(ins){html+='<div class="section-divider"></div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:4px">INSPECTOR</div><div style="font-size:13px;color:var(--text)">'+ins.inspector+'</div><div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:8px;margin-bottom:4px">STATUS</div><div style="font-size:13px;color:var(--text)">'+ins.status+'</div>';}
+  document.getElementById('report-detail-body').innerHTML=html;openModal('modal-report-detail');
 }
+function printReport(){var title=document.getElementById('report-detail-title').textContent;var body=document.getElementById('report-detail-body').innerHTML;var pa=document.getElementById('printArea');pa.innerHTML='<div id="printArea"><h2>'+escHtml(title)+'</h2>'+body+'</div>';pa.style.display='block';setTimeout(function(){window.print();pa.style.display='none';},200);}
 
-function printReport(){
-  var title=document.getElementById('report-detail-title').textContent;
-  var body=document.getElementById('report-detail-body').innerHTML;
-  var pa=document.getElementById('printArea');
-  pa.innerHTML='<div id="printArea"><h2>'+escHtml(title)+'</h2>'+body+'</div>';
-  pa.style.display='block';
-  setTimeout(function(){window.print();pa.style.display='none';},200);
-}
-
-// ── CARs ──
+// FIX 10 — CARs with remediation + review
 function renderCars(){
-  var cars=getCars();
-  var tbody=document.getElementById('carTable');
-  if(!tbody)return;
-  var html='';
+  var cars=getCars();var tbody=document.getElementById('carTable');if(!tbody)return;var html='';
   cars.forEach(function(c){
     var sevBadge=c.severity<=2?'badge-red':c.severity===3?'badge-warn':'badge-accent';
     var statusBadge=c.status==='CLOSED'?'badge-good':c.status==='IN REMEDIATION'?'badge-warn':'badge-red';
-    html+='<tr>';
-    html+='<td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+c.id+'</td>';
-    html+='<td>'+c.facility+'</td>';
-    html+='<td>'+c.ride+'</td>';
-    html+='<td style="font-size:11px">'+c.finding+'</td>';
-    html+='<td><span class="badge '+sevBadge+'">SEV '+c.severity+'</span></td>';
-    html+='<td>'+c.assignedTo+'</td>';
-    html+='<td style="font-family:var(--mono);font-size:11px">'+c.dueDate+'</td>';
-    html+='<td><span class="badge '+statusBadge+'">'+c.status+'</span></td>';
-    html+='<td>'+(c.status!=='CLOSED'?'<button class="btn-sm-action" onclick="openCloseCar(\''+c.id+'\')">Close CAR</button>':'<span style="font-family:var(--mono);font-size:9px;color:var(--text3)">Closed</span>')+'</td>';
-    html+='</tr>';
+    html+='<tr><td style="font-family:var(--mono);font-size:11px;color:var(--accent)">'+c.id+'</td><td>'+c.facility+'</td><td>'+c.ride+'</td><td style="font-size:11px">'+c.finding+'</td><td><span class="badge '+sevBadge+'">SEV '+c.severity+'</span></td><td>'+c.assignedTo+'</td><td style="font-family:var(--mono);font-size:11px">'+c.dueDate+'</td><td><span class="badge '+statusBadge+'">'+c.status+'</span></td>';
+    html+='<td>';
+    if(c.status==='OPEN')html+='<button class="btn-sm-action" onclick="openSubmitRemediation(\''+c.id+'\')">Submit Remediation</button>';
+    else if(c.status==='IN REMEDIATION')html+='<button class="btn-sm-action" onclick="openReviewClose(\''+c.id+'\')">Review &amp; Close</button>';
+    else html+='<span style="font-family:var(--mono);font-size:9px;color:var(--text3)">Closed</span>';
+    html+='</td></tr>';
   });
   tbody.innerHTML=html;
 }
-
-function openCloseCar(carId){
-  document.getElementById('close-car-id').value=carId;
-  document.getElementById('close-car-notes').value='';
+function openSubmitRemediation(carId){document.getElementById('remediation-car-id').value=carId;document.getElementById('remediation-notes').value='';document.getElementById('remediation-photo').value='';openModal('modal-submit-remediation');}
+function confirmSubmitRemediation(){
+  var carId=document.getElementById('remediation-car-id').value;var notes=document.getElementById('remediation-notes').value.trim();if(!notes)return;
+  var cars=getCars();var car=cars.find(function(c){return c.id===carId;});
+  if(car){car.status='IN REMEDIATION';car.remediationNotes=notes;car.remediationPhoto=document.getElementById('remediation-photo').value.trim();}
+  saveCars(cars);closeModal('modal-submit-remediation');renderCars();
+}
+function openReviewClose(carId){
+  document.getElementById('close-car-id').value=carId;document.getElementById('close-car-notes').value='';
+  document.getElementById('close-car-modal-title').textContent='Review & Close CAR';
+  document.getElementById('close-car-reviewer-field').style.display='';
+  document.getElementById('close-car-reviewer').value='';
+  document.getElementById('close-car-submit-btn').textContent='Review & Close';
   openModal('modal-close-car');
 }
-
 function confirmCloseCar(){
-  var carId=document.getElementById('close-car-id').value;
-  var notes=document.getElementById('close-car-notes').value.trim();
-  if(!notes)return;
-  var cars=getCars();
-  var car=cars.find(function(c){return c.id===carId;});
-  if(car){car.status='CLOSED';car.resolution=notes;}
-  saveCars(cars);
-  closeModal('modal-close-car');
-  renderCars();
+  var carId=document.getElementById('close-car-id').value;var notes=document.getElementById('close-car-notes').value.trim();if(!notes)return;
+  var reviewer=document.getElementById('close-car-reviewer').value.trim();
+  var cars=getCars();var car=cars.find(function(c){return c.id===carId;});
+  if(car){car.status='CLOSED';car.resolution=notes;car.reviewer=reviewer||'';}
+  saveCars(cars);closeModal('modal-close-car');renderCars();
 }
 
 // ═══════════════════════════════════════
@@ -1701,23 +1087,13 @@ function confirmCloseCar(){
 // ═══════════════════════════════════════
 function escHtml(str){var d=document.createElement('div');d.textContent=str;return d.innerHTML;}
 function escAttr(str){return str.replace(/'/g,"\\'").replace(/"/g,'&quot;');}
-function formatDate(iso){
-  var d=new Date(iso+'T00:00:00');
-  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();
-}
-function formatDateShort(d){
-  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return months[d.getMonth()]+' '+d.getDate();
-}
+function formatDate(iso){var d=new Date(iso+'T00:00:00');var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();}
+function formatDateShort(d){var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return months[d.getMonth()]+' '+d.getDate();}
 
 // ═══════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════
-document.addEventListener('DOMContentLoaded',function(){
-  renderInspections();
-  clRenderTable();
-});
+document.addEventListener('DOMContentLoaded',function(){renderInspections();clRenderTable();});
 </script>
 
 </body></html>
