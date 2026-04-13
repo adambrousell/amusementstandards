@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,11 +8,13 @@
 <style>
 :root{
   --bg:#1A1E25;--surface:#22272E;--surface2:#2D333B;--border:#373E47;
-  --accent:#6CA4DC;--accent-l:rgba(108,164,220,.1);--accent-b:rgba(108,164,220,.25);
+  --accent:#6CA4DC;--accent-l:rgba(108,164,220,.1);--accent-b:rgba(108,164,220,.25);--accent-ll:rgba(108,164,220,.22);
   --text:#D0D7DE;--text2:#9BA4AE;--text3:#6E7681;
   --good:#3FB950;--good-bg:rgba(63,185,80,.06);--good-b:rgba(63,185,80,.2);
   --warn:#D29922;--warn-bg:rgba(210,153,34,.06);--warn-b:rgba(210,153,34,.2);
   --red:#F85149;--red-bg:rgba(248,81,73,.06);--red-b:rgba(248,81,73,.2);
+  --amber:#E8A33A;--amber-bg:rgba(232,163,58,.06);--amber-b:rgba(232,163,58,.2);
+  --ylgreen:#9ACD32;--ylgreen-bg:rgba(154,205,50,.06);--ylgreen-b:rgba(154,205,50,.2);
   --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -92,13 +94,15 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--t
 .rail-leaf{display:flex;justify-content:space-between;align-items:center;padding:8px 10px 8px 28px;margin:1px 0;border-radius:4px;cursor:pointer;font-size:12px;color:var(--text2);min-height:34px;transition:background .12s,box-shadow .12s,color .12s;box-shadow:inset 3px 0 0 transparent}
 .rail-leaf.depth-2{padding-left:40px}
 .rail-leaf:hover{background:var(--surface2);color:var(--text)}
-.rail-leaf.active{background:var(--accent-l);box-shadow:inset 3px 0 0 var(--accent);color:var(--accent);font-weight:700}
+.rail-leaf.active{background:var(--accent-ll);box-shadow:inset 3px 0 0 var(--accent);color:var(--text);font-weight:700}
 .rail-leaf-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rail-leaf-count{font-family:var(--mono);font-size:10px;color:var(--text3);flex-shrink:0;margin-left:8px;display:flex;align-items:center;gap:4px}
-.rail-leaf.active .rail-leaf-count{color:var(--accent)}
+.rail-leaf.active .rail-leaf-count{color:var(--text)}
 .rail-dot{display:inline-block;width:9px;height:9px;border-radius:50%;outline:2px solid transparent;outline-offset:1px}
 .rail-dot.red{background:var(--red);outline-color:rgba(255,80,80,.25)}
+.rail-dot.amber{background:var(--amber);outline-color:rgba(232,163,58,.25)}
 .rail-dot.yellow{background:var(--warn);outline-color:rgba(255,180,0,.25)}
+.rail-dot.ylgreen{background:var(--ylgreen);outline-color:rgba(154,205,50,.25)}
 .rail-dot.green{background:var(--good);outline-color:rgba(50,200,100,.25)}
 
 /* Per-card header */
@@ -1030,12 +1034,34 @@ function buildOverviewHTML(){
   return html;
 }
 
+function aggregateGroupState(cat){
+  var leaves=[];
+  (cat.children||[]).forEach(function(child){
+    if(child.leaf)leaves.push(child.leaf);
+    else (child.children||[]).forEach(function(g){if(g.leaf)leaves.push(g.leaf);});
+  });
+  if(leaves.length===0)return 'empty';
+  var anyRed=false,allGreen=true;
+  leaves.forEach(function(id){
+    var c=countCard(id);
+    if(c.total===0||c.answered===0){anyRed=true;allGreen=false;}
+    else if(c.answered<c.total){allGreen=false;}
+  });
+  if(anyRed)return 'red';
+  if(allGreen)return 'green';
+  return 'yellow';
+}
+function chevColorForState(state){
+  return state==='red'?'var(--red)':state==='green'?'var(--good)':state==='yellow'?'var(--warn)':'var(--text3)';
+}
 function buildRailHTML(){
   var html='<div class="rail-property-report">Property Report</div>';
   TAXONOMY.forEach(function(cat){
     var catSlug=slug(cat.label);
+    var gState=aggregateGroupState(cat);
+    var chevColor=chevColorForState(gState);
     html+='<div class="rail-group open" data-group-id="'+catSlug+'">';
-    html+='<div class="rail-group-hdr" onclick="toggleRailGroup(\''+catSlug+'\')"><span class="rail-chevron">&#9658;</span><span class="rail-group-label">'+esc(cat.label)+'</span></div>';
+    html+='<div class="rail-group-hdr" onclick="toggleRailGroup(\''+catSlug+'\')"><span class="rail-chevron" id="rail-chevron-'+catSlug+'" style="color:'+chevColor+'">&#9658;</span><span class="rail-group-label">'+esc(cat.label)+'</span></div>';
     html+='<div class="rail-group-body">';
     cat.children.forEach(function(child){
       if(child.leaf){
@@ -1069,9 +1095,11 @@ function buildLeafHTML(cardId,depth){
 
 function railDotClass(c){
   if(c.total===0)return 'red';
-  if(c.answered===c.total)return 'green';
-  if(c.answered>0)return 'yellow';
-  return 'red';
+  var pct=(c.answered/c.total)*100;
+  if(pct===0)return 'red';
+  if(pct===100)return 'green';
+  if(pct<=50)return 'amber';
+  return 'ylgreen';
 }
 
 function countCard(cardId){
@@ -1232,6 +1260,11 @@ function updateCounters(){
     if(ce)ce.textContent=c.answered+'/'+c.total;
     var de=document.getElementById('rail-dot-'+cardId);
     if(de)de.className='rail-dot '+railDotClass(c);
+  });
+  // Group chevrons reflect aggregate of children
+  TAXONOMY.forEach(function(cat){
+    var ch=document.getElementById('rail-chevron-'+slug(cat.label));
+    if(ch)ch.style.color=chevColorForState(aggregateGroupState(cat));
   });
 }
 
