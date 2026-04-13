@@ -315,8 +315,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--sans);background:var(--b
     <div id="cl-dropzone" style="border:2px dashed var(--border);border-radius:6px;padding:36px 16px;text-align:center;cursor:pointer;transition:all .15s;background:var(--surface);min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:14px" onclick="document.getElementById('cl-file-input').click()">
       <div style="font-family:var(--mono);font-size:24px;margin-bottom:8px;color:var(--text3);line-height:1">+</div>
       <div style="font-size:14px;color:var(--text);font-weight:600">Drop inspection document here</div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px">.doc, .docx, .pdf, .txt accepted</div>
-      <input type="file" id="cl-file-input" accept=".doc,.docx,.pdf,.txt" style="display:none" onchange="clFileSelected(this)">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px">.docx, .pdf, .txt accepted</div>
+      <input type="file" id="cl-file-input" accept=".docx,.pdf,.txt" style="display:none" onchange="clFileSelected(this)">
     </div>
     <div id="cl-file-info" style="display:none;margin-top:10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 14px">
       <div style="display:flex;align-items:center;justify-content:space-between">
@@ -1108,15 +1108,14 @@ function confirmAddForm(){
 // ═══════════════════════════════════════
 function renderFacilitiesList(){
   var el=document.getElementById('facilitiesTable');if(!el)return;var vendors=getVendors();
-  var statusBadge=function(s){return s==='current'?'<span class="badge badge-good">CURRENT</span>':s==='review'?'<span class="badge badge-warn">REVIEW</span>':'<span class="badge badge-accent">ACTIVE</span>';};
   // FIX 6 — Clickable Open CARs cell that navigates to CARs tab pre-filtered by facility
   var carsBadge=function(n,facName){if(n===0)return '<span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span>';var color=n>=3?'var(--red)':'var(--warn)';return '<a href="#" style="font-family:var(--mono);font-size:11px;font-weight:700;color:'+color+';text-decoration:none" onclick="event.preventDefault();event.stopPropagation();filterCarsByFacility(\''+escAttr(facName)+'\')">'+n+'</a>';};
-  var html='<thead><tr><th>Facility</th><th>Type</th><th>Location</th><th>Vendor</th><th>Last Inspection</th><th title="Corrective Action Request">Open CARs</th><th>Status</th></tr></thead><tbody>';
+  var html='<thead><tr><th>Facility</th><th>Type</th><th>Location</th><th>Vendor</th><th>Last Inspection</th><th title="Corrective Action Request">Open CARs</th></tr></thead><tbody>';
   var staticNames={};
   FACILITIES_DATA.forEach(function(f){
     staticNames[f.name]=true;
     var vn=vendors.find(function(v){return v.id===f.vendorId;});
-    html+='<tr style="cursor:pointer" onclick="openFacility(\''+f.id+'\')"><td style="font-weight:600;color:var(--text)">'+f.name+'</td><td style="font-family:var(--mono);font-size:10px">'+f.type+'</td><td>'+f.location+'</td><td style="font-size:11px">'+(vn?vn.name:'—')+'</td><td style="font-family:var(--mono);font-size:11px">'+f.lastInspection+'</td><td style="text-align:center">'+carsBadge(f.openCars,f.name)+'</td><td>'+statusBadge(f.status)+'</td></tr>';
+    html+='<tr style="cursor:pointer" onclick="openFacility(\''+f.id+'\')"><td style="font-weight:600;color:var(--text)">'+f.name+'</td><td style="font-family:var(--mono);font-size:10px">'+f.type+'</td><td>'+f.location+'</td><td style="font-size:11px">'+(vn?vn.name:'—')+'</td><td style="font-family:var(--mono);font-size:11px">'+f.lastInspection+'</td><td style="text-align:center">'+carsBadge(f.openCars,f.name)+'</td></tr>';
   });
   // Item 9 — Append facility profiles from Facility Builder that are not already in FACILITIES_DATA
   var profiles=fbGetProfiles();
@@ -1129,7 +1128,7 @@ function renderFacilitiesList(){
     var derivedType='Mixed';
     if(typeKeys.length===1)derivedType=typeKeys[0];
     else if(typeKeys.length>1){var max=0;typeKeys.forEach(function(k){if(typeCounts[k]>max){max=typeCounts[k];derivedType=k;}});}
-    html+='<tr style="border-left:3px solid var(--accent)"><td style="font-weight:600;color:var(--text)">'+escHtml(p.facilityName)+'</td><td style="font-family:var(--mono);font-size:10px">'+escHtml(derivedType)+' <span class="badge badge-accent" style="margin-left:4px">FROM BUILDER</span></td><td>'+escHtml(p.location||'—')+'</td><td style="font-size:11px">—</td><td style="font-family:var(--mono);font-size:11px">—</td><td style="text-align:center"><span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span></td><td><span class="badge badge-accent">ACTIVE</span></td></tr>';
+    html+='<tr style="border-left:3px solid var(--accent)"><td style="font-weight:600;color:var(--text)">'+escHtml(p.facilityName)+'</td><td style="font-family:var(--mono);font-size:10px">'+escHtml(derivedType)+' <span class="badge badge-accent" style="margin-left:4px">FROM BUILDER</span></td><td>'+escHtml(p.location||'—')+'</td><td style="font-size:11px">—</td><td style="font-family:var(--mono);font-size:11px">—</td><td style="text-align:center"><span style="font-family:var(--mono);font-size:11px;color:var(--text3)">0</span></td></tr>';
   });
   el.innerHTML=html+'</tbody>';
 }
@@ -1183,10 +1182,64 @@ function clCountItems(sections){var n=0;sections.forEach(function(s){n+=s.items.
 function clFileSelected(input){if(input.files&&input.files[0])clHandleFile(input.files[0]);}
 function clSetStatus(msg,color){var el=document.getElementById('cl-upload-status');if(el){el.textContent=msg;el.style.color=color||'var(--text3)';el.style.minHeight=msg?'20px':'0';}}
 function clSetParseStatus(msg){var el=document.getElementById('cl-parse-status');if(el)el.textContent=msg;}
-function clHandleFile(file){var name=file.name.toLowerCase();var validExts=['.doc','.docx','.pdf','.txt'];var isValid=validExts.some(function(ext){return name.endsWith(ext);});if(!isValid){clSetStatus('Unsupported file type — accepts .doc, .docx, .pdf, .txt','var(--red)');return;}clPendingFile=file;clParsedResult=null;document.getElementById('cl-preview-panel').style.display='none';document.getElementById('cl-file-info').style.display='block';document.getElementById('cl-file-name').textContent=file.name;document.getElementById('cl-file-size').textContent=(file.size/1024).toFixed(1)+' KB';clSetStatus('','var(--text3)');clSetParseStatus('Parsing...');if(name.endsWith('.txt'))clParseTxt(file);else if(name.endsWith('.pdf'))clParsePdf(file);else clParseDocx(file);}
+function clHandleFile(file){var name=file.name.toLowerCase();var validExts=['.docx','.pdf','.txt'];var isValid=validExts.some(function(ext){return name.endsWith(ext);});if(!isValid){clSetStatus('Unsupported file type — accepts .docx, .pdf, .txt','var(--red)');return;}clPendingFile=file;clParsedResult=null;document.getElementById('cl-preview-panel').style.display='none';document.getElementById('cl-file-info').style.display='block';document.getElementById('cl-file-name').textContent=file.name;document.getElementById('cl-file-size').textContent=(file.size/1024).toFixed(1)+' KB';clSetStatus('','var(--text3)');clSetParseStatus('Parsing...');if(name.endsWith('.txt'))clParseTxt(file);else if(name.endsWith('.pdf'))clParsePdf(file);else clParseDocx(file);}
 function clParseTxt(file){var reader=new FileReader();reader.onload=function(e){clShowPreview(clStructureText(e.target.result),file.name);};reader.onerror=function(){clSetStatus('Could not extract text from this file — try saving as .docx','var(--red)');clSetParseStatus('Error');};reader.readAsText(file);}
-function clParseDocx(file){var doIt=function(){clSetParseStatus('Parsing with mammoth.js...');var reader=new FileReader();reader.onload=function(e){mammoth.convertToHtml({arrayBuffer:e.target.result}).then(function(result){return mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(raw){var boldSections=[];var div=document.createElement('div');div.innerHTML=result.value;var children=div.children;for(var i=0;i<children.length;i++){var el=children[i];if(el.querySelector('strong,b')){var t=(el.textContent||'').trim();if(t&&t.length<120)boldSections.push(t);}}clShowPreview(clStructureText(raw.value,boldSections),file.name);});}).catch(function(err){if(file.name.toLowerCase().endsWith('.doc')){clSetStatus('Legacy .doc could not be parsed — save as .docx and re-upload','var(--red)');clSetParseStatus('Error');document.getElementById('cl-preview-panel').style.display='none';}else{clSetStatus('Parse error: '+err.message,'var(--red)');clSetParseStatus('Error');}});};reader.readAsArrayBuffer(file);};if(typeof mammoth==='undefined'){clSetParseStatus('Loading mammoth.js...');var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';s.onload=doIt;s.onerror=function(){clSetStatus('Failed to load mammoth.js — check network','var(--red)');clSetParseStatus('Error');};document.head.appendChild(s);}else doIt();}
-function clParsePdf(file){var doIt=function(){pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';clSetParseStatus('Extracting PDF text...');var reader=new FileReader();reader.onload=function(e){var typedarray=new Uint8Array(e.target.result);pdfjsLib.getDocument({data:typedarray}).promise.then(function(pdf){var pages=[];var done=0;for(var p=1;p<=pdf.numPages;p++){(function(pageNum){pdf.getPage(pageNum).then(function(page){page.getTextContent().then(function(content){var text=content.items.map(function(item){return item.str;}).join(' ');pages[pageNum-1]=text;done++;if(done===pdf.numPages)clShowPreview(clStructureText(pages.join('\n')),file.name);});})})(p);}}).catch(function(){clSetStatus('Could not extract text from this file — try saving as .docx','var(--red)');clSetParseStatus('Error');});};reader.readAsArrayBuffer(file);};if(typeof pdfjsLib==='undefined'){clSetParseStatus('Loading PDF.js...');var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';s.onload=doIt;s.onerror=function(){clSetStatus('Failed to load PDF.js — check network','var(--red)');clSetParseStatus('Error');};document.head.appendChild(s);}else doIt();}
+function clParseDocx(file){var doIt=function(){clSetParseStatus('Parsing with mammoth.js...');var reader=new FileReader();reader.onload=function(e){mammoth.convertToHtml({arrayBuffer:e.target.result}).then(function(result){return mammoth.extractRawText({arrayBuffer:e.target.result}).then(function(raw){var boldSections=[];var div=document.createElement('div');div.innerHTML=result.value;var children=div.children;for(var i=0;i<children.length;i++){var el=children[i];if(el.querySelector('strong,b')){var t=(el.textContent||'').trim();if(t&&t.length<120)boldSections.push(t);}}clShowPreview(clStructureText(raw.value,boldSections),file.name);});}).catch(function(err){clSetStatus('Parse error: '+err.message,'var(--red)');clSetParseStatus('Error');document.getElementById('cl-preview-panel').style.display='none';});};reader.readAsArrayBuffer(file);};if(typeof mammoth==='undefined'){clSetParseStatus('Loading mammoth.js...');var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js';s.onload=doIt;s.onerror=function(){clSetStatus('Failed to load mammoth.js — check network','var(--red)');clSetParseStatus('Error');};document.head.appendChild(s);}else doIt();}
+function clParsePdf(file){
+  var doIt=function(){
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    clSetParseStatus('Extracting PDF text...');
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var typedarray=new Uint8Array(e.target.result);
+      pdfjsLib.getDocument({data:typedarray}).promise.then(function(pdf){
+        var pages=[];var done=0;
+        for(var p=1;p<=pdf.numPages;p++){
+          (function(pageNum){
+            pdf.getPage(pageNum).then(function(page){
+              page.getTextContent().then(function(content){
+                var parts=[];
+                for(var i=0;i<content.items.length;i++){
+                  var it=content.items[i];
+                  parts.push(it.str||'');
+                  if(it.hasEOL)parts.push('\n');
+                  else parts.push(' ');
+                }
+                var text=parts.join('');
+                if(text.indexOf('\n')===-1){
+                  text=text.replace(/(_{3,}\s*[A-Z]\.\s)/g,'\n$1');
+                  text=text.replace(/(\s)(\d+\.\s+[A-Z])/g,'$1\n$2');
+                  text=text.replace(/(Comments:)/g,'\n$1');
+                  text=text.replace(/(NOTE\s*#)/g,'\n$1');
+                  text=text.replace(/(DATE:)/g,'\n$1');
+                  text=text.replace(/(Inspector:)/g,'\n$1');
+                }
+                text=text.replace(/([^\n])(_{3,}\s*[A-Z]\.\s)/g,'$1\n$2');
+                text=text.replace(/[ \t]+/g,' ');
+                text=text.replace(/\n{2,}/g,'\n');
+                pages[pageNum-1]=text;
+                done++;
+                if(done===pdf.numPages)clShowPreview(clStructureText(pages.join('\n')),file.name);
+              });
+            });
+          })(p);
+        }
+      }).catch(function(){
+        clSetStatus('Could not extract text from this file — try saving as .docx','var(--red)');
+        clSetParseStatus('Error');
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  };
+  if(typeof pdfjsLib==='undefined'){
+    clSetParseStatus('Loading PDF.js...');
+    var s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+    s.onload=doIt;
+    s.onerror=function(){clSetStatus('Failed to load PDF.js — check network','var(--red)');clSetParseStatus('Error');};
+    document.head.appendChild(s);
+  }else doIt();
+}
 function clStructureText(rawText,boldLines){
 boldLines=boldLines||[];
 var lines=rawText.split(/\r?\n/).map(function(l){return l.trim();});
@@ -2304,3 +2357,4 @@ document.addEventListener('DOMContentLoaded',function(){renderInspections();clRe
 </script>
 
 </body></html>
+
