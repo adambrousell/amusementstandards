@@ -611,7 +611,7 @@ var LS={get:function(k,d){try{return JSON.parse(localStorage.getItem(k))||d;}cat
   var SEED_VERSION='2026-04-12-fix-10pass';
   try{
     if(localStorage.getItem('as360_seed_version')!==SEED_VERSION){
-      ['as360_inspections','as360_cars','as360_inspectors','as360_facility_profiles','as360_checklist_library','as360_routing_matrix'].forEach(function(k){localStorage.removeItem(k);});
+      ['as360_inspections','as360_cars','as360_inspectors','as360_facility_profiles','as360_checklist_library'].forEach(function(k){localStorage.removeItem(k);});
       localStorage.setItem('as360_seed_version',SEED_VERSION);
     }
   }catch(e){}
@@ -778,6 +778,11 @@ function getRoutingMatrix(){
   return d;
 }
 function saveRoutingMatrix(m){LS.set('as360_routing_matrix',m);}
+function getRoutingAudit(){return LS.get('as360_routing_matrix_audit',[]);}
+function saveRoutingAudit(arr){LS.set('as360_routing_matrix_audit',arr);}
+var ROUTING_EDIT_MODE=false;
+var ROUTING_PENDING_CHANGES=[];
+var ROUTING_SNAPSHOT=null;
 
 // FIX 9 — Facilities without score, with vendorId
 var FACILITIES_DATA=[
@@ -1522,19 +1527,33 @@ function confirmNewInspection(){
 function renderRoutingMatrix(){
   var container=document.getElementById('routing-matrix-container');if(!container)return;
   var matrix=getRoutingMatrix();
-  var html='<table class="matrix-tbl"><thead><tr><th>Status / Action</th>';
+  var editing=ROUTING_EDIT_MODE;
+  var toolbar='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:4px">';
+  if(editing){
+    toolbar+='<span style="font-family:var(--mono);font-size:10px;color:var(--warn);letter-spacing:.06em;text-transform:uppercase">\u270F Edit Mode \u2014 '+ROUTING_PENDING_CHANGES.length+' pending change'+(ROUTING_PENDING_CHANGES.length===1?'':'s')+'</span>';
+    toolbar+='<div style="display:flex;gap:6px"><button class="btn-sm-action" onclick="saveRoutingEdits()" style="color:var(--good);border-color:var(--good-b)">Save Changes</button><button class="btn-sm-action" onclick="cancelRoutingEdits()">Cancel</button></div>';
+  }else{
+    toolbar+='<span style="font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase">\u{1F512} Locked \u2014 Read Only</span>';
+    toolbar+='<div style="display:flex;gap:6px"><button class="btn-sm-action" onclick="enterRoutingEditMode()">Edit Permissions</button><button class="btn-sm-action" onclick="viewRoutingAudit()">Audit Log</button></div>';
+  }
+  toolbar+='</div>';
+  var html=toolbar+'<table class="matrix-tbl"><thead><tr><th>Status / Action</th>';
   ALL_RECIPIENTS.forEach(function(r){html+='<th>'+r+'</th>';});
   html+='</tr></thead><tbody>';
+  function cellRender(isChecked,onchangeCall){
+    if(editing){
+      return '<td><input type="checkbox"'+(isChecked?' checked':'')+' onchange="'+onchangeCall+'"></td>';
+    }
+    return '<td style="text-align:center;font-family:var(--mono);font-size:12px;color:'+(isChecked?'var(--good)':'var(--text3)')+'">'+(isChecked?'\u2713':'\u2717')+'</td>';
+  }
   ALL_STATUSES.forEach(function(s){
     html+='<tr><td>'+s+'</td>';
     ALL_RECIPIENTS.forEach(function(r){
       var checked=matrix[s]&&matrix[s][r];
-      html+='<td><input type="checkbox"'+(checked?' checked':'')+' onchange="updateRouting(\''+escAttr(s)+'\',\''+escAttr(r)+'\',this.checked)"></td>';
+      html+=cellRender(checked,'updateRouting(\''+escAttr(s)+'\',\''+escAttr(r)+'\',this.checked)');
     });
     html+='</tr>';
   });
-  // FIX 6 — Append 4 CAR permission rows (below existing status routing rows)
-  // Default checks: Tom/Noel on all 4; Underwriting on CLOSE CAR + OVERRIDE SEVERITY only; Production/Vendor unchecked.
   var CAR_PERMISSIONS=[
     {label:'OPEN CAR',defaults:{'Tom Jones':true,'Noel Rhodes':true,'Underwriting Desk':false,'Production':false,'Vendor':false}},
     {label:'ASSIGN CAR',defaults:{'Tom Jones':true,'Noel Rhodes':true,'Underwriting Desk':false,'Production':false,'Vendor':false}},
@@ -1546,15 +1565,71 @@ function renderRoutingMatrix(){
     html+='<tr><td>'+p.label+'</td>';
     ALL_RECIPIENTS.forEach(function(r){
       var on=!!p.defaults[r];
-      html+='<td><input type="checkbox"'+(on?' checked':'')+' onchange="updatePermission(\''+escAttr(p.label)+'\',\''+escAttr(r)+'\',this.checked)"></td>';
+      html+=cellRender(on,'updatePermission(\''+escAttr(p.label)+'\',\''+escAttr(r)+'\',this.checked)');
     });
     html+='</tr>';
   });
   html+='</tbody></table>';container.innerHTML=html;
 }
-// FIX 6 — Permission checkbox stub (visual-only for demo; can wire to storage later)
-function updatePermission(action,user,on){toast('Permission updated: '+action+' → '+user+(on?' \u2713':' \u2717'),'ok');}
-function updateRouting(status,recipient,on){var m=getRoutingMatrix();if(!m[status])m[status]={};m[status][recipient]=on;saveRoutingMatrix(m);toast('Routing updated: '+status+' → '+recipient+(on?' ✓':' ✗'),'ok');}
+// FIX 6 — Permission checkbox (edit-mode gated; diffs tracked in ROUTING_PENDING_CHANGES)
+function updatePermission(action,user,on){
+  if(!ROUTING_EDIT_MODE){toast('Enter Edit Mode to change permissions','err');renderRoutingMatrix();return;}
+  ROUTING_PENDING_CHANGES.push({type:'permission',action:action,user:user,to:on,at:new Date().toISOString()});
+  renderRoutingMatrix();
+}
+function updateRouting(status,recipient,on){
+  if(!ROUTING_EDIT_MODE){toast('Enter Edit Mode to change permissions','err');renderRoutingMatrix();return;}
+  var m=getRoutingMatrix();if(!m[status])m[status]={};
+  var prev=!!m[status][recipient];
+  if(prev===on)return;
+  m[status][recipient]=on;
+  saveRoutingMatrix(m);
+  ROUTING_PENDING_CHANGES.push({type:'routing',status:status,recipient:recipient,from:prev,to:on,at:new Date().toISOString()});
+  renderRoutingMatrix();
+}
+function enterRoutingEditMode(){
+  ROUTING_EDIT_MODE=true;
+  ROUTING_PENDING_CHANGES=[];
+  ROUTING_SNAPSHOT=JSON.parse(JSON.stringify(getRoutingMatrix()));
+  renderRoutingMatrix();
+}
+function cancelRoutingEdits(){
+  if(ROUTING_SNAPSHOT){saveRoutingMatrix(ROUTING_SNAPSHOT);}
+  ROUTING_EDIT_MODE=false;
+  ROUTING_PENDING_CHANGES=[];
+  ROUTING_SNAPSHOT=null;
+  renderRoutingMatrix();
+  toast('Changes discarded','ok');
+}
+function saveRoutingEdits(){
+  if(ROUTING_PENDING_CHANGES.length===0){ROUTING_EDIT_MODE=false;ROUTING_SNAPSHOT=null;renderRoutingMatrix();toast('No changes to save','ok');return;}
+  var summary=ROUTING_PENDING_CHANGES.map(function(c){
+    if(c.type==='routing')return c.status+' \u2192 '+c.recipient+': '+(c.from?'on':'off')+' \u2192 '+(c.to?'on':'off');
+    return c.action+' \u2192 '+c.user+': '+(c.to?'on':'off');
+  }).join('\n');
+  if(!confirm('Save '+ROUTING_PENDING_CHANGES.length+' change'+(ROUTING_PENDING_CHANGES.length===1?'':'s')+'?\n\n'+summary))return;
+  var audit=getRoutingAudit();
+  audit.push({savedAt:new Date().toISOString(),savedBy:'Adam Brousell',changes:ROUTING_PENDING_CHANGES.slice()});
+  saveRoutingAudit(audit);
+  ROUTING_EDIT_MODE=false;
+  ROUTING_PENDING_CHANGES=[];
+  ROUTING_SNAPSHOT=null;
+  renderRoutingMatrix();
+  toast('Saved '+audit[audit.length-1].changes.length+' change'+(audit[audit.length-1].changes.length===1?'':'s'),'ok');
+}
+function viewRoutingAudit(){
+  var audit=getRoutingAudit();
+  if(audit.length===0){alert('No audit history yet.');return;}
+  var lines=[];
+  audit.slice(-20).reverse().forEach(function(entry){
+    lines.push('['+entry.savedAt.substring(0,19).replace('T',' ')+'] '+entry.savedBy+' \u2014 '+entry.changes.length+' change'+(entry.changes.length===1?'':'s'));
+    entry.changes.forEach(function(c){
+      if(c.type==='routing')lines.push('   \u2022 '+c.status+' \u2192 '+c.recipient+': '+(c.from?'on':'off')+' \u2192 '+(c.to?'on':'off'));
+      else lines.push('   \u2022 '+c.action+' \u2192 '+c.user+': '+(c.to?'on':'off'));
+    });
+  });
+  alert('Last '+Math.min(20,audit.length)+' audit entries:\n\n'+lines.join('\n'));
+}
 
 function renderReports(){
   var reports=getReports();var tbody=document.getElementById('reportTable');if(!tbody)return;var html='';
