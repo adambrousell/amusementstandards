@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -24,6 +24,8 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--t
 .hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;height:48px;display:flex;align-items:center;position:sticky;top:0;z-index:100}
 .hdr-logo{font-family:var(--sans);font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.02em}
 .hdr-logo span{color:var(--accent)}
+#progress-strip{position:fixed;top:48px;left:0;right:0;height:5px;background:var(--surface2);z-index:99;pointer-events:none}
+#progress-strip-fill{height:100%;width:0%;background:var(--red);transition:width .3s ease,background-color .3s ease}
 .main{padding:16px;margin:0 auto;width:100%;padding-bottom:100px}
 #screen-login,#screen-assignments,#screen-confirm{max-width:720px;margin:0 auto}
 #screen-survey{max-width:1200px;margin:0 auto}
@@ -134,6 +136,12 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--t
 .no-expand select:focus{outline:none;border-color:var(--accent)}
 .no-expand textarea{width:100%;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:15px;color:var(--text);resize:vertical;min-height:60px;margin-top:8px}
 .no-expand textarea:focus{outline:none;border-color:var(--accent)}
+.comment-wrap{position:relative}
+.no-expand .comment-wrap textarea{padding-right:52px}
+.mic-btn{position:absolute;top:16px;right:8px;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text2);transition:border-color .15s,color .15s;user-select:none;-webkit-user-select:none}
+.mic-btn:hover{border-color:var(--accent);color:var(--accent)}
+.mic-btn.recording{color:var(--red);border-color:var(--red);animation:mic-pulse 1.2s infinite}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(248,81,73,.55)}50%{box-shadow:0 0 0 8px rgba(248,81,73,0)}}
 .no-expand .photo-btn{display:inline-block;padding:10px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:12px;color:var(--text3);cursor:pointer;margin-top:8px;min-height:44px}
 .no-expand .photo-btn:hover{border-color:var(--accent)}
 .no-expand .photo-preview{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:6px}
@@ -164,6 +172,7 @@ html,body{height:100%;font-family:var(--sans);background:var(--bg);color:var(--t
 <div class="hdr">
   <div class="hdr-logo">MASI <span>Field Inspection</span></div>
 </div>
+<div id="progress-strip"><div id="progress-strip-fill"></div></div>
 
 <div class="main">
 
@@ -1165,7 +1174,10 @@ function renderActiveCard(){
       });
       html+='</select>';
       html+='<label style="margin-top:10px">Comment (optional)</label>';
+      html+='<div class="comment-wrap">';
       html+='<textarea id="comment-'+key+'" placeholder="Describe finding..." oninput="onComment(\''+key+'\',this.value)">'+esc(it.comment||'')+'</textarea>';
+      if(SPEECH_SUPPORTED)html+='<div class="mic-btn" id="mic-'+key+'" onclick="toggleMic(\''+key+'\')" title="Dictate">\ud83c\udfa4</div>';
+      html+='</div>';
       html+='<label style="margin-top:10px">Photo (optional)</label>';
       html+='<div><span class="photo-btn" onclick="document.getElementById(\'photo-'+key+'\').click()">Attach Photo</span>';
       html+='<input type="file" id="photo-'+key+'" accept="image/*" capture="camera" style="display:none" onchange="onPhoto(\''+key+'\',this)"></div>';
@@ -1280,6 +1292,61 @@ function updateSubmitButton(){
     btn.disabled=!(answered>=1);
     btn.textContent='Submit Inspection ('+answered+'/'+total+')';
   }
+  var strip=document.getElementById('progress-strip-fill');
+  if(strip){
+    var pct=total===0?0:(answered/total)*100;
+    strip.style.width=pct+'%';
+    strip.style.background=pct===0?'var(--red)':pct===100?'var(--good)':'var(--warn)';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// VOICE-TO-TEXT (Web Speech API, silent hide if unsupported)
+// ═══════════════════════════════════════════════════════════════════════════
+
+var SPEECH_SUPPORTED=(typeof window!=='undefined'&&(typeof window.SpeechRecognition!=='undefined'||typeof window.webkitSpeechRecognition!=='undefined'));
+var MIC_STATE={rec:null,activeKey:null};
+
+function toggleMic(key){
+  var Rec=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!Rec)return;
+  var btn=document.getElementById('mic-'+key);
+  if(MIC_STATE.activeKey===key&&MIC_STATE.rec){
+    try{MIC_STATE.rec.stop();}catch(e){}
+    return;
+  }
+  if(MIC_STATE.rec){
+    try{MIC_STATE.rec.stop();}catch(e){}
+  }
+  var rec=new Rec();
+  rec.continuous=false;
+  rec.interimResults=false;
+  rec.lang=(navigator&&navigator.language)||'en-US';
+  MIC_STATE.rec=rec;
+  MIC_STATE.activeKey=key;
+  if(btn)btn.classList.add('recording');
+  rec.onresult=function(evt){
+    var txt='';
+    for(var i=0;i<evt.results.length;i++){
+      if(evt.results[i].isFinal)txt+=evt.results[i][0].transcript;
+    }
+    if(!txt)return;
+    var ta=document.getElementById('comment-'+key);
+    if(!ta)return;
+    var existing=ta.value||'';
+    var glue=existing&&!/\s$/.test(existing)?' ':'';
+    ta.value=existing+glue+txt;
+    onComment(key,ta.value);
+  };
+  var cleanup=function(){
+    var b=document.getElementById('mic-'+key);
+    if(b)b.classList.remove('recording');
+    MIC_STATE.rec=null;
+    MIC_STATE.activeKey=null;
+  };
+  rec.onend=cleanup;
+  rec.onerror=cleanup;
+  try{rec.start();}catch(e){cleanup();}
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
