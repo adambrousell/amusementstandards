@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eric Magliacane · Real Estate Professional · New Jersey</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand: #f5f0e8;
+      --cream: #faf8f4;
+      --slate: #2c3340;
+      --slate-light: #4a5568;
+      --gold: #b8960c;
+      --gold-light: #d4ab1a;
+      --coast: #5b7fa6;
+      --coast-light: #8aaec9;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--slate);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(184,150,12,0.15);
+      transition: all 0.3s ease;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--slate);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--slate-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 4rem 6rem;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--slate);
+      margin-bottom: 0.4rem;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--coast);
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--slate-light);
+      margin-bottom: 2rem;
+      letter-spacing: 0.03em;
+    }
+    .hero-desc {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--slate-light);
+      max-width: 460px;
+      margin-bottom: 3rem;
+      font-weight: 300;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--slate);
+      color: var(--white);
+      padding: 0.9rem 2rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-primary:hover { background: var(--gold); }
+    .btn-outline {
+      background: transparent;
+      color: var(--slate);
+      padding: 0.9rem 2rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1.5px solid var(--slate);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-outline:hover { border-color: var(--coast); color: var(--coast); }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-panel {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #2c3340 0%, #3d4f6e 50%, #5b7fa6 100%);
+    }
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.07;
+      background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 30px,
+        rgba(255,255,255,0.5) 30px,
+        rgba(255,255,255,0.5) 31px
+      );
+    }
+    .hero-initials {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(8rem, 18vw, 14rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.06);
+      letter-spacing: -0.05em;
+      user-select: none;
+    }
+    .hero-badge {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 1.2rem 2rem;
+      text-align: center;
+      color: white;
+      min-width: 240px;
+    }
+    .hero-badge-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 0.3rem;
+    }
+    .hero-badge-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--slate-light);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    .hero-scroll::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── STATS STRIP ─── */
+    .stats-strip {
+      background: var(--slate);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 3px solid var(--gold);
+    }
+    .stat-item {
+      padding: 2.5rem 2rem;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    .stat-item:hover::before { transform: scaleX(1); }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ─── SECTION BASE ─── */
+    section { padding: 6rem 0; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .section-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--slate);
+      margin-bottom: 1.5rem;
+    }
+    .section-headline em { font-style: italic; color: var(--coast); }
+
+    /* ─── ABOUT ─── */
+    .about-section { background: var(--sand); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .about-text p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--slate-light);
+      font-weight: 300;
+      margin-bottom: 1.2rem;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-highlights {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .highlight-card {
+      background: var(--white);
+      padding: 1.8rem;
+      border-left: 3px solid var(--gold);
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .highlight-card:hover {
+      transform: translateX(4px);
+      box-shadow: -4px 4px 20px rgba(0,0,0,0.06);
+    }
+    .highlight-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+    .highlight-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 0.35rem;
+    }
+    .highlight-desc {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--slate-light);
+      font-weight: 300;
+    }
+
+    /* ─── SERVICES ─── */
+    .services-section { background: var(--cream); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--slate-light);
+      border: 1.5px solid var(--slate-light);
+      margin-top: 3rem;
+    }
+    .service-card {
+      background: var(--cream);
+      padding: 3rem 2.5rem;
+      transition: background 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 0; height: 3px;
+      background: var(--gold);
+      transition: width 0.4s ease;
+    }
+    .service-card:hover { background: var(--sand); }
+    .service-card:hover::after { width: 100%; }
+    .service-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      color: rgba(44,51,64,0.08);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .service-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 0.75rem;
+    }
+    .service-desc {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--slate-light);
+      font-weight: 300;
+    }
+
+    /* ─── EXPERIENCE ─── */
+    .experience-section { background: var(--slate); color: white; }
+    .experience-section .section-headline { color: white; }
+    .exp-timeline {
+      margin-top: 3rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+    .exp-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    .exp-item {
+      position: relative;
+      padding: 0 0 3rem 2.5rem;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+    }
+    .exp-item:hover { opacity: 1; }
+    .exp-item:last-child { padding-bottom: 0; }
+    .exp-dot {
+      position: absolute;
+      left: -5px; top: 6px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 3px rgba(184,150,12,0.2);
+    }
+    .exp-date {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .exp-role {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 0.2rem;
+    }
+    .exp-company {
+      font-size: 0.88rem;
+      color: var(--coast-light);
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+    }
+    .exp-desc {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+      max-width: 580px;
+    }
+
+    /* ─── COVERAGE ─── */
+    .coverage-section { background: var(--sand); }
+    .coverage-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-top: 2rem;
+    }
+    .coverage-map {
+      position: relative;
+      background: linear-gradient(135deg, #e8f4f8 0%, #dceef7 100%);
+      border: 1px solid rgba(91,127,166,0.2);
+      padding: 3rem 2rem;
+      text-align: center;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .nj-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 300;
+      color: var(--coast);
+      opacity: 0.3;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+      letter-spacing: -0.05em;
+    }
+    .county-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+    .county-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--slate);
+    }
+    .county-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--coast);
+      flex-shrink: 0;
+    }
+    .county-item.primary .county-dot { background: var(--gold); width: 10px; height: 10px; }
+    .county-item.primary { font-weight: 500; }
+    .coverage-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--slate);
+      margin-bottom: 1rem;
+    }
+    .coverage-info p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--slate-light);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ─── EDUCATION ─── */
+    .edu-section { background: var(--cream); }
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .edu-card {
+      background: var(--white);
+      padding: 2.5rem;
+      border: 1px solid rgba(44,51,64,0.08);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.25s ease;
+    }
+    .edu-card:hover { box-shadow: 0 8px 32px rgba(44,51,64,0.1); }
+    .edu-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--gold), var(--coast));
+    }
+    .edu-degree {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 0.4rem;
+    }
+    .edu-school {
+      font-size: 0.95rem;
+      color: var(--coast);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+    .edu-field {
+      font-size: 0.85rem;
+      color: var(--slate-light);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ─── CONTACT ─── */
+    .contact-section {
+      background: linear-gradient(135deg, var(--slate) 0%, #3d4f6e 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 60px,
+        rgba(255,255,255,0.015) 60px,
+        rgba(255,255,255,0.015) 61px
+      );
+    }
+    .contact-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .contact-section .section-headline { color: white; }
+    .contact-section .section-label { color: var(--gold-light); }
+    .contact-intro {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.6);
+      font-weight: 300;
+      margin-top: 1.5rem;
+    }
+    .contact-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.25s ease;
+    }
+    .contact-item:hover { background: rgba(255,255,255,0.09); }
+    .contact-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+    .contact-item-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 0.3rem;
+    }
+    .contact-item-value {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.85);
+      font-weight: 300;
+      text-decoration: none;
+    }
+    .contact-item-value:hover { color: var(--gold-light); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #1a2030;
+      color: rgba(255,255,255,0.3);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+    }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    /* ─── ANIMATIONS ─── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+
+    /* Hero entrance */
+    .hero-eyebrow { animation: slideUp 0.8s ease 0.2s both; }
+    .hero-name    { animation: slideUp 0.8s ease 0.35s both; }
+    .hero-title   { animation: slideUp 0.8s ease 0.5s both; }
+    .hero-desc    { animation: slideUp 0.8s ease 0.65s both; }
+    .hero-ctas    { animation: slideUp 0.8s ease 0.8s both; }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-right   { animation: fadeIn 1.2s ease 0.3s both; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 7rem 1.5rem 3rem; }
+      .hero-right { height: 280px; }
+      .stats-strip { grid-template-columns: 1fr 1fr; }
+      .stat-item { border-right: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .container { padding: 0 1.5rem; }
+      .about-grid, .coverage-grid, .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .edu-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Eric <span>Magliacane</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#coverage">Coverage</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Real Estate Professional · New Jersey</div>
+    <h1 class="hero-name">Eric<br><em>Magliacane</em></h1>
+    <p class="hero-title">Licensed Realtor · eXp Realty</p>
+    <p class="hero-desc">
+      Serving buyers and sellers across all of New Jersey with a focus on Monmouth and Ocean Counties. 
+      Bringing a hospitality-first approach to every transaction — detail-oriented, driven, and deeply local.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Get in Touch</a>
+      <a href="#services" class="btn-outline">What I Do</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-bg-panel"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-initials">EM</div>
+    <div class="hero-badge">
+      <div class="hero-badge-label">Based in</div>
+      <div class="hero-badge-value">Sea Girt, NJ</div>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-number">NJ</div>
+    <div class="stat-label">Statewide Coverage</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">2+</div>
+    <div class="stat-label">Counties Specialized</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">500+</div>
+    <div class="stat-label">Connections</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">eXp</div>
+    <div class="stat-label">Realty Affiliate</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <div class="section-label">About Eric</div>
+        <h2 class="section-headline">A Professional <em>Built on Service</em></h2>
+        <p>
+          Eric Magliacane is a licensed New Jersey real estate salesperson certified through the NJ Department of Banking & Insurance — Real Estate Commission. He brings a background that few agents can match: years in customer-focused hospitality environments have sharpened his instinct for listening, adapting, and delivering results that feel personal.
+        </p>
+        <p>
+          Whether you're buying your first home on the Jersey Shore or selling a commercial property, Eric approaches every deal with the same commitment: efficient, respectful, and honest representation from first conversation to closed transaction.
+        </p>
+        <p>
+          Rooted in the Monmouth and Ocean County communities he serves, Eric combines deep local market knowledge with the national reach of eXp Realty's platform.
+        </p>
+      </div>
+      <div class="about-highlights">
+        <div class="highlight-card fade-in fade-in-delay-1">
+          <div class="highlight-icon">🏡</div>
+          <div class="highlight-title">Residential Specialist</div>
+          <div class="highlight-desc">Expert guidance for home buyers and sellers across NJ's competitive coastal markets.</div>
+        </div>
+        <div class="highlight-card fade-in fade-in-delay-2">
+          <div class="highlight-icon">🏢</div>
+          <div class="highlight-title">Commercial Real Estate</div>
+          <div class="highlight-desc">Navigating commercial transactions with precision, professionalism, and market intelligence.</div>
+        </div>
+        <div class="highlight-card fade-in fade-in-delay-3">
+          <div class="highlight-icon">🤝</div>
+          <div class="highlight-title">Relocation Services</div>
+          <div class="highlight-desc">Seamless transitions for clients moving into or out of New Jersey — from search to settlement.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="container">
+    <div class="section-label fade-in">What I Offer</div>
+    <h2 class="section-headline fade-in">Full-Service <em>Real Estate</em></h2>
+    <div class="services-grid">
+      <div class="service-card fade-in">
+        <div class="service-num">01</div>
+        <div class="service-title">Buyer Representation</div>
+        <div class="service-desc">From identifying the right properties to negotiating the best terms, I guide buyers through every step with market insight and advocacy.</div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-1">
+        <div class="service-num">02</div>
+        <div class="service-title">Seller Representation</div>
+        <div class="service-desc">Strategic pricing, targeted marketing, and skilled negotiation to maximize your return and minimize days on market.</div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-2">
+        <div class="service-num">03</div>
+        <div class="service-title">Commercial Transactions</div>
+        <div class="service-desc">Supporting investors, business owners, and developers with commercial acquisitions, sales, and leasing across New Jersey.</div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-3">
+        <div class="service-num">04</div>
+        <div class="service-title">Market Research</div>
+        <div class="service-desc">Rigorous comparative market analysis and local trend reporting so clients make confident, data-backed decisions.</div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-1">
+        <div class="service-num">05</div>
+        <div class="service-title">Relocation Consulting</div>
+        <div class="service-desc">Helping families and professionals relocate smoothly — whether moving to the Shore or transitioning elsewhere.</div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-2">
+        <div class="service-num">06</div>
+        <div class="service-title">Title & Insurance Guidance</div>
+        <div class="service-desc">Coordinating with title companies and homeowners insurance professionals to ensure a seamless, protected closing.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience-section" id="experience">
+  <div class="container">
+    <div class="section-label fade-in">Career</div>
+    <h2 class="section-headline fade-in">Experience &amp; <em>Background</em></h2>
+    <div class="exp-timeline">
+      <div class="exp-item fade-in">
+        <div class="exp-dot"></div>
+        <div class="exp-date">Current</div>
+        <div class="exp-role">Real Estate Sales Consultant</div>
+        <div class="exp-company">eXp Realty · New Jersey</div>
+        <div class="exp-desc">Full-service real estate representation across New Jersey with specialization in Monmouth and Ocean Counties — residential, commercial, and relocation transactions.</div>
+      </div>
+      <div class="exp-item fade-in fade-in-delay-1">
+        <div class="exp-dot"></div>
+        <div class="exp-date">Previous</div>
+        <div class="exp-role">Mixologist</div>
+        <div class="exp-company">The Asbury Hotel · Asbury Park, NJ</div>
+        <div class="exp-desc">Crafted signature cocktails and curated elevated guest experiences at one of the Jersey Shore's premier boutique hotel destinations.</div>
+      </div>
+      <div class="exp-item fade-in fade-in-delay-2">
+        <div class="exp-dot"></div>
+        <div class="exp-date">Previous</div>
+        <div class="exp-role">Bar Supervisor</div>
+        <div class="exp-company">Clark's Landing Yacht Club · NJ</div>
+        <div class="exp-desc">Managed bar operations, supervised team functions, oversaw inventory, and maintained service excellence in a high-volume hospitality environment.</div>
+      </div>
+      <div class="exp-item fade-in fade-in-delay-3">
+        <div class="exp-dot"></div>
+        <div class="exp-date">Previous</div>
+        <div class="exp-role">EHR Training Specialist &amp; Consultant</div>
+        <div class="exp-company">EHR Concepts</div>
+        <div class="exp-desc">Delivered Allscripts Enterprise training and implementation support, translating complex systems into accessible workflows for healthcare professionals.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE -->
+<section class="coverage-section" id="coverage">
+  <div class="container">
+    <div class="coverage-grid">
+      <div>
+        <div class="section-label fade-in">Service Area</div>
+        <h2 class="section-headline fade-in">All of New Jersey, <em>Focused on the Shore</em></h2>
+        <div class="coverage-info fade-in">
+          <p>
+            Licensed to serve clients across the entire state of New Jersey, Eric's deepest expertise lies in the coastal communities of Monmouth and Ocean Counties — some of the Garden State's most sought-after real estate markets.
+          </p>
+          <p>
+            Whether you're eyeing a beachfront property in Sea Girt, a family home in Toms River, or a commercial space anywhere in the state, local knowledge is Eric's competitive edge.
+          </p>
+          <a href="#contact" class="btn-primary">Discuss Your Market</a>
+        </div>
+      </div>
+      <div class="coverage-map fade-in fade-in-delay-1">
+        <div class="nj-label">NJ</div>
+        <ul class="county-list">
+          <li class="county-item primary"><div class="county-dot"></div>Monmouth County (Primary)</li>
+          <li class="county-item primary"><div class="county-dot"></div>Ocean County (Primary)</li>
+          <li class="county-item"><div class="county-dot"></div>Middlesex County</li>
+          <li class="county-item"><div class="county-dot"></div>Burlington County</li>
+          <li class="county-item"><div class="county-dot"></div>+ All NJ Counties</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="edu-section" id="education">
+  <div class="container">
+    <div class="section-label fade-in">Education</div>
+    <h2 class="section-headline fade-in">Academic <em>Foundation</em></h2>
+    <div class="edu-grid">
+      <div class="edu-card fade-in">
+        <div class="edu-degree">Bachelor of Arts</div>
+        <div class="edu-school">Adelphi University · Garden City, NY</div>
+        <div class="edu-field">Undergraduate studies providing a broad liberal arts foundation that informs client communication, negotiation, and analytical thinking.</div>
+      </div>
+      <div class="edu-card fade-in fade-in-delay-1">
+        <div class="edu-degree">Associate of Science</div>
+        <div class="edu-school">Endicott College · Beverly, MA</div>
+        <div class="edu-field">Coursework in Astronomy/Cosmology, Creative Writing, and Philosophy — disciplines that cultivate curiosity, perspective, and precise communication.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div>
+        <div class="section-label">Let's Talk</div>
+        <h2 class="section-headline">Ready to Make <em>Your Move?</em></h2>
+        <p class="contact-intro">
+          Whether you're searching for your next home, preparing to sell, or exploring commercial opportunities across New Jersey — Eric is ready to put his expertise and network to work for you.
+        </p>
+      </div>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-item-label">Location</div>
+            <div class="contact-item-value">Sea Girt, New Jersey</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🏢</div>
+          <div>
+            <div class="contact-item-label">Brokerage</div>
+            <div class="contact-item-value">eXp Realty · New Jersey</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🔗</div>
+          <div>
+            <div class="contact-item-label">LinkedIn</div>
+            <a class="contact-item-value" href="https://www.linkedin.com/in/eric-magliacane-37332a56" target="_blank">linkedin.com/in/eric-magliacane</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📋</div>
+          <div>
+            <div class="contact-item-label">License</div>
+            <div class="contact-item-value">NJ Dept. of Banking & Insurance<br>Real Estate Commission</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Eric Magliacane · eXp Realty · Licensed New Jersey Real Estate Salesperson · <a href="https://www.linkedin.com/in/eric-magliacane-37332a56" target="_blank">LinkedIn</a></p>
+</footer>
+
+<script>
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.boxShadow = window.scrollY > 40
+      ? '0 2px 20px rgba(0,0,0,0.08)'
+      : 'none';
+  });
+</script>
+</body>
+</html>
