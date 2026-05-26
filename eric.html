@@ -709,9 +709,55 @@
     @media (max-width: 900px) {
       nav { padding: 1rem 1.5rem; }
       .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-left { padding: 7rem 1.5rem 3rem; }
-      .hero-right { height: 280px; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: 100vh;
+        position: relative;
+      }
+      /* Dark navy fills the entire hero on mobile */
+      .hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, #2c3340 0%, #3d4f6e 50%, #5b7fa6 100%);
+        z-index: 0;
+      }
+      .hero-left {
+        padding: 7rem 1.5rem 3rem;
+        position: relative;
+        z-index: 2;
+      }
+      /* Flip text colors for dark background */
+      .hero-name { color: #ffffff; }
+      .hero-title { color: rgba(255,255,255,0.7); }
+      .hero-desc  { color: rgba(255,255,255,0.6); }
+      .btn-outline {
+        color: rgba(255,255,255,0.85);
+        border-color: rgba(255,255,255,0.4);
+      }
+      .btn-outline:hover { border-color: var(--gold-light); color: var(--gold-light); }
+
+      /* "EM" monogram as decorative bg on mobile */
+      .hero-left::after {
+        content: 'EM';
+        position: absolute;
+        top: 50%; right: -0.5rem;
+        transform: translateY(-50%);
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 14rem;
+        font-weight: 300;
+        color: rgba(255,255,255,0.04);
+        pointer-events: none;
+        z-index: 0;
+        line-height: 1;
+      }
+
+      /* Hide the right panel's box — pattern/badge would overlap */
+      .hero-right { display: none; }
+      .hero-scroll { color: rgba(255,255,255,0.4); }
+      .hero-scroll::after { background: linear-gradient(to bottom, var(--gold), transparent); }
+
       .stats-strip { grid-template-columns: 1fr 1fr; }
       .stat-item { border-right: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); }
       .container { padding: 0 1.5rem; }
